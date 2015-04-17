@@ -1,0 +1,6 @@
+stopit
+elementium==1.1.0
+py==1.4.26
+pytest==2.6.4
+selenium==2.45.0
+yolk==0.4.3
