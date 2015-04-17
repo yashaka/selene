@@ -3,22 +3,24 @@ from setuptools import setup
 from selene import version
 
 description = 'Concise API for selenium + Ajax support + PageObjects + Widgets in Python (Selenide/Capybara + Widgeon alternative)'
-long_description = 'see http://github.com/yashaka/selene/ for more docs...'
+# long_description = 'see http://github.com/yashaka/selene/ for more docs...'
 
 setup(
     name='selene',
     version=version.VERSION,
     url='http://github.com/yashaka/selene/',
+    download_url='https://github.com/yashaka/selene/tarball/' + version.VERSION,
     license='Apache Software License',
     author='Iakiv Kramarenko',
     install_requires=[],
     author_email='yashaka@gmail.com',
     description=description,
-    long_description=long_description,
-    packages=['widgeon'],
+    # long_description=long_description,
+    packages=['selene'],
     include_package_data=True,
     platforms='any',
     zip_safe=False,
+    keywords=['testing', 'selenium', 'selenide', 'browser', 'pageobject'],
     classifiers=[
         'Programming Language :: Python',
         'Programming Language :: Python :: 2',
