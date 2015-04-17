@@ -4,7 +4,6 @@ from selene.conditions import empty, eq, absent
 from tests.resources.pages.order import Order
 from selene.tools import *
 
-
 config.app_host = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/resources/testapp/'
 
 

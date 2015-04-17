@@ -1,4 +1,5 @@
 from selenium.webdriver.remote.webelement import WebElement
+from selenium.webdriver.common.keys import Keys
 from selene import config
 from selene.conditions import visible, not_empty, of_size
 from selene.driver import browser
@@ -96,6 +97,10 @@ class SElement(Filler, BaseFinder, Container):
 
     def set(self, value):
         self.send_keys(value)
+        return self
+
+    def press_enter(self):
+        self.send_keys(Keys.RETURN)
         return self
 
     def within(self, context):
