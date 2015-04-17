@@ -28,6 +28,3 @@ def test_it_fills_order():
 
     # todo: clear options finally
 
-test_it_fills_order()
-
-
