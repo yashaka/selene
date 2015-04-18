@@ -3,4 +3,8 @@
 *.iml
 selene.egg-info/
 dist/
-**/*.pyc
+*.pyc
+*.pyo
+*.swp
+*.class
+*.orig

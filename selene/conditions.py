@@ -7,8 +7,13 @@ def visible(it):
     """visible"""
     return it.is_displayed()
 
-def absent(it):
+
+def hidden(it):
     return not visible(it)
+
+
+absent = hidden  # todo: think on: making absent to mean exactly "absent in DOM"...
+
 
 # todo: think on: is it worthy?
 def equal(to_smth, mapped=None):

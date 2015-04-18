@@ -77,7 +77,7 @@ class SElement(Filler, BaseFinder, Container):
 
     def __init__(self, locator_or_element, context=RootSElement()):
         if type(locator_or_element) not in (str, WebElement):
-            raise TypeError('Unknown element type for element_or_locator parameter. '
+            raise TypeError('Unknown element type for locator_or_element parameter. '
                             'Only WebElement and str are accepted')
 
         self._context = context
@@ -122,18 +122,26 @@ class SElement(Filler, BaseFinder, Container):
 
 
 class SElementsCollection(BaseFinder, Container):
-    def __init__(self, locator, context=RootSElement(), wrapper_class=SElement):
+    def __init__(self, locator_or_selements, context=RootSElement(), wrapper_class=SElement):
+        if not (isinstance(locator_or_selements, str) or
+                (isinstance(locator_or_selements, list) and
+                     all((isinstance(item, SElement)) for item in locator_or_selements))):
+            raise TypeError('Unknown element type for locator_or_selement parameter. '
+                            'Only str or list of Selement are accepted')
+
         self._context = context
-        self._locator = locator
+        self._locator = locator_or_selements
         self._wrapper_class = wrapper_class
         self._conditions = [not_empty] if config.default_wait_selist_until_is_not_empty else []
         self._each_conditions = [visible] if config.default_wait_selement_until_displayed else []
 
-        super(SElementsCollection, self).__init__()
+        if isinstance(locator_or_selements, str):
+            self._finder = lambda: [self._wrapper_class(webelement).that(*self._each_conditions)
+                                    for webelement in self._context.find_elements_by_css_selector(self._locator)]
+        else:
+            self._finder = lambda: locator_or_selements
 
-    def _finder(self):
-        return [self._wrapper_class(webelement).insist(*self._each_conditions, forced=False)
-                for webelement in self._context.find_elements_by_css_selector(self._locator)]
+        super(SElementsCollection, self).__init__()
 
     def of(self, selement_class):
         """ sets _wrapper_class to wrap its 'items' in """
@@ -158,7 +166,8 @@ class SElementsCollection(BaseFinder, Container):
         return self._get().__getitem__(item)
 
     def __getslice__(self, i, j):
-        return self._finder().__getslice__(i, j)
+        # todo: think on: should we pass here self._context, and self._wrapper_class into constructor?
+        return SElementsCollection(self._finder().__getslice__(i, j))
 
     def __len__(self):
         return self._get().__len__()

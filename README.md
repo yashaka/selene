@@ -1,6 +1,6 @@
 # Selene
 
-Concise API for selenium + Ajax support + PageObjects + Widgets in Python (Selenide/Capybara + Widgeon alternative)
+Concise API for Selenium + Ajax support + PageObjects + Widgets in Python (Selenide/Capybara + Widgeon alternative)
 
 ## Installation
 
@@ -10,7 +10,31 @@ Concise API for selenium + Ajax support + PageObjects + Widgets in Python (Selen
 
 ### Basic example
 
-*TODO...*
+```python
+from selene.tools import *
+from selene.conditions import text, texts, absent
+
+
+def test_create_task():
+    tasks = ss("#todo-list>li")
+
+    visit("http://todomvc.com/examples/troopjs_require/#/")
+
+    for task_text in ["1", "2", "3"]:
+        s("#new-todo").set(task_text).press_enter()
+    tasks.insist(texts("1", "2", "3"))
+    s("#todo-count").insist(text(3))
+
+    tasks[2].s(".toggle").click()
+    s("#filters a[href='#/active']").click()
+
+    tasks[:2].insist(texts("1", "2"))
+    tasks[2].insist(absent)
+```
+
+### PageObjects and Widgets (aka SElements)
+
+**TBD**
 
 ### More examples
 
@@ -18,9 +42,7 @@ See **/tests** files for more examples of usage.
 
 ## TODO list
 
-* tbd...
-* fix long_description
-
+* see todo.md
 
 ## Contributing
 

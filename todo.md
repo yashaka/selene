@@ -1,3 +1,21 @@
+*  fix autocompletion for the code: tasks[2].insist(absent)
+i.e. after `].` was pressed
+
+First try with Jedi's autocompletion
+
+Second consider adding method instead of [] usage, e.g. #nth
+like:
+    ss("#item").nth(2).insist(absent)
+
+* ss("#item").insist(condition) expect "collection condition" as param...
+i.e. the one that knows by itself that it needs to examine items of the ss result (which is SelementsCollection)
+in order to assert "element condition" on each item among ss result, you need
+to use .insist_each
+
+what if make insist to define itself what condition was passed - collection or element one, and so define
+how to assert this condition - on all collection of items or on each item?
+
+* in case ss("...") finds selements but all of them are hidden, should the .insist(empty) still fail?
 
 * Think on how to implement:
 
