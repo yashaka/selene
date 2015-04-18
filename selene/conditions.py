@@ -62,3 +62,11 @@ def of_size(size):
     return new_condition
 
 
+def css_class(cssclass):
+    def new_condition(it):
+        return cssclass in it.get_attribute('class')
+    new_condition.__name__ = 'has css class: %s' % cssclass
+    return new_condition
+
+
+

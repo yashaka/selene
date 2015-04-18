@@ -159,6 +159,12 @@ class SElementsCollection(BaseFinder, Container):
             selement.insist(condition, *others)
         return self
 
+    def filter(self, condition, *others):
+        filtered = reduce(lambda filtered, cond: filter(cond, filtered),
+                          [condition] + list(others),
+                          self._finder())
+        return SElementsCollection(filtered)
+
     def __getattr__(self, item):
         return getattr(self._get(), item)
 
