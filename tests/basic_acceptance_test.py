@@ -1,5 +1,4 @@
 import os
-from selene import config
 from selene.conditions import empty, eq, absent
 from tests.resources.pages.order import Order
 from selene.tools import *

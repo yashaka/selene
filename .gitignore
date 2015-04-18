@@ -1,3 +1,6 @@
 .idea/
 .DS_Store
 *.iml
+selene.egg-info/
+dist/
+**/*.pyc

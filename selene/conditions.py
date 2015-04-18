@@ -29,6 +29,26 @@ def empty(it):
     return of_size(0)(it)
 
 
+def text(expected_containable_text):
+    expected_containable_text = str(expected_containable_text)
+    def new_condition(it):
+        return expected_containable_text in it.text
+    new_condition.__name__ = 'contains text: %s' % expected_containable_text
+    return new_condition
+
+
+def texts(*expected_containable_texts):
+    from operator import contains
+
+    def new_condition(it):
+        actual_texts = [item.text for item in it]
+        return len(it) == len(expected_containable_texts) and \
+               all(map(contains, actual_texts, expected_containable_texts))
+
+    new_condition.__name__ = 'is of containable texts: %s' % list(expected_containable_texts)
+    return new_condition
+
+
 def of_size(size):
     def new_condition(it):
         return len(it) == size

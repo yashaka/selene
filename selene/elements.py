@@ -1,7 +1,7 @@
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.common.keys import Keys
 from selene import config
-from selene.conditions import visible, not_empty, of_size
+from selene.conditions import visible, not_empty
 from selene.driver import browser
 from selene.helpers import merge
 from selene.page_object import Filler
@@ -45,7 +45,7 @@ class BaseFinder(object):
     def _get(self):
         """ loads self via _open, asserts _conditions on it, and returns what was found by _finder
             i.e. = 'smart' _finder"""
-        return wait_for(self._finder, until=self._conditions, after=self._open)
+        return wait_for(self._finder, until=self._conditions, by_demand_after=self._open)
 
     def get(self):
         """ convenient method to load self explicitly before e.g. #insist that will not load by default """
@@ -157,6 +157,9 @@ class SElementsCollection(BaseFinder, Container):
     def __getitem__(self, item):
         return self._get().__getitem__(item)
 
+    def __getslice__(self, i, j):
+        return self._finder().__getslice__(i, j)
+
     def __len__(self):
         return self._get().__len__()
 
@@ -165,3 +168,4 @@ class SElementsCollection(BaseFinder, Container):
 
     # todo: automate proxying all other magic methods (http://code.activestate.com/recipes/496741-object-proxying/)
     # todo: or proxy them explicitly if better
+
