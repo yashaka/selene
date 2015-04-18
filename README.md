@@ -1,6 +1,6 @@
 # Selene
 
-Concise API for Selenium + Ajax support + PageObjects + Widgets in Python (Selenide/Capybara + Widgeon alternative)
+Concise API for Selenium in Python + Ajax support + PageObjects + Widgets (Selenide/Capybara + Widgeon alternative)
 
 ## Installation
 
