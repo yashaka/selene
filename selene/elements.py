@@ -75,7 +75,16 @@ class BaseFinder(object):
 
 class SElement(Filler, BaseFinder, Container):
 
-    def __init__(self, locator_or_element, context=RootSElement()):
+    def __init__(self, locator_or_element, context=RootSElement(), **kwargs):
+        """
+        :param locator_or_element - locator (only css so far is supported) to be used to find self, or WebElement to be
+         wrapped directly.
+        :param context - selement to search self in
+        :param kwargs['logged_locator'] if provided will be used in representation of the selement, in case
+         it was build via wrapping WebElement
+        """
+        # todo: think on: implementing the goal solved with kwargs['logged_locator'] in a different less "magic" way
+
         if type(locator_or_element) not in (str, WebElement):
             raise TypeError('Unknown element type for locator_or_element parameter. '
                             'Only WebElement and str are accepted')
@@ -86,9 +95,13 @@ class SElement(Filler, BaseFinder, Container):
 
         if isinstance(locator_or_element, str):
             self._finder = lambda: self._context.find_element_by_css_selector(locator_or_element)
+            kwargs['logged_locator'] = locator_or_element
         elif isinstance(locator_or_element, WebElement):
             self._finder = lambda: locator_or_element
         # todo: think on refactoring the _finder definition to be more straightforward and maybe via fn instead of lambda
+
+        # todo: think on adding context to representation
+        self._finder.to_str = lambda: '{%s}' % kwargs.get('logged_locator', locator_or_element)
 
         super(SElement, self).__init__()
 
@@ -136,10 +149,15 @@ class SElementsCollection(BaseFinder, Container):
         self._each_conditions = [visible] if config.default_wait_selement_until_displayed else []
 
         if isinstance(locator_or_selements, str):
-            self._finder = lambda: [self._wrapper_class(webelement).that(*self._each_conditions)
-                                    for webelement in self._context.find_elements_by_css_selector(self._locator)]
+            self._finder = lambda: \
+                [self._wrapper_class(webelement, logged_locator='%s[%s]' % (locator_or_selements, index))
+                     .that(*self._each_conditions)
+                 for index, webelement in enumerate(self._context.find_elements_by_css_selector(self._locator))]
         else:
             self._finder = lambda: locator_or_selements
+
+        # todo: think on adding context to representation
+        self._finder.to_str = lambda: 'all {%s}' % (locator_or_selements,)
 
         super(SElementsCollection, self).__init__()
 

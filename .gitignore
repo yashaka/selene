@@ -8,4 +8,4 @@ dist/
 *.swp
 *.class
 *.orig
-tests/reports/*
+tests/reports

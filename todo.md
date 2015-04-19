@@ -1,3 +1,5 @@
+* test speed of selene (compare to selenide)
+
 *  fix autocompletion for the code: tasks[2].insist(absent)
 i.e. after `].` was pressed
 

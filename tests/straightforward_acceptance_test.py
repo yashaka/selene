@@ -1,6 +1,9 @@
-from selene.conditions import text, texts, hidden, css_class
-from selene.helpers import take_screenshot
+from selene.conditions import text, texts, hidden, css_class, visible
 from selene.tools import *
+
+# todo: find the way to not set config.app_host per test if it was set once...
+# todo: make it possible to apply config changes only for the scope of current test
+config.app_host = ''
 
 
 def test_create_task():
@@ -12,6 +15,7 @@ def test_create_task():
 
     for task_text in ["1", "2", "3"]:
         s("#new-todo").set(task_text).press_enter()
+
     tasks.insist(texts("1", "2", "3")).insist_each(active)
     s("#todo-count").insist(text(3))
 

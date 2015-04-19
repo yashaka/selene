@@ -11,6 +11,7 @@ class DummyResult(object):
     def __getattr__(self, item):
         return lambda *args, **kwargs: False
 
+
 def wait_for(code=lambda: None, until=lambda code_result: code_result.is_displayed(), by_demand_after=lambda: None,
              wait_time=config.default_wait_time):
     """
@@ -47,7 +48,7 @@ def wait_for(code=lambda: None, until=lambda code_result: code_result.is_display
                     time.sleep(0.1)
                     result = code()
         if not to_ctx_mgr:
-            # todo: refactor the following code, make it just `raise stopit.TimeoutException(str(code))`
+            # todo: think on: refactor the following code, make it just `raise stopit.TimeoutException(repr(code))` or etc.
             screenshot = '%s.png' % time.time()
             path = os.path.abspath('./reports/screenshots')  # todo: make screenshots path configurable
             full_path = take_screenshot(browser(), screenshot, path)
@@ -55,10 +56,10 @@ def wait_for(code=lambda: None, until=lambda code_result: code_result.is_display
             err_message = """
             Timeout reached while waiting...
             During: %ss
-            For: <TBD>
+            For: %s
             Until: %s
             Screenshot: %s
-            """ % (wait_time, condition_met.__name__, full_path)
+            """ % (wait_time, code.to_str(), condition_met.__name__, full_path)
             raise stopit.TimeoutException(err_message)
             # todo: improve error message. Also taking into account the proper alternative of condition implementation
 
