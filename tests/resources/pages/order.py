@@ -6,7 +6,7 @@ from selene.widgets import SelectList
 
 class Order(PageObject):
     def init(self):
-        self.details = Order.Details('#order_details')
+        self.details = self.Details('#order_details')
         self.add_item = s('#add_item')
         self.items = ss('[id^="item"]').of(self.Item)
 

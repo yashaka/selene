@@ -1,6 +1,8 @@
 from selenium import webdriver
 
 # This is a fast draft implementation and should be enhanced...
+from selene.helpers import take_screenshot
+
 
 class Browser(object):
     def __init__(self):
@@ -29,3 +31,8 @@ _browser = Browser()
 
 def browser():
     return _browser.get_browser()
+
+
+# todo: consider refactoring to the style: screenshot(name_or_full_path) with path get from config
+def screenshot(name, path='./'):
+    return take_screenshot(browser(), name, path)

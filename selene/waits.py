@@ -1,8 +1,11 @@
 from httplib import CannotSendRequest
+import os
 from selenium.common.exceptions import StaleElementReferenceException, NoSuchElementException
 from selene import config
 from selene.condition_helpers import satisfied
-from selene.helpers import suppress
+from selene.driver import browser
+from selene.helpers import suppress, take_screenshot
+
 
 class DummyResult(object):
     def __getattr__(self, item):
@@ -44,12 +47,18 @@ def wait_for(code=lambda: None, until=lambda code_result: code_result.is_display
                     time.sleep(0.1)
                     result = code()
         if not to_ctx_mgr:
+            # todo: refactor the following code, make it just `raise stopit.TimeoutException(str(code))`
+            screenshot = '%s.png' % time.time()
+            path = os.path.abspath('./reports/screenshots')  # todo: make screenshots path configurable
+            full_path = take_screenshot(browser(), screenshot, path)
+
             err_message = """
             Timeout reached while waiting...
             During: %ss
             For: <TBD>
             Until: %s
-            """ % (wait_time, condition_met.__name__)
+            Screenshot: %s
+            """ % (wait_time, condition_met.__name__, full_path)
             raise stopit.TimeoutException(err_message)
             # todo: improve error message. Also taking into account the proper alternative of condition implementation
 

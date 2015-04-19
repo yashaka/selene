@@ -26,4 +26,3 @@ def test_it_fills_order():
     item.advanced_options_selector.insist(absent)
 
     # todo: clear options finally
-

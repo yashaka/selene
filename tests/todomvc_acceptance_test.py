@@ -1,4 +1,5 @@
 from selene.conditions import text, texts, hidden, css_class
+from selene.helpers import take_screenshot
 from selene.tools import *
 
 
