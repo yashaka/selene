@@ -80,7 +80,8 @@ from selene.page_object import PageObject
 from selene.tools import visit, ss, s
 from selene.widgets import SelectList
 
-# We can define our Widget externally to main PageObject in case we want to reuse its elsewhere
+# We can define our Widget externally to main PageObject
+# in case we want to reuse its elsewhere
 class Article(SElement):
     def init(self):
         self.heading = self.s("heading")
@@ -153,13 +154,13 @@ Make your class a 'selene' Widget
 class Article(SElement):
 ```
 
+
 Inits its sub-elements
 ```python
     def init(self):
         self.heading = self.s("heading")
         self.text = self.s("article")
 ```
-
 The following selement definition
 ```python
         self.heading = self.s("heading")
@@ -176,11 +177,13 @@ Make your class a 'selene' PageObject
 class MainPage(PageObject):
 ```
 
+
 Specify how to load your page via implementing #open method
 ```python
     def open(self):
         visit("/main")
 ```
+
 
 Specify its sub-elements
 ```python
@@ -195,7 +198,8 @@ Specify its sub-elements
         #...
 ```
 
-Configure sub-widgets as LoadableComponents
+
+Configure sub-widgets as LoadableComponents via `to_open` method
 ```python
         self.blog = MainPage.Blog("#blog")
                     .to_open(lambda: s("#menu .blog-lnk").click())
@@ -215,10 +219,12 @@ MainPage.get().blog.articles[1].heading.insist(text("Hello Bob!"))
 ```
 It will be automatically loaded via `s("#menu .blog-lnk").click()` in case yet not visible.
 
+
 Declare a collection of widgets
 ```python
             self.articles = self.ss("[id^='article']").of(Article)
 ```
+
 
 Use SElement#fill_with to do a bulk set of fields
 ```python
@@ -237,18 +243,20 @@ So somewhere in the tests:
 signform.do_signin(mail="user@example.com", pass="ytrewq654321")
 ```
 
-Use factory method `PageObject#get` in order to instantiate PageObject and load it via `#open`
+
+Use factory method `PageObject#get` in order to instantiate PageObject and load it via `open`
 ```python
 main = MainPage.get();
 ```
+
 
 Or the same way with widgets:
 ```python
 main.blog.insist(hidden)
 main.blog.get().insist(visible)
 ```
-Since, `#insist` will not load widget if it's yet not loaded
-Instead, you can use `#assure` which is "smart" `#insist`, i.e. loading widget.
+Since, `insist` will not load widget if it's yet not loaded
+Instead, you can use `assure` which is "smart" `insist`, i.e. loading widget.
 ```python
 main = MainPage.get();
 
@@ -281,7 +289,7 @@ E.g. one more [PageObject example](https://github.com/yashaka/selene/blob/master
 
 ## Contributing
 
-1. Fork it ( https://github.com/[my-github-username]/py-widgeon/fork )
+1. Fork it ( https://github.com/[my-github-username]/selene/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
