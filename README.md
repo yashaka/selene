@@ -55,6 +55,67 @@ def test_create_task():
     tasks[2].insist(hidden)
 ```
 
+This should be completely enough to start writing your tests.
+In case you need to reuse some parts elsewhere - go ahead and move your locators:
+```python
+    tasks = ss("#todo-list>li")
+    active = css_class("active")
+    completed = css_class("completed")
+```
+to some class and so implement a PageObject pattern.
+
+### Simple PageObjects Example
+Here is a simple example of PageObjects implementation (inspired by [selenide google search example](https://github.com/selenide-examples/google/tree/master/test/org/selenide/examples/google/selenide_page_object)):
+
+```python
+from selene.tools import s, ss, visit
+from selene.conditions import text
+
+class GooglePage(object):
+    def open(self):
+        visit("http://google.com/ncr")
+        return self
+
+    def search(self, text):
+        s("[name='q']").set(text).press_enter()
+        return SearchResultsPage()
+
+class SearchResultsPage(object):
+    def __init__(self):
+        self.results = ss("#ires li.g")
+
+def test_google_search():
+    google = GooglePage().open()
+    search = google.search("selene")
+    search.results[0].insist(text("In Greek mythology, Selene is the goddess of the moon"))  # :D
+```
+
+We can pretify the code a bit:
+```python
+from selene.page_object import PageObject
+from selene.tools import s, ss, visit
+from selene.conditions import text
+
+class GooglePage(PageObject):
+    def open(self):
+        visit("http://google.com/ncr")
+
+    def search(self, text):
+        s("[name='q']").set(text).press_enter()
+        return SearchResultsPage()
+
+class SearchResultsPage(PageObject):
+    def init(self):
+        self.results = ss("#ires li.g")
+
+def test_google_search():
+    google = GooglePage().get()
+    search = google.search("selene")
+    search.results[0].insist(text("In Greek mythology, Selene is the goddess of the moon"))
+```
+
+That's it. Selene encourages to start writing tests in the simplest way. And add more layers of abstraction only by real demand. 
+
 ### Reporting
 So far reporting capabilities are reflected only in a detailed error messages.
 For example the following code
@@ -71,6 +132,8 @@ Screenshot: /Users/ayia/projects/yashaka/selene/tests/reports/screenshots/142953
 ```
 
 ### PageObjects composed with Widgets (aka SElements)
+Sometimes your UI is build with many "reusable" widgets or components. If you follow general "Test Automation Pyramid" guidelines, most probably you have not too much of automated selenium tests. And "simple pageobjects" will be pretty enough for your tests.
+But in case you need to write a tone of UI tests, and you need correspondent DRY solution for your reusable components then this section may be for you. 
 
 Selene encourages to use [composition over inheritance](http://en.wikipedia.org/wiki/Composition_over_inheritance) to reuse parts of web application like sidepanels, headers, footers, main contents, search forms, etc. This especially may be usefull in the case of single-page applications. Consequently we can naturally model our app under test even with a SinglePageObject composed with Widgets which can be loaded by demand like common PageObjects via their urls.
 
@@ -81,7 +144,7 @@ from selene.tools import visit, ss, s
 from selene.widgets import SelectList
 
 # We can define our Widget externally to main PageObject
-# in case we want to reuse its elsewhere
+# in case we want to reuse it elsewhere
 class Article(SElement):
     def init(self):
         self.heading = self.s("heading")
