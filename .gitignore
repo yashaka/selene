@@ -9,3 +9,4 @@ dist/
 *.class
 *.orig
 tests/reports
+reports/

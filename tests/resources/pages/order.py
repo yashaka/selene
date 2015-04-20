@@ -13,9 +13,9 @@ class Order(PageObject):
     def open(self):
         visit('order.html')
 
-    def add_item_with(self, **kwargs):
+    def add_item_with(self, **name_and_other_data):
         self.add_item.click()
-        return self.items[-1].fill_with(**kwargs)
+        return self.items[-1].fill_with(**name_and_other_data)
 
     class Details(SElement):
         def init(self):

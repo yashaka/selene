@@ -1,4 +1,4 @@
-from selene.conditions import text, texts, hidden, css_class
+from selene.conditions import text, texts, hidden, css_class, size
 from selene.tools import *
 from selene import config
 
@@ -21,6 +21,7 @@ def test_create_task():
 
     tasks[2].s(".toggle").click()
     tasks.filter(active).insist(texts("1", "2"))
+    tasks.filter(active).insist(size(2))
     tasks.filter(completed).insist(texts("3"))
 
     s("#filters a[href='#/active']").click()

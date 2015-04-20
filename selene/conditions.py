@@ -31,7 +31,7 @@ def not_empty(it):
 
 
 def empty(it):
-    return of_size(0)(it)
+    return size(0)(it)
 
 
 def text(expected_containable_text):
@@ -54,11 +54,10 @@ def texts(*expected_containable_texts):
     return new_condition
 
 
-def of_size(size):
+def size(length):
     def new_condition(it):
-        return len(it) == size
-    new_condition.__name__ = 'of_size_%s' % size
-    new_condition.__doc__ = 'of_size_%s' % size
+        return len(it) == length
+    new_condition.__name__ = 'size: %s' % length
     return new_condition
 
 

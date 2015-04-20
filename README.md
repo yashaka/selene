@@ -10,10 +10,9 @@ Main features:
 -- composed with reusable and loadable Widgets
 
 
-Selene was inspired by Selenide in Java and Widgeon gem in Ruby.
-Tests with Selene can be built either in a simple straightforward "selenide' style or with PageObjects composed from Widgets i.e. reusable element components (aka selements), that support LoadableComponent
+Selene was inspired by [Selenide](http://selenide.org/) in Java and [Widgeon](https://github.com/yashaka/widgeon) gem in Ruby.
+Tests with Selene can be built either in a simple straightforward "selenide' style or with PageObjects composed from Widgets i.e. reusable element components (aka selements), that support [LoadableComponent](https://code.google.com/p/selenium/wiki/LoadableComponent)
 pattern.
-
 
 NOTE: This is still a pre-alpha version and have some stability issues
 
@@ -73,7 +72,7 @@ Screenshot: /Users/ayia/projects/yashaka/selene/tests/reports/screenshots/142953
 
 ### PageObjects composed with Widgets (aka SElements)
 
-Selene encourages to use composition over inheritace to reuse parts of web application like sidepanels, headers, footers, main contents, search forms, etc. This especially may be usefull in the case of single-page applications. Consequently we can naturally model our app under test even with a SinglePageObject composed with Widgets which can be loaded by demand like common PageObjects via their urls.
+Selene encourages to use [composition over inheritace](http://en.wikipedia.org/wiki/Composition_over_inheritance) to reuse parts of web application like sidepanels, headers, footers, main contents, search forms, etc. This especially may be usefull in the case of single-page applications. Consequently we can naturally model our app under test even with a SinglePageObject composed with Widgets which can be loaded by demand like common PageObjects via their urls.
 
 ```python
 from selene.page_object import PageObject
@@ -101,13 +100,16 @@ class MainPage(PageObject):
                           
     class Blog(SElement):
         def init(self):
-            self.articles = ss("[id^='article']").of(Article)
+            self.articles = self.ss("[id^='article']").of(Article)
             # other elements...
             
     
     class Shop(Selement):
         def init(self):
             # shop elements...
+        
+        def add_to_cart(self, product):
+            # implementation...
     
     class SidePanel(SElement):
         def init(self):
@@ -120,9 +122,21 @@ class MainPage(PageObject):
                 self.pass = self.s("#pass")
                 self.signin = self.s("#sign_in")
             
-            def do_signin(self, **kwargs):
-                self.fill_will(**kwargs)
+            def do_signin(self, **mail_and_pass):
+                self.fill_will(**mail_and_pass)
                 signin.click()
+```
+
+So then, somewhere in the tests:
+
+```python
+main = MainPage.get();
+main.side_panel.do_signin(mail="user@example.com", pass="ytrewq654321")
+main.blog.articles.insist(size(10))
+
+shop = main.shop
+shop.add_to_cart("Product FooBar")
+# ...
 ```
 
 #### Example Explained
@@ -136,9 +150,11 @@ See **/tests** files for more examples of usage.
 ## TODO list
 
 * Improve and stabilize automatic webdriver management
+* Improve and stabilize screenshooting
 * add support of multiple browsers (only Firefox is supported so far)
 * add support of xpath locators (only css selectores so far)
 * add more convenient methods to SElement and SElementsCollection impl.
+* consider implementing conditions as hamcrest matchers (in addition to simple functions or lambdas)
 * improve general "autocompletion in IDE" capabilities (reduce "magic" in implementation)
 * make browser management support parallel testing
 * simplify implementation, at least decouple as much as possible some parts...
