@@ -93,15 +93,18 @@ class MainPage(PageObject):
     def init(self):
         self.lang = SelectList("#lang-selector")
         
-        self.shop = MainPage.Shop("#blog").to_open(lambda: s("#menu .shop-lnk").click())
+        self.shop = MainPage.Shop("#blog")
+                    .to_open(lambda: s("#menu .shop-lnk").click())
         
-        self.blog = MainPage.Blog("#blog").to_open(lambda: s("#menu .blog-lnk").click())
+        self.blog = MainPage.Blog("#blog")
+                    .to_open(lambda: s("#menu .blog-lnk").click())
         
         self.show_side_panel = s("#show-side-panel")
         self.side_panel = MainPage.SidePanel("#side-panel")
                           .to_open(lambda: self.show_side_panel.click())
                           
-    # Assuming our "widgets" exist only on single main page their classes are defined internally   
+    # Assuming our "widgets" exist only on single main page
+    # their classes are defined internally   
     
     class Shop(Selement):
         def init(self):
@@ -182,21 +185,26 @@ Specify how to load your page via implementing #open method
 Specify its sub-elements
 ```python
     def init(self):
-        self.lang = SelectList("#lang-selector")  # declaring lang as 'SelectList' widget
+        # declaring lang as 'SelectList' widget
+        self.lang = SelectList("#lang-selector")  
         
         #...
         
-        self.show_side_panel = s("#show-side-panel")  # declaring show_side_panel as "simple" SElement
+        # declaring show_side_panel as "simple" SElement
+        self.show_side_panel = s("#show-side-panel")  
         #...
 ```
 
 Configure sub-widgets as LoadableComponents
 ```python
-        self.blog = MainPage.Blog("#blog").to_open(lambda: s("#menu .blog-lnk").click())
+        self.blog = MainPage.Blog("#blog")
+                    .to_open(lambda: s("#menu .blog-lnk").click())
         
-        self.shop = MainPage.Shop("#blog").to_open(lambda: s("#menu .shop-lnk").click())
+        self.shop = MainPage.Shop("#blog")
+                    .to_open(lambda: s("#menu .shop-lnk").click())
         
-        # side panel may be used separately, so it's defined as separate sub-element of the MainPage
+        # side panel may be used separately, 
+        # so it's defined as separate sub-element of the MainPage
         self.show_side_panel = s("#show-side-panel")  
         self.side_panel = MainPage.SidePanel("#side-panel")
                           .to_open(lambda: self.show_side_panel.click())
@@ -243,7 +251,10 @@ Since, `#insist` will not load widget if it's yet not loaded
 Instead, you can use `#assure` which is "smart" `#insist`, i.e. loading widget.
 ```python
 main = MainPage.get();
-# main.blog.assure(hidden)  # >> this line will FAIL because assure will try to load blog until it's visible before asserting the "hidden" condition on it
+
+# main.blog.assure(hidden)  # >> this line will FAIL 
+# because assure will try to load blog until it's visible before asserting the "hidden" condition on it
+
 main.blog.assure(visible)
 ```
 It's up to the user what to use:
