@@ -65,7 +65,7 @@ def wait_for(code=lambda: None, until=lambda code_result: code_result.is_display
             Until: %s
             Screenshot: %s
             """ % (wait_time,
-                   code.to_str() if hasattr(code, 'to_str') else code,  # todo: think on: how to refactor... if possible
+                   code.__name__,  # todo: think on: refactoring to the usage without "underscores"
                    condition_met.__name__,
                    full_path)
             raise stopit.TimeoutException(err_message)

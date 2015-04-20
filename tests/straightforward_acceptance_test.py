@@ -1,4 +1,4 @@
-from selene.conditions import text, texts, hidden, css_class, visible
+from selene.conditions import text, texts, hidden, css_class
 from selene.tools import *
 from selene import config
 

@@ -101,7 +101,7 @@ class SElement(Filler, BaseFinder, Container):
         # todo: think on refactoring the _finder definition to be more straightforward and maybe via fn instead of lambda
 
         # todo: think on adding context to representation
-        self._finder.to_str = lambda: '{%s}' % kwargs.get('logged_locator', locator_or_element)
+        self._finder.__name__ = '{%s}' % kwargs.get('logged_locator', locator_or_element)
 
         super(SElement, self).__init__()
 
@@ -156,8 +156,10 @@ class SElementsCollection(BaseFinder, Container):
         else:
             self._finder = lambda: locator_or_selements
 
-        # todo: think on adding context to representation
-        self._finder.to_str = lambda: 'all {%s}' % (locator_or_selements,)
+        # todo: think on: representation of _finder was implementing as value (not fn),
+        #       so far it's ok because locator is expected to be set only via constructor...
+        self._finder.__name__ = 'all {%s}' % locator_or_selements  # todo: think on adding context to representation
+
 
         super(SElementsCollection, self).__init__()
 
