@@ -194,7 +194,7 @@ class MainPage(PageObject):
                 self.signin = self.s("#sign_in")
             
             def do_signin(self, **mail_and_pass):
-                self.fill_will(**mail_and_pass)
+                self.fill_with(**mail_and_pass)
                 signin.click()
 ```
 
