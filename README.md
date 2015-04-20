@@ -2,6 +2,8 @@
 
 Concise API for Selenium in Python + Ajax support + PageObjects + Widgets (Selenide/Capybara + Widgeon alternative)
 
+NOTE: This is still a pre-alpha version with some critical issues, it is NOT READY to be used on a real project.
+
 ## Installation
 
     pip install selene
