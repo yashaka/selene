@@ -72,10 +72,13 @@ Screenshot: /Users/ayia/projects/yashaka/selene/tests/reports/screenshots/142953
 
 ### PageObjects composed with Widgets (aka SElements)
 
-Selene encourages to use [composition over inheritace](http://en.wikipedia.org/wiki/Composition_over_inheritance) to reuse parts of web application like sidepanels, headers, footers, main contents, search forms, etc. This especially may be usefull in the case of single-page applications. Consequently we can naturally model our app under test even with a SinglePageObject composed with Widgets which can be loaded by demand like common PageObjects via their urls.
+Selene encourages to use [composition over inheritance](http://en.wikipedia.org/wiki/Composition_over_inheritance) to reuse parts of web application like sidepanels, headers, footers, main contents, search forms, etc. This especially may be usefull in the case of single-page applications. Consequently we can naturally model our app under test even with a SinglePageObject composed with Widgets which can be loaded by demand like common PageObjects via their urls.
 
 ```python
+from selene.elements import SElement
 from selene.page_object import PageObject
+from selene.tools import visit, ss, s
+from selene.widgets import SelectList
 
 # We can define our Widget externally to main PageObject in case we want to reuse its elsewhere
 class Article(SElement):
@@ -88,21 +91,17 @@ class MainPage(PageObject):
         visit("/main")
     
     def init(self):
-        self.blog = MainPage.Blog("#blog").to_open(lambda: s("#menu .blog-lnk").click())
+        self.lang = SelectList("#lang-selector")
         
         self.shop = MainPage.Shop("#blog").to_open(lambda: s("#menu .shop-lnk").click())
+        
+        self.blog = MainPage.Blog("#blog").to_open(lambda: s("#menu .blog-lnk").click())
         
         self.show_side_panel = s("#show-side-panel")
         self.side_panel = MainPage.SidePanel("#side-panel")
                           .to_open(lambda: self.show_side_panel.click())
                           
-    # Assuming our "widgets" exist only on single main page their classes are defined internally
-                          
-    class Blog(SElement):
-        def init(self):
-            self.articles = self.ss("[id^='article']").of(Article)
-            # other elements...
-            
+    # Assuming our "widgets" exist only on single main page their classes are defined internally   
     
     class Shop(Selement):
         def init(self):
@@ -110,6 +109,11 @@ class MainPage(PageObject):
         
         def add_to_cart(self, product):
             # implementation...
+                          
+    class Blog(SElement):
+        def init(self):
+            self.articles = self.ss("[id^='article']").of(Article)
+            # other elements...
     
     class SidePanel(SElement):
         def init(self):
@@ -141,11 +145,115 @@ shop.add_to_cart("Product FooBar")
 
 #### Example Explained
 
-**TBD**
+Make your class a 'selene' Widget
+```python
+class Article(SElement):
+```
+
+Inits its sub-elements
+```python
+    def init(self):
+        self.heading = self.s("heading")
+        self.text = self.s("article")
+```
+
+The following selement definition
+```python
+        self.heading = self.s("heading")
+```
+is a shortcut to:
+```python
+        self.heading = s("heading", self)
+```
+telling: search this element by locator `"heading"` inside the `self` context, i.e. selenium will search for `"heading"` not among all page but only inside the article, found by its own `"#article-1"` locator which may be definied like `Article("#article-1")`
+
+
+Make your class a 'selene' PageObject
+```python
+class MainPage(PageObject):
+```
+
+Specify how to load your page via implementing #open method
+```python
+    def open(self):
+        visit("/main")
+```
+
+Specify its sub-elements
+```python
+    def init(self):
+        self.lang = SelectList("#lang-selector")  # declaring lang as 'SelectList' widget
+        
+        #...
+        
+        self.show_side_panel = s("#show-side-panel")  # declaring show_side_panel as "simple" SElement
+        #...
+```
+
+Configure sub-widgets as LoadableComponents
+```python
+        self.blog = MainPage.Blog("#blog").to_open(lambda: s("#menu .blog-lnk").click())
+        
+        self.shop = MainPage.Shop("#blog").to_open(lambda: s("#menu .shop-lnk").click())
+        
+        # side panel may be used separately, so it's defined as separate sub-element of the MainPage
+        self.show_side_panel = s("#show-side-panel")  
+        self.side_panel = MainPage.SidePanel("#side-panel")
+                          .to_open(lambda: self.show_side_panel.click())
+```
+So when you try to use e.g. blog:
+```python
+MainPage.get().blog.articles[1].heading.insist(text("Hello Bob!"))
+```
+It will be automatically loaded via `s("#menu .blog-lnk").click()` in case yet not visible.
+
+Declare a collection of widgets
+```python
+            self.articles = self.ss("[id^='article']").of(Article)
+```
+
+Use SElement#fill_with to do a bulk set of fields
+```python
+        class SignInForm(SElement):
+            def init(self):
+                self.mail = self.s("#mail")
+                self.pass = self.s("#pass")
+                self.signin = self.s("#sign_in")
+            
+            def do_signin(self, **mail_and_pass):
+                self.fill_will(**mail_and_pass)
+                signin.click()
+```
+So somewhere in the tests:
+```python
+signform.do_signin(mail="user@example.com", pass="ytrewq654321")
+```
+
+Use factory method `PageObject#get` in order to instantiate PageObject and load it via `#open`
+```python
+main = MainPage.get();
+```
+
+Or the same way with widgets:
+```python
+main.blog.insist(hidden)
+main.blog.get().insist(visible)
+```
+Since, `#insist` will not load widget if it's yet not loaded
+Instead, you can use `#assure` which is "smart" `#insist`, i.e. loading widget.
+```python
+main = MainPage.get();
+# main.blog.assure(hidden)  # >> this line will FAIL because assure will try to load blog until it's visible before asserting the "hidden" condition on it
+main.blog.assure(visible)
+```
+It's up to the user what to use:
+- more pythonic `get` + `insist` (read: "explicit is better then implicit") 
+- or more laconic but "magical" `assure`
 
 ### More examples
 
-See **/tests** files for more examples of usage.
+See [/tests/](https://github.com/yashaka/selene/tree/master/tests) files for more examples of usage.
+E.g. one more [PageObject example](https://github.com/yashaka/selene/blob/master/tests/resources/pages/order.py) and its [acceptance test](https://github.com/yashaka/selene/blob/master/tests/pageobject_acceptance_test.py).
 
 ## TODO list
 
