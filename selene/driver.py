@@ -31,6 +31,10 @@ _browser = Browser()
 
 def browser():
     return _browser.get_browser()
+#
+#
+# def browser():
+#     return config.browser.get_browser()
 
 
 # todo: consider refactoring to the style: screenshot(name_or_full_path) with path get from config

@@ -3,7 +3,16 @@ from stopit import TimeoutException
 from selene.conditions import visible
 from selene.tools import *
 
-config.default_wait_time = 1
+# todo: find a way to work with config in "scope", like in "context_manager" style
+current_wait_time = config.default_wait_time
+
+
+def setup_module():
+    config.default_wait_time = 1
+
+
+def teardown_module():
+    config.default_wait_time = current_wait_time
 
 
 def test_it_fails_insist_not_existent_element():

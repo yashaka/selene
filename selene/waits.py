@@ -17,10 +17,13 @@ def wait_for(code=lambda: None, until=lambda code_result: code_result.is_display
     """
     waits `wait_time` smartly for the `until` conditions to be satisfied on the result of executing `code`
     but after the `after` code was executed optionally in case code() gave no satisfied result at first attempt
+
+    :param code - in case hasattr(code, 'to_str') to_str() method will be called to stringify code at error message in
+    case of failed wait_for
     """
     # todo: think on: better name for by_demand_after, or even another way to implement this feature
     # todo: think on: letting the wait_for to accept hamcrest matchers as 'until' conditions
-    # todo: think on: renaming code named param to element_finder.
+    # todo: think on: renaming 'code' param to element_finder in case wait_for will be only "element wait" implementation.
     #       the `code` name was chosen in order to implement "general case" of waiter
     #       nevertheless, the wait_for implementation has some parts bounded to the "element finding" context,
     #           like throwing specific exception in case element was not found...
@@ -49,6 +52,8 @@ def wait_for(code=lambda: None, until=lambda code_result: code_result.is_display
                     result = code()
         if not to_ctx_mgr:
             # todo: think on: refactor the following code, make it just `raise stopit.TimeoutException(repr(code))` or etc.
+            # todo: make the following 'screenshot taking' code optional (controoled via config)
+            # todo: think on: unbinding screenshooting from the wait_for implementation
             screenshot = '%s.png' % time.time()
             path = os.path.abspath('./reports/screenshots')  # todo: make screenshots path configurable
             full_path = take_screenshot(browser(), screenshot, path)
@@ -59,8 +64,12 @@ def wait_for(code=lambda: None, until=lambda code_result: code_result.is_display
             For: %s
             Until: %s
             Screenshot: %s
-            """ % (wait_time, code.to_str(), condition_met.__name__, full_path)
+            """ % (wait_time,
+                   code.to_str() if hasattr(code, 'to_str') else code,  # todo: think on: how to refactor... if possible
+                   condition_met.__name__,
+                   full_path)
             raise stopit.TimeoutException(err_message)
             # todo: improve error message. Also taking into account the proper alternative of condition implementation
+            #       e.g. as hamcrest matchers
 
     return result
