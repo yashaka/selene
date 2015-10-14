@@ -24,6 +24,6 @@ def test_create_task():
     tasks.filter(active).insist(size(2))
     tasks.filter(completed).insist(texts("3"))
 
-    s("#filters a[href='#/active']").click()
+    s("a[href='#/active']").click()
     tasks[:2].insist(texts("1", "2"))
     tasks[2].insist(hidden)

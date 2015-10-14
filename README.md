@@ -26,7 +26,7 @@ NOTE: This is still a pre-alpha version and have some stability issues
 
 ```python
 from selene.tools import *
-from selene.conditions import text, texts, absent
+from selene.conditions import text, texts, css_class, hidden
 
 
 def setup_module():
