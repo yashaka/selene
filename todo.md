@@ -1,3 +1,15 @@
+* make `filter` & `find` return proxy without immediate search
+
+* consider using `stopit` for `wait_for`
+
+* accept more than one condition in assure
+
+* change config.driver to tools.get_driver()/set_driver()
+
+* add `not` condition
+
+* consider adding shouldHave, shouldBe, should, shouldNot, etc. assure aliases
+
 * test speed of selene (compare to selenide)
 
 *  fix autocompletion for the code: tasks[2].insist(absent)
