@@ -1,5 +1,9 @@
 * make `filter` & `find` return proxy without immediate search
 
+* consider renaming finder() to get_actual_entity(), etc...
+
+* add ability to get "cached" version of selement for 
+
 * consider using `stopit` for `wait_for`
 
 * accept more than one condition in assure
@@ -10,7 +14,7 @@
 
 * consider adding shouldHave, shouldBe, should, shouldNot, etc. assure aliases
 
-* test speed of selene (compare to selenide)
+* test speed of selene (compare to selenide and selenium)
 
 *  fix autocompletion for the code: tasks[2].insist(absent)
 i.e. after `].` was pressed

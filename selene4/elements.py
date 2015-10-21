@@ -20,6 +20,9 @@ class WaitingFinder(object):
     def finder(self):
         pass
 
+    def __call__(self):
+        return self.finder()
+
     def __getattr__(self, item):
         found = None
         try:
@@ -29,7 +32,7 @@ class WaitingFinder(object):
                 found = self.assure(condition)
         return getattr(found, item)
 
-    def assure(self, condition):
+    def assure(self, condition, timeout=config.timeout):
         wait_for(self, condition, condition)
         return self
 
@@ -93,16 +96,13 @@ class SElementsCollection(WaitingFinder):
         self.locator = css_selector
         self.context = context
         self._wrapper_class = wrapper_class
-        self.default_conditions = []
 
     def finder(self):
         return [self._wrapper_class(webelement, '%s[%s]' % (self.locator, index))
                 for index, webelement in enumerate(self.context.find_elements_by_css_selector(self.locator))]
 
     def filter(self, condition):
-        filtered_elements = [selement for selement in self.finder()
-                             if condition(selement)]
-        return SmartElementsCollectionWrapper(filtered_elements, self.locator + "[filtered by ...]") # todo: refactor to be verbose
+        return FilteredSElementsCollection(self, condition)
 
     def find(self, condition_class, *condition_args):
         return self.filter(condition_class, *condition_args)[0]
@@ -114,8 +114,7 @@ class SElementsCollection(WaitingFinder):
         return self
 
     def __getitem__(self, item):
-        self.assure(size_at_least(item + 1))
-        return self.finder().__getitem__(item)  # todo: think on fixing probable slowability :) because of additional finder() call
+        return SElementsCollectionElement(self, item)
 
     def __len__(self):
         return self.finder().__len__()
@@ -125,13 +124,37 @@ class SElementsCollection(WaitingFinder):
 
     def __getslice__(self, i, j):
         # todo: think on: should we pass here self._context, and self._wrapper_class into constructor?
-        return SmartElementsCollectionWrapper(self.finder().__getslice__(i, j), self.locator + "[sliced by ...]")
+        return SElementsCollectionWrapper(self.finder().__getslice__(i, j), self.locator + "[sliced by ...]")
 
 
-class SmartElementsCollectionWrapper(SElementsCollection):
+class SElementsCollectionWrapper(SElementsCollection):
     def __init__(self, smart_elements_list, locator):
         self.wrapped_elements_list = smart_elements_list
-        super(SmartElementsCollectionWrapper, self).__init__(locator)
+        super(SElementsCollectionWrapper, self).__init__(locator)
 
     def finder(self):
         return self.wrapped_elements_list
+
+class SElementsCollectionElement(SElement):
+    def __init__(self, selements_collection, index):
+        self.index = index
+        self.selements_collection = selements_collection
+
+    def finder(self):
+        self.selements_collection.assure(size_at_least(self.index + 1))
+        return SElementWrapper(self.selements_collection.finder()[self.index],
+                               "%s[%s]" % (self.selements_collection.locator, self.index))
+
+class FilteredSElementsCollection(SElementsCollection):
+    def __init__(self, original_selements_collection, condition):
+        self.original_selements_collection = original_selements_collection
+        self.condition = condition
+
+    def finder(self):
+        filtered_elements = [selement for selement in self.original_selements_collection
+                             if self.condition(selement)]
+        return SElementsCollectionWrapper(
+            filtered_elements,
+            "(%s).filter(%s)" % (
+                self.original_selements_collection.locator,
+                self.condition.__class__.__name__))

@@ -10,7 +10,9 @@ class Condition(object):
 
     def __call__(self, entity):
         self.entity = entity
-        self.found = entity.finder()
+        self.found = entity()
+        # self.found = entity.finder()
+        print self.apply()
         return self.found if self.apply() else None
 
     def __str__(self):
@@ -142,6 +144,8 @@ class size(CollectionCondition):
 
     def apply(self):
         self.actual_size = len(self.found)
+        print self.found
+        print len(self.found)
         return self.actual_size == self.expected_size
 
     def expected(self):
