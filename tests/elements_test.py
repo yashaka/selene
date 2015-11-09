@@ -1,17 +1,25 @@
 import os
 
+import pytest
 from selenium.webdriver.common.by import By
 
 from selene import config
 from selene import visit, s, ss
+from selene.waits import ExpiredWaitingException
 
 
 def setup_module():
     config.app_host = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/resources/testapp/'
+    config.default_wait_time = 0.1
     visit('elements.html')
 
 
-def test_find_element_by_css():
+def test_find_element_by_css_for_not_existent_locator():
+    with pytest.raises(ExpiredWaitingException):
+        s("#i-do-not-exist").insist()
+
+
+def test_find_element_by_css_for_existent_locator():
     s('.css').insist()
 
 

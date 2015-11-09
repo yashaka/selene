@@ -7,3 +7,4 @@ app_host = ''
 default_wait_selement_until_displayed = True  # todo: consider adding default_wait_lambdas itself
 default_wait_selist_until_is_not_empty = True
 
+disappears_timeout = 10

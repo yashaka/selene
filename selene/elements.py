@@ -7,7 +7,7 @@ from selene.conditions import visible, not_empty, present, has_text, empty
 from selene.driver import browser
 from selene.helpers import merge
 from selene.page_object import Filler
-from selene.waits import wait_for
+from selene.waits import wait_for_element
 
 
 class RootSElement(object):
@@ -46,7 +46,7 @@ class BaseFinder(object):
     def find(self):
         """ convenient method to loads self via _open, asserts _conditions on it, and returns what was found by _finder
             i.e. = 'smart' _finder"""
-        return wait_for(self._finder, until=self._conditions, by_demand_after=self._open)
+        return wait_for_element(self._finder, until=self._conditions, by_demand_after=self._open)
 
     def insist(self, condition=visible, *others, **kwargs):
         """ asserts conditions on self
@@ -56,7 +56,7 @@ class BaseFinder(object):
 
         acquire = self._finder if opts["forced"] else self.find
 
-        wait_for(acquire, until=conditions)
+        wait_for_element(acquire, until=conditions)
         return self
         # todo: think on: is the #_get really needed here? maybe leave #_get only for everything except #insist?
         #       saying... Once you do something with element... you have a default checks and waits...
@@ -130,13 +130,13 @@ class SElement(Filler, BaseFinder, Container):
         # todo: redefine WebElement's methods like #click in order to return self in order to be used "in chain"
 
     def is_visible(self):
-        element = wait_for(self._finder)
+        element = wait_for_element(self._finder, lambda r: True)
         if present(element):
             return visible(element)
         return False
 
     def is_present(self):
-        return present(wait_for(self._finder))
+        return present(wait_for_element(self._finder, lambda r: True))
 
     def has_text(self):
         return has_text(self.find())
