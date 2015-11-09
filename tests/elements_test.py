@@ -8,33 +8,56 @@ from selene import visit, s, ss
 
 def setup_module():
     config.app_host = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/resources/testapp/'
+    visit('elements.html')
 
 
 def test_find_element_by_css():
-    visit('elements.html')
     s('.css').insist()
 
 
 def test_find_element_by_id():
-    visit('elements.html')
     s('item_31', By.ID).insist()
 
 
 def test_find_element_by_xpath():
-    visit('elements.html')
     s('//input[@id="item_31"]', By.XPATH).insist()
 
 
 def test_find_element_by_name():
-    visit('elements.html')
     s('last_name', By.NAME).insist()
 
 
 def test_find_elements_by_css():
-    visit('elements.html')
     ss('.item').insist(lambda e: len(e) == 5)
 
 
 def test_find_elements_by_xpath():
-    visit('elements.html')
     ss('//li', By.XPATH).insist(lambda e: len(e) == 5)
+
+
+def test_is_visible_for_hidden_locator():
+    assert not s('h', By.ID).is_visible()
+
+
+def test_is_visible_for_visible_locator():
+    assert s('.css').is_visible()
+
+
+def test_is_present_for_not_existent_locator():
+    assert not s('.dddh').is_present()
+
+
+def test_is_present_for_existent_locator():
+    assert s('.css').is_present()
+
+
+def test_has_text_for_not_populated_locator():
+    assert not s('.css').has_text()
+
+
+def test_has_test_for_populated_locator():
+    assert s('ol > li').has_text()
+
+
+def test_is_empty_for_filled_collection_of_elements():
+    assert not ss('ol').is_empty()

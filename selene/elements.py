@@ -3,7 +3,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.webelement import WebElement
 
 from selene import config
-from selene.conditions import visible, not_empty
+from selene.conditions import visible, not_empty, present, has_text, empty
 from selene.driver import browser
 from selene.helpers import merge
 from selene.page_object import Filler
@@ -129,6 +129,18 @@ class SElement(Filler, BaseFinder, Container):
 
         # todo: redefine WebElement's methods like #click in order to return self in order to be used "in chain"
 
+    def is_visible(self):
+        element = wait_for(self._finder)
+        if present(element):
+            return visible(element)
+        return False
+
+    def is_present(self):
+        return present(wait_for(self._finder))
+
+    def has_text(self):
+        return has_text(self.find())
+
 
 class SElementsCollection(BaseFinder, Container):
     def __init__(self, locator_or_selements, by=By.CSS_SELECTOR, context=RootSElement(), wrapper_class=SElement):
@@ -198,3 +210,6 @@ class SElementsCollection(BaseFinder, Container):
 
         # todo: automate proxying all other magic methods (http://code.activestate.com/recipes/496741-object-proxying/)
         # todo: or proxy them explicitly if better
+
+    def is_empty(self):
+        return empty(self.find())

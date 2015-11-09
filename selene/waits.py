@@ -1,6 +1,8 @@
-from httplib import CannotSendRequest
 import os
+from httplib import CannotSendRequest
+
 from selenium.common.exceptions import StaleElementReferenceException, NoSuchElementException
+
 from selene import config
 from selene.condition_helpers import satisfied
 from selene.driver import browser
@@ -12,7 +14,7 @@ class DummyResult(object):
         return lambda *args, **kwargs: False
 
 
-def wait_for(code=lambda: None, until=lambda code_result: code_result.is_displayed(), by_demand_after=lambda: None,
+def wait_for(code=lambda: None, until=lambda code_result: True, by_demand_after=lambda: None,
              wait_time=config.default_wait_time):
     """
     waits `wait_time` smartly for the `until` conditions to be satisfied on the result of executing `code`
