@@ -15,6 +15,8 @@ Tests with Selene can be built either in a simple straightforward "selenide' sty
 pattern.
 
 NOTE: This is still a pre-alpha version and have some stability issues
+## Releases notes
+[Click here to see more details about versions info and how to migrate to new version.](versions.md)
 
 ## Installation
 
@@ -342,7 +344,6 @@ E.g. one more [PageObject example](https://github.com/yashaka/selene/blob/master
 * Improve and stabilize automatic webdriver management
 * Improve and stabilize screenshooting
 * add support of multiple browsers (only Firefox is supported so far)
-* add support of xpath locators (only css selectores so far)
 * add more convenient methods to SElement and SElementsCollection impl.
 * consider implementing conditions as hamcrest matchers (in addition to simple functions or lambdas)
 * improve general "autocompletion in IDE" capabilities (reduce "magic" in implementation)

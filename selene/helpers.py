@@ -1,4 +1,5 @@
 import contextlib
+from httplib import CannotSendRequest
 
 
 @contextlib.contextmanager
@@ -30,8 +31,11 @@ def take_screenshot(driver, name, save_location='./'):
     if not os.path.exists(path):
         os.makedirs(path)
     full_path = '%s/%s' % (path, name)
-    driver.get_screenshot_as_file(full_path)
-    return full_path
+    try:
+        driver.get_screenshot_as_file(full_path)
+        return full_path
+    except CannotSendRequest:
+        return None
 
     # todo: sometimes screenshooting fails at httplib with CannotSendRequest... consider handling this somehow...
     # todo: and of course find the reason - why... it may depend on browser version...

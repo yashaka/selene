@@ -1,5 +1,7 @@
-from selenium.webdriver.remote.webelement import WebElement
+from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.remote.webelement import WebElement
+
 from selene import config
 from selene.conditions import visible, not_empty
 from selene.driver import browser
@@ -23,7 +25,6 @@ class Container(object):
 
 
 class BaseFinder(object):
-
     def _finder(self):
         """ to be defined in descendants as a function to find itself (actually its wrapped WebElement) """
         pass
@@ -42,15 +43,10 @@ class BaseFinder(object):
         self._conditions.extend([condition] + list(others))
         return self
 
-    def _get(self):
-        """ loads self via _open, asserts _conditions on it, and returns what was found by _finder
+    def find(self):
+        """ convenient method to loads self via _open, asserts _conditions on it, and returns what was found by _finder
             i.e. = 'smart' _finder"""
         return wait_for(self._finder, until=self._conditions, by_demand_after=self._open)
-
-    def get(self):
-        """ convenient method to load self explicitly before e.g. #insist that will not load by default """
-        self._get()
-        return self
 
     def insist(self, condition=visible, *others, **kwargs):
         """ asserts conditions on self
@@ -58,7 +54,7 @@ class BaseFinder(object):
         opts = merge(dict(forced=True), kwargs)
         conditions = [condition] + list(others)
 
-        acquire = self._finder if opts["forced"] else self._get
+        acquire = self._finder if opts["forced"] else self.find
 
         wait_for(acquire, until=conditions)
         return self
@@ -74,11 +70,11 @@ class BaseFinder(object):
 
 
 class SElement(Filler, BaseFinder, Container):
-
-    def __init__(self, locator_or_element, context=RootSElement(), **kwargs):
+    def __init__(self, locator_or_element, by=By.CSS_SELECTOR, context=RootSElement(), **kwargs):
         """
-        :param locator_or_element - locator (only css so far is supported) to be used to find self, or WebElement to be
+        :param locator_or_element - locator to be used to find self, or WebElement to be
          wrapped directly.
+        :param by - by type from selenium.webdriver.common.by.By.*
         :param context - selement to search self in
         :param kwargs['logged_locator'] if provided will be used in representation of the selement, in case
          it was build via wrapping WebElement
@@ -94,7 +90,7 @@ class SElement(Filler, BaseFinder, Container):
         self._conditions = [visible] if config.default_wait_selement_until_displayed else []
 
         if isinstance(locator_or_element, str):
-            self._finder = lambda: self._context.find_element_by_css_selector(locator_or_element)
+            self._finder = lambda: self._context.find_element(*(by, locator_or_element))
             kwargs['logged_locator'] = locator_or_element
         elif isinstance(locator_or_element, WebElement):
             self._finder = lambda: locator_or_element
@@ -106,7 +102,7 @@ class SElement(Filler, BaseFinder, Container):
         super(SElement, self).__init__()
 
     def __getattr__(self, item):
-        return getattr(self._get(), item)
+        return getattr(self.find(), item)
 
     def set(self, value):
         self.send_keys(value)
@@ -121,24 +117,24 @@ class SElement(Filler, BaseFinder, Container):
         self._context = context
         return self
 
-    def s(self, locator_or_selement):
+    def s(self, locator_or_element, by=By.CSS_SELECTOR):
         """ convenient method to define sub-selements with context automatically set to self """
-        if isinstance(locator_or_selement, SElement):
-            return locator_or_selement.within(self)
-        return SElement(locator_or_selement, self)
+        if isinstance(locator_or_element, SElement):
+            return locator_or_element.within(self)
+        return SElement(locator_or_element, by, self)
 
-    def ss(self, locator):
+    def ss(self, locator, by=By.CSS_SELECTOR):
         """ convenient method to define sub-selementscollections with context automatically set to self """
-        return SElementsCollection(locator, self)
+        return SElementsCollection(locator, by, self)
 
-    # todo: redefine WebElement's methods like #click in order to return self in order to be used "in chain"
+        # todo: redefine WebElement's methods like #click in order to return self in order to be used "in chain"
 
 
 class SElementsCollection(BaseFinder, Container):
-    def __init__(self, locator_or_selements, context=RootSElement(), wrapper_class=SElement):
+    def __init__(self, locator_or_selements, by=By.CSS_SELECTOR, context=RootSElement(), wrapper_class=SElement):
         if not (isinstance(locator_or_selements, str) or
-                (isinstance(locator_or_selements, list) and
-                     all((isinstance(item, SElement)) for item in locator_or_selements))):
+                    (isinstance(locator_or_selements, list) and
+                         all((isinstance(item, SElement)) for item in locator_or_selements))):
             raise TypeError('Unknown element type for locator_or_selement parameter. '
                             'Only str or list of Selement are accepted')
 
@@ -150,16 +146,15 @@ class SElementsCollection(BaseFinder, Container):
 
         if isinstance(locator_or_selements, str):
             self._finder = lambda: \
-                [self._wrapper_class(webelement, logged_locator='%s[%s]' % (locator_or_selements, index))
+                [self._wrapper_class(webelement, by, logged_locator='%s[%s]' % (locator_or_selements, index))
                      .that(*self._each_conditions)
-                 for index, webelement in enumerate(self._context.find_elements_by_css_selector(self._locator))]
+                 for index, webelement in enumerate(self._context.find_elements(*(by, self._locator)))]
         else:
             self._finder = lambda: locator_or_selements
 
         # todo: think on: representation of _finder was implementing as value (not fn),
         #       so far it's ok because locator is expected to be set only via constructor...
         self._finder.__name__ = 'all {%s}' % locator_or_selements  # todo: think on adding context to representation
-
 
         super(SElementsCollection, self).__init__()
 
@@ -186,21 +181,20 @@ class SElementsCollection(BaseFinder, Container):
         return SElementsCollection(filtered)
 
     def __getattr__(self, item):
-        return getattr(self._get(), item)
+        return getattr(self.find(), item)
 
     def __getitem__(self, item):
-        return self._get().__getitem__(item)
+        return self.find().__getitem__(item)
 
     def __getslice__(self, i, j):
         # todo: think on: should we pass here self._context, and self._wrapper_class into constructor?
         return SElementsCollection(self._finder().__getslice__(i, j))
 
     def __len__(self):
-        return self._get().__len__()
+        return self.find().__len__()
 
     def __iter__(self):
-        return self._get().__iter__()
+        return self.find().__iter__()
 
-    # todo: automate proxying all other magic methods (http://code.activestate.com/recipes/496741-object-proxying/)
-    # todo: or proxy them explicitly if better
-
+        # todo: automate proxying all other magic methods (http://code.activestate.com/recipes/496741-object-proxying/)
+        # todo: or proxy them explicitly if better
