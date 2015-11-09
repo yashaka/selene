@@ -10,9 +10,11 @@ Main features:
 -- composed with reusable and loadable Widgets
 
 
-Selene was inspired by [Selenide](http://selenide.org/) in Java and [Widgeon](https://github.com/yashaka/widgeon) gem in Ruby.
-Tests with Selene can be built either in a simple straightforward "selenide' style or with PageObjects composed from Widgets i.e. reusable element components (aka selements), that support [LoadableComponent](https://code.google.com/p/selenium/wiki/LoadableComponent)
-pattern.
+Selene was inspired by [Selenide](http://selenide.org/) in Java and [Widgeon](https://github.com/yashaka/widgeon) 
+gem in Ruby.
+Tests with Selene can be built either in a simple straightforward "selenide' style or with PageObjects composed 
+from Widgets i.e. reusable element components (aka selements), 
+that support [LoadableComponent](https://code.google.com/p/selenium/wiki/LoadableComponent) pattern.
 
 NOTE: This is still a pre-alpha version and have some stability issues
 ## Releases notes
@@ -23,6 +25,10 @@ NOTE: This is still a pre-alpha version and have some stability issues
     pip install selene
 
 ## Usage
+
+### Modules
+- ```from selene import ...``` to get access to main selene's functions
+- ```from selene.conditions import ...``` to get access to any selene's condition
 
 ### Basic example
 

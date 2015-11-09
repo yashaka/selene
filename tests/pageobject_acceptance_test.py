@@ -1,7 +1,8 @@
 import os
-from selene.conditions import empty, eq, absent
-from tests.resources.pages.order import Order
+
 from selene import config
+from selene.conditions import empty, eq, hidden
+from tests.resources.pages.order import Order
 
 
 def setup_module():
@@ -25,6 +26,6 @@ def test_it_fills_order():
     item.advanced_options.insist(empty)
 
     item.show_advanced_options_selector.click()
-    item.advanced_options_selector.insist(absent)
+    item.advanced_options_selector.insist(hidden)
 
     # todo: clear options finally

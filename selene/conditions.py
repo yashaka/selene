@@ -12,7 +12,13 @@ def hidden(it):
     return not visible(it)
 
 
-absent = hidden  # todo: think on: making absent to mean exactly "absent in DOM"...
+def absent(it):
+    from selene.waits import DummyResult
+    return isinstance(it, DummyResult)
+
+
+def present(it):
+    return not absent(it)
 
 
 # todo: think on: is it worthy?
@@ -68,4 +74,5 @@ def css_class(cssclass):
     return new_condition
 
 
-
+def has_text(it):
+    return len(it.text) > 0
