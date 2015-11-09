@@ -5,8 +5,25 @@ from selene.driver import browser
 from selene.elements import RootSElement, SElement, SElementsCollection
 
 
-def visit(relative_url):
-    return browser().get(config.app_host + relative_url)
+def visit(url='', relative=True):
+    """
+    This method allows to open any URL. If you specify relative URL then "config.app_host + url" will be loaded.
+
+    :param url: relative or absolute URL
+    :param relative: shows is URL relative or not (default = True)
+    :return: instance of browser
+    """
+    if relative:
+        to_open = config.app_host
+        if not to_open.endswith('/'):
+            to_open += '/'
+        if url.startswith('/'):
+            to_open += url.replace('/', '', 1)
+        else:
+            to_open += url
+        return browser().get(to_open)
+    else:
+        return browser().get(url)
 
 
 def s(locator_or_element, by=By.CSS_SELECTOR, context=RootSElement()):
