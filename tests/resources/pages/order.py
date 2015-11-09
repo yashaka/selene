@@ -1,6 +1,6 @@
+from selene import visit, ss, s
 from selene.elements import SElement
 from selene.page_object import PageObject
-from selene.tools import visit, ss, s
 from selene.widgets import SelectList
 
 

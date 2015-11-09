@@ -1,7 +1,8 @@
 import pytest
 from stopit import TimeoutException
+
+from selene import *
 from selene.conditions import visible
-from selene.tools import *
 
 # todo: find a way to work with config in "scope", like in "context_manager" style
 current_wait_time = config.default_wait_time

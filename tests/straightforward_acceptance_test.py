@@ -1,6 +1,6 @@
-from selene.conditions import text, texts, hidden, css_class, size
-from selene.tools import *
+from selene import *
 from selene import config
+from selene.conditions import text, texts, hidden, css_class, size
 
 
 def setup_module():
@@ -12,7 +12,7 @@ def test_create_task():
     active = css_class("active")
     completed = css_class("completed")
 
-    visit("http://todomvc.com/examples/troopjs_require/#/")
+    visit("http://todomvc.com/examples/troopjs_require/#/", False)
 
     for task_text in ["1", "2", "3"]:
         s("#new-todo").set(task_text).press_enter()

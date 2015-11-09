@@ -27,7 +27,7 @@ NOTE: This is still a pre-alpha version and have some stability issues
 ### Basic example
 
 ```python
-from selene.tools import *
+from selene import *
 from selene.conditions import text, texts, absent
 
 
@@ -70,7 +70,7 @@ to some class and so implement a PageObject pattern.
 Here is a simple example of PageObjects implementation (inspired by [selenide google search example](https://github.com/selenide-examples/google/tree/master/test/org/selenide/examples/google/selenide_page_object)):
 
 ```python
-from selene.tools import s, ss, visit
+from selene import s, ss, visit
 from selene.conditions import text
 
 class GooglePage(object):
@@ -95,7 +95,7 @@ def test_google_search():
 We can pretify the code a bit:
 ```python
 from selene.page_object import PageObject
-from selene.tools import s, ss, visit
+from selene import s, ss, visit
 from selene.conditions import text
 
 class GooglePage(PageObject):
@@ -142,7 +142,7 @@ Selene encourages to use [composition over inheritance](http://en.wikipedia.org/
 ```python
 from selene.elements import SElement
 from selene.page_object import PageObject
-from selene.tools import visit, ss, s
+from selene import visit, ss, s
 from selene.widgets import SelectList
 
 # We can define our Widget externally to main PageObject

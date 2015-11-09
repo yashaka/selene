@@ -3,7 +3,7 @@ import os
 from selenium.webdriver.common.by import By
 
 from selene import config
-from selene.tools import visit, s, ss
+from selene import visit, s, ss
 
 
 def setup_module():

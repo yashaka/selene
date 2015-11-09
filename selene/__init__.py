@@ -1,1 +1,4 @@
-__author__ = 'ayia'
+"""
+Here is defined
+"""
+from tools import s, ss, visit
