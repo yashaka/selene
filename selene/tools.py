@@ -26,14 +26,15 @@ def visit(url='', relative=True):
         return browser().get(url)
 
 
-def s(locator_or_element, by=By.CSS_SELECTOR, context=RootSElement()):
+def s(locator_or_element, by=By.CSS_SELECTOR, context=RootSElement(), loading_time=settings.time_of_element_appearence):
     """ convenient method to build SElement, i.e. the finder for element on the page by locator """
-    return SElement(locator_or_element, by, context)
+    return SElement(locator_or_element, by, context, loading_time=loading_time)
 
 
-def ss(locator_or_element, by=By.CSS_SELECTOR, context=RootSElement()):
+def ss(locator_or_element, by=By.CSS_SELECTOR, context=RootSElement(),
+       loading_time=settings.time_of_element_appearence):
     """ convenient method to build SElementsCollection, i.e. the finder for all elements on the page by locator """
-    return SElementsCollection(locator_or_element, by, context)
+    return SElementsCollection(locator_or_element, by, context, loading_time=loading_time)
 
 
 def execute_script(script, element=None):

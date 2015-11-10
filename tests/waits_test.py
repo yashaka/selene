@@ -6,6 +6,7 @@ from selene.waits import wait_for, ExpiredWaitingException
 
 def setup_module():
     settings.default_wait_time = 0.1
+    settings.screenshot_on_element_fail = False
 
 
 def test_wait_for_without_conditions():
@@ -52,12 +53,20 @@ def test_wait_for_element_which_does_not_exist():
         s("#i-do-not-exist").insist()
 
 
+def test_wait_for_element_with_on_screenshoting():
+    try:
+        settings.screenshot_on_element_fail = True
+        s("#i-do-not-exist").insist()
+        raise Exception("ExpiredWaitingException must be")
+    except ExpiredWaitingException as e:
+        assert 'settings.screenshot_on_element_fail = False' not in e.message
+    finally:
+        settings.screenshot_on_element_fail = False
+
+
 def test_wait_for_element_with_off_screenshoting():
     try:
-        settings.screenshot_on_element_fail = False
         s("#i-do-not-exist").insist()
-        assert "ExpiredWaitingException must be"
+        raise Exception("ExpiredWaitingException must be")
     except ExpiredWaitingException as e:
         assert 'settings.screenshot_on_element_fail = False' in e.message
-    finally:
-        settings.screenshot_on_element_fail = True

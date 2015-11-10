@@ -67,15 +67,15 @@ def wait_for_element(element_finder, until=lambda code_result: False, by_demand_
                      wait_time=settings.time_of_element_appearence):
     exceptions = (StaleElementReferenceException, NoSuchElementException, CannotSendRequest)
 
-    def as_str(object):
-        if isinstance(object, (tuple, list)):
-            str = ''
-            for item in object:
-                if str:
-                    str += ' and '
-                str += item.__name__  # todo: think on: refactoring to the usage without "underscores"
-            return str
-        return object.__name__
+    def as_str(item):
+        if isinstance(item, (tuple, list)):
+            s = ''
+            for item in item:
+                if s:
+                    s += ' and '
+                s += item.__name__  # todo: think on: refactoring to the usage without "underscores"
+            return s
+        return item.__name__
 
     def final_code():
         err_message = """
@@ -94,14 +94,12 @@ def wait_for_element(element_finder, until=lambda code_result: False, by_demand_
     return wait_for(element_finder, until, by_demand_after, wait_time, exceptions, final_code)
 
 
-def wait_for_element_is_not_present(element):
-    return wait_for_element(lambda: element.is_present(), lambda is_present: not is_present,
-                            wait_time=settings.time_of_element_disappearence)
+def wait_for_element_is_not_present(element, wait_time=settings.time_of_element_disappearence):
+    return wait_for_element(lambda: element.is_present(), lambda is_present: not is_present, wait_time=wait_time)
 
 
-def wait_for_element_is_not_visible(element):
-    return wait_for_element(lambda: element.is_visible(), lambda is_visible: not is_visible,
-                            wait_time=settings.time_of_element_disappearence)
+def wait_for_element_is_not_visible(element, wait_time=settings.time_of_element_disappearence):
+    return wait_for_element(lambda: element.is_visible(), lambda is_visible: not is_visible, wait_time=wait_time)
 
 
 def wait_for_ajax():

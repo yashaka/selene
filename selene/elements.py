@@ -46,7 +46,12 @@ class BaseFinder(object):
     def find(self):
         """ convenient method to loads self via _open, asserts _conditions on it, and returns what was found by _finder
             i.e. = 'smart' _finder"""
-        return wait_for_element(self._finder, until=self._conditions, by_demand_after=self._open)
+        return wait_for_element(
+            self._finder,
+            until=self._conditions,
+            by_demand_after=self._open,
+            wait_time=self._loading_time
+        )
 
     def insist(self, condition=visible, *others, **kwargs):
         """ asserts conditions on self
@@ -56,7 +61,7 @@ class BaseFinder(object):
 
         acquire = self._finder if opts["forced"] else self.find
 
-        wait_for_element(acquire, until=conditions)
+        wait_for_element(acquire, until=conditions, wait_time=self._loading_time)
         return self
         # todo: think on: is the #find really needed here? maybe leave #find only for everything except #insist?
         #       saying... Once you do something with element... you have a default checks and waits...
@@ -71,12 +76,14 @@ class BaseFinder(object):
 
 class SElement(Filler, BaseFinder, Container):
     def __init__(self, locator_or_element, by=By.CSS_SELECTOR, context=RootSElement(),
-                 condition=settings.element_condition, **kwargs):
+                 condition=settings.element_condition, loading_time=settings.time_of_element_appearence, **kwargs):
         """
         :param locator_or_element - locator to be used to find self, or WebElement to be
          wrapped directly.
         :param by - by type from selenium.webdriver.common.by.By.*
         :param context - selement to search self in
+        :param condition
+        :param loading_time - a custom time for wait until element is loading
         :param kwargs['logged_locator'] if provided will be used in representation of the selement, in case
          it was build via wrapping WebElement
         """
@@ -88,6 +95,7 @@ class SElement(Filler, BaseFinder, Container):
 
         self._context = context
         self._conditions = [condition] if condition else []
+        self._loading_time = loading_time
 
         if isinstance(locator_or_element, str):
             self._finder = lambda: self._context.find_element(*(by, locator_or_element))
@@ -130,13 +138,13 @@ class SElement(Filler, BaseFinder, Container):
         # todo: redefine WebElement's methods like #click in order to return self in order to be used "in chain"
 
     def is_visible(self):
-        element = wait_for_element(self._finder, lambda r: True)
+        element = wait_for_element(self._finder, lambda r: True, wait_time=self._loading_time)
         if present(element):
             return visible(element)
         return False
 
     def is_present(self):
-        return present(wait_for_element(self._finder, lambda r: True))
+        return present(wait_for_element(self._finder, lambda r: True, wait_time=self._loading_time))
 
     def has_text(self):
         return has_text(self.find())
@@ -144,7 +152,8 @@ class SElement(Filler, BaseFinder, Container):
 
 class SElementsCollection(BaseFinder, Container):
     def __init__(self, locator_or_selements, by=By.CSS_SELECTOR, context=RootSElement(), wrapper_class=SElement,
-                 condition=settings.elements_condition, each_condition=settings.element_condition):
+                 condition=settings.elements_condition, each_condition=settings.element_condition,
+                 loading_time=settings.time_of_element_appearence):
         if not (isinstance(locator_or_selements, str) or
                     (isinstance(locator_or_selements, list) and
                          all((isinstance(item, SElement)) for item in locator_or_selements))):
@@ -156,10 +165,11 @@ class SElementsCollection(BaseFinder, Container):
         self._wrapper_class = wrapper_class
         self._conditions = [condition] if condition else []
         self._each_condition = each_condition if each_condition else None
+        self._loading_time = loading_time
 
         if isinstance(locator_or_selements, str):
             self._finder = lambda: \
-                [self._wrapper_class(webelement, by, self._context, self._each_condition,
+                [self._wrapper_class(webelement, by, self._context, self._each_condition, self._loading_time,
                                      logged_locator='%s[%s]' % (locator_or_selements, index))
                  for index, webelement in enumerate(self._context.find_elements(*(by, self._locator)))]
         else:

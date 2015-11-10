@@ -6,6 +6,7 @@ from selene.conditions import absent, present, has_text
 
 def setup_module():
     settings.app_host = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/resources/testapp/'
+    settings.screenshot_on_element_fail = False
     visit('elements.html')
 
 

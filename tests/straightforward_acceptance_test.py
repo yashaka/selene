@@ -2,6 +2,10 @@ from selene import *
 from selene.conditions import text, texts, hidden, css_class, size
 
 
+def setup_module():
+    settings.screenshot_on_element_fail = False
+
+
 def test_create_task():
     tasks = ss(".todo-list>li")
     active = css_class("active")

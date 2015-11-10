@@ -7,10 +7,10 @@ from tests.resources.pages.order import Order
 
 def setup_module():
     settings.app_host = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/resources/testapp/'
+    settings.screenshot_on_element_fail = False
 
 
 def test_it_fills_order():
-
     order = Order.get()
     order.details.fill_with(first_name='Johanna', last_name='Smith', salutation='Mrs')
 

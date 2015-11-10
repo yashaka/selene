@@ -8,6 +8,7 @@
 - made refactoring of waits.py module
 - made refactoring of config.py module
 - made optional screenshoting if element was not found
+- added ability to set up custom time of waiting for element loading
 
 ## Migration from 0.0.4
 - both SElement and  SElementsCollection initialization was changed. Make sure you pass correct parameters 
