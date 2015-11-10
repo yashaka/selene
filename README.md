@@ -349,11 +349,12 @@ E.g. one more [PageObject example](https://github.com/yashaka/selene/blob/master
 
 * Improve and stabilize automatic webdriver management
 * Improve and stabilize screenshooting
-* add support of multiple browsers (only Firefox is supported so far)
+* add support of multiple browsers (only Firefox is supported so far). May integrate with 
+pytest-mozwebqa project](https://github.com/mozilla/pytest-mozwebqa).
+* make browser management support parallel testing (take a look on previous one)
 * add more convenient methods to SElement and SElementsCollection impl.
 * consider implementing conditions as hamcrest matchers (in addition to simple functions or lambdas)
 * improve general "autocompletion in IDE" capabilities (reduce "magic" in implementation)
-* make browser management support parallel testing
 * simplify implementation, at least decouple as much as possible some parts...
 * see more ideas at todo.md
 

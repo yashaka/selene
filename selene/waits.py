@@ -1,14 +1,13 @@
-import os
 import time
 from httplib import CannotSendRequest
 
 import stopit
 from selenium.common.exceptions import StaleElementReferenceException, NoSuchElementException, WebDriverException
 
-from selene import config
+from selene import settings
 from selene.condition_helpers import satisfied
-from selene.driver import browser
-from selene.helpers import suppress, take_screenshot
+from selene.driver import screenshot
+from selene.helpers import suppress
 
 
 class DummyResult(object):
@@ -65,7 +64,7 @@ def wait_for(code, until, by_demand_after=None, wait_time=0.1, exceptions=None,
 
 
 def wait_for_element(element_finder, until=lambda code_result: False, by_demand_after=lambda: None,
-                     wait_time=config.default_wait_time):
+                     wait_time=settings.time_of_element_appearence):
     exceptions = (StaleElementReferenceException, NoSuchElementException, CannotSendRequest)
 
     def as_str(object):
@@ -79,11 +78,6 @@ def wait_for_element(element_finder, until=lambda code_result: False, by_demand_
         return object.__name__
 
     def final_code():
-        # todo: make the following 'screenshot taking' code optional (controoled via config)
-        screenshot = '%s.png' % time.time()
-        path = os.path.abspath('./reports/screenshots')  # todo: make screenshots path configurable
-        full_path = take_screenshot(browser(), screenshot, path)
-
         err_message = """
         Timeout reached while waiting...
         During: %ss
@@ -93,7 +87,8 @@ def wait_for_element(element_finder, until=lambda code_result: False, by_demand_
         """ % (wait_time,
                as_str(element_finder),
                as_str(until),
-               full_path)
+               "Disabled: selene.settings.screenshot_on_element_fail = False" \
+                                         if not settings.screenshot_on_element_fail else screenshot())
         raise ExpiredWaitingException(err_message)
 
     return wait_for(element_finder, until, by_demand_after, wait_time, exceptions, final_code)
@@ -101,12 +96,12 @@ def wait_for_element(element_finder, until=lambda code_result: False, by_demand_
 
 def wait_for_element_is_not_present(element):
     return wait_for_element(lambda: element.is_present(), lambda is_present: not is_present,
-                            wait_time=config.disappears_timeout)
+                            wait_time=settings.time_of_element_disappearence)
 
 
 def wait_for_element_is_not_visible(element):
     return wait_for_element(lambda: element.is_visible(), lambda is_visible: not is_visible,
-                            wait_time=config.disappears_timeout)
+                            wait_time=settings.time_of_element_disappearence)
 
 
 def wait_for_ajax():
@@ -122,4 +117,4 @@ def wait_for_ajax():
         except WebDriverException:
             return True
 
-    wait_for_element(ajax, lambda result: result, wait_time=config.disappears_timeout)
+    wait_for_element(ajax, lambda result: result, wait_time=settings.time_of_element_disappearence)

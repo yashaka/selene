@@ -3,16 +3,19 @@ import os
 import pytest
 from selenium.webdriver.common.by import By
 
-from selene import config
+from selene import settings
 from selene import visit, s, ss
 from selene.waits import ExpiredWaitingException
 
 
 def setup_module():
-    config.app_host = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/resources/testapp/'
-    config.default_wait_time = 0.1
+    settings.app_host = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/resources/testapp/'
+    settings.time_of_element_appearence = 0.1
     visit('elements.html')
 
+
+def teardown_module():
+    settings.time_of_element_appearence = 4
 
 def test_find_element_by_css_for_not_existent_locator():
     with pytest.raises(ExpiredWaitingException):

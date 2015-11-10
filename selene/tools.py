@@ -1,6 +1,6 @@
 from selenium.webdriver.common.by import By
 
-from selene import config
+from selene import settings
 from selene.driver import browser
 from selene.elements import RootSElement, SElement, SElementsCollection
 
@@ -14,7 +14,7 @@ def visit(url='', relative=True):
     :return: instance of browser
     """
     if relative:
-        to_open = config.app_host
+        to_open = settings.app_host
         if not to_open.endswith('/'):
             to_open += '/'
         if url.startswith('/'):

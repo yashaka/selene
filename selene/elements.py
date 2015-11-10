@@ -2,8 +2,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.webelement import WebElement
 
-from selene import config
-from selene.conditions import visible, not_empty, present, has_text, empty
+from selene import settings
+from selene.conditions import visible, present, has_text, empty
 from selene.driver import browser
 from selene.helpers import merge
 from selene.page_object import Filler
@@ -58,7 +58,7 @@ class BaseFinder(object):
 
         wait_for_element(acquire, until=conditions)
         return self
-        # todo: think on: is the #_get really needed here? maybe leave #_get only for everything except #insist?
+        # todo: think on: is the #find really needed here? maybe leave #find only for everything except #insist?
         #       saying... Once you do something with element... you have a default checks and waits...
         #       but once you do insist it is assumed you know what you do...
         #       hm... From other point of view... such impl of insist makes #assure be defined in a DRY way...
@@ -70,7 +70,8 @@ class BaseFinder(object):
 
 
 class SElement(Filler, BaseFinder, Container):
-    def __init__(self, locator_or_element, by=By.CSS_SELECTOR, context=RootSElement(), **kwargs):
+    def __init__(self, locator_or_element, by=By.CSS_SELECTOR, context=RootSElement(),
+                 condition=settings.element_condition, **kwargs):
         """
         :param locator_or_element - locator to be used to find self, or WebElement to be
          wrapped directly.
@@ -86,8 +87,7 @@ class SElement(Filler, BaseFinder, Container):
                             'Only WebElement and str are accepted')
 
         self._context = context
-
-        self._conditions = [visible] if config.default_wait_selement_until_displayed else []
+        self._conditions = [condition] if condition else []
 
         if isinstance(locator_or_element, str):
             self._finder = lambda: self._context.find_element(*(by, locator_or_element))
@@ -143,7 +143,8 @@ class SElement(Filler, BaseFinder, Container):
 
 
 class SElementsCollection(BaseFinder, Container):
-    def __init__(self, locator_or_selements, by=By.CSS_SELECTOR, context=RootSElement(), wrapper_class=SElement):
+    def __init__(self, locator_or_selements, by=By.CSS_SELECTOR, context=RootSElement(), wrapper_class=SElement,
+                 condition=settings.elements_condition, each_condition=settings.element_condition):
         if not (isinstance(locator_or_selements, str) or
                     (isinstance(locator_or_selements, list) and
                          all((isinstance(item, SElement)) for item in locator_or_selements))):
@@ -153,13 +154,13 @@ class SElementsCollection(BaseFinder, Container):
         self._context = context
         self._locator = locator_or_selements
         self._wrapper_class = wrapper_class
-        self._conditions = [not_empty] if config.default_wait_selist_until_is_not_empty else []
-        self._each_conditions = [visible] if config.default_wait_selement_until_displayed else []
+        self._conditions = [condition] if condition else []
+        self._each_condition = each_condition if each_condition else None
 
         if isinstance(locator_or_selements, str):
             self._finder = lambda: \
-                [self._wrapper_class(webelement, by, logged_locator='%s[%s]' % (locator_or_selements, index))
-                     .that(*self._each_conditions)
+                [self._wrapper_class(webelement, by, self._context, self._each_condition,
+                                     logged_locator='%s[%s]' % (locator_or_selements, index))
                  for index, webelement in enumerate(self._context.find_elements(*(by, self._locator)))]
         else:
             self._finder = lambda: locator_or_selements

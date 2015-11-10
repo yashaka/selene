@@ -1,12 +1,12 @@
 import os
 
-from selene import config
+from selene import settings
 from selene.conditions import empty, eq, hidden
 from tests.resources.pages.order import Order
 
 
 def setup_module():
-    config.app_host = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/resources/testapp/'
+    settings.app_host = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/resources/testapp/'
 
 
 def test_it_fills_order():
