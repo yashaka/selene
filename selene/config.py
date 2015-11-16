@@ -1,9 +1,13 @@
-# that is temporary solution for managing configuration, and may be enhanced in future...
+from selene.conditions import visible, not_empty
 
-default_wait_time = 4
-default_browser = 'firefox'
+browser_name = 'firefox'
 app_host = ''
-# todo: investigate: additional time needed for such default waiting: feel like making optins True make it slower
-default_wait_selement_until_displayed = True  # todo: consider adding default_wait_lambdas itself
-default_wait_selist_until_is_not_empty = True
 
+time_of_element_appearence = 4
+time_of_element_disappearence = 10
+
+element_condition = visible
+elements_condition = not_empty
+
+screenshot_on_element_fail = True
+screenshot_path = './reports/screenshots'

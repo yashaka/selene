@@ -1,15 +1,16 @@
 import os
-from selene.conditions import empty, eq, absent
+
+from selene import settings
+from selene.conditions import empty, eq, hidden
 from tests.resources.pages.order import Order
-from selene import config
 
 
 def setup_module():
-    config.app_host = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/resources/testapp/'
+    settings.app_host = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/resources/testapp/'
+    settings.screenshot_on_element_fail = False
 
 
 def test_it_fills_order():
-
     order = Order.get()
     order.details.fill_with(first_name='Johanna', last_name='Smith', salutation='Mrs')
 
@@ -25,6 +26,6 @@ def test_it_fills_order():
     item.advanced_options.insist(empty)
 
     item.show_advanced_options_selector.click()
-    item.advanced_options_selector.insist(absent)
+    item.advanced_options_selector.insist(hidden)
 
     # todo: clear options finally

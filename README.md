@@ -10,11 +10,15 @@ Main features:
 -- composed with reusable and loadable Widgets
 
 
-Selene was inspired by [Selenide](http://selenide.org/) in Java and [Widgeon](https://github.com/yashaka/widgeon) gem in Ruby.
-Tests with Selene can be built either in a simple straightforward "selenide' style or with PageObjects composed from Widgets i.e. reusable element components (aka selements), that support [LoadableComponent](https://code.google.com/p/selenium/wiki/LoadableComponent)
-pattern.
+Selene was inspired by [Selenide](http://selenide.org/) in Java and [Widgeon](https://github.com/yashaka/widgeon) 
+gem in Ruby.
+Tests with Selene can be built either in a simple straightforward "selenide' style or with PageObjects composed 
+from Widgets i.e. reusable element components (aka selements), 
+that support [LoadableComponent](https://code.google.com/p/selenium/wiki/LoadableComponent) pattern.
 
 NOTE: This is still a pre-alpha version and have some stability issues
+## Releases notes
+[Click here to see more details about versions info and how to migrate to new version.](versions.md)
 
 ## Installation
 
@@ -22,10 +26,17 @@ NOTE: This is still a pre-alpha version and have some stability issues
 
 ## Usage
 
+### Modules
+- ```from selene import ...``` to get access to main selene's functions
+- ```from selene.conditions import ...``` to get access to any selene's condition
+
+### Find element 
+You can use default search by CSS like ```s('.toggle')``` or specify required By condition (```from selenium.webdriver.common.by import By```) as ```s('first_name', By.ID)```.
+
 ### Basic example
 
 ```python
-from selene.tools import *
+from selene import *
 from selene.conditions import text, texts, absent
 
 
@@ -68,7 +79,7 @@ to some class and so implement a PageObject pattern.
 Here is a simple example of PageObjects implementation (inspired by [selenide google search example](https://github.com/selenide-examples/google/tree/master/test/org/selenide/examples/google/selenide_page_object)):
 
 ```python
-from selene.tools import s, ss, visit
+from selene import s, ss, visit
 from selene.conditions import text
 
 class GooglePage(object):
@@ -93,7 +104,7 @@ def test_google_search():
 We can pretify the code a bit:
 ```python
 from selene.page_object import PageObject
-from selene.tools import s, ss, visit
+from selene import s, ss, visit
 from selene.conditions import text
 
 class GooglePage(PageObject):
@@ -140,7 +151,7 @@ Selene encourages to use [composition over inheritance](http://en.wikipedia.org/
 ```python
 from selene.elements import SElement
 from selene.page_object import PageObject
-from selene.tools import visit, ss, s
+from selene import visit, ss, s
 from selene.widgets import SelectList
 
 # We can define our Widget externally to main PageObject
@@ -341,14 +352,14 @@ E.g. one more [PageObject example](https://github.com/yashaka/selene/blob/master
 
 * Improve and stabilize automatic webdriver management
 * Improve and stabilize screenshooting
-* add support of multiple browsers (only Firefox is supported so far)
-* add support of xpath locators (only css selectores so far)
+* add support of multiple browsers (only Firefox is supported so far). May integrate with 
+[pytest-mozwebqa project](https://github.com/mozilla/pytest-mozwebqa).
+* make browser management support parallel testing (take a look on previous one)
 * add more convenient methods to SElement and SElementsCollection impl.
 * consider implementing conditions as hamcrest matchers (in addition to simple functions or lambdas)
 * improve general "autocompletion in IDE" capabilities (reduce "magic" in implementation)
-* make browser management support parallel testing
 * simplify implementation, at least decouple as much as possible some parts...
-* see more ideas at todo.md
+* see more ideas at [todo.md](todo.md)
 
 ## Contributing
 

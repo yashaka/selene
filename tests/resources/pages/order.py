@@ -1,6 +1,6 @@
+from selene import visit, ss, s
 from selene.elements import SElement
 from selene.page_object import PageObject
-from selene.tools import visit, ss, s
 from selene.widgets import SelectList
 
 
@@ -30,7 +30,7 @@ class Order(PageObject):
             self.other_data = self.s('.item_other_data')
 
             self.show_advanced_options_selector = self.s('.show_advanced_options_selector')
-            self.advanced_options_selector = self.AdvancedOptionsSelector('.advanced_options_selector', self) \
+            self.advanced_options_selector = self.AdvancedOptionsSelector('.advanced_options_selector', context=self) \
                 .to_open(lambda: self.show_advanced_options_selector.click())
 
             self.show_advanced_options = self.s('.show_advanced_options')
@@ -57,8 +57,8 @@ class Order(PageObject):
 
             class OptionsFilter(SElement):
                 def init(self):
-                    self.option_type = SelectList('.options_scope_type', self)
-                    self.scope = SelectList('.options_scope', self)
+                    self.option_type = SelectList('.options_scope_type', context=self)
+                    self.scope = SelectList('.options_scope', context=self)
 
         # todo: think on: removing it, because it's not needed here...
         class AdvancedOptions(SElement):
