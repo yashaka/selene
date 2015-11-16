@@ -14,8 +14,7 @@
 - both SElement and  SElementsCollection initialization was changed. Make sure you pass correct parameters 
 in ```__init__()``` method. 
 - replace all imports from ```from selene.tools import ...``` to ```from selene import ...```
-- if element isn't found, ```selene.waits.ExpiredWaitingException``` will be raised instead of 
-```stopit.TimeoutException```
+- if element isn't found, ```selene.waits.ExpiredWaitingException``` will be raised instead of ```stopit.TimeoutException``` 
 - use ```from selene import settings``` instead of ```from selene import config```
 
 # 0.0.4
