@@ -1,6 +1,8 @@
-from selenium import webdriver
+import time
 
+from selenium import webdriver
 # This is a fast draft implementation and should be enhanced...
+from selene import settings
 from selene.helpers import take_screenshot
 
 
@@ -31,12 +33,11 @@ _browser = Browser()
 
 def browser():
     return _browser.get_browser()
-#
-#
-# def browser():
-#     return config.browser.get_browser()
 
 
-# todo: consider refactoring to the style: screenshot(name_or_full_path) with path get from config
-def screenshot(name, path='./'):
+def _picture_name():
+    return '{name}.png'.format(name=time.time())
+
+
+def screenshot(name=_picture_name(), path=settings.screenshot_path):
     return take_screenshot(browser(), name, path)
