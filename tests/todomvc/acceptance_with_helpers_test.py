@@ -1,17 +1,19 @@
+import os
+
 from selenium.webdriver.common.keys import Keys
 
 __author__ = 'ayia'
 
-from tests.base4_test import *
-from selene4.conditions import *
-from selene4.tools import *
+from tests.base_test import *
+from selene.conditions import *
+from selene.tools import *
 
 
 class TestTodoMVC(BaseTest):
 
     def test_tasks_life_cycle(self):
 
-        visit("file:///Users/ayia/Dropbox/Apps/Heroku/todomvc4tasj/home.html")
+        visit('file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/todomvcapp/home.html')
 
         add("a")
 

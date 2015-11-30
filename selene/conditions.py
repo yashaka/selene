@@ -1,71 +1,186 @@
-# todo: consider using hamcrest matchers instead or even better - in addition to...
+from operator import contains, eq
+from selene import config
 
-# todo: provide convenient function's docs
-
-
-def visible(it):
-    """visible"""
-    return it.is_displayed()
+# todo: refactor conditions to accept element.finder, not element - to make implementation of conditions more secure
 
 
-def hidden(it):
-    return not visible(it)
+class Condition(object):
+
+    def __init__(self):
+        self.found = None
+
+    def __call__(self, entity):
+        self.entity = entity
+        self.found = entity()
+        # self.found = entity.finder() # todo: either delete or choose this version over previous one
+        return self.found if self.apply() else None
+
+    def __str__(self):
+        try:
+            return """
+            for %s found by: %s%s%s
+        """ % (self.identity(),
+               self.entity,
+               """:
+            \texpected: """ + str(self.expected()) if (self.expected() is not None) else "",
+               """
+            \t  actual: """ + str(self.actual()) if (self.actual() is not None) else ""
+            )
+        except Exception as e:
+            return "\n type: %s \n msg: %s \n" % (type(e), e)
+
+    def identity(self):
+        return "element"
+
+    def expected(self):
+        return None
+
+    def actual(self):
+        return None
+
+    def apply(self):
+        return None
 
 
-absent = hidden  # todo: think on: making absent to mean exactly "absent in DOM"...
+class CollectionCondition(Condition):
+
+    def identity(self):
+        return "elements"
 
 
-# todo: think on: is it worthy?
-def equal(to_smth, mapped=None):
-    def new_condition(it):
-        mapped_it = [getattr(its_element, mapped) for its_element in it] if mapped else it
-        return mapped_it == to_smth
-    return new_condition
+class text(Condition):
+    def __init__(self, expected_text):
+        self.expected_text = expected_text
+        self.actual_text = None
 
-eq = equal
+    def compare_fn(self):
+        return contains
 
+    def apply(self):
+        self.actual_text = self.found.text
+        return self.compare_fn()(self.actual_text, self.expected_text)
 
-def not_empty(it):
-    """not empty"""
-    return len(it) > 0
+    def expected(self):
+        return self.expected_text
 
-
-def empty(it):
-    return size(0)(it)
-
-
-def text(expected_containable_text):
-    expected_containable_text = str(expected_containable_text)
-    def new_condition(it):
-        return expected_containable_text in it.text
-    new_condition.__name__ = 'contains text: %s' % expected_containable_text
-    return new_condition
+    def actual(self):
+        return self.actual_text
 
 
-def texts(*expected_containable_texts):
-    from operator import contains
-
-    def new_condition(it):
-        actual_texts = [item.text for item in it]
-        return len(it) == len(expected_containable_texts) and \
-               all(map(contains, actual_texts, expected_containable_texts))
-
-    new_condition.__name__ = 'is of containable texts: %s' % list(expected_containable_texts)
-    return new_condition
+class exact_text(text):
+    def compare_fn(self):
+        return eq
 
 
-def size(length):
-    def new_condition(it):
-        return len(it) == length
-    new_condition.__name__ = 'size: %s' % length
-    return new_condition
+class Visible(Condition):
+    def apply(self):
+        return self.found.is_displayed()
 
 
-def css_class(cssclass):
-    def new_condition(it):
-        return cssclass in it.get_attribute('class')
-    new_condition.__name__ = 'has css class: %s' % cssclass
-    return new_condition
+visible = Visible()
 
 
+class Enabled(Condition):
+    def apply(self):
+        return self.found.is_enabled()
 
+enabled = Enabled()
+
+
+class Exist(Condition):
+    def apply(self):
+        return True
+
+
+exist = Exist()
+
+
+class Hidden(Condition):
+    def apply(self):
+        return not self.found.is_displayed()
+
+hidden = Hidden()
+
+class css_class(Condition):
+
+    def __init__(self, class_attribute_value):
+        self.expected_containable_class = class_attribute_value
+        self.actual_class = None
+
+    def apply(self):
+        self.actual_class = self.found.get_attribute("class")
+        return self.expected_containable_class in self.actual_class
+
+    def expected(self):
+        return self.expected_containable_class
+
+    def actual(self):
+        return self.actual()
+
+
+#########################
+# COLLECTION CONDITIONS #
+#########################
+
+
+class texts(CollectionCondition):
+
+    def __init__(self, *expected_texts):
+        self.expected_texts = expected_texts
+        self.actual_texts = None
+
+    def compare_fn(self):
+        return contains
+
+    def apply(self):
+        self.actual_texts = [item.text for item in self.found]
+        return len(self.actual_texts) == len(self.expected_texts) and \
+            all(map(self.compare_fn(), self.actual_texts, self.expected_texts))
+
+    def expected(self):
+        return self.expected_texts
+
+    def actual(self):
+        return self.actual_texts
+
+
+class exact_texts(texts):
+
+    def compare_fn(self):
+        return eq
+
+class size(CollectionCondition):
+
+    def __init__(self, expected_size):
+        self.expected_size = expected_size
+        self.actual_size = None
+
+    def apply(self):
+        self.actual_size = len(self.found)
+        return self.actual_size == self.expected_size
+
+    def expected(self):
+        return self.expected_size
+
+    def actual(self):
+        return self.actual_size
+
+
+empty = size(0)
+
+
+class size_at_least(CollectionCondition):
+
+    def __init__(self, minimum_size):
+        self.minimum_size = minimum_size
+        self.actual_size = None
+
+    def apply(self):
+        self.actual_size = len(self.found)
+        return self.actual_size >= self.minimum_size
+
+    def expected(self):
+        return self.minimum_size
+
+    def actual(self):
+        return self.actual_size

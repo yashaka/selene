@@ -1,4 +1,20 @@
-* make `filter` & `find` return proxy without immediate search
+* fix selene's slowness (comparing to jselenide e.g.)
+    
+* test and prettify all error messages (especially where locators are stringified)
+
+* refactor Order page and correspondent test to new style
+
+* catch IndexOutOfBoundsException
+
+* add support of all locators type
+
+* find the way for auto-completion to work in cases: ss("..").of(Task)[1].HERE()
+
+* find the way to make auto-completion work for all "intercepted" methods... like click() , etc...
+
+* think on privatizing some selement/collection fields
+
+* fix paths to test apps
 
 * consider renaming finder() to get_actual_entity(), etc...
 
@@ -8,11 +24,7 @@
 
 * accept more than one condition in assure
 
-* change config.driver to tools.get_driver()/set_driver()
-
 * add `not` condition
-
-* consider adding shouldHave, shouldBe, should, shouldNot, etc. assure aliases
 
 * test speed of selene (compare to selenide and selenium)
 
@@ -111,8 +123,6 @@ instead of:
 - Test with Jedi's autocompletion
 - Think on how to make it work in Intellij Idea...
 
-
-* think on adding "within" blocks... like in Widgeon
 
 * fix the following error:
 

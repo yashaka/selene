@@ -1,4 +1,5 @@
 import contextlib
+import os
 
 
 @contextlib.contextmanager
@@ -20,9 +21,7 @@ def merge(*dict_args):
     return result
 
 
-import os
-
-
+# todo: think on moving to tools
 def take_screenshot(driver, name, save_location='./'):
     """ saves screenshot of the current page via driver, with name, to the save_location """
     # Make sure the path exists.

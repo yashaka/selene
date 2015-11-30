@@ -1,6 +1,16 @@
 from selene.helpers import merge
 
 
+class Container(object):
+    def __init__(self):
+        if hasattr(self, 'init'):
+            self.init()
+
+    def init(self):
+        """ to be defined in descendants in order to init its sub-elements """
+        pass
+
+
 class Filler(object):
     # todo: think on renaming to #filled_with taking into account that method returns self...
     def fill_with(self, opts=None, *other_opts, **opts_as_kwargs):
@@ -20,7 +30,7 @@ class Filler(object):
         return self
 
 
-class PageObject(Filler):
+class PageObject(Container, Filler):
     @classmethod
     def get(cls, visit=True):  # todo: think on: is `visit` good name? maybe `open` would be better?
         """ a factory to create and load/open page """
@@ -28,8 +38,3 @@ class PageObject(Filler):
         if visit and hasattr(page, 'open'):
             page.open()
         return page
-
-    # todo: think on: mixing in the selene.elements.Container class instead of defining this constructor here
-    def __init__(self):
-        if hasattr(self, 'init'):
-            self.init()

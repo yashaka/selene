@@ -1,206 +1,241 @@
-from selenium.webdriver.remote.webelement import WebElement
+from selenium.common.exceptions import WebDriverException
+from selenium.webdriver import ActionChains
 from selenium.webdriver.common.keys import Keys
+
+from conditions import *
 from selene import config
-from selene.conditions import visible, not_empty
-from selene.driver import browser
-from selene.helpers import merge
-from selene.page_object import Filler
-from selene.waits import wait_for
+from selene.bys import by_css
+from selene.page_object import Filler, Container
+from selene.wait import wait_for, wait_for_not
+
+
+def actions():
+    return ActionChains(config.driver)
+
+
+class WaitingFinder(object):
+
+    def finder(self):
+        pass
+
+    def __call__(self):
+        return self.finder()
+
+    def __getattr__(self, item):
+        if isinstance(self, Wrapper):
+            self.found = self.finder()
+        else:
+            try:  # todo: do we even need this try here? is it probable to get fail here while need waiting?
+                self.found = self.finder()  # todo: refactor: duplicates previous self.finder() call (though this duplication is in other context...)
+            except WebDriverException:
+                pass # todo: solve & finalize: seems like next line is not needed here... so all try can be removed...
+                # self.assure(exist)  # todo: solve: it's general finder, but behaves like "Element" finder here, not like ElementsCollection finder...
+
+
+        return getattr(self.found, item)
+
+    def assure(self, condition, timeout=None):
+        if not timeout:
+            timeout = config.timeout
+        self.found = wait_for(self, condition, condition, timeout)
+        # self.found = self.finder() # todo: duplicated?
+        return self
+
+    insist = assure
+    should = assure
+    should_be = assure
+    should_have = assure
+
+    def assure_not(self, condition, timeout=None):
+        if not timeout:
+            timeout = config.timeout
+        wait_for_not(self, condition, condition, timeout)
+        return self
+
+    def __str__(self):
+        return str(self.locator)
 
 
 class RootSElement(object):
     def __getattr__(self, item):
-        return getattr(browser(), item)
+        return getattr(config.driver, item)
 
 
-class Container(object):
-    def __init__(self):
-        self.init()
-
-    def init(self):
-        """ to be defined in descendants in order to init its sub-elements """
-        pass
-
-
-class BaseFinder(object):
-
-    def _finder(self):
-        """ to be defined in descendants as a function to find itself (actually its wrapped WebElement) """
-        pass
-
-    def _open(self):
-        """ a function to open self in case it should be somehow loaded to become visible """
-        pass
-
-    def to_open(self, how_to_open_fn):
-        """ specifies the way to open self in case it should be explicitly loaded to become visible """
-        self._open = how_to_open_fn
-        return self
-
-    def that(self, condition, *others):
-        """ adds conditions to self to be asserted on it each time it will be used """
-        self._conditions.extend([condition] + list(others))
-        return self
-
-    def _get(self):
-        """ loads self via _open, asserts _conditions on it, and returns what was found by _finder
-            i.e. = 'smart' _finder"""
-        return wait_for(self._finder, until=self._conditions, by_demand_after=self._open)
-
-    def get(self):
-        """ convenient method to load self explicitly before e.g. #insist that will not load by default """
-        self._get()
-        return self
-
-    def insist(self, condition=visible, *others, **kwargs):
-        """ asserts conditions on self
-            by default it is forced to assert without self pre-loading if available via _open (kwargs['forced']=True) """
-        opts = merge(dict(forced=True), kwargs)
-        conditions = [condition] + list(others)
-
-        acquire = self._finder if opts["forced"] else self._get
-
-        wait_for(acquire, until=conditions)
-        return self
-        # todo: think on: is the #_get really needed here? maybe leave #_get only for everything except #insist?
-        #       saying... Once you do something with element... you have a default checks and waits...
-        #       but once you do insist it is assumed you know what you do...
-        #       hm... From other point of view... such impl of insist makes #assure be defined in a DRY way...
-
-    def assure(self, condition=visible, *others):
-        """ alias to #insist with forced=False, i.e. leaving the element opportunity to load itself before assert
-            i.e. = 'smart' insist """
-        return self.insist(condition, *others, forced=False)
+def parse_css_or_locator_to_tuple(css_selector_or_locator):
+    if isinstance(css_selector_or_locator, str):
+        return by_css(css_selector_or_locator)
+    if isinstance(css_selector_or_locator, tuple):
+        return css_selector_or_locator
+    raise TypeError("s argument should be string or tuple!")
 
 
-class SElement(Filler, BaseFinder, Container):
-
-    def __init__(self, locator_or_element, context=RootSElement(), **kwargs):
-        """
-        :param locator_or_element - locator (only css so far is supported) to be used to find self, or WebElement to be
-         wrapped directly.
-        :param context - selement to search self in
-        :param kwargs['logged_locator'] if provided will be used in representation of the selement, in case
-         it was build via wrapping WebElement
-        """
-        # todo: think on: implementing the goal solved with kwargs['logged_locator'] in a different less "magic" way
-
-        if type(locator_or_element) not in (str, WebElement):
-            raise TypeError('Unknown element type for locator_or_element parameter. '
-                            'Only WebElement and str are accepted')
-
-        self._context = context
-
-        self._conditions = [visible] if config.default_wait_selement_until_displayed else []
-
-        if isinstance(locator_or_element, str):
-            self._finder = lambda: self._context.find_element_by_css_selector(locator_or_element)
-            kwargs['logged_locator'] = locator_or_element
-        elif isinstance(locator_or_element, WebElement):
-            self._finder = lambda: locator_or_element
-        # todo: think on refactoring the _finder definition to be more straightforward and maybe via fn instead of lambda
-
-        # todo: think on adding context to representation
-        self._finder.__name__ = '{%s}' % kwargs.get('logged_locator', locator_or_element)
-
+class SElement(Container, WaitingFinder, Filler):
+    def __init__(self, css_selector_or_locator, context=RootSElement()):
+        self.locator = parse_css_or_locator_to_tuple(css_selector_or_locator)
+        self.context = context
+        self.default_conditions = [visible]
         super(SElement, self).__init__()
 
-    def __getattr__(self, item):
-        return getattr(self._get(), item)
+    def finder(self):
+        return self.context.find_element(*self.locator)
 
-    def set(self, value):
-        self.send_keys(value)
-        return self
-
-    def press_enter(self):
-        self.send_keys(Keys.RETURN)
+    def cash(self, found_element):
+        self.finder = lambda: found_element
         return self
 
     def within(self, context):
-        """ conveniently sets context for self to be found in """
-        self._context = context
+        self.context = context
         return self
 
-    def s(self, locator_or_selement):
-        """ convenient method to define sub-selements with context automatically set to self """
-        if isinstance(locator_or_selement, SElement):
-            return locator_or_selement.within(self)
-        return SElement(locator_or_selement, self)
+    # todo: consider passing second of=SElement parameter
+    def s(self, css_selector_or_locator):
+        return SElement(css_selector_or_locator).within(self)
 
-    def ss(self, locator):
-        """ convenient method to define sub-selementscollections with context automatically set to self """
-        return SElementsCollection(locator, self)
+    find = s
 
-    # todo: redefine WebElement's methods like #click in order to return self in order to be used "in chain"
+    def ss(self, css_selector_or_locator):
+        return SElementsCollection(css_selector_or_locator).within(self)
+
+    find_all = ss
+
+    def click(self):
+        self.assure(visible)
+        self.found.click()
+        return self
+
+    def double_click(self):
+        self.assure(visible)
+        actions().double_click(self.found).perform()
+        return self
+
+    def set(self, new_text_value):
+        self.assure(visible)
+        self.found.clear()
+        self.found.send_keys(new_text_value)
+        return self
+
+    set_value = set
+
+    def send_keys(self, *keys):
+        self.assure(visible)
+        self.found.send_keys(*keys)
+        return self
+
+    def press_enter(self):
+        return self.send_keys(Keys.ENTER)
+
+    def press_escape(self):
+        return self.send_keys(Keys.ESCAPE)
+
+    def hover(self):
+        self.assure(visible)
+        actions().move_to_element(self.found).perform()
+        return self
 
 
-class SElementsCollection(BaseFinder, Container):
-    def __init__(self, locator_or_selements, context=RootSElement(), wrapper_class=SElement):
-        if not (isinstance(locator_or_selements, str) or
-                (isinstance(locator_or_selements, list) and
-                     all((isinstance(item, SElement)) for item in locator_or_selements))):
-            raise TypeError('Unknown element type for locator_or_selement parameter. '
-                            'Only str or list of Selement are accepted')
+class Wrapper(object):
+    """ to be used as marker for classes for objects
+    that do not need waiting during '__getattr__' """
+    pass
 
-        self._context = context
-        self._locator = locator_or_selements
-        self._wrapper_class = wrapper_class
-        self._conditions = [not_empty] if config.default_wait_selist_until_is_not_empty else []
-        self._each_conditions = [visible] if config.default_wait_selement_until_displayed else []
+class SElementWrapper(SElement, Wrapper):
+    def __init__(self, selement, locator=None):
+        self._wrapped_element = selement
+        super(SElementWrapper, self).__init__(locator or selement.locator)
 
-        if isinstance(locator_or_selements, str):
-            self._finder = lambda: \
-                [self._wrapper_class(webelement, logged_locator='%s[%s]' % (locator_or_selements, index))
-                     .that(*self._each_conditions)
-                 for index, webelement in enumerate(self._context.find_elements_by_css_selector(self._locator))]
-        else:
-            self._finder = lambda: locator_or_selements
-
-        # todo: think on: representation of _finder was implementing as value (not fn),
-        #       so far it's ok because locator is expected to be set only via constructor...
-        self._finder.__name__ = 'all {%s}' % locator_or_selements  # todo: think on adding context to representation
+    def finder(self):
+        return self._wrapped_element
 
 
-        super(SElementsCollection, self).__init__()
+class SElementsCollection(WaitingFinder):
+    def __init__(self, css_selector_or_locator, context=RootSElement(), selement_class=SElement):
+        self.locator = parse_css_or_locator_to_tuple(css_selector_or_locator)
+        self.context = context
+        self._wrapper_class = selement_class
+        self.default_conditions = []
 
     def of(self, selement_class):
-        """ sets _wrapper_class to wrap its 'items' in """
         self._wrapper_class = selement_class
         return self
 
-    def each(self, condition, *others):
-        """ adds conditions to self to be asserted on each its item each time it will be used """
-        self._each_conditions.extend([condition] + list(others))
+    def within(self, context):
+        self.context = context
         return self
 
-    def insist_each(self, condition, *others):
+    def finder(self):
+        return [self._wrapper_class('%s[%s]' % (self.locator, index)).cash(webelement)
+                for index, webelement in enumerate(self.context.find_elements(*self.locator))]
+
+    def filter(self, condition):
+        return FilteredSElementsCollection(self, condition)
+
+    filterBy = filter
+
+    # todo: optimize it to find the only first, not all, and then get first.
+    def find(self, condition):
+        return self.filter(condition)[0]
+
+    findBy = find
+
+    def assure_each(self, condition):
         """ asserts conditions on each its item """
         for selement in self:
-            selement.insist(condition, *others)
+            selement.assure(condition)
         return self
 
-    def filter(self, condition, *others):
-        filtered = reduce(lambda filtered, cond: filter(cond, filtered),
-                          [condition] + list(others),
-                          self._finder())
-        return SElementsCollection(filtered)
-
-    def __getattr__(self, item):
-        return getattr(self._get(), item)
-
     def __getitem__(self, item):
-        return self._get().__getitem__(item)
+        return SElementsCollectionElement(self, item)
+
+    def __len__(self):
+        return self.finder().__len__()
+
+    def __iter__(self):
+        return self.finder().__iter__()
 
     def __getslice__(self, i, j):
         # todo: think on: should we pass here self._context, and self._wrapper_class into constructor?
-        return SElementsCollection(self._finder().__getslice__(i, j))
+        self.wrapper = SElementsCollectionWrapper(self.finder().__getslice__(i, j),
+                                                  str(self.locator) + "[sliced by (%s, %s)]" % (i, j))
+        return self.wrapper
 
-    def __len__(self):
-        return self._get().__len__()
 
-    def __iter__(self):
-        return self._get().__iter__()
+class SElementsCollectionWrapper(SElementsCollection, Wrapper):
+    def __init__(self, selements_list, css_selector_or_locator):
+        self.wrapped_elements_list = selements_list
+        super(SElementsCollectionWrapper, self).__init__(css_selector_or_locator)
 
-    # todo: automate proxying all other magic methods (http://code.activestate.com/recipes/496741-object-proxying/)
-    # todo: or proxy them explicitly if better
+    def finder(self):
+        return self.wrapped_elements_list
 
+
+class SElementsCollectionElement(SElement, Wrapper):
+    def __init__(self, selements_collection, index):
+        self.index = index
+        self.selements_collection = selements_collection
+        locator = "%s[%s]" % (self.selements_collection.locator, self.index)
+        super(SElementsCollectionElement, self).__init__(("selene", locator))
+
+    def finder(self):
+        self.selements_collection.assure(size_at_least(self.index + 1))
+        # return SElementWrapper(self.selements_collection.finder()[self.index],
+        # return SElementWrapper(self.selements_collection.found[self.index],
+        #                        self.locator)
+        return SElementWrapper(self.selements_collection.found[self.index],
+                               self.locator)
+
+
+class FilteredSElementsCollection(SElementsCollection, Wrapper):
+    def __init__(self, original_selements_collection, condition):
+        self.original_selements_collection = original_selements_collection
+        self.condition = condition
+        locator = "(%s).filter(%s)" % (
+            self.original_selements_collection.locator,
+            self.condition.__class__.__name__)
+        super(FilteredSElementsCollection, self).__init__(("selene", locator)) # todo: prettify and fix it in other similiar places, it's not a css selector to be passed as string
+
+    def finder(self):
+        filtered_elements = [selement for selement in self.original_selements_collection
+                             if self.condition(selement)]
+        return SElementsCollectionWrapper(
+            filtered_elements,
+            self.locator)
