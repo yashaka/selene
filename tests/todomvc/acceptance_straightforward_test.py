@@ -1,8 +1,8 @@
 import os
 
-from tests.base_test import *
 from selene.conditions import *
 from selene.tools import *
+from tests.base_test import *
 
 
 class TestTodoMVC(BaseTest):
@@ -12,7 +12,7 @@ class TestTodoMVC(BaseTest):
         tasks = ss("#todo-list>li")
         active_tasks = tasks.filter(css_class("active"))
 
-        visit('file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/todomvcapp/home.html')
+        visit('file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/todomvcapp/home.html', False)
 
         for task_text in ["1", "2", "3"]:
             s("#new-todo").set_value(task_text).press_enter()

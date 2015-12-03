@@ -1,16 +1,16 @@
 import os
 
+from selene import tools
 from selene.bys import by_link_text
 from selene.conditions import exact_text, visible, exact_texts, enabled
 from selene.tools import s, ss
-from selene import tools
 
 __author__ = 'ayia'
 
 tasks = ss("#todo-list>li")
 
 def visit():
-    tools.visit('file://' + os.path.abspath(os.path.dirname(__file__)) + '/../../resources/todomvcapp/home.html')
+    tools.visit('file://' + os.path.abspath(os.path.dirname(__file__)) + '/../../resources/todomvcapp/home.html', False)
 
 
 
