@@ -68,4 +68,5 @@ def test_nested_custom_selements():
     page.tasks.find(text("b")).toggle()
     page.clear_completed()
     page.tasks.assure(texts("a"))
+    page.footer.assure_items_left(1)
 

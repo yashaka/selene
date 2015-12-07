@@ -13,7 +13,6 @@ def visit():
     tools.visit('file://' + os.path.abspath(os.path.dirname(__file__)) + '/../../resources/todomvcapp/home.html')
 
 
-
 def filter_active():
     s(by_link_text("Active")).click()
 
