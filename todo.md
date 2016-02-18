@@ -1,4 +1,10 @@
+* add screenshots to error messages
+
+* add config.implicitlyWaitFor = conditions.enabled
+
 * fix selene's slowness (comparing to jselenide e.g.)
+    - change calling self.assure(visible) all the time to
+    call it only after first esception
     
 * test and prettify all error messages (especially where locators are stringified)
 

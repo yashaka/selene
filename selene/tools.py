@@ -7,7 +7,7 @@ def set_driver(driver):
 
 
 def get_driver():
-    return config.drive
+    return config.driver
 
 
 def visit(absolute_or_relative_url):

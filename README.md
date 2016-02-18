@@ -5,16 +5,14 @@ Main features:
 - Concise API for Selenium
 - jQuery-style selectors
 - Ajax support
-- Automatic webdriver management
-- SinglePage app friendly PageObjects
+- SinglePage App friendly PageObjects
 -- composed with reusable and loadable Widgets
 
 
-Selene was inspired by [Selenide](http://selenide.org/) in Java and [Widgeon](https://github.com/yashaka/widgeon) gem in Ruby.
-Tests with Selene can be built either in a simple straightforward "selenide' style or with PageObjects composed from Widgets i.e. reusable element components (aka selements), that support [LoadableComponent](https://code.google.com/p/selenium/wiki/LoadableComponent)
-pattern.
+Selene was inspired by [Selenide](http://selenide.org/) and [htmlelements](https://github.com/yandex-qatools/htmlelements) in Java and [Widgeon](https://github.com/yashaka/widgeon) gem in Ruby
+Tests with Selene can be built either in a simple straightforward "selenide' style or with PageObjects composed from Widgets i.e. reusable element components (aka selements).
 
-NOTE: This is still a pre-alpha version and have some stability issues
+NOTE: This is still a pre-alpha version and may have some issues
 
 ## Installation
 
@@ -25,34 +23,47 @@ NOTE: This is still a pre-alpha version and have some stability issues
 ### Basic example
 
 ```python
+from selenium import webdriver
+
+from selene.conditions import *
 from selene.tools import *
-from selene.conditions import text, texts, css_class, hidden
 
 
-def setup_module():
-    config.app_host = ''
+def setup_module(m):
+    set_driver(webdriver.Firefox())
 
 
-def test_create_task():
+def teardown_module(m):
+    get_driver().quit()
 
+
+def test_selene_demo(self):
     tasks = ss("#todo-list>li")
-    active = css_class("active")
-    completed = css_class("completed")
+    active_tasks = tasks.filter(css_class("active"))
 
-    visit("http://todomvc.com/examples/troopjs_require/#/")
+    visit('http://todomvc4tasj.herokuapp.com')
 
     for task_text in ["1", "2", "3"]:
-        s("#new-todo").set(task_text).press_enter()
-    tasks.insist(texts("1", "2", "3")).insist_each(active)
-    s("#todo-count").insist(text(3))
+        s("#new-todo").set_value(task_text).press_enter()
+
+    tasks.assure(texts("1", "2", "3")).assure_each(css_class("active"))
+    s("#todo-count").assure(text("3"))
 
     tasks[2].s(".toggle").click()
-    tasks.filter(active).insist(texts("1", "2"))
-    tasks.filter(completed).insist(texts("3"))
 
-    s("#filters a[href='#/active']").click()
-    tasks[:2].insist(texts("1", "2"))
-    tasks[2].insist(hidden)
+
+    active_tasks.assure(texts("1", "2"))
+    active_tasks.assure(size(2))
+
+    tasks.filter(css_class("completed")).assure(texts("3"))
+
+    s("a[href='#/active']").click()
+    tasks[:2].assure(texts("1", "2"))
+    tasks[2].assure(hidden)
+
+    s("#toggle-all").click()
+    s("#clear-completed").click()
+    tasks.assure(empty)
 ```
 
 This should be completely enough to start writing your tests.
@@ -63,6 +74,40 @@ In case you need to reuse some parts elsewhere - go ahead and move your locators
     completed = css_class("completed")
 ```
 to some class and so implement a PageObject pattern.
+
+You can also use alias methods for your taste:
+
+```python
+tasks[2].find(".toggle").click()
+```
+instead of
+```python
+tasks[2].s(".toggle").click()
+```
+
+```python
+s("#todo-list").find_all("li")
+```
+instead of
+```python
+s("#todo-list").ss("li")
+```
+
+```python
+tasks.insist(empty)
+```
+or
+```python
+tasks.should_be(empty)
+```
+instead of
+```python
+tasks.assure(empty)
+```
+
+all the following names means the same: `insist`, `assure`, `should_be`, `should`, `should_be`, `should_have`
+Just the first two can sound good with any condition, but others depend.
+
 
 ### Simple PageObjects Example
 Here is a simple example of PageObjects implementation (inspired by [selenide google search example](https://github.com/selenide-examples/google/tree/master/test/org/selenide/examples/google/selenide_page_object)):
@@ -120,22 +165,36 @@ That's it. Selene encourages to start writing tests in the simplest way. And add
 So far reporting capabilities are reflected only in a detailed error messages.
 For example the following code
 ```python
-ss("#todo-list>li")[2].insist(hidden) 
+ss("#todo-list>li")[2].should_be(hidden)
 ```
 in case of failure will result in exception raised with message:
 ```
-Timeout reached while waiting...
-During: 4s
-For: {#todo-list>li[2]}
-Until: hidden
-Screenshot: /Users/ayia/projects/yashaka/selene/tests/reports/screenshots/1429532551.16.png
+       TimeoutException: Message:
+                   failed while waiting 4 seconds
+                   to assert Hidden
+                   for element found by: ('css selector', '#new-todo')
 ```
 
-### PageObjects composed with Widgets (aka SElements)
+And the the following "more complex" locating code
+```python
+ss("#todo-list>li")[2].should_be(hidden)
+```
+in case of failure will result in exception raised with message:
+```
+       TimeoutException: Message:
+                   failed while waiting 4 seconds
+                   to assert Hidden
+                   for element found by: ('selene', "('css selector', '#todo-list>li')[2]")
+```
+
+Here the "stringified locator" is a bit more complicated for eyes. You can decode from it the following information:
+_"inside the list of elements available by css selector '#todo-list>li' selene was trying to find 2nd element"_
+
+### PageObjects composed with Widgets (aka SElements) - THIS SECTION IS OUTDATED. SELENE DOES NOT SUPPORT LOADABLE COMPONENT ANY MORE. SO to_open METHODS WILL NOT WORK IN THE CODE BELOW
 Sometimes your UI is build with many "reusable" widgets or components. If you follow general "Test Automation Pyramid" guidelines, most probably you have not too much of automated selenium tests. And "simple pageobjects" will be pretty enough for your tests.
 But in case you need to write a tone of UI tests, and you need correspondent DRY solution for your reusable components then this section may be for you. 
 
-Selene encourages to use [composition over inheritance](http://en.wikipedia.org/wiki/Composition_over_inheritance) to reuse parts of web application like sidepanels, headers, footers, main contents, search forms, etc. This especially may be usefull in the case of single-page applications. Consequently we can naturally model our app under test even with a SinglePageObject composed with Widgets which can be loaded by demand like common PageObjects via their urls.
+Selene encourages to use [composition over inheritance](http://en.wikipedia.org/wiki/Composition_over_inheritance) to reuse parts of web application like sidepanels, headers, footers, main contents, search forms, etc. This especially may be usefull in the case of over-complicated single-page applications. Consequently we can naturally model our app under test even with a SinglePageObject composed with Widgets.
 
 ```python
 from selene.elements import SElement
@@ -313,38 +372,16 @@ main = MainPage.get();
 ```
 
 
-Or the same way with widgets:
-```python
-main.blog.insist(hidden)
-main.blog.get().insist(visible)
-```
-Since, `insist` will not load widget if it's yet not loaded
-Instead, you can use `assure` which is "smart" `insist`, i.e. loading widget.
-```python
-main = MainPage.get();
-
-# main.blog.assure(hidden)  # >> this line will FAIL 
-# because assure will try to load blog until it's visible before asserting the "hidden" condition on it
-
-main.blog.assure(visible)
-```
-It's up to the user what to use:
-- more pythonic `get` + `insist` (read: "explicit is better then implicit") 
-- or more laconic but "magical" `assure`
-
 ### More examples
 
 See [/tests/](https://github.com/yashaka/selene/tree/master/tests) files for more examples of usage.
-E.g. one more [PageObject example](https://github.com/yashaka/selene/blob/master/tests/resources/pages/order.py) and its [acceptance test](https://github.com/yashaka/selene/blob/master/tests/pageobject_acceptance_test.py).
+E.g. one more [PageObject with Widgets example](https://github.com/yashaka/selene/blob/master/tests/order/pages/order.py) and its [acceptance test](https://github.com/yashaka/selene/blob/master/tests/order/custom_selements_and_collections_end_to_end_test.py).
 
 ## TODO list
 
-* Improve and stabilize automatic webdriver management
-* Improve and stabilize screenshooting
-* add support of multiple browsers (only Firefox is supported so far)
-* add support of xpath locators (only css selectores so far)
+* consider automatic webdriver management implementation
+* add screenshooting
 * add more convenient methods to SElement and SElementsCollection impl.
-* consider implementing conditions as hamcrest matchers (in addition to simple functions or lambdas)
 * improve general "autocompletion in IDE" capabilities (reduce "magic" in implementation)
 * make browser management support parallel testing
 * simplify implementation, at least decouple as much as possible some parts...
@@ -357,3 +394,5 @@ E.g. one more [PageObject example](https://github.com/yashaka/selene/blob/master
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
+
+NOTE: Take into account that the author of Selene is a big nerd, so it may be hard for you to get your PR being approved ;)

@@ -13,10 +13,10 @@ class TestTodoMVC(BaseTest):
 
         tasks.toggle("b")
 
-        tasks.filter_active ()
+        tasks.filter_active()
         tasks.should_be("a", "c")
 
-        tasks.filter_completed ()
+        tasks.filter_completed()
         tasks.should_be("b")
 
 
