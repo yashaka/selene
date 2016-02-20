@@ -1,3 +1,5 @@
+* remove stopit from dependency
+
 * add screenshots to error messages
 
 * add config.implicitlyWaitFor = conditions.enabled

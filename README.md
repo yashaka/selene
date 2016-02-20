@@ -15,6 +15,8 @@ Tests with Selene can be built either in a simple straightforward "selenide' sty
 
 NOTE: This is still a pre-alpha version and may have some issues
 
+NOTE: **Latest version - 0.0.5 - changed API a lot :)**
+
 ## Installation
 
     pip install selene

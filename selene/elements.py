@@ -52,6 +52,11 @@ class WaitingFinder(object):
         wait_for_not(self, condition, condition, timeout)
         return self
 
+    insist_not = assure_not
+    should_not = assure_not
+    should_not_be = assure_not
+    should_not_have = assure_not
+
     def __str__(self):
         return str(self.locator)
 

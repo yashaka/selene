@@ -1,6 +1,16 @@
 # Changelog
 
-## 0.0.5
+## 0.0.6
+- added alias methods:
+```
+    insist_not = assure_not
+    should_not = assure_not
+    should_not_be = assure_not
+    should_not_have = assure_not
+```
+- ...
+
+## 0.0.5 (released 20.02.2016)
 
 - big refactoring
   - removed currently unstable things
