@@ -8,7 +8,7 @@
     should_not_be = assure_not
     should_not_have = assure_not
 ```
-- ...
+- removed stopit from dependencies
 
 ## 0.0.5 (released 20.02.2016)
 
