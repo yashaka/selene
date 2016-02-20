@@ -31,12 +31,12 @@ class Order(PageObject):
             self.other_data = self.s('.item_other_data')
 
             self.show_advanced_options_selector = self.s('.show_advanced_options_selector')
-            self.advanced_options_selector = self.AdvancedOptionsSelector('.advanced_options_selector', self)
-                # .to_open(lambda: self.show_advanced_options_selector.click())
+            self.advanced_options_selector = self.AdvancedOptionsSelector('.advanced_options_selector', self)\
+                .to_open(lambda: self.show_advanced_options_selector.click())
 
             self.show_advanced_options = self.s('.show_advanced_options')
-            self.advanced_options = self.ss('.advanced_options .options_list li').of(self.AdvancedOption)
-                # .to_open(lambda: self.show_advanced_options.click())
+            self.advanced_options = self.ss('.advanced_options .options_list li').of(self.AdvancedOption)\
+                .to_open(lambda: self.show_advanced_options.click())
 
             self.clear_options = self.s('.clear_options')
 

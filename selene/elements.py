@@ -5,7 +5,7 @@ from selenium.webdriver.common.keys import Keys
 from conditions import *
 from selene import config
 from selene.bys import by_css
-from selene.page_object import Filler, Container
+from selene.page_object import Filler, LoadableContainer
 from selene.wait import wait_for, wait_for_not
 
 
@@ -69,7 +69,7 @@ def parse_css_or_locator_to_tuple(css_selector_or_locator):
     raise TypeError("s argument should be string or tuple!")
 
 
-class SElement(Container, WaitingFinder, Filler):
+class SElement(LoadableContainer, WaitingFinder, Filler):
     def __init__(self, css_selector_or_locator, context=RootSElement()):
         self.locator = parse_css_or_locator_to_tuple(css_selector_or_locator)
         self.context = context
@@ -147,12 +147,13 @@ class SElementWrapper(SElement, Wrapper):
         return self._wrapped_element
 
 
-class SElementsCollection(WaitingFinder):
+class SElementsCollection(LoadableContainer, WaitingFinder):
     def __init__(self, css_selector_or_locator, context=RootSElement(), selement_class=SElement):
         self.locator = parse_css_or_locator_to_tuple(css_selector_or_locator)
         self.context = context
         self._wrapper_class = selement_class
         self.default_conditions = []
+        super(SElementsCollection, self).__init__()
 
     def of(self, selement_class):
         self._wrapper_class = selement_class

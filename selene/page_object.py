@@ -1,14 +1,23 @@
 from selene.helpers import merge
 
 
-class Container(object):
+class LoadableContainer(object):
     def __init__(self):
         if hasattr(self, 'init'):
             self.init()
+        self._open = lambda: self
 
     def init(self):
         """ to be defined in descendants in order to init its sub-elements """
         pass
+
+    def to_open(self, how_to_open_fn):
+        self._open = how_to_open_fn
+        return self
+
+    def open(self):
+        self._open()
+        return self
 
 
 class Filler(object):
@@ -30,7 +39,7 @@ class Filler(object):
         return self
 
 
-class PageObject(Container, Filler):
+class PageObject(LoadableContainer, Filler):
     @classmethod
     def get(cls, visit=True):  # todo: think on: is `visit` good name? maybe `open` would be better?
         """ a factory to create and load/open page """
