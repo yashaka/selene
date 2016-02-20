@@ -182,6 +182,8 @@ in case of failure will result in exception raised with message:
                    for element found by: ('css selector', '#new-todo')
 ```
 
+---
+
 And the the following "more complex" locating code
 ```python
 ss("#todo-list>li")[2].should_be(hidden)
@@ -283,6 +285,7 @@ Make your class a 'selene' Widget
 class Article(SElement):
 ```
 
+---
 
 Init its sub-elements
 ```python
@@ -300,6 +303,7 @@ is a shortcut to:
 ```
 telling: search this element by locator `"heading"` inside the `self` context, i.e. selenium will search for `"heading"` not among all page but only inside the article, found by its own `"#article-1"` locator which may be definied like `Article("#article-1")`
 
+---
 
 Make your class a 'selene' PageObject
 ```python
@@ -327,6 +331,7 @@ Specify its sub-elements
         #...
 ```
 
+---
 
 Configure sub-widgets as "pseudo" LoadableComponents via `to_open` method
 ```python
@@ -373,12 +378,14 @@ shop.add_to_cart("Product FooBar")
 ```
 ;)
 
+---
 
 Declare a collection of widgets
 ```python
             self.articles = self.ss("[id^='article']").of(Article)
 ```
 
+---
 
 Use SElement#fill_with to do a bulk set of fields
 ```python
@@ -397,6 +404,7 @@ So somewhere in the tests:
 signform.do_signin(mail="user@example.com", pass="ytrewq654321")
 ```
 
+---
 
 Use factory method `PageObject#get` in order to instantiate PageObject and load it via `open`
 ```python
