@@ -1,3 +1,13 @@
+- optimize SElementsCollection#find to stop filtering on first found
+
+- add test about "non-exising" method call on selement/selementscollection
+
+- optimise: cash by demand + cash by first usage
+
+- add docstrings
+
+- make autocompletion work after get_driver().
+
 - improve selene's performance (comparing to jselenide e.g.)
     - change calling self.assure(visible) all the time to
     call it only after first exception
@@ -11,6 +21,8 @@
 - test and prettify all error messages (especially where locators are stringified)
 
 - catch IndexOutOfBoundsException
+
+- finalize all todos in code comments
 
 - find the way for auto-completion to work in cases: ss("..").of(Task)[1].HERE()
   - First try with Jedi's autocompletion

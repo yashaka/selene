@@ -11,8 +11,7 @@ class Condition(object):
 
     def __call__(self, entity):
         self.entity = entity
-        self.found = entity()
-        # self.found = entity.finder() # todo: either delete or choose this version over previous one
+        self.found = self.entity()
         return self.found if self.apply() else None
 
     def __str__(self):

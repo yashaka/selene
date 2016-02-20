@@ -7,7 +7,6 @@ from selene.tools import *
 
 class TestTodoMVC(BaseTest):
 
-    # 3s
     def test_selene_demo(self):
         tasks = ss("#todo-list>li")
         active_tasks = tasks.filter(css_class("active"))

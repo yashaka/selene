@@ -426,7 +426,7 @@ E.g. one more [PageObject with Widgets example](https://github.com/yashaka/selen
 * improve general "autocompletion in IDE" capabilities (reduce "magic" in implementation)
 * make browser management support parallel testing
 * simplify implementation, at least decouple as much as possible some parts...
-* see more ideas at todo.md
+* see more ideas at [see todo.md](https://github.com/yashaka/selene/blob/master/todo.md)
 
 ## Changelog
 

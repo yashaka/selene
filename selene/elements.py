@@ -15,30 +15,95 @@ def actions():
 
 class WaitingFinder(object):
 
-    def finder(self):
+    def __init__(self):
+        self.is_cached = False
+        self._found = None
+        self._default_conditions = []
+
+    def that(self, *default_conditions):
+        self._default_conditions = default_conditions
+        return self
+
+    def _finder(self):
         pass
 
+    # todo: consider making it public, because it is used outside of this class (in SElementsCollection)
+    def _cash_with(self, found_entity):
+        self.is_cached = True
+        self._finder = lambda: found_entity
+        return self
+
+    def _refind(self):
+        self._found = self._finder()
+        if config.cash_elements:
+            self._cash_with(self.found)
+        return self._found
+
+    @property
+    def found(self):
+        if not self._found:
+            self._refind()
+        return self._found
+
+    # @found.setter
+    # def found(self, found_element):
+    #     self._found = found_element
+
+    def cash(self):
+        self._cash_with(self.found)
+        return self
+
+    # todo: is used outside of class... should we make it public? :)...
+    #       or find another way to reach the goal outside of the class
+    def _execute(self, command, conditions = None):
+        if not conditions:
+            conditions = self._default_conditions
+        """
+        :param command: command operated on self.found
+        :return: result returned by command
+        """
+        result = None
+        try:
+            if not self.is_cached:  # todo: maybe move this check into _find?
+                self._refind()
+            result = command()
+        except (WebDriverException, IndexError):  # todo: consider `except self.handled_exceptions`
+            for condition in conditions:
+                self.assure(condition)  # todo: wait for "default condition" not visible
+            result = command()
+        return result
+
+    def _do(self, command):
+        """
+        :param command: command operated on self.found
+        :return: self
+        """
+        self._execute(command)
+        return self
+
+    # do we actually need this method?
     def __call__(self):
-        return self.finder()
+        """
+        :return: re-found wrapped entity
+        """
+        return self._refind()
 
+    # todo: consider removing it completely after mapping all webelement methods
     def __getattr__(self, item):
-        if isinstance(self, Wrapper):
-            self.found = self.finder()
-        else:
-            try:  # todo: do we even need this try here? is it probable to get fail here while need waiting?
-                self.found = self.finder()  # todo: refactor: duplicates previous self.finder() call (though this duplication is in other context...)
-            except WebDriverException:
-                pass # todo: solve & finalize: seems like next line is not needed here... so all try can be removed...
-                # self.assure(exist)  # todo: solve: it's general finder, but behaves like "Element" finder here, not like ElementsCollection finder...
+        return self._execute(lambda: getattr(self.found, item))
 
-
-        return getattr(self.found, item)
-
+    # todo: refactor caching logic in case of assure
+    # if entity is cached assure will wait for nothing...
+    # what is actually needed in "cached case"
+    # is making all element actions on cached version
+    # and also do first check in waiting assure - on cached version
+    # but once this "first check" failed - it's pretty reasonable "update" cash
+    #
+    # the same relates to assure_not of course
     def assure(self, condition, timeout=None):
         if not timeout:
             timeout = config.timeout
-        self.found = wait_for(self, condition, condition, timeout)
-        # self.found = self.finder() # todo: duplicated?
+        self._found = wait_for(self, condition, condition, timeout)
         return self
 
     insist = assure
@@ -49,6 +114,7 @@ class WaitingFinder(object):
     def assure_not(self, condition, timeout=None):
         if not timeout:
             timeout = config.timeout
+        # todo: where is self._found = ?          !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         wait_for_not(self, condition, condition, timeout)
         return self
 
@@ -74,19 +140,20 @@ def parse_css_or_locator_to_tuple(css_selector_or_locator):
     raise TypeError("s argument should be string or tuple!")
 
 
+# todo: think... with this multiple inheritance all the time
+#       I forget to set some field of some parent during refactoring...
+#       how to improve? o_O
 class SElement(LoadableContainer, WaitingFinder, Filler):
     def __init__(self, css_selector_or_locator, context=RootSElement()):
         self.locator = parse_css_or_locator_to_tuple(css_selector_or_locator)
         self.context = context
-        self.default_conditions = [visible]
+        self._default_conditions = [visible]
+        self.is_cached = False
+        self._found = None
         super(SElement, self).__init__()
 
-    def finder(self):
+    def _finder(self):
         return self.context.find_element(*self.locator)
-
-    def cash(self, found_element):
-        self.finder = lambda: found_element
-        return self
 
     def within(self, context):
         self.context = context
@@ -104,38 +171,32 @@ class SElement(LoadableContainer, WaitingFinder, Filler):
     find_all = ss
 
     def click(self):
-        self.assure(visible)
-        self.found.click()
-        return self
+        return self._do(lambda: self.found.click())
 
     def double_click(self):
-        self.assure(visible)
-        actions().double_click(self.found).perform()
-        return self
+        return self._do(lambda: actions().double_click(self.found).perform())
 
     def set(self, new_text_value):
-        self.assure(visible)
-        self.found.clear()
-        self.found.send_keys(new_text_value)
-        return self
+
+        def clear_and_send_keys():
+            self.found.clear()
+            self.found.send_keys(new_text_value)
+
+        return self._do(clear_and_send_keys)
 
     set_value = set
 
     def send_keys(self, *keys):
-        self.assure(visible)
-        self.found.send_keys(*keys)
-        return self
+        return self._do(lambda: self.found.send_keys(*keys))
 
     def press_enter(self):
-        return self.send_keys(Keys.ENTER)
+        return self._do(lambda: self.found.send_keys(Keys.ENTER))
 
     def press_escape(self):
-        return self.send_keys(Keys.ESCAPE)
+        return self._do(lambda: self.found.send_keys(Keys.ESCAPE))
 
     def hover(self):
-        self.assure(visible)
-        actions().move_to_element(self.found).perform()
-        return self
+        return self._do(lambda: actions().move_to_element(self.found).perform())
 
 
 class Wrapper(object):
@@ -143,12 +204,13 @@ class Wrapper(object):
     that do not need waiting during '__getattr__' """
     pass
 
+# todo: do we even need it? taking into acouunt that we can cash element to get the same _finder implementation...
 class SElementWrapper(SElement, Wrapper):
     def __init__(self, selement, locator=None):
         self._wrapped_element = selement
         super(SElementWrapper, self).__init__(locator or selement.locator)
 
-    def finder(self):
+    def _finder(self):
         return self._wrapped_element
 
 
@@ -157,7 +219,9 @@ class SElementsCollection(LoadableContainer, WaitingFinder):
         self.locator = parse_css_or_locator_to_tuple(css_selector_or_locator)
         self.context = context
         self._wrapper_class = selement_class
-        self.default_conditions = []
+        self._default_conditions = []
+        self._found = None
+        self.is_cached = False
         super(SElementsCollection, self).__init__()
 
     def of(self, selement_class):
@@ -168,8 +232,8 @@ class SElementsCollection(LoadableContainer, WaitingFinder):
         self.context = context
         return self
 
-    def finder(self):
-        return [self._wrapper_class('%s[%s]' % (self.locator, index)).cash(webelement)
+    def _finder(self):
+        return [self._wrapper_class('%s[%s]' % (self.locator, index))._cash_with(webelement)
                 for index, webelement in enumerate(self.context.find_elements(*self.locator))]
 
     def filter(self, condition):
@@ -193,16 +257,14 @@ class SElementsCollection(LoadableContainer, WaitingFinder):
         return SElementsCollectionElement(self, item)
 
     def __len__(self):
-        return self.finder().__len__()
+        return self._execute(lambda: self.found.__len__())
 
     def __iter__(self):
-        return self.finder().__iter__()
+        return self._execute(lambda: self.found.__iter__())
 
     def __getslice__(self, i, j):
         # todo: think on: should we pass here self._context, and self._wrapper_class into constructor?
-        self.wrapper = SElementsCollectionWrapper(self.finder().__getslice__(i, j),
-                                                  str(self.locator) + "[sliced by (%s, %s)]" % (i, j))
-        return self.wrapper
+        return SlicedSElementsCollection(self, i, j)
 
 
 class SElementsCollectionWrapper(SElementsCollection, Wrapper):
@@ -210,7 +272,7 @@ class SElementsCollectionWrapper(SElementsCollection, Wrapper):
         self.wrapped_elements_list = selements_list
         super(SElementsCollectionWrapper, self).__init__(css_selector_or_locator)
 
-    def finder(self):
+    def _finder(self):
         return self.wrapped_elements_list
 
 
@@ -221,14 +283,25 @@ class SElementsCollectionElement(SElement, Wrapper):
         locator = "%s[%s]" % (self.selements_collection.locator, self.index)
         super(SElementsCollectionElement, self).__init__(("selene", locator))
 
-    def finder(self):
-        self.selements_collection.assure(size_at_least(self.index + 1))
-        # return SElementWrapper(self.selements_collection.finder()[self.index],
-        # return SElementWrapper(self.selements_collection.found[self.index],
-        #                        self.locator)
-        return SElementWrapper(self.selements_collection.found[self.index],
+    def _finder(self):
+        # todo: consider move `.that(size_at_least(self.index + 1))` to `_execute(lambda: ..., size_at_least(...))`
+        element_by_index = self.selements_collection._execute(lambda: self.selements_collection.that(size_at_least(self.index + 1)).found[self.index])
+        return SElementWrapper(element_by_index,
                                self.locator)
 
+
+class SlicedSElementsCollection(SElementsCollection, Wrapper):
+    # todo: rename i & j to something more informative
+    def __init__(self, original_selements_collection, i, j):
+        self.i = i
+        self.j = j
+        self.selements_collection = original_selements_collection
+        locator = "%s[%s:%s]" % (self.selements_collection.locator, self.i, self.j)
+        super(SlicedSElementsCollection, self).__init__(("selene", locator))
+
+    def _finder(self):
+        sliced_elements = self.selements_collection._execute(lambda: self.selements_collection.that(size_at_least(self.j)).found[self.i:self.j])
+        return SElementsCollectionWrapper(sliced_elements, self.locator)
 
 class FilteredSElementsCollection(SElementsCollection, Wrapper):
     def __init__(self, original_selements_collection, condition):
@@ -239,7 +312,7 @@ class FilteredSElementsCollection(SElementsCollection, Wrapper):
             self.condition.__class__.__name__)
         super(FilteredSElementsCollection, self).__init__(("selene", locator)) # todo: prettify and fix it in other similiar places, it's not a css selector to be passed as string
 
-    def finder(self):
+    def _finder(self):
         filtered_elements = [selement for selement in self.original_selements_collection
                              if self.condition(selement)]
         return SElementsCollectionWrapper(
