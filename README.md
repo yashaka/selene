@@ -1,5 +1,5 @@
 # Selene - Concise API for Selenium in Python 
-(Selenide/Capybara + Widgeon alternative)
+(Selenide/Capybara + htmlelements/Widgeon alternative)
 
 Main features:
 - Concise API for Selenium
@@ -425,6 +425,10 @@ E.g. one more [PageObject with Widgets example](https://github.com/yashaka/selen
 * make browser management support parallel testing
 * simplify implementation, at least decouple as much as possible some parts...
 * see more ideas at todo.md
+
+## Changelog
+
+[see CHANGELOG.md](https://github.com/yashaka/selene/blob/master/CHANGELOG.md)
 
 ## Contributing
 
