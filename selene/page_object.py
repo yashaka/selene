@@ -19,6 +19,8 @@ class LoadableContainer(object):
         self._open()
         return self
 
+    get = open
+
 
 class Filler(object):
     # todo: think on renaming to #filled_with taking into account that method returns self...

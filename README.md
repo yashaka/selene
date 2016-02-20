@@ -6,10 +6,11 @@ Main features:
 - jQuery-style selectors
 - Ajax support
 - SinglePage App friendly PageObjects
--- composed with reusable and loadable Widgets
+  - composed with reusable and loadable Widgets
 
 
-Selene was inspired by [Selenide](http://selenide.org/) and [htmlelements](https://github.com/yandex-qatools/htmlelements) in Java and [Widgeon](https://github.com/yashaka/widgeon) gem in Ruby
+Selene was inspired by [Selenide](http://selenide.org/) and [htmlelements](https://github.com/yandex-qatools/htmlelements) in Java and [Widgeon](https://github.com/yashaka/widgeon) gem in Ruby.
+
 Tests with Selene can be built either in a simple straightforward "selenide' style or with PageObjects composed from Widgets i.e. reusable element components (aka selements).
 
 NOTE: This is still a pre-alpha version and may have some issues
@@ -188,13 +189,13 @@ in case of failure will result in exception raised with message:
 ```
 
 Here the "stringified locator" is a bit more complicated for eyes. You can decode from it the following information:
-_"inside the list of elements available by css selector '#todo-list>li' selene was trying to find 2nd element"_
+_"inside the list of elements available by css selector '#todo-list>li' selene was trying to find element with index [2]"_
 
-### PageObjects composed with Widgets (aka SElements) - THIS SECTION IS OUTDATED. SELENE DOES NOT SUPPORT LOADABLE COMPONENT ANY MORE. SO to_open METHODS WILL NOT WORK IN THE CODE BELOW
+### PageObjects composed with Widgets (aka SElements)
 Sometimes your UI is build with many "reusable" widgets or components. If you follow general "Test Automation Pyramid" guidelines, most probably you have not too much of automated selenium tests. And "simple pageobjects" will be pretty enough for your tests.
 But in case you need to write a tone of UI tests, and you need correspondent DRY solution for your reusable components then this section may be for you. 
 
-Selene encourages to use [composition over inheritance](http://en.wikipedia.org/wiki/Composition_over_inheritance) to reuse parts of web application like sidepanels, headers, footers, main contents, search forms, etc. This especially may be usefull in the case of over-complicated single-page applications. Consequently we can naturally model our app under test even with a SinglePageObject composed with Widgets.
+Selene encourages to use [composition over inheritance](http://en.wikipedia.org/wiki/Composition_over_inheritance) to reuse parts of web application like sidepanels, headers, footers, main contents, search forms, etc. This especially may be usefull in the case of over-complicated single-page applications. Consequently we can naturally model our app under test even with a SinglePageObject composed with Widgets, that can be loaded on demand.
 
 ```python
 from selene.elements import SElement
@@ -216,14 +217,14 @@ class MainPage(PageObject):
     def init(self):
         self.lang = SelectList("#lang-selector")
         
-        self.shop = MainPage.Shop("#blog")
+        self.shop = MainPage.Shop("#shop")\
                     .to_open(lambda: s("#menu .shop-lnk").click())
         
-        self.blog = MainPage.Blog("#blog")
+        self.blog = MainPage.Blog("#blog")\
                     .to_open(lambda: s("#menu .blog-lnk").click())
         
         self.show_side_panel = s("#show-side-panel")
-        self.side_panel = MainPage.SidePanel("#side-panel")
+        self.side_panel = MainPage.SidePanel("#side-panel")\
                           .to_open(lambda: self.show_side_panel.click())
                           
     # Assuming our "widgets" exist only on single main page
@@ -254,17 +255,17 @@ class MainPage(PageObject):
             
             def do_signin(self, **mail_and_pass):
                 self.fill_with(**mail_and_pass)
-                signin.click()
+                self.signin.click()
 ```
 
 So then, somewhere in the tests:
 
 ```python
 main = MainPage.get();
-main.side_panel.do_signin(mail="user@example.com", pass="ytrewq654321")
-main.blog.articles.insist(size(10))
+main.side_panel.open().do_signin(mail="user@example.com", pass="ytrewq654321")
+main.blog.open().articles.assure(size(10))
 
-shop = main.shop
+shop = main.shop.open()
 shop.add_to_cart("Product FooBar")
 # ...
 ```
@@ -277,7 +278,7 @@ class Article(SElement):
 ```
 
 
-Inits its sub-elements
+Init its sub-elements
 ```python
     def init(self):
         self.heading = self.s("heading")
@@ -321,12 +322,12 @@ Specify its sub-elements
 ```
 
 
-Configure sub-widgets as LoadableComponents via `to_open` method
+Configure sub-widgets as "pseudo" LoadableComponents via `to_open` method
 ```python
         self.blog = MainPage.Blog("#blog")
                     .to_open(lambda: s("#menu .blog-lnk").click())
         
-        self.shop = MainPage.Shop("#blog")
+        self.shop = MainPage.Shop("#shop")
                     .to_open(lambda: s("#menu .shop-lnk").click())
         
         # side panel may be used separately, 
@@ -337,9 +338,34 @@ Configure sub-widgets as LoadableComponents via `to_open` method
 ```
 So when you try to use e.g. blog:
 ```python
-MainPage.get().blog.articles[1].heading.insist(text("Hello Bob!"))
+MainPage.get().blog.open().articles[1].heading.insist(text("Hello Bob!"))
 ```
-It will be automatically loaded via `s("#menu .blog-lnk").click()` in case yet not visible.
+You have the ability to open it "along the way".
+It was called "pseudo" LoadableComponent, because the real loadable component would be automatically loaded via `s("#menu .blog-lnk").click()` in case yet not visible.
+
+Such "explicit over implicit" loading were implemented in selene in order to match python ZEN. Nevertheless test should explicitly state its test logic, not hide it internally. Though somewhere in the future it is possible to see such "implicit loading feature" available via additional configuration.
+
+Remember that this feature is far from being silver bullet. Actually you can have pretty handy code without using it:
+```python
+main = MainPage.get();
+main.open_side_panel()
+main.side_panel.do_signin(mail="user@example.com", pass="ytrewq654321")
+main.open_blog()
+main.blog.articles.assure(size(10))
+
+main.open_shop()
+shop = main.shop
+shop.add_to_cart("Product FooBar")
+# ...
+```
+or even:
+```python
+# ...
+shop = main.open_shop()
+shop.add_to_cart("Product FooBar")
+# ...
+```
+;)
 
 
 Declare a collection of widgets
@@ -371,7 +397,6 @@ Use factory method `PageObject#get` in order to instantiate PageObject and load 
 main = MainPage.get();
 ```
 
-
 ### More examples
 
 See [/tests/](https://github.com/yashaka/selene/tree/master/tests) files for more examples of usage.
@@ -389,10 +414,10 @@ E.g. one more [PageObject with Widgets example](https://github.com/yashaka/selen
 
 ## Contributing
 
-1. Fork it ( https://github.com/[my-github-username]/selene/fork )
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create a new Pull Request
-
-NOTE: Take into account that the author of Selene is a big nerd, so it may be hard for you to get your PR being approved ;)
+1. Add a "feature request" Issue to this project.
+2. Discuss its need and possible implementation. And once approved...
+2. Fork the project ( https://github.com/[my-github-username]/selene/fork )
+3. Create your feature branch (`git checkout -b my-new-feature`)
+4. Commit your changes (`git commit -am 'Add some feature'`)
+5. Push to the branch (`git push origin my-new-feature`)
+6. Create a new Pull Request
