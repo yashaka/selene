@@ -1,49 +1,36 @@
-* add screenshots to error messages
-
-* add config.implicitlyWaitFor = conditions.enabled
-
-* fix selene's slowness (comparing to jselenide e.g.)
+- improve selene's performance (comparing to jselenide e.g.)
     - change calling self.assure(visible) all the time to
-    call it only after first esception
-    
-* test and prettify all error messages (especially where locators are stringified)
+    call it only after first exception
 
-* refactor Order page and correspondent test to new style
+  - test speed of selene (compare to selenide and selenium)
 
-* catch IndexOutOfBoundsException
+- add screenshots to error messages
 
-* add support of all locators type
+- add config.implicitlyWaitFor = conditions.enabled
 
-* find the way for auto-completion to work in cases: ss("..").of(Task)[1].HERE()
+- test and prettify all error messages (especially where locators are stringified)
 
-* find the way to make auto-completion work for all "intercepted" methods... like click() , etc...
+- catch IndexOutOfBoundsException
 
-* think on privatizing some selement/collection fields
+- find the way for auto-completion to work in cases: ss("..").of(Task)[1].HERE()
+  - First try with Jedi's autocompletion
+  - Think on how to make it work in Intellij Idea...
 
-* fix paths to test apps
+- ensure auto-completion work for all "intercepted" methods... like click() , etc...
 
-* consider renaming finder() to get_actual_entity(), etc...
+- improve test coverage, especially of "unit level", not "acceptance" one
 
-* add ability to get "cached" version of selement for 
+- think on privatizing some selement/collection fields
 
-* consider using `stopit` for `wait_for`
+- consider renaming finder() to get_actual_entity(), etc...
 
-* accept more than one condition in assure
+- add ability to get "cached" version of selement for 
 
-* add `not` condition
+- accept more than one condition in assure
 
-* test speed of selene (compare to selenide and selenium)
+- add `not` condition
 
-*  fix autocompletion for the code: tasks[2].insist(absent)
-i.e. after `].` was pressed
-
-First try with Jedi's autocompletion
-
-Second consider adding method instead of [] usage, e.g. #nth
-like:
-    ss("#item").nth(2).insist(absent)
-
-* ss("#item").insist(condition) expect "collection condition" as param...
+- ss("#item").insist(condition) expect "collection condition" as param...
 i.e. the one that knows by itself that it needs to examine items of the ss result (which is SelementsCollection)
 in order to assert "element condition" on each item among ss result, you need
 to use .insist_each
@@ -51,9 +38,11 @@ to use .insist_each
 what if make insist to define itself what condition was passed - collection or element one, and so define
 how to assert this condition - on all collection of items or on each item?
 
-* in case ss("...") finds selements but all of them are hidden, should the .insist(empty) still fail?
+(todo: think on this once more... a year passed and now I do not Understand what I wrote :D )
 
-* Think on how to implement:
+- in case ss("...") finds selements but all of them are hidden, should the .insist(empty) still fail?
+
+- Think on how to implement:
 
 
     with the(order.details) as d:
@@ -71,7 +60,7 @@ instead of
         
 though seems like this is impossible...
 
-* DSL for "init" page with elements:
+- DSL for "init" page with elements:
 
 
     def init(self):
@@ -98,7 +87,7 @@ this will fail... the fix is:
             super(Order.Item, self).__init__(locator)
             self.that(lambda it: it.is_displayed())
 
-* one more way to init elements:
+- one more way to init elements:
 
 
         self.first_name = self.s('[name="first_name"]')
@@ -122,17 +111,4 @@ instead of:
         self.last_name = s('[name="last_name"]', self)
         self.salutation = SelectList('#salutation', self)
 
-* write more "unit" style tests.... having an html template, test small chunks of html bodies, predefined by js for each test
 
-* inspection does not work in Intellij Idea for ss('#item').of(Item)[-1].<HERE_NO_ANY_HINTS>
-
-- Test with Jedi's autocompletion
-- Think on how to make it work in Intellij Idea...
-
-
-* fix the following error:
-
-Exception httplib.CannotSendRequest: CannotSendRequest() in <bound method Browser.__del__ of <selementus.tools.Browser object at 0x10eb21e50>> ignored
-
-wich make driver unable to be closed. Can be encountered e.g. while TimeoutException was thrown...
-Error may be be relevant only to firefox version... ( so far selene was tested using Firefox 18.0 :) )
