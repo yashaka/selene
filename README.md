@@ -86,6 +86,8 @@ instead of
 tasks[2].s(".toggle").click()
 ```
 
+---
+
 ```python
 s("#todo-list").find_all("li")
 ```
@@ -93,6 +95,8 @@ instead of
 ```python
 s("#todo-list").ss("li")
 ```
+
+---
 
 ```python
 tasks.insist(empty)
@@ -105,6 +109,8 @@ instead of
 ```python
 tasks.assure(empty)
 ```
+
+---
 
 all the following names means the same: `insist`, `assure`, `should_be`, `should`, `should_be`, `should_have`
 Just the first two can sound good with any condition, but others depend.
