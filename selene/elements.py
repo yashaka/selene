@@ -4,7 +4,7 @@ from selenium.webdriver.common.keys import Keys
 
 from conditions import *
 from selene import config
-from selene.bys import by_css
+from selene.bys import by_css, by_xpath
 from selene.page_object import Filler, LoadableContainer
 from selene.wait import wait_for, wait_for_not
 
@@ -89,6 +89,10 @@ class WaitingFinder(object):
         return self._refind()
 
     # todo: consider removing it completely after mapping all webelement methods
+    #       or maybe it's good idea to leave it as it is... in case selenium adds one more
+    #       method to webelement :) and we still will support it without doing nothing
+    #       though... this may not be proper support... becuase here we do not know
+    #       what to use - _execute or _do
     def __getattr__(self, item):
         return self._execute(lambda: getattr(self.found, item))
 
@@ -111,6 +115,7 @@ class WaitingFinder(object):
     should_be = assure
     should_have = assure
 
+    #  todo: this method is crazy... and seems like the "wait_for_not" too... fix it
     def assure_not(self, condition, timeout=None):
         if not timeout:
             timeout = config.timeout
@@ -170,8 +175,64 @@ class SElement(LoadableContainer, WaitingFinder, Filler):
 
     find_all = ss
 
+    @property
+    def tag_name(self):
+        return self._execute(lambda: self.found.tag_name)
+
+    @property
+    def text(self):
+        return self._execute(lambda: self.found.text)
+
     def click(self):
         return self._do(lambda: self.found.click())
+
+    def submit(self):
+        return self._do(lambda: self.found.submit())
+
+    def clear(self):
+        return self._do(lambda: self.found.clear())
+
+    def get_attribute(self, name):
+        return self._execute(lambda: self.found.get_attribute(name))
+
+    def is_selected(self):
+        return self._execute(lambda: self.found.is_selected())
+
+    def is_enabled(self):
+        return self._execute(lambda: self.found.is_enabled())
+
+    def send_keys(self, *keys):
+        return self._do(lambda: self.found.send_keys(*keys))
+
+    def is_displayed(self):
+        return self._execute(lambda: self.found.is_displayed())
+
+    @property
+    def location_once_scrolled_into_view(self):
+        return self._execute(lambda: self.found.location_once_scrolled_into_view)
+
+    @property
+    def size(self):
+        return self._execute(lambda: self.found.size)
+
+    def value_of_css_property(self, property_name):
+        return self._execute(lambda: self.found.value_of_css_property(property_name))
+
+    @property
+    def location(self):
+        return self._execute(lambda: self.found.location)
+
+    @property
+    def rect(self):
+        return self._execute(lambda: self.found.rect)
+
+    @property
+    def parent(self):
+        return SElement(by_xpath("..")).within(self)  # todo: this should be covered with test especially
+
+    @property
+    def id(self):
+        return self._execute(lambda: self.found.id)
 
     def double_click(self):
         return self._do(lambda: actions().double_click(self.found).perform())
@@ -186,9 +247,6 @@ class SElement(LoadableContainer, WaitingFinder, Filler):
 
     set_value = set
 
-    def send_keys(self, *keys):
-        return self._do(lambda: self.found.send_keys(*keys))
-
     def press_enter(self):
         return self._do(lambda: self.found.send_keys(Keys.ENTER))
 
@@ -198,9 +256,12 @@ class SElement(LoadableContainer, WaitingFinder, Filler):
     def hover(self):
         return self._do(lambda: actions().move_to_element(self.found).perform())
 
-    @property
-    def text(self):
-        return self._execute(lambda: self.found.text)
+    def find_element(self, *locator):
+        return self._execute(lambda: self.found.find_element(*locator))
+
+    def find_elements(self, *locator):
+        return self._execute(lambda: self.found.find_elements(*locator))
+
 
 
 class Wrapper(object):

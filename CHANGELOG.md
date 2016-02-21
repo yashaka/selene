@@ -9,6 +9,9 @@
     should_not_have = assure_not
 ```
 - removed stopit from dependencies
+- optimized element actions (now they wait for visibility only if first try failed)
+- optimized SElementsCollection#find implementation - now it returns first match, not filter everything and then get first among all matches
+- mapped all webelement methods to selement (almost all) - now autocompletion works fully for selement
 
 ## 0.0.5 (released 20.02.2016)
 

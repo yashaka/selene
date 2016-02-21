@@ -42,7 +42,7 @@ def wait_for_not(entity, method, message='', timeout=None):
             if value is None:
                 return value
         except (WebDriverException,) as exc:
-            return True
+            return True  # todo: ?????????
         time.sleep(config.poll_during_waits)
         if time.time() > end_time:
             break
