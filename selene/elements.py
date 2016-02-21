@@ -198,6 +198,10 @@ class SElement(LoadableContainer, WaitingFinder, Filler):
     def hover(self):
         return self._do(lambda: actions().move_to_element(self.found).perform())
 
+    @property
+    def text(self):
+        return self._execute(lambda: self.found.text)
+
 
 class Wrapper(object):
     """ to be used as marker for classes for objects
@@ -241,9 +245,9 @@ class SElementsCollection(LoadableContainer, WaitingFinder):
 
     filterBy = filter
 
-    # todo: optimize it to find the only first, not all, and then get first.
     def find(self, condition):
-        return self.filter(condition)[0]
+        # return self.filter(condition)[0]
+        return SElementsCollectionElementByCondition(self, condition)
 
     findBy = find
 
@@ -263,7 +267,6 @@ class SElementsCollection(LoadableContainer, WaitingFinder):
         return self._execute(lambda: self.found.__iter__())
 
     def __getslice__(self, i, j):
-        # todo: think on: should we pass here self._context, and self._wrapper_class into constructor?
         return SlicedSElementsCollection(self, i, j)
 
 
@@ -284,7 +287,7 @@ class SElementsCollectionElement(SElement, Wrapper):
         super(SElementsCollectionElement, self).__init__(("selene", locator))
 
     def _finder(self):
-        # todo: consider move `.that(size_at_least(self.index + 1))` to `_execute(lambda: ..., size_at_least(...))`
+        # todo: consider moving `.that(size_at_least(self.index + 1))` to `_execute(lambda: ..., size_at_least(...))`
         element_by_index = self.selements_collection._execute(lambda: self.selements_collection.that(size_at_least(self.index + 1)).found[self.index])
         return SElementWrapper(element_by_index,
                                self.locator)
@@ -292,10 +295,10 @@ class SElementsCollectionElement(SElement, Wrapper):
 
 class SlicedSElementsCollection(SElementsCollection, Wrapper):
     # todo: rename i & j to something more informative
-    def __init__(self, original_selements_collection, i, j):
+    def __init__(self, selements_collection, i, j):
         self.i = i
         self.j = j
-        self.selements_collection = original_selements_collection
+        self.selements_collection = selements_collection
         locator = "%s[%s:%s]" % (self.selements_collection.locator, self.i, self.j)
         super(SlicedSElementsCollection, self).__init__(("selene", locator))
 
@@ -303,17 +306,33 @@ class SlicedSElementsCollection(SElementsCollection, Wrapper):
         sliced_elements = self.selements_collection._execute(lambda: self.selements_collection.that(size_at_least(self.j)).found[self.i:self.j])
         return SElementsCollectionWrapper(sliced_elements, self.locator)
 
+class SElementsCollectionElementByCondition(SElement, Wrapper):
+    def __init__(self, selements_collection, condition):
+        self.selements_collection = selements_collection
+        self.condition = condition
+        locator = "(%s).found_by(%s)" % (
+            self.selements_collection.locator,
+            self.condition.__class__.__name__)  # todo: this "name" will not be enough...
+                                                # more complete stringified version is needed
+        super(SElementsCollectionElementByCondition, self).__init__(("selene", locator))
+
+    def _finder(self):
+        for selement in self.selements_collection:
+            if self.condition(selement):
+                return SElementWrapper(selement, self.locator)
+
+
 class FilteredSElementsCollection(SElementsCollection, Wrapper):
-    def __init__(self, original_selements_collection, condition):
-        self.original_selements_collection = original_selements_collection
+    def __init__(self, selements_collection, condition):
+        self.selements_collection = selements_collection
         self.condition = condition
         locator = "(%s).filter(%s)" % (
-            self.original_selements_collection.locator,
+            self.selements_collection.locator,
             self.condition.__class__.__name__)
         super(FilteredSElementsCollection, self).__init__(("selene", locator)) # todo: prettify and fix it in other similiar places, it's not a css selector to be passed as string
 
     def _finder(self):
-        filtered_elements = [selement for selement in self.original_selements_collection
+        filtered_elements = [selement for selement in self.selements_collection
                              if self.condition(selement)]
         return SElementsCollectionWrapper(
             filtered_elements,
