@@ -5,6 +5,7 @@ from selenium.webdriver.common.keys import Keys
 from conditions import *
 from selene import config
 from selene.bys import by_css, by_xpath
+from selene.helpers import extend
 from selene.page_object import Filler, LoadableContainer
 from selene.wait import wait_for, wait_for_not
 
@@ -45,10 +46,6 @@ class WaitingFinder(object):
             self._refind()
         return self._found
 
-    # @found.setter
-    # def found(self, found_element):
-    #     self._found = found_element
-
     def cash(self):
         self._cash_with(self.found)
         return self
@@ -56,12 +53,12 @@ class WaitingFinder(object):
     # todo: is used outside of class... should we make it public? :)...
     #       or find another way to reach the goal outside of the class
     def _execute(self, command, conditions = None):
-        if not conditions:
-            conditions = self._default_conditions
         """
         :param command: command operated on self.found
         :return: result returned by command
         """
+        if not conditions:
+            conditions = self._default_conditions
         result = None
         try:
             if not self.is_cached:  # todo: maybe move this check into _find?
@@ -88,12 +85,29 @@ class WaitingFinder(object):
         """
         return self._refind()
 
-    # todo: consider removing it completely after mapping all webelement methods
-    #       or maybe it's good idea to leave it as it is... in case selenium adds one more
-    #       method to webelement :) and we still will support it without doing nothing
-    #       though... this may not be proper support... becuase here we do not know
-    #       what to use - _execute or _do
     def __getattr__(self, item):
+        """
+            This method actually is not needed much.
+            It might be needed for two cases:
+            - catch webelement's methods that are supported by selenium but not by selene
+                - so they can be redirected to wrapped selement's webelement.
+            - catch methods that are supported by widgets but not "inner lazy collection elements" found by filter/find
+                - so they can be transfered to the self.found which will contain actual "widget's element"
+            taking into account current implementation
+            of the "inner lazy widgets".
+            Currently each "inner element" of collection has its own wrapper class in order
+            to be "lazy". But in case of "collection of widgets" - "inner lazy element" should also extend
+            its original widget class. This __getattr__ implementation would make "all just work" even without
+            direct "extension".
+            Nevertheless each "lazy inner element" (e.g.: SElementsCollectionElement,
+            SElementsCollectionElementByCondition) extend the proper "wrapper class" for collection element making this
+            __getattr__ implementation useless in context of this purpose.
+
+            So far, the decision is to keep this implementation just in case :)
+            - in case someone want something special from original selenium behavior of webelements
+            - in case "lazy inner element" implementation is buggy and we still don't know this, but want "everything
+            just works..." (but this will be tested soon, and then we will rethink - need we this method or not)
+        """
         return self._execute(lambda: getattr(self.found, item))
 
     # todo: refactor caching logic in case of assure
@@ -155,7 +169,12 @@ class SElement(LoadableContainer, WaitingFinder, Filler):
         self._default_conditions = [visible]
         self.is_cached = False
         self._found = None
+        self._wrapper_class = SElement
         super(SElement, self).__init__()
+
+    def of(self, wrapper_class):
+        self._wrapper_class = wrapper_class
+        return self
 
     def _finder(self):
         return self.context.find_element(*self.locator)
@@ -346,12 +365,14 @@ class SElementsCollectionElement(SElement, Wrapper):
         self.selements_collection = selements_collection
         locator = "%s[%s]" % (self.selements_collection.locator, self.index)
         super(SElementsCollectionElement, self).__init__(("selene", locator))
+        extend(self, selements_collection._wrapper_class, ("selene", locator))
 
     def _finder(self):
         # todo: consider moving `.that(size_at_least(self.index + 1))` to `_execute(lambda: ..., size_at_least(...))`
-        element_by_index = self.selements_collection._execute(lambda: self.selements_collection.that(size_at_least(self.index + 1)).found[self.index])
-        return SElementWrapper(element_by_index,
-                               self.locator)
+        web_element_by_index = self.selements_collection.that(size_at_least(self.index + 1))._execute(lambda: self.selements_collection.found[self.index].found)
+        return web_element_by_index
+            # read explanation somewhere below about why we are returning here wrapped webelement (i.e. repacking it)
+            # not selement...
 
 
 class SlicedSElementsCollection(SElementsCollection, Wrapper):
@@ -364,9 +385,10 @@ class SlicedSElementsCollection(SElementsCollection, Wrapper):
         super(SlicedSElementsCollection, self).__init__(("selene", locator))
 
     def _finder(self):
-        sliced_elements = self.selements_collection._execute(lambda: self.selements_collection.that(size_at_least(self.j)).found[self.i:self.j])
+        sliced_elements = self.selements_collection.that(size_at_least(self.j))._execute(lambda: self.selements_collection.found[self.i:self.j])
         return SElementsCollectionWrapper(sliced_elements, self.locator)
 
+# todo: consider using "private" __fields in order to have no conflicts during `extend` call below
 class SElementsCollectionElementByCondition(SElement, Wrapper):
     def __init__(self, selements_collection, condition):
         self.selements_collection = selements_collection
@@ -376,11 +398,17 @@ class SElementsCollectionElementByCondition(SElement, Wrapper):
             self.condition.__class__.__name__)  # todo: this "name" will not be enough...
                                                 # more complete stringified version is needed
         super(SElementsCollectionElementByCondition, self).__init__(("selene", locator))
+        extend(self, selements_collection._wrapper_class, ("selene", locator))
 
     def _finder(self):
         for selement in self.selements_collection:
             if self.condition(selement):
-                return SElementWrapper(selement, self.locator)
+                return selement.found
+                    # `return selement` would also work...
+                    # but it will add one more "internal delegation" to self.found
+                    # so by choosing `return selement.found` we save some CPU time :) (a tiny bit of course)
+                    # and make code "less magical" (what is more valuable)
+                    # we kind of "repacking" original webelement found in SElementsCollection on more time ;)
 
 
 class FilteredSElementsCollection(SElementsCollection, Wrapper):

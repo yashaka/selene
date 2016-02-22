@@ -11,9 +11,12 @@ __author__ = 'ayia'
 
 # todo: refactor to not use only raw selenium helpers
 
+TODOMVC_URL = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../../resources/todomvcapp/home.html'
+
+
 def open_todomvc():
     # todo: refactor to use repo copy of todomvc
-    get_driver().get('file://' + os.path.abspath(os.path.dirname(__file__)) + '/../../resources/todomvcapp/home.html')
+    get_driver().get(TODOMVC_URL)
     WebDriverWait(get_driver(), config.timeout).until(
         element_to_be_clickable((By.CSS_SELECTOR, "#new-todo")))
 

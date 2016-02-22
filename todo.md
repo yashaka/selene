@@ -1,5 +1,3 @@
-- optimize SElementsCollection#find to stop filtering on first found
-
 - add test about "non-exising" method call on selement/selementscollection
 
 - optimise: cash by demand + cash by first usage
@@ -8,19 +6,13 @@
 
 - make autocompletion work after get_driver().
 
-- improve selene's performance (comparing to jselenide e.g.)
-    - change calling self.assure(visible) all the time to
-    call it only after first exception
-
-  - test speed of selene (compare to selenide and selenium)
-
 - add screenshots to error messages
 
 - add config.implicitlyWaitFor = conditions.enabled
 
 - test and prettify all error messages (especially where locators are stringified)
 
-- catch IndexOutOfBoundsException
+- catch IndexError
 
 - finalize all todos in code comments
 
