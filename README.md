@@ -422,7 +422,7 @@ E.g. one more [PageObject with Widgets example](https://github.com/yashaka/selen
 
 * consider automatic webdriver management implementation
 * add screenshooting
-* add more convenient methods to SElement and SElementsCollection impl.
+* add more convenient methods to SElementsCollection impl.
 * improve general "autocompletion in IDE" capabilities (reduce "magic" in implementation)
 * make browser management support parallel testing
 * simplify implementation, at least decouple as much as possible some parts...

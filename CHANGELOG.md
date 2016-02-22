@@ -13,7 +13,7 @@
   - now selene is as fast as selenium with research of elements before any action. Manual cashing is also available when "raw selenium" speed is needed (semi-automatic customizable cashing will be added later)
 - optimized SElementsCollection#find implementation - now it returns first match, not filter everything and then get first among all matches
 - mapped all webelement methods to selement (almost all) - now autocompletion works fully for selement
-- optimized "inner lazy elements" of collection logic, removed a bit magic from it.
+- optimized logic of "inner lazy elements" of collection, removed a bit of magic from it.
 
 ## 0.0.5 (released 20.02.2016)
 
