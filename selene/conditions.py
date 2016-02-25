@@ -11,11 +11,12 @@ class Condition(object):
 
     def __call__(self, entity):
         self.entity = entity
-        self.found = self.entity()
+        self.found = self.entity()  # todo: do we actually need it?
+                                    # while we have self.found = wait_for(...
         return self.found if self.apply() else None
 
     def __str__(self):
-        try:
+        try:  # todo: is this try still needed? o_O
             return """
             for %s found by: %s%s%s
         """ % (self.identity(),

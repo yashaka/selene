@@ -31,7 +31,8 @@ class WaitingFinder(object):
     # todo: consider making it public, because it is used outside of this class (in SElementsCollection)
     def _cash_with(self, found_entity):
         self.is_cached = True
-        self._finder = lambda: found_entity
+        self._finder = lambda: found_entity  # todo: this impl make it impossible to "un_cash". refactor!
+                                             # todo: but keep solution independent from "_finder implementation"
         return self
 
     def _refind(self):
@@ -43,7 +44,9 @@ class WaitingFinder(object):
     @property
     def found(self):
         if not self._found:
-            self._refind()
+            self._refind()  # todo: it is week place here... what if _finder is already "cached" ?
+                            # with current #cash method impl it's ok, but what if some
+                            # refactoring happened and this "feature" was forgotten?
         return self._found
 
     def cash(self):
@@ -66,7 +69,7 @@ class WaitingFinder(object):
             result = command()
         except (WebDriverException, IndexError):  # todo: consider `except self.handled_exceptions`
             for condition in conditions:
-                self.assure(condition)  # todo: wait for "default condition" not visible
+                self.assure(condition)
             result = command()
         return result
 
@@ -282,22 +285,6 @@ class SElement(LoadableContainer, WaitingFinder, Filler):
         return self._execute(lambda: self.found.find_elements(*locator))
 
 
-
-class Wrapper(object):
-    """ to be used as marker for classes for objects
-    that do not need waiting during '__getattr__' """
-    pass
-
-# todo: do we even need it? taking into acouunt that we can cash element to get the same _finder implementation...
-class SElementWrapper(SElement, Wrapper):
-    def __init__(self, selement, locator=None):
-        self._wrapped_element = selement
-        super(SElementWrapper, self).__init__(locator or selement.locator)
-
-    def _finder(self):
-        return self._wrapped_element
-
-
 class SElementsCollection(LoadableContainer, WaitingFinder):
     def __init__(self, css_selector_or_locator, context=RootSElement(), selement_class=SElement):
         self.locator = parse_css_or_locator_to_tuple(css_selector_or_locator)
@@ -350,16 +337,7 @@ class SElementsCollection(LoadableContainer, WaitingFinder):
         return SlicedSElementsCollection(self, i, j)
 
 
-class SElementsCollectionWrapper(SElementsCollection, Wrapper):
-    def __init__(self, selements_list, css_selector_or_locator):
-        self.wrapped_elements_list = selements_list
-        super(SElementsCollectionWrapper, self).__init__(css_selector_or_locator)
-
-    def _finder(self):
-        return self.wrapped_elements_list
-
-
-class SElementsCollectionElement(SElement, Wrapper):
+class SElementsCollectionElement(SElement):
     def __init__(self, selements_collection, index):
         self.index = index
         self.selements_collection = selements_collection
@@ -375,7 +353,7 @@ class SElementsCollectionElement(SElement, Wrapper):
             # not selement...
 
 
-class SlicedSElementsCollection(SElementsCollection, Wrapper):
+class SlicedSElementsCollection(SElementsCollection):
     # todo: rename i & j to something more informative
     def __init__(self, selements_collection, i, j):
         self.i = i
@@ -383,20 +361,21 @@ class SlicedSElementsCollection(SElementsCollection, Wrapper):
         self.selements_collection = selements_collection
         locator = "%s[%s:%s]" % (self.selements_collection.locator, self.i, self.j)
         super(SlicedSElementsCollection, self).__init__(("selene", locator))
+        extend(self, selements_collection._wrapper_class, ("selene", locator))
 
     def _finder(self):
         sliced_elements = self.selements_collection.that(size_at_least(self.j))._execute(lambda: self.selements_collection.found[self.i:self.j])
-        return SElementsCollectionWrapper(sliced_elements, self.locator)
+        return sliced_elements
 
 # todo: consider using "private" __fields in order to have no conflicts during `extend` call below
-class SElementsCollectionElementByCondition(SElement, Wrapper):
+class SElementsCollectionElementByCondition(SElement):
     def __init__(self, selements_collection, condition):
         self.selements_collection = selements_collection
         self.condition = condition
         locator = "(%s).found_by(%s)" % (
             self.selements_collection.locator,
             self.condition.__class__.__name__)  # todo: this "name" will not be enough...
-                                                # more complete stringified version is needed
+                                                # todo: more complete stringified version is needed
         super(SElementsCollectionElementByCondition, self).__init__(("selene", locator))
         extend(self, selements_collection._wrapper_class, ("selene", locator))
 
@@ -411,18 +390,19 @@ class SElementsCollectionElementByCondition(SElement, Wrapper):
                     # we kind of "repacking" original webelement found in SElementsCollection on more time ;)
 
 
-class FilteredSElementsCollection(SElementsCollection, Wrapper):
+class FilteredSElementsCollection(SElementsCollection):
     def __init__(self, selements_collection, condition):
         self.selements_collection = selements_collection
         self.condition = condition
         locator = "(%s).filter(%s)" % (
             self.selements_collection.locator,
             self.condition.__class__.__name__)
-        super(FilteredSElementsCollection, self).__init__(("selene", locator)) # todo: prettify and fix it in other similiar places, it's not a css selector to be passed as string
+        super(FilteredSElementsCollection, self).__init__(("selene", locator))
+            # todo: prettify and fix it in other similiar places,
+            # todo: it's not a css selector to be passed as string
+        extend(self, selements_collection._wrapper_class, ("selene", locator))
 
     def _finder(self):
         filtered_elements = [selement for selement in self.selements_collection
                              if self.condition(selement)]
-        return SElementsCollectionWrapper(
-            filtered_elements,
-            self.locator)
+        return filtered_elements

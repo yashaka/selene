@@ -19,7 +19,9 @@ def wait_for(entity, method, message='', timeout=None):
             value = method(entity)
             if value is not None:
                 return value
-        except (WebDriverException,) as exc:
+        except (WebDriverException,) as exc:  # todo: do we need here IndexError also? seems like yes...
+            # it's also interesting that this is second place
+            # where exceptions ara caught for the same purpose
             screen = getattr(exc, 'screen', None)
             stacktrace = getattr(exc, 'stacktrace', None)
         time.sleep(config.poll_during_waits)

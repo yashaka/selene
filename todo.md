@@ -1,10 +1,15 @@
-- add test about "non-exising" method call on selement/selementscollection
-
 - optimise: cash by demand + cash by first usage
+    - refactor cash impl to allow un-cashing
+
+- fix the is_displayed method - it should not be executed with _execute with default wait for visibility
+
+- add test about "non-exising" method call on selement/selementscollection
 
 - add docstrings
 
 - make autocompletion work after get_driver().
+
+- make selene support parallel execution
 
 - add screenshots to error messages
 
