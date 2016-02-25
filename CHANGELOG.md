@@ -1,6 +1,10 @@
 # Changelog
 
-## 0.0.6
+## 0.0.7
+- refactored lazy inner collection classes to use extend in __init__ and not use SElementsCollectionWrapper (removed the latter and SElementWrapper)
+- etc.
+
+## 0.0.6 (released 22.02.2016)
 - added alias methods:
 ```
     insist_not = assure_not
