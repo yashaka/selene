@@ -8,10 +8,10 @@ from selene.bys import by_css, by_xpath
 from selene.helpers import extend
 from selene.page_object import Filler, LoadableContainer
 from selene.wait import wait_for, wait_for_not
-
+import selene
 
 def actions():
-    return ActionChains(config.driver)
+    return ActionChains(selene.tools.get_driver())
 
 
 class WaitingFinder(object):
@@ -151,7 +151,7 @@ class WaitingFinder(object):
 
 class RootSElement(object):
     def __getattr__(self, item):
-        return getattr(config.driver, item)
+        return getattr(selene.tools.get_driver(), item)
 
 
 def parse_css_or_locator_to_tuple(css_selector_or_locator):
@@ -309,6 +309,8 @@ class SElementsCollection(LoadableContainer, WaitingFinder):
 
     def filter(self, condition):
         return FilteredSElementsCollection(self, condition)
+            # todo: consider passing all needed info to constructor instead of using private members to access them
+
 
     filterBy = filter
 
@@ -392,6 +394,7 @@ class SElementsCollectionElementByCondition(SElement):
 
 class FilteredSElementsCollection(SElementsCollection):
     def __init__(self, selements_collection, condition):
+        # todo: consider renaming to self.original_collection or just self.collection
         self.selements_collection = selements_collection
         self.condition = condition
         locator = "(%s).filter(%s)" % (
@@ -403,6 +406,8 @@ class FilteredSElementsCollection(SElementsCollection):
         extend(self, selements_collection._wrapper_class, ("selene", locator))
 
     def _finder(self):
-        filtered_elements = [selement for selement in self.selements_collection
-                             if self.condition(selement)]
+        filtered_elements = [
+            selement for selement in self.selements_collection
+            if self.condition(selement)
+            ]
         return filtered_elements

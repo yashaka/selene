@@ -15,7 +15,11 @@
 
 - add config.implicitlyWaitFor = conditions.enabled
 
+- test "splitted locators are better than long ones because cam be easier traced in stacktrace"
+
 - test and prettify all error messages (especially where locators are stringified)
+
+- move tools.get_driver to something like WebDriverRunner.get_driver
 
 - catch IndexError
 
