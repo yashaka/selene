@@ -32,6 +32,6 @@ def s(css_selector_or_locator):
     return SElement(css_selector_or_locator)
 
 
-def ss(css_selector_or_locator):
-    return SElementsCollection(css_selector_or_locator)
+def ss(css_selector_or_locator, of=SElement):
+    return SElementsCollection(css_selector_or_locator, of=of)
 

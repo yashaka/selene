@@ -31,9 +31,19 @@ def test_selements_collections_of_custom_selements():
     given_active("a", "b", "c")
     ss("#todo-list>li").of(Task)[1].delete()
     ss("#todo-list>li").of(Task).assure(texts("a", "c"))
+    # ss("#todo-list>li", of=Task)[0].delete()
+    ss("#todo-list>li").of(Task)[0].delete()
+    ss("#todo-list>li").of(Task).assure(texts("c"))
 
     ss("#todo-list>li").of(Task).find(text("c")).delete()
-    ss("#todo-list>li").of(Task).assure(texts("a"))
+    ss("#todo-list>li").of(Task).assure(empty)
+
+
+def test_selements_collections_of_custom_selements_iterator():
+    given_active("a", "b", "c")
+    for task in ss("#todo-list>li", of=Task):
+        task.delete()
+    ss("#todo-list>li").of(Task).assure(empty)
 
 
 class TodoMVC(SElement):

@@ -80,6 +80,14 @@ class Visible(Condition):
 visible = Visible()
 
 
+class Clickable(Condition):
+    def apply(self):
+        return self.found.is_displayed and self.found.is_enabled()
+
+
+clickable = Clickable()
+
+
 class Enabled(Condition):
     def apply(self):
         return self.found.is_enabled()

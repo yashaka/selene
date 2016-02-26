@@ -28,6 +28,7 @@ class WaitingFinder(object):
     def _finder(self):
         pass
 
+    # todo: consider changing impl to "plan cash after first refind", not "cash now"...
     # todo: consider making it public, because it is used outside of this class (in SElementsCollection)
     def _cash_with(self, found_entity):
         self.is_cached = True
@@ -175,6 +176,9 @@ class SElement(LoadableContainer, WaitingFinder, Filler):
         self._wrapper_class = SElement
         super(SElement, self).__init__()
 
+    # todo: seems like wrapper_class is not used so far... o_O
+    # todo: seems like its impl should be something like return wrapper_class(self.locator, self.context)
+    # todo: but what's the point? :)
     def of(self, wrapper_class):
         self._wrapper_class = wrapper_class
         return self
@@ -286,10 +290,10 @@ class SElement(LoadableContainer, WaitingFinder, Filler):
 
 
 class SElementsCollection(LoadableContainer, WaitingFinder):
-    def __init__(self, css_selector_or_locator, context=RootSElement(), selement_class=SElement):
+    def __init__(self, css_selector_or_locator, context=RootSElement(), of=SElement):
         self.locator = parse_css_or_locator_to_tuple(css_selector_or_locator)
         self.context = context
-        self._wrapper_class = selement_class
+        self._wrapper_class = of
         self._default_conditions = []
         self._found = None
         self.is_cached = False
@@ -304,8 +308,10 @@ class SElementsCollection(LoadableContainer, WaitingFinder):
         return self
 
     def _finder(self):
-        return [self._wrapper_class('%s[%s]' % (self.locator, index))._cash_with(webelement)
-                for index, webelement in enumerate(self.context.find_elements(*self.locator))]
+        locator = lambda index: '%s[%s]' % (self.locator, index)
+        webelements = self.context.find_elements(*self.locator)
+        return [self._wrapper_class(locator(index))._cash_with(webelement)
+                for index, webelement in enumerate(webelements)]
 
     def filter(self, condition):
         return FilteredSElementsCollection(self, condition)
@@ -363,7 +369,7 @@ class SlicedSElementsCollection(SElementsCollection):
         self.selements_collection = selements_collection
         locator = "%s[%s:%s]" % (self.selements_collection.locator, self.i, self.j)
         super(SlicedSElementsCollection, self).__init__(("selene", locator))
-        extend(self, selements_collection._wrapper_class, ("selene", locator))
+        # extend(self, selements_collection._wrapper_class, ("selene", locator))
 
     def _finder(self):
         sliced_elements = self.selements_collection.that(size_at_least(self.j))._execute(lambda: self.selements_collection.found[self.i:self.j])
@@ -403,7 +409,7 @@ class FilteredSElementsCollection(SElementsCollection):
         super(FilteredSElementsCollection, self).__init__(("selene", locator))
             # todo: prettify and fix it in other similiar places,
             # todo: it's not a css selector to be passed as string
-        extend(self, selements_collection._wrapper_class, ("selene", locator))
+        # extend(self, selements_collection._wrapper_class, ("selene", locator))
 
     def _finder(self):
         filtered_elements = [

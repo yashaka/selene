@@ -12,6 +12,7 @@ from tests.todomvc.helpers.todomvc import TODOMVC_URL
 browser = None
 shaded_browser = None
 
+
 def setup_function(f):
     global browser
     global shaded_browser
@@ -24,8 +25,7 @@ def setup_function(f):
     browser.get(TODOMVC_URL)
     WebDriverWait(browser, 4).until(expected_conditions.visibility_of_element_located((By.CSS_SELECTOR, "#new-todo")))
 
-    shaded_browser = webdriver.Firefox()
-
+    # shaded_browser = webdriver.Firefox()
 
 
 def teardown_function(f):
@@ -33,7 +33,7 @@ def teardown_function(f):
     global shaded_browser
     browser.quit()
     get_driver().quit()
-    shaded_browser.quit()
+    # shaded_browser.quit()
 
 
 def create_tasks_with_raw_selenium():
@@ -64,19 +64,19 @@ def create_tasks_with_selene_with_cash():
 def test_selene_is_almost_as_fast_selenium_with_research_and_initial_wait_for_visibility():
     selene_time = time_spent(create_tasks_with_selene_and_send_keys)
     selenium_time = time_spent(create_tasks_with_selenium_with_research)
-    # print "%s vs %s" % (selene_time, selenium_time)
+    print "%s vs %s" % (selene_time, selenium_time)
     assert selene_time < 1.12 * selenium_time
 
 
 def test_selene_is_from_32_to_50_percents_slower_than_raw_selenium():
     selene_time = time_spent(create_tasks_with_selene_and_send_keys)
     selenium_time = time_spent(create_tasks_with_raw_selenium)
-    # print "%s vs %s" % (selene_time, selenium_time)
+    print "%s vs %s" % (selene_time, selenium_time)
     assert selene_time <= 1.51 * selenium_time
 
 
 def test_cashed_selene_is_almost_as_fast_raw_selenium():
     selene_time = time_spent(create_tasks_with_selene_with_cash)
     selenium_time = time_spent(create_tasks_with_raw_selenium)
-    # print "%s vs %s" % (selene_time, selenium_time)
+    print "%s vs %s" % (selene_time, selenium_time)
     assert selene_time < 1.12 * selenium_time

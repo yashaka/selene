@@ -1,8 +1,9 @@
 # Changelog
 
 ## 0.0.7
+- added ss(".element", of=Task) syntax in addition to ss(".element").of(Task)
 - refactored lazy inner collection classes to use extend in __init__ and not use SElementsCollectionWrapper (removed the latter and SElementWrapper)
-- etc.
+- refactored: removed unnecessary extend from "inner" selement collections (it is needed obviously only for "inner" selement collection element classes)
 
 ## 0.0.6 (released 22.02.2016)
 - added alias methods:

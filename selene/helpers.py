@@ -20,6 +20,7 @@ def merge(*dict_args):
         result.update(dictionary)
     return result
 
+
 def extend(obj, cls, *init_args, **init_kwargs):
     obj.__class__ = type(obj.__class__.__name__, (obj.__class__, cls), {})
     cls.__init__(obj, *init_args, **init_kwargs)
