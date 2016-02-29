@@ -20,14 +20,17 @@ def open_todomvc():
     WebDriverWait(get_driver(), config.timeout).until(
         element_to_be_clickable((By.CSS_SELECTOR, "#new-todo")))
 
+
 def given_at_other_page():
     if not has(s("#order_details"), visible):
         get_driver().get('file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/orderapp/order.html')
 
+
 def execute_js(js_string):
     return get_driver().execute_script(js_string)
 
-def given(tasks):
+
+def given(*tasks):
 
     if not has(s("#new-todo"), visible):
         open_todomvc()
@@ -44,7 +47,16 @@ def given(tasks):
 
     open_todomvc()
 
+
+def given_empty_tasks():
+    given()
+
+
+def task(taskText, is_completed=False):
+    return dict(title=taskText, completed=is_completed)
+
+
 def given_active(*taskTexts):
-    return given([dict(title=text, completed=False) for text in taskTexts])
+    return given(*[task(text) for text in taskTexts])
 
 when_active = given_active

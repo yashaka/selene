@@ -95,7 +95,11 @@ class Enabled(Condition):
 enabled = Enabled()
 
 
+# todo: consider renaming it to something else, because in jSelenide exist = visible
 class Exist(Condition):
+    """
+    checks if element exist in DOM
+    """
     def apply(self):
         return True
 

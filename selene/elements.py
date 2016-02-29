@@ -68,6 +68,8 @@ class WaitingFinder(object):
             if not self.is_cached:  # todo: maybe move this check into _find?
                 self._refind()
             result = command()
+            # todo: think on: the "try" code should not wait... because TimeoutException will
+            #       also be catched
         except (WebDriverException, IndexError):  # todo: consider `except self.handled_exceptions`
             for condition in conditions:
                 self.assure(condition)
@@ -203,7 +205,7 @@ class SElement(LoadableContainer, WaitingFinder, Filler):
 
     @property
     def tag_name(self):
-        return self._execute(lambda: self.found.tag_name)
+        return self._execute(lambda: self.found.tag_name, conditions=[exist])
 
     @property
     def text(self):
@@ -219,7 +221,7 @@ class SElement(LoadableContainer, WaitingFinder, Filler):
         return self._do(lambda: self.found.clear())
 
     def get_attribute(self, name):
-        return self._execute(lambda: self.found.get_attribute(name))
+        return self._execute(lambda: self.found.get_attribute(name), conditions=[exist])
 
     def is_selected(self):
         return self._execute(lambda: self.found.is_selected())
@@ -231,7 +233,7 @@ class SElement(LoadableContainer, WaitingFinder, Filler):
         return self._do(lambda: self.found.send_keys(*keys))
 
     def is_displayed(self):
-        return self._execute(lambda: self.found.is_displayed())
+        return self._execute(lambda: self.found.is_displayed(), conditions=[exist])
 
     @property
     def location_once_scrolled_into_view(self):
@@ -242,7 +244,7 @@ class SElement(LoadableContainer, WaitingFinder, Filler):
         return self._execute(lambda: self.found.size)
 
     def value_of_css_property(self, property_name):
-        return self._execute(lambda: self.found.value_of_css_property(property_name))
+        return self._execute(lambda: self.found.value_of_css_property(property_name), conditions=[exist])
 
     @property
     def location(self):

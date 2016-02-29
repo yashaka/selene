@@ -1,10 +1,13 @@
+import pytest
+from selenium.common.exceptions import TimeoutException
+
 __author__ = 'ayia'
 
 from selenium import webdriver
 
 from selene.conditions import *
 from selene.tools import *
-from tests.todomvc.helpers.todomvc import given_active, given_at_other_page
+from tests.todomvc.helpers.todomvc import given_active, given_at_other_page, given_empty_tasks, given, task
 
 
 def setup_module(m):
@@ -43,3 +46,24 @@ def test_lazy_inner_ss():
     given_at_other_page()
     s("#todo-list").ss("li")
     s("#todo-list").find_all("li")  # alias
+
+
+def test_is_displayed_fails_with_waiting_if_element_not_exist():
+    given_at_other_page()
+    original_timeout = config.timeout  # todo: switch to s("#todo-list").during(0.1).is_displayed()
+                                       # todo: once the feature available
+    config.timeout = 0.1
+    with pytest.raises(TimeoutException):
+        s("#todo-list").is_displayed()
+    config.timeout = original_timeout
+
+
+def test_is_displayed_returns_value_with_no_wait_for_visibility():
+    given_empty_tasks()
+    assert not s("#clear-completed").is_displayed()
+
+
+def test_is_displayed_returns_true():
+    given(task("a"), task("b", is_completed=True))
+    assert s("#clear-completed").is_displayed()
+

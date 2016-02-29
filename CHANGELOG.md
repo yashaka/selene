@@ -2,6 +2,7 @@
 
 ## 0.0.7
 - fixed python3 support
+- fixed the is_displayed method - now it cotains implicit wait for "exist in DOM" instead of "visible"
 - added ss(".element", of=Task) syntax in addition to ss(".element").of(Task)
 - removed "general interceptor of all unknown methods" SElement's base class (actually commented it in code:)
 - refactored lazy inner collection classes to use extend in __init__ and not use SElementsCollectionWrapper (removed the latter and SElementWrapper)
