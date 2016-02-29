@@ -11,3 +11,4 @@ dist/
 tests/reports
 reports/
 tests/comparison/
+.cache

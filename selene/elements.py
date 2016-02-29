@@ -2,7 +2,7 @@ from selenium.common.exceptions import WebDriverException
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.keys import Keys
 
-from conditions import *
+from selene.conditions import *
 from selene import config
 from selene.bys import by_css, by_xpath
 from selene.helpers import extend
@@ -89,30 +89,30 @@ class WaitingFinder(object):
         """
         return self._refind()
 
-    def __getattr__(self, item):
-        """
-            This method actually is not needed much.
-            It might be needed for two cases:
-            - catch webelement's methods that are supported by selenium but not by selene
-                - so they can be redirected to wrapped selement's webelement.
-            - catch methods that are supported by widgets but not "inner lazy collection elements" found by filter/find
-                - so they can be transfered to the self.found which will contain actual "widget's element"
-            taking into account current implementation
-            of the "inner lazy widgets".
-            Currently each "inner element" of collection has its own wrapper class in order
-            to be "lazy". But in case of "collection of widgets" - "inner lazy element" should also extend
-            its original widget class. This __getattr__ implementation would make "all just work" even without
-            direct "extension".
-            Nevertheless each "lazy inner element" (e.g.: SElementsCollectionElement,
-            SElementsCollectionElementByCondition) extend the proper "wrapper class" for collection element making this
-            __getattr__ implementation useless in context of this purpose.
-
-            So far, the decision is to keep this implementation just in case :)
-            - in case someone want something special from original selenium behavior of webelements
-            - in case "lazy inner element" implementation is buggy and we still don't know this, but want "everything
-            just works..." (but this will be tested soon, and then we will rethink - need we this method or not)
-        """
-        return self._execute(lambda: getattr(self.found, item))
+    # def __getattr__(self, item):
+    #     """
+    #         This method actually is not needed much.
+    #         It might be needed for two cases:
+    #         - catch webelement's methods that are supported by selenium but not by selene
+    #             - so they can be redirected to wrapped selement's webelement.
+    #         - catch methods that are supported by widgets but not "inner lazy collection elements" found by filter/find
+    #             - so they can be transfered to the self.found which will contain actual "widget's element"
+    #         taking into account current implementation
+    #         of the "inner lazy widgets".
+    #         Currently each "inner element" of collection has its own wrapper class in order
+    #         to be "lazy". But in case of "collection of widgets" - "inner lazy element" should also extend
+    #         its original widget class. This __getattr__ implementation would make "all just work" even without
+    #         direct "extension".
+    #         Nevertheless each "lazy inner element" (e.g.: SElementsCollectionElement,
+    #         SElementsCollectionElementByCondition) extend the proper "wrapper class" for collection element making this
+    #         __getattr__ implementation useless in context of this purpose.
+    #
+    #         So far, the decision is to keep this implementation just in case :)
+    #         - in case someone want something special from original selenium behavior of webelements
+    #         - in case "lazy inner element" implementation is buggy and we still don't know this, but want "everything
+    #         just works..." (but this will be tested soon, and then we will rethink - need we this method or not)
+    #     """
+    #     return self._execute(lambda: getattr(self.found, item))
 
     # todo: refactor caching logic in case of assure
     # if entity is cached assure will wait for nothing...
@@ -333,6 +333,8 @@ class SElementsCollection(LoadableContainer, WaitingFinder):
         return self
 
     def __getitem__(self, item):
+        if isinstance(item, slice):
+            return SlicedSElementsCollection(self, item.start, item.stop)  # todo: make it support item.step
         return SElementsCollectionElement(self, item)
 
     def __len__(self):
@@ -341,8 +343,8 @@ class SElementsCollection(LoadableContainer, WaitingFinder):
     def __iter__(self):
         return self._execute(lambda: self.found.__iter__())
 
-    def __getslice__(self, i, j):
-        return SlicedSElementsCollection(self, i, j)
+    # def __getslice__(self, i, j):
+    #     return SlicedSElementsCollection(self, i, j)
 
 
 class SElementsCollectionElement(SElement):
@@ -362,17 +364,17 @@ class SElementsCollectionElement(SElement):
 
 
 class SlicedSElementsCollection(SElementsCollection):
-    # todo: rename i & j to something more informative
-    def __init__(self, selements_collection, i, j):
-        self.i = i
-        self.j = j
+    # todo: make it accept slice instead of start stop, and only after this - parse slice.start and slice.stop
+    def __init__(self, selements_collection, start, stop):
+        self.start = start
+        self.stop = stop
         self.selements_collection = selements_collection
-        locator = "%s[%s:%s]" % (self.selements_collection.locator, self.i, self.j)
+        locator = "%s[%s:%s]" % (self.selements_collection.locator, self.start, self.stop)
         super(SlicedSElementsCollection, self).__init__(("selene", locator))
         # extend(self, selements_collection._wrapper_class, ("selene", locator))
 
     def _finder(self):
-        sliced_elements = self.selements_collection.that(size_at_least(self.j))._execute(lambda: self.selements_collection.found[self.i:self.j])
+        sliced_elements = self.selements_collection.that(size_at_least(self.stop))._execute(lambda: self.selements_collection.found[self.start:self.stop])
         return sliced_elements
 
 # todo: consider using "private" __fields in order to have no conflicts during `extend` call below

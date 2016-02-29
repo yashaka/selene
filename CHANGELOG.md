@@ -1,7 +1,9 @@
 # Changelog
 
 ## 0.0.7
+- fixed python3 support
 - added ss(".element", of=Task) syntax in addition to ss(".element").of(Task)
+- removed "general interceptor of all unknown methods" SElement's base class (actually commented it in code:)
 - refactored lazy inner collection classes to use extend in __init__ and not use SElementsCollectionWrapper (removed the latter and SElementWrapper)
 - refactored: removed unnecessary extend from "inner" selement collections (it is needed obviously only for "inner" selement collection element classes)
 

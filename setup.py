@@ -1,5 +1,4 @@
 from setuptools import setup
-
 from selene import version
 
 description = 'Concise API for selenium in Python + Ajax support + PageObjects + Widgets (Selenide/Capybara + htmlelements/Widgeon alternative)'
@@ -17,7 +16,7 @@ setup(
     # long_description=long_description,
     packages=['selene'],
     include_package_data=True,
-    install_requires=['selenium>=2.45.0'],
+    install_requires=['selenium>=2.45.0', 'future'],
     platforms='any',
     zip_safe=False,
     keywords=['testing', 'selenium', 'selenide', 'browser', 'pageobject', 'widget', 'wrapper'],

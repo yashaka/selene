@@ -1,4 +1,5 @@
 from selene.helpers import merge
+from future.utils import iteritems
 
 
 class LoadableContainer(object):
@@ -36,7 +37,7 @@ class Filler(object):
         if not opts: opts = {}
         list_of_opts = [merge(opts, opts_as_kwargs)] + list(other_opts)
         for options in list_of_opts:
-            for (field, value) in options.iteritems():
+            for (field, value) in iteritems(options):
                 getattr(self, field).set(value)  # todo: think on: `adding (value != None) and` to the start, in case somebody would put None to the opts...
         return self
 
