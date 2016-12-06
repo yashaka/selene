@@ -12,3 +12,4 @@ tests/reports
 reports/
 tests/comparison/
 .cache
+build
