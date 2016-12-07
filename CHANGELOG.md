@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.0
+- fixed encoding issues when working with text of elements in conditions
+- added bys.by_name
+
 ## 0.0.8
 - tbd
 

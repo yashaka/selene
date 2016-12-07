@@ -11,6 +11,10 @@ def by_css(css_selector):
     return (By.CSS_SELECTOR, css_selector)
 
 
+def by_name(name):
+    return (By.NAME, name)
+
+
 def by_link_text(text):
     return (By.LINK_TEXT, text)
 

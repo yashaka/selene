@@ -16,18 +16,16 @@ class Condition(object):
         return self.found if self.apply() else None
 
     def __str__(self):
-        try:  # todo: is this try still needed? o_O
+            expected_string = str(self.expected()) if (self.expected() is not None) else ""
+            actual_string = str(self.actual()) if (self.actual() is not None) else ""
             return """
             for %s found by: %s%s%s
         """ % (self.identity(),
                self.entity,
                """:
-            \texpected: """ + str(self.expected()) if (self.expected() is not None) else "",
+            \texpected: """ + expected_string,
                """
-            \t  actual: """ + str(self.actual()) if (self.actual() is not None) else ""
-            )
-        except Exception as e:
-            return "\n type: %s \n msg: %s \n" % (type(e), e)
+            \t  actual: """ + actual_string)
 
     def identity(self):
         return "element"
@@ -57,7 +55,7 @@ class text(Condition):
         return contains
 
     def apply(self):
-        self.actual_text = self.found.text
+        self.actual_text = self.found.text.encode('utf-8')
         return self.compare_fn()(self.actual_text, self.expected_text)
 
     def expected(self):
@@ -145,7 +143,7 @@ class texts(CollectionCondition):
         return contains
 
     def apply(self):
-        self.actual_texts = [item.text for item in self.found]
+        self.actual_texts = [item.text.encode('utf-8') for item in self.found]
         return len(self.actual_texts) == len(self.expected_texts) and \
             all(map(self.compare_fn(), self.actual_texts, self.expected_texts))
 
