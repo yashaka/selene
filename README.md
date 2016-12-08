@@ -5,17 +5,15 @@ Main features:
 - Concise API for Selenium
 - jQuery-style selectors
 - Ajax support
-- SinglePage App friendly PageObjects
-  - composed with reusable and loadable Widgets
+- PageObjects support
 
 
-Selene was inspired by [Selenide](http://selenide.org/) and [htmlelements](https://github.com/yandex-qatools/htmlelements) in Java and [Widgeon](https://github.com/yashaka/widgeon) gem in Ruby.
 
-Tests with Selene can be built either in a simple straightforward "selenide' style or with PageObjects composed from Widgets i.e. reusable element components (aka selements).
+Selene was inspired by [Selenide](http://selenide.org/) from Java world.
+
+Tests with Selene can be built either in a simple straightforward "selenide' style or with PageObjects composed from Widgets i.e. reusable element components.
 
 NOTE: This is still a pre-alpha version and may have some issues
-
-NOTE: **Latest version - 0.0.5 - changed API a lot :)**
 
 ## Installation
 
@@ -144,30 +142,6 @@ def test_google_search():
     search.results[0].insist(text("In Greek mythology, Selene is the goddess of the moon"))  # :D
 ```
 
-We can pretify the code a bit:
-```python
-from selene.page_object import PageObject
-from selene.tools import s, ss, visit
-from selene.conditions import text
-
-class GooglePage(PageObject):
-    def open(self):
-        visit("http://google.com/ncr")
-
-    def search(self, text):
-        s("[name='q']").set(text).press_enter()
-        return SearchResultsPage()
-
-class SearchResultsPage(PageObject):
-    def init(self):
-        self.results = ss("#ires li.g")
-
-def test_google_search():
-    google = GooglePage().get()
-    search = google.search("selene")
-    search.results[0].insist(text("In Greek mythology, Selene is the goddess of the moon"))
-```
-
 That's it. Selene encourages to start writing tests in the simplest way. And add more layers of abstraction only by real demand. 
 
 ### Reporting
@@ -201,216 +175,85 @@ in case of failure will result in exception raised with message:
 Here the "stringified locator" is a bit more complicated for eyes. You can decode from it the following information:
 _"inside the list of elements available by css selector '#todo-list>li' selene was trying to find element with index [2]"_
 
-### PageObjects composed with Widgets (aka SElements)
+### PageObjects composed with Widgets
 Sometimes your UI is build with many "reusable" widgets or components. If you follow general "Test Automation Pyramid" guidelines, most probably you have not too much of automated selenium tests. And "simple pageobjects" will be pretty enough for your tests.
 But in case you need to write a tone of UI tests, and you need correspondent DRY solution for your reusable components then this section may be for you. 
 
 Selene encourages to use [composition over inheritance](http://en.wikipedia.org/wiki/Composition_over_inheritance) to reuse parts of web application like sidepanels, headers, footers, main contents, search forms, etc. This especially may be usefull in the case of over-complicated single-page applications. Consequently we can naturally model our app under test even with a SinglePageObject composed with Widgets, that can be loaded on demand.
 
+Below you can find an example of Widgets (aka ElementObjects, aka "[PageObjects by Fowler](http://martinfowler.com/bliki/PageObject.html)".
+The application under test - [TodoMvc](todomvc4tasj.herokuapp.com) is very simple. It is completely does not make sense to use Widgets here:). But we use it just as an example of implementation.
 ```python
-from selene.elements import SElement
-from selene.page_object import PageObject
-from selene.tools import visit, ss, s
-from selene.widgets import SelectList
+from selene.conditions import exact_text, hidden, exact_texts
+from selene.tools import set_driver, get_driver, ss, s
+from selenium import webdriver
 
-# We can define our Widget externally to main PageObject
-# in case we want to reuse it elsewhere
-class Article(SElement):
-    def init(self):
-        self.heading = self.s("heading")
-        self.text = self.s("article")
-
-class MainPage(PageObject):
-    def open(self):
-        visit("/main")
-    
-    def init(self):
-        self.lang = SelectList("#lang-selector")
-        
-        self.shop = MainPage.Shop("#shop")\
-                    .to_open(lambda: s("#menu .shop-lnk").click())
-        
-        self.blog = MainPage.Blog("#blog")\
-                    .to_open(lambda: s("#menu .blog-lnk").click())
-        
-        self.show_side_panel = s("#show-side-panel")
-        self.side_panel = MainPage.SidePanel("#side-panel")\
-                          .to_open(lambda: self.show_side_panel.click())
-                          
-    # Assuming our "widgets" exist only on single main page
-    # their classes are defined internally   
-    
-    class Shop(Selement):
-        def init(self):
-            # shop elements...
-        
-        def add_to_cart(self, product):
-            # implementation...
-                          
-    class Blog(SElement):
-        def init(self):
-            self.articles = self.ss("[id^='article']").of(Article)
-            # other elements...
-    
-    class SidePanel(SElement):
-        def init(self):
-            self.sign_in_form = self.s(MainPage.SidePanel.SignInForm("#sign-in-form"))
-            self.other_element = self.s("#other-element")
-        
-        class SignInForm(SElement):
-            def init(self):
-                self.mail = self.s("#mail")
-                self.pass = self.s("#pass")
-                self.signin = self.s("#sign_in")
-            
-            def do_signin(self, **mail_and_pass):
-                self.fill_with(**mail_and_pass)
-                self.signin.click()
-```
-
-So then, somewhere in the tests:
-
-```python
-main = MainPage.get();
-main.side_panel.open().do_signin(mail="user@example.com", pass="ytrewq654321")
-main.blog.open().articles.assure(size(10))
-
-shop = main.shop.open()
-shop.add_to_cart("Product FooBar")
-# ...
-```
-
-#### Example Explained
-
-Make your class a 'selene' Widget
-```python
-class Article(SElement):
-```
-
----
-
-Init its sub-elements
-```python
-    def init(self):
-        self.heading = self.s("heading")
-        self.text = self.s("article")
-```
-The following selement definition
-```python
-        self.heading = self.s("heading")
-```
-is a shortcut to:
-```python
-        self.heading = s("heading", self)
-```
-telling: search this element by locator `"heading"` inside the `self` context, i.e. selenium will search for `"heading"` not among all page but only inside the article, found by its own `"#article-1"` locator which may be definied like `Article("#article-1")`
-
----
-
-Make your class a 'selene' PageObject
-```python
-class MainPage(PageObject):
-```
+from helpers.todomvc import given_active
 
 
-Specify how to load your page via implementing #open method
-```python
-    def open(self):
-        visit("/main")
-```
+def setup_module(m):
+    set_driver(webdriver.Firefox())
 
 
-Specify its sub-elements
-```python
-    def init(self):
-        # declaring lang as 'SelectList' widget
-        self.lang = SelectList("#lang-selector")  
-        
-        #...
-        
-        # declaring show_side_panel as "simple" SElement
-        self.show_side_panel = s("#show-side-panel")  
-        #...
-```
+def teardown_module(m):
+    get_driver().quit()
 
----
+class Task(object):
 
-Configure sub-widgets as "pseudo" LoadableComponents via `to_open` method
-```python
-        self.blog = MainPage.Blog("#blog")
-                    .to_open(lambda: s("#menu .blog-lnk").click())
-        
-        self.shop = MainPage.Shop("#shop")
-                    .to_open(lambda: s("#menu .shop-lnk").click())
-        
-        # side panel may be used separately, 
-        # so it's defined as separate sub-element of the MainPage
-        self.show_side_panel = s("#show-side-panel")  
-        self.side_panel = MainPage.SidePanel("#side-panel")
-                          .to_open(lambda: self.show_side_panel.click())
-```
-So when you try to use e.g. blog:
-```python
-MainPage.get().blog.open().articles[1].heading.insist(text("Hello Bob!"))
-```
-You have the ability to open it "along the way".
-It was called "pseudo" LoadableComponent, because the real loadable component would be automatically loaded via `s("#menu .blog-lnk").click()` in case yet not visible.
+    def __init__(self, container):
+        self.container = container
 
-Such "explicit over implicit" loading were implemented in selene in order to match python ZEN. Nevertheless test should explicitly state its test logic, not hide it internally. Though somewhere in the future it is possible to see such "implicit loading feature" available via additional configuration.
+    def toggle(self):
+        self.container.find(".toggle").click()
+        return self
 
-Remember that this feature is far from being silver bullet. Actually you can have pretty handy code without using it:
-```python
-main = MainPage.get();
-main.open_side_panel()
-main.side_panel.do_signin(mail="user@example.com", pass="ytrewq654321")
-main.open_blog()
-main.blog.articles.assure(size(10))
 
-main.open_shop()
-shop = main.shop
-shop.add_to_cart("Product FooBar")
-# ...
-```
-or even:
-```python
-# ...
-shop = main.open_shop()
-shop.add_to_cart("Product FooBar")
-# ...
-```
-;)
+class Tasks(object):
 
----
+    def _elements(self):
+        return ss("#todo-list>li")
 
-Declare a collection of widgets
-```python
-            self.articles = self.ss("[id^='article']").of(Article)
-```
+    def _task_element(self, text):
+        return self._elements().findBy(exact_text(text))
 
----
+    def task(self, text):
+        return Task(self._task_element(text))
 
-Use SElement#fill_with to do a bulk set of fields
-```python
-        class SignInForm(SElement):
-            def init(self):
-                self.mail = self.s("#mail")
-                self.pass = self.s("#pass")
-                self.signin = self.s("#sign_in")
-            
-            def do_signin(self, **mail_and_pass):
-                self.fill_will(**mail_and_pass)
-                signin.click()
-```
-So somewhere in the tests:
-```python
-signform.do_signin(mail="user@example.com", pass="ytrewq654321")
-```
+    def should_be(self, *texts):
+        self._elements().should_have(exact_texts(*texts))
 
----
 
-Use factory method `PageObject#get` in order to instantiate PageObject and load it via `open`
-```python
-main = MainPage.get();
+class Footer(object):
+    def __init__(self):
+        self.container = s("#footer")
+        self.clear_completed = self.container.find("#clear-completed")
+
+    def should_have_items_left(self, number_of_active_tasks):
+        self.container.find("#todo-count>strong").should_have(exact_text(str(number_of_active_tasks)))
+
+
+class TodoMVC(object):
+    def __init__(self):
+        self.container = s("#todoapp");
+        self.tasks = Tasks()
+        self.footer = Footer()
+
+    def clear_completed(self):
+        self.footer.clear_completed.click()
+        self.footer.clear_completed.should_be(hidden)
+        return self
+
+
+def test_complete_task():
+    given_active("a", "b")
+
+    app = TodoMVC()
+
+    app.tasks.task("b").toggle()
+    app.clear_completed()
+    app.tasks.should_be("a")
+    app.footer.should_have_items_left(1)
+
 ```
 
 ### More examples
