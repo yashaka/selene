@@ -1,11 +1,12 @@
 # Changelog
 
 ## 1.0.0
+- tbd
+
+## 0.0.8 (released 08.12.2016)
+- locked the selenium version to 2.53.1
 - fixed encoding issues when working with text of elements in conditions
 - added bys.by_name
-
-## 0.0.8
-- tbd
 
 ## 0.0.7 (released 01.03.2016)
 - fixed python3 support
