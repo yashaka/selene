@@ -38,7 +38,7 @@ def teardown_module(m):
     get_driver().quit()
 
 
-def test_selene_demo(self):
+def test_selene_demo():
     tasks = ss("#todo-list>li")
     active_tasks = tasks.filter(css_class("active"))
 
