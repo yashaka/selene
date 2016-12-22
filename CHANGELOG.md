@@ -1,7 +1,9 @@
 # Changelog
 
 ## 1.0.0
-- tbd
+- internal
+  - improved test coverage
+    - added "given-helpers" for preconditions for atomic tests
 
 ## 0.0.8 (released 08.12.2016)
 - locked the selenium version to 2.53.1

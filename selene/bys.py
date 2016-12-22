@@ -1,6 +1,6 @@
 from selenium.webdriver.common.by import By
 
-__author__ = 'ayia'
+__author__ = 'yashaka'
 
 
 def by(css_selector):

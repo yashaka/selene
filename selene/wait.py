@@ -1,6 +1,6 @@
 from selene import config
 
-__author__ = 'ayia'
+__author__ = 'yashaka'
 
 import time
 from selenium.common.exceptions import NoSuchElementException, WebDriverException

@@ -1,7 +1,7 @@
 import pytest
 from selenium.common.exceptions import TimeoutException
 
-__author__ = 'ayia'
+__author__ = 'yashaka'
 
 from selenium import webdriver
 

@@ -7,7 +7,7 @@ from selene.tools import visit, s, get_driver
 from selene.wait import has
 from selenium.webdriver.support.expected_conditions import element_to_be_clickable
 
-__author__ = 'ayia'
+__author__ = 'yashaka'
 
 # todo: refactor to not use only raw selenium helpers
 
@@ -49,7 +49,7 @@ def given(*tasks):
 
 
 def given_empty_tasks():
-    given()
+    GIVEN()
 
 
 def task(taskText, is_completed=False):
@@ -57,6 +57,6 @@ def task(taskText, is_completed=False):
 
 
 def given_active(*taskTexts):
-    return given(*[task(text) for text in taskTexts])
+    return GIVEN(*[task(text) for text in taskTexts])
 
 when_active = given_active

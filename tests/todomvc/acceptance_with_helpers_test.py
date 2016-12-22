@@ -2,7 +2,7 @@ import os
 
 from selenium.webdriver.common.keys import Keys
 
-__author__ = 'ayia'
+__author__ = 'yashaka'
 
 from tests.base_test import *
 from selene.conditions import *

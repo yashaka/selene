@@ -5,7 +5,7 @@ from selene.conditions import exact_text, visible, exact_texts, enabled
 from selene.tools import s, ss
 from selene import tools
 
-__author__ = 'ayia'
+__author__ = 'yashaka'
 
 tasks = ss("#todo-list>li")
 
