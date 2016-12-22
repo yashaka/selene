@@ -33,20 +33,26 @@ class LoadedHtmlPage(object):
             "setTimeout(function() { " + script.replace("\n", " ") + " }, " + str(timeout) + ");")
         return self
 
+    def render_body_with_timeout(self, body, timeout):
+        return self.render_body(body, timeout)
+
 
 class GivenPage(object):
 
     def __init__(self, driver):
         self._driver = driver
 
-    def loading_page(self, timeout, body):
+    def load_body_with_timeout(self, body, timeout):
+        return LoadedHtmlPage(self._driver).render_body_with_timeout(body, timeout)
+
+    def opened_with_body_with_timeout(self, body, timeout):
         return LoadingHtmlPage(timeout, body).load_in(self._driver)
 
-    def loaded_with_body(self, body):
-        return self.loading_page(0, body)
+    def opened_with_body(self, body):
+        return self.opened_with_body_with_timeout(body, 0)
 
     def opened_empty(self):
         return LoadingHtmlPage().load_in(self._driver)
 
     def load_body(self, body):
-        LoadedHtmlPage(self._driver).render_body(body)
+        return LoadedHtmlPage(self._driver).render_body(body)
