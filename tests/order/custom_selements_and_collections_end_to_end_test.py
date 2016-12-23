@@ -9,6 +9,7 @@ from tests.order.pages.order import Order
 
 
 def setup_function(m):
+    config.timeout = 4
     set_driver(webdriver.Firefox())
     config.app_host = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/orderapp/'
 

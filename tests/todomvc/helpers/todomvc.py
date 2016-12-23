@@ -49,7 +49,7 @@ def given(*tasks):
 
 
 def given_empty_tasks():
-    GIVEN()
+    given()
 
 
 def task(taskText, is_completed=False):
@@ -57,6 +57,6 @@ def task(taskText, is_completed=False):
 
 
 def given_active(*taskTexts):
-    return GIVEN(*[task(text) for text in taskTexts])
+    return given(*[task(text) for text in taskTexts])
 
 when_active = given_active

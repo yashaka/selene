@@ -25,7 +25,7 @@ def setup_function(fn):
     global original_timeout
 
 
-def test_selement_search_waits_for_visibility_on_actions_like_click():
+def test_waits_for_visibility():
     GIVEN_PAGE\
         .opened_with_body(
             '''
@@ -35,11 +35,11 @@ def test_selement_search_waits_for_visibility_on_actions_like_click():
             'document.getElementsByTagName("a")[0].style = "display:block";',
             500)
 
-    s('a').click()
+    ss('a')[0].click()
     assert ("second" in get_driver().current_url) is True
 
 
-def test_selement_search_waits_for_present_in_dom_and_visibility_on_actions_like_click():
+def test_waits_for_present_in_dom_and_visibility():
     GIVEN_PAGE.opened_with_body(
             '''
             <h2 id="second">Heading 2</h2>''')
@@ -49,11 +49,11 @@ def test_selement_search_waits_for_present_in_dom_and_visibility_on_actions_like
             <h2 id="second">Heading 2</h2>''',
             500)
 
-    s('a').click()
+    ss('a')[0].click()
     assert ("second" in get_driver().current_url) is True
 
 
-def test_selement_search_waits_first_for_present_in_dom_then_visibility_on_actions_like_click():
+def test_waits_first_for_present_in_dom_then_visibility():
     GIVEN_PAGE.opened_with_body(
             '''
             <h2 id="second">Heading 2</h2>''')
@@ -66,11 +66,12 @@ def test_selement_search_waits_first_for_present_in_dom_then_visibility_on_actio
             'document.getElementsByTagName("a")[0].style = "display:block";',
             500)
 
-    s('a').click()
+    ss('a')[0].click()
     assert ("second" in get_driver().current_url) is True
 
 
-def test_selement_search_fails_on_timeout_during_waiting_for_visibility_on_actions_like_click():
+# todo: there should be each such test method for each "passing" test from above...
+def test_fails_on_timeout_during_waiting_for_visibility():
     config.timeout = 0.25
     GIVEN_PAGE\
         .opened_with_body(
@@ -82,6 +83,6 @@ def test_selement_search_fails_on_timeout_during_waiting_for_visibility_on_actio
             500)
 
     with pytest.raises(TimeoutException):
-        s("a").click()
+        ss('a')[0].click()
     assert ("second" in get_driver().current_url) is False
 

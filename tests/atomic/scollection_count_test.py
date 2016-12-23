@@ -17,7 +17,7 @@ def teardown_module(m):
     get_driver().quit()
 
 
-def test_scollection_counts_invisible_tasks():
+def test_counts_invisible_tasks():
     GIVEN_PAGE.opened_empty()
     elements = ss('.will-appear')
 
