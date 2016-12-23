@@ -36,7 +36,7 @@ def test_waits_for_visibility():
             'document.getElementsByTagName("a")[0].style = "display:block";',
             500)
 
-    ss('a').findBy(exact_text('go to Heading 2')).click()
+    ss('a').find_by(exact_text('go to Heading 2')).click()
     assert ("second" in get_driver().current_url) is True
 
 
@@ -50,7 +50,7 @@ def test_waits_for_present_in_dom_and_visibility():
             <h2 id="second">Heading 2</h2>''',
             500)
 
-    ss('a').findBy(exact_text('go to Heading 2')).click()
+    ss('a').find_by(exact_text('go to Heading 2')).click()
     assert ("second" in get_driver().current_url) is True
 
 
@@ -67,7 +67,7 @@ def test_waits_first_for_present_in_dom_then_visibility():
             'document.getElementsByTagName("a")[0].style = "display:block";',
             500)
 
-    ss('a').findBy(exact_text('go to Heading 2')).click()
+    ss('a').find_by(exact_text('go to Heading 2')).click()
     assert ("second" in get_driver().current_url) is True
 
 
@@ -84,6 +84,6 @@ def test_fails_on_timeout_during_waiting_for_visibility():
             500)
 
     with pytest.raises(TimeoutException):
-        ss('a').findBy(exact_text('go to Heading 2')).click()
+        ss('a').find_by(exact_text('go to Heading 2')).click()
     assert ("second" in get_driver().current_url) is False
 

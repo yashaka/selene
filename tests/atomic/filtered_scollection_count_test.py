@@ -20,7 +20,7 @@ def teardown_module(m):
 
 def test_counts_invisible_tasks():
     GIVEN_PAGE.opened_empty()
-    elements = ss('li').filterBy(css_class('will-appear'))
+    elements = ss('li').filter_by(css_class('will-appear'))
 
     WHEN.load_body('''
                    <ul>Hello to:

@@ -26,13 +26,13 @@ def setup_function(fn):
 
 def test_search_is_lazy_and_does_not_start_on_creation():
     GIVEN_PAGE.opened_empty()
-    non_existent_collection = ss('.not-existing').filterBy(css_class('special'))
+    non_existent_collection = ss('.not-existing').filter_by(css_class('special'))
     assert str(non_existent_collection)
 
 
 def test_search_is_postponed_until_actual_action_like_questioning_count():
     GIVEN_PAGE.opened_empty()
-    elements = ss('li').filterBy(css_class('will-appear'))
+    elements = ss('li').filter_by(css_class('will-appear'))
 
     WHEN.load_body('''
                    <ul>Hello to:
@@ -45,7 +45,7 @@ def test_search_is_postponed_until_actual_action_like_questioning_count():
 
 def test_search_is_updated_on_next_actual_action_like_questioning_count():
     GIVEN_PAGE.opened_empty()
-    elements = ss('li').filterBy(css_class('will-appear'))
+    elements = ss('li').filter_by(css_class('will-appear'))
 
     WHEN.load_body('''
                    <ul>Hello to:

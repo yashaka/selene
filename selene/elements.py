@@ -319,13 +319,14 @@ class SElementsCollection(LoadableContainer, WaitingFinder):
         return FilteredSElementsCollection(self, condition)
             # todo: consider passing all needed info to constructor instead of using private members to access them
 
-
+    filter_by = filter
     filterBy = filter
 
     def find(self, condition):
         # return self.filter(condition)[0]
         return SElementsCollectionElementByCondition(self, condition)
 
+    find_by = find
     findBy = find
 
     def assure_each(self, condition):
