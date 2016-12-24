@@ -2,13 +2,13 @@ from selenium.common.exceptions import WebDriverException
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.keys import Keys
 
-from selene.conditions import *
+import selene
 from selene import config
 from selene.bys import by_css, by_xpath
 from selene.helpers import extend
 from selene.page_object import Filler, LoadableContainer
 from selene.wait import wait_for, wait_for_not
-import selene
+
 
 def actions():
     return ActionChains(selene.tools.get_driver())

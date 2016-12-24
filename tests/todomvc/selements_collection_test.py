@@ -1,8 +1,7 @@
-from selenium.common.exceptions import TimeoutException
-from selenium import webdriver
 import pytest
+from selenium import webdriver
+from selenium.common.exceptions import TimeoutException
 
-from selene.conditions import *
 from selene.tools import *
 from tests.todomvc.helpers.todomvc import given_active, given_at_other_page
 

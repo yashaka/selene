@@ -1,7 +1,8 @@
-from selene.conditions import exact_text
-from tests.atomic.helpers.givenpage import GivenPage
 from selenium import webdriver
+
+from selene.support.conditions import exact_text
 from selene.tools import *
+from tests.atomic.helpers.givenpage import GivenPage
 
 __author__ = 'yashaka'
 

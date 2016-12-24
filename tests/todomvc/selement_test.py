@@ -5,7 +5,6 @@ __author__ = 'yashaka'
 
 from selenium import webdriver
 
-from selene.conditions import *
 from selene.tools import *
 from tests.todomvc.helpers.todomvc import given_active, given_at_other_page, given_empty_tasks, given, task
 
@@ -29,7 +28,7 @@ def test_assure_and_alias_methods():
 
 def test_assure_not_and_alias_methods():
     given_at_other_page()
-    s("#new-todo").assure_not(exist)
+    s("#new-todo").should_not(exist)
     s("#new-todo").insist_not(exist)  # alias
     s("#new-todo").should_not(exist)  # alias
     s("#new-todo").should_not_be(exist)  # alias
@@ -45,7 +44,7 @@ def test_lazy_inner_s():
 def test_lazy_inner_ss():
     given_at_other_page()
     s("#todo-list").ss("li")
-    s("#todo-list").find_all("li")  # alias
+    s("#todo-list").all("li")  # alias
 
 
 def test_is_displayed_fails_with_waiting_if_element_not_exist():

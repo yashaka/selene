@@ -4,7 +4,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 
-from selene.conditions import visible
+from selene.support.conditions import visible
 from selene.tools import s, set_driver, get_driver, visit
 from tests.helpers import time_spent
 from tests.todomvc.helpers.todomvc import TODOMVC_URL

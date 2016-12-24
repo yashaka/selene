@@ -19,7 +19,7 @@ def teardown_module(m):
 
 def test_counts_invisible_tasks():
     GIVEN_PAGE.opened_empty()
-    elements = s('ul').find_all('.will-appear')
+    elements = s('ul').all('.will-appear')
 
     WHEN.load_body('''
                    <ul>Hello to:

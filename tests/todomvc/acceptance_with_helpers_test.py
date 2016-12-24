@@ -5,7 +5,6 @@ from selenium.webdriver.common.keys import Keys
 __author__ = 'yashaka'
 
 from tests.base_test import *
-from selene.conditions import *
 from selene.tools import *
 
 

@@ -2,7 +2,6 @@ __author__ = 'yashaka'
 
 from selenium import webdriver
 
-from selene.conditions import *
 from selene.tools import *
 from tests.todomvc.helpers.todomvc import given_active
 

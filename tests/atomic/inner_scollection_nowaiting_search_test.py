@@ -19,7 +19,7 @@ def teardown_module(m):
 
 def test_does_not_wait_inner():
     GIVEN_PAGE.opened_empty()
-    elements = s('ul').find_all('.will-appear')
+    elements = s('ul').all('.will-appear')
 
     WHEN.load_body('''
                    <ul>Hello to:
@@ -40,7 +40,7 @@ def test_does_not_wait_inner():
 
 def test_waits_for_parent_in_dom_then_visible():
     GIVEN_PAGE.opened_empty()
-    elements = s('ul').find_all('.will-appear')
+    elements = s('ul').all('.will-appear')
 
     WHEN.load_body('''
                    <li class='will-appear'>Bob</li>

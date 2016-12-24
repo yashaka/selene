@@ -1,18 +1,28 @@
 from operator import contains, eq
-from selene import config
 
+from core.none_object import NoneObject
+from selene import config
+import selenium.common.exceptions
 # todo: refactor conditions to accept element.finder, not element - to make implementation of conditions more secure
+from selene.exceptions import ConditionNotSatisfiedException
+
+
+or_not_to_be = lambda: True
 
 
 class Condition(object):
 
     def __init__(self):
-        self.found = None
+        self.found = NoneObject('Condition#found')
 
     def __call__(self, entity):
         self.entity = entity
         self.found = self.entity()  # todo: do we actually need it?
                                     # while we have self.found = wait_for(...
+        if self.apply():
+            return self.found
+        else:
+            raise ConditionNotSatisfiedException
         return self.found if self.apply() else None
 
     def __str__(self):
@@ -103,23 +113,27 @@ class Exist(Condition):
 
 
 exist = Exist()
+in_dom = exist
 
 
 class Hidden(Condition):
     def apply(self):
         return not self.found.is_displayed()
 
+
 hidden = Hidden()
+
 
 class css_class(Condition):
 
     def __init__(self, class_attribute_value):
+        # type: (str) -> None
         self.expected_containable_class = class_attribute_value
-        self.actual_class = None
+        self.actual_class = ''  # type: str
 
     def apply(self):
         self.actual_class = self.found.get_attribute("class")
-        return self.expected_containable_class in self.actual_class
+        return self.expected_containable_class in self.actual_class.split()
 
     def expected(self):
         return self.expected_containable_class
@@ -127,6 +141,26 @@ class css_class(Condition):
     def actual(self):
         return self.actual()
 
+
+class attribute(Condition):
+
+    def __init__(self, name, value):
+        # type: (str, str) -> None
+        self.name = name
+        self.expected_value = value
+        self.actual_value = ''  # type: str
+
+    def apply(self):
+        self.actual_value = self.found.get_attribute(self.name)
+        return self.actual_value == self.expected_value
+
+    def expected(self):
+        return self.expected_value
+
+    def actual(self):
+        return self.actual_value
+
+blank = attribute('value', '')
 
 #########################
 # COLLECTION CONDITIONS #

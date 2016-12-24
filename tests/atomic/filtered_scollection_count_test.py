@@ -1,7 +1,8 @@
-from selene.conditions import css_class
-from tests.atomic.helpers.givenpage import GivenPage
 from selenium import webdriver
+
+from selene.support.conditions import css_class
 from selene.tools import *
+from tests.atomic.helpers.givenpage import GivenPage
 
 __author__ = 'yashaka'
 

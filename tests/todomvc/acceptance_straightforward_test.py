@@ -1,8 +1,7 @@
 import os
 
-from tests.base_test import *
-from selene.conditions import *
 from selene.tools import *
+from tests.base_test import *
 
 
 class TestTodoMVC(BaseTest):

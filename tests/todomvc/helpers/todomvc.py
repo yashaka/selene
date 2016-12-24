@@ -1,11 +1,13 @@
 import os
+
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
-from selene import config
-from selene.conditions import visible
-from selene.tools import visit, s, get_driver
-from selene.wait import has
 from selenium.webdriver.support.expected_conditions import element_to_be_clickable
+from selenium.webdriver.support.wait import WebDriverWait
+
+from selene import config
+from selene.support.conditions import visible
+from selene.tools import s, get_driver
+from selene.wait import has
 
 __author__ = 'yashaka'
 

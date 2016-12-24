@@ -1,7 +1,8 @@
 import pytest
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
-from selene.conditions import visible
+
+from selene.support.conditions import visible
 from selene.tools import *
 
 # todo: find a way to work with config in "scope", like in "context_manager" style

@@ -1,9 +1,9 @@
 import os
 
-from selene.bys import by_link_text
-from selene.conditions import exact_text, visible, exact_texts, enabled
-from selene.tools import s, ss
 from selene import tools
+from selene.bys import by_link_text
+from selene.support.conditions import exact_text, visible, exact_texts, enabled
+from selene.tools import s, ss
 
 __author__ = 'yashaka'
 

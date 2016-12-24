@@ -2,8 +2,8 @@ import os
 
 from selenium import webdriver
 
-from selene.conditions import empty, exist, exact_texts, hidden
 from selene import config
+from selene.support.conditions import empty, exact_texts, hidden
 from selene.tools import set_driver, get_driver
 from tests.order.pages.order import Order
 
