@@ -1,23 +1,20 @@
 from selenium import webdriver
 
-from selene.support.conditions import exact_text
-from selene.tools import *
+from selene import config
+from selene.conditions import css_class, exact_text
+from selene.selene_driver import SeleneDriver
 from tests.atomic.helpers.givenpage import GivenPage
 
 __author__ = 'yashaka'
 
-driver = webdriver.Firefox()
+driver = SeleneDriver(webdriver.Firefox())
 GIVEN_PAGE = GivenPage(driver)
 WHEN = GIVEN_PAGE
 original_timeout = config.timeout
 
 
-def setup_module(m):
-    set_driver(driver)
-
-
 def teardown_module(m):
-    get_driver().quit()
+    driver.quit()
 
 
 def setup_function(fn):
@@ -27,13 +24,13 @@ def setup_function(fn):
 
 def test_search_is_lazy_and_does_not_start_on_creation_for_both_collection_and_indexed():
     GIVEN_PAGE.opened_empty()
-    non_existent_element = ss('.non-existing').find_by(exact_text('Kate'))
+    non_existent_element = driver.all('.non-existing').element_by(exact_text('Kate'))
     assert str(non_existent_element)
 
 
 def test_search_is_postponed_until_actual_action_like_questioning_displayed():
     GIVEN_PAGE.opened_empty()
-    element = ss('.will-appear').find_by(exact_text('Kate'))
+    element = driver.all('.will-appear').element_by(exact_text('Kate'))
 
     WHEN.load_body('''
                    <ul>Hello to:
@@ -45,18 +42,18 @@ def test_search_is_postponed_until_actual_action_like_questioning_displayed():
 
 def test_search_is_updated_on_next_actual_action_like_questioning_displayed():
     GIVEN_PAGE.opened_empty()
-    element = ss('.will-appear').find_by(exact_text('Kate'))
+    element = driver.all('.will-appear').element_by(css_class('special'))
 
     WHEN.load_body('''
                    <ul>Hello to:
                        <li class="will-appear">Bob</li>
-                       <li class="will-appear">Kate</li>
+                       <li class="will-appear special">Kate</li>
                    </ul>''')
     assert element.is_displayed() is True
 
     WHEN.load_body('''
                    <ul>Hello to:
                        <li class="will-appear">Bob</li>
-                       <li class="will-appear" style="display:none">Kate</li>
+                       <li class="will-appear special" style="display:none">Kate</li>
                    </ul>''')
     assert element.is_displayed() is False

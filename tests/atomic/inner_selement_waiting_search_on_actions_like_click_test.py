@@ -1,24 +1,21 @@
 import pytest
+from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
 
+from selene import config
+from selene.selene_driver import SeleneDriver
 from tests.atomic.helpers.givenpage import GivenPage
-from selenium import webdriver
-from selene.tools import *
 
 __author__ = 'yashaka'
 
-driver = webdriver.Firefox()
+driver = SeleneDriver(webdriver.Firefox())
 GIVEN_PAGE = GivenPage(driver)
 WHEN = GIVEN_PAGE
 original_timeout = config.timeout
-        
-        
-def setup_module(m):
-    set_driver(driver)
 
 
 def teardown_module(m):
-    get_driver().quit()
+    driver.quit()
 
 
 def setup_function(fn):
@@ -37,8 +34,8 @@ def test_waits_for_inner_visibility():
             'document.getElementsByTagName("a")[0].style = "display:block";',
             250)
 
-    s('p').find('a').click()
-    assert ('second' in get_driver().current_url) is True
+    driver.element('p').element('a').click()
+    assert ('second' in driver.current_url()) is True
 
 
 def test_waits_for_inner_presence_in_dom_and_visibility():
@@ -55,8 +52,8 @@ def test_waits_for_inner_presence_in_dom_and_visibility():
             </p>''',
             250)
 
-    s('p').find('a').click()
-    assert ('second' in get_driver().current_url) is True
+    driver.element('p').element('a').click()
+    assert ('second' in driver.current_url()) is True
 
 
 def test_waits_first_for_inner_presence_in_dom_then_visibility():
@@ -76,8 +73,8 @@ def test_waits_first_for_inner_presence_in_dom_then_visibility():
             'document.getElementsByTagName("a")[0].style = "display:block";',
             500)
 
-    s('p').find('a').click()
-    assert ('second' in get_driver().current_url) is True
+    driver.element('p').element('a').click()
+    assert ('second' in driver.current_url()) is True
 
 
 def test_waits_first_for_parent_in_dom_then_inner_in_dom_then_visibility():
@@ -99,8 +96,8 @@ def test_waits_first_for_parent_in_dom_then_inner_in_dom_then_visibility():
             'document.getElementsByTagName("a")[0].style = "display:block";',
             750)
 
-    s('p').find('a').click()
-    assert ('second' in get_driver().current_url) is True
+    driver.element('p').element('a').click()
+    assert ('second' in driver.current_url()) is True
 
 
 # todo: there should be each such test method for each "passing" test from above...
@@ -118,6 +115,6 @@ def test_fails_on_timeout_during_waiting_for_inner_visibility():
             500)
 
     with pytest.raises(TimeoutException):
-        s('p').find('a').click()
-    assert ('second' in get_driver().current_url) is False
+        driver.element('p').element('a').click()
+    assert ('second' in driver.current_url()) is False
 

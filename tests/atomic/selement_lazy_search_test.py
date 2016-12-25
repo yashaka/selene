@@ -1,24 +1,19 @@
-import pytest
-from selenium.common.exceptions import TimeoutException
-
-from tests.atomic.helpers.givenpage import GivenPage
 from selenium import webdriver
-from selene.tools import *
+
+from selene import config
+from selene.selene_driver import SeleneDriver
+from tests.atomic.helpers.givenpage import GivenPage
 
 __author__ = 'yashaka'
 
-driver = webdriver.Firefox()
+driver = SeleneDriver(webdriver.Firefox())
 GIVEN_PAGE = GivenPage(driver)
 WHEN = GIVEN_PAGE
 original_timeout = config.timeout
 
 
-def setup_module(m):
-    set_driver(driver)
-
-
 def teardown_module(m):
-    get_driver().quit()
+    driver.quit()
 
 
 def setup_function(fn):
@@ -28,14 +23,14 @@ def setup_function(fn):
 
 def test_search_is_lazy_and_does_not_start_on_creation():
     GIVEN_PAGE.opened_empty()
-    non_existent_element = s('#not-existing-element-id')
+    non_existent_element = driver.element('#not-existing-element-id')
     assert str(non_existent_element)
 
 
 def test_search_is_postponed_until_actual_action_like_questioning_displayed():
     GIVEN_PAGE.opened_empty()
 
-    element = s('#will-be-existing-element-id')
+    element = driver.element('#will-be-existing-element-id')
     WHEN.load_body('<h1 id="will-be-existing-element-id">Hello kitty:*</h1>')
     assert element.is_displayed() is True
 
@@ -43,7 +38,7 @@ def test_search_is_postponed_until_actual_action_like_questioning_displayed():
 def test_search_is_updated_on_next_actual_action_like_questioning_displayed():
     GIVEN_PAGE.opened_empty()
 
-    element = s('#will-be-existing-element-id')
+    element = driver.element('#will-be-existing-element-id')
     WHEN.load_body('<h1 id="will-be-existing-element-id">Hello kitty:*</h1>')
     assert element.is_displayed() is True
 

@@ -1,21 +1,19 @@
-from tests.atomic.helpers.givenpage import GivenPage
 from selenium import webdriver
-from selene.tools import *
+
+from selene import config
+from selene.selene_driver import SeleneDriver
+from tests.atomic.helpers.givenpage import GivenPage
 
 __author__ = 'yashaka'
 
-driver = webdriver.Firefox()
+driver = SeleneDriver(webdriver.Firefox())
 GIVEN_PAGE = GivenPage(driver)
 WHEN = GIVEN_PAGE
 original_timeout = config.timeout
 
 
-def setup_module(m):
-    set_driver(driver)
-
-
 def teardown_module(m):
-    get_driver().quit()
+    driver.quit()
 
 
 def setup_function(fn):
@@ -25,14 +23,14 @@ def setup_function(fn):
 
 def test_search_is_lazy_and_does_not_start_on_creation_for_both_parent_and_inner():
     GIVEN_PAGE.opened_empty()
-    non_existent_element = s('#not-existing-element').find('.not-existing-inner')
+    non_existent_element = driver.element('#not-existing-element').element('.not-existing-inner')
     assert str(non_existent_element)
 
 
 def test_search_is_postponed_until_actual_action_like_questioning_displayed():
     GIVEN_PAGE.opened_empty()
 
-    element = s('#will-be-existing-element').find('.will-exist-inner')
+    element = driver.element('#will-be-existing-element').element('.will-exist-inner')
     WHEN.load_body('''
         <h1 id="will-be-existing-element">
             <span class="will-exist-inner">Hello</span> kitty:*
@@ -43,14 +41,14 @@ def test_search_is_postponed_until_actual_action_like_questioning_displayed():
 def test_search_is_updated_on_next_actual_action_like_questioning_displayed():
     GIVEN_PAGE.opened_empty()
 
-    element = s('#will-be-existing-element').find('.will-exist-inner')
+    element = driver.element('#will-be-existing-element').element('.will-exist-inner')
     WHEN.load_body('''
         <h1 id="will-be-existing-element">
             <span class="will-exist-inner">Hello</span> kitty:*
         </h1>''')
     assert element.is_displayed() is True
 
-    element = s('#will-be-existing-element').find('.will-exist-inner')
+    element = driver.element('#will-be-existing-element').element('.will-exist-inner')
     WHEN.load_body('''
         <h1 id="will-be-existing-element">
             <span class="will-exist-inner" style="display:none">Hello</span> kitty:*
@@ -67,5 +65,5 @@ def test_search_finds_exactly_inside_parent():
             <h2 id="second">Heading 2</h2>
         /p>''')
 
-    s('p').find('a').click()
-    assert ("second" in get_driver().current_url) is True
+    driver.element('p').element('a').click()
+    assert ("second" in driver.current_url()) is True

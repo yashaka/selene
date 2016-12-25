@@ -1,23 +1,21 @@
 from selenium import webdriver
 
-from selene.support.conditions import css_class
-from selene.tools import *
+from selene import config
+from selene.conditions import css_class
+from selene.selene_driver import SeleneDriver
+from selene.support.conditions import have
 from tests.atomic.helpers.givenpage import GivenPage
 
 __author__ = 'yashaka'
 
-driver = webdriver.Firefox()
+driver = SeleneDriver(webdriver.Firefox())
 GIVEN_PAGE = GivenPage(driver)
 WHEN = GIVEN_PAGE
 original_timeout = config.timeout
 
 
-def setup_module(m):
-    set_driver(driver)
-
-
 def teardown_module(m):
-    get_driver().quit()
+    driver.quit()
 
 
 def setup_function(fn):
@@ -27,13 +25,13 @@ def setup_function(fn):
 
 def test_search_is_lazy_and_does_not_start_on_creation():
     GIVEN_PAGE.opened_empty()
-    non_existent_collection = ss('.not-existing').filter_by(css_class('special'))
+    non_existent_collection = driver.all('.not-existing').filtered_by(css_class('special'))
     assert str(non_existent_collection)
 
 
 def test_search_is_postponed_until_actual_action_like_questioning_count():
     GIVEN_PAGE.opened_empty()
-    elements = ss('li').filter_by(css_class('will-appear'))
+    elements = driver.all('li').filtered_by(css_class('will-appear'))
 
     WHEN.load_body('''
                    <ul>Hello to:
@@ -46,7 +44,7 @@ def test_search_is_postponed_until_actual_action_like_questioning_count():
 
 def test_search_is_updated_on_next_actual_action_like_questioning_count():
     GIVEN_PAGE.opened_empty()
-    elements = ss('li').filter_by(css_class('will-appear'))
+    elements = driver.all('li').filtered_by(css_class('will-appear'))
 
     WHEN.load_body('''
                    <ul>Hello to:

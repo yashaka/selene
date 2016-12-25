@@ -8,3 +8,4 @@ existing = conditions.exist
 clickable = conditions.clickable
 hidden = conditions.hidden
 blank = conditions.blank
+or_not_to_be = conditions.or_not_to_be

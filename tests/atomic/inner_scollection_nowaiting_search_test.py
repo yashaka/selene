@@ -1,25 +1,24 @@
-from tests.atomic.helpers.givenpage import GivenPage
 from selenium import webdriver
-from selene.tools import *
+
+from selene import config
+from selene.selene_driver import SeleneDriver
+from tests.atomic.helpers.givenpage import GivenPage
 
 __author__ = 'yashaka'
 
-driver = webdriver.Firefox()
+driver = SeleneDriver(webdriver.Firefox())
 GIVEN_PAGE = GivenPage(driver)
 WHEN = GIVEN_PAGE
-
-
-def setup_module(m):
-    set_driver(driver)
+original_timeout = config.timeout
 
 
 def teardown_module(m):
-    get_driver().quit()
+    driver.quit()
 
 
 def test_does_not_wait_inner():
     GIVEN_PAGE.opened_empty()
-    elements = s('ul').all('.will-appear')
+    elements = driver.element('ul').all('.will-appear')
 
     WHEN.load_body('''
                    <ul>Hello to:
@@ -40,7 +39,7 @@ def test_does_not_wait_inner():
 
 def test_waits_for_parent_in_dom_then_visible():
     GIVEN_PAGE.opened_empty()
-    elements = s('ul').all('.will-appear')
+    elements = driver.element('ul').all('.will-appear')
 
     WHEN.load_body('''
                    <li class='will-appear'>Bob</li>

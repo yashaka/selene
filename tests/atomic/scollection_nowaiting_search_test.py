@@ -1,25 +1,24 @@
-from tests.atomic.helpers.givenpage import GivenPage
 from selenium import webdriver
-from selene.tools import *
+
+from selene import config
+from selene.selene_driver import SeleneDriver
+from tests.atomic.helpers.givenpage import GivenPage
 
 __author__ = 'yashaka'
 
-driver = webdriver.Firefox()
+driver = SeleneDriver(webdriver.Firefox())
 GIVEN_PAGE = GivenPage(driver)
 WHEN = GIVEN_PAGE
-
-
-def setup_module(m):
-    set_driver(driver)
+original_timeout = config.timeout
 
 
 def teardown_module(m):
-    get_driver().quit()
+    driver.quit()
 
 
 def test_waits_nothing():
     GIVEN_PAGE.opened_empty()
-    elements = ss('.will-appear')
+    elements = driver.all('.will-appear')
 
     WHEN.load_body('''
                    <ul>Hello to:

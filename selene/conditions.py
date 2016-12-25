@@ -23,8 +23,11 @@ class Condition(object):
             return self.found
         else:
             raise ConditionNotSatisfiedException
+
         return self.found if self.apply() else None
 
+    # todo: change this method to only stringify condition name and parameters,
+    # todo:  and everything else should be provided in some describe method...
     def __str__(self):
             expected_string = str(self.expected()) if (self.expected() is not None) else ""
             actual_string = str(self.actual()) if (self.actual() is not None) else ""
@@ -37,17 +40,33 @@ class Condition(object):
                """
             \t  actual: """ + actual_string)
 
+    def description(self):
+        return "%s expecting: %s" % (self.__class__.__name__, self.expected())
+
     def identity(self):
         return "element"
 
     def expected(self):
-        return None
+        return ''
 
     def actual(self):
-        return None
+        return ''
 
     def apply(self):
-        return None
+        return False
+
+    def matches_webelement(self, webelement):
+        self.found = webelement
+        try:
+            return self.apply()
+        except Exception:
+            return False
+
+    def matches(self, entity):
+        try:
+            return self(entity)
+        except Exception:
+            return False
 
 
 class CollectionCondition(Condition):
@@ -139,7 +158,7 @@ class css_class(Condition):
         return self.expected_containable_class
 
     def actual(self):
-        return self.actual()
+        return self.actual_class
 
 
 class attribute(Condition):

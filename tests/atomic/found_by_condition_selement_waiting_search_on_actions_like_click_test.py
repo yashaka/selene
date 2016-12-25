@@ -2,24 +2,21 @@ import pytest
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
 
-from selene.support.conditions import exact_text
-from selene.tools import *
+from selene import config
+from selene.conditions import css_class, exact_text
+from selene.selene_driver import SeleneDriver
 from tests.atomic.helpers.givenpage import GivenPage
 
 __author__ = 'yashaka'
 
-driver = webdriver.Firefox()
+driver = SeleneDriver(webdriver.Firefox())
 GIVEN_PAGE = GivenPage(driver)
 WHEN = GIVEN_PAGE
 original_timeout = config.timeout
 
 
-def setup_module(m):
-    set_driver(driver)
-
-
 def teardown_module(m):
-    get_driver().quit()
+    driver.quit()
 
 
 def setup_function(fn):
@@ -36,8 +33,8 @@ def test_waits_for_visibility():
             'document.getElementsByTagName("a")[0].style = "display:block";',
             500)
 
-    ss('a').find_by(exact_text('go to Heading 2')).click()
-    assert ("second" in get_driver().current_url) is True
+    driver.all('a').element_by(exact_text('go to Heading 2')).click()
+    assert ("second" in driver.current_url()) is True
 
 
 def test_waits_for_present_in_dom_and_visibility():
@@ -50,8 +47,8 @@ def test_waits_for_present_in_dom_and_visibility():
             <h2 id="second">Heading 2</h2>''',
             500)
 
-    ss('a').find_by(exact_text('go to Heading 2')).click()
-    assert ("second" in get_driver().current_url) is True
+    driver.all('a').element_by(exact_text('go to Heading 2')).click()
+    assert ("second" in driver.current_url()) is True
 
 
 def test_waits_first_for_present_in_dom_then_visibility():
@@ -67,8 +64,8 @@ def test_waits_first_for_present_in_dom_then_visibility():
             'document.getElementsByTagName("a")[0].style = "display:block";',
             500)
 
-    ss('a').find_by(exact_text('go to Heading 2')).click()
-    assert ("second" in get_driver().current_url) is True
+    driver.all('a').element_by(exact_text('go to Heading 2')).click()
+    assert ("second" in driver.current_url()) is True
 
 
 # todo: there should be each such test method for each "passing" test from above...
@@ -84,6 +81,6 @@ def test_fails_on_timeout_during_waiting_for_visibility():
             500)
 
     with pytest.raises(TimeoutException):
-        ss('a').find_by(exact_text('go to Heading 2')).click()
-    assert ("second" in get_driver().current_url) is False
+        driver.all('a').element_by(exact_text('go to Heading 2')).click()
+    assert ("second" in driver.current_url()) is False
 
