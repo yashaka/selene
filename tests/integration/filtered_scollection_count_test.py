@@ -2,7 +2,7 @@ from selenium import webdriver
 
 from core.none_object import NoneObject
 from selene import config
-from selene.selene_driver import SeleneDriver
+from selene.driver import SeleneDriver
 from selene.support.conditions import have
 from tests.integration.helpers.givenpage import GivenPage
 
@@ -21,6 +21,7 @@ def setup_module(m):
     GIVEN_PAGE = GivenPage(driver)
     global WHEN
     WHEN = GIVEN_PAGE
+
 
 def teardown_module(m):
     driver.quit()

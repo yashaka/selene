@@ -1,5 +1,5 @@
 from tests.base_test import *
-from tests.demo.todomvc.pagemodules_approach.pages import tasks
+from tests.examples.todomvc.pagemodules_approach.pages import tasks
 
 
 class TestTodoMVC(BaseTest):

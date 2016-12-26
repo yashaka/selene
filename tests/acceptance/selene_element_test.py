@@ -37,22 +37,9 @@ def test_assure_not_and_alias_methods():
     s("#new-todo").should_not_have(exist)  # alias
 
 
-def test_lazy_inner_s():
-    given_at_other_page()
-    s("#todo-list>li:nth-of-type(1)").s(".toggle")
-    s("#todo-list>li:nth-of-type(1)").find(".toggle")  # alias
-
-
-def test_lazy_inner_ss():
-    given_at_other_page()
-    s("#todo-list").ss("li")
-    s("#todo-list").all("li")  # alias
-
-
 def test_is_displayed_fails_with_waiting_if_element_not_exist():
     given_at_other_page()
-    original_timeout = config.timeout  # todo: switch to s("#todo-list").during(0.1).is_displayed()
-                                       # todo: once the feature available
+    original_timeout = config.timeout  # todo: switch to something like s("#todo-list").with_timeout(0.1).is_displayed()
     config.timeout = 0.1
     with pytest.raises(TimeoutException):
         s("#todo-list").is_displayed()

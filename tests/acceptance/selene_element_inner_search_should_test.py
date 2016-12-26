@@ -1,4 +1,4 @@
-from selene.conditions import exact_text, exact_texts
+from selene.support.conditions import have
 
 __author__ = 'yashaka'
 
@@ -18,9 +18,9 @@ def teardown_module(m):
 
 def test_search_inner_selement():
     given_active("a", "b")
-    s("#todo-list").s("li").assure(exact_text("a"))
+    s("#todo-list").s("li").should(have.exact_text("a"))
 
 
-def test_search_inner_selements_collection():
+def test_search_inner_selene_collection():
     given_active("a", "b")
-    s("#todo-list").all("li").assure(exact_texts("a", "b"))
+    s("#todo-list").all("li").should(have.exact_texts("a", "b"))

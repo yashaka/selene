@@ -21,7 +21,6 @@ class TestTodoMVC(BaseTest):
 
         tasks[2].s(".toggle").click()
 
-
         active_tasks.assure(texts("1", "2"))
         active_tasks.assure(size(2))
 

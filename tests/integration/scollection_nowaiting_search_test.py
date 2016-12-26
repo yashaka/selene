@@ -2,7 +2,7 @@ from selenium import webdriver
 
 from core.none_object import NoneObject
 from selene import config
-from selene.selene_driver import SeleneDriver
+from selene.driver import SeleneDriver
 from tests.integration.helpers.givenpage import GivenPage
 
 __author__ = 'yashaka'

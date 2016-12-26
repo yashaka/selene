@@ -1,6 +1,8 @@
 import contextlib
 import os
 
+from selenium.webdriver.common.by import By
+
 
 @contextlib.contextmanager
 def suppress(*exceptions):
@@ -39,3 +41,12 @@ def take_screenshot(driver, name, save_location='./'):
 
     # todo: sometimes screenshooting fails at httplib with CannotSendRequest... consider handling this somehow...
     # todo: and of course find the reason - why... it may depend on browser version...
+
+
+def css_or_by_to_by(css_selector_or_by):
+    # todo: will it work `if isinstance(css_selector_or_by, Tuple[str, str]):` ?
+    if isinstance(css_selector_or_by, tuple):
+        return css_selector_or_by
+    if isinstance(css_selector_or_by, str):
+        return (By.CSS_SELECTOR, css_selector_or_by)
+    raise TypeError('css_selector_or_by should be str with CSS selector or Tuple[by:str, value:str]')

@@ -1,16 +1,18 @@
-import selene.selene_driver
+from selenium.webdriver.remote.webdriver import WebDriver
+
+import selene.driver
 from selene import config
-from selene.selene_driver import IWebDriver, SeleneElement, SeleneCollection
+from selene.elements import SeleneElement, SeleneCollection
 
 
 def set_driver(driver):
     # type: (WebDriver) -> None
-    selene.selene_driver._shared_web_driver_source.driver = driver
+    selene.driver._shared_web_driver_source.driver = driver
 
 
 def get_driver():
     # type: () -> WebDriver
-    return selene.selene_driver._shared_web_driver_source.driver
+    return selene.driver._shared_web_driver_source.driver
 
 
 def visit(absolute_or_relative_url):
@@ -33,7 +35,7 @@ def visit(absolute_or_relative_url):
 
 def s(css_selector_or_by):
     # return SElement(css_selector_or_locator)
-    return SeleneElement.by_css_or_by(css_selector_or_by, selene.selene_driver._shared_driver)
+    return SeleneElement.by_css_or_by(css_selector_or_by, selene.driver._shared_driver)
 
 
 element = s
@@ -41,7 +43,7 @@ element = s
 
 def ss(css_selector_or_by):
     # return SElementsCollection(css_selector_or_locator, of=of)
-    return SeleneCollection.by_css_or_by(css_selector_or_by, selene.selene_driver._shared_driver)
+    return SeleneCollection.by_css_or_by(css_selector_or_by, selene.driver._shared_driver)
 
 
 elements = ss
