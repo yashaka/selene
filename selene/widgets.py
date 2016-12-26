@@ -1,7 +1,7 @@
 from selenium.webdriver.support.select import Select
 
+from selene.conditions import visible
 from selene.elements import RootSElement, SElement
-from selene.support.conditions import visible
 
 
 class SelectList(SElement):

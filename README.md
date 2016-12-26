@@ -40,7 +40,7 @@ def teardown_module(m):
 
 def test_selene_demo():
     tasks = ss("#todo-list>li")
-    active_tasks = tasks.filter(css_class("active"))
+    active_tasks = tasks.filter_by(css_class("active"))
 
     visit('http://todomvc4tasj.herokuapp.com')
 
@@ -56,7 +56,7 @@ def test_selene_demo():
     active_tasks.assure(texts("1", "2"))
     active_tasks.assure(size(2))
 
-    tasks.filter(css_class("completed")).assure(texts("3"))
+    tasks.filter_by(css_class("completed")).assure(texts("3"))
 
     s("a[href='#/active']").click()
     tasks[:2].assure(texts("1", "2"))

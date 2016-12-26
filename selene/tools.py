@@ -1,13 +1,17 @@
+import selene.selene_driver
 from selene import config
 from selene.elements import SElement, SElementsCollection
+from selene.selene_driver import IWebDriver, SeleneElement, SeleneCollection
 
 
 def set_driver(driver):
-    config.driver = driver
+    # type: (WebDriver) -> None
+    selene.selene_driver._shared_web_driver_source.driver = driver
 
 
 def get_driver():
-    return config.driver
+    # type: () -> WebDriver
+    return selene.selene_driver._shared_web_driver_source.driver
 
 
 def visit(absolute_or_relative_url):
@@ -28,10 +32,17 @@ def visit(absolute_or_relative_url):
     get_driver().get(config.app_host + absolute_or_relative_url)
 
 
-def s(css_selector_or_locator):
-    return SElement(css_selector_or_locator)
+def s(css_selector_or_by):
+    # return SElement(css_selector_or_locator)
+    return SeleneElement.by_css_or_by(css_selector_or_by, selene.selene_driver._shared_driver)
 
 
-def ss(css_selector_or_locator, of=SElement):
-    return SElementsCollection(css_selector_or_locator, of=of)
+element = s
 
+
+def ss(css_selector_or_by):
+    # return SElementsCollection(css_selector_or_locator, of=of)
+    return SeleneCollection.by_css_or_by(css_selector_or_by, selene.selene_driver._shared_driver)
+
+
+elements = ss

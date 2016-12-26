@@ -17,12 +17,18 @@ from selenium.webdriver.remote.switch_to import SwitchTo
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
 
+from core.none_object import NoneObject
 from selene.conditions import Condition
 from selene.support.conditions import be
 from selene.support.conditions import have
 from core.delegation import DelegatingMeta
 from selene import config
 from selene.wait import wait_for, wait_for_not
+
+try:
+    from functools import lru_cache
+except ImportError:
+    from backports.functools_lru_cache import lru_cache
 
 
 class ISearchContext(object):
@@ -581,6 +587,7 @@ class ISeleneListWebElementLocator(object):
         return self.description
 
 
+# todo: consider renaming/refactoring to WebDriverWebElementLocator...
 class SearchContextWebElementLocator(ISeleneWebElementLocator):
     def __init__(self, by, search_context):
         # type: (Tuple[By, str], ISearchContext) -> None
@@ -593,6 +600,35 @@ class SearchContextWebElementLocator(ISeleneWebElementLocator):
 
     def find(self):
         return self._search_context.find_element(*self._by)
+
+
+class InnerWebElementLocator(ISeleneWebElementLocator):
+    def __init__(self, by, element):
+        # type: (Tuple[By, str], SeleneElement) -> None
+        self._by = by
+        self._element = element
+
+    @property
+    def description(self):
+        return "By.Selene: (%s).find(%s)" % (self._element, self._by)
+
+    def find(self):
+        # return self._element.should(be.in_dom).find_element(*self._by)
+        return self._element.should(be.visible).find_element(*self._by)
+        # todo: should(be.in_dom) or be.visible?
+
+
+class CachingWebElementLocator(ISeleneWebElementLocator):
+    @property
+    def description(self):
+        return "Caching %" + (self._element,)
+
+    @lru_cache()
+    def find(self):
+        return self._element()
+
+    def __init__(self, element):
+        self._element = element
 
 
 # todo: PyCharm generates abstract methods impl before __init__ method.
@@ -626,11 +662,24 @@ class SearchContextListWebElementLocator(ISeleneListWebElementLocator):
         return self._search_context.find_elements(*self._by)
 
 
+class InnerListWebElementLocator(ISeleneListWebElementLocator):
+    def __init__(self, by, element):
+        # type: (Tuple[By, str], SeleneElement) -> None
+        self._by = by
+        self._element = element
+
+    @property
+    def description(self):
+        return "By.Selene: (%s).find_all(%s)" % (self._element, self._by)
+
+    def find(self):
+        # return self._element.should(be.in_dom).find_elements(*self._by)
+        return self._element.should(be.visible).find_elements(*self._by)
+        # todo: should(be.in_dom) or be.visible?
+
+
 class FilteredListWebElementLocator(ISeleneListWebElementLocator):
     def find(self):
-        # filtered = [selement()
-        #             for selement in self._collection
-        #             if self._condition.matches(selement)]
         webelements = self._collection()
         filtered = [webelement
                     for webelement in webelements
@@ -647,11 +696,24 @@ class FilteredListWebElementLocator(ISeleneListWebElementLocator):
         self._collection = collection
 
 
+class SlicedListWebElementLocator(ISeleneListWebElementLocator):
+    def find(self):
+        self._collection.should(have.size_at_least(self._slice.stop))
+        webelements = self._collection()
+        return webelements[self._slice.start:self._slice.stop:self._slice.step]
+
+    @property
+    def description(self):
+        return "By.Selene: (%s)[%s:%s:%s]" % (self._collection, self._slice.start, self._slice.stop, self._slice.step)
+
+    def __init__(self, slc,  collection):
+        # type: (slice, SeleneCollection) -> None
+        self._slice = slc
+        self._collection = collection
+
+
 class FoundByConditionWebElementLocator(ISeleneWebElementLocator):
     def find(self):
-        # for selement in self._collection:
-        #     if self._condition.matches(selement):
-        #         return selement()
         for webelement in self._collection():
             if self._condition.matches_webelement(webelement):
                 return webelement
@@ -665,6 +727,15 @@ class FoundByConditionWebElementLocator(ISeleneWebElementLocator):
         # type: (Condition, SeleneCollection) -> None
         self._condition = condition
         self._collection = collection
+
+
+def css_or_by_to_by(css_selector_or_by):
+    # todo: will it work `if isinstance(css_selector_or_by, Tuple[str, str]):` ?
+    if isinstance(css_selector_or_by, tuple):
+        return css_selector_or_by
+    if isinstance(css_selector_or_by, str):
+        return (By.CSS_SELECTOR, css_selector_or_by)
+    raise TypeError('css_selector_or_by should be str with CSS selector or Tuple[by:str, value:str]')
 
 
 class SeleneElement(IWebElement):
@@ -686,7 +757,7 @@ class SeleneElement(IWebElement):
 
     @classmethod
     def by(cls, by, webdriver, context=None):
-        # type: (Tuple[str, str], WebDriver, ISearchContext) -> SeleneElement
+        # type: (Tuple[str, str], IWebDriver, ISearchContext) -> SeleneElement
         if not context:
             context = webdriver
 
@@ -694,7 +765,7 @@ class SeleneElement(IWebElement):
 
     @classmethod
     def by_css(cls, css_selector, webdriver, context=None):
-        # type: (str, WebDriver, ISearchContext) -> SeleneElement
+        # type: (str, IWebDriver, ISearchContext) -> SeleneElement
         if not context:
             context = webdriver
 
@@ -705,13 +776,12 @@ class SeleneElement(IWebElement):
         if not context:
             context = webdriver
 
-        # todo: will it work `if isinstance(css_selector_or_by, Tuple[str, str]):` ?
-        if isinstance(css_selector_or_by, tuple):
-            return SeleneElement.by(css_selector_or_by, webdriver, context)
-        if isinstance(css_selector_or_by, str):
-            return SeleneElement.by_css(css_selector_or_by, webdriver, context)
-        raise TypeError('css_selector_or_by should be str with CSS selector or Tuple[by:str, value:str]')
+        return SeleneElement.by(
+            css_or_by_to_by(css_selector_or_by),
+            webdriver,
+            context)
 
+    # todo: consider renaming webdriver to driver, because actually SeleneDriver also can be put here...
     def __init__(self, selene_locator, webdriver):
         # type: (ISeleneWebElementLocator, WebDriver) -> None
         self._locator = selene_locator
@@ -721,20 +791,36 @@ class SeleneElement(IWebElement):
     def __str__(self):
         return self._locator.description
 
-    def s(self, css_selector_or_by):
-        return SeleneElement.by_css_or_by(css_selector_or_by, self._webdriver, context=self)
+    def element(self, css_selector_or_by):
+        return SeleneElement(
+            InnerWebElementLocator(css_or_by_to_by(css_selector_or_by), self),
+            self._webdriver)
 
-    element = s
-    find = s
-    child = s
+    s = element
+    find = element
+    # todo: consider making find a separate not-lazy method (not alias)
+    # to be used in such example: s("#element").hover().find(".inner").click()
+    #                       over: s("#element").hover().element(".inner").click()
+    # todo: should then all action-commands return cached elements by default?
 
-    def ss(self, css_selector_or_by):
-        return SeleneCollection.by_css_or_by(css_selector_or_by, self._webdriver, context=self)
+    # todo: this is an object, it does not find. should we switch from method to "as a property" implementation?
+    def caching(self):
+        return SeleneElement(CachingWebElementLocator(self), self._webdriver)
 
-    all = ss
-    elements = ss
-    find_all = ss
-    children = ss
+    # todo: cached or cache?
+    def cached(self):
+        caching = self.caching()
+        return caching.should(be.in_dom)
+
+    def all(self, css_selector_or_by):
+        # return SeleneCollection.by_css_or_by(css_selector_or_by, self._webdriver, context=self)
+        return SeleneCollection(
+            InnerListWebElementLocator(css_or_by_to_by(css_selector_or_by), self),
+            self._webdriver)
+
+    ss = all
+    elements = all
+    find_all = all
 
     def should(self, condition, timeout=None):
         if not timeout:
@@ -953,15 +1039,15 @@ class SeleneCollection(Sequence):
 
     @classmethod
     def by(cls, by, webdriver, context=None):
-        # type: (Tuple[str, str], WebDriver, ISearchContext) -> SeleneCollection
+        # type: (Tuple[str, str], IWebDriver, ISearchContext) -> SeleneCollection
         if not context:
             context = webdriver
 
-        return SeleneCollection(SearchContextListWebElementLocator(by, webdriver), webdriver)
+        return SeleneCollection(SearchContextListWebElementLocator(by, context), webdriver)
 
     @classmethod
     def by_css(cls, css_selector, webdriver, context=None):
-        # type: (str, WebDriver, ISearchContext) -> SeleneCollection
+        # type: (str, IWebDriver, ISearchContext) -> SeleneCollection
         if not context:
             context = webdriver
 
@@ -972,11 +1058,7 @@ class SeleneCollection(Sequence):
         if not context:
             context = webdriver
 
-        if isinstance(css_selector_or_by, tuple):
-            return SeleneCollection.by(css_selector_or_by, webdriver, context)
-        if isinstance(css_selector_or_by, str):
-            return SeleneCollection.by_css(css_selector_or_by, webdriver, context)
-        raise TypeError('css_selector_or_by should be str with CSS selector or Tuple[by:str, value:str]')
+        return SeleneCollection.by(css_or_by_to_by(css_selector_or_by), webdriver, context)
 
     def __init__(self, selene_locator, webdriver):
         self._locator = selene_locator
@@ -1017,25 +1099,43 @@ class SeleneCollection(Sequence):
     should_not_be = should_not
     should_not_have = should_not
 
-    def ss(self, condition):
+    def should_each(self, condition, timeout=None):
+        if not timeout:
+            timeout = config.timeout
+
+        for selement in self:
+            selement.should(condition, timeout)
+
+    def should_each_not(self, condition, timeout=None):
+        if not timeout:
+            timeout = config.timeout
+
+        for selement in self:
+            selement.should_not(condition, timeout)
+
+    def filtered_by(self, condition):
         return SeleneCollection(FilteredListWebElementLocator(condition, self), self._webdriver)
 
-    filtered = ss
-    filtered_by = ss
-    all_by = ss
-    filter_by = ss
-    filterBy = ss
+    ss = filtered_by
+    all_by = filtered_by
+    filtered = filtered_by
+    filter_by = filtered_by
+    filterBy = filtered_by
 
-    def s(self, condition):
+    def element_by(self, condition):
         return SeleneElement(FoundByConditionWebElementLocator(condition, self), self._webdriver)
 
-    element_by = s
-    find_by = s
-    findBy = s
+    s = element_by
+    find_by = element_by
+    findBy = element_by
 
     # *** Sequence methods ***
 
     def __getitem__(self, index):
+        if isinstance(index, slice):
+            return SeleneCollection(
+                SlicedListWebElementLocator(index, collection=self),
+                self._webdriver)
         return SeleneElement(IndexedWebElementLocator(index, collection=self), self._webdriver)
 
     def __len__(self):
@@ -1046,10 +1146,12 @@ class SeleneCollection(Sequence):
     def __iter__(self):
         i = 0
         current_len = len(self)
-        while i <= current_len:
+        while i < current_len:
             v = self[i]
             yield v
             i += 1
+
+    # *** Additional Collection style methods ***
 
     # *** Useful shortcuts ***
 
@@ -1059,6 +1161,48 @@ class SeleneCollection(Sequence):
     def first(self):
         return self[0]
 
+    # # *** private methods ***
+    #
+    # def _execute(self, command, condition=be.or_not_to_be):
+    #     try:
+    #         return command()
+    #     except (WebDriverException,):
+    #         self.should(condition)
+    #         return command()
+
+
+class IWebDriverSource(object):
+    __metaclass__ = ABCMeta
+
+    @abstractproperty
+    def driver(self):
+        # type: () -> WebDriver
+        pass
+
+
+# todo: consider implementing it like of DelegatingMeta
+class ExplicitWebDriverSource(IWebDriverSource):
+    @property
+    def driver(self):
+        return self._webdriver
+
+    def __init__(self, webdriver):
+        self._webdriver = webdriver
+
+
+class SharedWebDriverSource(IWebDriverSource):
+
+    @property
+    def driver(self):
+        return self._webdriver
+
+    @driver.setter
+    def driver(self, value):
+        self._webdriver = value
+
+    def __init__(self):
+        self._webdriver = NoneObject("SharedWebDriverSource#_webdriver")  # type: IWebDriver
+
 
 class SeleneDriver(IWebDriver):
     __metaclass__ = DelegatingMeta
@@ -1067,27 +1211,46 @@ class SeleneDriver(IWebDriver):
     def __delegate__(self):
         return self._webdriver
 
-    def __init__(self, webdriver):
-        self._webdriver = webdriver
+    @property
+    def _webdriver(self):
+        return self._source.driver
 
-    def s(self, css_selector_or_by):
-        return SeleneElement.by_css_or_by(css_selector_or_by, self._webdriver)
+    # todo: consider the usage: `SeleneDriver(FirefoxDriver())` over `SeleneDriver.wrap(FirefoxDriver())`
+    # todo: it may be possible if __init__ accepts webdriver_or_source and IWebDriverSource implements IWebDriver...
+    @classmethod
+    def wrap(cls, webdriver):
+        # type: (WebDriver) -> SeleneDriver
+        return SeleneDriver(ExplicitWebDriverSource(webdriver))
 
-    element = s
-    find = s
+    # def __init__(self, webdriver):
+    #     self._webdriver = webdriver
 
-    def ss(self, css_selector_or_by):
-        return SeleneCollection.by_css_or_by(css_selector_or_by, self._webdriver)
+    def __init__(self, webdriver_source):
+        # type: (IWebDriverSource) -> None
+        self._source = webdriver_source
 
-    all = ss
-    elements = ss
-    find_all = ss
+    def element(self, css_selector_or_by):
+        return SeleneElement.by_css_or_by(css_selector_or_by, self)
+
+    s = element
+    find = element
+
+    def all(self, css_selector_or_by):
+        return SeleneCollection.by_css_or_by(css_selector_or_by, self)
+
+    ss = all
+    elements = all
+    find_all = all
 
     # *** SearchContext methods ***
     def find_elements(self, by=By.ID, value=None):
-        # return self._webdriver.find_elements(by, value)
-        return self.find_all((by, value))
+        return self._webdriver.find_elements(by, value)
+        # return self.find_all((by, value))
 
     def find_element(self, by=By.ID, value=None):
-        # return self._webdriver.find_element(by, value)
-        return self.find((by, value))
+        return self._webdriver.find_element(by, value)
+        # return self.find((by, value))
+
+
+_shared_web_driver_source = SharedWebDriverSource()
+_shared_driver = SeleneDriver(_shared_web_driver_source)
