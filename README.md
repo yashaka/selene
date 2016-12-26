@@ -1,5 +1,5 @@
 # Selene - Concise API for Selenium in Python 
-(Selenide/Capybara + htmlelements/Widgeon alternative)
+(Selenide port in Python)
 
 Main features:
 - Concise API for Selenium
@@ -8,14 +8,22 @@ Main features:
 - PageObjects support
 
 
-
 Selene was inspired by [Selenide](http://selenide.org/) from Java world.
 
 Tests with Selene can be built either in a simple straightforward "selenide' style or with PageObjects composed from Widgets i.e. reusable element components.
 
-NOTE: This is still a pre-alpha version and may have some issues
+NOTE: This is still a pre-alpha version and API is nut fully finalized. Lately selene was completely refactored, and have changed API a bit. So if you have been using it before (versions <= 0.0.8), then upgrading to next version may break your tests. Read changelog before upgrading to be prepared;)
 
 ## Installation
+
+### latest development version (currently this is recommended option unless selene 1.0 will be released):
+
+    $ git clone https://github.com/yashaka/selene.git
+    $ python setup.py install
+
+[It is preferable also to use  local virtualenv](https://gist.github.com/yashaka/a547c6e0df5f6c973acc04655b6e3072).
+
+### latest released version (versions <= 0.0.8 will become outdated soon)
 
     pip install selene
 
@@ -26,9 +34,9 @@ NOTE: This is still a pre-alpha version and may have some issues
 ```python
 from selenium import webdriver
 
+from selene.support.condition import be, have
 from selene.conditions import *
 from selene.tools import *
-
 
 def setup_module(m):
     set_driver(webdriver.Firefox())
@@ -37,34 +45,33 @@ def setup_module(m):
 def teardown_module(m):
     get_driver().quit()
 
-
 def test_selene_demo():
     tasks = ss("#todo-list>li")
-    active_tasks = tasks.filter_by(css_class("active"))
+    active_tasks = tasks.filtered_by(css_class("active"))
 
     visit('http://todomvc4tasj.herokuapp.com')
 
     for task_text in ["1", "2", "3"]:
         s("#new-todo").set_value(task_text).press_enter()
 
-    tasks.assure(texts("1", "2", "3")).assure_each(css_class("active"))
-    s("#todo-count").assure(text("3"))
+    tasks.should(have.texts("1", "2", "3")).should_each(have.css_class("active"))
+    s("#todo-count").should(have.text("3"))
 
-    tasks[2].s(".toggle").click()
+    tasks[2].element(".toggle").click()
 
 
-    active_tasks.assure(texts("1", "2"))
-    active_tasks.assure(size(2))
+    active_tasks.should(have.texts("1", "2"))
+    active_tasks.should(have.size(2))
 
-    tasks.filter_by(css_class("completed")).assure(texts("3"))
+    tasks.filtered_by(css_class("completed")).should(have.texts("3"))
 
     s("a[href='#/active']").click()
-    tasks[:2].assure(texts("1", "2"))
-    tasks[2].assure(hidden)
+    tasks[:2].should(have.texts("1", "2"))
+    tasks[2].should(be.hidden)
 
     s("#toggle-all").click()
     s("#clear-completed").click()
-    tasks.assure(empty)
+    tasks.should(be.empty)
 ```
 
 This should be completely enough to start writing your tests.
@@ -79,27 +86,27 @@ to some class and so implement a PageObject pattern.
 You can also use alias methods for your taste:
 
 ```python
-tasks[2].find(".toggle").click()
+tasks[2].s(".toggle").click()
 ```
 instead of
 ```python
-tasks[2].s(".toggle").click()
+tasks[2].element(".toggle").click()
 ```
 
 ---
 
-```python
-s("#todo-list").find_all("li")
-```
-instead of
 ```python
 s("#todo-list").ss("li")
 ```
+instead of
+```python
+s("#todo-list").all("li")
+```
 
 ---
 
 ```python
-tasks.insist(empty)
+tasks.assure(empty)
 ```
 or
 ```python
@@ -107,14 +114,80 @@ tasks.should_be(empty)
 ```
 instead of
 ```python
-tasks.assure(empty)
+tasks.should(be.empty)
 ```
 
 ---
 
-all the following names means the same: `insist`, `assure`, `should_be`, `should`, `should_be`, `should_have`
-Just the first two can sound good with any condition, but others depend.
+all the following names means the same: `assure`, `should`, `should_be`, `should_have`
+Just the first `assure` sounds good with any condition:
+* `assure(visible)` :)
+* `assure(text('foo')` :)
 
+but others may not:
+
+* `should(visible)` :(
+* `should(text('foo'))` :(
+
+so you have to choose proper "condition" version each time:
+
+* `should(be.visible)` :)
+* `should(have.text('foo'))` :)
+
+or proper "should" alias:
+
+* `should_be(visible)` :)
+* `should_have(text('foo'))` :)
+
+though these versions are less laconic than when using `assure`.
+Compare:
+
+* `assure(text('foo')` :)
+* `should_have(text('foo'))` :|
+* `should(have.text('foo'))` :|
+
+But regardless being less concise, the latest version gives you better autocomplete abilities when you don't remember all conditions:
+
+* `assure(.` :(
+* `should(have. ...` :)
+
+There seems to be no "the only best option". You can use the style you prefer more;)
+
+### Explicit SeleneDriver
+
+In addition to s, ss "static" methods (from selene.tools) to represent elements on the page, you can use their "object oriented" alternatives from SeleneDriver:
+
+```python
+driver = SeleneDriver.wrap(FirefoxDriver())
+#...
+def test_selene_demo():
+    tasks = driver.ss("#todo-list>li")
+
+    visit('http://todomvc4tasj.herokuapp.com')
+
+    for task_text in ["1", "2", "3"]:
+        driver.s("#new-todo").set_value(task_text).press_enter()
+
+    tasks.should(have.texts("1", "2", "3"))
+```
+
+or even in more readable way:
+
+```python
+driver = SeleneDriver.wrap(FirefoxDriver())
+#...
+def test_selene_demo():
+    tasks = driver.all("#todo-list>li")
+
+    visit('http://todomvc4tasj.herokuapp.com')
+
+    for task_text in ["1", "2", "3"]:
+        driver.element("#new-todo").set_value(task_text).press_enter()
+
+    tasks.should(have.texts("1", "2", "3"))
+```
+
+This approach may be useful in case you need to deal with different webdriver instances at the same time. (todo: examples will be provided later)
 
 ### Simple PageObjects Example
 Here is a simple example of PageObjects implementation (inspired by [selenide google search example](https://github.com/selenide-examples/google/tree/master/test/org/selenide/examples/google/selenide_page_object)):
@@ -139,7 +212,7 @@ class SearchResultsPage(object):
 def test_google_search():
     google = GooglePage().open()
     search = google.search("selene")
-    search.results[0].insist(text("In Greek mythology, Selene is the goddess of the moon"))  # :D
+    search.results[0].assure(text("In Greek mythology, Selene is the goddess of the moon"))  # :D
 ```
 
 That's it. Selene encourages to start writing tests in the simplest way. And add more layers of abstraction only by real demand. 
@@ -169,7 +242,7 @@ in case of failure will result in exception raised with message:
        TimeoutException: Message:
                    failed while waiting 4 seconds
                    to assert Hidden
-                   for element found by: ('selene', "('css selector', '#todo-list>li')[2]")
+                   for element found by: ('By.Selene', "('css selector', '#todo-list>li')[2]")
 ```
 
 Here the "stringified locator" is a bit more complicated for eyes. You can decode from it the following information:
@@ -259,16 +332,13 @@ def test_complete_task():
 ### More examples
 
 See [/tests/](https://github.com/yashaka/selene/tree/master/tests) files for more examples of usage.
-E.g. one more [PageObject with Widgets example](https://github.com/yashaka/selene/blob/master/tests/order/pages/order.py) and its [acceptance test](https://github.com/yashaka/selene/blob/master/tests/order/custom_selements_and_collections_end_to_end_test.py).
+E.g. one more [PageObject with Widgets example](https://github.com/yashaka/selene/blob/master/tests/examples/order/app_model/order_widgets.py) and its [acceptance test](https://github.com/yashaka/selene/blob/master/tests/examples/order/order_test.py).
 
 ## TODO list
 
 * consider automatic webdriver management implementation
 * add screenshooting
-* add more convenient methods to SElementsCollection impl.
-* improve general "autocompletion in IDE" capabilities (reduce "magic" in implementation)
 * make browser management support parallel testing
-* simplify implementation, at least decouple as much as possible some parts...
 * see more ideas at [see todo.md](https://github.com/yashaka/selene/blob/master/todo.md)
 
 ## Changelog
@@ -276,6 +346,9 @@ E.g. one more [PageObject with Widgets example](https://github.com/yashaka/selen
 [see CHANGELOG.md](https://github.com/yashaka/selene/blob/master/CHANGELOG.md)
 
 ## Contributing
+
+Before implementing your ideas, it is recommended first to create a corresponding issue and discuss the plan to be approved;)
+Also consider first to help with issues marked with help_needed label ;)
 
 1. Add a "feature request" Issue to this project.
 2. Discuss its need and possible implementation. And once approved...
