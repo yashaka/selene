@@ -1,6 +1,5 @@
 import selene.selene_driver
 from selene import config
-from selene.elements import SElement, SElementsCollection
 from selene.selene_driver import IWebDriver, SeleneElement, SeleneCollection
 
 
