@@ -1,9 +1,26 @@
 # Changelog
 
-## 1.0.0
+## 1.0.0 (from master branch)
 - internal
   - improved test coverage
     - added "given-helpers" for preconditions for atomic tests
+  - completely refactored implementation to be more structural and solid
+    - on the way found non-stable behavior of old implementation and fixed it
+- new features:
+  - object oriented paradigm is now supported in context of webdriver usage
+    - Don't like "static" s, ss helpers (from selene.tools module) using global driver instance set by set_driver(...)?
+    - now you can use driver.element, driver.all correspondingly
+        - where driver = SeleneDriver.wrap(FirefoxDriver()), etc.
+        - SeleneDriver has almost the same interface as WebDriver with additional methods
+          - so you can do everything you can do with raw selenium when needed
+- breaking changes:
+  - removed out of the box but overcomplicated Widgets support via extending SElement
+    - you still can create reusable Widgets in much simpler way
+      - see more explanation in [#17](https://github.com/yashaka/selene/issues/17)
+  - removed access by config.driver to the driver instance that was set by set_driver(...) from selene.tools
+    - it's mandatory to use get_driver(...) from selene.tools for this
+  - naming changes:
+    - tbd...
 
 ## 0.0.8 (released 08.12.2016)
 - locked the selenium version to 2.53.1
