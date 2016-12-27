@@ -1,18 +1,35 @@
+from selenium import webdriver
 from selenium.webdriver.remote.webdriver import WebDriver
+from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.firefox import GeckoDriverManager
 
 import selene.driver
 from selene import config
 from selene.elements import SeleneElement, SeleneCollection
+import atexit
+
+
+def exit():
+    get_driver().quit()
 
 
 def set_driver(driver):
     # type: (WebDriver) -> None
+    atexit.register(exit)
     selene.driver._shared_web_driver_source.driver = driver
 
 
 def get_driver():
     # type: () -> WebDriver
     return selene.driver._shared_web_driver_source.driver
+
+
+def is_driver_initialized():
+    try:
+        get_driver().session_id
+        return True
+    except AttributeError:
+        return False
 
 
 def visit(absolute_or_relative_url):
@@ -30,6 +47,8 @@ def visit(absolute_or_relative_url):
         visit('/subpage1')
         visit('/subpage2')
     """
+    if not is_driver_initialized():
+        set_driver(webdriver.Firefox(executable_path=GeckoDriverManager().install()))
     get_driver().get(config.app_host + absolute_or_relative_url)
 
 
