@@ -16,7 +16,7 @@ setup(
     # long_description=long_description,
     packages=['selene'],
     include_package_data=True,
-    install_requires=['selenium==2.53.1', 'future', 'backports.functools_lru_cache'],
+    install_requires=['selenium', 'future', 'backports.functools_lru_cache'],
     platforms='any',
     zip_safe=False,
     keywords=['testing', 'selenium', 'selenide', 'browser', 'pageobject', 'widget', 'wrapper'],
