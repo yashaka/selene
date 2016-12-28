@@ -1,5 +1,6 @@
 import pytest
 from selenium.common.exceptions import TimeoutException
+from webdriver_manager.firefox import GeckoDriverManager
 
 from selene.support.conditions import have
 from selene.tools import *
