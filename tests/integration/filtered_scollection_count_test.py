@@ -1,4 +1,5 @@
 from selenium import webdriver
+from webdriver_manager.firefox import GeckoDriverManager
 
 from core.none_object import NoneObject
 from selene import config

@@ -1,6 +1,7 @@
 import os
 
 from selenium import webdriver
+from webdriver_manager.firefox import GeckoDriverManager
 
 from selene import config
 from selene.tools import set_driver, get_driver
@@ -9,7 +10,7 @@ from tests.examples.order.app_model.order_widgets import Order
 
 def setup_function(m):
     config.timeout = 4
-    set_driver(webdriver.Firefox())
+    set_driver(webdriver.Firefox(executable_path=GeckoDriverManager().install()))
     config.app_host = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../../resources/orderapp/'
 
 

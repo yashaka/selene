@@ -1,7 +1,8 @@
 import pytest
 from selenium import webdriver
-from selene.tools import get_driver, set_driver
 from webdriver_manager.firefox import GeckoDriverManager
+
+from selene.tools import get_driver, set_driver
 
 
 @pytest.fixture(scope='class')
