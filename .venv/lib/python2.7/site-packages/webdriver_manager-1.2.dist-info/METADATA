@@ -1,0 +1,25 @@
+Metadata-Version: 2.0
+Name: webdriver-manager
+Version: 1.2
+Summary: Library provides the way to automatically manage drivers for different browsers
+Home-page: https://github.com/SergeyPirogov/webdriver_manager
+Author: Sergey Pirogov
+Author-email: automationremarks@gmail.com
+License: UNKNOWN
+Download-URL: https://github.com/SergeyPirogov/webdriver_manager/tarball/1.2
+Keywords: testing,selenium,driver,test automation
+Platform: UNKNOWN
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Intended Audience :: Information Technology
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: Unix
+Classifier: Operating System :: MacOS
+Requires-Dist: requests
+
+UNKNOWN
+
+

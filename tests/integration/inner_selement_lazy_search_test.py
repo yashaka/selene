@@ -76,4 +76,4 @@ def test_search_finds_exactly_inside_parent():
         /p>''')
 
     driver.element('p').element('a').click()
-    assert ("second" in driver.current_url()) is True
+    assert ("second" in driver.current_url) is True
