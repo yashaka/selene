@@ -1,6 +1,6 @@
 #py==1.4.26
 pytest
-selenium
+selenium==2.53.1
 future
 backports.functools_lru_cache
 #yolk
