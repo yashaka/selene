@@ -3,7 +3,7 @@ from selenium.webdriver.remote.webdriver import WebDriver
 import selene.driver
 from selene import config
 from selene.elements import SeleneElement, SeleneCollection
-from selene.factory import start_browser
+import selene.factory
 
 
 def quit_driver():
@@ -13,6 +13,7 @@ def quit_driver():
 def set_driver(driver):
     # type: (WebDriver) -> None
     selene.driver._shared_web_driver_source.driver = driver
+    config.browser_name = driver.name
 
 
 def get_driver():
@@ -35,7 +36,7 @@ def visit(absolute_or_relative_url):
         visit('/subpage1')
         visit('/subpage2')
     """
-    start_browser(selene.config.browser_name)
+    selene.factory.start_browser(selene.config.browser_name)
     get_driver().get(config.app_host + absolute_or_relative_url)
 
 
