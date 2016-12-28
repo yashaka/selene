@@ -11,7 +11,7 @@
     - Don't like "static" s, ss helpers (from selene.tools module) using global driver instance set by set_driver(...)?
     - now you can use driver.element, driver.all correspondingly
         - where driver = SeleneDriver.wrap(FirefoxDriver()), etc.
-        - SeleneDriver has almost the same interface as WebDriver with additional methods
+        - SeleneDriver has almost the same interface as WebDriver, but with additional methods
           - so you can do everything you can do with raw selenium when needed
 - breaking changes:
   - removed out of the box but overcomplicated Widgets support via extending SElement

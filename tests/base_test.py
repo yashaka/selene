@@ -1,11 +1,14 @@
 import pytest
 from selenium import webdriver
+from webdriver_manager.firefox import GeckoDriverManager
+
 from selene.tools import get_driver, set_driver
+from tests.acceptance.helpers.helper import get_test_driver
 
 
 @pytest.fixture(scope='class')
 def setup(request):
-    set_driver(webdriver.Firefox())
+    set_driver(get_test_driver())
 
     def teardown():
         get_driver().quit()

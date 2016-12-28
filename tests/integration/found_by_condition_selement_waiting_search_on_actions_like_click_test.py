@@ -44,7 +44,7 @@ def test_waits_for_visibility():
             500)
 
     driver.all('a').element_by(exact_text('go to Heading 2')).click()
-    assert ("second" in driver.current_url()) is True
+    assert ("second" in driver.current_url) is True
 
 
 def test_waits_for_present_in_dom_and_visibility():
@@ -58,7 +58,7 @@ def test_waits_for_present_in_dom_and_visibility():
             500)
 
     driver.all('a').element_by(exact_text('go to Heading 2')).click()
-    assert ("second" in driver.current_url()) is True
+    assert ("second" in driver.current_url) is True
 
 
 def test_waits_first_for_present_in_dom_then_visibility():
@@ -75,7 +75,7 @@ def test_waits_first_for_present_in_dom_then_visibility():
             500)
 
     driver.all('a').element_by(exact_text('go to Heading 2')).click()
-    assert ("second" in driver.current_url()) is True
+    assert ("second" in driver.current_url) is True
 
 
 # todo: there should be each such test method for each "passing" test from above...
@@ -92,5 +92,5 @@ def test_fails_on_timeout_during_waiting_for_visibility():
 
     with pytest.raises(TimeoutException):
         driver.all('a').element_by(exact_text('go to Heading 2')).click()
-    assert ("second" in driver.current_url()) is False
+    assert ("second" in driver.current_url) is False
 
