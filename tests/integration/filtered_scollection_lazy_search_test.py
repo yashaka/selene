@@ -4,7 +4,6 @@ from core.none_object import NoneObject
 from selene import config
 from selene.conditions import css_class
 from selene.driver import SeleneDriver
-from selene.support.conditions import have
 from tests.integration.helpers.givenpage import GivenPage
 
 __author__ = 'yashaka'

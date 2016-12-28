@@ -1,12 +1,12 @@
 from selene.conditions import exact_text, hidden, exact_texts
 from selene.tools import set_driver, get_driver, ss, s
-from selenium import webdriver
 
+from tests.acceptance.helpers.helper import get_test_driver
 from tests.acceptance.helpers.todomvc import given_active
 
 
 def setup_module(m):
-    set_driver(webdriver.Firefox())
+    set_driver(get_test_driver())
 
 
 def teardown_module(m):
@@ -14,7 +14,6 @@ def teardown_module(m):
 
 
 class Task(object):
-
     def __init__(self, container):
         self.container = container
 
@@ -24,7 +23,6 @@ class Task(object):
 
 
 class Tasks(object):
-
     def _elements(self):
         return ss("#todo-list>li")
 
