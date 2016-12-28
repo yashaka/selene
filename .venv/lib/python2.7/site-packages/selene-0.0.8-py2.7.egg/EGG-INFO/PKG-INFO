@@ -1,0 +1,25 @@
+Metadata-Version: 1.1
+Name: selene
+Version: 0.0.8
+Summary: Concise API for selenium in Python + Ajax support + PageObjects + Widgets (Selenide/Capybara + htmlelements/Widgeon alternative)
+Home-page: http://github.com/yashaka/selene/
+Author: Iakiv Kramarenko
+Author-email: yashaka@gmail.com
+License: Apache Software License
+Download-URL: https://github.com/yashaka/selene/tarball/0.0.8
+Description: UNKNOWN
+Keywords: testing,selenium,selenide,browser,pageobject,widget,wrapper
+Platform: any
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 3
+Classifier: Development Status :: 3 - Alpha
+Classifier: Natural Language :: English
+Classifier: Environment :: Web Environment
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Software Development :: Libraries :: Application Frameworks
+Classifier: Topic :: Internet :: WWW/HTTP :: Browsers
+Classifier: Topic :: Software Development :: Testing
