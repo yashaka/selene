@@ -19,6 +19,7 @@ def start_browser(name):
     if is_driver_initialized(name):
         return selene.tools.get_driver()
 
+    atexit._run_exitfuncs()
     if name == Browser.CHROME:
         driver = webdriver.Chrome(executable_path=ChromeDriverManager().install())
     else:
