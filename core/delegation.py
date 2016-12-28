@@ -12,14 +12,14 @@ def _make_delegator_method(name):
     return delegator
 
 
-def _make_delegator_method_to_property(name):
-    def delegator(self, *args, **kwargs):
-        return getattr(self.__delegate__, name)
-    return delegator
+# def _make_delegator_method_to_property(name):
+#     def delegator(self, *args, **kwargs):
+#         return getattr(self.__delegate__, name)
+#     return delegator
 
 
-# def _make_delegator_property(name):
-#     return property(lambda self: getattr(self.__delegate__, name))
+def _make_delegator_property(name):
+    return property(lambda self: getattr(self.__delegate__, name))
 
 
 def _is_property(name, cls):
@@ -28,24 +28,28 @@ def _is_property(name, cls):
 
 class DelegatingMeta(ABCMeta):
     def __new__(mcs, name, bases, dct):
-        abstract_method_names = frozenset.union(*(frozenset(filter(lambda m: not _is_property(m, base), base.__abstractmethods__))
-                                                  for base in bases))
         abstract_property_names = frozenset.union(*(frozenset(filter(lambda m: _is_property(m, base), base.__abstractmethods__))
+                                                    for base in bases))
+
+        for base in bases:
+            base.__abstractmethods__ = frozenset(filter(lambda m: not _is_property(m, base), base.__abstractmethods__))
+
+        abstract_method_names = frozenset.union(*(base.__abstractmethods__
                                                   for base in bases))
 
         for name in abstract_method_names:
             if name not in dct:
                 dct[name] = _make_delegator_method(name)
 
-        for name in abstract_property_names:
-            if name not in dct:
-                dct[name] = _make_delegator_method_to_property(name)
+        # for name in abstract_property_names:
+        #     if name not in dct:
+        #         dct[name] = _make_delegator_method_to_property(name)
 
         cls = super(DelegatingMeta, mcs).__new__(mcs, name, bases, dct)
 
-        # for name in abstract_property_names:
-        #     if name not in dct:
-        #         setattr(cls, name, _make_delegator_property(name))
+        for name in abstract_property_names:
+            if name not in dct:
+                setattr(cls, name, _make_delegator_property(name))
 
         return cls
 
