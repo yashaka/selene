@@ -8,3 +8,5 @@ app_host = ''
 cash_elements = False
 """To cash all elements after first successful find
       config.cash_elements = True"""
+
+browser_name = "chrome"

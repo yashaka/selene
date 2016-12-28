@@ -1,3 +1,7 @@
+from webdriver_manager.firefox import GeckoDriverManager
+
+from tests.acceptance.helpers.helper import get_test_driver
+
 __author__ = 'yashaka'
 
 from selenium import webdriver
@@ -8,7 +12,7 @@ from selene.bys import *
 
 
 def setup_module(m):
-    set_driver(webdriver.Firefox())
+    set_driver(get_test_driver())
 
 
 def teardown_module(m):
