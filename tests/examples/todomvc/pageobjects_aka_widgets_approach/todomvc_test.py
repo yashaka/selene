@@ -1,14 +1,12 @@
-from webdriver_manager.firefox import GeckoDriverManager
-
 from selene.conditions import exact_text, hidden, exact_texts
 from selene.tools import set_driver, get_driver, ss, s
-from selenium import webdriver
 
+from tests.acceptance.helpers.helper import get_test_driver
 from tests.acceptance.helpers.todomvc import given_active
 
 
 def setup_module(m):
-    set_driver(webdriver.Firefox(executable_path=GeckoDriverManager().install()))
+    set_driver(get_test_driver())
 
 
 def teardown_module(m):

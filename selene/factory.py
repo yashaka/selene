@@ -22,7 +22,9 @@ def start_browser(name):
     atexit._run_exitfuncs()
     if name == Browser.CHROME:
         driver = webdriver.Chrome(executable_path=ChromeDriverManager().install())
-    else:
+    elif name == Browser.MARIONETTE:
         driver = webdriver.Firefox(executable_path=GeckoDriverManager().install())
+    else:
+        driver = webdriver.Firefox()
     atexit.register(driver.quit)
     selene.tools.set_driver(driver)
