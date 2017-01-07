@@ -14,6 +14,7 @@ from selene.abctypes.webelement import IWebElement
 from selene.conditions import Condition
 from selene.common.delegation import DelegatingMeta
 from selene.helpers import css_or_by_to_by
+from selene.support import by
 from selene.support.conditions import be
 from selene.support.conditions import have
 from selene.wait import wait_for, wait_for_not
@@ -219,6 +220,8 @@ class SeleneElement(IWebElement):
     def __str__(self):
         return self._locator.description
 
+    # *** Relative elements ***
+
     def element(self, css_selector_or_by):
         return SeleneElement(
             InnerWebElementLocator(css_or_by_to_by(css_selector_or_by), self),
@@ -250,6 +253,20 @@ class SeleneElement(IWebElement):
     elements = all
     find_all = all
 
+    @property
+    def parent_element(self):
+        return self.element(by.be_parent())
+
+    @property
+    def following_sibling(self):
+        return self.element(by.be_following_sibling())
+
+    @property
+    def first_child(self):
+        return self.element(by.be_first_child())
+
+    # *** Asserts (Explicit waits) ***
+
     def should(self, condition, timeout=None):
         if not timeout:
             timeout = config.timeout
@@ -276,6 +293,8 @@ class SeleneElement(IWebElement):
     assure_not = should_not
     should_not_be = should_not
     should_not_have = should_not
+
+    # *** Additional actions ***
 
     def double_click(self):
         self._execute(
