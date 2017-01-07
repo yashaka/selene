@@ -1,25 +1,22 @@
-from time import sleep
-
 import pytest
-from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
 
 from selene.browsers import Browser
-from selene.factory import start_browser
+from selene.factory import start_driver
 from selene.tools import get_driver, set_driver
+from tests.acceptance.helpers.helper import get_test_driver
 
 
 @pytest.mark.parametrize("browser_name", ["firefox",
                                           "chrome"])
 def test_factory_can_create_browser(browser_name):
-    start_browser(browser_name)
-    driver = get_driver()
-    assert driver.name == browser_name
+    start_driver(browser_name)
+    assert get_driver().name == browser_name
 
 
 def test_can_set_browser_directly():
-    driver = webdriver.Chrome(ChromeDriverManager().install())
+    driver = get_test_driver()
     set_driver(driver)
-    start_browser(Browser.CHROME)
-    assert driver.name == Browser.CHROME
+    start_driver(Browser.CHROME)
+    assert get_driver().name == Browser.CHROME
+    get_driver().quit()
     driver.quit()

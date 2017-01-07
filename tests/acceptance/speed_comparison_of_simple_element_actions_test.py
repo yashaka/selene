@@ -6,6 +6,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 
 from selene.conditions import visible
 from selene.tools import s, set_driver, get_driver, visit
+from tests.acceptance.helpers.helper import get_test_driver
 from tests.helpers import time_spent
 from tests.acceptance.helpers.todomvc import TODOMVC_URL
 
@@ -17,15 +18,15 @@ def setup_function(f):
     global browser
     global shaded_browser
 
-    set_driver(webdriver.Firefox())
+    set_driver(get_test_driver())
     visit(TODOMVC_URL)
     s("#new-todo").should_be(visible)
 
-    browser = webdriver.Firefox()
+    browser = get_test_driver()
     browser.get(TODOMVC_URL)
     WebDriverWait(browser, 4).until(expected_conditions.visibility_of_element_located((By.CSS_SELECTOR, "#new-todo")))
 
-    shaded_browser = webdriver.Firefox()
+    shaded_browser = get_test_driver()
 
 
 def teardown_function(f):

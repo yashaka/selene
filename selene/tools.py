@@ -12,14 +12,12 @@ def quit_driver():
 
 def set_driver(driver):
     # type: (WebDriver) -> None
-    if selene.factory.driver_has_started(driver.name):
-        selene.factory.kill_all_started_browsers()
     selene.factory.set_shared_driver(driver)
 
 
 def get_driver():
     # type: () -> WebDriver
-    return selene.factory.start_browser(selene.config.browser_name)
+    return selene.factory.start_driver(selene.config.browser_name)
 
 
 def visit(absolute_or_relative_url):
