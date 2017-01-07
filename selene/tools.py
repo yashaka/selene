@@ -12,6 +12,8 @@ def quit_driver():
 
 def set_driver(driver):
     # type: (WebDriver) -> None
+    if selene.factory.is_another_driver(driver):
+        selene.factory.kill_all_started_drivers()
     selene.factory.set_shared_driver(driver)
 
 

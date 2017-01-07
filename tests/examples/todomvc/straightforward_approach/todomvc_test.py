@@ -15,7 +15,6 @@ APP_URL = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../../../re
 class TestTodoMVC(BaseTest):
 
     def test_filter_tasks(self):
-        selene.browser_name = "firefox"
         visit(APP_URL)
 
         s('#new-todo').should(be.enabled).set_value('a').press_enter()

@@ -13,20 +13,16 @@ import selene.tools
 
 
 def set_shared_driver(driver):
-    driver_name = driver.name
-    if not is_same_driver(driver):
-        kill_all_started_drivers()
     selene.driver._shared_web_driver_source.driver = driver
-    config.browser_name = driver_name
-
+    config.browser_name = driver.name
 
 def get_shared_driver():
     return selene.driver._shared_web_driver_source.driver
 
 
-def is_same_driver(driver):
+def is_another_driver(driver):
     try:
-        return get_shared_driver().session_id == driver.session_id
+        return get_shared_driver().session_id != driver.session_id
     except AttributeError:
         return False
 
@@ -34,7 +30,7 @@ def is_same_driver(driver):
 def driver_has_started(name):
     try:
         shared_driver = get_shared_driver()
-        return shared_driver.name == name
+        return shared_driver.name == name and shared_driver.session_id
     except AttributeError:
         return False
 
@@ -53,8 +49,7 @@ def start_driver(name):
     elif name == Browser.MARIONETTE:
         driver = webdriver.Firefox(executable_path=GeckoDriverManager().install())
     else:
-        binary = FirefoxBinary("/home/sergey/Downloads/firefox/firefox")
-        driver = webdriver.Firefox(firefox_binary=binary)
+        driver = webdriver.Firefox()
     set_shared_driver(driver)
     _register_driver(driver)
     return driver
