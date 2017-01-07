@@ -4,10 +4,10 @@ from abc import ABCMeta, abstractproperty
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webdriver import WebDriver
 
-from core.delegation import DelegatingMeta
-from core.none_object import NoneObject
-from selene.elements import SeleneElement, SeleneCollection
 from selene.abctypes.webdriver import IWebDriver
+from selene.common.delegation import DelegatingMeta
+from selene.common.none_object import NoneObject
+from selene.elements import SeleneElement, SeleneCollection
 
 
 class IWebDriverSource(object):

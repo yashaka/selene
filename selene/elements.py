@@ -6,17 +6,17 @@ from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
-from core.delegation import DelegatingMeta
 from selene import config
-from selene.conditions import Condition
-from selene.helpers import css_or_by_to_by
 from selene.abctypes.locators import ISeleneWebElementLocator, ISeleneListWebElementLocator
-from selene.support.conditions import be
-from selene.support.conditions import have
-from selene.wait import wait_for, wait_for_not
 from selene.abctypes.search_context import ISearchContext
 from selene.abctypes.webdriver import IWebDriver
 from selene.abctypes.webelement import IWebElement
+from selene.conditions import Condition
+from selene.common.delegation import DelegatingMeta
+from selene.helpers import css_or_by_to_by
+from selene.support.conditions import be
+from selene.support.conditions import have
+from selene.wait import wait_for, wait_for_not
 
 try:
     from functools import lru_cache
