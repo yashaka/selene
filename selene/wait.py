@@ -57,14 +57,14 @@ def wait_for_not(entity, method, message='', timeout=None):
 
 def has(entity, method):
     try:
-        value = method(entity);
+        value = method(entity)
         return value if value is not None else False
     except (WebDriverException,) as exc:
         return False
 
 def has_not(entity, method):
     try:
-        value = method(entity);
+        value = method(entity)
         return value if value is None else True
     except (WebDriverException,) as exc:
         return True

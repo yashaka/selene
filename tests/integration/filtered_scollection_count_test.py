@@ -1,8 +1,8 @@
 from selenium import webdriver
 from webdriver_manager.firefox import GeckoDriverManager
 
-from core.none_object import NoneObject
 from selene import config
+from selene.common.none_object import NoneObject
 from selene.driver import SeleneDriver
 from selene.support.conditions import have
 from tests.acceptance.helpers.helper import get_test_driver

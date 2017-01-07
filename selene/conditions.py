@@ -1,9 +1,6 @@
 from operator import contains, eq
 
-from core.none_object import NoneObject
-from selene import config
-import selenium.common.exceptions
-# todo: refactor conditions to accept element.finder, not element - to make implementation of conditions more secure
+from selene.common.none_object import NoneObject
 from selene.exceptions import ConditionNotSatisfiedException
 
 

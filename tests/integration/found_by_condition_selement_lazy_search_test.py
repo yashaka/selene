@@ -1,8 +1,8 @@
 from selenium import webdriver
 
-from core.none_object import NoneObject
 from selene import config
 from selene.conditions import css_class, exact_text
+from selene.common.none_object import NoneObject
 from selene.driver import SeleneDriver
 from tests.acceptance.helpers.helper import get_test_driver
 from tests.integration.helpers.givenpage import GivenPage

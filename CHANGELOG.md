@@ -13,6 +13,17 @@
         - where driver = SeleneDriver.wrap(FirefoxDriver()), etc.
         - SeleneDriver has almost the same interface as WebDriver, but with additional methods
           - so you can do everything you can do with raw selenium when needed
+  - additional "helpers" from selene.support package
+    - more readable and convenient API to retrieve conditions via selene.support.(be|have)
+      - e.g. `s('#element').should(have.text('foo'))`
+    - more readable and convenient API to retrieve by locators via selene.support.by
+      - e.g. 
+        - `s(by.text('foo')).click()`
+        - `s('#element').element(by.be_following_sibling).click()`
+    - SeleneElement relative search shortcut-methods:
+      - `s('#element').parent_element.click()`
+      - `s('#element').following_sibling.click()`
+      - `s('#element').first_child.click()`
 - breaking changes:
   - removed out of the box but overcomplicated Widgets support via extending SElement
     - you still can create reusable Widgets in much simpler way
