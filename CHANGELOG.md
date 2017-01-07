@@ -1,6 +1,19 @@
 # Changelog
 
-## 1.0.0 (from master branch)
+## 1.0.0ax (next from master branch)
+  - naming changes:
+    - tbd...
+    
+## 1.0.0a2 (not published, available via direct install from sources)
+- new features:
+  - automatic driver management (thanks to PR from @SergeyPirogov)
+    - no more need to `set_driver`, 
+      just use any command from `selene.tools`, 
+      like `visit`, `s`, or `ss` and driver will be opened automatically,
+      and then closed automatically (unless you decide to set it manually via `set_driver`)
+    - includes automatic installation of needed drivers via [webdriver_manager](https://github.com/SergeyPirogov/webdriver_manager)
+    
+## 1.0.0a1 (not published, available via direct install from sources)
 - internal
   - improved test coverage
     - added "given-helpers" for preconditions for atomic tests
@@ -30,8 +43,6 @@
       - see more explanation in [#17](https://github.com/yashaka/selene/issues/17)
   - removed access by config.driver to the driver instance that was set by set_driver(...) from selene.tools
     - it's mandatory to use get_driver(...) from selene.tools for this
-  - naming changes:
-    - tbd...
 
 ## 0.0.8 (released 08.12.2016)
 - locked the selenium version to 2.53.1

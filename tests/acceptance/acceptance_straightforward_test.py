@@ -2,10 +2,9 @@ import os
 
 from selene.conditions import css_class, texts, text, size, hidden, empty
 from selene.tools import *
-from tests.base_test import *
 
 
-class TestTodoMVC(BaseTest):
+class TestTodoMVC(object):
 
     def test_selene_demo(self):
         tasks = ss("#todo-list>li")

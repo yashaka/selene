@@ -2,17 +2,16 @@ import pytest
 from selenium.common.exceptions import TimeoutException
 
 from selene.conditions import hidden, exist
+from tests.acceptance.helpers.helper import get_test_driver
 
 __author__ = 'yashaka'
-
-from selenium import webdriver
 
 from selene.tools import *
 from tests.acceptance.helpers.todomvc import given_active, given_at_other_page, given_empty_tasks, given, task
 
 
 def setup_module(m):
-    set_driver(webdriver.Firefox())
+    set_driver(get_test_driver())
 
 
 def teardown_module(m):
@@ -54,4 +53,3 @@ def test_is_displayed_returns_value_with_no_wait_for_visibility():
 def test_is_displayed_returns_true():
     given(task("a"), task("b", is_completed=True))
     assert s("#clear-completed").is_displayed()
-

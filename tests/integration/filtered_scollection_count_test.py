@@ -1,9 +1,11 @@
 from selenium import webdriver
+from webdriver_manager.firefox import GeckoDriverManager
 
 from selene import config
 from selene.common.none_object import NoneObject
 from selene.driver import SeleneDriver
 from selene.support.conditions import have
+from tests.acceptance.helpers.helper import get_test_driver
 from tests.integration.helpers.givenpage import GivenPage
 
 __author__ = 'yashaka'
@@ -16,7 +18,7 @@ original_timeout = config.timeout
 
 def setup_module(m):
     global driver
-    driver = SeleneDriver.wrap(webdriver.Firefox())
+    driver = SeleneDriver.wrap(get_test_driver())
     global GIVEN_PAGE
     GIVEN_PAGE = GivenPage(driver)
     global WHEN

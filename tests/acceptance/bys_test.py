@@ -1,6 +1,6 @@
-__author__ = 'yashaka'
+from tests.acceptance.helpers.helper import get_test_driver
 
-from selenium import webdriver
+__author__ = 'yashaka'
 
 from selene.tools import *
 from tests.acceptance.helpers.todomvc import given_active
@@ -8,7 +8,7 @@ from selene.bys import *
 
 
 def setup_module(m):
-    set_driver(webdriver.Firefox())
+    set_driver(get_test_driver())
 
 
 def teardown_module(m):

@@ -3,16 +3,23 @@ from selenium.webdriver.remote.webdriver import WebDriver
 import selene.driver
 from selene import config
 from selene.elements import SeleneElement, SeleneCollection
+import selene.factory
+
+
+def quit_driver():
+    get_driver().quit()
 
 
 def set_driver(driver):
     # type: (WebDriver) -> None
-    selene.driver._shared_web_driver_source.driver = driver
+    if selene.factory.is_another_driver(driver):
+        selene.factory.kill_all_started_drivers()
+    selene.factory.set_shared_driver(driver)
 
 
 def get_driver():
     # type: () -> WebDriver
-    return selene.driver._shared_web_driver_source.driver
+    return selene.factory.ensure_driver_started(selene.config.browser_name)
 
 
 def visit(absolute_or_relative_url):

@@ -8,11 +8,10 @@ from selene.support.conditions import have
 
 __author__ = 'yashaka'
 
-from tests.base_test import *
 from selene.tools import *
 
 
-class TestTodoMVC(BaseTest):
+class TestTodoMVC(object):
 
     def test_tasks_life_cycle(self):
 

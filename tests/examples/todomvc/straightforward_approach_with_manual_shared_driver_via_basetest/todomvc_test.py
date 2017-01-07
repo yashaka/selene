@@ -1,15 +1,20 @@
+import os
+
 from selene.support.conditions import be
 from selene.support.conditions import have
+from tests.base_test import *
 
 from selene.bys import by_link_text
 from selene.conditions import exact_text
 from selene.tools import ss, s, visit
 
+APP_URL = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../../../resources/todomvcapp/home.html'
 
-class TestTodoMVC(object):
+
+class TestTodoMVC(BaseTest):
 
     def test_filter_tasks(self):
-        visit('https://todomvc4tasj.herokuapp.com/')
+        visit(APP_URL)
 
         s('#new-todo').should(be.enabled).set_value('a').press_enter()
         s('#new-todo').should(be.enabled).set_value('b').press_enter()
