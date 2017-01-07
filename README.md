@@ -6,6 +6,7 @@ Main features:
 - jQuery-style selectors
 - Ajax support
 - PageObjects support
+- Automatic driver management
 
 
 Selene was inspired by [Selenide](http://selenide.org/) from Java world.
@@ -32,22 +33,12 @@ NOTE: This is still a pre-alpha version and API is nut fully finalized. Lately s
 ### Basic example
 
 ```python
-from selenium import webdriver
-
-from selene.support.condition import be, have
-from selene.conditions import *
-from selene.tools import *
-
-def setup_module(m):
-    set_driver(webdriver.Firefox())
-
-
-def teardown_module(m):
-    get_driver().quit()
+from selene.tools import s, ss, visit
+from selene.support.conditions import be, have
 
 def test_selene_demo():
     tasks = ss("#todo-list>li")
-    active_tasks = tasks.filtered_by(css_class("active"))
+    active_tasks = tasks.filtered_by(have.css_class("active"))
 
     visit('http://todomvc4tasj.herokuapp.com')
 
@@ -63,7 +54,7 @@ def test_selene_demo():
     active_tasks.should(have.texts("1", "2"))
     active_tasks.should(have.size(2))
 
-    tasks.filtered_by(css_class("completed")).should(have.texts("3"))
+    tasks.filtered_by(have.css_class("completed")).should(have.texts("3"))
 
     s("a[href='#/active']").click()
     tasks[:2].should(have.texts("1", "2"))
@@ -78,8 +69,8 @@ This should be completely enough to start writing your tests.
 In case you need to reuse some parts elsewhere - go ahead and move your locators:
 ```python
     tasks = ss("#todo-list>li")
-    active = css_class("active")
-    completed = css_class("completed")
+    active = have.css_class("active")
+    completed = have.css_class("completed")
 ```
 to some class and so implement a PageObject pattern.
 
@@ -152,6 +143,40 @@ But regardless being less concise, the latest version gives you better autocompl
 * `should(have. ...` :)
 
 There seems to be no "the only best option". You can use the style you prefer more;)
+
+### Configuring shared browser
+
+By default all "search elements" methods (`s`, `ss`) and other browser actions methods like `visit` - use shared driver.
+Shared driver is initialized automatically and uses Firefox driver. 
+
+If you wont other shared browser's driver, you can customize it explicitly:
+```python
+from selene import config
+from selene.browsers import Browser
+
+config.browser_name = Browser.CHROME
+```
+
+You also can disable automatic driver initialization by providing your driver instance:
+
+```python
+from selene.tools import set_driver, get_driver
+from selenium import webdriver
+
+# this allows you to provide additional driver customization
+def setup_module(m):
+    driver = webdriver.Remote(
+        command_executor='http://127.0.0.1:4444/wd/hub',
+        desired_capabilities={'browserName': 'htmlunit',
+                              'version': '2',
+                              'javascriptEnabled': True})
+    set_driver(driver)
+
+
+# then you have to close driver manually
+def teardown_module(m):
+    get_driver().quit()
+```
 
 ### Explicit SeleneDriver
 

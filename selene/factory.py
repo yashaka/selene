@@ -39,10 +39,14 @@ def kill_all_started_drivers():
     atexit._run_exitfuncs()
 
 
-def start_driver(name):
+def ensure_driver_started(name):
     if driver_has_started(name):
         return get_shared_driver()
 
+    return _start_driver(name)
+
+
+def _start_driver(name):
     kill_all_started_drivers()
     if name == Browser.CHROME:
         driver = webdriver.Chrome(executable_path=ChromeDriverManager().install())
@@ -53,6 +57,7 @@ def start_driver(name):
     set_shared_driver(driver)
     _register_driver(driver)
     return driver
+
 
 
 def _register_driver(driver):

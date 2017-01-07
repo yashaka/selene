@@ -19,7 +19,7 @@ def set_driver(driver):
 
 def get_driver():
     # type: () -> WebDriver
-    return selene.factory.start_driver(selene.config.browser_name)
+    return selene.factory.ensure_driver_started(selene.config.browser_name)
 
 
 def visit(absolute_or_relative_url):
