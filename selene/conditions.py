@@ -3,19 +3,17 @@ from operator import contains, eq
 from selene.common.none_object import NoneObject
 from selene.exceptions import ConditionNotSatisfiedException
 
-
 or_not_to_be = lambda: True
 
 
 class Condition(object):
-
     def __init__(self):
         self.found = NoneObject('Condition#found')
 
     def __call__(self, entity):
         self.entity = entity
         self.found = self.entity()  # todo: do we actually need it?
-                                    # while we have self.found = wait_for(...
+        # while we have self.found = wait_for(...
         if self.apply():
             return self.found
         else:
@@ -26,16 +24,16 @@ class Condition(object):
     # todo: change this method to only stringify condition name and parameters,
     # todo:  and everything else should be provided in some describe method...
     def __str__(self):
-            expected_string = str(self.expected()) if (self.expected() is not None) else ""
-            actual_string = str(self.actual()) if (self.actual() is not None) else ""
-            return """
-            for %s found by: %s%s%s
-        """ % (self.identity(),
-               self.entity._locator._by,
-               """:
-            \texpected: """ + expected_string,
-               """
-            \t  actual: """ + actual_string)
+        expected_string = str(self.expected()) if (self.expected() is not None) else ""
+        actual_string = str(self.actual()) if (self.actual() is not None) else ""
+        return """
+            for {element} located by: {locator}
+            \texpected: {expected}
+            \t  actual: {actual}
+        """.format(element=self.identity(),
+                   locator=self.entity,
+                   expected=expected_string,
+                   actual=actual_string)
 
     def description(self):
         return "%s expecting: %s" % (self.__class__.__name__, self.expected())
@@ -67,7 +65,6 @@ class Condition(object):
 
 
 class CollectionCondition(Condition):
-
     def identity(self):
         return "elements"
 
@@ -116,6 +113,7 @@ class Enabled(Condition):
     def apply(self):
         return self.found.is_enabled()
 
+
 enabled = Enabled()
 
 
@@ -124,6 +122,7 @@ class Exist(Condition):
     """
     checks if element exist in DOM
     """
+
     def apply(self):
         return True
 
@@ -141,7 +140,6 @@ hidden = Hidden()
 
 
 class css_class(Condition):
-
     def __init__(self, class_attribute_value):
         # type: (str) -> None
         self.expected_containable_class = class_attribute_value
@@ -159,7 +157,6 @@ class css_class(Condition):
 
 
 class attribute(Condition):
-
     def __init__(self, name, value):
         # type: (str, str) -> None
         self.name = name
@@ -176,7 +173,9 @@ class attribute(Condition):
     def actual(self):
         return self.actual_value
 
+
 blank = attribute('value', '')
+
 
 #########################
 # COLLECTION CONDITIONS #
@@ -184,7 +183,6 @@ blank = attribute('value', '')
 
 
 class texts(CollectionCondition):
-
     def __init__(self, *expected_texts):
         self.expected_texts = expected_texts
         self.actual_texts = None
@@ -195,7 +193,7 @@ class texts(CollectionCondition):
     def apply(self):
         self.actual_texts = [item.text.encode('utf-8') for item in self.found]
         return len(self.actual_texts) == len(self.expected_texts) and \
-            all(map(self.compare_fn(), self.actual_texts, self.expected_texts))
+               all(map(self.compare_fn(), self.actual_texts, self.expected_texts))
 
     def expected(self):
         return self.expected_texts
@@ -205,12 +203,11 @@ class texts(CollectionCondition):
 
 
 class exact_texts(texts):
-
     def compare_fn(self):
         return eq
 
-class size(CollectionCondition):
 
+class size(CollectionCondition):
     def __init__(self, expected_size):
         self.expected_size = expected_size
         self.actual_size = None
@@ -230,7 +227,6 @@ empty = size(0)
 
 
 class size_at_least(CollectionCondition):
-
     def __init__(self, minimum_size):
         self.minimum_size = minimum_size
         self.actual_size = None

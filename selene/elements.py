@@ -34,7 +34,7 @@ class SearchContextWebElementLocator(ISeleneWebElementLocator):
 
     @property
     def description(self):
-        return "By.Selene: (%s).find(%s)" % (self._search_context, self._by)
+        return "Selene.find({})".format(self._by)
 
     def find(self):
         return self._search_context.find_element(*self._by)
@@ -48,7 +48,7 @@ class InnerWebElementLocator(ISeleneWebElementLocator):
 
     @property
     def description(self):
-        return "By.Selene: (%s).find(%s)" % (self._element, self._by)
+        return "%s.find(%s)" % (self._element, self._by)
 
     def find(self):
         # return self._element.should(be.in_dom).find_element(*self._by)
