@@ -2,7 +2,7 @@ import os
 
 import selene
 from selene.browsers import Browser
-from selene.conditions import exact_text
+from selene.conditions import exact_text, hidden, visible
 from selene.tools import visit, s
 
 start_page = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/start_page.html'
@@ -17,3 +17,4 @@ def test_can_init_custom_browser_on_visit():
     selene.config.browser_name = Browser.CHROME
     visit(start_page)
     s("#selene_link").should_have(exact_text("Selene site"))
+    s("#hidden_button").click()
