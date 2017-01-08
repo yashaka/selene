@@ -122,7 +122,7 @@ but others may not:
 
 so you have to choose proper "condition" version each time:
 
-* `should(be.visible)` :)
+* `should(be.visible` :)
 * `should(have.text('foo'))` :)
 
 or proper "should" alias:
@@ -267,11 +267,18 @@ in case of failure will result in exception raised with message:
        TimeoutException: Message:
                    failed while waiting 4 seconds
                    to assert Hidden
-                   for element found by: ('By.Selene', "('css selector', '#todo-list>li')[2]")
+                   for element found by: ('By.Selene', ('css selector', '#todo-list>li')[2]")
 ```
 
 Here the "stringified locator" is a bit more complicated for eyes. You can decode from it the following information:
 _"inside the list of elements available by css selector '#todo-list>li' selene was trying to find element with index [2]"_
+
+**NOTE** 
+If you use pytest, it is recommended to [disable too detailed traceback printing](http://doc.pytest.org/en/latest/usage.html#modifying-python-traceback-printing), e.g. by using one of the following command-line options:
+```
+pytest --tb=short   # shorter traceback format
+pytest --tb=native  # Python standard library formatting
+```
 
 ### PageObjects composed with Widgets
 Sometimes your UI is build with many "reusable" widgets or components. If you follow general "Test Automation Pyramid" guidelines, most probably you have not too much of automated selenium tests. And "simple pageobjects" will be pretty enough for your tests.

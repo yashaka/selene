@@ -8,3 +8,4 @@ texts = conditions.texts
 exact_texts = conditions.exact_texts
 css_class = conditions.css_class
 attribute = conditions.attribute
+not_ = conditions.not_

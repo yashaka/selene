@@ -1,7 +1,7 @@
 from operator import contains, eq
 
 from selene.common.none_object import NoneObject
-from selene.exceptions import ConditionNotSatisfiedException
+from selene.exceptions import ConditionMismatch
 
 
 or_not_to_be = lambda: True
@@ -14,34 +14,30 @@ class Condition(object):
 
     def __call__(self, entity):
         self.entity = entity
-        self.found = self.entity()  # todo: do we actually need it?
-        # while we have self.found = wait_for(...
+        self.found = self.entity()
         if self.apply():
             return self.found
         else:
-            raise ConditionNotSatisfiedException
+            raise ConditionMismatch()
 
-        return self.found if self.apply() else None
-
-    # todo: change this method to only stringify condition name and parameters,
-    # todo:  and everything else should be provided in some describe method...
     def __str__(self):
-        expected_string = str(self.expected()) if (self.expected() is not None) else ""
-        actual_string = str(self.actual()) if (self.actual() is not None) else ""
-        return """
-            for {element} located by: {locator}
-            \texpected: {expected}
-            \t  actual: {actual}
+        raw_expected = str(self.expected())
+        expected_string = '''
+            \texpected: ''' + raw_expected if raw_expected else ''
 
-            reason: {reason}
-        """.format(element=self.identity(),
-                   locator=self.entity,
-                   expected=expected_string,
-                   actual=actual_string,
-                   reason=self.reason())
+        raw_actual = str(self.actual())
+        actual_string = '''
+            \t  actual: ''' + raw_actual if raw_actual else ''
+
+        return 'for {identity} located by: {locator},{expected}{actual}'.format(
+            identity=self.identity(),
+            locator=self.entity,
+            expected=expected_string,
+            actual=actual_string)
 
     def description(self):
-        return "%s expecting: %s" % (self.__class__.__name__, self.expected())
+        expected = self.expected()
+        return "%s(%s)" % (self.__class__.__name__, expected) if expected else self.__class__.__name__
 
     def identity(self):
         return "element"
@@ -68,8 +64,46 @@ class Condition(object):
         except Exception:
             return False
 
-    def reason(self):
-        return "Condition Mismatch"
+
+class not_(Condition):
+
+    def __init__(self, condition):
+        # type: (Condition) -> None
+        self.condition = condition
+        super(not_, self).__init__()
+
+    def __call__(self, entity):
+        self.entity = entity
+        try:
+            self.condition.__call__(entity)
+        except Exception as exc:
+            self.found = self.condition.found
+            return self.found
+        raise ConditionMismatch()
+
+    def description(self):
+        expected = self.condition.expected()
+        return 'not %s(%s)' % (self.condition.__class__.__name__, expected) if expected else 'not ' + self.__class__.__name__
+
+    def expected(self):
+        expected = self.condition.expected()
+        return 'not(%s)' % expected if expected else ''
+
+    def actual(self):
+        return self.condition.actual()
+
+    def identity(self):
+        return self.condition.identity()
+
+    def apply(self):
+        return self.condition.apply()
+
+    def matches(self, entity):
+        return not self.condition.matches(entity)
+
+    def matches_webelement(self, webelement):
+        return not self.condition.matches_webelement(webelement)
+
 
 class CollectionCondition(Condition):
 
@@ -79,6 +113,7 @@ class CollectionCondition(Condition):
 
 class text(Condition):
     def __init__(self, expected_text):
+        super(text, self).__init__()
         self.expected_text = expected_text
         self.actual_text = None
 
@@ -149,6 +184,7 @@ class css_class(Condition):
 
     def __init__(self, class_attribute_value):
         # type: (str) -> None
+        super(css_class, self).__init__()
         self.expected_containable_class = class_attribute_value
         self.actual_class = ''  # type: str
 
@@ -167,6 +203,7 @@ class attribute(Condition):
 
     def __init__(self, name, value):
         # type: (str, str) -> None
+        super(attribute, self).__init__()
         self.name = name
         self.expected_value = value
         self.actual_value = ''  # type: str
@@ -191,6 +228,7 @@ blank = attribute('value', '')
 class texts(CollectionCondition):
 
     def __init__(self, *expected_texts):
+        super(texts, self).__init__()
         self.expected_texts = expected_texts
         self.actual_texts = None
 
@@ -217,6 +255,7 @@ class exact_texts(texts):
 class size(CollectionCondition):
 
     def __init__(self, expected_size):
+        super(size, self).__init__()
         self.expected_size = expected_size
         self.actual_size = None
 
@@ -237,6 +276,7 @@ empty = size(0)
 class size_at_least(CollectionCondition):
 
     def __init__(self, minimum_size):
+        super(size_at_least, self).__init__()
         self.minimum_size = minimum_size
         self.actual_size = None
 

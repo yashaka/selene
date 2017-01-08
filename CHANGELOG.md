@@ -3,6 +3,14 @@
 ## 1.0.0ax (next from master branch)
   - naming changes:
     - tbd...
+
+## 1.0.0a3 (next from master branch)
+  - improvements:
+    - error messages are cleaner
+      - todo: still lacks proper test coverage of all cases...
+  - internal
+    - refactored wait_for implementation, made it cleaner
+      - todo: still need to refactor condition implementation
     
 ## 1.0.0a2 (not published, available via direct install from sources)
 - new features:

@@ -1,7 +1,8 @@
 from selenium.common.exceptions import WebDriverException
 
 
-class ConditionNotSatisfiedException(WebDriverException):
+class ConditionMismatch(WebDriverException):
     """
     """
-    pass
+    def __str__(self):
+        return 'Condition Mismatch'

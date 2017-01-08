@@ -26,11 +26,14 @@ def setup_module(m):
 
 
 def teardown_module(m):
+    global original_timeout
+    config.timeout = original_timeout
     driver.quit()
 
 
 def setup_function(fn):
-    global original_timeout
+    config.timeout = original_timeout
+
 
 
 def test_complex_locator_based_on_by_locators():

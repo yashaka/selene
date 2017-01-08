@@ -70,7 +70,7 @@ tasks = ss("#todo-list>li")
 
 def add(*taskTexts):
     for text in taskTexts:
-        s("#new-todo").send_keys(text, Keys.ENTER)
+        s("#new-todo").should(be.enabled).send_keys(text, Keys.ENTER)
 
 
 def assert_tasks(*task_texts):
