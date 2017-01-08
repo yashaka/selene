@@ -3,10 +3,12 @@ from operator import contains, eq
 from selene.common.none_object import NoneObject
 from selene.exceptions import ConditionNotSatisfiedException
 
+
 or_not_to_be = lambda: True
 
 
 class Condition(object):
+
     def __init__(self):
         self.found = NoneObject('Condition#found')
 
@@ -65,6 +67,7 @@ class Condition(object):
 
 
 class CollectionCondition(Condition):
+
     def identity(self):
         return "elements"
 
@@ -113,7 +116,6 @@ class Enabled(Condition):
     def apply(self):
         return self.found.is_enabled()
 
-
 enabled = Enabled()
 
 
@@ -122,7 +124,6 @@ class Exist(Condition):
     """
     checks if element exist in DOM
     """
-
     def apply(self):
         return True
 
@@ -140,6 +141,7 @@ hidden = Hidden()
 
 
 class css_class(Condition):
+
     def __init__(self, class_attribute_value):
         # type: (str) -> None
         self.expected_containable_class = class_attribute_value
@@ -157,6 +159,7 @@ class css_class(Condition):
 
 
 class attribute(Condition):
+
     def __init__(self, name, value):
         # type: (str, str) -> None
         self.name = name
@@ -173,9 +176,7 @@ class attribute(Condition):
     def actual(self):
         return self.actual_value
 
-
 blank = attribute('value', '')
-
 
 #########################
 # COLLECTION CONDITIONS #
@@ -183,6 +184,7 @@ blank = attribute('value', '')
 
 
 class texts(CollectionCondition):
+
     def __init__(self, *expected_texts):
         self.expected_texts = expected_texts
         self.actual_texts = None
@@ -203,11 +205,12 @@ class texts(CollectionCondition):
 
 
 class exact_texts(texts):
+
     def compare_fn(self):
         return eq
 
-
 class size(CollectionCondition):
+
     def __init__(self, expected_size):
         self.expected_size = expected_size
         self.actual_size = None
@@ -227,6 +230,7 @@ empty = size(0)
 
 
 class size_at_least(CollectionCondition):
+
     def __init__(self, minimum_size):
         self.minimum_size = minimum_size
         self.actual_size = None

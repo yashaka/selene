@@ -70,7 +70,6 @@ def has(entity, method):
     except (WebDriverException,) as exc:
         return False
 
-
 def has_not(entity, method):
     try:
         value = method(entity)
