@@ -13,7 +13,6 @@ def wait_for(entity, method, message='', timeout=None):
         timeout = config.timeout
     screen = None
     stacktrace = None
-    reason = None
     end_time = time.time() + timeout
     while True:
         try:
@@ -25,7 +24,6 @@ def wait_for(entity, method, message='', timeout=None):
             # where exceptions ara caught for the same purpose
             screen = getattr(exc, 'screen', None)
             stacktrace = getattr(exc, 'stacktrace', None)
-            reason = exc.msg if exc.msg else "Value Mismatch"
         time.sleep(config.poll_during_waits)
         if time.time() > end_time:
             break
@@ -33,11 +31,9 @@ def wait_for(entity, method, message='', timeout=None):
         """
             failed while waiting {timeout} seconds
             to assert {condition}{message}
-            reason: {reason}
         """.format(timeout=timeout,
                    condition=method.__class__.__name__,
-                   message=message,
-                   reason=reason),
+                   message=message),
         screen, stacktrace)
 
 

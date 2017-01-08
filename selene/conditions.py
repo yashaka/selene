@@ -32,10 +32,13 @@ class Condition(object):
             for {element} located by: {locator}
             \texpected: {expected}
             \t  actual: {actual}
+
+            reason: {reason}
         """.format(element=self.identity(),
                    locator=self.entity,
                    expected=expected_string,
-                   actual=actual_string)
+                   actual=actual_string,
+                   reason=self.reason())
 
     def description(self):
         return "%s expecting: %s" % (self.__class__.__name__, self.expected())
@@ -65,6 +68,8 @@ class Condition(object):
         except Exception:
             return False
 
+    def reason(self):
+        return "Condition Mismatch"
 
 class CollectionCondition(Condition):
 
