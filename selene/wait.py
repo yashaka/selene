@@ -30,8 +30,12 @@ def wait_for(entity, method, message='', timeout=None):
             break
     raise TimeoutException(
         """
-            failed while waiting %s seconds
-            to assert %s%s        """ % (timeout, method.__class__.__name__, message), screen, stacktrace)
+            failed while waiting {timeout} seconds
+            to assert {condition}{message}
+        """.format(timeout=timeout,
+                   condition=method.__class__.__name__,
+                   message=message),
+        screen, stacktrace)
 
 
 def wait_for_not(entity, method, message='', timeout=None):
@@ -62,6 +66,7 @@ def has(entity, method):
         return value if value is not None else False
     except (WebDriverException,) as exc:
         return False
+
 
 def has_not(entity, method):
     try:
