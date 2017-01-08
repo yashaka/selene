@@ -1,10 +1,10 @@
+import sys
 from selenium.webdriver.remote.webdriver import WebDriver
 
 import selene.driver
 from selene import config
 from selene.elements import SeleneElement, SeleneCollection
 import selene.factory
-
 
 def quit_driver():
     get_driver().quit()

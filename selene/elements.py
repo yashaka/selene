@@ -11,13 +11,13 @@ from selene.abctypes.locators import ISeleneWebElementLocator, ISeleneListWebEle
 from selene.abctypes.search_context import ISearchContext
 from selene.abctypes.webdriver import IWebDriver
 from selene.abctypes.webelement import IWebElement
-from selene.conditions import Condition
+from selene.conditions import Condition, not_
 from selene.common.delegation import DelegatingMeta
 from selene.helpers import css_or_by_to_by
 from selene.support import by
 from selene.support.conditions import be
 from selene.support.conditions import have
-from selene.wait import wait_for, wait_for_not
+from selene.wait import wait_for
 
 try:
     from functools import lru_cache
@@ -26,7 +26,7 @@ except ImportError:
 
 
 # todo: consider renaming/refactoring to WebDriverWebElementLocator...
-class SearchContextWebElementLocator(ISeleneWebElementLocator):
+class WebDriverWebElementLocator(ISeleneWebElementLocator):
     def __init__(self, by, search_context):
         # type: (Tuple[By, str], ISearchContext) -> None
         self._by = by
@@ -34,7 +34,7 @@ class SearchContextWebElementLocator(ISeleneWebElementLocator):
 
     @property
     def description(self):
-        return "By.Selene: (%s).find(%s)" % (self._search_context, self._by)
+        return str(self._by)
 
     def find(self):
         return self._search_context.find_element(*self._by)
@@ -48,11 +48,11 @@ class InnerWebElementLocator(ISeleneWebElementLocator):
 
     @property
     def description(self):
-        return "By.Selene: (%s).find(%s)" % (self._element, self._by)
+        return "%s.find(%s)" % (self._element, self._by)
 
     def find(self):
         # return self._element.should(be.in_dom).find_element(*self._by)
-        return self._element.should(be.visible).find_element(*self._by)
+        return self._element.should(be.Visible()).find_element(*self._by)
         # todo: should(be.in_dom) or be.visible?
 
 
@@ -94,7 +94,7 @@ class SearchContextListWebElementLocator(ISeleneListWebElementLocator):
 
     @property
     def description(self):
-        return "By.Selene: (%s).find_all(%s)" % (self._search_context, self._by)
+        return str(self._by)
 
     def find(self):
         return self._search_context.find_elements(*self._by)
@@ -112,7 +112,7 @@ class InnerListWebElementLocator(ISeleneListWebElementLocator):
 
     def find(self):
         # return self._element.should(be.in_dom).find_elements(*self._by)
-        return self._element.should(be.visible).find_elements(*self._by)
+        return self._element.should(be.Visible()).find_elements(*self._by)
         # todo: should(be.in_dom) or be.visible?
 
 
@@ -190,7 +190,7 @@ class SeleneElement(IWebElement):
         if not context:
             context = webdriver
 
-        return SeleneElement(SearchContextWebElementLocator(by, context), webdriver)
+        return SeleneElement(WebDriverWebElementLocator(by, context), webdriver)
 
     @classmethod
     def by_css(cls, css_selector, webdriver, context=None):
@@ -285,7 +285,8 @@ class SeleneElement(IWebElement):
         if not timeout:
             timeout = config.timeout
         # todo: implement proper cashing
-        wait_for_not(self, condition, condition, timeout)
+        not_condition = not_(condition)
+        wait_for(self, not_condition, not_condition, timeout)
         return self
 
     # todo: consider removing some aliases
@@ -299,7 +300,7 @@ class SeleneElement(IWebElement):
     def double_click(self):
         self._execute(
             lambda: self._actions_chains.double_click(self.__delegate__).perform(),
-            condition=be.visible)
+            condition=be.Visible())
         return self
 
     def set(self, new_text_value):
@@ -310,7 +311,7 @@ class SeleneElement(IWebElement):
 
         self._execute(
             clear_and_send_keys,
-            condition=be.visible)
+            condition=be.Visible())
 
         return self
 
@@ -328,7 +329,7 @@ class SeleneElement(IWebElement):
     def hover(self):
         self._execute(
             lambda: self._actions_chains.move_to_element(self.__delegate__).perform(),
-            condition=be.visible)
+            condition=be.Visible())
         return self
 
     # *** ISearchContext methods ***
@@ -351,24 +352,24 @@ class SeleneElement(IWebElement):
     def text(self):
         return self._execute(
             lambda: self.__delegate__.text,
-            condition=be.visible)
+            condition=be.Visible())
 
     def click(self):
         self._execute(
             lambda: self.__delegate__.click(),
-            condition=be.visible)
+            condition=be.Visible())
         return self  # todo: think on: IWebElement#click was supposed to return None
 
     def submit(self):
         self._execute(
             lambda: self.__delegate__.submit(),
-            condition=be.visible)
+            condition=be.Visible())
         return self
 
     def clear(self):
         self._execute(
             lambda: self.__delegate__.clear(),
-            condition=be.visible)
+            condition=be.Visible())
         return self
 
     def get_attribute(self, name):
@@ -379,17 +380,17 @@ class SeleneElement(IWebElement):
     def is_selected(self):
         return self._execute(
             lambda: self.__delegate__.is_selected(),
-            condition=be.visible)
+            condition=be.Visible())
 
     def is_enabled(self):
         return self._execute(
             lambda: self.__delegate__.is_enabled(),
-            condition=be.visible)
+            condition=be.Visible())
 
     def send_keys(self, *value):
         self._execute(
             lambda: self.__delegate__.send_keys(*value),
-            condition=be.visible)
+            condition=be.Visible())
         return self
 
     # RenderedWebElement Items
@@ -402,13 +403,13 @@ class SeleneElement(IWebElement):
     def location_once_scrolled_into_view(self):
         return self._execute(
             lambda: self.__delegate__.location_once_scrolled_into_view,
-            condition=be.visible)
+            condition=be.Visible())
 
     @property
     def size(self):
         return self._execute(
             lambda: self.__delegate__.size,
-            condition=be.visible)
+            condition=be.Visible())
 
     def value_of_css_property(self, property_name):
         return self._execute(
@@ -419,30 +420,30 @@ class SeleneElement(IWebElement):
     def location(self):
         return self._execute(
             lambda: self.__delegate__.location,
-            condition=be.visible)
+            condition=be.Visible())
 
     @property
     def rect(self):
         return self._execute(
             lambda: self.__delegate__.rect,
-            condition=be.visible)
+            condition=be.Visible())
 
     @property
     def screenshot_as_base64(self):
         return self._execute(
             lambda: self.__delegate__.screenshot_as_base64,
-            condition=be.visible)  # todo: or `be.in_dom`?
+            condition=be.Visible())  # todo: or `be.in_dom`?
 
     @property
     def screenshot_as_png(self):
         return self._execute(
             lambda: self.__delegate__.screenshot_as_png,
-            condition=be.visible)  # todo: or `be.in_dom`?
+            condition=be.Visible())  # todo: or `be.in_dom`?
 
     def screenshot(self, filename):
         return self._execute(
             lambda: self.__delegate__.screenshot(filename),
-            condition=be.visible)  # todo: or `be.in_dom`?
+            condition=be.Visible())  # todo: or `be.in_dom`?
 
     @property
     def parent(self):
@@ -536,7 +537,8 @@ class SeleneCollection(Sequence):
         if not timeout:
             timeout = config.timeout
         # todo: implement proper cashing
-        wait_for_not(self, condition, condition, timeout)
+        not_condition = not_(condition)
+        wait_for(self, not_condition, not_condition, timeout)
         return self
 
     # todo: consider removing some aliases are even all of them
