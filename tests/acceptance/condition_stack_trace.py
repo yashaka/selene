@@ -23,9 +23,11 @@ def test_should_be_suppressed_exception_message_for_explicit_condition():
     assert exception_message(ex) == ['Message: ',
                                      '            failed while waiting 4 seconds',
                                      '            to assert exact_text',
-                                     "            for element found by: ('css selector', '#selene_link'):",
+                                     "            for element located by: Selene.find(('css selector', '#selene_link'))",
                                      '            \texpected: Selene sit',
-                                     '            \t  actual: Selene site']
+                                     '            \t  actual: Selene site',
+                                     "",
+                                     "            reason: Condition Mismatch"]
 
 
 def test_should_be_suppressed_exception_message_for_implicit_condition():
@@ -36,6 +38,8 @@ def test_should_be_suppressed_exception_message_for_implicit_condition():
     assert exception_message(ex) == ['Message: ',
                                      '            failed while waiting 4 seconds',
                                      '            to assert Visible',
-                                     "            for element found by: ('css selector', '#hidden_button'):",
+                                     "            for element located by: Selene.find(('css selector', '#hidden_button'))",
                                      '            \texpected: ',
-                                     '            \t  actual:']
+                                     '            \t  actual: ',
+                                     "",
+                                     "            reason: Condition Mismatch"]
