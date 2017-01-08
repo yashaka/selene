@@ -31,7 +31,7 @@ class Condition(object):
             return """
             for %s found by: %s%s%s
         """ % (self.identity(),
-               self.entity,
+               self.entity._locator._by,
                """:
             \texpected: """ + expected_string,
                """

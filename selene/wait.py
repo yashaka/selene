@@ -8,6 +8,7 @@ from selenium.common.exceptions import TimeoutException
 
 
 def wait_for(entity, method, message='', timeout=None):
+    __tracebackhide__ = True
     if not timeout:
         timeout = config.timeout
     screen = None
@@ -30,11 +31,11 @@ def wait_for(entity, method, message='', timeout=None):
     raise TimeoutException(
         """
             failed while waiting %s seconds
-            to assert %s%s
-        """ % (timeout, method.__class__.__name__, message), screen, stacktrace)
+            to assert %s%s        """ % (timeout, method.__class__.__name__, message), screen, stacktrace)
 
 
 def wait_for_not(entity, method, message='', timeout=None):
+    __tracebackhide__ = True
     if not timeout:
         timeout = config.timeout
     end_time = time.time() + timeout

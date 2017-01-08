@@ -268,6 +268,7 @@ class SeleneElement(IWebElement):
     # *** Asserts (Explicit waits) ***
 
     def should(self, condition, timeout=None):
+        __tracebackhide__ = True
         if not timeout:
             timeout = config.timeout
         # todo: implement proper cashing
@@ -282,6 +283,7 @@ class SeleneElement(IWebElement):
     should_have = should
 
     def should_not(self, condition, timeout=None):
+        __tracebackhide__ = True
         if not timeout:
             timeout = config.timeout
         # todo: implement proper cashing
@@ -354,6 +356,7 @@ class SeleneElement(IWebElement):
             condition=be.visible)
 
     def click(self):
+        __tracebackhide__ = True
         self._execute(
             lambda: self.__delegate__.click(),
             condition=be.visible)
@@ -459,6 +462,7 @@ class SeleneElement(IWebElement):
     # *** private methods ***
 
     def _execute(self, command, condition=be.or_not_to_be):
+        __tracebackhide__ = True
         try:
             return command()
         except (WebDriverException,):
