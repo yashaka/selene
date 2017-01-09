@@ -1,5 +1,3 @@
-from selenium import webdriver
-
 from selene import config
 from selene.common.none_object import NoneObject
 from selene.driver import SeleneDriver
@@ -50,16 +48,16 @@ def test_does_not_wait_inner():
 
 def test_waits_for_parent_in_dom_then_visible():
     GIVEN_PAGE.opened_empty()
-    elements = driver.element('ul').all('.will-appear')
+    elements = driver.element('#will-appear').all('.item')
 
     WHEN.load_body('''
-                   <li class='will-appear'>Bob</li>
-                   <li class='will-appear' style='display:none'>Kate</li>''')
+                   <li class='item'>Bob</li>
+                   <li class='item' style='display:none'>Kate</li>''')
 
     WHEN.load_body_with_timeout('''
-                                <ul style="display:none">Hello to:
-                                    <li class='will-appear'>Bob</li>
-                                    <li class='will-appear' style='display:none'>Kate</li>
+                                <ul id='will-appear' style="display:none">Hello to:
+                                    <li class='item'>Bob</li>
+                                    <li class='item' style='display:none'>Kate</li>
                                 </ul>''',
                                 250)\
         .execute_script_with_timeout(

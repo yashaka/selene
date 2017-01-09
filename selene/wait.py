@@ -15,6 +15,8 @@ def wait_for(entity, method, message='', timeout=None):
         try:
             return method(entity)
         except Exception as reason:
+            reason_message = getattr(reason, 'msg', getattr(reason, 'message', ''))
+            reason_string = '{name}: {message}'.format(name=reason.__class__.__name__, message=reason_message)
             screen = getattr(reason, 'screen', None)
             stacktrace = getattr(reason, 'stacktrace', None)
             if time.time() > end_time:
@@ -27,7 +29,7 @@ def wait_for(entity, method, message='', timeout=None):
                     timeout=timeout,
                     condition=method.description(),
                     message=message,
-                    reason=reason), screen, stacktrace)
+                    reason=reason_string), screen, stacktrace)
             time.sleep(config.poll_during_waits)
 
 

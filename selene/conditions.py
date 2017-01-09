@@ -1,7 +1,7 @@
 from operator import contains, eq
 
 from selene.common.none_object import NoneObject
-from selene.exceptions import ConditionMismatch
+from selene.exceptions import ConditionMismatchException
 
 
 or_not_to_be = lambda: True
@@ -18,7 +18,7 @@ class Condition(object):
         if self.apply():
             return self.found
         else:
-            raise ConditionMismatch()
+            raise ConditionMismatchException()
 
     def __str__(self):
         raw_expected = str(self.expected())
@@ -79,7 +79,7 @@ class not_(Condition):
         except Exception as exc:
             self.found = self.condition.found
             return self.found
-        raise ConditionMismatch()
+        raise ConditionMismatchException()
 
     def description(self):
         expected = self.condition.expected()

@@ -1,7 +1,7 @@
 from _ast import Tuple, List
 from collections import Sequence
 
-from selenium.common.exceptions import WebDriverException, NoSuchElementException
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -34,7 +34,7 @@ class WebDriverWebElementLocator(ISeleneWebElementLocator):
 
     @property
     def description(self):
-        return str(self._by)
+        return 'first_by%s' % str(self._by)
 
     def find(self):
         return self._search_context.find_element(*self._by)
@@ -48,12 +48,10 @@ class InnerWebElementLocator(ISeleneWebElementLocator):
 
     @property
     def description(self):
-        return "%s.find(%s)" % (self._element, self._by)
+        return "%s.find_by%s" % (self._element, self._by)
 
     def find(self):
-        # return self._element.should(be.in_dom).find_element(*self._by)
-        return self._element.should(be.Visible()).find_element(*self._by)
-        # todo: should(be.in_dom) or be.visible?
+        return self._element.get_actual_webelement().find_element(*self._by)
 
 
 class CachingWebElementLocator(ISeleneWebElementLocator):
@@ -73,12 +71,11 @@ class CachingWebElementLocator(ISeleneWebElementLocator):
 # todo: Should we use this order convention? like below...
 class IndexedWebElementLocator(ISeleneWebElementLocator):
     def find(self):
-        delegate = self._collection.should(have.size_at_least(self._index + 1))
-        return delegate()[self._index]
+        return self._collection.get_actual_webelements()[self._index]
 
     @property
     def description(self):
-        return "By.Selene: (%s)[%s]" % (self._collection, self._index)
+        return "%s[%s]" % (self._collection, self._index)
 
     def __init__(self, index, collection):
         # type: (int, SeleneCollection) -> None
@@ -86,7 +83,7 @@ class IndexedWebElementLocator(ISeleneWebElementLocator):
         self._collection = collection
 
 
-class SearchContextListWebElementLocator(ISeleneListWebElementLocator):
+class WebdriverListWebElementLocator(ISeleneListWebElementLocator):
     def __init__(self, by, search_context):
         # type: (Tuple[By, str], ISearchContext) -> None
         self._by = by
@@ -94,7 +91,7 @@ class SearchContextListWebElementLocator(ISeleneListWebElementLocator):
 
     @property
     def description(self):
-        return str(self._by)
+        return 'all_by%s' % str(self._by)
 
     def find(self):
         return self._search_context.find_elements(*self._by)
@@ -108,12 +105,10 @@ class InnerListWebElementLocator(ISeleneListWebElementLocator):
 
     @property
     def description(self):
-        return "By.Selene: (%s).find_all(%s)" % (self._element, self._by)
+        return "(%s).find_all_by(%s)" % (self._element, self._by)
 
     def find(self):
-        # return self._element.should(be.in_dom).find_elements(*self._by)
-        return self._element.should(be.Visible()).find_elements(*self._by)
-        # todo: should(be.in_dom) or be.visible?
+        return self._element.get_actual_webelement().find_elements(*self._by)
 
 
 class FilteredListWebElementLocator(ISeleneListWebElementLocator):
@@ -126,7 +121,7 @@ class FilteredListWebElementLocator(ISeleneListWebElementLocator):
 
     @property
     def description(self):
-        return "By.Selene: (%s).filter_by(%s)" % (self._collection, self._condition.description())
+        return "(%s).filter_by(%s)" % (self._collection, self._condition.description())
 
     def __init__(self, condition, collection):
         # type: (Condition, SeleneCollection) -> None
@@ -136,13 +131,13 @@ class FilteredListWebElementLocator(ISeleneListWebElementLocator):
 
 class SlicedListWebElementLocator(ISeleneListWebElementLocator):
     def find(self):
-        self._collection.should(have.size_at_least(self._slice.stop))
+        # self._collection.should(have.size_at_least(self._slice.stop)) # todo: remove once covered with tests
         webelements = self._collection()
         return webelements[self._slice.start:self._slice.stop:self._slice.step]
 
     @property
     def description(self):
-        return "By.Selene: (%s)[%s:%s:%s]" % (self._collection, self._slice.start, self._slice.stop, self._slice.step)
+        return "(%s)[%s:%s:%s]" % (self._collection, self._slice.start, self._slice.stop, self._slice.step)
 
     def __init__(self, slc,  collection):
         # type: (slice, SeleneCollection) -> None
@@ -155,11 +150,11 @@ class FoundByConditionWebElementLocator(ISeleneWebElementLocator):
         for webelement in self._collection():
             if self._condition.matches_webelement(webelement):
                 return webelement
-        raise NoSuchElementException('Element was not found by: %s' % (self.description,))
+        raise NoSuchElementException('Element was not found by: %s' % (self._condition,))
 
     @property
     def description(self):
-        return "By.Selene: (%s).find_by(%s)" % (self._collection, self._condition.description())
+        return "(%s).select_by(%s)" % (self._collection, self._condition.description())
 
     def __init__(self, condition, collection):
         # type: (Condition, SeleneCollection) -> None
@@ -172,10 +167,13 @@ class SeleneElement(IWebElement):
 
     @property
     def __delegate__(self):
+        # type: () -> IWebElement
         return self._locator.find()
 
     # todo: is this alias needed?
-    _get_actual_webelement = __delegate__
+    def get_actual_webelement(self):
+        # type: () -> IWebElement
+        return self.__delegate__
 
     # todo: consider removing this method once conditions will be refactored
     # todo: (currently Condition impl depends on this method)
@@ -335,10 +333,16 @@ class SeleneElement(IWebElement):
     # *** ISearchContext methods ***
 
     def find_elements(self, by=By.ID, value=None):
-        return self.__delegate__.find_elements(by, value)
+        return self._execute(
+            lambda: self.__delegate__.find_elements(by, value),
+            condition=be.Visible())
+        # return self.__delegate__.find_elements(by, value) # todo: remove
 
     def find_element(self, by=By.ID, value=None):
-        return self.__delegate__.find_element(by, value)
+        return self._execute(
+            lambda: self.__delegate__.find_element(by, value),
+            condition=be.Visible())
+        # return self.__delegate__.find_element(by, value) # todo: remove
 
     # *** IWebElement methods ***
 
@@ -462,7 +466,7 @@ class SeleneElement(IWebElement):
     def _execute(self, command, condition=be.or_not_to_be):
         try:
             return command()
-        except (WebDriverException,):
+        except Exception:
             self.should(condition)
             return command()
 
@@ -481,6 +485,10 @@ class SeleneCollection(Sequence):
         # type: () -> List[IWebElement]
         return self._locator.find()
 
+    def get_actual_webelements(self):
+        # type: () -> List[IWebElement]
+        return self.__delegate__
+
     def __call__(self):
         # type: () -> List[IWebElement]
         return self.__delegate__
@@ -491,7 +499,7 @@ class SeleneCollection(Sequence):
         if not context:
             context = webdriver
 
-        return SeleneCollection(SearchContextListWebElementLocator(by, context), webdriver)
+        return SeleneCollection(WebdriverListWebElementLocator(by, context), webdriver)
 
     @classmethod
     def by_css(cls, css_selector, webdriver, context=None):
@@ -512,6 +520,8 @@ class SeleneCollection(Sequence):
         # type: (ISeleneListWebElementLocator, IWebDriver) -> None
         self._locator = selene_locator
         self._webdriver = webdriver
+
+    # todo: consider adding self.cashing, self.cashed - like for SeleneElement
 
     def __str__(self):
         return self._locator.description
@@ -587,6 +597,10 @@ class SeleneCollection(Sequence):
         return SeleneElement(IndexedWebElementLocator(index, collection=self), self._webdriver)
 
     def __len__(self):
+        # todo: optimise to the following:
+        #   return self.waifFor(size_at_least(0)),
+        # where waitFor will return the result of condition application, not self like should
+        self.should(have.size_at_least(0))
         return len(self.__delegate__)
 
     # *** Overriden Sequence methods ***
@@ -608,12 +622,3 @@ class SeleneCollection(Sequence):
 
     def first(self):
         return self[0]
-
-    # # *** private methods ***
-    #
-    # def _execute(self, command, condition=be.or_not_to_be):
-    #     try:
-    #         return command()
-    #     except (WebDriverException,):
-    #         self.should(condition)
-    #         return command()
