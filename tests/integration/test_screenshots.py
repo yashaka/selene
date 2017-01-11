@@ -1,5 +1,8 @@
 import os
 
+import pytest
+from selenium.common.exceptions import TimeoutException
+
 from selene import config
 from selene.conditions import exact_text
 from selene.tools import visit, make_screenshot, s
@@ -29,4 +32,6 @@ def test_can_save_screenshot_to_custom_folder():
 
 def test_can_make_screenshot_automatically():
     visit(start_page)
-    s("#selene_link").should_have(exact_text("Selen site"))
+    with pytest.raises(TimeoutException):
+        s("#selene_link").should_have(exact_text("Selen site"))
+    assert os.path.exists("/Users/sepi/PycharmProjects/selene/tests/screen_3.png")
