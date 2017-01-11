@@ -1,10 +1,16 @@
-import sys
+import logging
+import os
+
+import itertools
 from selenium.webdriver.remote.webdriver import WebDriver
 
 import selene.driver
+import selene.factory
 from selene import config
 from selene.elements import SeleneElement, SeleneCollection
-import selene.factory
+
+counter = itertools.count()
+
 
 def quit_driver():
     get_driver().quit()
@@ -54,3 +60,16 @@ def ss(css_selector_or_by):
 
 
 elements = ss
+
+
+def make_screenshot(filename="screen"):
+    id = next(counter)
+    screen_dir = config.screenshot_folder
+    screenshot_path = "{path}/{name}_{id}.png".format(path=screen_dir,
+                                                      name=filename,
+                                                      id=id)
+    if not os.path.exists(screen_dir):
+        os.makedirs(screen_dir)
+
+    get_driver().get_screenshot_as_file(screenshot_path)
+    return screenshot_path

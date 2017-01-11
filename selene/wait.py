@@ -1,3 +1,4 @@
+import selene
 from selene import config
 from selene.conditions import not_
 
@@ -20,16 +21,19 @@ def wait_for(entity, method, message='', timeout=None):
             screen = getattr(reason, 'screen', None)
             stacktrace = getattr(reason, 'stacktrace', None)
             if time.time() > end_time:
+                screenshot = selene.tools.make_screenshot()
                 raise TimeoutException('''
             failed while waiting {timeout} seconds
             to assert {condition}
             {message}
 
-            reason: {reason}'''.format(
+            reason: {reason}
+            screenshot: {screenshot}'''.format(
                     timeout=timeout,
                     condition=method.description(),
                     message=message,
-                    reason=reason_string), screen, stacktrace)
+                    reason=reason_string,
+                    screenshot=screenshot), screen, stacktrace)
             time.sleep(config.poll_during_waits)
 
 
