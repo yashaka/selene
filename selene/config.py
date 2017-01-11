@@ -1,4 +1,6 @@
 # todo: make the properties also "object oriented" to support different configs per different SeleneDriver instances
+import os
+
 from selene.browsers import Browser
 
 timeout = 4
@@ -11,3 +13,4 @@ cash_elements = False
       config.cash_elements = True"""
 
 browser_name = Browser.FIREFOX
+screenshot_folder = "{}/screenshots".format(os.path.expanduser("~"))
