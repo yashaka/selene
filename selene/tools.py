@@ -1,8 +1,8 @@
+from selenium.webdriver.remote.webdriver import WebDriver
 import logging
 import os
 
 import itertools
-from selenium.webdriver.remote.webdriver import WebDriver
 
 import selene.driver
 import selene.factory
