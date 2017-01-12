@@ -13,4 +13,4 @@ cash_elements = False
       config.cash_elements = True"""
 
 browser_name = Browser.FIREFOX
-screenshot_folder = "{}/screenshots".format(os.path.expanduser("~"))
+screenshot_folder = "{}/.selene/screenshots".format(os.path.expanduser("~"))
