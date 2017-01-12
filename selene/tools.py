@@ -1,15 +1,15 @@
-from selenium.webdriver.remote.webdriver import WebDriver
-import logging
+import itertools
 import os
 
-import itertools
+import time
+from selenium.webdriver.remote.webdriver import WebDriver
 
 import selene.driver
 import selene.factory
 from selene import config
 from selene.elements import SeleneElement, SeleneCollection
 
-counter = itertools.count()
+counter = itertools.count(start=int(round(time.time() * 1000)))
 
 
 def quit_driver():
