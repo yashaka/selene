@@ -13,13 +13,13 @@ start_page = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resou
 def test_can_make_screenshot_with_default_name():
     visit(start_page)
     path = make_screenshot()
-    assert "/Users/sepi/screenshots/screen_0.png" == path
+    assert "/Users/sepi/.selene/screenshots/screen_0.png" == path
 
 
 def test_can_make_screenshot_with_custom_name():
     visit(start_page)
     path = make_screenshot(filename="custom")
-    assert "/Users/sepi/screenshots/custom_1.png" == path
+    assert "/Users/sepi/.selene/screenshots/custom_1.png" == path
 
 
 def test_can_save_screenshot_to_custom_folder():
