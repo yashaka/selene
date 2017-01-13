@@ -63,13 +63,14 @@ elements = ss
 
 
 def make_screenshot(filename="screen"):
-    id = next(counter)
-    screen_dir = config.screenshot_folder
-    screenshot_path = "{path}/{name}_{id}.png".format(path=screen_dir,
-                                                      name=filename,
-                                                      id=id)
-    if not os.path.exists(screen_dir):
-        os.makedirs(screen_dir)
+    screenshot_id = counter.next()
+    screenshot_path = "{path}/{sub_folder}/{name}_{id}.png".format(path=config.screenshot_folder,
+                                                                   sub_folder=screenshot_id,
+                                                                   name=filename,
+                                                                   id=screenshot_id)
+    folder = os.path.dirname(screenshot_path)
+    if not os.path.exists(folder):
+        os.makedirs(folder)
 
     get_driver().get_screenshot_as_file(screenshot_path)
     return screenshot_path
