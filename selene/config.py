@@ -1,5 +1,7 @@
 # todo: make the properties also "object oriented" to support different configs per different SeleneDriver instances
+import itertools
 import os
+import time
 
 from selene.browsers import Browser
 
@@ -13,4 +15,10 @@ cash_elements = False
       config.cash_elements = True"""
 
 browser_name = Browser.FIREFOX
-screenshot_folder = "{}/.selene/screenshots".format(os.path.expanduser("~"))
+
+counter = itertools.count(start=int(round(time.time() * 1000)))
+
+screenshot_folder = "{user_home}/.selene/screenshots/{subfolder}".format(
+    user_home=os.path.expanduser("~"),
+    subfolder=counter.next())
+

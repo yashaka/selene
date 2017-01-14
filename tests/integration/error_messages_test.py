@@ -1,4 +1,5 @@
 import pytest
+import re
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
 
@@ -25,7 +26,9 @@ def teardown_module(m):
 
 
 def exception_message(ex):
-    return map(lambda s: s.strip(), str(ex.value.msg).strip().splitlines())
+    return [line.strip() if not re.match('\s*screenshot: /.*?/\.selene/screenshots/\d+?/screen_\d+\.png\s*',line)
+            else 'screenshot: //.selene/screenshots/*/screen_*.png'
+            for line in str(ex.value.msg).strip().splitlines()]
 
 
 def test_selement_search_fails_with_message_when_explicitly_waits_for_condition():
@@ -44,7 +47,8 @@ def test_selement_search_fails_with_message_when_explicitly_waits_for_condition(
             'expected: Hello wor',
             'actual: Hello world!',
             '',
-            'reason: ConditionMismatchException: condition did not match']
+            'reason: ConditionMismatchException: condition did not match',
+            'screenshot: //.selene/screenshots/*/screen_*.png']
 
 
 def test_selement_search_fails_with_message_when_implicitly_waits_for_condition():
@@ -60,7 +64,8 @@ def test_selement_search_fails_with_message_when_implicitly_waits_for_condition(
             'to assert Visible',
             "for element located by: first_by('css selector', '#hidden-button'),",
             '',
-            'reason: ConditionMismatchException: condition did not match']
+            'reason: ConditionMismatchException: condition did not match',
+            'screenshot: //.selene/screenshots/*/screen_*.png']
 
 
 def test_inner_selement_search_fails_with_message_when_implicitly_waits_for_condition_mismatch_on_inner_element():
@@ -78,7 +83,8 @@ def test_inner_selement_search_fails_with_message_when_implicitly_waits_for_cond
          'to assert Visible',
          "for element located by: first_by('css selector', '#container').find_by('css selector', '#hidden-button'),",
          '',
-         'reason: ConditionMismatchException: condition did not match']
+         'reason: ConditionMismatchException: condition did not match',
+         'screenshot: //.selene/screenshots/*/screen_*.png']
 
 
 def test_inner_selement_search_fails_with_message_when_implicitly_waits_for_condition_mismatched_on_parent_element():
@@ -97,7 +103,8 @@ def test_inner_selement_search_fails_with_message_when_implicitly_waits_for_cond
          'to assert Visible',
          "for element located by: first_by('css selector', '#hidden-container').find_by('css selector', '#button'),",
          '',
-         'reason: ConditionMismatchException: condition did not match']
+         'reason: ConditionMismatchException: condition did not match',
+         'screenshot: //.selene/screenshots/*/screen_*.png']
 
 
 def test_inner_selement_search_fails_with_message_when_implicitly_waits_for_condition_failed_on_parent_element():
@@ -116,7 +123,8 @@ def test_inner_selement_search_fails_with_message_when_implicitly_waits_for_cond
          'to assert Visible',
          "for element located by: first_by('css selector', '#not-existing').find_by('css selector', '#button'),",
          '',
-         'reason: NoSuchElementException: Unable to locate element: {"method":"css selector","selector":"#not-existing"}']
+         'reason: NoSuchElementException: Unable to locate element: {"method":"css selector","selector":"#not-existing"}',
+         'screenshot: //.selene/screenshots/*/screen_*.png']
 
 
 def test_indexed_selement_search_fails_with_message_when_implicitly_waits_for_condition_failed_on_collection():
@@ -135,7 +143,8 @@ def test_indexed_selement_search_fails_with_message_when_implicitly_waits_for_co
          'to assert Visible',
          "for element located by: all_by('css selector', 'button')[1],",
          '',
-         'reason: IndexError: list index out of range']
+         'reason: IndexError: list index out of range',
+         'screenshot: //.selene/screenshots/*/screen_*.png']
 
 
 def test_selement_search_fails_with_message_when_explicitly_waits_for_not_condition():
@@ -154,4 +163,5 @@ def test_selement_search_fails_with_message_when_explicitly_waits_for_not_condit
             'expected: not(Hello world!)',
             'actual: Hello world!',
             '',
-            'reason: ConditionMismatchException: condition did not match']
+            'reason: ConditionMismatchException: condition did not match',
+            'screenshot: //.selene/screenshots/*/screen_*.png']
