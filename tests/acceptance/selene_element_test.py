@@ -1,6 +1,7 @@
 import pytest
 from selenium.common.exceptions import TimeoutException
 
+from selene import config
 from selene.conditions import hidden, exist
 from tests.acceptance.helpers.helper import get_test_driver
 

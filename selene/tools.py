@@ -1,10 +1,12 @@
-import sys
+import os
+
 from selenium.webdriver.remote.webdriver import WebDriver
 
 import selene.driver
-from selene import config
-from selene.elements import SeleneElement, SeleneCollection
 import selene.factory
+from selene.config import counter
+from selene.elements import SeleneElement, SeleneCollection
+
 
 def quit_driver():
     get_driver().quit()
@@ -37,7 +39,7 @@ def visit(absolute_or_relative_url):
         visit('/subpage1')
         visit('/subpage2')
     """
-    get_driver().get(config.app_host + absolute_or_relative_url)
+    get_driver().get(selene.config.app_host + absolute_or_relative_url)
 
 
 def s(css_selector_or_by):
@@ -54,3 +56,18 @@ def ss(css_selector_or_by):
 
 
 elements = ss
+
+
+def take_screenshot(path=None, filename=None):
+    if not path:
+        path = selene.config.screenshot_folder
+    if not filename:
+        filename = "screen_{id}".format(id=selene.config.counter.next())
+    screenshot_path = "{path}/{name}.png".format(path=path,
+                                                 name=filename)
+    folder = os.path.dirname(screenshot_path)
+    if not os.path.exists(folder):
+        os.makedirs(folder)
+
+    get_driver().get_screenshot_as_file(screenshot_path)
+    return screenshot_path
