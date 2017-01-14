@@ -21,4 +21,3 @@ counter = itertools.count(start=int(round(time.time() * 1000)))
 screenshot_folder = "{user_home}/.selene/screenshots/{subfolder}".format(
     user_home=os.path.expanduser("~"),
     subfolder=counter.next())
-
