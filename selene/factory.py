@@ -2,9 +2,11 @@ import atexit
 from time import sleep
 
 from selenium import webdriver
+from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
+from selenium.webdriver.remote.webdriver import WebDriver
 
 import selene
 from selene import config
@@ -15,6 +17,7 @@ import selene.tools
 def set_shared_driver(driver):
     selene.driver._shared_web_driver_source.driver = driver
     config.browser_name = driver.name
+
 
 def get_shared_driver():
     return selene.driver._shared_web_driver_source.driver
@@ -27,12 +30,23 @@ def is_another_driver(driver):
         return False
 
 
-def driver_has_started(name):
+def is_driver_still_open(driver):
+    # type: (WebDriver) -> bool
     try:
-        shared_driver = get_shared_driver()
-        return shared_driver.name == name and shared_driver.session_id
-    except AttributeError:
+        driver.title
+    # todo: specify exception...
+    except Exception:
         return False
+    return True
+
+
+def driver_has_started(name):
+    shared_driver = get_shared_driver()
+    if not shared_driver:
+        return False
+    return shared_driver.name == name \
+        and shared_driver.session_id \
+        and is_driver_still_open(shared_driver)
 
 
 def kill_all_started_drivers():

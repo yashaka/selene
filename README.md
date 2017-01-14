@@ -369,7 +369,6 @@ E.g. one more [PageObject with Widgets example](https://github.com/yashaka/selen
 ## TODO list
 
 * consider automatic webdriver management implementation
-* add screenshooting
 * make browser management support parallel testing
 * see more ideas at [see todo.md](https://github.com/yashaka/selene/blob/master/todo.md)
 

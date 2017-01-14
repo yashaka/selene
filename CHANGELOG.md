@@ -5,6 +5,12 @@
     - tbd...
 
 ## 1.0.0a3 (next from master branch)
+  - added automatic screenshots on failed "should" methods
+    - by default screenshots are created in {user_home}/.selene/screenshots/{id_of_current_tests_run}
+    - by default the "previous run" screenshots are not cleared on "next run"
+  - screenshot can be created manually by `selene.tools.take_screenshot`
+
+## 1.0.0a3 (next from master branch)
   - improvements:
     - error messages are cleaner
       - todo: still lacks proper test coverage of all cases...
