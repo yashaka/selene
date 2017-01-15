@@ -1,9 +1,6 @@
 import atexit
-from time import sleep
 
 from selenium import webdriver
-from selenium.common.exceptions import WebDriverException
-from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 from selenium.webdriver.remote.webdriver import WebDriver
@@ -34,7 +31,7 @@ def is_driver_still_open(driver):
     # type: (WebDriver) -> bool
     try:
         driver.title
-    # todo: specify exception...
+    # todo: specify exception?.. (unfortunately there Selenium does not use some specific exception for this...)
     except Exception:
         return False
     return True
@@ -71,7 +68,6 @@ def _start_driver(name):
     set_shared_driver(driver)
     _register_driver(driver)
     return driver
-
 
 
 def _register_driver(driver):
