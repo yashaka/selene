@@ -1,6 +1,6 @@
 from future.utils import iteritems
-from selenium.webdriver.support.select import Select
 
+from selene.elements import SeleneElement
 from selene.helpers import merge
 from selene.support.conditions import be
 from selene.support.conditions import have
@@ -9,10 +9,27 @@ from selene.tools import visit, ss, s
 
 class SelectList(object):
     def __init__(self, element):
+        # type: (SeleneElement) -> None
         self._element = element
 
+    def open(self):
+        self._element.click()
+
+    def _options(self):
+        return self._element.all('option')
+
+    def select_by_value(self, value):
+        self._options().element_by(have.value(value)).click()
+
+    def select_by_text(self, text):
+        self._options().element_by(have.text(text)).click()
+
+    def select_by_exact_text(self, text):
+        self._options().element_by(have.exact_text(text)).click()
+
     def set(self, value):
-        Select(self._element).select_by_visible_text(value)
+        self.open()
+        self.select_by_value(value)
 
 
 class Filler(object):
