@@ -9,7 +9,7 @@ python:
   - "2.7"
 
 install:
-  - "pip install -r requirements.txt"
+  - pip install tox
 
 before_install:
   - export CHROME_BIN=/usr/bin/google-chrome
@@ -22,4 +22,4 @@ before_install:
   - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x16"
 
 script:
-  - py.test -sv tests/ --tb=short
+  - tox
