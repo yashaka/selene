@@ -1,3 +1,4 @@
+import warnings
 from _ast import Tuple, List
 from collections import Sequence
 
@@ -305,10 +306,15 @@ class SeleneElement(with_metaclass(DelegatingMeta, IWebElement)):
         return self
 
     # todo: consider removing some aliases
-    insist = should
     assure = should
     should_be = should
     should_have = should
+
+    def insist(self, condition, timeout=None):
+        """ Deprecated use should or assure instead
+        """
+        warnings.warn("use should or assure instead", DeprecationWarning)
+        return self.should(condition, timeout)
 
     def should_not(self, condition, timeout=None):
         if timeout is None:
@@ -319,10 +325,15 @@ class SeleneElement(with_metaclass(DelegatingMeta, IWebElement)):
         return self
 
     # todo: consider removing some aliases
-    insist_not = should_not
     assure_not = should_not
     should_not_be = should_not
     should_not_have = should_not
+
+    def insist_not(self, condition, timeout=None):
+        """ Deprecated use should or assure instead
+        """
+        warnings.warn("use should_not or assure_not instead", DeprecationWarning)
+        return self.should_not(condition, timeout)
 
     # *** Additional actions ***
 
@@ -558,10 +569,15 @@ class SeleneCollection(with_metaclass(DelegatingMeta, Sequence)):
         return self
 
     # todo: consider removing some aliases
-    insist = should
     assure = should
     should_be = should
     should_have = should
+
+    def insist(self, condition, timeout=None):
+        """ Deprecated use should or assure instead
+        """
+        warnings.warn("use should or assure instead", DeprecationWarning)
+        return self.should(condition, timeout)
 
     def should_not(self, condition, timeout=None):
         if timeout is None:
@@ -572,10 +588,15 @@ class SeleneCollection(with_metaclass(DelegatingMeta, Sequence)):
         return self
 
     # todo: consider removing some aliases are even all of them
-    insist_not = should_not
     assure_not = should_not
     should_not_be = should_not
     should_not_have = should_not
+
+    def insist_not(self, condition, timeout=None):
+        """ Deprecated use should_not or assure_not instead
+        """
+        warnings.warn("use should_not or assure_not instead", DeprecationWarning)
+        return self.should_not(condition, timeout)
 
     def should_each(self, condition, timeout=None):
         if timeout is None:
@@ -584,6 +605,8 @@ class SeleneCollection(with_metaclass(DelegatingMeta, Sequence)):
         for selement in self:
             selement.should(condition, timeout)
 
+    assure_each = should_each
+
     def should_each_not(self, condition, timeout=None):
         if timeout is None:
             timeout = config.timeout
@@ -591,21 +614,41 @@ class SeleneCollection(with_metaclass(DelegatingMeta, Sequence)):
         for selement in self:
             selement.should_not(condition, timeout)
 
+    assure_each_not = should_each_not
+
     def filtered_by(self, condition):
         return SeleneCollection(FilteredListWebElementLocator(condition, self), self._webdriver)
 
     ss = filtered_by
     all_by = filtered_by
     filtered = filtered_by
+
+    filter = filtered_by
     filter_by = filtered_by
-    filterBy = filtered_by
+
+    def filterBy(self, condition):
+        """ Deprecated use filtered_by or all_by instead
+        """
+        warnings.warn("use filtered_by or all_by instead", DeprecationWarning)
+        return self.filtered_by(condition)
 
     def element_by(self, condition):
         return SeleneElement(FoundByConditionWebElementLocator(condition, self), self._webdriver)
 
     s = element_by
     find_by = element_by
-    findBy = element_by
+
+    def findBy(self, condition):
+        """ Deprecated use element_by instead
+        """
+        warnings.warn("use element_by instead", DeprecationWarning)
+        return self.element_by(condition)
+
+    def find(self, condition):
+        """ Deprecated use element_by instead
+        """
+        warnings.warn("use element_by instead", DeprecationWarning)
+        return self.element_by(condition)
 
     # *** Sequence methods ***
 
