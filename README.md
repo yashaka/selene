@@ -1,6 +1,8 @@
 # Selene - Concise API for Selenium in Python 
 (Selenide port in Python)
 
+[![Build Status](https://travis-ci.org/yashaka/selene.svg?branch=master)](https://travis-ci.org/yashaka/selene)
+
 Main features:
 - Concise API for Selenium
 - jQuery-style selectors
