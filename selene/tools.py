@@ -4,7 +4,7 @@ from selenium.webdriver.remote.webdriver import WebDriver
 
 import selene.driver
 import selene.factory
-from selene.config import counter
+import selene.config
 from selene.elements import SeleneElement, SeleneCollection
 
 

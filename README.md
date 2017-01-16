@@ -366,12 +366,6 @@ def test_complete_task():
 See [/tests/](https://github.com/yashaka/selene/tree/master/tests) files for more examples of usage.
 E.g. one more [PageObject with Widgets example](https://github.com/yashaka/selene/blob/master/tests/examples/order/app_model/order_widgets.py) and its [acceptance test](https://github.com/yashaka/selene/blob/master/tests/examples/order/order_test.py).
 
-## TODO list
-
-* consider automatic webdriver management implementation
-* make browser management support parallel testing
-* see more ideas at [see todo.md](https://github.com/yashaka/selene/blob/master/todo.md)
-
 ## Changelog
 
 [see CHANGELOG.md](https://github.com/yashaka/selene/blob/master/CHANGELOG.md)

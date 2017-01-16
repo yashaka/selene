@@ -220,6 +220,11 @@ class attribute(Condition):
 
 blank = attribute('value', '')
 
+
+def value(val):
+    return attribute('value', val)
+
+
 #########################
 # COLLECTION CONDITIONS #
 #########################
