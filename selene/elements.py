@@ -1,6 +1,7 @@
 from _ast import Tuple, List
 from collections import Sequence
 
+from future.utils import with_metaclass
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
@@ -190,8 +191,7 @@ def _wait_with_screenshot(entity, condition, timeout=None, polling=None):
         raise TimeoutException(msg, e.screen, e.stacktrace)
 
 
-class SeleneElement(IWebElement):
-    __metaclass__ = DelegatingMeta
+class SeleneElement(with_metaclass(DelegatingMeta, IWebElement)):
 
     @property
     def __delegate__(self):
@@ -493,14 +493,12 @@ class SeleneElement(IWebElement):
             condition=be.in_dom)
 
 
-class SeleneCollection(Sequence):
+class SeleneCollection(with_metaclass(DelegatingMeta, Sequence)):
     """
     To fully match Selenium, SeleneCollection should extend collection.abc.MutableSequence.
     But that's the place where we should be more restrictive.
     It is actually the Selenium, who should use "Sequence" instead of "MutableSequence" (list)
     """
-
-    __metaclass__ = DelegatingMeta
 
     @property
     def __delegate__(self):

@@ -1,8 +1,9 @@
 from abc import ABCMeta, abstractmethod
 
+from future.utils import with_metaclass
 
-class IEntityCondition(object):
-    __metaclass__ = ABCMeta
+
+class IEntityCondition(with_metaclass(ABCMeta, object)):
 
     # todo: consider using __call__ instead
     @abstractmethod

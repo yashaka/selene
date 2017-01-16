@@ -2,6 +2,8 @@ from _ast import List
 from abc import ABCMeta, abstractmethod
 import operator
 
+from future.utils import with_metaclass
+
 from selene.abctypes.conditions import IEntityCondition
 from selene.abctypes.webelement import IWebElement
 # from selene.elements import SeleneElement, SeleneCollection
@@ -38,8 +40,7 @@ class Not(IEntityCondition):
 not_ = Not
 
 
-class ElementCondition(IEntityCondition):
-    __metaclass__ = ABCMeta
+class ElementCondition(with_metaclass(ABCMeta, IEntityCondition)):
 
     def description(self):
         return self.__class__.__name__
@@ -194,8 +195,7 @@ blank = value('')
 # *** Collection Conditions ***
 
 
-class CollectionCondition(IEntityCondition):
-    __metaclass__ = ABCMeta
+class CollectionCondition(with_metaclass(ABCMeta, IEntityCondition)):
 
     def description(self):
         return self.__class__.__name__
