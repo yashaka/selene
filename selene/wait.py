@@ -23,19 +23,16 @@ def wait_for(entity, method, message='', timeout=None):
             stacktrace = getattr(reason, 'stacktrace', None)
 
             if time.time() > end_time:
-                screenshot = selene.tools.take_screenshot()
                 raise TimeoutException('''
             failed while waiting {timeout} seconds
             to assert {condition}
             {message}
 
-            reason: {reason}
-            screenshot: {screenshot}'''.format(
+            reason: {reason}'''.format(
                     timeout=timeout,
                     condition=method.description(),
                     message=message,
-                    reason=reason_string,
-                    screenshot=screenshot), screen, stacktrace)
+                    reason=reason_string), screen, stacktrace)
 
             time.sleep(config.poll_during_waits)
 
