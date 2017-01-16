@@ -4,8 +4,9 @@
   - naming changes:
     - tbd...
     
-## 1.0.0.a5 (to be released)
+## 1.0.0a5 (released 16.01.2017)
   - refactored conditions implementation
+  - broken support for python 3 (will be fixed in next versions)
 
 ## 1.0.0a4 (next from master branch)
   - added automatic screenshots on failed "should" methods
