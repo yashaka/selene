@@ -26,7 +26,7 @@ def teardown_module(m):
 
 
 def exception_message(ex):
-    return [line.strip() if not re.match('\s*screenshot: /.*?/\.selene/screenshots/\d+?/screen_\d+\.png\s*',line)
+    return [line.strip() if not re.match('\s*screenshot: .*?/\.selene/screenshots/\d+?/screen_\d+\.png\s*',line)
             else 'screenshot: //.selene/screenshots/*/screen_*.png'
             for line in str(ex.value.msg).strip().splitlines()]
 
