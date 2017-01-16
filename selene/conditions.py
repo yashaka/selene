@@ -1,296 +1,273 @@
-from operator import contains, eq
+from _ast import List
+from abc import ABCMeta, abstractmethod
+import operator
 
-from selene.common.none_object import NoneObject
+from selene.abctypes.conditions import IEntityCondition
+from selene.abctypes.webelement import IWebElement
+# from selene.elements import SeleneElement, SeleneCollection
 from selene.exceptions import ConditionMismatchException
 
 
-or_not_to_be = lambda: True
-
-
-class Condition(object):
-
-    def __init__(self):
-        self.found = NoneObject('Condition#found')
-
-    def __call__(self, entity):
-        self.entity = entity
-        self.found = self.entity()
-        if self.apply():
-            return self.found
-        else:
-            raise ConditionMismatchException()
-
-    def __str__(self):
-        raw_expected = str(self.expected())
-        expected_string = '''
-            \texpected: ''' + raw_expected if raw_expected else ''
-
-        raw_actual = str(self.actual())
-        actual_string = '''
-            \t  actual: ''' + raw_actual if raw_actual else ''
-
-        return 'for {identity} located by: {locator},{expected}{actual}'.format(
-            identity=self.identity(),
-            locator=self.entity,
-            expected=expected_string,
-            actual=actual_string)
+class OrNotToBe(IEntityCondition):
 
     def description(self):
-        expected = self.expected()
-        return "%s(%s)" % (self.__class__.__name__, expected) if expected else self.__class__.__name__
+        return self.__class__.__name__
 
-    def identity(self):
-        return "element"
+    def fn(self, entity):
+        return entity
 
-    def expected(self):
-        return ''
-
-    def actual(self):
-        return ''
-
-    def apply(self):
-        return False
-
-    def matches_webelement(self, webelement):
-        self.found = webelement
-        try:
-            return self.apply()
-        except Exception:
-            return False
-
-    def matches(self, entity):
-        try:
-            return self(entity)
-        except Exception:
-            return False
+or_not_to_be = OrNotToBe
 
 
-class not_(Condition):
+class Not(IEntityCondition):
 
     def __init__(self, condition):
-        # type: (Condition) -> None
-        self.condition = condition
-        super(not_, self).__init__()
-
-    def __call__(self, entity):
-        self.entity = entity
-        try:
-            self.condition.__call__(entity)
-        except Exception as exc:
-            self.found = self.condition.found
-            return self.found
-        raise ConditionMismatchException()
+        # type: (IEntityCondition) -> None
+        self._condition = condition
 
     def description(self):
-        expected = self.condition.expected()
-        return 'not %s(%s)' % (self.condition.__class__.__name__, expected) if expected else 'not ' + self.__class__.__name__
+        return 'not {}'.format(self._condition.description())
 
-    def expected(self):
-        expected = self.condition.expected()
-        return 'not(%s)' % expected if expected else ''
+    def fn(self, entity):
+        try:
+            self._condition.fn(entity)
+        except Exception as reason:
+            return reason
+        raise ConditionMismatchException()  # todo: add more information to message
 
-    def actual(self):
-        return self.condition.actual()
-
-    def identity(self):
-        return self.condition.identity()
-
-    def apply(self):
-        return self.condition.apply()
-
-    def matches(self, entity):
-        return not self.condition.matches(entity)
-
-    def matches_webelement(self, webelement):
-        return not self.condition.matches_webelement(webelement)
+not_ = Not
 
 
-class CollectionCondition(Condition):
+class ElementCondition(IEntityCondition):
+    __metaclass__ = ABCMeta
 
-    def identity(self):
-        return "elements"
+    def description(self):
+        return self.__class__.__name__
 
+    def fn(self, element):
+        # type: (SeleneElement) -> IWebElement
+        return self.match(element.get_actual_webelement())
 
-class text(Condition):
-    def __init__(self, expected_text):
-        super(text, self).__init__()
-        self.expected_text = expected_text
-        self.actual_text = None
-
-    def compare_fn(self):
-        return contains
-
-    def apply(self):
-        self.actual_text = self.found.text.encode('utf-8')
-        return self.compare_fn()(self.actual_text, self.expected_text)
-
-    def expected(self):
-        return self.expected_text
-
-    def actual(self):
-        return self.actual_text
+    @abstractmethod
+    def match(self, webelement):
+        # type: (IWebElement) -> IWebElement
+        pass
 
 
-class exact_text(text):
-    def compare_fn(self):
-        return eq
+def is_matched(condition, webelement):
+    # type: (ElementCondition, IWebElement) -> bool
+    try:
+        condition.match(webelement)
+        return True
+    except Exception:
+        return False
 
 
-class Visible(Condition):
-    def apply(self):
-        return self.found.is_displayed()
+class Visible(ElementCondition):
+    def match(self, webelement):
+        # type: (SeleneElement) -> IWebElement
+        if not webelement.is_displayed():
+            raise ConditionMismatchException()
+        return webelement
 
 
 visible = Visible()
+appear = visible
 
 
-class Clickable(Condition):
-    def apply(self):
-        return self.found.is_displayed and self.found.is_enabled()
+class Hidden(ElementCondition):
+    def match(self, webelement):
+        # type: (SeleneElement) -> IWebElement
+        if webelement.is_displayed():
+            raise ConditionMismatchException()
+        return webelement
 
+
+hidden = Hidden()
+disappear = hidden
+
+
+# todo: implement as and_(displayed, enabled)
+class Clickable(ElementCondition):
+    def match(self, webelement):
+        # type: (IWebElement) -> IWebElement
+        actual_displayed = webelement.is_displayed()
+        actual_enabled = webelement.is_enabled()
+        if not (actual_displayed and actual_enabled):
+            raise ConditionMismatchException(
+                expected='displayed and enabled',
+                actual='displayed: {displayed}, enabled: {enabled}'.format(
+                    displayed=actual_displayed, enabled=actual_enabled))
+        return webelement
 
 clickable = Clickable()
 
 
-class Enabled(Condition):
-    def apply(self):
-        return self.found.is_enabled()
+class Enabled(ElementCondition):
+    def match(self, webelement):
+        # type: (SeleneElement) -> IWebElement
+        if not webelement.is_enabled():
+            raise ConditionMismatchException()
+        return webelement
 
-enabled = Enabled()
+enabled= Enabled()
 
 
-# todo: consider renaming it to something else, because in jSelenide exist = visible
-class Exist(Condition):
+class InDom(ElementCondition):
     """
     checks if element exist in DOM
     """
-    def apply(self):
-        return True
+    def match(self, webelement):
+        return webelement
 
 
-exist = Exist()
-in_dom = exist
+in_dom = InDom()
+exist = in_dom
 
 
-class Hidden(Condition):
-    def apply(self):
-        return not self.found.is_displayed()
+class Text(ElementCondition):
+
+    def __init__(self, expected_text):
+        self.expected_text = expected_text
+
+    def match(self, webelement):
+        actual_text = webelement.text.encode('utf-8')
+        if self.expected_text not in actual_text:
+            raise ConditionMismatchException(expected=self.expected_text, actual=actual_text)
+        return webelement
+
+text = Text
 
 
-hidden = Hidden()
+class ExactText(ElementCondition):
+
+    def __init__(self, expected_text):
+        self.expected_text = expected_text
+
+    def match(self, webelement):
+        actual_text = webelement.text.encode('utf-8')
+        if not self.expected_text == actual_text:
+            raise ConditionMismatchException(expected=self.expected_text, actual=actual_text)
+        return webelement
+
+exact_text = ExactText
 
 
-class css_class(Condition):
+class CssClass(ElementCondition):
 
-    def __init__(self, class_attribute_value):
-        # type: (str) -> None
-        super(css_class, self).__init__()
-        self.expected_containable_class = class_attribute_value
-        self.actual_class = ''  # type: str
+    def __init__(self, expected):
+        self.expected = expected
 
-    def apply(self):
-        self.actual_class = self.found.get_attribute("class")
-        return self.expected_containable_class in self.actual_class.split()
+    def match(self, webelement):
+        actual = webelement.get_attribute("class")
+        if self.expected not in actual.split():
+            raise ConditionMismatchException(expected=self.expected, actual='class attribute: {}'.format(actual))
+        return webelement
 
-    def expected(self):
-        return self.expected_containable_class
-
-    def actual(self):
-        return self.actual_class
+css_class = CssClass
 
 
-class attribute(Condition):
+class Attribute(ElementCondition):
 
     def __init__(self, name, value):
-        # type: (str, str) -> None
-        super(attribute, self).__init__()
         self.name = name
-        self.expected_value = value
-        self.actual_value = ''  # type: str
+        self.value = value
 
-    def apply(self):
-        self.actual_value = self.found.get_attribute(self.name)
-        return self.actual_value == self.expected_value
+    def match(self, webelement):
+        actual = webelement.get_attribute(self.name)
+        if not self.value == actual:
+            raise ConditionMismatchException(
+                expected='{name}="{value}"'.format(name=self.name, value=self.value),
+                actual='{name}="{value}"'.format(name=self.name, value=actual))
+        return webelement
 
-    def expected(self):
-        return self.expected_value
-
-    def actual(self):
-        return self.actual_value
-
-blank = attribute('value', '')
+attribute = Attribute
 
 
 def value(val):
-    return attribute('value', val)
+    return Attribute('value', val)
 
 
-#########################
-# COLLECTION CONDITIONS #
-#########################
+blank = value('')
 
 
-class texts(CollectionCondition):
-
-    def __init__(self, *expected_texts):
-        super(texts, self).__init__()
-        self.expected_texts = expected_texts
-        self.actual_texts = None
-
-    def compare_fn(self):
-        return contains
-
-    def apply(self):
-        self.actual_texts = [item.text.encode('utf-8') for item in self.found]
-        return len(self.actual_texts) == len(self.expected_texts) and \
-               all(map(self.compare_fn(), self.actual_texts, self.expected_texts))
-
-    def expected(self):
-        return self.expected_texts
-
-    def actual(self):
-        return self.actual_texts
+# *** Collection Conditions ***
 
 
-class exact_texts(texts):
+class CollectionCondition(IEntityCondition):
+    __metaclass__ = ABCMeta
 
-    def compare_fn(self):
-        return eq
+    def description(self):
+        return self.__class__.__name__
 
-class size(CollectionCondition):
+    def fn(self, elements):
+        # type: (SeleneCollection) -> List[IWebElement]
+        return self.match(elements.get_actual_webelements())
 
-    def __init__(self, expected_size):
-        super(size, self).__init__()
-        self.expected_size = expected_size
-        self.actual_size = None
-
-    def apply(self):
-        self.actual_size = len(self.found)
-        return self.actual_size == self.expected_size
-
-    def expected(self):
-        return self.expected_size
-
-    def actual(self):
-        return self.actual_size
+    @abstractmethod
+    def match(self, webelements):
+        # type: (List[IWebElement]) -> List[IWebElement]
+        pass
 
 
+class Texts(CollectionCondition):
+
+    def __init__(self, *expected):
+        self.expected = expected
+
+    def match(self, webelements):
+        actual = [it.text.encode('utf-8') for it in webelements]
+        if not (len(actual) == len(self.expected) and all(map(operator.contains, actual, self.expected))):
+            raise ConditionMismatchException(
+                expected=self.expected,
+                actual=actual)
+        return webelements
+
+texts = Texts
+
+
+class ExactTexts(CollectionCondition):
+
+    def __init__(self, *expected):
+        self.expected = expected
+
+    def match(self, webelements):
+        actual = [it.text.encode('utf-8') for it in webelements]
+        if not (len(actual) == len(self.expected) and all(map(operator.eq, actual, self.expected))):
+            raise ConditionMismatchException(
+                expected=self.expected,
+                actual=actual)
+        return webelements
+
+exact_texts = ExactTexts
+
+
+class Size(CollectionCondition):
+    def __init__(self, expected):
+        self.expected = expected
+
+    def match(self, webelements):
+        actual = len(webelements)
+        if not actual == self.expected:
+            raise ConditionMismatchException(
+                expected=self.expected,
+                actual=actual)
+        return webelements
+
+size = Size
 empty = size(0)
 
 
-class size_at_least(CollectionCondition):
+class SizeAtLeast(CollectionCondition):
+    def __init__(self, expected):
+        self.expected = expected
 
-    def __init__(self, minimum_size):
-        super(size_at_least, self).__init__()
-        self.minimum_size = minimum_size
-        self.actual_size = None
+    def match(self, webelements):
+        actual = len(webelements)
+        if not actual >= self.expected:
+            raise ConditionMismatchException(
+                expected='>= {}'.format(self.expected),
+                actual=actual)
+        return webelements
 
-    def apply(self):
-        self.actual_size = len(self.found)
-        return self.actual_size >= self.minimum_size
-
-    def expected(self):
-        return self.minimum_size
-
-    def actual(self):
-        return self.actual_size
+size_at_least = SizeAtLeast

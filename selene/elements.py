@@ -13,13 +13,13 @@ from selene.abctypes.locators import ISeleneWebElementLocator, ISeleneListWebEle
 from selene.abctypes.search_context import ISearchContext
 from selene.abctypes.webdriver import IWebDriver
 from selene.abctypes.webelement import IWebElement
-from selene.conditions import Condition, not_
 from selene.common.delegation import DelegatingMeta
 from selene.helpers import css_or_by_to_by
 from selene.support import by
 from selene.support.conditions import be
 from selene.support.conditions import have
 from selene.wait import wait_for
+from selene.conditions import not_, is_matched
 
 try:
     from functools import lru_cache
@@ -54,7 +54,7 @@ class InnerWebElementLocator(ISeleneWebElementLocator):
 
     def find(self):
         # return self._element.get_actual_webelement().find_element(*self._by)
-        return wait_for(self._element, be.Visible()).find_element(*self._by)
+        return wait_for(self._element, be.visible, config.timeout, config.poll_during_waits).find_element(*self._by)
 
 
 class CachingWebElementLocator(ISeleneWebElementLocator):
@@ -76,7 +76,11 @@ class CachingWebElementLocator(ISeleneWebElementLocator):
 class IndexedWebElementLocator(ISeleneWebElementLocator):
     def find(self):
         # return self._collection.get_actual_webelements()[self._index]
-        return wait_for(self._collection, have.size_at_least(self._index + 1))[self._index]
+        return wait_for(
+            self._collection,
+            have.size_at_least(self._index + 1),
+            config.timeout,
+            config.poll_during_waits)[self._index]
 
     @property
     def description(self):
@@ -114,7 +118,8 @@ class InnerListWebElementLocator(ISeleneListWebElementLocator):
 
     def find(self):
         # return self._element.get_actual_webelement().find_elements(*self._by)
-        return wait_for(self._element, be.Visible()).find_elements(*self._by)
+        return wait_for(self._element, be.visible, config.timeout, config.poll_during_waits)\
+            .find_elements(*self._by)
 
 
 class FilteredListWebElementLocator(ISeleneListWebElementLocator):
@@ -122,7 +127,7 @@ class FilteredListWebElementLocator(ISeleneListWebElementLocator):
         webelements = self._collection()
         filtered = [webelement
                     for webelement in webelements
-                    if self._condition.matches_webelement(webelement)]
+                    if is_matched(self._condition, webelement)]
         return filtered
 
     @property
@@ -138,7 +143,10 @@ class FilteredListWebElementLocator(ISeleneListWebElementLocator):
 class SlicedListWebElementLocator(ISeleneListWebElementLocator):
     def find(self):
         # webelements = self._collection()
-        webelements = wait_for(self._collection, have.size_at_least(self._slice.stop))
+        webelements = wait_for(self._collection,
+                               have.size_at_least(self._slice.stop),
+                               config.timeout,
+                               config.poll_during_waits)
         return webelements[self._slice.start:self._slice.stop:self._slice.step]
 
     @property
@@ -154,7 +162,7 @@ class SlicedListWebElementLocator(ISeleneListWebElementLocator):
 class FoundByConditionWebElementLocator(ISeleneWebElementLocator):
     def find(self):
         for webelement in self._collection():
-            if self._condition.matches_webelement(webelement):
+            if is_matched(self._condition, webelement):
                 return webelement
         raise NoSuchElementException('Element was not found by: %s' % (self._condition,))
 
@@ -168,15 +176,17 @@ class FoundByConditionWebElementLocator(ISeleneWebElementLocator):
         self._collection = collection
 
 
-def _wait_with_screenshot(entity, condition, timeout=None):
+def _wait_with_screenshot(entity, condition, timeout=None, polling=None):
     if timeout is None:
         timeout = config.timeout
+    if polling is None:
+        polling = config.poll_during_waits
     try:
-        return wait_for(entity, condition, timeout)
+        return wait_for(entity, condition, timeout, polling)
     except TimeoutException as e:
         screenshot = selene.tools.take_screenshot()
         msg = '''{original_msg}
-        screenshot: {screenshot}'''.format(original_msg=e.msg, screenshot=screenshot)
+            screenshot: {screenshot}'''.format(original_msg=e.msg, screenshot=screenshot)
         raise TimeoutException(msg, e.screen, e.stacktrace)
 
 
@@ -319,7 +329,7 @@ class SeleneElement(IWebElement):
     def double_click(self):
         self._execute_on_webelement(
             lambda it: self._actions_chains.double_click(it).perform(),
-            condition=be.Visible())
+            condition=be.visible)
         return self
 
     def set(self, new_text_value):
@@ -330,7 +340,7 @@ class SeleneElement(IWebElement):
 
         self._execute_on_webelement(
             clear_and_send_keys,
-            condition=be.Visible())
+            condition=be.visible)
 
         return self
 
@@ -348,7 +358,7 @@ class SeleneElement(IWebElement):
     def hover(self):
         self._execute_on_webelement(
             lambda it: self._actions_chains.move_to_element(it).perform(),
-            condition=be.Visible())
+            condition=be.visible)
         return self
 
     # *** ISearchContext methods ***
@@ -356,13 +366,13 @@ class SeleneElement(IWebElement):
     def find_elements(self, by=By.ID, value=None):
         return self._execute_on_webelement(
             lambda it: it.find_elements(by, value),
-            condition=be.Visible())
+            condition=be.visible)
         # return self.__delegate__.find_elements(by, value) # todo: remove
 
     def find_element(self, by=By.ID, value=None):
         return self._execute_on_webelement(
             lambda it: it.find_element(by, value),
-            condition=be.Visible())
+            condition=be.visible)
         # return self.__delegate__.find_element(by, value) # todo: remove
 
     # *** IWebElement methods ***
@@ -377,24 +387,24 @@ class SeleneElement(IWebElement):
     def text(self):
         return self._execute_on_webelement(
             lambda it: it.text,
-            condition=be.Visible())
+            condition=be.visible)
 
     def click(self):
         self._execute_on_webelement(
             lambda it: it.click(),
-            condition=be.Visible())
+            condition=be.visible)
         return self  # todo: think on: IWebElement#click was supposed to return None
 
     def submit(self):
         self._execute_on_webelement(
             lambda it: it.submit(),
-            condition=be.Visible())
+            condition=be.visible)
         return self
 
     def clear(self):
         self._execute_on_webelement(
             lambda it: it.clear(),
-            condition=be.Visible())
+            condition=be.visible)
         return self
 
     def get_attribute(self, name):
@@ -405,17 +415,17 @@ class SeleneElement(IWebElement):
     def is_selected(self):
         return self._execute_on_webelement(
             lambda it: it.is_selected(),
-            condition=be.Visible())
+            condition=be.visible)
 
     def is_enabled(self):
         return self._execute_on_webelement(
             lambda it: it.is_enabled(),
-            condition=be.Visible())
+            condition=be.visible)
 
     def send_keys(self, *value):
         self._execute_on_webelement(
             lambda it: it.send_keys(*value),
-            condition=be.Visible())
+            condition=be.visible)
         return self
 
     # RenderedWebElement Items
@@ -428,13 +438,13 @@ class SeleneElement(IWebElement):
     def location_once_scrolled_into_view(self):
         return self._execute_on_webelement(
             lambda it: it.location_once_scrolled_into_view,
-            condition=be.Visible())
+            condition=be.visible)
 
     @property
     def size(self):
         return self._execute_on_webelement(
             lambda it: it.size,
-            condition=be.Visible())
+            condition=be.visible)
 
     def value_of_css_property(self, property_name):
         return self._execute_on_webelement(
@@ -445,30 +455,30 @@ class SeleneElement(IWebElement):
     def location(self):
         return self._execute_on_webelement(
             lambda it: it.location,
-            condition=be.Visible())
+            condition=be.visible)
 
     @property
     def rect(self):
         return self._execute_on_webelement(
             lambda it: it.rect,
-            condition=be.Visible())
+            condition=be.visible)
 
     @property
     def screenshot_as_base64(self):
         return self._execute_on_webelement(
             lambda it: it.screenshot_as_base64,
-            condition=be.Visible())  # todo: or `be.in_dom`?
+            condition=be.visible)  # todo: or `be.in_dom`?
 
     @property
     def screenshot_as_png(self):
         return self._execute_on_webelement(
             lambda it: it.screenshot_as_png,
-            condition=be.Visible())  # todo: or `be.in_dom`?
+            condition=be.visible)  # todo: or `be.in_dom`?
 
     def screenshot(self, filename):
         return self._execute_on_webelement(
             lambda it: it.screenshot(filename),
-            condition=be.Visible())  # todo: or `be.in_dom`?
+            condition=be.visible)  # todo: or `be.in_dom`?
 
     @property
     def parent(self):

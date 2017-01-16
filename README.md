@@ -339,7 +339,7 @@ class Footer(object):
 
 class TodoMVC(object):
     def __init__(self):
-        self.container = s("#todoapp");
+        self.container = s("#todoapp")
         self.tasks = Tasks()
         self.footer = Footer()
 

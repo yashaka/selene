@@ -3,8 +3,11 @@
 ## 1.0.0ax (next from master branch)
   - naming changes:
     - tbd...
+    
+## 1.0.0.a5 (to be released)
+  - refactored conditions implementation
 
-## 1.0.0a3 (next from master branch)
+## 1.0.0a4 (next from master branch)
   - added automatic screenshots on failed "should" methods
     - by default screenshots are created in {user_home}/.selene/screenshots/{id_of_current_tests_run}
     - by default the "previous run" screenshots are not cleared on "next run"

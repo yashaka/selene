@@ -1,6 +1,5 @@
 from selene import conditions
 
-Visible = conditions.Visible
 visible = conditions.visible
 in_dom = conditions.in_dom
 enabled = conditions.enabled
