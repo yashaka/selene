@@ -9,7 +9,7 @@ setup(
     version=version.VERSION,
     url='http://github.com/yashaka/selene/',
     download_url='https://github.com/yashaka/selene/tarball/' + version.VERSION,
-    license='Apache Software License',
+    license='MIT',
     author='Iakiv Kramarenko',
     author_email='yashaka@gmail.com',
     description=description,
