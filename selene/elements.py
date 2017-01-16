@@ -53,7 +53,8 @@ class InnerWebElementLocator(ISeleneWebElementLocator):
         return "%s.find_by%s" % (self._element, self._by)
 
     def find(self):
-        return self._element.get_actual_webelement().find_element(*self._by)
+        # return self._element.get_actual_webelement().find_element(*self._by)
+        return wait_for(self._element, be.Visible()).find_element(*self._by)
 
 
 class CachingWebElementLocator(ISeleneWebElementLocator):
@@ -74,7 +75,8 @@ class CachingWebElementLocator(ISeleneWebElementLocator):
 # todo: Should we use this order convention? like below...
 class IndexedWebElementLocator(ISeleneWebElementLocator):
     def find(self):
-        return self._collection.get_actual_webelements()[self._index]
+        # return self._collection.get_actual_webelements()[self._index]
+        return wait_for(self._collection, have.size_at_least(self._index + 1))[self._index]
 
     @property
     def description(self):
@@ -111,7 +113,8 @@ class InnerListWebElementLocator(ISeleneListWebElementLocator):
         return "(%s).find_all_by(%s)" % (self._element, self._by)
 
     def find(self):
-        return self._element.get_actual_webelement().find_elements(*self._by)
+        # return self._element.get_actual_webelement().find_elements(*self._by)
+        return wait_for(self._element, be.Visible()).find_elements(*self._by)
 
 
 class FilteredListWebElementLocator(ISeleneListWebElementLocator):
@@ -134,8 +137,8 @@ class FilteredListWebElementLocator(ISeleneListWebElementLocator):
 
 class SlicedListWebElementLocator(ISeleneListWebElementLocator):
     def find(self):
-        # self._collection.should(have.size_at_least(self._slice.stop)) # todo: remove once covered with tests
-        webelements = self._collection()
+        # webelements = self._collection()
+        webelements = wait_for(self._collection, have.size_at_least(self._slice.stop))
         return webelements[self._slice.start:self._slice.stop:self._slice.step]
 
     @property
@@ -169,7 +172,7 @@ def _wait_with_screenshot(entity, condition, timeout=None):
     if timeout is None:
         timeout = config.timeout
     try:
-        return wait_for(entity, condition, condition, timeout)
+        return wait_for(entity, condition, timeout)
     except TimeoutException as e:
         screenshot = selene.tools.take_screenshot()
         msg = '''{original_msg}
@@ -287,7 +290,7 @@ class SeleneElement(IWebElement):
         if timeout is None:
             timeout = config.timeout
         # todo: implement proper cashing
-        # self._found = wait_for(self, condition, condition, timeout)
+        # self._found = wait_for(self, condition, timeout)
         _wait_with_screenshot(self, condition, timeout)
         return self
 

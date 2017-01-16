@@ -9,7 +9,9 @@ import time
 from selenium.common.exceptions import TimeoutException
 
 
-def wait_for(entity, method, message='', timeout=None):
+def wait_for(entity, method, timeout=None, message=None):
+    if message is None:
+        message = method  # todo: refactor
     if not timeout:
         timeout = config.timeout
     end_time = time.time() + timeout
