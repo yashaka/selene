@@ -1,15 +1,17 @@
+# coding=utf-8
 from selene.support.conditions import be
 from selene.support.conditions import have
 
 from selene.bys import by_link_text
 from selene.conditions import exact_text
-from selene.tools import ss, s, visit
+from selene.tools import ss, s, visit, wait_to
 
 
 class TestTodoMVC(object):
 
     def test_filter_tasks(self):
         visit('https://todomvc4tasj.herokuapp.com/')
+        wait_to(have.title('TroopJS • TodoMVC'))
 
         s('#new-todo').should(be.enabled).set_value('a').press_enter()
         s('#new-todo').should(be.enabled).set_value('b').press_enter()

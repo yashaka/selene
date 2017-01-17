@@ -6,6 +6,7 @@ import selene.driver
 import selene.factory
 import selene.config
 from selene.elements import SeleneElement, SeleneCollection
+from selene.wait import wait_for
 
 
 def quit_driver():
@@ -71,3 +72,17 @@ def take_screenshot(path=None, filename=None):
 
     get_driver().get_screenshot_as_file(screenshot_path)
     return screenshot_path
+
+
+# todo: consider adding aliases, like: wait_until, wait_brhwser_to
+def wait_to(webdriver_condition, timeout=None, polling=None):
+    if timeout is None:
+        timeout = selene.config.timeout
+    if polling is None:
+        polling = selene.config.poll_during_waits
+
+    return wait_for(get_driver(), webdriver_condition, timeout, polling)
+
+
+def execute_script(script, *args):
+    return get_driver().execute_script(script, *args)

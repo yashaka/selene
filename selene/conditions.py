@@ -1,3 +1,4 @@
+import ast
 from _ast import List
 from abc import ABCMeta, abstractmethod
 import operator
@@ -5,6 +6,7 @@ import operator
 from future.utils import with_metaclass
 
 from selene.abctypes.conditions import IEntityCondition
+from selene.abctypes.webdriver import IWebDriver
 from selene.abctypes.webelement import IWebElement
 # from selene.elements import SeleneElement, SeleneCollection
 from selene.exceptions import ConditionMismatchException
@@ -38,6 +40,52 @@ class Not(IEntityCondition):
         raise ConditionMismatchException()  # todo: add more information to message
 
 not_ = Not
+
+
+# *** WebDriver Conditions ***
+
+class WebDriverCondition(with_metaclass(ABCMeta, IEntityCondition)):
+    @abstractmethod
+    def fn(self, webdriver):
+        pass
+
+    def description(self):
+        return self.__class__.__name__
+
+
+class JsReturnedTrue(WebDriverCondition):
+
+    def __init__(self, script_to_return_bool):
+        self.script = script_to_return_bool
+
+    def fn(self, webdriver):
+        # type: (IWebDriver) -> bool
+        result = webdriver.execute_script(self.script)
+        if not result:
+            raise ConditionMismatchException(
+                expected='''script: {script}
+                \t\t to return: true'''.format(script=self.script),
+                actual='''returned: {result}'''.format(result=result))
+
+js_returned_true = JsReturnedTrue
+
+
+class Title(WebDriverCondition):
+
+    def __init__(self, text):
+        self.expected = text
+
+    def fn(self, webdriver):
+        # type: (IWebDriver) -> bool
+        actual = webdriver.title.encode('utf-8')
+        if not self.expected == actual:
+            raise ConditionMismatchException(
+                expected=self.expected,
+                actual=actual)
+
+title = Title
+
+# *** Element Conditions ***
 
 
 class ElementCondition(with_metaclass(ABCMeta, IEntityCondition)):
