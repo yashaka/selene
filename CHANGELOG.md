@@ -4,7 +4,7 @@
   - naming changes:
     - tbd...
     
-## 1.0.0a6 (to be released 17.01.2017)
+## 1.0.0a6 (released 17.01.2017)
   - added selene.tools.wait_to to wait for driver conditions like have.title, have.js_returned_true
   - added Title and JsReturnedTrue webdriver conditions
   - added selene.tools.execute_script
