@@ -1,7 +1,7 @@
 from setuptools import setup
 from selene import version
 
-description = 'Concise API for selenium in Python + Ajax support + PageObjects + Widgets (Selenide/Capybara + htmlelements/Widgeon alternative)'
+description = 'Concise API for selenium in Python + Ajax support + PageObjects (Selenide port from Java to Python)'
 # long_description = 'see http://github.com/yashaka/selene/ for more docs...'
 
 setup(

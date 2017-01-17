@@ -15,18 +15,22 @@ Selene was inspired by [Selenide](http://selenide.org/) from Java world.
 
 Tests with Selene can be built either in a simple straightforward "selenide' style or with PageObjects composed from Widgets i.e. reusable element components.
 
-NOTE: This is still a pre-alpha version and API is nut fully finalized. Lately selene was completely refactored, and have changed API a bit. So if you have been using it before (versions <= 0.0.8), then upgrading to next version may break your tests. Read changelog before upgrading to be prepared;)
+NOTE: This is still an alpha version. Lately selene was completely refactored, and have changed API a bit. So if you have been using it before (versions <= 0.0.8), then upgrading to next version may break your tests. Read changelog before upgrading to be prepared;)
 
 ## Installation
 
-### latest development version (currently this is recommended option unless selene 1.0 will be released):
+### latest development version 
 
     $ git clone https://github.com/yashaka/selene.git
     $ python setup.py install
 
 [It is preferable also to use  local virtualenv](https://gist.github.com/yashaka/a547c6e0df5f6c973acc04655b6e3072).
 
-### latest released version (versions <= 0.0.8 will become outdated soon)
+### latest published pre-release version (currently this is recommended option unless selene 1.0 will be released):
+
+    pip install selene --pre
+
+### latest release version (versions <= 0.0.8 will become outdated soon)
 
     pip install selene
 
