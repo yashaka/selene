@@ -3,6 +3,7 @@ import os
 import pytest
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
+from webdriver_manager.chrome import ChromeDriverManager
 
 from selene import config
 from selene.conditions import exact_text
@@ -19,7 +20,7 @@ def setup_function(f):
 
 
 def setup_module(m):
-    set_driver(webdriver.Firefox())
+    set_driver(webdriver.Chrome(executable_path=ChromeDriverManager().install()))
 
 
 def teardown_module(m):
