@@ -1,8 +1,9 @@
 from abc import ABCMeta, abstractmethod, abstractproperty
 
+from future.utils import with_metaclass
 
-class ISeleneWebElementLocator(object):
-    __metaclass__ = ABCMeta
+
+class ISeleneWebElementLocator(with_metaclass(ABCMeta, object)):
 
     @abstractmethod
     def find(self):
@@ -18,8 +19,7 @@ class ISeleneWebElementLocator(object):
         return self.description
 
 
-class ISeleneListWebElementLocator(object):
-    __metaclass__ = ABCMeta
+class ISeleneListWebElementLocator(with_metaclass(ABCMeta, object)):
 
     @abstractmethod
     def find(self):

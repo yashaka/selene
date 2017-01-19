@@ -1,6 +1,7 @@
 """The Selene's WebDriver Decorator implementation."""
 from abc import ABCMeta, abstractproperty
 
+from future.utils import with_metaclass
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webdriver import WebDriver
 
@@ -10,8 +11,7 @@ from selene.common.none_object import NoneObject
 from selene.elements import SeleneElement, SeleneCollection
 
 
-class IWebDriverSource(object):
-    __metaclass__ = ABCMeta
+class IWebDriverSource(with_metaclass(ABCMeta, object)):
 
     @abstractproperty
     def driver(self):
@@ -43,8 +43,7 @@ class SharedWebDriverSource(IWebDriverSource):
         self._webdriver = NoneObject("SharedWebDriverSource#_webdriver")  # type: IWebDriver
 
 
-class SeleneDriver(IWebDriver):
-    __metaclass__ = DelegatingMeta
+class SeleneDriver(with_metaclass(DelegatingMeta, IWebDriver)):
 
     @property
     def __delegate__(self):

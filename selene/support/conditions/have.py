@@ -10,3 +10,11 @@ css_class = conditions.css_class
 attribute = conditions.attribute
 value = conditions.value
 not_ = conditions.not_
+
+
+def js_returned_true(script_to_return_bool):
+    return conditions.JsReturnedTrue(script_to_return_bool)
+
+
+def title(text):
+    return conditions.Title(text)

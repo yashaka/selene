@@ -31,7 +31,7 @@ def get_default_screenshot_folder():
 
 
 def get_screen_id():
-    return config.counter.next() - 1
+    return next(config.counter) - 1
 
 
 def test_can_make_screenshot_with_default_name():

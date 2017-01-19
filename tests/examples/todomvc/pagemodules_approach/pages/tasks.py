@@ -3,16 +3,18 @@ import os
 from selene import tools
 from selene.bys import by_link_text
 from selene.conditions import exact_text, visible, exact_texts, enabled
-from selene.tools import get_driver, ss, s
+from selene.support.conditions import have
+from selene.tools import ss, s, wait_to
 
 __author__ = 'yashaka'
 
 
-tasks = ss("#todo-list>li")
+_elements = ss("#todo-list>li")
 
 
 def visit():
     tools.visit('file://' + os.path.abspath(os.path.dirname(__file__)) + '/../../../../resources/todomvcapp/home.html')
+    wait_to(have.js_returned_true("return $._data($('#clear-completed').get(0), 'events').hasOwnProperty('click')"))
 
 
 def filter_active():
@@ -29,8 +31,12 @@ def add(*task_texts):
 
 
 def toggle(task_text):
-    tasks.element_by(exact_text(task_text)).find(".toggle").click()
+    _elements.element_by(exact_text(task_text)).find(".toggle").click()
 
 
 def should_be(*task_texts):
-    tasks.filtered_by(visible).should_have(exact_texts(*task_texts))
+    _elements.filtered_by(visible).should_have(exact_texts(*task_texts))
+
+
+def clear_completed():
+    s('#clear-completed').click()

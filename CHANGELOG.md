@@ -3,8 +3,17 @@
 ## 1.0.0ax (next from master branch)
   - naming changes:
     - tbd...
+    
+## 1.0.0a6 (released 17.01.2017)
+  - added selene.tools.wait_to to wait for driver conditions like have.title, have.js_returned_true
+  - added Title and JsReturnedTrue webdriver conditions
+  - added selene.tools.execute_script
+    
+## 1.0.0a5 (released 16.01.2017)
+  - refactored conditions implementation
+  - broken support for python 3 (will be fixed in next versions)
 
-## 1.0.0a3 (next from master branch)
+## 1.0.0a4 (next from master branch)
   - added automatic screenshots on failed "should" methods
     - by default screenshots are created in {user_home}/.selene/screenshots/{id_of_current_tests_run}
     - by default the "previous run" screenshots are not cleared on "next run"

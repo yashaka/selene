@@ -7,7 +7,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selene import config
 from selene.conditions import visible
 from selene.tools import s, get_driver
-from selene.wait import has
+from selene.wait import satisfied
 
 __author__ = 'yashaka'
 
@@ -24,7 +24,7 @@ def open_todomvc():
 
 
 def given_at_other_page():
-    if not has(s("#order_details"), visible):
+    if not satisfied(s("#order_details"), visible):
         get_driver().get('file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/orderapp/order.html')
 
 
@@ -34,7 +34,7 @@ def execute_js(js_string):
 
 def given(*tasks):
 
-    if not has(s("#new-todo"), visible):
+    if not satisfied(s("#new-todo"), visible):
         open_todomvc()
 
     import json

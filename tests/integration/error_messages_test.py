@@ -5,7 +5,7 @@ from selenium.common.exceptions import TimeoutException
 
 from selene import config
 from selene.common.none_object import NoneObject
-from selene.conditions import exact_text
+from selene.support.conditions import have
 from selene.tools import s, get_driver, set_driver, ss
 from tests.integration.helpers.givenpage import GivenPage
 
@@ -26,7 +26,7 @@ def teardown_module(m):
 
 
 def exception_message(ex):
-    return [line.strip() if not re.match('\s*screenshot: /.*?/\.selene/screenshots/\d+?/screen_\d+\.png\s*',line)
+    return [line.strip() if not re.match('\s*screenshot: .*?/\.selene/screenshots/\d+?/screen_\d+\.png\s*',line)
             else 'screenshot: //.selene/screenshots/*/screen_*.png'
             for line in str(ex.value.msg).strip().splitlines()]
 
@@ -38,16 +38,16 @@ def test_selement_search_fails_with_message_when_explicitly_waits_for_condition(
     config.timeout = 0.1
 
     with pytest.raises(TimeoutException) as ex:
-        s('#element').should_have(exact_text('Hello wor'))
+        s('#element').should(have.exact_text('Hello wor'))
 
     assert exception_message(ex) == \
            ['failed while waiting 0.1 seconds',
-            'to assert exact_text(Hello wor)',
-            "for element located by: first_by('css selector', '#element'),",
-            'expected: Hello wor',
-            'actual: Hello world!',
+            'to assert ExactText',
+            "for first_by('css selector', '#element')",
             '',
             'reason: ConditionMismatchException: condition did not match',
+            'expected: Hello wor',
+            'actual: Hello world!',
             'screenshot: //.selene/screenshots/*/screen_*.png']
 
 
@@ -62,7 +62,7 @@ def test_selement_search_fails_with_message_when_implicitly_waits_for_condition(
     assert exception_message(ex) == \
            ['failed while waiting 0.1 seconds',
             'to assert Visible',
-            "for element located by: first_by('css selector', '#hidden-button'),",
+            "for first_by('css selector', '#hidden-button')",
             '',
             'reason: ConditionMismatchException: condition did not match',
             'screenshot: //.selene/screenshots/*/screen_*.png']
@@ -81,7 +81,7 @@ def test_inner_selement_search_fails_with_message_when_implicitly_waits_for_cond
     assert exception_message(ex) == \
         ['failed while waiting 0.1 seconds',
          'to assert Visible',
-         "for element located by: first_by('css selector', '#container').find_by('css selector', '#hidden-button'),",
+         "for first_by('css selector', '#container').find_by('css selector', '#hidden-button')",
          '',
          'reason: ConditionMismatchException: condition did not match',
          'screenshot: //.selene/screenshots/*/screen_*.png']
@@ -101,7 +101,12 @@ def test_inner_selement_search_fails_with_message_when_implicitly_waits_for_cond
     assert exception_message(ex) == \
         ['failed while waiting 0.1 seconds',
          'to assert Visible',
-         "for element located by: first_by('css selector', '#hidden-container').find_by('css selector', '#button'),",
+         "for first_by('css selector', '#hidden-container').find_by('css selector', '#button')",
+         '',
+         'reason: TimeoutException:',
+         'failed while waiting 0.1 seconds',
+         'to assert Visible',
+         "for first_by('css selector', '#hidden-container')",
          '',
          'reason: ConditionMismatchException: condition did not match',
          'screenshot: //.selene/screenshots/*/screen_*.png']
@@ -121,7 +126,12 @@ def test_inner_selement_search_fails_with_message_when_implicitly_waits_for_cond
     assert exception_message(ex) == \
         ['failed while waiting 0.1 seconds',
          'to assert Visible',
-         "for element located by: first_by('css selector', '#not-existing').find_by('css selector', '#button'),",
+         "for first_by('css selector', '#not-existing').find_by('css selector', '#button')",
+         '',
+         'reason: TimeoutException:',
+         'failed while waiting 0.1 seconds',
+         'to assert Visible',
+         "for first_by('css selector', '#not-existing')",
          '',
          'reason: NoSuchElementException: Unable to locate element: {"method":"css selector","selector":"#not-existing"}',
          'screenshot: //.selene/screenshots/*/screen_*.png']
@@ -141,27 +151,35 @@ def test_indexed_selement_search_fails_with_message_when_implicitly_waits_for_co
     assert exception_message(ex) == \
         ['failed while waiting 0.1 seconds',
          'to assert Visible',
-         "for element located by: all_by('css selector', 'button')[1],",
+         "for all_by('css selector', 'button')[1]",
          '',
-         'reason: IndexError: list index out of range',
+         'reason: TimeoutException:',
+         'failed while waiting 0.1 seconds',
+         'to assert SizeAtLeast',
+         "for all_by('css selector', 'button')",
+         '',
+         'reason: ConditionMismatchException: condition did not match',
+         'expected: >= 2',
+         'actual: 1',
          'screenshot: //.selene/screenshots/*/screen_*.png']
 
-
-def test_selement_search_fails_with_message_when_explicitly_waits_for_not_condition():
-    GIVEN_PAGE.opened_with_body('''
-    <label id='element'>Hello world!</label>
-    ''')
-    config.timeout = 0.1
-
-    with pytest.raises(TimeoutException) as ex:
-        s('#element').should_not_have(exact_text('Hello world!'))
-
-    assert exception_message(ex) == \
-           ['failed while waiting 0.1 seconds',
-            'to assert not exact_text(Hello world!)',
-            "for element located by: first_by('css selector', '#element'),",
-            'expected: not(Hello world!)',
-            'actual: Hello world!',
-            '',
-            'reason: ConditionMismatchException: condition did not match',
-            'screenshot: //.selene/screenshots/*/screen_*.png']
+# todo: uncomment when refactored conditions implementation
+# def test_selement_search_fails_with_message_when_explicitly_waits_for_not_condition():
+#     GIVEN_PAGE.opened_with_body('''
+#     <label id='element'>Hello world!</label>
+#     ''')
+#     config.timeout = 0.1
+#
+#     s('#element').should_not(have.exact_text('Hello world!'))
+#     with pytest.raises(TimeoutException) as ex:
+#         s('#element').should_not(have.exact_text('Hello world!'))
+#
+#     assert exception_message(ex) == \
+#            ['failed while waiting 0.1 seconds',
+#             'to assert not ExactText',
+#             "for first_by('css selector', '#element')",
+#             '',
+#             'reason: ConditionMismatchException: condition did not match',
+#             'expected: not(Hello world!)',
+#             'actual: Hello world!',
+#             'screenshot: //.selene/screenshots/*/screen_*.png']
