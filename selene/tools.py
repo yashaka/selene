@@ -64,8 +64,9 @@ def take_screenshot(path=None, filename=None):
         path = selene.config.screenshot_folder
     if not filename:
         filename = "screen_{id}".format(id=next(selene.config.counter))
-    screenshot_path = "{path}/{name}.png".format(path=path,
-                                                 name=filename)
+    screenshot_path = os.path.join(path,
+                                   "{}.png".format(filename))
+
     folder = os.path.dirname(screenshot_path)
     if not os.path.exists(folder):
         os.makedirs(folder)
