@@ -3,6 +3,7 @@
 ## 1.0.0ax (next from master branch)
   - naming changes:
     - tbd...
+  - fixed #71: weird paths of screenshots for windows
     
 ## 1.0.0a6 (released 17.01.2017)
   - added selene.tools.wait_to to wait for driver conditions like have.title, have.js_returned_true
