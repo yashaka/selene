@@ -25,6 +25,6 @@ def test_filter_tasks():
 
     config.timeout = 0.5
     with pytest.raises(TimeoutException) as ex:
-        ss("#todo-list>li").should(have.texts('a', 'b', 'c'))
+        ss("#todo-list>li").should(have.size(3))
 
-    assert "actual: ['a', 'b', 'c', 'a', 'b', 'c']" in ex.value.msg
+    assert "actual: 6" in ex.value.msg

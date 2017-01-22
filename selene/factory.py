@@ -6,6 +6,7 @@ from webdriver_manager.firefox import GeckoDriverManager
 from selenium.webdriver.remote.webdriver import WebDriver
 
 import selene
+import selene.driver
 from selene import config
 from selene.browsers import Browser
 import selene.tools

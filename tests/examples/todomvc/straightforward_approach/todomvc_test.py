@@ -11,7 +11,8 @@ class TestTodoMVC(object):
 
     def test_filter_tasks(self):
         visit('https://todomvc4tasj.herokuapp.com/')
-        wait_to(have.title('TroopJS • TodoMVC'))
+        wait_to(have.js_returned_true("return $._data($('#clear-completed').get(0), 'events').hasOwnProperty('click')"))
+        wait_to(have.title(u'TroopJS • TodoMVC'))
 
         s('#new-todo').should(be.enabled).set_value('a').press_enter()
         s('#new-todo').should(be.enabled).set_value('b').press_enter()

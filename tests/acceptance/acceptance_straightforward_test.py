@@ -1,5 +1,3 @@
-import os
-
 from selene.conditions import css_class, texts, text, size, hidden, empty
 from selene.tools import *
 
@@ -16,7 +14,7 @@ class TestTodoMVC(object):
             s("#new-todo").set_value(task_text).press_enter()
 
         tasks.assure(texts("1", "2", "3")).should_each(css_class("active"))
-        s("#todo-count").assure(text("3"))
+        s("#todo-count").assure(text('3'))
 
         tasks[2].s(".toggle").click()
 

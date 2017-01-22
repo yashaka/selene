@@ -3,7 +3,7 @@ from _ast import List
 from abc import ABCMeta, abstractmethod
 import operator
 
-from future.utils import with_metaclass
+from future.utils import with_metaclass, lmap
 
 from selene.abctypes.conditions import IEntityCondition
 from selene.abctypes.webdriver import IWebDriver
@@ -19,6 +19,7 @@ class OrNotToBe(IEntityCondition):
 
     def fn(self, entity):
         return entity
+
 
 or_not_to_be = OrNotToBe
 
@@ -38,6 +39,7 @@ class Not(IEntityCondition):
         except Exception as reason:
             return reason
         raise ConditionMismatchException()  # todo: add more information to message
+
 
 not_ = Not
 
@@ -77,11 +79,12 @@ class Title(WebDriverCondition):
 
     def fn(self, webdriver):
         # type: (IWebDriver) -> bool
-        actual = webdriver.title.encode('utf-8')
+        actual = webdriver.title
         if not self.expected == actual:
             raise ConditionMismatchException(
                 expected=self.expected,
                 actual=actual)
+
 
 title = Title
 
@@ -136,6 +139,8 @@ hidden = Hidden()
 disappear = hidden
 
 
+# todo: consider removing this condition... because it can confuse somebody...
+# it's actually kind of "pseudo-clickable", the actual "clackability" depends on js events...
 # todo: implement as and_(displayed, enabled)
 class Clickable(ElementCondition):
     def match(self, webelement):
@@ -149,6 +154,7 @@ class Clickable(ElementCondition):
                     displayed=actual_displayed, enabled=actual_enabled))
         return webelement
 
+
 clickable = Clickable()
 
 
@@ -159,7 +165,8 @@ class Enabled(ElementCondition):
             raise ConditionMismatchException()
         return webelement
 
-enabled= Enabled()
+
+enabled = Enabled()
 
 
 class InDom(ElementCondition):
@@ -180,10 +187,11 @@ class Text(ElementCondition):
         self.expected_text = expected_text
 
     def match(self, webelement):
-        actual_text = webelement.text.encode('utf-8')
+        actual_text = webelement.text
         if self.expected_text not in actual_text:
             raise ConditionMismatchException(expected=self.expected_text, actual=actual_text)
         return webelement
+
 
 text = Text
 
@@ -194,7 +202,7 @@ class ExactText(ElementCondition):
         self.expected_text = expected_text
 
     def match(self, webelement):
-        actual_text = webelement.text.encode('utf-8')
+        actual_text = webelement.text
         if not self.expected_text == actual_text:
             raise ConditionMismatchException(expected=self.expected_text, actual=actual_text)
         return webelement
@@ -212,6 +220,7 @@ class CssClass(ElementCondition):
         if self.expected not in actual.split():
             raise ConditionMismatchException(expected=self.expected, actual='class attribute: {}'.format(actual))
         return webelement
+
 
 css_class = CssClass
 
@@ -264,8 +273,8 @@ class Texts(CollectionCondition):
         self.expected = expected
 
     def match(self, webelements):
-        actual = [it.text.encode('utf-8') for it in webelements]
-        if not (len(actual) == len(self.expected) and all(map(operator.contains, actual, self.expected))):
+        actual = [it.text for it in webelements]
+        if not (len(actual) == len(self.expected) and all(lmap(operator.contains, actual, self.expected))):
             raise ConditionMismatchException(
                 expected=self.expected,
                 actual=actual)
@@ -280,8 +289,8 @@ class ExactTexts(CollectionCondition):
         self.expected = expected
 
     def match(self, webelements):
-        actual = [it.text.encode('utf-8') for it in webelements]
-        if not (len(actual) == len(self.expected) and all(map(operator.eq, actual, self.expected))):
+        actual = [it.text for it in webelements]
+        if not (len(actual) == len(self.expected) and all(lmap(operator.eq, actual, self.expected))):
             raise ConditionMismatchException(
                 expected=self.expected,
                 actual=actual)

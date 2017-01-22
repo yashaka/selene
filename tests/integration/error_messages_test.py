@@ -46,8 +46,8 @@ def test_selement_search_fails_with_message_when_explicitly_waits_for_condition(
             "for first_by('css selector', '#element')",
             '',
             'reason: ConditionMismatchException: condition did not match',
-            'expected: Hello wor',
-            'actual: Hello world!',
+            "expected: Hello wor",
+            "actual: Hello world!",
             'screenshot: //.selene/screenshots/*/screen_*.png']
 
 
