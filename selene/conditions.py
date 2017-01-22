@@ -193,8 +193,6 @@ text = Text
 
 class ExactText(ElementCondition):
     def __init__(self, expected_text):
-        if type(expected_text) == str:
-            expected_text = bytes(expected_text, encoding="UTF-8")
         self.expected_text = expected_text
 
     def match(self, webelement):
@@ -264,11 +262,10 @@ class CollectionCondition(with_metaclass(ABCMeta, IEntityCondition)):
 
 class Texts(CollectionCondition):
     def __init__(self, *expected):
-        exp = [it.encode('utf-8') for it in expected]
-        self.expected = exp
+        self.expected = expected
 
     def match(self, webelements):
-        actual = [it.text.encode('utf-8') for it in webelements]
+        actual = [it.text for it in webelements]
         if not (len(actual) == len(self.expected) and all(map(operator.contains, actual, self.expected))):
             raise ConditionMismatchException(
                 expected=self.expected,
