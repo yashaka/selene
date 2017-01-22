@@ -13,18 +13,17 @@ from selene.exceptions import ConditionMismatchException
 
 
 class OrNotToBe(IEntityCondition):
-
     def description(self):
         return self.__class__.__name__
 
     def fn(self, entity):
         return entity
 
+
 or_not_to_be = OrNotToBe
 
 
 class Not(IEntityCondition):
-
     def __init__(self, condition):
         # type: (IEntityCondition) -> None
         self._condition = condition
@@ -38,6 +37,7 @@ class Not(IEntityCondition):
         except Exception as reason:
             return reason
         raise ConditionMismatchException()  # todo: add more information to message
+
 
 not_ = Not
 
@@ -54,7 +54,6 @@ class WebDriverCondition(with_metaclass(ABCMeta, IEntityCondition)):
 
 
 class JsReturnedTrue(WebDriverCondition):
-
     def __init__(self, script_to_return_bool):
         self.script = script_to_return_bool
 
@@ -67,11 +66,11 @@ class JsReturnedTrue(WebDriverCondition):
                 \t\t to return: true'''.format(script=self.script),
                 actual='''returned: {result}'''.format(result=result))
 
+
 js_returned_true = JsReturnedTrue
 
 
 class Title(WebDriverCondition):
-
     def __init__(self, text):
         self.expected = text
 
@@ -83,13 +82,14 @@ class Title(WebDriverCondition):
                 expected=self.expected,
                 actual=actual)
 
+
 title = Title
+
 
 # *** Element Conditions ***
 
 
 class ElementCondition(with_metaclass(ABCMeta, IEntityCondition)):
-
     def description(self):
         return self.__class__.__name__
 
@@ -149,6 +149,7 @@ class Clickable(ElementCondition):
                     displayed=actual_displayed, enabled=actual_enabled))
         return webelement
 
+
 clickable = Clickable()
 
 
@@ -159,13 +160,15 @@ class Enabled(ElementCondition):
             raise ConditionMismatchException()
         return webelement
 
-enabled= Enabled()
+
+enabled = Enabled()
 
 
 class InDom(ElementCondition):
     """
     checks if element exist in DOM
     """
+
     def match(self, webelement):
         return webelement
 
@@ -175,7 +178,6 @@ exist = in_dom
 
 
 class Text(ElementCondition):
-
     def __init__(self, expected_text):
         self.expected_text = expected_text
 
@@ -185,12 +187,14 @@ class Text(ElementCondition):
             raise ConditionMismatchException(expected=self.expected_text, actual=actual_text)
         return webelement
 
+
 text = Text
 
 
 class ExactText(ElementCondition):
-
     def __init__(self, expected_text):
+        if type(expected_text) == str:
+            expected_text = bytes(expected_text, encoding="UTF-8")
         self.expected_text = expected_text
 
     def match(self, webelement):
@@ -199,11 +203,11 @@ class ExactText(ElementCondition):
             raise ConditionMismatchException(expected=self.expected_text, actual=actual_text)
         return webelement
 
+
 exact_text = ExactText
 
 
 class CssClass(ElementCondition):
-
     def __init__(self, expected):
         self.expected = expected
 
@@ -213,11 +217,11 @@ class CssClass(ElementCondition):
             raise ConditionMismatchException(expected=self.expected, actual='class attribute: {}'.format(actual))
         return webelement
 
+
 css_class = CssClass
 
 
 class Attribute(ElementCondition):
-
     def __init__(self, name, value):
         self.name = name
         self.value = value
@@ -229,6 +233,7 @@ class Attribute(ElementCondition):
                 expected='{name}="{value}"'.format(name=self.name, value=self.value),
                 actual='{name}="{value}"'.format(name=self.name, value=actual))
         return webelement
+
 
 attribute = Attribute
 
@@ -244,7 +249,6 @@ blank = value('')
 
 
 class CollectionCondition(with_metaclass(ABCMeta, IEntityCondition)):
-
     def description(self):
         return self.__class__.__name__
 
@@ -259,9 +263,9 @@ class CollectionCondition(with_metaclass(ABCMeta, IEntityCondition)):
 
 
 class Texts(CollectionCondition):
-
     def __init__(self, *expected):
-        self.expected = expected
+        exp = [it.encode('utf-8') for it in expected]
+        self.expected = exp
 
     def match(self, webelements):
         actual = [it.text.encode('utf-8') for it in webelements]
@@ -271,13 +275,13 @@ class Texts(CollectionCondition):
                 actual=actual)
         return webelements
 
+
 texts = Texts
 
 
 class ExactTexts(CollectionCondition):
-
     def __init__(self, *expected):
-        self.expected = expected
+        self.expected = bytes(expected)
 
     def match(self, webelements):
         actual = [it.text.encode('utf-8') for it in webelements]
@@ -286,6 +290,7 @@ class ExactTexts(CollectionCondition):
                 expected=self.expected,
                 actual=actual)
         return webelements
+
 
 exact_texts = ExactTexts
 
@@ -302,6 +307,7 @@ class Size(CollectionCondition):
                 actual=actual)
         return webelements
 
+
 size = Size
 empty = size(0)
 
@@ -317,5 +323,6 @@ class SizeAtLeast(CollectionCondition):
                 expected='>= {}'.format(self.expected),
                 actual=actual)
         return webelements
+
 
 size_at_least = SizeAtLeast
