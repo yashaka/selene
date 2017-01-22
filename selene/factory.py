@@ -1,5 +1,6 @@
 import atexit
 
+from selene.common.none_object import NoneObject
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
@@ -39,11 +40,11 @@ def is_driver_still_open(driver):
 
 def driver_has_started(name):
     shared_driver = get_shared_driver()
-    if not shared_driver:
+    if not shared_driver or isinstance(shared_driver, NoneObject):
         return False
     return shared_driver.name == name \
-        and shared_driver.session_id \
-        and is_driver_still_open(shared_driver)
+           and shared_driver.session_id \
+           and is_driver_still_open(shared_driver)
 
 
 def kill_all_started_drivers():
