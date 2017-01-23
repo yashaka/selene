@@ -1,14 +1,11 @@
-import ast
-from _ast import List
 from abc import ABCMeta, abstractmethod
-import operator
 
+import operator
 from future.utils import with_metaclass, lmap
 
 from selene.abctypes.conditions import IEntityCondition
 from selene.abctypes.webdriver import IWebDriver
 from selene.abctypes.webelement import IWebElement
-# from selene.elements import SeleneElement, SeleneCollection
 from selene.exceptions import ConditionMismatchException
 
 
