@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-=======
-# -*- coding: utf-8 -*-
-import operator
->>>>>>> f2b19b0a3506c4725869bacf94d33424ebad3c1d
 from abc import ABCMeta, abstractmethod
 
 import operator
