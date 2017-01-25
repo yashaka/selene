@@ -3,6 +3,8 @@ dist: trusty
 
 addons:
   firefox: "46.0"
+  code_climate:
+      repo_token: 32e9d19beababd45504f16d8046d3332746d5aa6ffffe00c83fa1c1a3187ed0c
 
 language: python
 python:
