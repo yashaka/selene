@@ -1,1 +1,2 @@
 pytest
+codeclimate-test-reporter
