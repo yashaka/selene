@@ -24,4 +24,4 @@ before_install:
 
 script:
   - tox
-  - codeclimate-test-reporter --file .coverage
+  - codeclimate-test-reporter --debug --file .coverage
