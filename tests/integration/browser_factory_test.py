@@ -11,13 +11,8 @@ from tests.acceptance.helpers.helper import get_test_driver
 @pytest.mark.parametrize("browser_name", ["firefox",
                                           "chrome"])
 def test_factory_can_start_browser_by_name(browser_name):
-    root = tkinter.Tk()
-    screen_width = root.winfo_screenwidth()
-    screen_height = root.winfo_screenheight()
-
     driver = factory._start_driver(browser_name)
     assert driver.name == browser_name
-    assert driver.get_window_size() == {'height': screen_height, 'width': screen_width}
 
 
 @pytest.mark.parametrize("browser_name", ["firefox",
