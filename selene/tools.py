@@ -6,6 +6,7 @@ import selene.driver
 import selene.factory
 import selene.config
 from selene.elements import SeleneElement, SeleneCollection
+
 from selene.wait import wait_for
 
 
