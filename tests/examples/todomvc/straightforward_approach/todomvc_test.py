@@ -1,4 +1,5 @@
 # coding=utf-8
+from selene import config
 from selene.support.conditions import be
 from selene.support.conditions import have
 
@@ -11,7 +12,8 @@ class TestTodoMVC(object):
 
     def test_filter_tasks(self):
         visit('https://todomvc4tasj.herokuapp.com/')
-        wait_to(have.js_returned_true("return $._data($('#clear-completed').get(0), 'events').hasOwnProperty('click')"))
+        clear_completed_js_loaded = "return $._data($('#clear-completed').get(0), 'events').hasOwnProperty('click')"
+        wait_to(have.js_returned_true(clear_completed_js_loaded), timeout=config.timeout*2)
         wait_to(have.title(u'TroopJS • TodoMVC'))
 
         s('#new-todo').should(be.enabled).set_value('a').press_enter()
