@@ -6,10 +6,8 @@ from webdriver_manager.firefox import GeckoDriverManager
 from selenium.webdriver.remote.webdriver import WebDriver
 
 import selene
-import selene.driver
 from selene import config
 from selene.browsers import Browser
-import selene.tools
 
 
 def set_shared_driver(driver):
@@ -43,8 +41,8 @@ def driver_has_started(name):
     if not shared_driver:
         return False
     return shared_driver.name == name \
-        and shared_driver.session_id \
-        and is_driver_still_open(shared_driver)
+           and shared_driver.session_id \
+           and is_driver_still_open(shared_driver)
 
 
 def kill_all_started_drivers():
@@ -58,14 +56,34 @@ def ensure_driver_started(name):
     return _start_driver(name)
 
 
+def __start_chrome():
+    options = webdriver.ChromeOptions()
+    if config.maximize_window:
+        options.add_argument("--start-maximized")
+    return webdriver.Chrome(executable_path=ChromeDriverManager().install(),
+                            chrome_options=options)
+
+
+def __start_firefox(name):
+    executable_path = "wires"
+    if name == Browser.MARIONETTE:
+        executable_path = GeckoDriverManager().install()
+    driver = webdriver.Firefox(executable_path=executable_path)
+    if config.maximize_window:
+        driver.maximize_window()
+    return driver
+
+
+def __get_driver(name):
+    if name == Browser.CHROME:
+        return __start_chrome()
+    else:
+        return __start_firefox(name)
+
+
 def _start_driver(name):
     kill_all_started_drivers()
-    if name == Browser.CHROME:
-        driver = webdriver.Chrome(executable_path=ChromeDriverManager().install())
-    elif name == Browser.MARIONETTE:
-        driver = webdriver.Firefox(executable_path=GeckoDriverManager().install())
-    else:
-        driver = webdriver.Firefox()
+    driver = __get_driver(name)
     set_shared_driver(driver)
     _register_driver(driver)
     return driver
