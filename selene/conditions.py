@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
-import operator
 from abc import ABCMeta, abstractmethod
 
+import operator
 from future.utils import with_metaclass, lmap
 
 from selene.abctypes.conditions import IEntityCondition
