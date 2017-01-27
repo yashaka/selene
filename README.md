@@ -3,6 +3,8 @@
 
 [![Build Status](https://travis-ci.org/yashaka/selene.svg?branch=master)](https://travis-ci.org/yashaka/selene)
 
+[![codecov](https://codecov.io/gh/yashaka/selene/branch/master/graph/badge.svg)](https://codecov.io/gh/yashaka/selene)
+
 Main features:
 - Concise API for Selenium
 - jQuery-style selectors
