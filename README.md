@@ -150,12 +150,14 @@ But regardless being less concise, the latest version gives you better autocompl
 
 There seems to be no "the only best option". You can use the style you prefer more;)
 
-### Configuring shared browser
+### Automatic driver management
 
 By default all "search elements" methods (`s`, `ss`) and other browser actions methods like `visit` - use shared driver.
-Shared driver is initialized automatically and uses Firefox driver. 
+Shared driver is initialized automatically and uses Firefox driver by default.
 
-If you wont other shared browser's driver, you can customize it explicitly:
+#### Configuring shared browser and automatic driver executable installation
+
+If you want other shared browser's driver, you can customize it explicitly:
 ```python
 from selene import config
 from selene.browsers import Browser
@@ -163,7 +165,17 @@ from selene.browsers import Browser
 config.browser_name = Browser.CHROME
 ```
 
-You also can disable automatic driver initialization by providing your driver instance:
+In order to make it work, you only need to have Chrome browser installed. 
+
+But you don't need to install chromedriver executable, it will be installed automatically for you, if neeeded, thanks to integrated [webdriver_manager](https://github.com/SergeyPirogov/webdriver_manager)
+
+#### Disabling automatic driver executable installation
+
+In case you want to use your own executable, you can install it by you own and configure [webdriver_manager correspondingly](https://github.com/SergeyPirogov/webdriver_manager#configuration)
+
+#### Disabling automatic driver management
+
+You also can disable automatic driver initialization by providing your own driver instance:
 
 ```python
 from selene.tools import set_driver, get_driver
