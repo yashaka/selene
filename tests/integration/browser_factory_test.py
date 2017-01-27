@@ -10,7 +10,7 @@ from tests.acceptance.helpers.helper import get_test_driver
 
 @pytest.mark.parametrize("browser_name", ["firefox",
                                           "chrome"])
-def test_factory_can_start_browser_by_name(browser_name):
+def test_factory_can_start_browser_maximized(browser_name):
     driver = factory._start_driver(browser_name)
     assert driver.name == browser_name
 
