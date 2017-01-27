@@ -9,7 +9,7 @@ def test_filter_tasks():
     config.browser_name = 'chrome'
 
     visit('https://todomvc4tasj.herokuapp.com')
-    wait_to(have.js_returned_true("return $._data($('#clear-completed').get(0), 'events').hasOwnProperty('click')"))
+    wait_to(have.js_returned_true("return $._data($('#clear-completed').get(0), 'events').hasOwnProperty('click')"), timeout=8)
 
     s('#new-todo').set_value('a').press_enter()
     s('#new-todo').set_value('b').press_enter()
