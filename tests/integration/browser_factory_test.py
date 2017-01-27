@@ -1,5 +1,3 @@
-import tkinter
-
 import pytest
 
 from selene import factory
