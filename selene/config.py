@@ -22,3 +22,5 @@ screenshot_folder = os.path.join(os.path.expanduser("~"),
                                  ".selene",
                                  "screenshots",
                                  str(next(counter)))
+
+desired_capabilities = None
