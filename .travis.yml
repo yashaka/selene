@@ -24,5 +24,4 @@ before_install:
 script:
   - tox
 
-after_script:
-"./.upload_reports.sh"
+after_script: "./.upload_reports.sh"
