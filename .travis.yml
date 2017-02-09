@@ -1,4 +1,5 @@
 sudo: required
+sudo: true
 dist: trusty
 
 addons:
