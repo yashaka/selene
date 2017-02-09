@@ -10,7 +10,6 @@ from selene.browsers import Browser
 from selene.common.none_object import NoneObject
 from selene.tools import get_driver, set_driver, visit
 
-
 from selene.tools import get_driver, set_driver
 from tests.acceptance.helpers.helper import get_test_driver
 
@@ -19,7 +18,6 @@ start_page = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resou
 
 @pytest.mark.parametrize("browser_name", ["firefox",
                                           "chrome"])
-
 def test_factory_can_start_browser_maximized(browser_name):
     driver = factory._start_driver(browser_name)
     assert driver.name == browser_name
@@ -27,6 +25,7 @@ def test_factory_can_start_browser_maximized(browser_name):
 
 @pytest.mark.parametrize("browser_name", ["firefox",
                                           "chrome"])
+
 def test_ensure_driver_started(browser_name):
     factory.ensure_driver_started(browser_name)
     assert get_driver().name == browser_name
@@ -82,3 +81,4 @@ def test_can_auto_close_browser():
     driver = get_driver()
     factory.kill_all_started_drivers()
     assert factory.is_driver_still_open(driver) is False
+
