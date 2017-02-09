@@ -87,7 +87,8 @@ def _start_driver(name):
     kill_all_started_drivers()
     driver = __get_driver(name)
     set_shared_driver(driver)
-    _register_driver(driver)
+    if not config.hold_browser_open:
+        _register_driver(driver)
     return driver
 
 

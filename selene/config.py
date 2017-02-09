@@ -16,6 +16,7 @@ cash_elements = False
 
 browser_name = Browser.FIREFOX
 maximize_window = True
+hold_browser_open = False
 counter = itertools.count(start=int(round(time.time() * 1000)))
 
 screenshot_folder = os.path.join(os.path.expanduser("~"),
