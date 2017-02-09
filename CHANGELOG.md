@@ -3,6 +3,7 @@
 ## 1.0.0ax (next from master branch)
   - naming changes:
     - tbd...
+  - #76: added config.maximize_window (set to True by default)
   
 ## 1.0.0a7 (released 22.01.2017)
   - fixed #71: weird paths of screenshots for windows
