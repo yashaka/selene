@@ -10,7 +10,6 @@ from selene.exceptions import ConditionMismatchException
 
 
 class OrNotToBe(IEntityCondition):
-
     def description(self):
         return self.__class__.__name__
 
@@ -22,7 +21,6 @@ or_not_to_be = OrNotToBe
 
 
 class Not(IEntityCondition):
-
     def __init__(self, condition):
         # type: (IEntityCondition) -> None
         self._condition = condition
@@ -53,7 +51,6 @@ class WebDriverCondition(with_metaclass(ABCMeta, IEntityCondition)):
 
 
 class JsReturnedTrue(WebDriverCondition):
-
     def __init__(self, script_to_return_bool):
         self.script = script_to_return_bool
 
@@ -66,11 +63,11 @@ class JsReturnedTrue(WebDriverCondition):
                 \t\t to return: true'''.format(script=self.script),
                 actual='''returned: {result}'''.format(result=result))
 
+
 js_returned_true = JsReturnedTrue
 
 
 class Title(WebDriverCondition):
-
     def __init__(self, text):
         self.expected = text
 
@@ -85,11 +82,11 @@ class Title(WebDriverCondition):
 
 title = Title
 
+
 # *** Element Conditions ***
 
 
 class ElementCondition(with_metaclass(ABCMeta, IEntityCondition)):
-
     def description(self):
         return self.__class__.__name__
 
@@ -170,6 +167,7 @@ class InDom(ElementCondition):
     """
     checks if element exist in DOM
     """
+
     def match(self, webelement):
         return webelement
 
@@ -179,7 +177,6 @@ exist = in_dom
 
 
 class Text(ElementCondition):
-
     def __init__(self, expected_text):
         self.expected_text = expected_text
 
@@ -194,7 +191,6 @@ text = Text
 
 
 class ExactText(ElementCondition):
-
     def __init__(self, expected_text):
         self.expected_text = expected_text
 
@@ -204,11 +200,11 @@ class ExactText(ElementCondition):
             raise ConditionMismatchException(expected=self.expected_text, actual=actual_text)
         return webelement
 
+
 exact_text = ExactText
 
 
 class CssClass(ElementCondition):
-
     def __init__(self, expected):
         self.expected = expected
 
@@ -223,7 +219,6 @@ css_class = CssClass
 
 
 class Attribute(ElementCondition):
-
     def __init__(self, name, value):
         self.name = name
         self.value = value
@@ -235,6 +230,7 @@ class Attribute(ElementCondition):
                 expected='{name}="{value}"'.format(name=self.name, value=self.value),
                 actual='{name}="{value}"'.format(name=self.name, value=actual))
         return webelement
+
 
 attribute = Attribute
 
@@ -250,7 +246,6 @@ blank = value('')
 
 
 class CollectionCondition(with_metaclass(ABCMeta, IEntityCondition)):
-
     def description(self):
         return self.__class__.__name__
 
@@ -265,7 +260,6 @@ class CollectionCondition(with_metaclass(ABCMeta, IEntityCondition)):
 
 
 class Texts(CollectionCondition):
-
     def __init__(self, *expected):
         self.expected = expected
 
@@ -277,11 +271,11 @@ class Texts(CollectionCondition):
                 actual=actual)
         return webelements
 
+
 texts = Texts
 
 
 class ExactTexts(CollectionCondition):
-
     def __init__(self, *expected):
         self.expected = expected
 
@@ -292,6 +286,7 @@ class ExactTexts(CollectionCondition):
                 expected=self.expected,
                 actual=actual)
         return webelements
+
 
 exact_texts = ExactTexts
 
@@ -307,6 +302,7 @@ class Size(CollectionCondition):
                 expected=self.expected,
                 actual=actual)
         return webelements
+
 
 size = Size
 empty = size(0)
@@ -324,4 +320,35 @@ class SizeAtLeast(CollectionCondition):
                 actual=actual)
         return webelements
 
+
 size_at_least = SizeAtLeast
+
+
+class ExactPageUrl(WebDriverCondition):
+    def __init__(self, url):
+        self.expected = url
+
+    def fn(self, webdriver):
+        actual = webdriver.current_url
+        if not self.expected == actual:
+            raise ConditionMismatchException(
+                expected=self.expected,
+                actual=actual)
+
+
+exact_url = ExactPageUrl
+
+
+class PartialPageUrl(WebDriverCondition):
+    def __init__(self, url):
+        self.expected = url
+
+    def fn(self, webdriver):
+        actual = webdriver.current_url
+        if not self.expected in actual:
+            raise ConditionMismatchException(
+                message="Page url doesn't contain {}".format(self.expected),
+                expected=self.expected,
+                actual=actual)
+
+partial_url = PartialPageUrl
