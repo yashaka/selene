@@ -3,7 +3,12 @@
 ## 1.0.0ax (next from master branch)
   - naming changes:
     - tbd...
-  - #76: added config.maximize_window (set to True by default)
+  - new features
+    - #76: added config.maximize_window (set to True by default)
+    - #68: added config.hold_browser_open (set to False by default)
+    - #78: added config.desired_capabilities (set to None by default)
+  - project infrastracture
+    - #84: improved travis job: added archiving build artifacts (test results)
   
 ## 1.0.0a7 (released 22.01.2017)
   - fixed #71: weird paths of screenshots for windows
