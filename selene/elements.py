@@ -9,7 +9,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
 import selene
-import selene.tools
 from selene import config
 from selene import tools
 from selene.abctypes.locators import ISeleneWebElementLocator, ISeleneListWebElementLocator
