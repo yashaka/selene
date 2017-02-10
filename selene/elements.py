@@ -20,7 +20,6 @@ from selene.helpers import css_or_by_to_by
 from selene.support import by
 from selene.support.conditions import be
 from selene.support.conditions import have
-from selene.tools import execute_script
 from selene.wait import wait_for
 from selene.conditions import not_, is_matched
 
@@ -360,7 +359,7 @@ class SeleneElement(with_metaclass(DelegatingMeta, IWebElement)):
 
     def scroll_to(self):
         location = self.get_actual_webelement().location
-        execute_script("window.scrollTo({x},{y});".format(x=location['x'],
+        tools.execute_script("window.scrollTo({x},{y});".format(x=location['x'],
                                                                 y=location['y']))
         return self
 
