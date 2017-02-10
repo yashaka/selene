@@ -76,7 +76,8 @@ def __start_firefox(name):
 
 
 def __start_phantomjs():
-    return webdriver.PhantomJS(executable_path=PhantomJsDriverManager().install())
+    return webdriver.PhantomJS(executable_path=PhantomJsDriverManager().install(),
+                               desired_capabilities=config.desired_capabilities)
 
 
 def __get_driver(name):
