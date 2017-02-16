@@ -7,7 +7,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 from selene import config
 from selene.conditions import exact_text, visible
-from selene.tools import visit, take_screenshot, s, set_driver, get_driver, get_latest_screenshot
+from selene.tools import visit, take_screenshot, s, set_driver, get_driver, latest_screenshot
 
 start_page = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/start_page.html'
 original_default_screenshot_folder = config.screenshot_folder
@@ -106,5 +106,5 @@ def test_can_get_latest_screenshot_path():
     with pytest.raises(TimeoutException):
         s("#s").should_be(visible)
 
-    picture = get_latest_screenshot()
+    picture = latest_screenshot()
     assert os.path.exists(picture)
