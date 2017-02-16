@@ -362,9 +362,15 @@ class SeleneElement(with_metaclass(DelegatingMeta, IWebElement)):
     set_value = set
 
     def scroll_to(self):
-        location = self.get_actual_webelement().location
-        selene.tools.execute_script("window.scrollTo({x},{y});".format(x=location['x'],
-                                                                y=location['y']))
+
+        def js_scroll_to(webelement):
+            location = webelement.location
+            selene.tools.execute_script("window.scrollTo({x},{y});".format(x=location['x'],
+                                                                           y=location['y']))
+        self._execute_on_webelement(
+            js_scroll_to,
+            condition=be.visible)
+
         return self
 
     def press_enter(self):
