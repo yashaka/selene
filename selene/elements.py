@@ -9,7 +9,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
 import selene
-import selene.tools
 from selene import config
 from selene.abctypes.locators import ISeleneWebElementLocator, ISeleneListWebElementLocator
 from selene.abctypes.search_context import ISearchContext
@@ -361,6 +360,12 @@ class SeleneElement(with_metaclass(DelegatingMeta, IWebElement)):
         return self
 
     set_value = set
+
+    def scroll_to(self):
+        location = self.get_actual_webelement().location
+        selene.tools.execute_script("window.scrollTo({x},{y});".format(x=location['x'],
+                                                                y=location['y']))
+        return self
 
     def press_enter(self):
         return self.send_keys(Keys.ENTER)
