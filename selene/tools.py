@@ -59,6 +59,8 @@ def ss(css_selector_or_by):
 
 elements = ss
 
+_latest_screenshot = None
+
 
 def take_screenshot(path=None, filename=None):
     if not path:
@@ -73,7 +75,13 @@ def take_screenshot(path=None, filename=None):
         os.makedirs(folder)
 
     get_driver().get_screenshot_as_file(screenshot_path)
+    global _latest_screenshot
+    _latest_screenshot = screenshot_path
     return screenshot_path
+
+
+def get_latest_screenshot():
+    return _latest_screenshot
 
 
 # todo: consider adding aliases, like: wait_until, wait_brhwser_to
