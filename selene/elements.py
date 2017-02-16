@@ -120,7 +120,7 @@ class InnerListWebElementLocator(ISeleneListWebElementLocator):
 
     def find(self):
         # return self._element.get_actual_webelement().find_elements(*self._by)
-        return wait_for(self._element, be.visible, config.timeout, config.poll_during_waits)\
+        return wait_for(self._element, be.visible, config.timeout, config.poll_during_waits) \
             .find_elements(*self._by)
 
 
@@ -155,7 +155,7 @@ class SlicedListWebElementLocator(ISeleneListWebElementLocator):
     def description(self):
         return "(%s)[%s:%s:%s]" % (self._collection, self._slice.start, self._slice.stop, self._slice.step)
 
-    def __init__(self, slc,  collection):
+    def __init__(self, slc, collection):
         # type: (slice, SeleneCollection) -> None
         self._slice = slc
         self._collection = collection
@@ -193,7 +193,6 @@ def _wait_with_screenshot(entity, condition, timeout=None, polling=None):
 
 
 class SeleneElement(with_metaclass(DelegatingMeta, IWebElement)):
-
     @property
     def __delegate__(self):
         # type: () -> IWebElement
@@ -259,6 +258,7 @@ class SeleneElement(with_metaclass(DelegatingMeta, IWebElement)):
 
     s = element
     find = element
+
     # todo: consider making find a separate not-lazy method (not alias)
     # to be used in such example: s("#element").hover().find(".inner").click()
     #                       over: s("#element").hover().element(".inner").click()
@@ -341,6 +341,11 @@ class SeleneElement(with_metaclass(DelegatingMeta, IWebElement)):
         self._execute_on_webelement(
             lambda it: self._actions_chains.double_click(it).perform(),
             condition=be.visible)
+        return self
+
+    def context_click(self):
+        self._execute_on_webelement(lambda it: self._actions_chains.context_click(it).perform(),
+                                    condition=be.visible)
         return self
 
     def set(self, new_text_value):
