@@ -68,8 +68,8 @@ js_returned_true = JsReturnedTrue
 
 
 class Title(WebDriverCondition):
-    def __init__(self, text):
-        self.expected = text
+    def __init__(self, exact_value):
+        self.expected = exact_value
 
     def fn(self, webdriver):
         # type: (IWebDriver) -> bool
@@ -81,6 +81,52 @@ class Title(WebDriverCondition):
 
 
 title = Title
+
+
+class TitleContaining(WebDriverCondition):
+    def __init__(self, partial_value):
+        self.expected = partial_value
+
+    def fn(self, webdriver):
+        # type: (IWebDriver) -> bool
+        actual = webdriver.title
+        if actual not in self.expected:
+            raise ConditionMismatchException(
+                expected=self.expected,
+                actual=actual)
+
+
+title_containing = TitleContaining
+
+
+class Url(WebDriverCondition):
+    def __init__(self, exact_value):
+        self.expected = exact_value
+
+    def fn(self, webdriver):
+        actual = webdriver.current_url
+        if not self.expected == actual:
+            raise ConditionMismatchException(
+                expected=self.expected,
+                actual=actual)
+
+
+url = Url
+
+
+class UrlContaining(WebDriverCondition):
+    def __init__(self, partial_value):
+        self.expected = partial_value
+
+    def fn(self, webdriver):
+        actual = webdriver.current_url
+        if not self.expected in actual:
+            raise ConditionMismatchException(
+                message="Page url doesn't contain {}".format(self.expected),
+                expected=self.expected,
+                actual=actual)
+
+url_containing = UrlContaining
 
 
 # *** Element Conditions ***
@@ -322,33 +368,3 @@ class SizeAtLeast(CollectionCondition):
 
 
 size_at_least = SizeAtLeast
-
-
-class ExactPageUrl(WebDriverCondition):
-    def __init__(self, url):
-        self.expected = url
-
-    def fn(self, webdriver):
-        actual = webdriver.current_url
-        if not self.expected == actual:
-            raise ConditionMismatchException(
-                expected=self.expected,
-                actual=actual)
-
-
-exact_url = ExactPageUrl
-
-
-class PartialPageUrl(WebDriverCondition):
-    def __init__(self, url):
-        self.expected = url
-
-    def fn(self, webdriver):
-        actual = webdriver.current_url
-        if not self.expected in actual:
-            raise ConditionMismatchException(
-                message="Page url doesn't contain {}".format(self.expected),
-                expected=self.expected,
-                actual=actual)
-
-partial_url = PartialPageUrl
