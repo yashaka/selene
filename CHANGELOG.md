@@ -3,10 +3,19 @@
 ## 1.0.0ax (next from master branch)
   - naming changes:
     - tbd...
-  - new features
-    - #76: added config.maximize_window (set to True by default)
-    - #68: added config.hold_browser_open (set to False by default)
-    - #78: added config.desired_capabilities (set to None by default)
+    
+## 1.0.0a8 (released 16.02.2017)
+  - new features added
+    - #76: config.maximize_window (set to True by default)
+    - #68: config.hold_browser_open (set to False by default)
+    - #78: config.desired_capabilities (set to None by default)
+    - #92: selene.tools.latest_screenshot() (returns NoneObject if no screenshot have been added yet)
+    - #85: SeleneElement#context_click()
+    - #77: SeleneElement#scroll_to() (not needed in all cases, but may be usefull in some browsers sometimes...)
+    - #75: support for phantomjs browser
+    - conditions: url, url_containing, title_containing
+    - refactored aliases implementation from selene.support.conditions.have
+      - now they are implemented as method definitions giving better hints during autocomplete
   - project infrastracture
     - #84: improved travis job: added archiving build artifacts (test results)
   
