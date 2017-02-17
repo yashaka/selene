@@ -5,6 +5,7 @@ from selenium.webdriver.remote.webdriver import WebDriver
 import selene.driver
 import selene.factory
 import selene.config
+from selene.common.none_object import NoneObject
 from selene.elements import SeleneElement, SeleneCollection
 
 from selene.wait import wait_for
@@ -59,6 +60,8 @@ def ss(css_selector_or_by):
 
 elements = ss
 
+_latest_screenshot = NoneObject("selene.tools._latest_screenshot")
+
 
 def take_screenshot(path=None, filename=None):
     if not path:
@@ -73,7 +76,13 @@ def take_screenshot(path=None, filename=None):
         os.makedirs(folder)
 
     get_driver().get_screenshot_as_file(screenshot_path)
+    global _latest_screenshot
+    _latest_screenshot = screenshot_path
     return screenshot_path
+
+
+def latest_screenshot():
+    return _latest_screenshot
 
 
 # todo: consider adding aliases, like: wait_until, wait_brhwser_to

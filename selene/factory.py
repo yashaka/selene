@@ -4,6 +4,7 @@ from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 from selenium.webdriver.remote.webdriver import WebDriver
+from webdriver_manager.phantomjs import PhantomJsDriverManager
 
 import selene
 from selene import config
@@ -61,22 +62,31 @@ def __start_chrome():
     if config.maximize_window:
         options.add_argument("--start-maximized")
     return webdriver.Chrome(executable_path=ChromeDriverManager().install(),
-                            chrome_options=options)
+                            chrome_options=options,
+                            desired_capabilities=config.desired_capabilities)
 
 
 def __start_firefox(name):
     executable_path = "wires"
     if name == Browser.MARIONETTE:
         executable_path = GeckoDriverManager().install()
-    driver = webdriver.Firefox(executable_path=executable_path)
+    driver = webdriver.Firefox(capabilities=config.desired_capabilities,
+                               executable_path=executable_path)
     if config.maximize_window:
         driver.maximize_window()
     return driver
 
 
+def __start_phantomjs():
+    return webdriver.PhantomJS(executable_path=PhantomJsDriverManager().install(),
+                               desired_capabilities=config.desired_capabilities)
+
+
 def __get_driver(name):
     if name == Browser.CHROME:
         return __start_chrome()
+    elif name == Browser.PHANTOMJS:
+        return __start_phantomjs()
     else:
         return __start_firefox(name)
 
@@ -85,7 +95,8 @@ def _start_driver(name):
     kill_all_started_drivers()
     driver = __get_driver(name)
     set_shared_driver(driver)
-    _register_driver(driver)
+    if not config.hold_browser_open:
+        _register_driver(driver)
     return driver
 
 

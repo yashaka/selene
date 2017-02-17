@@ -6,8 +6,8 @@ from selenium.common.exceptions import TimeoutException
 from webdriver_manager.chrome import ChromeDriverManager
 
 from selene import config
-from selene.conditions import exact_text
-from selene.tools import visit, take_screenshot, s, set_driver, get_driver
+from selene.conditions import exact_text, visible
+from selene.tools import visit, take_screenshot, s, set_driver, get_driver, latest_screenshot
 
 start_page = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/start_page.html'
 original_default_screenshot_folder = config.screenshot_folder
@@ -98,3 +98,13 @@ def test_can_make_screenshot_automatically():
     expected = os.path.join(get_default_screenshot_folder(),
                             'screen_{id}.png'.format(id=get_screen_id()))
     assert os.path.exists(expected)
+
+
+def test_can_get_latest_screenshot_path():
+    config.screenshot_folder = os.path.dirname(os.path.abspath(__file__)) + '/../../build/screenshots'
+    visit(start_page)
+    with pytest.raises(TimeoutException):
+        s("#s").should_be(visible)
+
+    picture = latest_screenshot()
+    assert os.path.exists(picture)
