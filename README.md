@@ -250,7 +250,7 @@ class GooglePage(object):
 
 class SearchResultsPage(object):
     def __init__(self):
-        self.results = ss("#ires li.g")
+        self.results = ss(".srg .g")
 
 def test_google_search():
     google = GooglePage().open()
