@@ -5,7 +5,7 @@ from selene.support.conditions import have
 
 from selene.bys import by_link_text
 from selene.conditions import exact_text
-from selene.tools import ss, s, visit, wait_to
+from selene.browser import ss, s, visit, wait_to
 
 
 class TestTodoMVC(object):

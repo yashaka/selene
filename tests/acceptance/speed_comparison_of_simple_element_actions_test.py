@@ -5,7 +5,7 @@ from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 
 from selene.conditions import visible
-from selene.tools import s, set_driver, get_driver, visit
+from selene.browser import s, set_driver, driver, visit
 from tests.acceptance.helpers.helper import get_test_driver
 from tests.helpers import time_spent
 from tests.acceptance.helpers.todomvc import TODOMVC_URL
@@ -33,7 +33,7 @@ def teardown_function(f):
     global browser
     global shaded_browser
     browser.quit()
-    get_driver().quit()
+    driver().quit()
     shaded_browser.quit()
 
 

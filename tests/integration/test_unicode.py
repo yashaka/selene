@@ -4,7 +4,7 @@ import os
 from selene import config
 from selene.browsers import Browser
 from selene.conditions import texts, exact_text
-from selene.tools import visit, s, ss
+from selene.browser import visit, s, ss
 
 start_page = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/start_page.html'
 

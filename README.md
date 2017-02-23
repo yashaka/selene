@@ -39,7 +39,7 @@ NOTE: This is still an alpha version. Lately selene was completely refactored, a
 ### Basic example
 
 ```python
-from selene.tools import s, ss, visit
+from selene.browser import s, ss, visit
 from selene.support.conditions import be, have
 
 def test_selene_demo():
@@ -178,7 +178,7 @@ In case you want to use your own executable, you can install it by you own and c
 You also can disable automatic driver initialization by providing your own driver instance:
 
 ```python
-from selene.tools import set_driver, get_driver
+from selene import browser 
 from selenium import webdriver
 
 # this allows you to provide additional driver customization
@@ -188,12 +188,12 @@ def setup_module(m):
         desired_capabilities={'browserName': 'htmlunit',
                               'version': '2',
                               'javascriptEnabled': True})
-    set_driver(driver)
+    browser.set_driver(driver)
 
 
 # then you have to close driver manually
 def teardown_module(m):
-    get_driver().quit()
+    browser.quit()
 ```
 
 ### Explicit SeleneDriver
@@ -201,12 +201,16 @@ def teardown_module(m):
 In addition to s, ss "static" methods (from selene.tools) to represent elements on the page, you can use their "object oriented" alternatives from SeleneDriver:
 
 ```python
-driver = SeleneDriver.wrap(FirefoxDriver())
+from selene.driver import SeleneDriver
+from selenium.webdriver import Firefox
+from selene.support.conditions import have
+
+driver = SeleneDriver.wrap(Firefox())
 #...
 def test_selene_demo():
     tasks = driver.ss("#todo-list>li")
 
-    visit('http://todomvc4tasj.herokuapp.com')
+    driver.get('http://todomvc4tasj.herokuapp.com')
 
     for task_text in ["1", "2", "3"]:
         driver.s("#new-todo").set_value(task_text).press_enter()
@@ -217,12 +221,16 @@ def test_selene_demo():
 or even in more readable way:
 
 ```python
-driver = SeleneDriver.wrap(FirefoxDriver())
+from selene.driver import SeleneDriver
+from selenium.webdriver import Firefox
+from selene.support.conditions import have
+
+driver = SeleneDriver.wrap(Firefox())
 #...
 def test_selene_demo():
     tasks = driver.all("#todo-list>li")
 
-    visit('http://todomvc4tasj.herokuapp.com')
+    driver.get('http://todomvc4tasj.herokuapp.com')
 
     for task_text in ["1", "2", "3"]:
         driver.element("#new-todo").set_value(task_text).press_enter()
@@ -236,8 +244,8 @@ This approach may be useful in case you need to deal with different webdriver in
 Here is a simple example of PageObjects implementation (inspired by [selenide google search example](https://github.com/selenide-examples/google/tree/master/test/org/selenide/examples/google/selenide_page_object)):
 
 ```python
-from selene.tools import s, ss, visit
-from selene.conditions import text
+from selene.browser import s, ss, visit
+from selene.support.conditions import have
 
 class GooglePage(object):
     def open(self):
@@ -255,7 +263,7 @@ class SearchResultsPage(object):
 def test_google_search():
     google = GooglePage().open()
     search = google.search("selene")
-    search.results[0].assure(text("In Greek mythology, Selene is the goddess of the moon"))  # :D
+    search.results[0].should(have.text("In Greek mythology, Selene is the goddess of the moon"))  # :D
 ```
 
 That's it. Selene encourages to start writing tests in the simplest way. And add more layers of abstraction only by real demand. 
@@ -264,7 +272,10 @@ That's it. Selene encourages to start writing tests in the simplest way. And add
 So far reporting capabilities are reflected only in a detailed error messages.
 For example the following code
 ```python
-ss("#todo-list>li")[2].should_be(hidden)
+from selene.browser import ss
+from selene.support.conditions import be
+#...
+ss("#todo-list>li")[2].should(be.hidden)
 ```
 in case of failure will result in exception raised with message:
 ```
@@ -278,7 +289,10 @@ in case of failure will result in exception raised with message:
 
 And the the following "more complex" locating code
 ```python
-ss("#todo-list>li")[2].should_be(hidden)
+from selene.browser import ss
+from selene.support.conditions import be
+#...
+ss("#todo-list>li")[2].should(be.hidden)
 ```
 in case of failure will result in exception raised with message:
 ```
@@ -308,8 +322,9 @@ Below you can find an example of Widgets (aka ElementObjects, aka "[PageObjects 
 The application under test - [TodoMvc](todomvc4tasj.herokuapp.com) is very simple. It is completely does not make sense to use Widgets here:). But we use it just as an example of implementation.
 ```python
 from selene.conditions import exact_text, hidden, exact_texts
-from selene.tools import set_driver, get_driver, ss, s
+from selene.browser import set_driver, driver, ss, s
 from selenium import webdriver
+from selene.support.conditions import have, be
 
 from helpers.todomvc import given_active
 
@@ -319,7 +334,7 @@ def setup_module(m):
 
 
 def teardown_module(m):
-    get_driver().quit()
+    driver().quit()
 
 class Task(object):
 
@@ -327,7 +342,7 @@ class Task(object):
         self.container = container
 
     def toggle(self):
-        self.container.find(".toggle").click()
+        self.container.element(".toggle").click()
         return self
 
 
@@ -337,22 +352,22 @@ class Tasks(object):
         return ss("#todo-list>li")
 
     def _task_element(self, text):
-        return self._elements().findBy(exact_text(text))
+        return self._elements().element_by(have.exact_text(text))
 
     def task(self, text):
         return Task(self._task_element(text))
 
     def should_be(self, *texts):
-        self._elements().should_have(exact_texts(*texts))
+        self._elements().should(have.exact_texts(*texts))
 
 
 class Footer(object):
     def __init__(self):
         self.container = s("#footer")
-        self.clear_completed = self.container.find("#clear-completed")
+        self.clear_completed = self.container.element("#clear-completed")
 
     def should_have_items_left(self, number_of_active_tasks):
-        self.container.find("#todo-count>strong").should_have(exact_text(str(number_of_active_tasks)))
+        self.container.element("#todo-count>strong").should(have.exact_text(str(number_of_active_tasks)))
 
 
 class TodoMVC(object):
@@ -363,7 +378,7 @@ class TodoMVC(object):
 
     def clear_completed(self):
         self.footer.clear_completed.click()
-        self.footer.clear_completed.should_be(hidden)
+        self.footer.clear_completed.should(be.hidden)
         return self
 
 

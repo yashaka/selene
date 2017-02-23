@@ -4,7 +4,7 @@ from selene.elements import SeleneElement
 from selene.helpers import merge
 from selene.support.conditions import be
 from selene.support.conditions import have
-from selene.tools import visit, ss, s
+from selene.browser import visit, ss, s
 
 
 class SelectList(object):

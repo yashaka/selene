@@ -4,7 +4,7 @@ from selene import tools
 from selene.bys import by_link_text
 from selene.conditions import exact_text, visible, exact_texts, enabled
 from selene.support.conditions import have
-from selene.tools import ss, s, wait_to
+from selene.browser import ss, s, wait_to
 
 __author__ = 'yashaka'
 

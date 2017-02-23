@@ -8,7 +8,7 @@ from selene.support.conditions import have
 
 __author__ = 'yashaka'
 
-from selene.tools import *
+from selene.browser import *
 
 
 class TestTodoMVC(object):

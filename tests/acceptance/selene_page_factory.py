@@ -3,7 +3,7 @@ import os
 import selene
 from selene.browsers import Browser
 from selene.conditions import exact_text, visible, hidden
-from selene.tools import visit, s
+from selene.browser import visit, s
 
 start_page = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/start_page.html'
 

@@ -1,5 +1,5 @@
 from selene.conditions import css_class, texts, text, size, hidden, empty
-from selene.tools import *
+from selene.browser import *
 
 
 class TestTodoMVC(object):

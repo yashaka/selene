@@ -3,7 +3,7 @@ from selenium.common.exceptions import TimeoutException
 from webdriver_manager.firefox import GeckoDriverManager
 
 from selene.support.conditions import have
-from selene.tools import *
+from selene.browser import *
 from tests.acceptance.helpers.helper import get_test_driver
 from tests.acceptance.helpers.todomvc import given_active
 
@@ -13,7 +13,7 @@ def setup_module(m):
 
 
 def teardown_module(m):
-    get_driver().quit()
+    driver().quit()
 
 
 def test_assure_passes():

@@ -4,7 +4,7 @@ from selenium import webdriver
 
 from selene.support.conditions import be
 from selene.support.conditions import have
-from selene.tools import set_driver, get_driver, visit, s, ss
+from selene.browser import set_driver, driver, visit, s, ss
 
 
 def setup_module(m):
@@ -12,7 +12,7 @@ def setup_module(m):
 
 
 def teardown_module(m):
-    get_driver().quit()
+    driver().quit()
 
 
 def test_filter_tasks():

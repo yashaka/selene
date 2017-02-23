@@ -1,7 +1,7 @@
 import os
 
 from selene import config
-from selene.tools import set_driver, get_driver
+from selene.browser import set_driver, driver
 from tests.acceptance.helpers.helper import get_test_driver
 from tests.examples.order.app_model.order_widgets import Order
 
@@ -13,7 +13,7 @@ def setup_function(m):
 
 
 def teardown_function(m):
-    get_driver().quit()
+    driver().quit()
     config.app_host = ''
 
 

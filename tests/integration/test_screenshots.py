@@ -7,7 +7,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 from selene import config
 from selene.conditions import exact_text, visible
-from selene.tools import visit, take_screenshot, s, set_driver, get_driver, latest_screenshot
+from selene.browser import visit, take_screenshot, s, set_driver, driver, latest_screenshot
 
 start_page = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/start_page.html'
 original_default_screenshot_folder = config.screenshot_folder
@@ -24,7 +24,7 @@ def setup_module(m):
 
 
 def teardown_module(m):
-    get_driver().quit()
+    driver().quit()
 
 
 def get_default_screenshot_folder():

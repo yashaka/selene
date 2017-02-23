@@ -7,7 +7,7 @@ from tests.acceptance.helpers.helper import get_test_driver
 
 __author__ = 'yashaka'
 
-from selene.tools import *
+from selene.browser import *
 from tests.acceptance.helpers.todomvc import given_active, given_at_other_page, given_empty_tasks, given, task
 
 
@@ -16,7 +16,7 @@ def setup_module(m):
 
 
 def teardown_module(m):
-    get_driver().quit()
+    driver().quit()
 
 
 def test_assure_and_alias_methods():

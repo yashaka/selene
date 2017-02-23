@@ -1,13 +1,7 @@
-import selene
-import selene.tools
-from selene import config
-# from selene.elements import SeleneElement, SeleneCollection
-
 import time
 from selenium.common.exceptions import TimeoutException
 
 from selene.abctypes.conditions import IEntityCondition
-from selene.exceptions import ConditionMismatchException
 
 
 def wait_for(entity, condition, timeout=4, polling=0.1):

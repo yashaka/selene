@@ -6,7 +6,7 @@ from selenium.common.exceptions import TimeoutException
 from selene import config
 from selene.common.none_object import NoneObject
 from selene.support.conditions import have
-from selene.tools import s, get_driver, set_driver, ss
+from selene.browser import s, driver, set_driver, ss
 from tests.integration.helpers.givenpage import GivenPage
 
 GIVEN_PAGE = NoneObject('GivenPage')  # type: GivenPage
@@ -22,7 +22,7 @@ def setup_module(m):
 
 def teardown_module(m):
     config.timeout = original_timeout
-    get_driver().quit()
+    driver().quit()
 
 
 def exception_message(ex):

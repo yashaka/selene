@@ -6,7 +6,7 @@ from tests.base_test import *
 
 from selene.bys import by_link_text
 from selene.conditions import exact_text
-from selene.tools import ss, s, visit
+from selene.browser import ss, s, visit
 
 APP_URL = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../../../resources/todomvcapp/home.html'
 

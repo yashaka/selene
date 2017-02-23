@@ -2,7 +2,7 @@ from selene import config
 from selene.support import by
 from selene.support.conditions import be
 from selene.support.conditions import have
-from selene.tools import visit, s, ss, wait_to
+from selene.browser import visit, s, ss, wait_to
 
 
 def test_filter_tasks():

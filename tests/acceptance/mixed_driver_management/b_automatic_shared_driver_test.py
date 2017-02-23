@@ -3,7 +3,7 @@ import os
 from selene.support.conditions import be
 from selene.support.conditions import have
 
-from selene.tools import ss, s, visit
+from selene.browser import ss, s, visit
 
 
 def test_filter_tasks():

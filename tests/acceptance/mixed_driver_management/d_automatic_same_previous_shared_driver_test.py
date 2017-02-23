@@ -7,7 +7,7 @@ from selene import config
 from selene.support.conditions import be
 from selene.support.conditions import have
 
-from selene.tools import ss, s, visit
+from selene.browser import ss, s, visit
 
 original_timeout = config.timeout
 

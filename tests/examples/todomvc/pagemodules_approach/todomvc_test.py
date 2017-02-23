@@ -1,4 +1,4 @@
-from selene.tools import execute_script
+from selene.browser import execute_script
 from tests.examples.todomvc.pagemodules_approach.pages import tasks
 
 
