@@ -2,7 +2,10 @@
 
 ## 1.0.0ax (next from master branch)
   - naming changes:
-    - tbd...
+    - tbd
+  - upcoming breaking changes:
+    - selene.config.app_host renamed to selene.config.base_url
+      - selene.config.app_host still works but will be removed in next versions
     
 ## 1.0.0a8 (released 16.02.2017)
   - new features added

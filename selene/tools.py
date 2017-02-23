@@ -31,18 +31,20 @@ def visit(absolute_or_relative_url):
     """
     Loads a web page in the current browser session.
     :param absolute_or_relative_url:
-        an absolute url to web page in case of config.app_host is not specified,
+        an absolute url to web page in case of config.base_url is not specified,
         otherwise - relative url correspondingly
 
     :Usage:
         visit('http://mydomain.com/subpage1')
         visit('http://mydomain.com/subpage2')
         # OR
-        config.app_host = 'http://mydomain.com'
+        config.base_url = 'http://mydomain.com'
         visit('/subpage1')
         visit('/subpage2')
     """
-    get_driver().get(selene.config.app_host + absolute_or_relative_url)
+    # todo: refactor next line when app_host is removed
+    base_url = selene.config.app_host if selene.config.app_host else selene.config.base_url
+    get_driver().get(base_url + absolute_or_relative_url)
 
 
 def s(css_selector_or_by):
