@@ -34,44 +34,100 @@ NOTE: This is still an alpha version. Lately selene was completely refactored, a
 
     pip install selene
 
-## Usage
+## Quick Start
+
+### Basic Usage: 4 pillars of Selene
+
+All Selene API consists just from 4 pillars:
+1. Browser Actions (including finding elements)
+2. Custom Selectors
+3. Assertion Conditions
+4. Custom Configuration
+And one more not mandatory bonus:
+5. concise jquery-style shortcuts for finding elements
+
+All pillars are reflected in corresponding selene python modules and their methods.
+
+#### 1. Browser Actions: [browser.*](https://github.com/yashaka/selene/blob/master/selene/browser.py)
+e.g. `browser.visit('https://todomvc4tasj.herokuapp.com')`
+e.g. `browser.element('#new-todo')`
+e.g. `browser.all('#todo-list>li')`
+
+Once you have the elements, of course you can do some actions on them:
+e.g. `browser.element('#new-todo').set_value('do something').press_enter()`
+e.g. `browser.all('#todo-list>li').first().find('.toggle').click()`
+
+#### 2. Custom Selectors: [by.*](https://github.com/yashaka/selene/blob/master/selene/support/by.py)
+By default element finders (`browser.element`, `browser.all`) accept css selectors as strings, but you can use any custom selector from the `by` module.
+e.g. `browser.element(by.link_text("Active")).click()`
+
+#### 3. Assertion Conditions: [be.*](https://github.com/yashaka/selene/blob/master/selene/support/conditions/be.py) and [have.*](https://github.com/yashaka/selene/blob/master/selene/support/conditions/have.py)
+Assertion conditions are used in "assertion actions" on elements.
+e.g. `browser.element("#new-todo").should(be.blank)` or the same `browser.element("#new-todo").should(have.value('')`
+e.g. `browser.all('#todo-list>li').should(have.exact_texts('do something', 'do more'))`
+e.g. `browser.all('#todo-list>li').should(be.empty)`
+
+#### 4. Custom Configuration: [config.*](https://github.com/yashaka/selene/blob/master/selene/config.py)
+e.g. `config.browser_name = 'chrome'`
+You can omit custom configuration and Selene will use default values, e.g. browser_name is equal to `'firefox'` by default
+
+#### 5. Concise jquery-style shortcuts for finding elements:
+e.g. `s('#new-todo')` instead of `browser.element('#new-todo')`
+e.g. `ss('#todo-list>li')` instead of `browser.all('#todo-list>li')`
+
+#### Imports
+
+You can access to all main Selene API via single "wildcard" import:
+```
+from selene.api import *
+```
+
+If you don't like "wildcard" imports, you can use direct module imports or direct module functions import;) no problem:)
+
+### OOP sidenotes...
+If you did not like the "non-OOP" module functions from above, don't panic, you can use the same API via creating SeleneDriver objects...
+You can find more explanations a bit further in this Readme.
 
 ### Basic example
 
 ```python
-from selene.browser import s, ss, visit
-from selene.support.conditions import be, have
-
-def test_selene_demo():
-    tasks = ss("#todo-list>li")
-    active_tasks = tasks.filtered_by(have.css_class("active"))
-
-    visit('http://todomvc4tasj.herokuapp.com')
-
-    for task_text in ["1", "2", "3"]:
-        s("#new-todo").set_value(task_text).press_enter()
-
-    tasks.should(have.texts("1", "2", "3")).should_each(have.css_class("active"))
-    s("#todo-count").should(have.text("3"))
-
-    tasks[2].element(".toggle").click()
+from selene.api import *
 
 
-    active_tasks.should(have.texts("1", "2"))
-    active_tasks.should(have.size(2))
+class TestTodoMVC(object):
 
-    tasks.filtered_by(have.css_class("completed")).should(have.texts("3"))
+    def test_selene_demo(self):
+        tasks = ss("#todo-list>li")
+        active_tasks = tasks.filtered_by(have.css_class("active"))
 
-    s("a[href='#/active']").click()
-    tasks[:2].should(have.texts("1", "2"))
-    tasks[2].should(be.hidden)
+        browser.visit('https://todomvc4tasj.herokuapp.com')
 
-    s("#toggle-all").click()
-    s("#clear-completed").click()
-    tasks.should(be.empty)
+        s("#new-todo").should(be.blank)
+
+        for task_text in ["1", "2", "3"]:
+            s("#new-todo").set_value(task_text).press_enter()
+        tasks.should(have.exact_texts("1", "2", "3")).should_each(have.css_class("active"))
+        s("#todo-count").should(have.text('3'))
+
+        tasks[2].s(".toggle").click()
+        active_tasks.should(have.texts("1", "2"))
+        active_tasks.should(have.size(2))
+
+        tasks.filtered_by(have.css_class("completed")).should(have.texts("3"))
+
+        s(by.link_text("Active")).click()
+        tasks[:2].should(have.texts("1", "2"))
+        tasks[2].should(be.hidden)
+
+        s("#toggle-all").click()
+        s("#clear-completed").click()
+        tasks.should(be.empty)
 ```
 
 This should be completely enough to start writing your tests.
+
+### Next steps...
+
 In case you need to reuse some parts elsewhere - go ahead and move your locators:
 ```python
     tasks = ss("#todo-list>li")
