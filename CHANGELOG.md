@@ -3,11 +3,23 @@
 ## 1.0.0ax (next from master branch)
   - naming changes:
     - tbd
-  - upcoming breaking changes:
-    - selene.config.app_host renamed to selene.config.base_url
+    
+ 
+## 1.0.0a10 (to be released 01.03.2017)
+  - [#103](https://github.com/yashaka/selene/issues/103): NEW API entry points
+    - now all main selene API is available via single wildcard import: `from selene.api import *`
+      - you can use the "old direct imports way" but at least until 1.0 release "the new way" will result in more stable API. We may move modules between packages, but your new way imports remain stable. See more explantains in issue description #103   
+    - read Quick Start section in README.MD for more details.
+  - **UPCOMING BREAKING CHANGES**:
+    - deprecated selene.config.app_host, use `selene.config.base_url` instead 
       - selene.config.app_host still works but will be removed in next versions
-    - #101: deprecated selene.tools, use selene.browser instead
+    - [#101](https://github.com/yashaka/selene/issues/101): deprecated selene.tools, use selene.browser and selene.support.jquery_style_selectors instead or just the "new way imports from #103"
+  - new features
+    - [#51](https://github.com/yashaka/selene/issues/51): added ability to configure selene via passing/setting system variables
     
+## 1.0.0a9 (to be released 01.03.2017)
+  - skipped:)
+
 ## 1.0.0a8 (released 16.02.2017)
   - new features added
     - #76: config.maximize_window (set to True by default)
