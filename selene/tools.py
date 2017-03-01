@@ -52,22 +52,29 @@ def visit(absolute_or_relative_url):
     get_driver().get(base_url + absolute_or_relative_url)
 
 
-def s(css_selector_or_by):
-    warnings.warn("use selene.browser.element(css_selector_or_by) or selene.browser.s(css_selector_or_by) instead",
+def element(css_selector_or_by):
+    warnings.warn("use selene.browser.element(css_selector_or_by) instead",
                   DeprecationWarning)
     return SeleneElement.by_css_or_by(css_selector_or_by, selene.driver._shared_driver)
 
 
-element = s
+def s(css_selector_or_by):
+    warnings.warn("use selene.support.jquery_style_selectors.s(css_selector_or_by) instead",
+                  DeprecationWarning)
+    return SeleneElement.by_css_or_by(css_selector_or_by, selene.driver._shared_driver)
 
 
-def ss(css_selector_or_by):
+def elements(css_selector_or_by):
     warnings.warn("use selene.browser.elements(css_selector_or_by) or selene.browser.ss(css_selector_or_by) instead",
                   DeprecationWarning)
     return SeleneCollection.by_css_or_by(css_selector_or_by, selene.driver._shared_driver)
 
 
-elements = ss
+def ss(css_selector_or_by):
+    warnings.warn("use selene.support.jquery_style_selectors.ss(css_selector_or_by) instead",
+                  DeprecationWarning)
+    return SeleneCollection.by_css_or_by(css_selector_or_by, selene.driver._shared_driver)
+
 
 _latest_screenshot = NoneObject("selene.tools._latest_screenshot")
 
@@ -98,7 +105,7 @@ def latest_screenshot():
 
 # todo: consider adding aliases, like: wait_until, wait_brhwser_to
 def wait_to(webdriver_condition, timeout=None, polling=None):
-    warnings.warn("use selene.browser.wait_to(webdriver_condition, timeout, polling): instead", DeprecationWarning)
+    warnings.warn("use selene.browser.wait_to(webdriver_condition, timeout, polling) instead", DeprecationWarning)
     if timeout is None:
         timeout = selene.config.timeout
     if polling is None:
@@ -108,5 +115,5 @@ def wait_to(webdriver_condition, timeout=None, polling=None):
 
 
 def execute_script(script, *args):
-    warnings.warn("use selene.browser.execute_script(script, *args): instead", DeprecationWarning)
+    warnings.warn("use selene.browser.execute_script(script, *args) instead", DeprecationWarning)
     return get_driver().execute_script(script, *args)
