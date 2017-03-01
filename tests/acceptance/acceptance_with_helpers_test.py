@@ -1,10 +1,9 @@
-import os
-
 from selenium.webdriver.common.keys import Keys
 
-from selene.conditions import visible, empty, exact_texts, texts, exact_text, css_class
+from selene.conditions import visible, empty, exact_text, css_class
 from selene.support.conditions import be
 from selene.support.conditions import have
+from selene.support.jquery_style_selectors import s, ss
 
 __author__ = 'yashaka'
 

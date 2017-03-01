@@ -7,7 +7,8 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 from selene import config
 from selene.conditions import exact_text, visible
-from selene.browser import visit, take_screenshot, s, set_driver, driver, latest_screenshot
+from selene.browser import visit, take_screenshot, set_driver, driver, latest_screenshot
+from selene.support.jquery_style_selectors import s
 
 start_page = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/start_page.html'
 original_default_screenshot_folder = config.screenshot_folder

@@ -1,20 +1,21 @@
 # coding=utf-8
+from selene import browser
 from selene import config
 from selene.support.conditions import be
 from selene.support.conditions import have
 
 from selene.bys import by_link_text
 from selene.conditions import exact_text
-from selene.browser import ss, s, visit, wait_to
+from selene.support.jquery_style_selectors import s, ss
 
 
 class TestTodoMVC(object):
 
     def test_filter_tasks(self):
-        visit('https://todomvc4tasj.herokuapp.com/')
+        browser.visit('https://todomvc4tasj.herokuapp.com/')
         clear_completed_js_loaded = "return $._data($('#clear-completed').get(0), 'events').hasOwnProperty('click')"
-        wait_to(have.js_returned_true(clear_completed_js_loaded), timeout=config.timeout*2)
-        wait_to(have.title(u'TroopJS • TodoMVC'))
+        browser.wait_to(have.js_returned_true(clear_completed_js_loaded), timeout=config.timeout*3)
+        browser.wait_to(have.title(u'TroopJS • TodoMVC'))
 
         s('#new-todo').should(be.enabled).set_value('a').press_enter()
         s('#new-todo').should(be.enabled).set_value('b').press_enter()

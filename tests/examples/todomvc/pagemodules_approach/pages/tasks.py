@@ -1,10 +1,10 @@
 import os
 
-from selene import tools
 from selene.bys import by_link_text
 from selene.conditions import exact_text, visible, exact_texts, enabled
 from selene.support.conditions import have
-from selene.browser import ss, s, wait_to
+from selene import browser
+from selene.support.jquery_style_selectors import s, ss
 
 __author__ = 'yashaka'
 
@@ -13,8 +13,9 @@ _elements = ss("#todo-list>li")
 
 
 def visit():
-    tools.visit('file://' + os.path.abspath(os.path.dirname(__file__)) + '/../../../../resources/todomvcapp/home.html')
-    wait_to(have.js_returned_true("return $._data($('#clear-completed').get(0), 'events').hasOwnProperty('click')"))
+    browser.visit('file://' + os.path.abspath(os.path.dirname(__file__)) + '/../../../../resources/todomvcapp/home.html')
+    clear_completed_js_loaded = "return $._data($('#clear-completed').get(0), 'events').hasOwnProperty('click')"
+    browser.wait_to(have.js_returned_true(clear_completed_js_loaded))
 
 
 def filter_active():

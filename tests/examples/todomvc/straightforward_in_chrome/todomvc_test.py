@@ -1,15 +1,17 @@
+from selene import browser
 from selene import config
 from selene.support import by
 from selene.support.conditions import be
 from selene.support.conditions import have
-from selene.browser import visit, s, ss, wait_to
+from selene.support.jquery_style_selectors import s, ss
 
 
 def test_filter_tasks():
     config.browser_name = 'chrome'
 
-    visit('https://todomvc4tasj.herokuapp.com')
-    wait_to(have.js_returned_true("return $._data($('#clear-completed').get(0), 'events').hasOwnProperty('click')"), timeout=8)
+    browser.visit('https://todomvc4tasj.herokuapp.com')
+    clear_completed_js_loaded = "return $._data($('#clear-completed').get(0), 'events').hasOwnProperty('click')"
+    browser.wait_to(have.js_returned_true(clear_completed_js_loaded), timeout=config.timeout*3)
 
     s('#new-todo').set_value('a').press_enter()
     s('#new-todo').set_value('b').press_enter()

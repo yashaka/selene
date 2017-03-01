@@ -8,8 +8,9 @@ from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
-import selene
 from selene import config
+from selene import helpers
+from selene.abctypes.conditions import IEntityCondition
 from selene.abctypes.locators import ISeleneWebElementLocator, ISeleneListWebElementLocator
 from selene.abctypes.search_context import ISearchContext
 from selene.abctypes.webdriver import IWebDriver
@@ -136,7 +137,7 @@ class FilteredListWebElementLocator(ISeleneListWebElementLocator):
         return "(%s).filter_by(%s)" % (self._collection, self._condition.description())
 
     def __init__(self, condition, collection):
-        # type: (Condition, SeleneCollection) -> None
+        # type: (IEntityCondition, SeleneCollection) -> None
         self._condition = condition
         self._collection = collection
 
@@ -172,12 +173,12 @@ class FoundByConditionWebElementLocator(ISeleneWebElementLocator):
         return "(%s).select_by(%s)" % (self._collection, self._condition.description())
 
     def __init__(self, condition, collection):
-        # type: (Condition, SeleneCollection) -> None
+        # type: (IEntityCondition, SeleneCollection) -> None
         self._condition = condition
         self._collection = collection
 
 
-def _wait_with_screenshot(entity, condition, timeout=None, polling=None):
+def _wait_with_screenshot(webdriver, entity, condition, timeout=None, polling=None):
     if timeout is None:
         timeout = config.timeout
     if polling is None:
@@ -185,7 +186,7 @@ def _wait_with_screenshot(entity, condition, timeout=None, polling=None):
     try:
         return wait_for(entity, condition, timeout, polling)
     except TimeoutException as e:
-        screenshot = selene.tools.take_screenshot()
+        screenshot = helpers.take_screenshot(webdriver, )
         msg = '''{original_msg}
             screenshot: {screenshot}'''.format(original_msg=e.msg, screenshot=screenshot)
         raise TimeoutException(msg, e.screen, e.stacktrace)
@@ -246,7 +247,7 @@ class SeleneElement(with_metaclass(DelegatingMeta, IWebElement)):
         return self._locator.description
 
     def _execute_on_webelement(self, command, condition=be.or_not_to_be):
-        return command(_wait_with_screenshot(self, condition))
+        return command(_wait_with_screenshot(self._webdriver, self, condition))
 
     # *** Relative elements ***
 
@@ -301,7 +302,7 @@ class SeleneElement(with_metaclass(DelegatingMeta, IWebElement)):
             timeout = config.timeout
         # todo: implement proper cashing
         # self._found = wait_for(self, condition, timeout)
-        _wait_with_screenshot(self, condition, timeout)
+        _wait_with_screenshot(self._webdriver, self, condition, timeout)
         return self
 
     # todo: consider removing some aliases
@@ -320,7 +321,7 @@ class SeleneElement(with_metaclass(DelegatingMeta, IWebElement)):
             timeout = config.timeout
         # todo: implement proper cashing
         not_condition = not_(condition)
-        _wait_with_screenshot(self, not_condition, timeout)
+        _wait_with_screenshot(self._webdriver, self, not_condition, timeout)
         return self
 
     # todo: consider removing some aliases
@@ -365,8 +366,8 @@ class SeleneElement(with_metaclass(DelegatingMeta, IWebElement)):
 
         def js_scroll_to(webelement):
             location = webelement.location
-            selene.tools.execute_script("window.scrollTo({x},{y});".format(x=location['x'],
-                                                                           y=location['y']))
+            self._webdriver.execute_script("window.scrollTo({x},{y});".format(x=location['x'],
+                                                                              y=location['y']))
         self._execute_on_webelement(
             js_scroll_to,
             condition=be.visible)
@@ -581,7 +582,7 @@ class SeleneCollection(with_metaclass(DelegatingMeta, Sequence)):
     def should(self, condition, timeout=None):
         if timeout is None:
             timeout = config.timeout
-        _wait_with_screenshot(self, condition, timeout)
+        _wait_with_screenshot(self._webdriver, self, condition, timeout)
         return self
 
     # todo: consider removing some aliases
@@ -600,7 +601,7 @@ class SeleneCollection(with_metaclass(DelegatingMeta, Sequence)):
             timeout = config.timeout
         # todo: implement proper cashing
         not_condition = not_(condition)
-        _wait_with_screenshot(self, not_condition, timeout)
+        _wait_with_screenshot(self._webdriver, self, not_condition, timeout)
         return self
 
     # todo: consider removing some aliases are even all of them
@@ -679,7 +680,7 @@ class SeleneCollection(with_metaclass(DelegatingMeta, Sequence)):
         # todo: optimise to the following:
         #   return self.waifFor(size_at_least(0)),
         # where waitFor will return the result of condition application, not self like should
-        return len(_wait_with_screenshot(self, have.size_at_least(0)))
+        return len(_wait_with_screenshot(self._webdriver, self, have.size_at_least(0)))
 
     # *** Overriden Sequence methods ***
 

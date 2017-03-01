@@ -1,5 +1,6 @@
-from selene.conditions import css_class, texts, text, size, hidden, empty
 from selene.browser import *
+from selene.conditions import css_class, texts, text, size, hidden, empty
+from selene.support.jquery_style_selectors import s, ss
 
 
 class TestTodoMVC(object):

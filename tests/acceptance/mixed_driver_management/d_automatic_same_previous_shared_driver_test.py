@@ -3,11 +3,12 @@ import os
 import pytest
 from selenium.common.exceptions import TimeoutException
 
+from selene import browser
 from selene import config
 from selene.support.conditions import be
 from selene.support.conditions import have
 
-from selene.browser import ss, s, visit
+from selene.support.jquery_style_selectors import s, ss
 
 original_timeout = config.timeout
 
@@ -17,7 +18,7 @@ def teardown_module(m):
 
 
 def test_filter_tasks():
-    visit('file://' + os.path.abspath(os.path.dirname(__file__)) + '/../../resources/todomvcapp/home.html')
+    browser.visit('file://' + os.path.abspath(os.path.dirname(__file__)) + '/../../resources/todomvcapp/home.html')
 
     s('#new-todo').should(be.enabled).set_value('a').press_enter()
     s('#new-todo').should(be.enabled).set_value('b').press_enter()

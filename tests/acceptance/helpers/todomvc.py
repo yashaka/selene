@@ -6,7 +6,8 @@ from selenium.webdriver.support.wait import WebDriverWait
 
 from selene import config
 from selene.conditions import visible
-from selene.browser import s, driver
+from selene.browser import driver
+from selene.support.jquery_style_selectors import s
 from selene.wait import satisfied
 
 __author__ = 'yashaka'

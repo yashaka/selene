@@ -2,12 +2,12 @@ import os
 
 from selenium.webdriver.remote.webdriver import WebDriver
 
+import selene.config
 import selene.driver
 import selene.factory
-import selene.config
+from selene import helpers
 from selene.common.none_object import NoneObject
 from selene.elements import SeleneElement, SeleneCollection
-
 from selene.wait import wait_for
 
 
@@ -59,10 +59,6 @@ def element(css_selector_or_by):
     return SeleneElement.by_css_or_by(css_selector_or_by, selene.driver._shared_driver)
 
 
-def s(css_selector_or_by):
-    return element(css_selector_or_by)
-
-
 def elements(css_selector_or_by):
     return SeleneCollection.by_css_or_by(css_selector_or_by, selene.driver._shared_driver)
 
@@ -71,10 +67,7 @@ def all(css_selector_or_by):
     return elements(css_selector_or_by)
 
 
-def ss(css_selector_or_by):
-    return elements(css_selector_or_by)
-
-_latest_screenshot = NoneObject("selene.tools._latest_screenshot")
+_latest_screenshot = NoneObject("selene.browser._latest_screenshot")
 
 
 def take_screenshot(path=None, filename=None):
@@ -82,16 +75,12 @@ def take_screenshot(path=None, filename=None):
         path = selene.config.screenshot_folder
     if not filename:
         filename = "screen_{id}".format(id=next(selene.config.counter))
-    screenshot_path = os.path.join(path,
-                                   "{}.png".format(filename))
 
-    folder = os.path.dirname(screenshot_path)
-    if not os.path.exists(folder):
-        os.makedirs(folder)
+    screenshot_path = helpers.take_screenshot(driver(), path, filename)
 
-    driver().get_screenshot_as_file(screenshot_path)
     global _latest_screenshot
     _latest_screenshot = screenshot_path
+
     return screenshot_path
 
 

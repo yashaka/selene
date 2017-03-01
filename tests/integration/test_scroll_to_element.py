@@ -1,7 +1,8 @@
 import os
 
 from selene import config
-from selene.browser import visit, s, driver
+from selene.browser import visit, driver
+from selene.support.jquery_style_selectors import s
 
 start_page = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/start_page.html'
 

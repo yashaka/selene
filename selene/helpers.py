@@ -3,6 +3,8 @@ import os
 
 from selenium.webdriver.common.by import By
 
+import selene.config
+
 
 @contextlib.contextmanager
 def suppress(*exceptions):
@@ -28,19 +30,21 @@ def extend(obj, cls, *init_args, **init_kwargs):
     cls.__init__(obj, *init_args, **init_kwargs)
 
 
-# todo: think on moving to tools
-def take_screenshot(driver, name, save_location='./'):
-    """ saves screenshot of the current page via driver, with name, to the save_location """
-    # Make sure the path exists.
-    path = os.path.abspath(save_location)
-    if not os.path.exists(path):
-        os.makedirs(path)
-    full_path = '%s/%s' % (path, name)
-    driver.get_screenshot_as_file(full_path)
-    return full_path
+def take_screenshot(webdriver, path=None, filename=None):
+    if not path:
+        path = selene.config.screenshot_folder
+    if not filename:
+        filename = "screen_{id}".format(id=next(selene.config.counter))
 
-    # todo: sometimes screenshooting fails at httplib with CannotSendRequest... consider handling this somehow...
-    # todo: and of course find the reason - why... it may depend on browser version...
+    screenshot_path = os.path.join(path,
+                                   "{}.png".format(filename))
+
+    folder = os.path.dirname(screenshot_path)
+    if not os.path.exists(folder):
+        os.makedirs(folder)
+
+    webdriver.get_screenshot_as_file(screenshot_path)
+    return screenshot_path
 
 
 def css_or_by_to_by(css_selector_or_by):
