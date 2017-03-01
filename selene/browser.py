@@ -15,9 +15,6 @@ def quit_driver():
     driver().quit()
 
 
-# todo: do we need a browser.quit() alias for browser.quit_driver (do we actually need browser.quit_driver()?)
-# the problem is with that it is standard method quit() in python,
-# and if user will import directly quit from selene.browser there might be some conflicts...
 def quit():
     quit_driver()
 
@@ -25,8 +22,6 @@ def quit():
 def close():
     driver().close()
 
-
-# todo: do we need a browser.close_current_window() alias for browser.close()?
 
 def set_driver(webdriver):
     # type: (WebDriver) -> None
@@ -60,20 +55,24 @@ def visit(absolute_or_relative_url):
     driver().get(base_url + absolute_or_relative_url)
 
 
-def s(css_selector_or_by):
+def element(css_selector_or_by):
     return SeleneElement.by_css_or_by(css_selector_or_by, selene.driver._shared_driver)
 
 
-def element(css_selector_or_by):
-    return s(css_selector_or_by)
-
-
-def ss(css_selector_or_by):
-    return SeleneCollection.by_css_or_by(css_selector_or_by, selene.driver._shared_driver)
+def s(css_selector_or_by):
+    return element(css_selector_or_by)
 
 
 def elements(css_selector_or_by):
-    return ss(css_selector_or_by)
+    return SeleneCollection.by_css_or_by(css_selector_or_by, selene.driver._shared_driver)
+
+
+def all(css_selector_or_by):
+    return elements(css_selector_or_by)
+
+
+def ss(css_selector_or_by):
+    return elements(css_selector_or_by)
 
 _latest_screenshot = NoneObject("selene.tools._latest_screenshot")
 
