@@ -5,6 +5,16 @@
 
 Selene - Concise API for Selenium in Python 
 ===========================================
+
+.. image:: https://travis-ci.org/yashaka/selene.svg?branch=master
+    :target: https://travis-ci.org/yashaka/selene
+
+.. image:: https://codecov.io/gh/yashaka/selene/branch/master/graph/badge.svg
+    :target: https://codecov.io/gh/yashaka/selene
+
+.. image:: https://badges.gitter.im/gitterHQ/gitter.svg
+    :target: https://gitter.im/automician/selene
+
 (Selenide port in Python)
 
 
