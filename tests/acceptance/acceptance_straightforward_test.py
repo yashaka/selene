@@ -11,7 +11,7 @@ class TestTodoMVC(object):
         tasks = ss("#todo-list>li")
         active_tasks = tasks.filtered_by(have.css_class("active"))
 
-        browser.visit(app_url)
+        browser.open_url(app_url)
 
         s("#new-todo").should(be.blank)
 

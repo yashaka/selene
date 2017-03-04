@@ -60,7 +60,7 @@ def ensure_driver_started(name):
 
 def __start_chrome():
     options = webdriver.ChromeOptions()
-    if config.maximize_window:
+    if config.start_maximized:
         options.add_argument("--start-maximized")
     return webdriver.Chrome(executable_path=ChromeDriverManager().install(),
                             chrome_options=options,
@@ -73,7 +73,7 @@ def __start_firefox(name):
         executable_path = GeckoDriverManager().install()
     driver = webdriver.Firefox(capabilities=config.desired_capabilities,
                                executable_path=executable_path)
-    if config.maximize_window:
+    if config.start_maximized:
         driver.maximize_window()
     return driver
 

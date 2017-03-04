@@ -15,7 +15,7 @@ APP_URL = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../../../re
 class TestTodoMVC(BaseTest):
 
     def test_filter_tasks(self):
-        browser.visit(APP_URL)
+        browser.open_url(APP_URL)
 
         s('#new-todo').should(be.enabled).set_value('a').press_enter()
         s('#new-todo').should(be.enabled).set_value('b').press_enter()

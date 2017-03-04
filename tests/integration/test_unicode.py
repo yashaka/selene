@@ -12,7 +12,7 @@ start_page = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resou
 
 def setup_module(m):
     config.browser_name = Browser.CHROME
-    browser.visit(start_page)
+    browser.open_url(start_page)
 
 
 def test_ru_text():

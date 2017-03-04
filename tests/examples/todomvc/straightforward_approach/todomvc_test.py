@@ -12,7 +12,7 @@ from selene.support.jquery_style_selectors import s, ss
 class TestTodoMVC(object):
 
     def test_filter_tasks(self):
-        browser.visit('https://todomvc4tasj.herokuapp.com/')
+        browser.open_url('https://todomvc4tasj.herokuapp.com/')
         clear_completed_js_loaded = "return $._data($('#clear-completed').get(0), 'events').hasOwnProperty('click')"
         browser.wait_to(have.js_returned_true(clear_completed_js_loaded), timeout=config.timeout*3)
         browser.wait_to(have.title(u'TroopJS • TodoMVC'))

@@ -14,7 +14,7 @@ class TestTodoMVC(object):
 
     def test_tasks_life_cycle(self):
 
-        visit('file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/todomvcapp/home.html')
+        open_url('file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/todomvcapp/home.html')
 
         add("a")
 

@@ -22,15 +22,15 @@ cash_elements = env('selene_cache_elements') == 'True' or False
 
 browser_name = env('selene_browser_name') or Browser.FIREFOX
 
-maximize_window = False if env('selene_maximize_window') == 'False' else True
+start_maximized = False if env('selene_start_maximized') == 'False' else True
 
 hold_browser_open = env('selene_hold_browser_open') == 'True' or False
 
 counter = itertools.count(start=int(round(time.time() * 1000)))
 
-screenshot_folder = env('selene_screenshot_folder') or os.path.join(os.path.expanduser('~'),
+reports_folder = env('selene_screenshot_folder') or os.path.join(os.path.expanduser('~'),
                                                                     '.selene',
                                                                     'screenshots',
-                                                                    str(next(counter)))
+                                                                 str(next(counter)))
 
 desired_capabilities = None

@@ -7,16 +7,16 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 from selene import config
 from selene.conditions import exact_text, visible
-from selene.browser import visit, take_screenshot, set_driver, driver, latest_screenshot
+from selene.browser import open_url, take_screenshot, set_driver, driver, latest_screenshot
 from selene.support.jquery_style_selectors import s
 
 start_page = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/start_page.html'
-original_default_screenshot_folder = config.screenshot_folder
+original_default_screenshot_folder = config.reports_folder
 origina_timeout = config.timeout
 
 
 def setup_function(f):
-    config.screenshot_folder = original_default_screenshot_folder
+    config.reports_folder = original_default_screenshot_folder
     config.timeout = origina_timeout
 
 
@@ -29,7 +29,7 @@ def teardown_module(m):
 
 
 def get_default_screenshot_folder():
-    return config.screenshot_folder
+    return config.reports_folder
 
 
 def get_screen_id():
@@ -37,7 +37,7 @@ def get_screen_id():
 
 
 def test_can_make_screenshot_with_default_name():
-    visit(start_page)
+    open_url(start_page)
     actual = take_screenshot()
 
     expected = os.path.join(get_default_screenshot_folder(),
@@ -47,7 +47,7 @@ def test_can_make_screenshot_with_default_name():
 
 
 def test_can_make_screenshot_with_custom_name():
-    visit(start_page)
+    open_url(start_page)
     actual = take_screenshot(filename="custom")
 
     expected = os.path.join(get_default_screenshot_folder(), 'custom.png')
@@ -56,8 +56,8 @@ def test_can_make_screenshot_with_custom_name():
 
 
 def test_can_save_screenshot_to_custom_folder_specified_through_config():
-    config.screenshot_folder = os.path.dirname(os.path.abspath(__file__)) + '/../../build/screenshots'
-    visit(start_page)
+    config.reports_folder = os.path.dirname(os.path.abspath(__file__)) + '/../../build/screenshots'
+    open_url(start_page)
     actual = take_screenshot()
 
     expected = os.path.join(get_default_screenshot_folder(),
@@ -69,7 +69,7 @@ def test_can_save_screenshot_to_custom_folder_specified_through_config():
 
 def test_can_save_screenshot_to_custom_folder_specified_as_parameter():
     screenshot_folder = os.path.dirname(os.path.abspath(__file__)) + '/../../build/screenshots'
-    visit(start_page)
+    open_url(start_page)
     actual = take_screenshot(path=screenshot_folder)
 
     expected = os.path.join(screenshot_folder,
@@ -81,7 +81,7 @@ def test_can_save_screenshot_to_custom_folder_specified_as_parameter():
 
 def test_can_save_screenshot_to_custom_folder_with_custom_name():
     screenshot_folder = os.path.dirname(os.path.abspath(__file__)) + '/../../build/screenshots'
-    visit(start_page)
+    open_url(start_page)
     actual = take_screenshot(path=screenshot_folder,
                              filename="custom_file_in_custom_folder")
 
@@ -92,7 +92,7 @@ def test_can_save_screenshot_to_custom_folder_with_custom_name():
 
 
 def test_can_make_screenshot_automatically():
-    visit(start_page)
+    open_url(start_page)
     config.timeout = 0.1
     with pytest.raises(TimeoutException) as ex:
         s("#selene_link").should_have(exact_text("Selen site"))
@@ -102,8 +102,8 @@ def test_can_make_screenshot_automatically():
 
 
 def test_can_get_latest_screenshot_path():
-    config.screenshot_folder = os.path.dirname(os.path.abspath(__file__)) + '/../../build/screenshots'
-    visit(start_page)
+    config.reports_folder = os.path.dirname(os.path.abspath(__file__)) + '/../../build/screenshots'
+    open_url(start_page)
     with pytest.raises(TimeoutException):
         s("#s").should_be(visible)
 
