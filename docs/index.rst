@@ -31,8 +31,12 @@ Selene was inspired by `Selenide <http://selenide.org/>`_ from Java world.
 
 Tests with Selene can be built either in a simple straightforward "selenide' style or with PageObjects composed from Widgets i.e. reusable element components.
 
+.. toctree::
+   :maxdepth: 2
+
+
 Installation
-------------
+////////////
 
 latest release version
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -73,8 +77,8 @@ And one more not mandatory bonus:
 
 All pillars are reflected in corresponding selene python modules and their methods.
 
-Basic example
-^^^^^^^^^^^^^
+Basic usage
+^^^^^^^^^^^
 ::
 
    from selene.api import *
@@ -83,6 +87,15 @@ Basic example
    s("#new-todo").should(be.blank)
    s("#new-todo").set_value(1).press_enter()
    ss("#todo-list>li").should(have.exact_texts("1"))
+
+Further Documentation Guides
+----------------------------
+
+.. toctree::
+   :maxdepth: 2
+
+   advanced
+
 
 Indices and tables
 ------------------

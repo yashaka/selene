@@ -26,6 +26,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Advanced Usage of Selene" href="advanced.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -57,6 +58,8 @@
 </ul>
 <p>Selene was inspired by <a class="reference external" href="http://selenide.org/">Selenide</a> from Java world.</p>
 <p>Tests with Selene can be built either in a simple straightforward &#8220;selenide&#8217; style or with PageObjects composed from Widgets i.e. reusable element components.</p>
+<div class="toctree-wrapper compound">
+</div>
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="latest-release-version">
@@ -77,10 +80,10 @@ $ python setup.py install
 <div class="highlight-default"><div class="highlight"><pre><span></span>$ pip install selene --pre
 </pre></div>
 </div>
-</div>
-</div>
 <div class="section" id="quick-start">
-<h2>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this headline">¶</a></h2>
+<h4>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this headline">¶</a></h4>
+</div>
+</div>
 <div class="section" id="basic-usage-4-pillars-of-selene">
 <h3>Basic Usage: 4 pillars of Selene<a class="headerlink" href="#basic-usage-4-pillars-of-selene" title="Permalink to this headline">¶</a></h3>
 <p>All Selene API consists just from 4 pillars:</p>
@@ -96,8 +99,8 @@ $ python setup.py install
 </ol>
 <p>All pillars are reflected in corresponding selene python modules and their methods.</p>
 </div>
-<div class="section" id="basic-example">
-<h3>Basic example<a class="headerlink" href="#basic-example" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="basic-usage">
+<h3>Basic usage<a class="headerlink" href="#basic-usage" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">selene.api</span> <span class="k">import</span> <span class="o">*</span>
 
 <span class="n">browser</span><span class="o">.</span><span class="n">open_url</span><span class="p">(</span><span class="s1">&#39;https://todomvc4tasj.herokuapp.com&#39;</span><span class="p">)</span>
@@ -106,15 +109,23 @@ $ python setup.py install
 <span class="n">ss</span><span class="p">(</span><span class="s2">&quot;#todo-list&gt;li&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">should</span><span class="p">(</span><span class="n">have</span><span class="o">.</span><span class="n">exact_texts</span><span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
+<div class="section" id="further-documentation-guides">
+<h4>Further Documentation Guides<a class="headerlink" href="#further-documentation-guides" title="Permalink to this headline">¶</a></h4>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced Usage of Selene</a></li>
+</ul>
 </div>
 </div>
 <div class="section" id="indices-and-tables">
-<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h2>
+<h4>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h4>
 <ul class="simple">
 <li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
 <li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
 <li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
 </ul>
+</div>
+</div>
 </div>
 </div>
 
