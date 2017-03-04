@@ -6,7 +6,8 @@ from selenium.webdriver.support.wait import WebDriverWait
 
 from selene import config
 from selene.conditions import visible
-from selene.tools import s, get_driver
+from selene.browser import driver
+from selene.support.jquery_style_selectors import s
 from selene.wait import satisfied
 
 __author__ = 'yashaka'
@@ -18,18 +19,18 @@ TODOMVC_URL = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../../r
 
 def open_todomvc():
     # todo: refactor to use repo copy of todomvc
-    get_driver().get(TODOMVC_URL)
-    WebDriverWait(get_driver(), config.timeout).until(
+    driver().get(TODOMVC_URL)
+    WebDriverWait(driver(), config.timeout).until(
         element_to_be_clickable((By.CSS_SELECTOR, "#new-todo")))
 
 
 def given_at_other_page():
     if not satisfied(s("#order_details"), visible):
-        get_driver().get('file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/orderapp/order.html')
+        driver().get('file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/orderapp/order.html')
 
 
 def execute_js(js_string):
-    return get_driver().execute_script(js_string)
+    return driver().execute_script(js_string)
 
 
 def given(*tasks):

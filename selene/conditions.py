@@ -17,7 +17,7 @@ class OrNotToBe(IEntityCondition):
         return entity
 
 
-or_not_to_be = OrNotToBe
+or_not_to_be = OrNotToBe()
 
 
 class Not(IEntityCondition):

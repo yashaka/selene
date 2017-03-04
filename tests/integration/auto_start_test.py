@@ -1,7 +1,8 @@
 import os
 
 from selene.conditions import exact_text
-from selene.tools import visit, s, set_driver, get_driver
+from selene.browser import visit, set_driver, driver
+from selene.support.jquery_style_selectors import s
 from tests.acceptance.helpers.helper import get_test_driver
 
 start_page = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/start_page.html'
@@ -28,4 +29,4 @@ def test_auto_start_2():
     s("#selene_link").should_have(exact_text("Selene site"))
 
 def teardown_module(m):
-    get_driver().quit()
+    driver().quit()
