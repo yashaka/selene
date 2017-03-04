@@ -59,7 +59,7 @@ latest published pre-release version
 
 
 Quick Start
------------
+///////////
 
 Basic Usage: 4 pillars of Selene
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -77,8 +77,6 @@ And one more not mandatory bonus:
 
 All pillars are reflected in corresponding selene python modules and their methods.
 
-Basic usage
-^^^^^^^^^^^
 ::
 
    from selene.api import *
@@ -89,17 +87,9 @@ Basic usage
    ss("#todo-list>li").should(have.exact_texts("1"))
 
 Further Documentation Guides
-----------------------------
+////////////////////////////
 
 .. toctree::
    :maxdepth: 2
 
    advanced
-
-
-Indices and tables
-------------------
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
