@@ -7,7 +7,7 @@ import selene.driver
 
 from selene import config
 from selene import factory
-from selene.browsers import Browser
+from selene.browsers import BrowserName
 from selene.common.none_object import NoneObject
 from selene.browser import driver, set_driver, open_url
 
@@ -33,8 +33,8 @@ def test_ensure_driver_started(browser_name):
 def test_ensure_driver_started__when__set_browser_directly():
     webdriver = get_test_driver()
     set_driver(webdriver)
-    factory.ensure_driver_started(Browser.CHROME)
-    assert driver().name == Browser.CHROME
+    factory.ensure_driver_started(BrowserName.CHROME)
+    assert driver().name == BrowserName.CHROME
     driver().quit()
 
 

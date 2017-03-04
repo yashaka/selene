@@ -9,7 +9,7 @@ from webdriver_manager.phantomjs import PhantomJsDriverManager
 import selene
 import selene.driver
 from selene import config
-from selene.browsers import Browser
+from selene.browsers import BrowserName
 
 
 def set_shared_driver(driver):
@@ -69,7 +69,7 @@ def __start_chrome():
 
 def __start_firefox(name):
     executable_path = "wires"
-    if name == Browser.MARIONETTE:
+    if name == BrowserName.MARIONETTE:
         executable_path = GeckoDriverManager().install()
     driver = webdriver.Firefox(capabilities=config.desired_capabilities,
                                executable_path=executable_path)
@@ -84,9 +84,9 @@ def __start_phantomjs():
 
 
 def __get_driver(name):
-    if name == Browser.CHROME:
+    if name == BrowserName.CHROME:
         return __start_chrome()
-    elif name == Browser.PHANTOMJS:
+    elif name == BrowserName.PHANTOMJS:
         return __start_phantomjs()
     else:
         return __start_firefox(name)

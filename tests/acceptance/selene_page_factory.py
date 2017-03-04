@@ -1,7 +1,7 @@
 import os
 
 import selene
-from selene.browsers import Browser
+from selene.browsers import BrowserName
 from selene.conditions import exact_text, visible, hidden
 from selene.browser import open_url
 from selene.support.jquery_style_selectors import s
@@ -15,6 +15,6 @@ def test_can_init_default_browser_on_visit():
 
 
 def test_can_init_custom_browser_on_visit():
-    selene.config.browser_name = Browser.CHROME
+    selene.config.browser_name = BrowserName.CHROME
     open_url(start_page)
     s("#selene_link").should_have(exact_text("Selene site"))

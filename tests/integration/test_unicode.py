@@ -3,7 +3,7 @@ import os
 
 from selene import browser
 from selene import config
-from selene.browsers import Browser
+from selene.browsers import BrowserName
 from selene.conditions import texts, exact_text
 from selene.support.jquery_style_selectors import s, ss
 
@@ -11,7 +11,7 @@ start_page = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resou
 
 
 def setup_module(m):
-    config.browser_name = Browser.CHROME
+    config.browser_name = BrowserName.CHROME
     browser.open_url(start_page)
 
 
