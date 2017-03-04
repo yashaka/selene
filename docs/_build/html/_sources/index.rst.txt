@@ -12,6 +12,9 @@ Selene - Concise API for Selenium in Python
 .. image:: https://codecov.io/gh/yashaka/selene/branch/master/graph/badge.svg
     :target: https://codecov.io/gh/yashaka/selene
 
+.. image:: https://badges.gitter.im/gitterHQ/gitter.svg
+    :target: https://gitter.im/automician/selene
+
 (Selenide port in Python)
 
 
@@ -31,16 +34,55 @@ Tests with Selene can be built either in a simple straightforward "selenide' sty
 Installation
 ------------
 
-latest development version::
+latest release version
+^^^^^^^^^^^^^^^^^^^^^^
+::
+
+   $ pip install selene
+
+latest development version
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+::
 
     $ git clone https://github.com/yashaka/selene.git
     $ python setup.py install
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+latest published pre-release version
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+::
+
+   $ pip install selene --pre
 
 
+Quick Start
+-----------
+
+Basic Usage: 4 pillars of Selene
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+All Selene API consists just from 4 pillars:
+
+1. Browser Actions (including finding elements)
+2. Custom Selectors
+3. Assertion Conditions
+4. Custom Configuration
+
+And one more not mandatory bonus:
+
+5. concise jquery-style shortcuts for finding elements
+
+All pillars are reflected in corresponding selene python modules and their methods.
+
+Basic example
+^^^^^^^^^^^^^
+::
+
+   from selene.api import *
+
+   browser.open_url('https://todomvc4tasj.herokuapp.com')
+   s("#new-todo").should(be.blank)
+   s("#new-todo").set_value(1).press_enter()
+   ss("#todo-list>li").should(have.exact_texts("1"))
 
 Indices and tables
 ------------------

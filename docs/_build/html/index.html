@@ -45,6 +45,7 @@
 <h1>Selene - Concise API for Selenium in Python<a class="headerlink" href="#selene-concise-api-for-selenium-in-python" title="Permalink to this headline">¶</a></h1>
 <a class="reference external image-reference" href="https://travis-ci.org/yashaka/selene"><img alt="https://travis-ci.org/yashaka/selene.svg?branch=master" src="https://travis-ci.org/yashaka/selene.svg?branch=master" /></a>
 <a class="reference external image-reference" href="https://codecov.io/gh/yashaka/selene"><img alt="https://codecov.io/gh/yashaka/selene/branch/master/graph/badge.svg" src="https://codecov.io/gh/yashaka/selene/branch/master/graph/badge.svg" /></a>
+<a class="reference external image-reference" href="https://gitter.im/automician/selene"><img alt="https://badges.gitter.im/gitterHQ/gitter.svg" src="https://badges.gitter.im/gitterHQ/gitter.svg" /></a>
 <p>(Selenide port in Python)</p>
 <p>Main features:</p>
 <ul class="simple">
@@ -58,12 +59,53 @@
 <p>Tests with Selene can be built either in a simple straightforward &#8220;selenide&#8217; style or with PageObjects composed from Widgets i.e. reusable element components.</p>
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
-<p>latest development version:</p>
+<div class="section" id="latest-release-version">
+<h3>latest release version<a class="headerlink" href="#latest-release-version" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ pip install selene
+</pre></div>
+</div>
+</div>
+<div class="section" id="latest-development-version">
+<h3>latest development version<a class="headerlink" href="#latest-development-version" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-default"><div class="highlight"><pre><span></span>$ git clone https://github.com/yashaka/selene.git
 $ python setup.py install
 </pre></div>
 </div>
-<div class="toctree-wrapper compound">
+</div>
+<div class="section" id="latest-published-pre-release-version">
+<h3>latest published pre-release version<a class="headerlink" href="#latest-published-pre-release-version" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ pip install selene --pre
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="quick-start">
+<h2>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="basic-usage-4-pillars-of-selene">
+<h3>Basic Usage: 4 pillars of Selene<a class="headerlink" href="#basic-usage-4-pillars-of-selene" title="Permalink to this headline">¶</a></h3>
+<p>All Selene API consists just from 4 pillars:</p>
+<ol class="arabic simple">
+<li>Browser Actions (including finding elements)</li>
+<li>Custom Selectors</li>
+<li>Assertion Conditions</li>
+<li>Custom Configuration</li>
+</ol>
+<p>And one more not mandatory bonus:</p>
+<ol class="arabic simple" start="5">
+<li>concise jquery-style shortcuts for finding elements</li>
+</ol>
+<p>All pillars are reflected in corresponding selene python modules and their methods.</p>
+</div>
+<div class="section" id="basic-example">
+<h3>Basic example<a class="headerlink" href="#basic-example" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">selene.api</span> <span class="k">import</span> <span class="o">*</span>
+
+<span class="n">browser</span><span class="o">.</span><span class="n">open_url</span><span class="p">(</span><span class="s1">&#39;https://todomvc4tasj.herokuapp.com&#39;</span><span class="p">)</span>
+<span class="n">s</span><span class="p">(</span><span class="s2">&quot;#new-todo&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">should</span><span class="p">(</span><span class="n">be</span><span class="o">.</span><span class="n">blank</span><span class="p">)</span>
+<span class="n">s</span><span class="p">(</span><span class="s2">&quot;#new-todo&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">press_enter</span><span class="p">()</span>
+<span class="n">ss</span><span class="p">(</span><span class="s2">&quot;#todo-list&gt;li&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">should</span><span class="p">(</span><span class="n">have</span><span class="o">.</span><span class="n">exact_texts</span><span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="indices-and-tables">
@@ -91,7 +133,6 @@ $ python setup.py install
 <h3>Useful Links</h3>
 <ul>
   <li><a href="https://gitter.im/automician/selene">Selene @ Gitter</a></li>
-  <p></p>
   <li><a href="http://github.com/yashaka/selene">Selene @ GitHub</a></li>
   <li><a href="http://pypi.python.org/pypi/selene">Selene @ PyPI</a></li>
   <li><a href="http://github.com/yashaka/selene/issues">Issue Tracker</a></li>
