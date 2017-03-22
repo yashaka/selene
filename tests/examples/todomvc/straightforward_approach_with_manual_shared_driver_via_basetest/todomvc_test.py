@@ -1,12 +1,13 @@
 import os
 
+from selene import browser
 from selene.support.conditions import be
 from selene.support.conditions import have
 from tests.base_test import *
 
 from selene.bys import by_link_text
 from selene.conditions import exact_text
-from selene.tools import ss, s, visit
+from selene.support.jquery_style_selectors import s, ss
 
 APP_URL = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../../../resources/todomvcapp/home.html'
 
@@ -14,7 +15,7 @@ APP_URL = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../../../re
 class TestTodoMVC(BaseTest):
 
     def test_filter_tasks(self):
-        visit(APP_URL)
+        browser.visit(APP_URL)
 
         s('#new-todo').should(be.enabled).set_value('a').press_enter()
         s('#new-todo').should(be.enabled).set_value('b').press_enter()

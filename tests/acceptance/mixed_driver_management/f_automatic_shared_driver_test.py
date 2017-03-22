@@ -1,13 +1,14 @@
 import os
 
+from selene import browser
 from selene.support.conditions import be
 from selene.support.conditions import have
 
-from selene.tools import ss, s, visit
+from selene.support.jquery_style_selectors import s, ss
 
 
 def test_filter_tasks():
-    visit('file://' + os.path.abspath(os.path.dirname(__file__)) + '/../../resources/todomvcapp/home.html')
+    browser.visit('file://' + os.path.abspath(os.path.dirname(__file__)) + '/../../resources/todomvcapp/home.html')
 
     s('#new-todo').should(be.enabled).set_value('a').press_enter()
     s('#new-todo').should(be.enabled).set_value('b').press_enter()

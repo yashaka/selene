@@ -2,7 +2,7 @@ from tests.acceptance.helpers.helper import get_test_driver
 
 __author__ = 'yashaka'
 
-from selene.tools import *
+from selene.browser import *
 from tests.acceptance.helpers.todomvc import given_active
 from selene.bys import *
 
@@ -12,7 +12,7 @@ def setup_module(m):
 
 
 def teardown_module(m):
-    get_driver().quit()
+    driver().quit()
 
 
 def test_by_text_with_single_and_double_quotes():
@@ -21,4 +21,4 @@ def test_by_text_with_single_and_double_quotes():
 
 
 def find_element(locator):
-    return get_driver().find_element(*locator)
+    return driver().find_element(*locator)

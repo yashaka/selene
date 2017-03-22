@@ -1,10 +1,11 @@
 from future.utils import iteritems
 
+from selene import browser
 from selene.elements import SeleneElement
 from selene.helpers import merge
 from selene.support.conditions import be
 from selene.support.conditions import have
-from selene.tools import visit, ss, s
+from selene.support.jquery_style_selectors import s, ss
 
 
 class SelectList(object):
@@ -60,7 +61,7 @@ class Order(object):
         self.items = self.Items(ss('[id^="item"]'))
 
     def open(self):
-        visit('order.html')
+        browser.visit('order.html')
 
     def add_item_with(self, **name_and_other_data):
         self.add_item.click()

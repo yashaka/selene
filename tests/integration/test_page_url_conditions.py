@@ -6,8 +6,8 @@ from selenium.common.exceptions import TimeoutException
 from selene import config
 from selene.conditions import url, url_containing
 from selene.exceptions import ConditionMismatchException
-from selene.tools import visit, get_driver
-from selene.tools import wait_to
+from selene.browser import visit, driver
+from selene.browser import wait_to
 from tests.integration.error_messages_test import exception_message
 
 start_page = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/start_page.html'
@@ -26,7 +26,7 @@ def teardown_function(f):
 
 def test_can_wait_for_exact_url():
     visit(start_page)
-    wait_to(url(get_driver().current_url))
+    wait_to(url(driver().current_url))
 
 
 def test_can_wait_for_part_of_url():

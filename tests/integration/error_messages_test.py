@@ -3,10 +3,11 @@ import re
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
 
+from selene import browser
 from selene import config
 from selene.common.none_object import NoneObject
 from selene.support.conditions import have
-from selene.tools import s, get_driver, set_driver, ss
+from selene.support.jquery_style_selectors import s, ss
 from tests.integration.helpers.givenpage import GivenPage
 
 GIVEN_PAGE = NoneObject('GivenPage')  # type: GivenPage
@@ -15,14 +16,14 @@ original_timeout = config.timeout
 
 def setup_module(m):
     driver = webdriver.Firefox()
-    set_driver(driver)
+    browser.set_driver(driver)
     global GIVEN_PAGE
     GIVEN_PAGE = GivenPage(driver)
 
 
 def teardown_module(m):
     config.timeout = original_timeout
-    get_driver().quit()
+    browser.driver().quit()
 
 
 def exception_message(ex):

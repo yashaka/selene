@@ -7,6 +7,7 @@ from selenium.webdriver.remote.webdriver import WebDriver
 from webdriver_manager.phantomjs import PhantomJsDriverManager
 
 import selene
+import selene.driver
 from selene import config
 from selene.browsers import Browser
 
@@ -27,10 +28,10 @@ def is_another_driver(driver):
         return False
 
 
-def is_driver_still_open(driver):
+def is_driver_still_open(webdriver):
     # type: (WebDriver) -> bool
     try:
-        driver.title
+        webdriver.title
     # todo: specify exception?.. (unfortunately there Selenium does not use some specific exception for this...)
     except Exception:
         return False
