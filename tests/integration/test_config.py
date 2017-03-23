@@ -8,6 +8,11 @@ os.environ["selene_maximize_window"] = "True"
 os.environ['selene_hold_browser_open'] = "True"
 
 from selene import config
+from importlib import reload
+
+
+def setup_module(m):
+    reload(config)
 
 
 def test_timeout():
