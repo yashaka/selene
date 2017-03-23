@@ -1,18 +1,33 @@
 import os
-
-os.environ["selene_timeout"] = "3"
-os.environ["selene_poll_during_waits"] = "0.5"
-os.environ["selene_base_url"] = "http://localhost"
-os.environ["selene_browser_name"] = "chrome"
-os.environ["selene_maximize_window"] = "True"
-os.environ['selene_hold_browser_open'] = "True"
-
 from selene import config
 from importlib import reload
 
+old_timeout = os.environ["selene_timeout"]
+old_polling_interval = os.environ["selene_poll_during_waits"]
+old_base_url = os.environ["selene_base_url"]
+old_browser_name = os.environ["selene_browser_name"]
+old_browser_maximize = os.environ["selene_maximize_window"]
+old_hold_browser_open = os.environ['selene_hold_browser_open']
+
 
 def setup_module(m):
+    os.environ["selene_timeout"] = "3"
+    os.environ["selene_poll_during_waits"] = "0.5"
+    os.environ["selene_base_url"] = "http://localhost"
+    os.environ["selene_browser_name"] = "chrome"
+    os.environ["selene_maximize_window"] = "True"
+    os.environ['selene_hold_browser_open'] = "True"
+
     reload(config)
+
+
+def teardown_module(m):
+    os.environ["selene_timeout"] = old_timeout
+    os.environ["selene_poll_during_waits"] = old_polling_interval
+    os.environ["selene_base_url"] = old_base_url
+    os.environ["selene_browser_name"] = old_browser_name
+    os.environ["selene_maximize_window"] = old_browser_maximize
+    os.environ['selene_hold_browser_open'] = old_hold_browser_open
 
 
 def test_timeout():
