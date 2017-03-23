@@ -1,6 +1,14 @@
 import os
+
+try:
+    reload  # Python 2.7
+except NameError:
+    try:
+        from importlib import reload  # Python 3.4+
+    except ImportError:
+        from imp import reload  # Python 3.0 - 3.3
+
 from selene import config
-from importlib import reload
 
 old_timeout = config.timeout
 old_polling_interval = config.poll_during_waits
