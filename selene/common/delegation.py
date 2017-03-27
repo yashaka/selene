@@ -3,12 +3,13 @@ from abc import ABCMeta
 
 def _make_delegator_method(name):
     def delegator(self, *args, **kwargs):
-        return getattr(self.__delegate__, name)(*args, **kwargs)
+        return getattr(self.__delegate__, name)(*args, **kwargs)  # pragma: no cover
         # todo: consider using __call__() instead of __delegate__
         # in Python delegates are objects with __call__ method..
         # so why not to use the following:
         #     return getattr(self(), name)(*args, **kwargs)
         # ?
+
     return delegator
 
 
@@ -19,7 +20,7 @@ def _make_delegator_method(name):
 
 
 def _make_delegator_property(name):
-    return property(lambda self: getattr(self.__delegate__, name))
+    return property(lambda self: getattr(self.__delegate__, name))  # pragma: no cover
 
 
 def _is_property(name, cls):
@@ -28,8 +29,9 @@ def _is_property(name, cls):
 
 class DelegatingMeta(ABCMeta):
     def __new__(mcs, name, bases, dct):
-        abstract_property_names = frozenset.union(*(frozenset(filter(lambda m: _is_property(m, base), base.__abstractmethods__))
-                                                    for base in bases))
+        abstract_property_names = frozenset.union(
+            *(frozenset(filter(lambda m: _is_property(m, base), base.__abstractmethods__))
+              for base in bases))
 
         for base in bases:
             base.__abstractmethods__ = frozenset(filter(lambda m: not _is_property(m, base), base.__abstractmethods__))
@@ -52,7 +54,6 @@ class DelegatingMeta(ABCMeta):
                 setattr(cls, name, _make_delegator_property(name))
 
         return cls
-
 
 # todo: finalize naming: Delegating, Delegate, actual_delegate, delegatee, delegator o_O ?
 # We have the following players in this game:
