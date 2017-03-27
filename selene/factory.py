@@ -1,6 +1,7 @@
 import atexit
 
 from selenium import webdriver
+from selenium.common.exceptions import UnexpectedAlertPresentException
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 from selenium.webdriver.remote.webdriver import WebDriver
@@ -33,6 +34,8 @@ def is_driver_still_open(webdriver):
     try:
         webdriver.title
     # todo: specify exception?.. (unfortunately there Selenium does not use some specific exception for this...)
+    except UnexpectedAlertPresentException:
+        return True
     except Exception:
         return False
     return True
