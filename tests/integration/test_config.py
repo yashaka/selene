@@ -23,7 +23,7 @@ def setup_module(m):
     os.environ["selene_poll_during_waits"] = '0.5'
     os.environ["selene_base_url"] = "http://localhost"
     os.environ["selene_browser_name"] = "chrome"
-    os.environ["selene_maximize_window"] = 'True'
+    os.environ["selene_start_maximized"] = 'True'
     os.environ['selene_hold_browser_open'] = 'True'
 
     reload(config)
@@ -34,7 +34,7 @@ def teardown_module(m):
     os.environ["selene_poll_during_waits"] = str(old_polling_interval)
     os.environ["selene_base_url"] = old_base_url
     os.environ["selene_browser_name"] = old_browser_name
-    os.environ["selene_maximize_window"] = str(old_browser_maximize)
+    os.environ["selene_start_maximized"] = str(old_browser_maximize)
     os.environ['selene_hold_browser_open'] = str(old_hold_browser_open)
 
 
