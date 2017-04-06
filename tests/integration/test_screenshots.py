@@ -11,7 +11,7 @@ from selene.browser import open_url, take_screenshot, set_driver, driver, latest
 from selene.support.jquery_style_selectors import s
 
 start_page = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/start_page.html'
-original_default_screenshot_folder = config.reports_folder
+original_default_screenshot_folder = config.screenshot_folder
 origina_timeout = config.timeout
 
 
@@ -29,7 +29,7 @@ def teardown_module(m):
 
 
 def get_default_screenshot_folder():
-    return config.reports_folder
+    return config.screenshot_folder
 
 
 def get_screen_id():
