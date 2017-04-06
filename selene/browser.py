@@ -43,12 +43,12 @@ def open_url(absolute_or_relative_url):
         otherwise - relative url correspondingly
 
     :Usage:
-        visit('http://mydomain.com/subpage1')
-        visit('http://mydomain.com/subpage2')
+        open_url('http://mydomain.com/subpage1')
+        open_url('http://mydomain.com/subpage2')
         # OR
         config.base_url = 'http://mydomain.com'
-        visit('/subpage1')
-        visit('/subpage2')
+        open_url('/subpage1')
+        open_url('/subpage2')
     """
     # todo: refactor next line when app_host is removed
     base_url = selene.config.app_host if selene.config.app_host else selene.config.base_url
