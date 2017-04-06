@@ -35,7 +35,7 @@ def driver():
     return selene.factory.ensure_driver_started(selene.config.browser_name)
 
 
-def visit(absolute_or_relative_url):
+def open_url(absolute_or_relative_url):
     """
     Loads a web page in the current browser session.
     :param absolute_or_relative_url:
@@ -72,7 +72,7 @@ _latest_screenshot = NoneObject("selene.browser._latest_screenshot")
 
 def take_screenshot(path=None, filename=None):
     if not path:
-        path = selene.config.screenshot_folder
+        path = selene.config.reports_folder
     if not filename:
         filename = "screen_{id}".format(id=next(selene.config.counter))
 

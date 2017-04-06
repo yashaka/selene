@@ -1,4 +1,4 @@
-class Browser(object):
+class BrowserName(object):
     CHROME = "chrome"
     FIREFOX = "firefox"
     MARIONETTE = "marionette"
