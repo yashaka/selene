@@ -32,7 +32,7 @@ def extend(obj, cls, *init_args, **init_kwargs):
 
 def take_screenshot(webdriver, path=None, filename=None):
     if not path:
-        path = selene.config.reports_folder
+        path = selene.config.screenshot_folder
     if not filename:
         filename = "screen_{id}".format(id=next(selene.config.counter))
 
