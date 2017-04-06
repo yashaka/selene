@@ -35,7 +35,7 @@ def driver():
     return selene.factory.ensure_driver_started(selene.config.browser_name)
 
 
-def visit(absolute_or_relative_url):
+def open_url(absolute_or_relative_url):
     """
     Loads a web page in the current browser session.
     :param absolute_or_relative_url:
@@ -43,12 +43,12 @@ def visit(absolute_or_relative_url):
         otherwise - relative url correspondingly
 
     :Usage:
-        visit('http://mydomain.com/subpage1')
-        visit('http://mydomain.com/subpage2')
+        open_url('http://mydomain.com/subpage1')
+        open_url('http://mydomain.com/subpage2')
         # OR
         config.base_url = 'http://mydomain.com'
-        visit('/subpage1')
-        visit('/subpage2')
+        open_url('/subpage1')
+        open_url('/subpage2')
     """
     # todo: refactor next line when app_host is removed
     base_url = selene.config.app_host if selene.config.app_host else selene.config.base_url
@@ -72,7 +72,7 @@ _latest_screenshot = NoneObject("selene.browser._latest_screenshot")
 
 def take_screenshot(path=None, filename=None):
     if not path:
-        path = selene.config.screenshot_folder
+        path = selene.config.reports_folder
     if not filename:
         filename = "screen_{id}".format(id=next(selene.config.counter))
 

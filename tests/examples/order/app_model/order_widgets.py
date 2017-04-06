@@ -61,7 +61,7 @@ class Order(object):
         self.items = self.Items(ss('[id^="item"]'))
 
     def open(self):
-        browser.visit('order.html')
+        browser.open_url('order.html')
 
     def add_item_with(self, **name_and_other_data):
         self.add_item.click()

@@ -3,7 +3,7 @@ import itertools
 import os
 import time
 
-from selene.browsers import Browser
+from selene.browsers import BrowserName
 from selene.helpers import env
 
 timeout = int(env('selene_timeout', 4))
@@ -21,7 +21,7 @@ cash_elements = env('selene_cache_elements') == 'True' or False
 
 browser_name = env('selene_browser_name', Browser.FIREFOX)
 
-maximize_window = False if env('selene_maximize_window') == 'False' else True
+start_maximized = False if env('selene_start_maximized') == 'False' else True
 
 hold_browser_open = env('selene_hold_browser_open') == 'True' or False
 

@@ -7,9 +7,9 @@ import selene.driver
 
 from selene import config
 from selene import factory
-from selene.browsers import Browser
+from selene.browsers import BrowserName
 from selene.common.none_object import NoneObject
-from selene.browser import driver, set_driver, visit
+from selene.browser import driver, set_driver, open_url
 
 from tests.acceptance.helpers.helper import get_test_driver
 
@@ -33,8 +33,8 @@ def test_ensure_driver_started(browser_name):
 def test_ensure_driver_started__when__set_browser_directly():
     webdriver = get_test_driver()
     set_driver(webdriver)
-    factory.ensure_driver_started(Browser.CHROME)
-    assert driver().name == Browser.CHROME
+    factory.ensure_driver_started(BrowserName.CHROME)
+    assert driver().name == BrowserName.CHROME
     driver().quit()
 
 
@@ -68,7 +68,7 @@ def test_can_get_set_shared_driver():
 
 def test_can_hold_autocreated_browser_open():
     config.hold_browser_open = True
-    visit(start_page)
+    open_url(start_page)
     webdriver = driver()
     factory.kill_all_started_drivers()
     assert factory.is_driver_still_open(webdriver)
@@ -77,7 +77,7 @@ def test_can_hold_autocreated_browser_open():
 
 def test_can_auto_close_browser():
     config.hold_browser_open = False
-    visit(start_page)
+    open_url(start_page)
     webdriver = driver()
     factory.kill_all_started_drivers()
     assert factory.is_driver_still_open(webdriver) is False

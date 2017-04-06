@@ -5,7 +5,7 @@ from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 
 from selene.conditions import visible
-from selene.browser import set_driver, driver, visit
+from selene.browser import set_driver, driver, open_url
 from selene.support.jquery_style_selectors import s
 from tests.acceptance.helpers.helper import get_test_driver
 from tests.helpers import time_spent
@@ -20,7 +20,7 @@ def setup_function(f):
     global shaded_browser
 
     set_driver(get_test_driver())
-    visit(TODOMVC_URL)
+    open_url(TODOMVC_URL)
     s("#new-todo").should_be(visible)
 
     browser = get_test_driver()

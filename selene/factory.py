@@ -1,6 +1,7 @@
 import atexit
 
 from selenium import webdriver
+from selenium.common.exceptions import UnexpectedAlertPresentException
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 from selenium.webdriver.remote.webdriver import WebDriver
@@ -9,7 +10,7 @@ from webdriver_manager.phantomjs import PhantomJsDriverManager
 import selene
 import selene.driver
 from selene import config
-from selene.browsers import Browser
+from selene.browsers import BrowserName
 
 
 def set_shared_driver(driver):
@@ -33,6 +34,8 @@ def is_driver_still_open(webdriver):
     try:
         webdriver.title
     # todo: specify exception?.. (unfortunately there Selenium does not use some specific exception for this...)
+    except UnexpectedAlertPresentException:
+        return True
     except Exception:
         return False
     return True
@@ -60,7 +63,7 @@ def ensure_driver_started(name):
 
 def __start_chrome():
     options = webdriver.ChromeOptions()
-    if config.maximize_window:
+    if config.start_maximized:
         options.add_argument("--start-maximized")
     return webdriver.Chrome(executable_path=ChromeDriverManager().install(),
                             chrome_options=options,
@@ -69,11 +72,11 @@ def __start_chrome():
 
 def __start_firefox(name):
     executable_path = "wires"
-    if name == Browser.MARIONETTE:
+    if name == BrowserName.MARIONETTE:
         executable_path = GeckoDriverManager().install()
     driver = webdriver.Firefox(capabilities=config.desired_capabilities,
                                executable_path=executable_path)
-    if config.maximize_window:
+    if config.start_maximized:
         driver.maximize_window()
     return driver
 
@@ -84,9 +87,9 @@ def __start_phantomjs():
 
 
 def __get_driver(name):
-    if name == Browser.CHROME:
+    if name == BrowserName.CHROME:
         return __start_chrome()
-    elif name == Browser.PHANTOMJS:
+    elif name == BrowserName.PHANTOMJS:
         return __start_phantomjs()
     else:
         return __start_firefox(name)

@@ -82,7 +82,7 @@ _latest_screenshot = NoneObject("selene.tools._latest_screenshot")
 def take_screenshot(path=None, filename=None):
     warnings.warn("use selene.browser.take_screenshot() instead", DeprecationWarning)
     if not path:
-        path = selene.config.screenshot_folder
+        path = selene.config.reports_folder
     if not filename:
         filename = "screen_{id}".format(id=next(selene.config.counter))
     screenshot_path = os.path.join(path,

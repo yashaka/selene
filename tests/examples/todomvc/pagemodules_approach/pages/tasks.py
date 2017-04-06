@@ -13,7 +13,7 @@ _elements = ss("#todo-list>li")
 
 
 def visit():
-    browser.visit('file://' + os.path.abspath(os.path.dirname(__file__)) + '/../../../../resources/todomvcapp/home.html')
+    browser.open_url('file://' + os.path.abspath(os.path.dirname(__file__)) + '/../../../../resources/todomvcapp/home.html')
     clear_completed_js_loaded = "return $._data($('#clear-completed').get(0), 'events').hasOwnProperty('click')"
     browser.wait_to(have.js_returned_true(clear_completed_js_loaded))
 
