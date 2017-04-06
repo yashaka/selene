@@ -56,8 +56,5 @@ def css_or_by_to_by(css_selector_or_by):
     raise TypeError('css_selector_or_by should be str with CSS selector or Tuple[by:str, value:str]')
 
 
-def env(key):
-    try:
-        return os.environ[key]
-    except KeyError:
-        return None
+def env(key, default=None):
+    return os.environ.get(key, default)
