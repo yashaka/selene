@@ -14,7 +14,7 @@ old_timeout = config.timeout
 old_polling_interval = config.poll_during_waits
 old_base_url = config.base_url
 old_browser_name = config.browser_name
-old_browser_maximize = config.maximize_window
+old_browser_maximize = config.start_maximized
 old_hold_browser_open = config.hold_browser_open
 
 
@@ -55,7 +55,7 @@ def test_browser_name():
 
 
 def test_browser_maximize():
-    assert config.maximize_window is True
+    assert config.start_maximized is True
 
 
 def test_hold_browser_open():
