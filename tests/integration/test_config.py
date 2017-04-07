@@ -27,7 +27,6 @@ def setup_module(m):
     os.environ[SELENE_BROWSER_NAME] = "chrome"
     os.environ[SELENE_START_MAXIMIZED] = 'True'
     os.environ[SELENE_HOLD_BROWSER_OPEN] = 'True'
-
     reload(config)
 
 
@@ -38,6 +37,7 @@ def teardown_module(m):
     os.environ[SELENE_BROWSER_NAME] = old_browser_name
     os.environ[SELENE_START_MAXIMIZED] = str(old_browser_maximize)
     os.environ[SELENE_HOLD_BROWSER_OPEN] = str(old_hold_browser_open)
+    reload(config)
 
 
 def test_timeout():
