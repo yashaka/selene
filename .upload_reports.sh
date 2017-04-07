@@ -19,4 +19,4 @@ tar -zcvf $ARTIFACTS_FILE *
 echo "Check file exists"
 ls | grep $ARTIFACTS_FILE
 echo "Uploading to transfer.sh"
-curl --upload-file $ARTIFACTS_FILE http://transfer.sh/$ARTIFACTS_FILE
+curl --upload-file $ARTIFACTS_FILE https://transfer.sh/$ARTIFACTS_FILE
