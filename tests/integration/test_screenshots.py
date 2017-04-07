@@ -1,6 +1,7 @@
 import os
 
 import pytest
+import shutil
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
 from webdriver_manager.chrome import ChromeDriverManager
@@ -26,6 +27,7 @@ def setup_module(m):
 
 def teardown_module(m):
     driver().quit()
+    shutil.rmtree(config.reports_folder)
 
 
 def get_default_screenshot_folder():
