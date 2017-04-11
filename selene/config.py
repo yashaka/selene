@@ -1,6 +1,7 @@
 # todo: make the properties also 'object oriented' to support different configs per different SeleneDriver instances
 import itertools
 import os
+import sys
 import time
 
 from selene.browsers import BrowserName
@@ -34,3 +35,5 @@ reports_folder = env('selene_screenshot_folder') or os.path.join(os.path.expandu
                                                                  str(next(counter)))
 
 desired_capabilities = None
+
+PY2 = sys.version_info[0] == 2
