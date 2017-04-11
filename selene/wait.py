@@ -14,6 +14,8 @@ def wait_for(entity, condition, timeout=4, polling=0.1):
             reason_message = getattr(reason, 'msg',
                                      getattr(reason, 'message',
                                              getattr(reason, 'args', '')))
+            if isinstance(reason_message, unicode):
+                reason_message = reason_message.encode('unicode-escape')
             reason_string = '{name}: {message}'.format(name=reason.__class__.__name__, message=reason_message)
             screen = getattr(reason, 'screen', None)
             stacktrace = getattr(reason, 'stacktrace', None)
