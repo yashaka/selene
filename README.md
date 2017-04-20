@@ -25,6 +25,10 @@ NOTE: This is still an alpha version. Lately selene was completely refactored, a
     $ git clone https://github.com/yashaka/selene.git
     $ python setup.py install
 
+or using pip:
+
+    $ pip install git+https://github.com/yashaka/selene.git
+
 [It is preferable also to use  local virtualenv](https://gist.github.com/yashaka/a547c6e0df5f6c973acc04655b6e3072).
 
 ### latest published pre-release version (currently this is recommended option unless selene 1.0 will be released):
