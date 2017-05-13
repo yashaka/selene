@@ -1,3 +1,4 @@
+import logging
 import os
 
 from selene import config
@@ -13,5 +14,6 @@ def setup_module(m):
 
 def test_can_scroll_to():
     open_url(start_page)
+    logging.warning(driver().current_url)
     driver().set_window_size(300, 400)
     s("#invisible_link").scroll_to().click()
