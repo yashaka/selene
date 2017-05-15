@@ -28,7 +28,7 @@ class Tasks(object):
         return ss("#todo-list>li")
 
     def _task_element(self, text):
-        return self._elements().findBy(exact_text(text))
+        return self._elements().element_by(exact_text(text))
 
     def task(self, text):
         return Task(self._task_element(text))

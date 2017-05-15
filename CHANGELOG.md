@@ -4,14 +4,26 @@
 - naming changes:
   - tbd
 - removed deprecated things: 
-  - selene.tools (use selene.browser instead)
-  - SeleneElement#insist (use SeleneElement#should instead)
-  - SeleneElement#insist_not (use SeleneElement#should_not instead)
-  - SeleneCollection#insist (use SeleneCollection#should instead)
-  - SeleneCollection#insist_not (use SeleneCollection#should_not instead)
-  - SeleneCollection#filterBy (use SeleneCollection#filteredBy instead)
-  - SeleneCollection#findBy (use SeleneCollection#element_by instead)
-  - SeleneCollection#find (use SeleneCollection#element_by instead)
+  - `selene.tools` (use `selene.browser` instead)
+  - `SeleneElement#`
+    - `insist` (use `should` instead)
+    - `insist_not` (use `should_not` instead)
+  - `SeleneCollection#`
+    - `insist` (use `should` instead)
+    - `insist_not` (use `should_not` instead)
+    - `filterBy` (use `filtered_by` instead)
+    - `findBy` (use `element_by` instead)
+    - `find` (use `element_by` instead)
+- deprecated (will produce `DeprecationWarning`):
+  - `SeleneCollection#`
+    - `filtered` (use `filtered_by` instead)
+    - `ss` (use `filtered_by` instead)
+    - `s` (use `element_by` instead)
+- marked as "considering to deprecate" (will produce `FutureWarning`):
+  - `SeleneCollection#`
+    - `filter` (consider using `filtered_by` instead)
+    - `filter_by` (consider using `filtered_by` instead)
+    - `find_by` (consider using `element_by` instead)
 - new features:
   - [#15](https://github.com/yashaka/selene/issues/15): added `browser.title()` shortcut for `browser.driver().title`
     

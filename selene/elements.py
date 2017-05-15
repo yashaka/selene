@@ -307,9 +307,14 @@ class SeleneElement(with_metaclass(DelegatingMeta, IWebElement)):
         return self
 
     # todo: consider removing some aliases
-    assure = should
-    should_be = should
-    should_have = should
+    def assure(self, condition, timeout=None):
+        return self.should(condition, timeout)
+
+    def should_be(self, condition, timeout=None):
+        return self.should(condition, timeout)
+
+    def should_have(self, condition, timeout=None):
+        return self.should(condition, timeout)
 
     def should_not(self, condition, timeout=None):
         if timeout is None:
@@ -320,9 +325,14 @@ class SeleneElement(with_metaclass(DelegatingMeta, IWebElement)):
         return self
 
     # todo: consider removing some aliases
-    assure_not = should_not
-    should_not_be = should_not
-    should_not_have = should_not
+    def assure_not(self, condition, timeout=None):
+        return self.should_not(condition, timeout)
+
+    def should_not_be(self, condition, timeout=None):
+        return self.should_not(condition, timeout)
+
+    def should_not_have(self, condition, timeout=None):
+        return self.should_not(condition, timeout)
 
     # *** Additional actions ***
 
@@ -575,9 +585,14 @@ class SeleneCollection(with_metaclass(DelegatingMeta, Sequence)):
         return self
 
     # todo: consider removing some aliases
-    assure = should
-    should_be = should
-    should_have = should
+    def assure(self, condition, timeout=None):
+        return self.should(condition, timeout)
+
+    def should_be(self, condition, timeout=None):
+        return self.should(condition, timeout)
+
+    def should_have(self, condition, timeout=None):
+        return self.should(condition, timeout)
 
     def should_not(self, condition, timeout=None):
         if timeout is None:
@@ -588,9 +603,14 @@ class SeleneCollection(with_metaclass(DelegatingMeta, Sequence)):
         return self
 
     # todo: consider removing some aliases are even all of them
-    assure_not = should_not
-    should_not_be = should_not
-    should_not_have = should_not
+    def assure_not(self, condition, timeout=None):
+        return self.should_not(condition, timeout)
+
+    def should_not_be(self, condition, timeout=None):
+        return self.should_not(condition, timeout)
+
+    def should_not_have(self, condition, timeout=None):
+        return self.should_not(condition, timeout)
 
     def should_each(self, condition, timeout=None):
         if timeout is None:
@@ -599,7 +619,8 @@ class SeleneCollection(with_metaclass(DelegatingMeta, Sequence)):
         for selement in self:
             selement.should(condition, timeout)
 
-    assure_each = should_each
+    def assure_each(self, condition, timeout=None):
+        return self.should_each(condition, timeout)
 
     def should_each_not(self, condition, timeout=None):
         if timeout is None:
@@ -608,23 +629,49 @@ class SeleneCollection(with_metaclass(DelegatingMeta, Sequence)):
         for selement in self:
             selement.should_not(condition, timeout)
 
-    assure_each_not = should_each_not
+    def assure_each(self, condition, timeout=None):
+        return self.should_each_not(condition, timeout)
 
     def filtered_by(self, condition):
         return SeleneCollection(FilteredListWebElementLocator(condition, self), self._webdriver)
 
-    ss = filtered_by
-    all_by = filtered_by
-    filtered = filtered_by
+    def all_by(self, condition):
+        """ Alias for SeleneCollection#filtered_by
+        """
+        return self.filtered_by(condition)
 
-    filter = filtered_by
-    filter_by = filtered_by
+    def filter_by(self, condition):
+        warnings.warn("may be deprecated in future, consider using filtered_by instead", FutureWarning)
+        return self.filtered_by(condition)
+
+    def filter(self, condition):
+        warnings.warn("may be deprecated in future, consider using filtered_by instead", FutureWarning)
+        return self.filtered_by(condition)
+
+    def filtered(self, condition):
+        """ Deprecated. Use filtered_by instead
+        """
+        warnings.warn("use filtered_by instead", DeprecationWarning)
+        return self.filtered_by(condition)
+
+    def ss(self, condition):
+        """ Deprecated. Use filtered_by instead
+        """
+        warnings.warn("use filtered_by instead", DeprecationWarning)
+        return self.filtered_by(condition)
 
     def element_by(self, condition):
         return SeleneElement(FoundByConditionWebElementLocator(condition, self), self._webdriver)
 
-    s = element_by
-    find_by = element_by
+    def find_by(self, condition):
+        warnings.warn("may be deprecated in future, consider using element_by instead", FutureWarning)
+        return self.element_by(condition)
+
+    def s(self, condition):
+        """ Deprecated. Use element_by instead
+        """
+        warnings.warn("use element_by instead", DeprecationWarning)
+        return self.element_by(condition)
 
     # *** Sequence methods ***
 
