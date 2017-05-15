@@ -4,7 +4,14 @@
 - naming changes:
   - tbd
 - removed deprecated things: 
-  - selene/tools.py
+  - selene.tools (use selene.browser instead)
+  - SeleneElement#insist (use SeleneElement#should instead)
+  - SeleneElement#insist_not (use SeleneElement#should_not instead)
+  - SeleneCollection#insist (use SeleneCollection#should instead)
+  - SeleneCollection#insist_not (use SeleneCollection#should_not instead)
+  - SeleneCollection#filterBy (use SeleneCollection#filteredBy instead)
+  - SeleneCollection#findBy (use SeleneCollection#element_by instead)
+  - SeleneCollection#find (use SeleneCollection#element_by instead)
 - new features:
   - [#15](https://github.com/yashaka/selene/issues/15): added `browser.title()` shortcut for `browser.driver().title`
     

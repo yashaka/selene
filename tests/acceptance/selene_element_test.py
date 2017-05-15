@@ -23,7 +23,6 @@ def teardown_module(m):
 def test_assure_and_alias_methods():
     given_active("a")
     s("#clear-completed").assure(hidden)
-    s("#clear-completed").insist(hidden)  # alias
     s("#clear-completed").should(hidden)  # alias
     s("#clear-completed").should_be(hidden)  # alias
     s("#clear-completed").should_have(hidden)  # alias
@@ -32,7 +31,6 @@ def test_assure_and_alias_methods():
 def test_assure_not_and_alias_methods():
     given_at_other_page()
     s("#new-todo").should_not(exist)
-    s("#new-todo").insist_not(exist)  # alias
     s("#new-todo").should_not(exist)  # alias
     s("#new-todo").should_not_be(exist)  # alias
     s("#new-todo").should_not_have(exist)  # alias
