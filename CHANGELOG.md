@@ -3,18 +3,20 @@
 ## 1.0.0ax (next from master branch)
   - naming changes:
     - tbd
+  - removed deprecated stuff: 
+    - selene/tools.py
     
 ## 1.0.0a11 (to be released 13.05.2017)
   - naming changes:
     - browser.visit() renamed to browser.open_url()
     - config.maximize_windows -> config.start_maximized
     - config.screenshot_folder -> config.reports_folder
-  - removed deprecated stuff:
-    - selene.tools
   - improvements
     - screenshot link is now clickable in console output
   - bug fixes:
-    - #124: If by.xpath contains utf8 symbols and not condition get UnicodeEncodeError: 'ascii'
+    - [#124](https://github.com/yashaka/selene/issues/124): If by.xpath contains utf8 symbols and not condition get UnicodeEncodeError: 'ascii'   
+  - planned to remove in next version:
+    - selene.tools
  
 ## 1.0.0a10 (released 01.03.2017)
   - [#103](https://github.com/yashaka/selene/issues/103): NEW API entry points
