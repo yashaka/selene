@@ -104,3 +104,7 @@ def should(webdriver_condition, timeout=None, polling=None):
 
 def execute_script(script, *args):
     return driver().execute_script(script, *args)
+
+
+def title():
+    return driver().title

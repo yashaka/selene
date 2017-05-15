@@ -1,10 +1,12 @@
 # Changelog
 
 ## 1.0.0ax (next from master branch)
-  - naming changes:
-    - tbd
-  - removed deprecated stuff: 
-    - selene/tools.py
+- naming changes:
+  - tbd
+- removed deprecated things: 
+  - selene/tools.py
+- new features:
+  - [#15](https://github.com/yashaka/selene/issues/15): added `browser.title()` shortcut for `browser.driver().title`
     
 ## 1.0.0a11 (to be released 13.05.2017)
   - naming changes:
