@@ -7,6 +7,10 @@ from selene.abctypes.search_context import ISearchContext
 
 
 class IWebElement(ISearchContext):
+
+    @abstractproperty
+    def __repr__(self): pass
+
     @abstractproperty
     def tag_name(self): pass
 

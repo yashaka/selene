@@ -1,6 +1,7 @@
 import warnings
 from _ast import Tuple, List
 from collections import Sequence
+from json import JSONEncoder
 
 from future.utils import with_metaclass
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
