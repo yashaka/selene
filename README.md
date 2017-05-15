@@ -57,7 +57,7 @@ And one more not mandatory bonus:
 All pillars are reflected in corresponding selene python modules and their methods.
 
 #### 1. Browser Actions: [browser.*](https://github.com/yashaka/selene/blob/master/selene/browser.py)
-e.g. `browser.visit('https://todomvc4tasj.herokuapp.com')`
+e.g. `browser.open_url('https://todomvc4tasj.herokuapp.com')`
 
 e.g. `browser.element('#new-todo')`
 
@@ -121,7 +121,7 @@ class TestTodoMVC(object):
         tasks = ss("#todo-list>li")
         active_tasks = tasks.filtered_by(have.css_class("active"))
 
-        browser.visit('https://todomvc4tasj.herokuapp.com')
+        browser.open_url('https://todomvc4tasj.herokuapp.com')
 
         s("#new-todo").should(be.blank)
 
@@ -229,7 +229,7 @@ There seems to be no "the only best option". You can use the style you prefer mo
 
 ### Automatic driver management
 
-By default all "search elements" methods (`s`, `ss`) and other browser actions methods like `visit` - use shared driver.
+By default all "search elements" methods (`s`, `ss`) and other browser actions methods like `open_url` - use shared driver.
 Shared driver is initialized automatically and uses Firefox driver by default.
 
 #### Configuring shared browser and automatic driver executable installation
@@ -321,12 +321,13 @@ This approach may be useful in case you need to deal with different webdriver in
 Here is a simple example of PageObjects implementation (inspired by [selenide google search example](https://github.com/selenide-examples/google/tree/master/test/org/selenide/examples/google/selenide_page_object)):
 
 ```python
-from selene.browser import s, ss, visit
+from selene.browser import open_url
+from selene.support.jquery_style_selectors import s, ss
 from selene.support.conditions import have
 
 class GooglePage(object):
     def open(self):
-        visit("http://google.com/ncr")
+        open_url("http://google.com/ncr")
         return self
 
     def search(self, text):
@@ -349,7 +350,7 @@ That's it. Selene encourages to start writing tests in the simplest way. And add
 So far reporting capabilities are reflected only in a detailed error messages.
 For example the following code
 ```python
-from selene.browser import ss
+from selene.support.jquery_style_selectors import ss
 from selene.support.conditions import be
 #...
 ss("#todo-list>li")[2].should(be.hidden)
@@ -366,7 +367,7 @@ in case of failure will result in exception raised with message:
 
 And the the following "more complex" locating code
 ```python
-from selene.browser import ss
+from selene.support.jquery_style_selectors import ss
 from selene.support.conditions import be
 #...
 ss("#todo-list>li")[2].should(be.hidden)
@@ -399,7 +400,8 @@ Below you can find an example of Widgets (aka ElementObjects, aka "[PageObjects 
 The application under test - [TodoMvc](todomvc4tasj.herokuapp.com) is very simple. It is completely does not make sense to use Widgets here:). But we use it just as an example of implementation.
 ```python
 from selene.conditions import exact_text, hidden, exact_texts
-from selene.browser import set_driver, driver, ss, s
+from selene.browser import set_driver, driver
+from selene.support.jquery_style_selectors import ss, s
 from selenium import webdriver
 from selene.support.conditions import have, be
 
