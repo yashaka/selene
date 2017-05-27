@@ -189,7 +189,7 @@ def _wait_with_screenshot(webdriver, entity, condition, timeout=None, polling=No
     except TimeoutException as e:
         screenshot = helpers.take_screenshot(webdriver, )
         msg = '''{original_msg}
-            screenshot: file:///{screenshot}'''.format(original_msg=e.msg, screenshot=screenshot)
+            screenshot: file://{screenshot}'''.format(original_msg=e.msg, screenshot=screenshot)
         raise TimeoutException(msg, e.screen, e.stacktrace)
 
 
