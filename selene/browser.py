@@ -38,7 +38,7 @@ def driver():
 def open_url(absolute_or_relative_url):
     """
     Loads a web page in the current browser session.
-    :param absolute_or_relative_url:
+    :param absolgenerateute_or_relative_url:
         an absolute url to web page in case of config.base_url is not specified,
         otherwise - relative url correspondingly
 
@@ -61,7 +61,6 @@ def element(css_selector_or_by):
 
 def elements(css_selector_or_by):
     return SeleneCollection.by_css_or_by(css_selector_or_by, selene.driver._shared_driver)
-
 
 def all(css_selector_or_by):
     return elements(css_selector_or_by)
