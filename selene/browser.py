@@ -98,7 +98,7 @@ def wait_to(webdriver_condition, timeout=None, polling=None):
 
 
 def should(webdriver_condition, timeout=None, polling=None):
-    return wait_for(webdriver_condition, timeout, polling)
+    return wait_to(webdriver_condition, timeout, polling)
 
 
 def execute_script(script, *args):
