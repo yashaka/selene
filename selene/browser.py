@@ -66,7 +66,7 @@ def all(css_selector_or_by):
     return elements(css_selector_or_by)
 
 
-_latest_screenshot = NoneObject("selene.browser._latest_screenshot")
+latest_screenshot = NoneObject("selene.browser._latest_screenshot")
 
 
 def take_screenshot(path=None, filename=None):
@@ -77,14 +77,10 @@ def take_screenshot(path=None, filename=None):
 
     screenshot_path = helpers.take_screenshot(driver(), path, filename)
 
-    global _latest_screenshot
-    _latest_screenshot = screenshot_path
+    global latest_screenshot
+    latest_screenshot = screenshot_path
 
     return screenshot_path
-
-
-def latest_screenshot():
-    return _latest_screenshot
 
 
 # todo: consider adding aliases, like: wait_until, wait_brhwser_to
