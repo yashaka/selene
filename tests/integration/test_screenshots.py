@@ -107,5 +107,5 @@ def test_can_get_latest_screenshot_path():
     with pytest.raises(TimeoutException):
         s("#s").should_be(visible)
 
-    picture = latest_screenshot()
+    picture = latest_screenshot
     assert os.path.exists(picture)
