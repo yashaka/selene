@@ -522,6 +522,11 @@ class SeleneElement(with_metaclass(DelegatingMeta, IWebElement)):
             lambda it: it.id,
             condition=be.in_dom)
 
+    # Additional properties
+
+    @property
+    def stripped_text(self):
+        return self.text.strip()
 
 class SeleneCollection(with_metaclass(DelegatingMeta, Sequence)):
     """

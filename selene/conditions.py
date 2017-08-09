@@ -250,6 +250,20 @@ class ExactText(ElementCondition):
 exact_text = ExactText
 
 
+class StrippedText(ElementCondition):
+    def __init__(self, expected_text):
+        self.expected_text = expected_text
+
+    def match(self, webelement):
+        actual_text = webelement.text
+        if not self.expected_text == str(actual_text).strip():
+            raise ConditionMismatchException(expected=self.expected_text, actual=actual_text)
+        return webelement
+
+
+stripped_text = StrippedText
+
+
 class CssClass(ElementCondition):
     def __init__(self, expected):
         self.expected = expected

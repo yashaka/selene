@@ -19,6 +19,10 @@ def text(partial_value):
     return conditions.text(partial_value)
 
 
+def stripped_text(value):
+    return conditions.stripped_text(value)
+
+
 def attribute(name, value):
     return conditions.attribute(name, value)
 
