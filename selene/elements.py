@@ -11,6 +11,7 @@ from selenium.webdriver.common.keys import Keys
 
 from selene import config
 from selene import helpers
+from selene import browser
 from selene.abctypes.conditions import IEntityCondition
 from selene.abctypes.locators import ISeleneWebElementLocator, ISeleneListWebElementLocator
 from selene.abctypes.search_context import ISearchContext
@@ -23,6 +24,7 @@ from selene.support.conditions import be
 from selene.support.conditions import have
 from selene.wait import wait_for
 from selene.conditions import not_, is_matched
+
 
 try:
     from functools import lru_cache
@@ -188,6 +190,7 @@ def _wait_with_screenshot(webdriver, entity, condition, timeout=None, polling=No
         return wait_for(entity, condition, timeout, polling)
     except TimeoutException as e:
         screenshot = helpers.take_screenshot(webdriver, )
+        browser.latest_screenshot = screenshot
         msg = '''{original_msg}
             screenshot: file://{screenshot}'''.format(original_msg=e.msg, screenshot=screenshot)
         raise TimeoutException(msg, e.screen, e.stacktrace)
