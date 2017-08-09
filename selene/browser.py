@@ -77,8 +77,8 @@ def take_screenshot(path=None, filename=None):
 
     screenshot_path = helpers.take_screenshot(driver(), path, filename)
 
-    global _latest_screenshot
-    _latest_screenshot = screenshot_path
+    global latest_screenshot
+    latest_screenshot = screenshot_path
 
     return screenshot_path
 
