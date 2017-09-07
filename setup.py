@@ -1,28 +1,52 @@
-from setuptools import setup
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+"""The setup script."""
+
+from setuptools import setup, find_packages
 from selene import version
 
-description = 'Concise API for selenium in Python + Ajax support + PageObjects (Selenide port from Java to Python)'
-# long_description = 'see http://github.com/yashaka/selene/ for more docs...'
+with open('README.md') as readme_file:
+    readme = readme_file.read()
+
+with open('CHANGELOG.md') as history_file:
+    history = history_file.read()
+
+requirements = [
+    'selenium',
+    'webdriver_manager',
+    'future',
+    'backports.functools_lru_cache',
+    'six'
+]
+
+setup_requirements = [
+    'pytest-runner',
+]
+
+test_requirements = [
+    'pytest',
+]
 
 setup(
     name='selene',
     version=version.VERSION,
-    url='http://github.com/yashaka/selene/',
-    download_url='https://github.com/yashaka/selene/tarball/' + version.VERSION,
-    license='MIT',
+    description='Concise API for selenium in Python + Ajax support + PageObjects (Selenide port from Java to Python)',
+    long_description=readme + '\n\n' + history,
     author='Iakiv Kramarenko',
     author_email='yashaka@gmail.com',
-    description=description,
-    # long_description=long_description,
-    packages=['selene',
-              'selene.api',
-              'selene.abctypes',
-              'selene.common',
-              'selene.support',
-              'selene.support.conditions'],
+    url='http://github.com/yashaka/selene/',
+    packages=find_packages(include=[
+        'selene',
+        'selene.api',
+        'selene.abctypes',
+        'selene.common',
+        'selene.support',
+        'selene.support.conditions'
+    ]),
     include_package_data=True,
-    install_requires=['selenium==2.53.1', 'webdriver_manager', 'future', 'backports.functools_lru_cache', 'six'],
-    platforms='any',
+    install_requires=requirements,
+    license="MIT license",
     zip_safe=False,
     keywords=['testing', 'selenium', 'selenide', 'browser', 'pageobject', 'widget', 'wrapper'],
     classifiers=[
@@ -39,5 +63,8 @@ setup(
         'Topic :: Software Development :: Libraries :: Application Frameworks',
         'Topic :: Internet :: WWW/HTTP :: Browsers',
         'Topic :: Software Development :: Testing'
-    ]
+    ],
+    test_suite='tests',
+    tests_require=test_requirements,
+    setup_requires=setup_requirements,
 )
