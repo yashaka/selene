@@ -494,3 +494,8 @@ Also consider first to help with issues marked with help_needed label ;)
 4. Commit your changes (`git commit -am 'Add some feature'`)
 5. Push to the branch (`git push origin my-new-feature`)
 6. Create a new Pull Request
+
+## Release process
+
+1. python setup.py bdist_wheel
+2. twine upload dist/*
