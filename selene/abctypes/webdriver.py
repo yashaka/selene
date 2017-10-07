@@ -31,6 +31,11 @@ class IWebDriver(ISearchContext):
         pass
 
     @abstractproperty
+    def w3c(self):
+        # type: () -> bool
+        pass
+
+    @abstractproperty
     def name(self):
         # type: () -> str
         pass
