@@ -19,9 +19,12 @@ before_install:
   - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x16"
 
 install:
-  - pip install pipenv
+  - pip install pipenv --dev
+
 script:
   - pipenv install
   - pipenv run py.test -sv --cov-config .coveragerc --cov-report html:skip-covered --cov-report term:skip-covered --cov=selene --tb=short tests/
+  - codecov
 
-after_script: "./.upload_reports.sh"
+after_script:
+  - "./.upload_reports.sh"
