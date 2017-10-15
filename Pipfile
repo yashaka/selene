@@ -1,0 +1,15 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[dev-packages]
+pytest = "*"
+
+[packages]
+
+selenium = "==2.53.1"
+future = "*"
+"backports.functools-lru-cache" = "*"
+"webdriver-manager" = "*"
+six = "*"
