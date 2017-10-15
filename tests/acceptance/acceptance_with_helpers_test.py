@@ -1,5 +1,6 @@
 from selenium.webdriver.common.keys import Keys
 
+from selene import config
 from selene.conditions import visible, empty, exact_text, css_class
 from selene.support.conditions import be
 from selene.support.conditions import have
@@ -9,6 +10,7 @@ __author__ = 'yashaka'
 
 from selene.browser import *
 
+config.browser_name = "marionette"
 
 class TestTodoMVC(object):
 

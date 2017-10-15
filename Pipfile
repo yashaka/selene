@@ -3,17 +3,14 @@ url = "https://pypi.python.org/simple"
 verify_ssl = true
 name = "pypi"
 
-[dev-packages]
-
-pytest = "*"
-"pytest-cov" = "*"
-codecov = "*"
-
-
 [packages]
-
-selenium = "==2.53.1"
+selenium = "*"
 future = "*"
-"backports.functools-lru-cache" = "*"
-"webdriver-manager" = "*"
+webdriver-manager = "*"
 six = "*"
+"backports.functools_lru_cache" = "*"
+
+[dev-packages]
+pytest = "*"
+pytest-cov = "*"
+codecov = "*"
