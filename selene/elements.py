@@ -381,6 +381,9 @@ class SeleneElement(with_metaclass(DelegatingMeta, IWebElement)):
 
     def press_tab(self):
         return self.send_keys(Keys.TAB)
+    
+    def press_down(self):
+        return self.send_keys(Keys.ARROW_DOWN)
 
     def hover(self):
         self._execute_on_webelement(
