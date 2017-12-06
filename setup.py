@@ -21,7 +21,7 @@ setup(
               'selene.support',
               'selene.support.conditions'],
     include_package_data=True,
-    install_requires=['selenium==2.53.1', 'webdriver_manager', 'future', 'backports.functools_lru_cache', 'six'],
+    install_requires=['selenium', 'webdriver_manager', 'future', 'backports.functools_lru_cache', 'six'],
     platforms='any',
     zip_safe=False,
     keywords=['testing', 'selenium', 'selenide', 'browser', 'pageobject', 'widget', 'wrapper'],
