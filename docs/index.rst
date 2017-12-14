@@ -58,6 +58,14 @@ latest published pre-release version
    $ pip install selene --pre
 
 
+Development
+///////////
+
+1. Clone project git clone https://github.com/yashaka/selene.git
+2. Install pipenv via pip install pipenv
+3. cd selene
+4. pipenv install --dev
+
 Quick Start
 ///////////
 
