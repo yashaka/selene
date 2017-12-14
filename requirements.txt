@@ -1,5 +1,5 @@
 selenium==2.53.1
 future
-backports.functools_lru_cache
+backports.functools_lru_cache==1.4
 webdriver_manager
 six
