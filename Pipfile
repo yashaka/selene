@@ -1,16 +1,21 @@
 [[source]]
+
 url = "https://pypi.python.org/simple"
 verify_ssl = true
 name = "pypi"
 
+
 [packages]
+
 selenium = "==2.53.1"
 future = "*"
-webdriver-manager = "==1.4.4"
+webdriver-manager = "*"
 six = "*"
-"backports.functools_lru_cache" = "*"
+"backports.functools-lru-cache" = "*"
+
 
 [dev-packages]
+
 pytest = "*"
 pytest-cov = "*"
 codecov = "*"

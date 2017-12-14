@@ -3,7 +3,7 @@ sudo: true
 dist: trusty
 
 addons:
-  firefox: "latest"
+  firefox: "46.0"
   chrome: "stable"
 
 language: python
