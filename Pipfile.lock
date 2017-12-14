@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "889c701c91029ec35c61283793a7175c94088bc762ae9584399e7a72b63a70ad"
+            "sha256": "c98d508ba2a9e31689217e2a036db302009e59386df7f13311a041dd73db6b9a"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -48,25 +48,11 @@
             ],
             "version": "==3.0.4"
         },
-        "colorama": {
-            "hashes": [
-                "sha256:463f8483208e921368c9f306094eb6f725c6ca42b0f97e313cb5d5512459feda",
-                "sha256:48eb22f4f8461b1df5734a074b57042430fb06e1d61bd1e11b078c0fe6d7a1f1"
-            ],
-            "version": "==0.3.9"
-        },
         "configparser": {
             "hashes": [
                 "sha256:5308b47021bc2340965c371f0f058cc6971a04502638d4244225c49d80db273a"
             ],
             "version": "==3.5.0"
-        },
-        "crayons": {
-            "hashes": [
-                "sha256:6f51241d0c4faec1c04c1c0ac6a68f1d66a4655476ce1570b3f37e5166a599cc",
-                "sha256:5e17691605e564d63482067eb6327d01a584bbaf870beffd4456a3391bd8809d"
-            ],
-            "version": "==0.1.2"
         },
         "future": {
             "hashes": [
@@ -90,10 +76,10 @@
         },
         "selenium": {
             "hashes": [
-                "sha256:af448c15b3225056cd406b435cda10bfcee250460a4811e4fd8b21be9f61626c",
-                "sha256:3af07d7a4b5d523540fa4f32902b9dec15e0379862406aef974729f42411053d"
+                "sha256:b1af142650ed7025f906349ae0d7ed1f1a1e635e6ce7ac67e2b2f854f9f8fdc1",
+                "sha256:53929418a41295b526fbb68e43bc32fe93c3ef99c030b9e705caf1de486440de"
             ],
-            "version": "==3.8.0"
+            "version": "==2.53.1"
         },
         "six": {
             "hashes": [
@@ -111,9 +97,9 @@
         },
         "webdriver-manager": {
             "hashes": [
-                "sha256:215cee4acb4da48de9c44bee5cab401915c76f6cbe8cd322bf3d0c5687cac194"
+                "sha256:f1f209a41a830faa15045d0e8d04e6d24690250a9dc332a025f980fbba718660"
             ],
-            "version": "==1.4.5"
+            "version": "==1.4.4"
         }
     },
     "develop": {

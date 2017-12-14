@@ -4,9 +4,9 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-selenium = "*"
+selenium = "==2.53.1"
 future = "*"
-webdriver-manager = "*"
+webdriver-manager = "==1.4.4"
 six = "*"
 "backports.functools_lru_cache" = "*"
 
