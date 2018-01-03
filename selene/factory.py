@@ -5,7 +5,6 @@ from selenium.common.exceptions import UnexpectedAlertPresentException
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 from selenium.webdriver.remote.webdriver import WebDriver
-from webdriver_manager.phantomjs import PhantomJsDriverManager
 
 import selene
 import selene.driver
@@ -81,16 +80,9 @@ def __start_firefox(name):
     return driver
 
 
-def __start_phantomjs():
-    return webdriver.PhantomJS(executable_path=PhantomJsDriverManager().install(),
-                               desired_capabilities=config.desired_capabilities)
-
-
 def __get_driver(name):
     if name == BrowserName.CHROME:
         return __start_chrome()
-    elif name == BrowserName.PHANTOMJS:
-        return __start_phantomjs()
     else:
         return __start_firefox(name)
 
