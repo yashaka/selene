@@ -149,7 +149,7 @@ class ElementCondition(with_metaclass(ABCMeta, IEntityCondition)):
 def is_matched(condition, webelement):
     # type: (ElementCondition, IWebElement) -> bool
     try:
-        condition.fn(webelement)
+        condition.match(webelement)
         return True
     except Exception:
         return False
