@@ -3,6 +3,7 @@ import os
 
 from selene import browser
 from selene import config
+from selene.browser import driver
 from selene.browsers import BrowserName
 from selene.conditions import texts, exact_text
 from selene.support.conditions import have
@@ -14,6 +15,10 @@ start_page = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resou
 def setup_module(m):
     config.browser_name = BrowserName.CHROME
     browser.open_url(start_page)
+
+
+def teardown_module(m):
+    driver().quit()
 
 
 def test_ru_text():
