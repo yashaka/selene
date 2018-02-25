@@ -90,7 +90,7 @@ class TitleContaining(WebDriverCondition):
     def fn(self, webdriver):
         # type: (IWebDriver) -> bool
         actual = webdriver.title
-        if actual not in self.expected:
+        if self.expected not in actual:
             raise ConditionMismatchException(
                 expected=self.expected,
                 actual=actual)
