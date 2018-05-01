@@ -632,7 +632,7 @@ class SeleneCollection(with_metaclass(DelegatingMeta, Sequence)):
         for selement in self:
             selement.should_not(condition, timeout)
 
-    def assure_each(self, condition, timeout=None):
+    def assure_each_not(self, condition, timeout=None):
         return self.should_each_not(condition, timeout)
 
     def filtered_by(self, condition):
