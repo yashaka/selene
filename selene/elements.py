@@ -57,7 +57,7 @@ class InnerWebElementLocator(ISeleneWebElementLocator):
 
     def find(self):
         # return self._element.get_actual_webelement().find_element(*self._by)
-        return wait_for(self._element, be.visible, config.timeout, config.poll_during_waits).find_element(*self._by)
+        return wait_for(self._element, be.in_dom, config.timeout, config.poll_during_waits).find_element(*self._by)
 
 
 class CachingWebElementLocator(ISeleneWebElementLocator):
@@ -121,7 +121,7 @@ class InnerListWebElementLocator(ISeleneListWebElementLocator):
 
     def find(self):
         # return self._element.get_actual_webelement().find_elements(*self._by)
-        return wait_for(self._element, be.visible, config.timeout, config.poll_during_waits) \
+        return wait_for(self._element, be.in_dom, config.timeout, config.poll_during_waits) \
             .find_elements(*self._by)
 
 
@@ -396,13 +396,13 @@ class SeleneElement(with_metaclass(DelegatingMeta, IWebElement)):
     def find_elements(self, by=By.ID, value=None):
         return self._execute_on_webelement(
             lambda it: it.find_elements(by, value),
-            condition=be.visible)
+            condition=be.in_dom)
         # return self.__delegate__.find_elements(by, value) # todo: remove
 
     def find_element(self, by=By.ID, value=None):
         return self._execute_on_webelement(
             lambda it: it.find_element(by, value),
-            condition=be.visible)
+            condition=be.in_dom)
         # return self.__delegate__.find_element(by, value) # todo: remove
 
     # *** IWebElement methods ***
@@ -632,7 +632,7 @@ class SeleneCollection(with_metaclass(DelegatingMeta, Sequence)):
         for selement in self:
             selement.should_not(condition, timeout)
 
-    def assure_each(self, condition, timeout=None):
+    def assure_each_not(self, condition, timeout=None):
         return self.should_each_not(condition, timeout)
 
     def filtered_by(self, condition):

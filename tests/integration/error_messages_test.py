@@ -104,11 +104,6 @@ def test_inner_selement_search_fails_with_message_when_implicitly_waits_for_cond
          'to assert Visible',
          "for first_by('css selector', '#hidden-container').find_by('css selector', '#button')",
          '',
-         'reason: TimeoutException:',
-         'failed while waiting 0.1 seconds',
-         'to assert Visible',
-         "for first_by('css selector', '#hidden-container')",
-         '',
          'reason: ConditionMismatchException: condition did not match',
          'screenshot: //.selene/screenshots/*/screen_*.png']
 
@@ -131,7 +126,7 @@ def test_inner_selement_search_fails_with_message_when_implicitly_waits_for_cond
          '',
          'reason: TimeoutException:',
          'failed while waiting 0.1 seconds',
-         'to assert Visible',
+         'to assert InDom',
          "for first_by('css selector', '#not-existing')",
          '',
          'reason: NoSuchElementException: Unable to locate element: {"method":"css selector","selector":"#not-existing"}',
