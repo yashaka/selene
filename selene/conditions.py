@@ -134,7 +134,7 @@ url_containing = UrlContaining
 
 class ElementCondition(with_metaclass(ABCMeta, IEntityCondition)):
     def description(self):
-        return self.__class__.__name__
+        return self.__class__.__name__.lower()
 
     def fn(self, element):
         # type: (SeleneElement) -> IWebElement
