@@ -328,6 +328,7 @@ class IWebDriver(ISearchContext):
 
     save_screenshot = get_screenshot_as_file
 
+    @abstractmethod
     def get_screenshot_as_png(self):
         # type: () -> object
         # todo: type?
