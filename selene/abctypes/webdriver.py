@@ -41,10 +41,6 @@ class IWebDriver(ISearchContext):
         pass
 
     @abstractmethod
-    def w3c(self):
-        pass
-
-    @abstractmethod
     def start_client(self):
         # type: () -> None
         pass
