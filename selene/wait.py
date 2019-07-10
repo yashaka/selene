@@ -12,9 +12,11 @@ def wait_for(entity, condition, timeout=4, polling=0.1):
         try:
             return condition.fn(entity)
         except Exception as reason:
-            reason_message = getattr(reason, 'msg',
-                                     getattr(reason, 'message',
-                                             getattr(reason, 'args', '')))
+            reason_message = str(reason)
+            # reason_message = getattr(reason, 'msg',  # todo: is the previous line enough?
+            #                          getattr(reason, 'message',
+            #                                  getattr(reason, 'args', '')))
+
             if six.PY2:
                 if isinstance(reason_message, unicode):
                     reason_message = reason_message.encode('unicode-escape')

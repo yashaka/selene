@@ -11,9 +11,10 @@ __author__ = 'yashaka'
 
 _elements = ss("#todo-list>li")
 
+app_url = 'https://todomvc4tasj.herokuapp.com/'
 
 def visit():
-    browser.open_url('file://' + os.path.abspath(os.path.dirname(__file__)) + '/../../../../resources/todomvcapp/home.html')
+    browser.open_url(app_url)
     clear_completed_js_loaded = "return $._data($('#clear-completed').get(0), 'events').hasOwnProperty('click')"
     browser.wait_to(have.js_returned_true(clear_completed_js_loaded))
 

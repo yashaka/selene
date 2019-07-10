@@ -24,7 +24,7 @@ setup(
     install_requires=['selenium', 'webdriver_manager', 'future', 'backports.functools_lru_cache', 'six'],
     platforms='any',
     zip_safe=False,
-    keywords=['testing', 'selenium', 'selenide', 'browser', 'pageobject', 'widget', 'wrapper'],
+    keywords=['testing', 'selenium==3.141.0', 'selenide', 'browser', 'pageobject', 'widget', 'wrapper'],
     classifiers=[
         'Programming Language :: Python',
         'Programming Language :: Python :: 2',

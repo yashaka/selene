@@ -13,3 +13,6 @@ reports/
 tests/comparison/
 .cache
 build
+.coverage
+geckodriver.log
+skip-covered/

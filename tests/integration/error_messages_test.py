@@ -15,7 +15,7 @@ original_timeout = config.timeout
 
 
 def setup_module(m):
-    driver = webdriver.Firefox()
+    driver = webdriver.Chrome()
     browser.set_driver(driver)
     global GIVEN_PAGE
     GIVEN_PAGE = GivenPage(driver)
@@ -119,18 +119,17 @@ def test_inner_selement_search_fails_with_message_when_implicitly_waits_for_cond
     with pytest.raises(TimeoutException) as ex:
         s('#not-existing').element('#button').click()
 
-    assert exception_message(ex) == \
+    assert exception_message(ex)[:10] == \
         ['failed while waiting 0.1 seconds',
          'to assert Visible',
          "for first_by('css selector', '#not-existing').find_by('css selector', '#button')",
          '',
-         'reason: TimeoutException:',
+         'reason: TimeoutException: Message:',
          'failed while waiting 0.1 seconds',
          'to assert InDom',
          "for first_by('css selector', '#not-existing')",
          '',
-         'reason: NoSuchElementException: Unable to locate element: {"method":"css selector","selector":"#not-existing"}',
-         'screenshot: //.selene/screenshots/*/screen_*.png']
+         'reason: NoSuchElementException: Message: no such element: Unable to locate element: {"method":"css selector","selector":"#not-existing"}']
 
 
 def test_indexed_selement_search_fails_with_message_when_implicitly_waits_for_condition_failed_on_collection():
@@ -149,7 +148,7 @@ def test_indexed_selement_search_fails_with_message_when_implicitly_waits_for_co
          'to assert Visible',
          "for all_by('css selector', 'button')[1]",
          '',
-         'reason: TimeoutException:',
+         'reason: TimeoutException: Message:',
          'failed while waiting 0.1 seconds',
          'to assert SizeAtLeast',
          "for all_by('css selector', 'button')",
@@ -157,6 +156,7 @@ def test_indexed_selement_search_fails_with_message_when_implicitly_waits_for_co
          'reason: ConditionMismatchException: condition did not match',
          'expected: >= 2',
          'actual: 1',
+         '',
          'screenshot: //.selene/screenshots/*/screen_*.png']
 
 # todo: uncomment when refactored conditions implementation

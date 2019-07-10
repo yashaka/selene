@@ -9,13 +9,15 @@ from selene.bys import by_link_text
 from selene.conditions import exact_text
 from selene.support.jquery_style_selectors import s, ss
 
-APP_URL = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../../../resources/todomvcapp/home.html'
+APP_URL = 'https://todomvc4tasj.herokuapp.com/'
 
 
 class TestTodoMVC(BaseTest):
 
     def test_filter_tasks(self):
         browser.open_url(APP_URL)
+        clear_completed_js_loaded = "return $._data($('#clear-completed').get(0), 'events').hasOwnProperty('click')"
+        browser.wait_to(have.js_returned_true(clear_completed_js_loaded))
 
         s('#new-todo').should(be.enabled).set_value('a').press_enter()
         s('#new-todo').should(be.enabled).set_value('b').press_enter()

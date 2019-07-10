@@ -18,7 +18,7 @@ original_timeout = config.timeout
 
 def setup_module(m):
     global driver
-    driver = SeleneDriver.wrap(webdriver.Firefox())
+    driver = SeleneDriver.wrap(webdriver.Chrome())
     global GIVEN_PAGE
     GIVEN_PAGE = GivenPage(driver)
     global WHEN

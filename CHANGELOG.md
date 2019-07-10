@@ -1,6 +1,22 @@
 # Changelog
 
 ## 1.0.0ax (next from master branch)
+- removed
+  - ConditionMismatchException.message (use `str(exOfConditionMismatchExceptionType)` for the same purpose)
+- defaults changes:
+  - changed default `browser_name` to `BrowserName.CHROME`
+- naming changes:
+  - tbd
+- removed deprecated things: 
+  - tbd
+- deprecated (will produce `DeprecationWarning`):
+  - tbd
+- marked as "considering to deprecate" (will produce `FutureWarning`):
+  - tbd
+- new features:
+  - tbd
+
+## 1.0.0a12-13
 - naming changes:
   - tbd
 - removed deprecated things: 

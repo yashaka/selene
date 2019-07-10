@@ -65,7 +65,7 @@ def __start_chrome():
     if config.start_maximized:
         options.add_argument("--start-maximized")
     return webdriver.Chrome(executable_path=ChromeDriverManager().install(),
-                            chrome_options=options,
+                            options=options,
                             desired_capabilities=config.desired_capabilities)
 
 

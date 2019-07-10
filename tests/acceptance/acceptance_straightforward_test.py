@@ -2,8 +2,14 @@ import os
 from selene.api import *
 
 
-app_url = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/todomvcapp/home.html'
-
+# app_url = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/todomvcapp/home.html'
+app_url = 'https://todomvc4tasj.herokuapp.com/'
+# is_TodoMVC_loaded = ('return '
+#                      '$._data($("#new-todo").get(0), "events").hasOwnProperty("keyup") && '
+#                      '$._data($("#toggle-all").get(0), "events").hasOwnProperty("change") && '
+#                      '$._data($("#todo-list").get(0), "events").hasOwnProperty("change") && '
+#                      '$._data($("#clear-completed").get(0), "events").hasOwnProperty("click")')
+is_TodoMVC_loaded = 'return (Object.keys(require.s.contexts._.defined).length === 39)'
 
 class TestTodoMVC(object):
 
@@ -12,8 +18,7 @@ class TestTodoMVC(object):
         active_tasks = tasks.filtered_by(have.css_class("active"))
 
         browser.open_url(app_url)
-
-        s("#new-todo").should(be.blank)
+        browser.should(have.js_returned_true(is_TodoMVC_loaded))
 
         for task_text in ["1", "2", "3"]:
             s("#new-todo").set_value(task_text).press_enter()
@@ -33,4 +38,3 @@ class TestTodoMVC(object):
         s("#toggle-all").click()
         s("#clear-completed").click()
         tasks.should(be.empty)
-

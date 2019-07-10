@@ -15,6 +15,6 @@ def test_can_init_default_browser_on_visit():
 
 
 def test_can_init_custom_browser_on_visit():
-    selene.config.browser_name = BrowserName.CHROME
+    selene.config.browser_name = BrowserName.MARIONETTE
     open_url(start_page)
     s("#selene_link").should_have(exact_text("Selene site"))

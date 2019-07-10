@@ -1,5 +1,6 @@
 from selene import browser
 from selene import config
+from selene.browsers import BrowserName
 from selene.support import by
 from selene.support.conditions import be
 from selene.support.conditions import have
@@ -7,7 +8,7 @@ from selene.support.jquery_style_selectors import s, ss
 
 
 def test_filter_tasks():
-    config.browser_name = 'chrome'
+    config.browser_name = BrowserName.MARIONETTE
 
     browser.open_url('https://todomvc4tasj.herokuapp.com')
     clear_completed_js_loaded = "return $._data($('#clear-completed').get(0), 'events').hasOwnProperty('click')"

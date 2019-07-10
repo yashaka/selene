@@ -20,7 +20,7 @@ cash_elements = env(SELENE_CACHE_ELEMENTS) == 'True' or False
 '''To cash all elements after first successful find
       config.cash_elements = True'''
 
-browser_name = env(SELENE_BROWSER_NAME, BrowserName.FIREFOX)
+browser_name = env(SELENE_BROWSER_NAME, BrowserName.CHROME)
 
 start_maximized = False if env(SELENE_START_MAXIMIZED) == 'False' else True
 

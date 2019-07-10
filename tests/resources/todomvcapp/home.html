@@ -69,12 +69,10 @@
 						Application($('html'), 'bootstrap', RouteWidget($(window), 'route')).start();
 					});
 				});
+				document.getElementById("new-todo").disabled=false;
 			}
 		};
 	</script>
 	<script src="bower_components/requirejs/require.js" async="async"></script>
-  <script>
-    document.getElementById("new-todo").disabled=false;
-  </script>
 	</body>
 </html>
