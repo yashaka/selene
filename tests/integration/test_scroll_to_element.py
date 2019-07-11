@@ -1,7 +1,7 @@
 import logging
 import os
 
-from selene import config
+from selene import config, browser
 from selene.browser import open_url, driver
 from selene.support.jquery_style_selectors import s
 
@@ -14,6 +14,7 @@ def setup_module(m):
 
 def test_can_scroll_to():
     open_url(start_page)
-    logging.warning(driver().current_url)
-    driver().set_window_size(300, 400)
+    # logging.warning(driver().current_url)
+    # driver().set_window_size(300, 400)
     s("#invisible_link").scroll_to().click()
+    assert "header" in browser.driver().current_url

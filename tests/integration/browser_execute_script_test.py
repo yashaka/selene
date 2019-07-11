@@ -14,8 +14,8 @@ def setup_module(m):
 
 def test_can_scroll_to_via_js():
     browser.open_url(start_page)
-    logging.warning(browser.driver().current_url)
-    browser.driver().set_window_size(300, 400)
+    # logging.warning(browser.driver().current_url)
+    # browser.driver().set_window_size(300, 400)
     link = s("#invisible_link")
     # browser.driver().execute_script("arguments[0].scrollIntoView();", link)
     # - this code does not work because SeleneElement is not JSON serializable, and I don't know the way to fix it
@@ -23,3 +23,4 @@ def test_can_scroll_to_via_js():
     #     and specify a custom encoder, but we can't change this call inside selenium webdriver implementation
     browser.driver().execute_script("arguments[0].scrollIntoView();", link.get_actual_webelement())
     link.click()
+    assert "header" in browser.driver().current_url

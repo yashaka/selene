@@ -7,7 +7,7 @@ from selene.support.conditions import have
 from selene.support.jquery_style_selectors import s, ss
 
 
-def test_filter_tasks():
+def x_test_filter_tasks():
     config.browser_name = BrowserName.MARIONETTE
 
     browser.open_url('https://todomvc4tasj.herokuapp.com')

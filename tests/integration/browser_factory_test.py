@@ -52,6 +52,10 @@ def test_driver_has_started():
 
 
 def test_ensure_driver_has_started():
+    driver = factory.ensure_driver_started("chrome")
+    assert driver.name == "chrome"
+
+def x_test_ensure_driver_has_started_with_marionette():
     driver = factory.ensure_driver_started("marionette")
     assert driver.name == "firefox"
 
