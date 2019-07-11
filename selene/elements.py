@@ -1,7 +1,11 @@
 import warnings
 from _ast import Tuple, List
-from collections import Sequence
-from json import JSONEncoder
+
+import sys
+if sys.version_info < (3, 7, 0):
+    from collections import Sequence
+else:
+    from collections.abc import Sequence
 
 from future.utils import with_metaclass
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
