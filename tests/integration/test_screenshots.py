@@ -21,7 +21,7 @@ def setup_function(f):
 
 
 def setup_module(m):
-    set_driver(webdriver.Chrome(executable_path=ChromeDriverManager().install()))
+    set_driver(webdriver.Chrome(ChromeDriverManager().install()))
 
 
 def teardown_module(m):

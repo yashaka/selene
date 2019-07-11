@@ -1,6 +1,7 @@
 import os
 
 from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
 
 from selene import browser
 from selene.support.conditions import be
@@ -9,7 +10,7 @@ from selene.support.jquery_style_selectors import s, ss
 
 
 def setup_module(m):
-    browser.set_driver(webdriver.Chrome())  # todo: was firefox here... should it be here?
+    browser.set_driver(webdriver.Chrome(ChromeDriverManager().install()))  # todo: was firefox here... should it be here?
 
 
 def teardown_module(m):

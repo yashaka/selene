@@ -2,6 +2,7 @@ import pytest
 import re
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
+from webdriver_manager.chrome import ChromeDriverManager
 
 from selene import browser
 from selene import config
@@ -15,7 +16,7 @@ original_timeout = config.timeout
 
 
 def setup_module(m):
-    driver = webdriver.Chrome()
+    driver = webdriver.Chrome(ChromeDriverManager().install())
     browser.set_driver(driver)
     global GIVEN_PAGE
     GIVEN_PAGE = GivenPage(driver)
