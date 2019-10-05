@@ -484,6 +484,9 @@ class SeleneElement(with_metaclass(DelegatingMeta, IWebElement)):
             condition=be.visible)
         return self
 
+    def type(self, *value):
+        return self.send_keys(*value)
+
     # RenderedWebElement Items
     def is_displayed(self):
         return self._execute_on_webelement(

@@ -2,9 +2,9 @@
 
 ## 1.0.0ax (next from master branch)
 - removed
-  - ConditionMismatchException.message (use `str(exOfConditionMismatchExceptionType)` for the same purpose)
+  - tbd
 - defaults changes:
-  - changed default `browser_name` to `BrowserName.CHROME`
+  - tbd
 - naming changes:
   - tbd
 - removed deprecated things: 
@@ -15,6 +15,16 @@
   - tbd
 - new features:
   - tbd
+
+## 1.0.0a14
+- removed
+  - ConditionMismatchException.message (use `str(exOfConditionMismatchExceptionType)` for the same purpose)
+- defaults changes:
+  - changed default `browser_name` to `BrowserName.CHROME`
+- added
+  - `have.size_greater_than_or_equal` alias for `have.size_at_least`
+  - `element.type` alias for `element.send_keys`
+  - `be`, `by`, and `have` imports to `selene` module
 
 ## 1.0.0a12-13
 - naming changes:

@@ -64,6 +64,10 @@ def size_at_least(minimum_size_of_collection):
     return conditions.size_at_least(minimum_size_of_collection)
 
 
+def size_greater_than_or_equal(minimum_size_of_collection):
+    return conditions.size_at_least(minimum_size_of_collection)
+
+
 def exact_texts(*values):
     return conditions.exact_texts(*values)
 
