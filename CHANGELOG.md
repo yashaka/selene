@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.0 (todo)
+- planned api changes:
+  - all.first() to all.first
+
 ## 1.0.0ax (next from master branch)
 - removed
   - tbd
