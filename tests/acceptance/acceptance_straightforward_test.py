@@ -57,6 +57,6 @@ class TestTodoMVC(object):
         tasks[:2].should(have.texts("1", "2"))
         tasks[2].should(be.hidden)
 
-        s("#toggle-all").click()
-        s("#clear-completed").click()
+        s(by.id("toggle-all")).click()
+        s("//*[@id='clear-completed']").click()
         tasks.should(be.empty)

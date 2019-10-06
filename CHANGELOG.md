@@ -20,6 +20,11 @@
 - new features:
   - tbd
 
+## 1.0.0a15
+- new features:
+  - added `by.id`
+  - now `browser.element` can parse xpath in string selector passed as parameter
+
 ## 1.0.0a14
 - removed
   - ConditionMismatchException.message (use `str(exOfConditionMismatchExceptionType)` for the same purpose)

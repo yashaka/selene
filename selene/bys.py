@@ -33,6 +33,10 @@ def by_css(css_selector):
     return (By.CSS_SELECTOR, css_selector)
 
 
+def by_id(name):
+    return (By.ID, name)
+
+
 def by_name(name):
     return (By.NAME, name)
 

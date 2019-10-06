@@ -31,6 +31,10 @@ def xpath(selector):
     return bys.by_xpath(selector)
 
 
+def id(attribute_value):
+    return bys.by_id(attribute_value)
+
+
 def name(attribute_value):
     return bys.by_name(attribute_value)
 
