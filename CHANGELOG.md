@@ -19,6 +19,17 @@
   - tbd
 - new features:
   - tbd
+  
+## 1.0.0a16
+- new features:
+  - added `SeleneElement#matching(condition)` and `SeleneCollection#matching(condition)` 
+    - as "non-waiting-predicate" version of should
+    - e.g. to be used like 
+        - `browser.element('#foo').matching(be.visible)` 
+        - over 
+        - `browser.element('#foo').is_displayed()`
+          - this version will be deprecated in next versions...
+- fixed `not_` usage in `SeleneCollection#element_by/filtered_by`
 
 ## 1.0.0a15
 - new features:
