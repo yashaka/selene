@@ -54,8 +54,9 @@ class Not(IEntityCondition):
         try:
             self._condition.fn(entity)
         except Exception as reason:
-            return reason
+            return entity
         raise ConditionMismatchException()  # todo: add more information to message
+
 
 
 not_ = Not

@@ -25,6 +25,8 @@ from selene.api import *
 
 
 # app_url = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/todomvcapp/home.html'
+from selene.conditions import not_
+
 app_url = 'https://todomvc4tasj.herokuapp.com/'
 # is_TodoMVC_loaded = ('return '
 #                      '$._data($("#new-todo").get(0), "events").hasOwnProperty("keyup") && '
@@ -52,6 +54,8 @@ class TestTodoMVC(object):
         active_tasks.should(have.size(2))
 
         tasks.filtered_by(have.css_class("completed")).should(have.texts("3"))
+        tasks.element_by(not_(have.css_class("completed"))).should(have.text("1"))
+        tasks.filtered_by(not_(have.css_class("completed"))).should(have.texts("1", "2"))
 
         s(by.link_text("Active")).click()
         tasks[:2].should(have.texts("1", "2"))

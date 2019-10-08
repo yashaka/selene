@@ -25,7 +25,7 @@ from _ast import Tuple, List
 
 import sys
 if sys.version_info < (3, 7, 0):
-    from collections import Sequence
+    from collections import Sequence, Iterable
 else:
     from collections.abc import Sequence
 
@@ -100,6 +100,19 @@ class CachingWebElementLocator(ISeleneWebElementLocator):
         self._element = element
 
 
+class WrappedWebElementLocator(ISeleneWebElementLocator):
+    @property
+    def description(self):
+        return self._description
+
+    def find(self):
+        return self._webelement
+
+    def __init__(self, webelement, description):
+        self._webelement = webelement
+        self._description = description
+
+
 # todo: PyCharm generates abstract methods impl before __init__ method.
 # todo: Should we use this order convention? like below...
 class IndexedWebElementLocator(ISeleneWebElementLocator):
@@ -153,10 +166,10 @@ class InnerListWebElementLocator(ISeleneListWebElementLocator):
 
 class FilteredListWebElementLocator(ISeleneListWebElementLocator):
     def find(self):
-        webelements = self._collection()
-        filtered = [webelement
-                    for webelement in webelements
-                    if is_matched(self._condition, webelement)]
+        elements = self._collection._as_cached_list()
+        filtered = [element()
+                    for element in elements
+                    if element.matching(self._condition)]
         return filtered
 
     @property
@@ -165,8 +178,8 @@ class FilteredListWebElementLocator(ISeleneListWebElementLocator):
 
     def __init__(self, condition, collection):
         # type: (IEntityCondition, SeleneCollection) -> None
-        self._condition = condition
-        self._collection = collection
+        self._condition = condition # type: IEntityCondition
+        self._collection = collection  # type: SeleneCollection
 
 
 class SlicedListWebElementLocator(ISeleneListWebElementLocator):
@@ -190,9 +203,9 @@ class SlicedListWebElementLocator(ISeleneListWebElementLocator):
 
 class FoundByConditionWebElementLocator(ISeleneWebElementLocator):
     def find(self):
-        for webelement in self._collection():
-            if is_matched(self._condition, webelement):
-                return webelement
+        for element in self._collection._as_cached_list():
+            if element.matching(self._condition):
+                return element()
         raise NoSuchElementException('Element was not found by: %s' % (self._condition,))
 
     @property
@@ -321,6 +334,16 @@ class SeleneElement(with_metaclass(DelegatingMeta, IWebElement)):
     @property
     def first_child(self):
         return self.element(by.be_first_child())
+
+    # *** Matchable ***
+
+    def matching(self, condition):
+        # type: (IEntityCondition) -> bool
+        try:
+            condition.fn(self)
+            return True
+        except Exception:
+            return False
 
     # *** Asserts (Explicit waits) ***
 
@@ -561,15 +584,15 @@ class SeleneCollection(with_metaclass(DelegatingMeta, Sequence)):
 
     @property
     def __delegate__(self):
-        # type: () -> List[IWebElement]
+        # type: () -> Iterable[IWebElement]
         return self._locator.find()
 
     def get_actual_webelements(self):
-        # type: () -> List[IWebElement]
+        # type: () -> Iterable[IWebElement]
         return self.__delegate__
 
     def __call__(self):
-        # type: () -> List[IWebElement]
+        # type: () -> Iterable[IWebElement]
         return self.__delegate__
 
     @classmethod
@@ -604,6 +627,25 @@ class SeleneCollection(with_metaclass(DelegatingMeta, Sequence)):
 
     def __str__(self):
         return self._locator.description
+
+    def _as_cached_list(self):  # todo: should we make it a property?
+        # type: () -> Iterable[SeleneElement]
+        return [SeleneElement(WrappedWebElementLocator(webelement, '${this}[${index}]'.format(this=self, index=i)),
+                              self._webdriver)
+                for i, webelement in
+                enumerate(self.get_actual_webelements())]
+
+    # *** Matchable ***
+
+    def matching(self, condition):
+        # type: (IEntityCondition) -> bool
+        try:
+            condition.fn(self)
+            return True
+        except Exception:
+            return False
+
+    # *** Assertable ***
 
     # todo: consider extracting the following not DRY should methods to BaseMixin, or even better: some WaitObject
     # to be mixed in to both Selene Element and Collection
