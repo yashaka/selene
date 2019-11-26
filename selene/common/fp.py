@@ -19,24 +19,11 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+from typing import TypeVar
 
 
-# todo: consider deleting
-class ConditionMismatchException(Exception):
-    """
-    """
-
-    def __init__(self, message='condition did not match', expected=None, actual=None):
-        msg = message
-        if expected is not None:
-            msg += '''
-            \texpected: {}'''.format(expected)
-        if actual is not None:
-            msg += '''
-            \t  actual: {}'''.format(actual)
-        super(ConditionMismatchException, self).__init__(msg)
+T = TypeVar("T")
 
 
-class ConditionNotMatchedError(AssertionError):
-    def __init__(self, message = 'condition not matched'):
-        super(ConditionNotMatchedError, self).__init__(message)
+def identity(it: T) -> T:
+    return it

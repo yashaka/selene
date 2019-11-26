@@ -65,6 +65,7 @@ def take_screenshot(webdriver, path=None, filename=None):
     if not os.path.exists(folder):
         os.makedirs(folder)
 
+    # todo: refactor to catch errors smartly in get_screenshot_as_file
     webdriver.get_screenshot_as_file(screenshot_path)
     return screenshot_path
 

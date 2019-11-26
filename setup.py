@@ -27,7 +27,6 @@ setup(
     keywords=['testing', 'selenium==3.141.0', 'selenide', 'browser', 'pageobject', 'widget', 'wrapper'],
     classifiers=[
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 3',
         'Development Status :: 3 - Alpha',
         'Natural Language :: English',

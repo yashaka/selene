@@ -584,15 +584,15 @@ class SeleneCollection(with_metaclass(DelegatingMeta, Sequence)):
 
     @property
     def __delegate__(self):
-        # type: () -> Iterable[IWebElement]
+        # type: () -> List[IWebElement]
         return self._locator.find()
 
     def get_actual_webelements(self):
-        # type: () -> Iterable[IWebElement]
+        # type: () -> List[IWebElement]
         return self.__delegate__
 
     def __call__(self):
-        # type: () -> Iterable[IWebElement]
+        # type: () -> List[IWebElement]
         return self.__delegate__
 
     @classmethod

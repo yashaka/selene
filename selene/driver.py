@@ -65,15 +65,20 @@ class SharedWebDriverSource(IWebDriverSource):
         self._webdriver = NoneObject("SharedWebDriverSource#_webdriver")  # type: IWebDriver
 
 
-class SeleneDriver(with_metaclass(DelegatingMeta, IWebDriver)):
+class SeleneDriver(with_metaclass(DelegatingMeta, IWebDriver)):  # todo: consider using here WebDriver
 
     @property
-    def __delegate__(self):
+    def __delegate__(self) -> WebDriver:
         return self._webdriver
 
     @property
-    def _webdriver(self):
+    def _webdriver(self) -> WebDriver:
         return self._source.driver
+
+    # todo: do we need this? isn't it less obvious, kiss, and more magic?
+    def __call__(self):
+        # type: () -> WebDriver
+        return self.__delegate__
 
     # todo: consider the usage: `SeleneDriver(FirefoxDriver())` over `SeleneDriver.wrap(FirefoxDriver())`
     # todo: it may be possible if __init__ accepts webdriver_or_source and IWebDriverSource implements IWebDriver...

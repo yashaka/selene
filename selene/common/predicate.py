@@ -20,23 +20,43 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-
-# todo: consider deleting
-class ConditionMismatchException(Exception):
-    """
-    """
-
-    def __init__(self, message='condition did not match', expected=None, actual=None):
-        msg = message
-        if expected is not None:
-            msg += '''
-            \texpected: {}'''.format(expected)
-        if actual is not None:
-            msg += '''
-            \t  actual: {}'''.format(actual)
-        super(ConditionMismatchException, self).__init__(msg)
+import re
 
 
-class ConditionNotMatchedError(AssertionError):
-    def __init__(self, message = 'condition not matched'):
-        super(ConditionNotMatchedError, self).__init__(message)
+def is_truthy(something):
+    return bool(something) if not something == '' else True
+
+
+def equals(expected):
+    return lambda actual: expected == actual
+
+
+def is_greater_than(expected):
+    return lambda actual: actual > expected
+
+
+def is_greater_than_or_equal(expected):
+    return lambda actual: actual >= expected
+
+
+def is_less_than(expected):
+    return lambda actual: actual < expected
+
+
+def is_less_than_or_equal(expected):
+    return lambda actual: actual <= expected
+
+
+def includes(expected):
+    return lambda actual: expected in actual
+
+
+def includes_word(expected):
+    return lambda actual: expected in re.split(r'\s+', actual)
+
+
+list_compare_by = lambda f: lambda x, *xs: lambda y, *ys: \
+    True if x is None and y is None else bool(f(x)(y)) and list_compare_by(f)(*xs or None)(*ys or None)
+
+equals_to_list = list_compare_by(equals)
+equals_by_contains_to_list = list_compare_by(includes)
