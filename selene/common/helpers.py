@@ -20,42 +20,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from abc import ABCMeta, abstractmethod, abstractproperty
 
-from future.utils import with_metaclass
-
-
-class ISeleneWebElementLocator(with_metaclass(ABCMeta, object)):
-
-    @abstractmethod
-    def find(self):
-        # type: () -> WebElement
-        pass
-
-    # @abstractproperty
-    @property
-    @abstractmethod
-    def description(self):
-        # type: () -> str
-        pass
-
-    def __str__(self):
-        return self.description
-
-
-class ISeleneListWebElementLocator(with_metaclass(ABCMeta, object)):
-
-    @abstractmethod
-    def find(self):
-        # type: () -> List[WebElement]
-        pass
-
-    @abstractproperty
-    def description(self):
-        # type: () -> str
-        pass
-
-    def __str__(self):
-        return self.description
-
+def as_dict(o, skip_empty=True):
+    return {k: v
+            for k, v in o.__dict__.items()
+            if not (skip_empty and v is None)}
 

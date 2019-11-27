@@ -51,8 +51,8 @@ class Matchable(Assertable):
 
 
 class Configured(ABC):
-    @abstractmethod
     @property
+    @abstractmethod
     def config(self) -> Config:
         pass
 
@@ -69,10 +69,11 @@ class WaitingEntity(Assertable, Matchable, Configured):
     def wait(self) -> Wait[E]:
         return self._wait
 
-    def perform(self, command: Callable[[E], None]):
+    def perform(self, command: Callable[[E], None]) -> E:
         self.wait.command(command)
+        return self
 
-    def get(self, query: Callable[[E], R]):
+    def get(self, query: Callable[[E], R]) -> R:
         return self.wait.query(query)
 
     # --- Configured --- #

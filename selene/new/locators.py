@@ -19,43 +19,15 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
-from abc import ABCMeta, abstractmethod, abstractproperty
-
-from future.utils import with_metaclass
+from abc import abstractmethod, ABC
+from typing import TypeVar, Generic
 
 
-class ISeleneWebElementLocator(with_metaclass(ABCMeta, object)):
-
-    @abstractmethod
-    def find(self):
-        # type: () -> WebElement
-        pass
-
-    # @abstractproperty
-    @property
-    @abstractmethod
-    def description(self):
-        # type: () -> str
-        pass
-
-    def __str__(self):
-        return self.description
+T = TypeVar('T')
 
 
-class ISeleneListWebElementLocator(with_metaclass(ABCMeta, object)):
+class Locator(ABC, Generic[T]):
 
     @abstractmethod
-    def find(self):
-        # type: () -> List[WebElement]
+    def find(self) -> T:
         pass
-
-    @abstractproperty
-    def description(self):
-        # type: () -> str
-        pass
-
-    def __str__(self):
-        return self.description
-
-
