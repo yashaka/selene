@@ -20,41 +20,30 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from abc import ABCMeta, abstractmethod, abstractproperty
+from dataclasses import dataclass
+from typing import Callable
 
-from future.utils import with_metaclass
-
-
-class ISeleneWebElementLocator(with_metaclass(ABCMeta, object)):
-
-    @abstractmethod
-    def find(self):
-        # type: () -> WebElement
-        pass
-
-    @abstractmethod
-    @property
-    def description(self):
-        # type: () -> str
-        pass
-
-    def __str__(self):
-        return self.description
+from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.remote.webdriver import WebDriver
 
 
-class ISeleneListWebElementLocator(with_metaclass(ABCMeta, object)):
-
-    @abstractmethod
-    def find(self):
-        # type: () -> List[WebElement]
-        pass
-
-    @abstractproperty
-    def description(self):
-        # type: () -> str
-        pass
-
-    def __str__(self):
-        return self.description
+@dataclass(frozen=True)
+class WaitHooks:
+    failure: Callable[[TimeoutException], Exception]
 
 
+@dataclass(frozen=True)
+class Hooks:
+    wait: WaitHooks
+
+
+@dataclass(frozen=True)
+class Config:
+    driver: WebDriver = None
+    timeout: int = None
+    base_url: str = None
+    set_value_by_js: bool = None
+    type_value_by_js: bool = None
+    window_width: int = None
+    window_height: int = None
+    hooks: Hooks = None

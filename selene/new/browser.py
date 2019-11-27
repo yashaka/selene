@@ -20,41 +20,19 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from abc import ABCMeta, abstractmethod, abstractproperty
+from selenium.webdriver.remote.webdriver import WebDriver
 
-from future.utils import with_metaclass
+from selene.new.config import Config
+from selene.new.entity import WaitingEntity
 
 
-class ISeleneWebElementLocator(with_metaclass(ABCMeta, object)):
+class Browser(WaitingEntity):
+    def __init__(self, config: Config):
+        super().__init__(config)
 
-    @abstractmethod
-    def find(self):
-        # type: () -> WebElement
-        pass
+    def __str__(self):
+        return 'browser'
 
-    @abstractmethod
     @property
-    def description(self):
-        # type: () -> str
-        pass
-
-    def __str__(self):
-        return self.description
-
-
-class ISeleneListWebElementLocator(with_metaclass(ABCMeta, object)):
-
-    @abstractmethod
-    def find(self):
-        # type: () -> List[WebElement]
-        pass
-
-    @abstractproperty
-    def description(self):
-        # type: () -> str
-        pass
-
-    def __str__(self):
-        return self.description
-
-
+    def driver(self) -> WebDriver:
+        return self.config.driver
