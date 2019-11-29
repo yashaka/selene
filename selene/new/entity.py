@@ -26,7 +26,7 @@ from abc import abstractmethod, ABC
 from typing import TypeVar, Callable
 
 from selene.new.config import Config
-from selene.new.wait import Wait, Lambda
+from selene.new.wait import Wait, Lambda, Command, Query
 from selene.new.condition import Condition
 
 E = TypeVar('E', bound='Assertable')
@@ -69,12 +69,35 @@ class WaitingEntity(Assertable, Matchable, Configured):
     def wait(self) -> Wait[E]:
         return self._wait
 
-    def perform(self, command: Callable[[E], None]) -> E:
-        self.wait.command(command)
+    def perform(self, command: Command[E]) -> E:
+        """Useful to call external commands.
+
+        Commands might be predefined in Selene:
+            element.perform(command.js.scroll_into_view)
+        or some custom defined by selene user:
+            element.perform(my_action.triple_click)
+
+        You might think that it will be usefull to use these methods also in Selene internally
+        in order to define built in commands e.g. in Element class, like:
+
+            def click(self):
+                return self.perform(Command('click', lambda element: element().click()))
+
+        instead of:
+
+            def click(self):
+                self.wait.for_(Command('click', lambda element: element().click()))
+                return self
+
+        But so far, we use the latter version - though, less concise, but more explicit,
+        making it more obvious that waiting is built in;)
+
+        """
+        self.wait.for_(command)
         return self
 
-    def get(self, query: Callable[[E], R]) -> R:
-        return self.wait.query(query)
+    def get(self, query: Query[E, R]) -> R:
+        return self.wait.for_(query)
 
     # --- Configured --- #
 

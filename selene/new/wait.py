@@ -43,28 +43,24 @@ Proc = Callable[[T], None]
 Predicate = Callable[[T], bool]
 
 
-class IFn(ABC, Generic[T, R]):  # todo: consider using Callable[[T], R] instead
-
-    @abstractmethod
-    def call(self, entity: T) -> R:
-        pass
+Fn = Callable[[T], R]
 
 
-# todo: consider renaming to DescribedFn or DescribedQuery
-class Query(IFn[T, R]):
+class Query(Generic[T, R]):
 
     def __init__(self, description: str, fn: Lambda[T, R]):
         self._description = description
         self._fn = fn
 
-    def call(self, entity: T) -> R:
+    def __call__(self, entity: T) -> R:
         return self._fn(entity)
 
     def __str__(self):
         return self._description
 
 
-Command = Query[T, None]
+class Command(Query[T, None]):
+    pass
 
 
 # todo: provide sexy fluent implementation via builder, i.e. Wait.the(element).atMost(3).orFailWith(hook)
@@ -77,12 +73,12 @@ class Wait(Generic[E]):
         self._hook_failure = or_fail_with
 
     # todo: consider renaming to `def to(...)`, though will sound awkward when wait.to(condition)
-    def for_(self, fn: IFn[E, R]) -> R:
+    def for_(self, fn: Callable[[E], R]) -> R:
         finish_time = time.time() + self._timeout
 
         while True:
             try:
-                return fn.call(self._entity)
+                return fn(self._entity)
             except Exception as reason:
                 if time.time() > finish_time:
 
@@ -104,16 +100,16 @@ class Wait(Generic[E]):
 
                     raise self._hook_failure(failure)
 
-    def until(self, fn: IFn[E, R]) -> bool:
+    def until(self, fn: Callable[[E], R]) -> bool:
         try:
             self.for_(fn)
             return True
         except TimeoutException:
             return False
 
-    # todo: do we need it?
-    def command(self, fn: Callable[[E], R]) -> None:
-        self.for_(Command(str(fn), fn))
+    # todo: do we really need these aliases?
+    def command(self, description: str, fn: Callable[[E], None]) -> None:
+        self.for_(Command(description, fn))
 
-    def query(self, fn: Callable[[E], R]) -> R:
-        return self.for_(Query(str(fn), fn))
+    def query(self, description: str, fn: Callable[[E], R]) -> R:
+        return self.for_(Query(description, fn))

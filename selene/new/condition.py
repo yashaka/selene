@@ -25,14 +25,14 @@ from __future__ import annotations
 from typing import List, TypeVar
 
 from selene.exceptions import ConditionNotMatchedError
-from selene.new.wait import IFn, Predicate, Lambda
+from selene.new.wait import Fn, Predicate, Lambda
 
 
 E = TypeVar('E')
 R = TypeVar('R')
 
 
-class Condition(IFn[E, None]):
+class Condition(Fn[E, None]):
 
     @classmethod
     def by_and(cls, *conditions):

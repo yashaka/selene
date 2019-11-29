@@ -24,12 +24,17 @@ from __future__ import annotations
 
 from typing import Union
 
+from selenium.webdriver import ActionChains
+from selenium.webdriver.android.webdriver import WebDriver
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.webelement import WebElement
 
 from selene.common.helpers import as_dict
+from selene.new import command
 from selene.new.config import Config
 from selene.new.entity import WaitingEntity
 from selene.new.locators import Locator
+from selene.new.wait import Command
 
 
 class Element(WaitingEntity):
@@ -48,16 +53,22 @@ class Element(WaitingEntity):
 
     # --- Commands --- #
 
+    def execute_script(self, script_on_self: str, *extra_args):
+        driver: WebDriver = self.config.driver
+        webelement = self()
+        # todo: should we wrap it in wait or not?
+        return driver.execute_script(script_on_self, webelement, *extra_args)
+
     def set_value(self, value: Union[str, int]) -> Element:
+        # todo: should we move all commands like following or queries like in conditions - to separate py modules?
+        # todo: should we make them webelement based (Callable[[WebElement], None]) instead of element based?
         def fn(element: Element):
             webelement = element()
             webelement.clear()  # todo: change to impl based not on clear, because clear generates post-events...
             webelement.send_keys(str(value))
 
-        fn.__str__ = lambda: f'set value: {value}'  # todo: refactor to pass description in wait.command
-
-        self.wait.command(fn if self.config.set_value_by_js
-                          else fn)  # todo: change to jsCommand
+        self.wait.for_(command.js.set_value(value) if self.config.set_value_by_js
+                       else Command(f'set value: {value}', fn))
 
         return self
 
@@ -66,12 +77,57 @@ class Element(WaitingEntity):
             webelement = element()
             webelement.send_keys(str(keys))
 
-        fn.__str__ = lambda: f'type: {keys}'
-
-        self.wait.command(fn if self.config.type_by_js
-                          else fn)  # todo: change to jsCommand
+        self.wait.for_(command.js.type(keys) if self.config.type_by_js
+                          else Command(f'type: {keys}', fn))
 
         return self
 
+    def press_enter(self) -> Element:
+        return self.type(Keys.ENTER)
 
-SeleneElement = Element  # todo: consider deprecating this name
+    def press_escape(self) -> Element:
+        return self.type(Keys.ESCAPE)
+
+    def press_tab(self) -> Element:
+        return self.type(Keys.TAB)
+
+    def clear(self) -> Element:
+        self.wait.command('clear', lambda element: element().clear())
+        return self
+
+    # todo: do we need config.click_by_js?
+    def click(self) -> Element:  # todo: add offset args with defaults, or add additional method, think on what is better
+        """Just a normal click:)
+
+        You might ask, why don't we have config.click_by_js?
+        Because making all clicks js based is not a "normal case".
+        You might need to speed up all "set value" in your tests, but command.js.click will not speed up anything.
+        Yet, sometimes, it might be useful as workaround.
+        In such cases - use
+
+            element.perform(command.js.click)
+
+        to achieve the goal in less concise way,
+        thus, identifying by this "awkwardness" that it is really a workaround;)
+        """
+        self.wait.command('click', lambda element: element().click())
+        return self
+
+    def double_click(self) -> Element:
+        actions: ActionChains = ActionChains(self.config.driver)
+        self.wait.command('double click', lambda element: actions.double_click(element()).perform())
+        return self
+
+    def context_click(self) -> Element:
+        actions: ActionChains = ActionChains(self.config.driver)
+        self.wait.command('context click', lambda element: actions.context_click(element()).perform())
+        return self
+
+    def hover(self) -> Element:
+        actions: ActionChains = ActionChains(self.config.driver)
+        self.wait.command('hover', lambda element: actions.move_to_element(element()).perform())
+        return self
+
+
+class SeleneElement(Element):  # todo: consider deprecating this name
+    pass
