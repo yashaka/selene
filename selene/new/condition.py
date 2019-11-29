@@ -62,7 +62,7 @@ class Condition(Fn[E, None]):
         is_or_have = condition_words[1]
         name = ' '.join(condition_words[1:])
         no_or_not = 'not' if is_or_have == 'is' else 'no'
-        new_description = description or '{is_or_have} {no_or_not} {name}'.format(**vars())
+        new_description = description or f'{is_or_have} {no_or_not} {name}'
 
         def fn(entity):
             try:
@@ -100,7 +100,7 @@ class Condition(Fn[E, None]):
         def fn(entity: E) -> None:
             actual = query(entity)
             if not predicate(actual):
-                raise AssertionError('actual {query}: {actual}'.format(**vars()))
+                raise AssertionError(f'actual {query}: {actual}')
 
         return Condition(description, fn)
 

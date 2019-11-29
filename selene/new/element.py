@@ -33,23 +33,26 @@ from selene.common.helpers import as_dict
 from selene.new import command
 from selene.new.config import Config
 from selene.new.entity import WaitingEntity
-from selene.new.locators import Locator
+from selene.new.locator import Locator
 from selene.new.wait import Command
 
 
 class Element(WaitingEntity):
+
+    # todo: should we move locator based init and with_ to Located base abstract class?
+
     def __init__(self, locator: Locator[WebElement], config: Config):
         self._locator = locator
         super().__init__(config)
 
-    def with_(self, config: Config):
+    def with_(self, config: Config) -> Element:
         return Element(self._locator, Config(**{**as_dict(self.config), **config}))
 
     def __str__(self):
         return str(self._locator)
 
     def __call__(self) -> WebElement:
-        return self._locator.find()
+        return self._locator()
 
     # --- Commands --- #
 
@@ -96,7 +99,8 @@ class Element(WaitingEntity):
         return self
 
     # todo: do we need config.click_by_js?
-    def click(self) -> Element:  # todo: add offset args with defaults, or add additional method, think on what is better
+    # todo: add offset args with defaults, or add additional method, think on what is better
+    def click(self) -> Element:
         """Just a normal click:)
 
         You might ask, why don't we have config.click_by_js?
@@ -127,6 +131,17 @@ class Element(WaitingEntity):
         actions: ActionChains = ActionChains(self.config.driver)
         self.wait.command('hover', lambda element: actions.move_to_element(element()).perform())
         return self
+
+    # todo: should we reflect queries as self methods? or not...
+    # pros: faster to query element attributes
+    # cons: queries are not test oriented. test is steps + asserts
+    #       so queries will be used only occasionally, then why to make a heap from Element?
+    #       hence, occasionally it's enough to have them called as
+    #           query.outer_html(element)  # non-waiting version
+    #       or
+    #           element.get(query.outer_html)  # waiting version
+    # def outer_html(self) -> str:
+    #     return self.wait.for_(query.outer_html)
 
 
 class SeleneElement(Element):  # todo: consider deprecating this name

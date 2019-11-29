@@ -19,26 +19,22 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from typing import Union, Tuple, List
 
-from selenium.webdriver.common.by import By
-
-
-def as_dict(o, skip_empty=True):
-    return {k: v
-            for k, v in o.__dict__.items()
-            if not (skip_empty and v is None)}
+from selene.new.element import Element
+from selene.new.wait import Query
 
 
-def to_by(selector_or_by: Union[str, tuple]) -> Tuple[str, str]:
-    # todo: will it work `if isinstance(css_selector_or_by, Tuple[str, str]):` ?
-    if isinstance(selector_or_by, tuple):
-        return selector_or_by
-    if isinstance(selector_or_by, str):
-        return (By.XPATH, selector_or_by) if (selector_or_by.startswith('/') or selector_or_by.startswith('./')) \
-            else (By.CSS_SELECTOR, selector_or_by)
-    raise TypeError('selector_or_by should be str with CSS selector or XPATH selector or Tuple[by:str, value:str]')
+def attribute(name: str) -> Query[Element, str]:
+    def fn(element: Element) -> str:
+        return element().get_attribute(name)
+
+    return Query(f'attribute {name}', fn)
 
 
-def flatten(list_of_lists: List[list]) -> list:
-    return [item for sublist in list_of_lists for item in sublist]
+inner_html = attribute('innerHTML')
+
+
+outer_html = attribute('outerHTML')
+
+
+value = attribute('value')

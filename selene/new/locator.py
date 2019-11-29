@@ -19,15 +19,19 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from abc import abstractmethod, ABC
-from typing import TypeVar, Generic
 
+from typing import TypeVar, Generic, Callable
 
 T = TypeVar('T')
 
 
-class Locator(ABC, Generic[T]):
+class Locator(Generic[T]):
+    def __init__(self, description: str, locate: Callable[[], T]):
+        self._description = description
+        self._locate = locate
 
-    @abstractmethod
-    def find(self) -> T:
-        pass
+    def __call__(self) -> T:
+        return self._locate()
+
+    def __str__(self):
+        return self._description

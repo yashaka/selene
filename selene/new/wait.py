@@ -46,9 +46,10 @@ Predicate = Callable[[T], bool]
 Fn = Callable[[T], R]
 
 
+# todo: consider moving outside of "wait" module... because there is no direct cohesion with it
 class Query(Generic[T, R]):
 
-    def __init__(self, description: str, fn: Lambda[T, R]):
+    def __init__(self, description: str, fn: Callable[[T], R]):
         self._description = description
         self._fn = fn
 

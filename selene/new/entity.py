@@ -57,7 +57,7 @@ class Configured(ABC):
         pass
 
 
-class WaitingEntity(Assertable, Matchable, Configured):
+class WaitingEntity(ABC, Assertable, Matchable, Configured):
 
     def __init__(self, config: Config):
         self._config = config
