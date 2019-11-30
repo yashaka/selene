@@ -20,13 +20,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from selene import browser
-from selene import config
-from selene.browsers import BrowserName
-from selene.support import by
+from selene.support.past import browser, config
+from selene.support.past.browsers import BrowserName
+from selene.support.past.support import by
 from selene.support.conditions import be
 from selene.support.conditions import have
-from selene.support.jquery_style_selectors import s, ss
+from selene.support.past.support.jquery_style_selectors import s, ss
 
 
 def x_test_filter_tasks():
@@ -34,7 +33,7 @@ def x_test_filter_tasks():
 
     browser.open_url('https://todomvc4tasj.herokuapp.com')
     clear_completed_js_loaded = "return $._data($('#clear-completed').get(0), 'events').hasOwnProperty('click')"
-    browser.wait_to(have.js_returned_true(clear_completed_js_loaded), timeout=config.timeout*3)
+    browser.wait_to(have.js_returned_true(clear_completed_js_loaded), timeout=config.timeout * 3)
 
     s('#new-todo').set_value('a').press_enter()
     s('#new-todo').set_value('b').press_enter()

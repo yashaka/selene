@@ -20,9 +20,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from selene import browser
-from selene.conditions import exact_text, hidden, exact_texts
-from selene.support.jquery_style_selectors import s, ss
+from selene.support.past import browser
+from selene.support.past.conditions import exact_text, hidden, exact_texts
+from selene.support.past.support.jquery_style_selectors import s, ss
 
 from tests.acceptance.helpers.helper import get_test_driver
 from tests.acceptance.helpers.todomvc import given_active

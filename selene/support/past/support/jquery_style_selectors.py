@@ -20,21 +20,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from selene.new.element import Element
-from selene.new.wait import Query
+from selene.support.past import browser
 
 
-def attribute(name: str) -> Query[Element, str]:
-    def fn(element: Element) -> str:
-        return element().get_attribute(name)
-
-    return Query(f'attribute {name}', fn)
+def s(css_selector_or_by):
+    return browser.element(css_selector_or_by)
 
 
-inner_html = attribute('innerHTML')
-
-
-outer_html = attribute('outerHTML')
-
-
-value = attribute('value')
+def ss(css_selector_or_by):
+    return browser.elements(css_selector_or_by)

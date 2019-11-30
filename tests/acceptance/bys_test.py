@@ -24,9 +24,9 @@ from tests.acceptance.helpers.helper import get_test_driver
 
 __author__ = 'yashaka'
 
-from selene.browser import *
+from selene.support.past.browser import *
 from tests.acceptance.helpers.todomvc import given_active
-from selene.bys import *
+from selene.support.past.bys import *
 
 
 def setup_module(m):

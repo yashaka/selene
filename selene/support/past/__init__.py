@@ -20,19 +20,3 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from selenium.webdriver.remote.webdriver import WebDriver
-
-from selene.new.config import Config
-from selene.new.entity import WaitingEntity
-
-
-class Browser(WaitingEntity):
-    def __init__(self, config: Config):
-        super().__init__(config)
-
-    def __str__(self):
-        return 'browser'
-
-    @property
-    def driver(self) -> WebDriver:
-        return self.config.driver

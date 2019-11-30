@@ -20,112 +20,118 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import os
+from __future__ import annotations
 
+from typing import Union
+
+from selenium.webdriver.remote.switch_to import SwitchTo
 from selenium.webdriver.remote.webdriver import WebDriver
 
-import selene.config
-import selene.driver
-import selene.factory
-from selene import helpers
-from selene.common.none_object import NoneObject
-from selene.elements import SeleneElement, SeleneCollection
-from selene.wait import wait_for
+from selene.common.helpers import as_dict, to_by, is_absolute_url
+from selene import query
+from selene.collection import Collection
+from selene.config import Config
+from selene.element import Element
+from selene.entity import WaitingEntity
+from selene.locator import Locator
 
 
-def quit_driver():
-    driver().quit()
+class Browser(WaitingEntity):
+    def __init__(self, config: Config):
+        super().__init__(config)
+
+    def with_(self, config: Config) -> Browser:
+        return Browser(Config(**{**as_dict(self.config), **config}))
+
+    def __str__(self):
+        return 'browser'
+
+    @property
+    def driver(self) -> WebDriver:
+        return self.config.driver
+
+    # --- Element builders --- #
+
+    def element(self, css_or_xpath_or_by: Union[str, tuple]) -> Element:
+        by = to_by(css_or_xpath_or_by)
+
+        return Element(
+            Locator(f'{self}.element({by})',
+                    lambda: self.driver.find_element(*by)),
+            self.config)
+
+    def all(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection:
+        by = to_by(css_or_xpath_or_by)
+
+        return Collection(
+            Locator(f'{self}.all({by})',
+                    lambda: self.driver.find_elements(*by)),
+            self.config)
+
+    # --- High Level Commands--- #
+
+    def open(self, relative_or_absolute_url: str) -> Browser:
+        width = self.config.window_width
+        height = self.config.window_height
+
+        if width and height:
+            self.driver.set_window_size(int(width), int(height))
+
+        is_absolute = is_absolute_url(relative_or_absolute_url)
+        base_url = self.config.base_url
+        url = relative_or_absolute_url if is_absolute else base_url + relative_or_absolute_url
+
+        self.driver.get(url)
+        self.driver.switch_to.window()
+
+        return self
+
+    def switch_to_next_tab(self) -> Browser:
+        self.driver.switch_to.window(query.next_tab(self))
+
+        # todo: should we user waiting version here (and in other similar cases)?
+        # self.perform(Command(
+        #     'open next tab',
+        #     lambda browser: browser.driver.switch_to.window(query.next_tab(self))))
+
+        return self
+
+    def switch_to_previous_tab(self) -> Browser:
+        self.driver.switch_to.window(query.previous_tab(self))
+        return self
+
+    def switch_to_tab(self, index_or_name: Union[int, str]) -> Browser:
+        if isinstance(index_or_name, int):
+            self.driver.switch_to(query.tab(index_or_name)(self))
+        else:
+            self.driver.switch_to.window(index_or_name)
+
+        return self
+
+    @property
+    def switch_to(self) -> SwitchTo:
+        return self.driver.switch_to.alert
+
+    # todo: should we add also a shortcut for self.driver.switch_to.alert ?
+    #       if we don't need to switch_to.'back' after switch to alert - then for sure we should...
+    #       question is - should we implement our own alert as waiting entity?
+
+    def close_current_tab(self) -> Browser:
+        self.driver.close()
+        return self
+
+    def quit(self) -> None:
+        self.driver.quit()
+
+    def clear_local_storage(self) -> Browser:
+        self.driver.execute_script('window.localStorage.clear();') # todo: should we catch and ignore errors?
+        return self
+
+    def clear_session_storage(self) -> Browser:
+        self.driver.execute_script('window.sessionStorage.clear();')
+        return self
 
 
-def quit():
-    quit_driver()
+class SeleneDriver(Browser):
+    pass
 
-
-def close():
-    driver().close()
-
-
-def set_driver(webdriver):
-    # type: (WebDriver) -> None
-    if selene.factory.is_another_driver(webdriver):
-        selene.factory.kill_all_started_drivers()
-    selene.factory.set_shared_driver(webdriver)
-
-
-def driver():
-    # type: () -> WebDriver
-    return selene.factory.ensure_driver_started(selene.config.browser_name)
-
-
-def open_url(absolute_or_relative_url):
-    """
-    Loads a web page in the current browser session.
-    :param absolgenerateute_or_relative_url:
-        an absolute url to web page in case of config.base_url is not specified,
-        otherwise - relative url correspondingly
-
-    :Usage:
-        open_url('http://mydomain.com/subpage1')
-        open_url('http://mydomain.com/subpage2')
-        # OR
-        config.base_url = 'http://mydomain.com'
-        open_url('/subpage1')
-        open_url('/subpage2')
-    """
-    # todo: refactor next line when app_host is removed
-    base_url = selene.config.app_host if selene.config.app_host else selene.config.base_url
-    driver().get(base_url + absolute_or_relative_url)
-
-
-def element(css_selector_or_by):
-    return SeleneElement.by_css_or_by(css_selector_or_by, selene.driver._shared_driver)
-
-
-def elements(css_selector_or_by):
-    return SeleneCollection.by_css_or_by(css_selector_or_by, selene.driver._shared_driver)
-
-def all(css_selector_or_by):
-    return elements(css_selector_or_by)
-
-
-_latest_screenshot = NoneObject("selene.browser._latest_screenshot")
-
-
-def take_screenshot(path=None, filename=None):
-    if not path:
-        path = selene.config.reports_folder
-    if not filename:
-        filename = "screen_{id}".format(id=next(selene.config.counter))
-
-    screenshot_path = helpers.take_screenshot(driver(), path, filename)
-
-    global _latest_screenshot
-    _latest_screenshot = screenshot_path
-
-    return screenshot_path
-
-
-def latest_screenshot():
-    return _latest_screenshot
-
-
-# todo: consider adding aliases, like: wait_until, wait_brhwser_to
-def wait_to(webdriver_condition, timeout=None, polling=None):
-    if timeout is None:
-        timeout = selene.config.timeout
-    if polling is None:
-        polling = selene.config.poll_during_waits
-
-    return wait_for(driver(), webdriver_condition, timeout, polling)
-
-
-def should(webdriver_condition, timeout=None, polling=None):
-    return wait_to(webdriver_condition, timeout, polling)
-
-
-def execute_script(script, *args):
-    return driver().execute_script(script, *args)
-
-
-def title():
-    return driver().title

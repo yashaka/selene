@@ -26,11 +26,10 @@ from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
 from webdriver_manager.chrome import ChromeDriverManager
 
-from selene import browser
-from selene import config
-from selene.common.none_object import NoneObject
+from selene.support.past import browser, config
+from selene.support.past.common.none_object import NoneObject
 from selene.support.conditions import have
-from selene.support.jquery_style_selectors import s, ss
+from selene.support.past.support.jquery_style_selectors import s, ss
 from tests.integration.helpers.givenpage import GivenPage
 
 GIVEN_PAGE = NoneObject('GivenPage')  # type: GivenPage

@@ -23,14 +23,14 @@
 from __future__ import annotations
 
 from abc import abstractmethod, ABC
-from typing import TypeVar, Callable
+from typing import TypeVar
 
-from selene.new.config import Config
-from selene.new.wait import Wait, Lambda, Command, Query
-from selene.new.condition import Condition
+from selene.config import Config
+from selene.wait import Wait, Command, Query
+from selene.condition import Condition
 
 E = TypeVar('E', bound='Assertable')
-R = TypeVar('R', bound='Assertable')
+R = TypeVar('R')
 
 
 class Assertable(ABC):
@@ -57,7 +57,7 @@ class Configured(ABC):
         pass
 
 
-class WaitingEntity(ABC, Assertable, Matchable, Configured):
+class WaitingEntity(Matchable, Configured):
 
     def __init__(self, config: Config):
         self._config = config
@@ -118,4 +118,3 @@ class WaitingEntity(ABC, Assertable, Matchable, Configured):
 
     def matching(self, condition: Condition[E]) -> bool:
         return condition.predicate(self)
-

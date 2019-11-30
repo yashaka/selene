@@ -21,12 +21,11 @@
 # SOFTWARE.
 
 import pytest
-from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
 
-from selene import config
-from selene.common.none_object import NoneObject
-from selene.driver import SeleneDriver
+from selene.support.past import config
+from selene.support.past.common.none_object import NoneObject
+from selene.support.past.driver import SeleneDriver
 from tests.acceptance.helpers.helper import get_test_driver
 from tests.integration.helpers.givenpage import GivenPage
 

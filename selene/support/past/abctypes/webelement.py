@@ -25,7 +25,7 @@ from abc import abstractproperty, abstractmethod
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
 
-from selene.abctypes.search_context import ISearchContext
+from selene.support.past.abctypes.search_context import ISearchContext
 
 
 class IWebElement(ISearchContext):

@@ -20,37 +20,32 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# todo: make the properties also 'object oriented' to support different configs per different SeleneDriver instances
-import itertools
-import os
-import time
+from dataclasses import dataclass
+from typing import Callable
 
-from selene.browsers import BrowserName
-from selene.environment import *
-from selene.helpers import env
+from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.remote.webdriver import WebDriver
 
-timeout = int(env(SELENE_TIMEOUT, 4))
-poll_during_waits = float(env(SELENE_POLL_DURING_WAITS, 0.1))
+# todo: consider making these dataclasses be Mapping-like, so can be used in the 'dict' context
 
-base_url = env(SELENE_BASE_URL, '')
-app_host = None
-# todo: we may probably refactor selene.config to selene.browser.config where config - is an object, not a module
-# todo: then it would be better to add warnings.warn("use base_url instead", DeprecationWarning)
 
-# todo: make cashing work (currently will not work...)
-cash_elements = env(SELENE_CACHE_ELEMENTS) == 'True' or False
-'''To cash all elements after first successful find
-      config.cash_elements = True'''
+@dataclass(frozen=True)
+class WaitHooks:
+    failure: Callable[[TimeoutException], Exception]
 
-browser_name = env(SELENE_BROWSER_NAME, BrowserName.CHROME)
 
-start_maximized = False if env(SELENE_START_MAXIMIZED) == 'False' else True
+@dataclass(frozen=True)
+class Hooks:
+    wait: WaitHooks
 
-hold_browser_open = env(SELENE_HOLD_BROWSER_OPEN) == 'True' or False
 
-counter = itertools.count(start=int(round(time.time() * 1000)))
-
-_default_folder = os.path.join(os.path.expanduser('~'), '.selene', 'screenshots', str(next(counter)))
-reports_folder = env(SELENE_REPORTS_FOLDER, _default_folder)
-
-desired_capabilities = None
+@dataclass(frozen=True)
+class Config:
+    driver: WebDriver = None
+    timeout: int = None
+    base_url: str = None
+    set_value_by_js: bool = None
+    type_by_js: bool = None
+    window_width: int = None
+    window_height: int = None
+    hooks: Hooks = None

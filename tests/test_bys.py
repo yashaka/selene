@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from selene.bys import by, by_css, by_name, by_link_text, by_partial_link_text, by_xpath, following_sibling, parent, \
+from selene.support.past.bys import by, by_css, by_name, by_link_text, by_partial_link_text, by_xpath, following_sibling, parent, \
     first_child, by_text, by_partial_text, escape_text_quotes_for_xpath
 
 

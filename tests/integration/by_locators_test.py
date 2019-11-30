@@ -20,15 +20,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import pytest
 from selenium import webdriver
-from selenium.common.exceptions import TimeoutException
 from webdriver_manager.chrome import ChromeDriverManager
 
-from selene import config
-from selene.common.none_object import NoneObject
-from selene.driver import SeleneDriver
-from selene.support import by
+from selene.support.past import config
+from selene.support.past.common.none_object import NoneObject
+from selene.support.past.driver import SeleneDriver
+from selene.support.past.support import by
 from tests.integration.helpers.givenpage import GivenPage
 
 __author__ = 'yashaka'

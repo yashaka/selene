@@ -35,20 +35,19 @@ from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
-from selene import config
-from selene import helpers
-from selene.abctypes.conditions import IEntityCondition
-from selene.abctypes.locators import ISeleneWebElementLocator, ISeleneListWebElementLocator
-from selene.abctypes.search_context import ISearchContext
-from selene.abctypes.webdriver import IWebDriver
-from selene.abctypes.webelement import IWebElement
-from selene.common.delegation import DelegatingMeta
-from selene.helpers import css_or_by_to_by
-from selene.support import by
+from selene.support.past import config, helpers
+from selene.support.past.abctypes.conditions import IEntityCondition
+from selene.support.past.abctypes.locators import ISeleneWebElementLocator, ISeleneListWebElementLocator
+from selene.support.past.abctypes.search_context import ISearchContext
+from selene.support.past.abctypes.webdriver import IWebDriver
+from selene.support.past.abctypes.webelement import IWebElement
+from selene.support.past.common.delegation import DelegatingMeta
+from selene.support.past.helpers import css_or_by_to_by
+from selene.support.past.support import by
 from selene.support.conditions import be
 from selene.support.conditions import have
-from selene.wait import wait_for
-from selene.conditions import not_, is_matched
+from selene.support.past.wait import wait_for
+from selene.support.past.conditions import not_
 
 try:
     from functools import lru_cache

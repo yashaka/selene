@@ -29,12 +29,13 @@ from selenium.webdriver.android.webdriver import WebDriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.webelement import WebElement
 
-from selene.common.helpers import as_dict
-from selene.new import command
-from selene.new.config import Config
-from selene.new.entity import WaitingEntity
-from selene.new.locator import Locator
-from selene.new.wait import Command
+from selene.common.helpers import as_dict, to_by
+from selene import command
+from selene.collection import Collection
+from selene.config import Config
+from selene.entity import WaitingEntity
+from selene.locator import Locator
+from selene.wait import Command
 
 
 class Element(WaitingEntity):
@@ -45,14 +46,36 @@ class Element(WaitingEntity):
         self._locator = locator
         super().__init__(config)
 
+    # --- Configured --- #
+
     def with_(self, config: Config) -> Element:
         return Element(self._locator, Config(**{**as_dict(self.config), **config}))
+
+    # --- Located --- #
 
     def __str__(self):
         return str(self._locator)
 
     def __call__(self) -> WebElement:
         return self._locator()
+
+    # --- Relative location --- #
+
+    def element(self, css_or_xpath_or_by: Union[str, tuple]) -> Element:
+        by = to_by(css_or_xpath_or_by)
+
+        return Element(
+            Locator(f'{self}.element({by})',
+                    lambda: self().find_element(*by)),
+            self.config)
+
+    def all(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection:
+        by = to_by(css_or_xpath_or_by)
+
+        return Collection(
+            Locator(f'{self}.all({by})',
+                    lambda: self().find_elements(*by)),
+            self.config)
 
     # --- Commands --- #
 

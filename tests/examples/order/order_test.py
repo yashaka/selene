@@ -22,8 +22,8 @@
 
 import os
 
-from selene import config
-from selene.browser import set_driver, driver
+from selene.support.past import config
+from selene.support.past.browser import set_driver, driver
 from tests.acceptance.helpers.helper import get_test_driver
 from tests.examples.order.app_model.order_widgets import Order
 

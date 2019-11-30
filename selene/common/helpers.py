@@ -42,3 +42,12 @@ def to_by(selector_or_by: Union[str, tuple]) -> Tuple[str, str]:
 
 def flatten(list_of_lists: List[list]) -> list:
     return [item for sublist in list_of_lists for item in sublist]
+
+
+def is_absolute_url(relative_or_absolute_url: str) -> bool:
+    url = relative_or_absolute_url.lower()
+    return (url.startswith('http:') or
+            url.startswith('https:') or
+            url.startswith('file:') or
+            url.startswith('about:') or
+            url.startswith('data:'))

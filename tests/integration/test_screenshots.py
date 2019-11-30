@@ -27,10 +27,10 @@ from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
 from webdriver_manager.chrome import ChromeDriverManager
 
-from selene import config
-from selene.conditions import exact_text, visible
-from selene.browser import open_url, take_screenshot, set_driver, driver, latest_screenshot
-from selene.support.jquery_style_selectors import s
+from selene.support.past import config
+from selene.support.past.conditions import exact_text, visible
+from selene.support.past.browser import open_url, take_screenshot, set_driver, driver, latest_screenshot
+from selene.support.past.support.jquery_style_selectors import s
 
 start_page = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/start_page.html'
 original_default_screenshot_folder = config.reports_folder

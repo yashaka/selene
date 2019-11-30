@@ -20,12 +20,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import os
 from selene.api import *
 
-
 # app_url = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/todomvcapp/home.html'
-from selene.conditions import not_
+from selene.support.past.conditions import not_
 
 app_url = 'https://todomvc4tasj.herokuapp.com/'
 # is_TodoMVC_loaded = ('return '
@@ -34,6 +32,7 @@ app_url = 'https://todomvc4tasj.herokuapp.com/'
 #                      '$._data($("#todo-list").get(0), "events").hasOwnProperty("change") && '
 #                      '$._data($("#clear-completed").get(0), "events").hasOwnProperty("click")')
 is_TodoMVC_loaded = 'return (Object.keys(require.s.contexts._.defined).length === 39)'
+
 
 class TestTodoMVC(object):
 

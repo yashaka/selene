@@ -22,12 +22,12 @@
 
 from future.utils import iteritems
 
-from selene import browser
-from selene.elements import SeleneElement
-from selene.helpers import merge
+from selene.support.past import browser
+from selene.support.past.elements import SeleneElement
+from selene.support.past.helpers import merge
 from selene.support.conditions import be
 from selene.support.conditions import have
-from selene.support.jquery_style_selectors import s, ss
+from selene.support.past.support.jquery_style_selectors import s, ss
 
 
 class SelectList(object):

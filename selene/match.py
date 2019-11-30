@@ -23,9 +23,9 @@
 from typing import List, Any
 
 from selene.common import predicate
-from selene.driver import SeleneDriver
-from selene.elements import SeleneCollection, SeleneElement
-from selene.new.condition import Condition
+from selene.support.past.driver import SeleneDriver
+from selene.support.past.elements import SeleneCollection, SeleneElement
+from selene.condition import Condition
 
 # todo: consider the following type aliases
 # ElementCondition = Condition[SeleneElement]

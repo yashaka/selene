@@ -20,17 +20,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import os
-
 import pytest
 from selenium.common.exceptions import TimeoutException
 
-from selene import browser
-from selene import config
-from selene.support.conditions import be
+from selene.support.past import browser, config
 from selene.support.conditions import have
 
-from selene.support.jquery_style_selectors import s, ss
+from selene.support.past.support.jquery_style_selectors import s, ss
 
 
 todomvc_url = 'https://todomvc4tasj.herokuapp.com/'

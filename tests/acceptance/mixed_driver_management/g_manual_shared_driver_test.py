@@ -20,15 +20,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import os
-
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 
-from selene import browser
-from selene.support.conditions import be
+from selene.support.past import browser
 from selene.support.conditions import have
-from selene.support.jquery_style_selectors import s, ss
+from selene.support.past.support.jquery_style_selectors import s, ss
 
 
 def setup_module(m):

@@ -25,10 +25,10 @@ from abc import ABCMeta, abstractmethod
 import operator
 from future.utils import with_metaclass, lmap
 
-from selene.abctypes.conditions import IEntityCondition
-from selene.abctypes.webdriver import IWebDriver
-from selene.abctypes.webelement import IWebElement
-from selene.exceptions import ConditionMismatchException
+from selene.support.past.abctypes.conditions import IEntityCondition
+from selene.support.past.abctypes.webdriver import IWebDriver
+from selene.support.past.abctypes.webelement import IWebElement
+from selene.support.past.exceptions import ConditionMismatchException
 
 
 class OrNotToBe(IEntityCondition):

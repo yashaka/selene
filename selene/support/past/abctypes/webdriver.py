@@ -33,7 +33,7 @@ from selenium.webdriver.remote.switch_to import SwitchTo
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
 
-from selene.abctypes.search_context import ISearchContext
+from selene.support.past.abctypes.search_context import ISearchContext
 
 
 class IWebDriver(ISearchContext):

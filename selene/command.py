@@ -21,8 +21,8 @@
 # SOFTWARE.
 from typing import Union
 
-from selene.new.element import Element
-from selene.new.wait import Command
+from selene.element import Element
+from selene.wait import Command
 
 
 class js:

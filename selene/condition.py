@@ -22,17 +22,17 @@
 
 from __future__ import annotations
 
-from typing import List, TypeVar
+from typing import List, TypeVar, Callable
 
-from selene.exceptions import ConditionNotMatchedError
-from selene.new.wait import Fn, Predicate, Lambda
+from selene.support.past.exceptions import ConditionNotMatchedError
+from selene.wait import Predicate, Lambda
 
 
 E = TypeVar('E')
 R = TypeVar('R')
 
 
-class Condition(Fn[E, None]):
+class Condition(Callable[[E], None]):
 
     @classmethod
     def by_and(cls, *conditions):

@@ -27,10 +27,10 @@ from future.utils import with_metaclass
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webdriver import WebDriver
 
-from selene.abctypes.webdriver import IWebDriver
-from selene.common.delegation import DelegatingMeta
-from selene.common.none_object import NoneObject
-from selene.elements import SeleneElement, SeleneCollection
+from selene.support.past.abctypes.webdriver import IWebDriver
+from selene.support.past.common.delegation import DelegatingMeta
+from selene.support.past.common.none_object import NoneObject
+from selene.support.past.elements import SeleneElement, SeleneCollection
 
 
 class IWebDriverSource(with_metaclass(ABCMeta, object)):

@@ -27,12 +27,12 @@ from typing import List, Union
 from selenium.webdriver.remote.webelement import WebElement
 
 from selene.common.helpers import as_dict, to_by, flatten
-from selene.new import query
-from selene.new.condition import Condition
-from selene.new.config import Config
-from selene.new.element import Element
-from selene.new.entity import WaitingEntity
-from selene.new.locator import Locator, T
+from selene import query
+from selene.condition import Condition
+from selene.config import Config
+from selene.element import Element
+from selene.entity import WaitingEntity
+from selene.locator import Locator
 
 
 class Collection(WaitingEntity):
@@ -50,7 +50,7 @@ class Collection(WaitingEntity):
         return self._locator()
 
     @property
-    def cached(self) -> Collection[Element]:
+    def cached(self) -> Collection:
         webelements = self()
         return Collection(Locator(f'{self}.cached', lambda: webelements), self.config)
 
@@ -81,7 +81,7 @@ class Collection(WaitingEntity):
     def first(self):
         return self.element(0)
 
-    def sliced(self, start: int, stop: int, step: int = 1) -> Collection[Element]:
+    def sliced(self, start: int, stop: int, step: int = 1) -> Collection:
         def find() -> List[WebElement]:
             webelements = self()
 
@@ -91,19 +91,19 @@ class Collection(WaitingEntity):
 
         return Collection(Locator(f'{self}[{start}:{stop}:{step}]', find), self.config)
 
-    def __getitem__(self, index_or_slice: Union[int, slice]) -> Union[Element, Collection[Element]]:
+    def __getitem__(self, index_or_slice: Union[int, slice]) -> Union[Element, Collection]:
         if isinstance(index_or_slice, slice):
             return self.sliced(slice.start, slice.stop, slice.step)
 
         return self.element(index_or_slice)
 
-    def from_(self, start: int) -> Collection[Element]:
+    def from_(self, start: int) -> Collection:
         return self[start:]
 
-    def to(self, stop: int) -> Collection[Element]:
+    def to(self, stop: int) -> Collection:
         return self[:stop]
 
-    def filtered_by(self, condition: Condition[Element]) -> Collection[Element]:
+    def filtered_by(self, condition: Condition[Element]) -> Collection:
         return Collection(
             Locator(f'{self}.filtered_by({condition})',
                     lambda: [element() for element in self.cached if element.matching(condition)]),
@@ -125,7 +125,7 @@ class Collection(WaitingEntity):
 
         return Element(Locator(f'{self}.element_by({condition})', find), self.config)
 
-    def all(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection[Element]:
+    def all(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection:
         by = to_by(css_or_xpath_or_by)
 
         return Collection(
@@ -133,7 +133,7 @@ class Collection(WaitingEntity):
                     lambda: flatten([webelement.find_elements(*by) for webelement in self()])),
             self.config)
 
-    def map(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection[Element]:
+    def map(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection:
         by = to_by(css_or_xpath_or_by)
 
         return Collection(

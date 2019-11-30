@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from selene.browser import execute_script
+from selene.support.past.browser import execute_script
 from tests.examples.todomvc.pagemodules_approach.pages import tasks
 
 
