@@ -24,8 +24,8 @@ from selene.support.past import browser
 from selene.support.past.conditions import exact_text, hidden, exact_texts
 from selene.support.past.support.jquery_style_selectors import s, ss
 
-from tests.acceptance.helpers.helper import get_test_driver
-from tests.acceptance.helpers.todomvc import given_active
+from tests.past.acceptance.helpers.helper import get_test_driver
+from tests.past.acceptance.helpers.todomvc import given_active
 
 
 def setup_module(m):

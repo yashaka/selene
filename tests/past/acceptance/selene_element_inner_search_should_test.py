@@ -20,38 +20,29 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from __future__ import annotations
+from selene.support.conditions import have
+from selene.support.past.support.jquery_style_selectors import s
+from tests.past.acceptance.helpers.helper import get_test_driver
 
-from dataclasses import dataclass
-from typing import Callable
+__author__ = 'yashaka'
 
-from selenium.common.exceptions import TimeoutException
-from selenium.webdriver.remote.webdriver import WebDriver
-
-# todo: consider making these dataclasses be Mapping-like, so can be used in the 'dict' context
-from selene.common.helpers import as_dict
+from selene.support.past.browser import *
+from tests.past.acceptance.helpers.todomvc import given_active
 
 
-@dataclass(frozen=True)
-class WaitHooks:
-    failure: Callable[[TimeoutException], Exception]
+def setup_module(m):
+    set_driver(get_test_driver())
 
 
-@dataclass(frozen=True)
-class Hooks:
-    wait: WaitHooks
+def teardown_module(m):
+    driver().quit()
 
 
-@dataclass(frozen=True)
-class Config:
-    driver: WebDriver = None
-    timeout: int = None
-    base_url: str = None
-    set_value_by_js: bool = None
-    type_by_js: bool = None
-    window_width: int = None
-    window_height: int = None
-    hooks: Hooks = None
+def test_search_inner_selement():
+    given_active("a", "b")
+    s("#todo-list").s("li").should(have.exact_text("a"))
 
-    def with_(self, config: Config) -> Config:
-        return Config(**{**as_dict(self), **config})
+
+def test_search_inner_selene_collection():
+    given_active("a", "b")
+    s("#todo-list").all("li").should(have.exact_texts("a", "b"))

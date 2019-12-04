@@ -41,7 +41,7 @@ class Collection(WaitingEntity):
         super().__init__(config)
 
     def with_(self, config: Config) -> Collection:
-        return Collection(self._locator, Config(**{**as_dict(self.config), **config}))
+        return Collection(self._locator, self.config.with_(config))
 
     def __str__(self):
         return str(self._locator)

@@ -32,7 +32,7 @@ from selene.support.past.browsers import BrowserName
 from selene.support.past.common.none_object import NoneObject
 from selene.support.past.browser import driver, set_driver, open_url
 
-from tests.acceptance.helpers.helper import get_test_driver
+from tests.past.acceptance.helpers.helper import get_test_driver
 
 start_page = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/start_page.html'
 

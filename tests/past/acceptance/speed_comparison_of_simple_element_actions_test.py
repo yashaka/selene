@@ -28,9 +28,9 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selene.support.past.conditions import visible
 from selene.support.past.browser import set_driver, driver, open_url
 from selene.support.past.support.jquery_style_selectors import s
-from tests.acceptance.helpers.helper import get_test_driver
+from tests.past.acceptance.helpers.helper import get_test_driver
 from tests.helpers import time_spent
-from tests.acceptance.helpers.todomvc import TODOMVC_URL
+from tests.past.acceptance.helpers.todomvc import TODOMVC_URL
 
 browser = None
 shaded_browser = None

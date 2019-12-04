@@ -24,7 +24,7 @@ from selene.support.past import config
 from selene.support.past.conditions import css_class
 from selene.support.past.common.none_object import NoneObject
 from selene.support.past.driver import SeleneDriver
-from tests.acceptance.helpers.helper import get_test_driver
+from tests.past.acceptance.helpers.helper import get_test_driver
 from tests.integration.helpers.givenpage import GivenPage
 
 __author__ = 'yashaka'

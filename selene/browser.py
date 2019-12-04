@@ -41,7 +41,7 @@ class Browser(WaitingEntity):
         super().__init__(config)
 
     def with_(self, config: Config) -> Browser:
-        return Browser(Config(**{**as_dict(self.config), **config}))
+        return Browser(self.config.with_(config))
 
     def __str__(self):
         return 'browser'
@@ -130,6 +130,9 @@ class Browser(WaitingEntity):
     def clear_session_storage(self) -> Browser:
         self.driver.execute_script('window.sessionStorage.clear();')
         return self
+
+
+# --- Deprecated --- #  todo: remove in future versions
 
 
 class SeleneDriver(Browser):

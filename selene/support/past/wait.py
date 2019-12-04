@@ -31,7 +31,7 @@ from selene.support.past.abctypes.conditions import IEntityCondition
 
 
 def wait_for(entity, condition, timeout=4, polling=0.1):
-    # type: (object, IEntityCondition, int) -> object
+    # type: (object, IEntityCondition, int, int) -> object
     end_time = time.time() + timeout
     while True:
         try:

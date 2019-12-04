@@ -49,7 +49,7 @@ class Element(WaitingEntity):
     # --- Configured --- #
 
     def with_(self, config: Config) -> Element:
-        return Element(self._locator, Config(**{**as_dict(self.config), **config}))
+        return Element(self._locator, self.config.with_(config))
 
     # --- Located --- #
 

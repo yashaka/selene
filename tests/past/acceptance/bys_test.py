@@ -20,12 +20,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from tests.acceptance.helpers.helper import get_test_driver
+from tests.past.acceptance.helpers.helper import get_test_driver
 
 __author__ = 'yashaka'
 
 from selene.support.past.browser import *
-from tests.acceptance.helpers.todomvc import given_active
+from tests.past.acceptance.helpers.todomvc import given_active
 from selene.support.past.bys import *
 
 
