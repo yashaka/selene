@@ -20,38 +20,16 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+
 from __future__ import annotations
 
-from dataclasses import dataclass
-from typing import Callable
-
-from selenium.common.exceptions import TimeoutException
-from selenium.webdriver.remote.webdriver import WebDriver
-
-# todo: consider making these dataclasses be Mapping-like, so can be used in the 'dict' context
-from selene.common.helpers import as_dict
+from selene.config import Config
+from selene.support.shared.browser import SharedBrowser
+from selene.support.shared.config import SharedConfig
 
 
-@dataclass(frozen=True)
-class WaitHooks:
-    failure: Callable[[TimeoutException], Exception]
+config = SharedConfig()
 
+config.set(Config(timeout=4))
 
-@dataclass(frozen=True)
-class Hooks:
-    wait: WaitHooks
-
-
-@dataclass(frozen=True)
-class Config:  # todo: consider making a base Config class unfrozen, and then use frozen version in browser
-    driver: WebDriver = None
-    timeout: int = None
-    base_url: str = None
-    set_value_by_js: bool = None
-    type_by_js: bool = None
-    window_width: int = None
-    window_height: int = None
-    hooks: Hooks = None
-
-    def with_(self, config: Config) -> Config:
-        return Config(**{**as_dict(self), **config})
+browser = SharedBrowser(config)

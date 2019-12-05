@@ -40,6 +40,7 @@ class Browser(WaitingEntity):
     def __init__(self, config: Config):
         super().__init__(config)
 
+    # todo: consider implement it as context manager too...
     def with_(self, config: Config) -> Browser:
         return Browser(self.config.with_(config))
 
