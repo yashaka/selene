@@ -22,6 +22,7 @@
 
 from __future__ import annotations
 
+import atexit
 import itertools
 import os
 import time
@@ -29,46 +30,112 @@ import warnings
 from functools import lru_cache
 from typing import Union, List
 
+from selenium.webdriver import Chrome, ChromeOptions, Firefox
 from selenium.webdriver.remote.webdriver import WebDriver
+from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.firefox import GeckoDriverManager
 
 from selene.browser import Browser
 from selene.collection import Collection
+from selene.common.helpers import on_error_return_false
 from selene.config import Config
 from selene.support.past.common.none_object import NoneObject
 
 
+# todo: consider moving to shared/config.py
 class SharedConfig(Config):
 
-    __storage: List[Config] = []
+    _storage: List[Config] = []
 
     def set(self, config: Config):
-        if not self.__storage:
-            self.__storage.append(config)
+        if not self._storage:
+            self._storage.append(config)
         else:
-            stored = self.__storage.pop()
-            self.__storage.append(stored.with_(config))
+            stored = self._storage.pop()
+            self._storage.append(stored.with_(config))
+
+    @property
+    def _get(self) -> Config:  # todo: consider renaming to _stored or _shared
+        return self._storage[0]
 
     @property
     def timeout(self) -> int:
-        return self.__storage[0].timeout
+        return self._get.timeout
 
     @timeout.setter
     def timeout(self, value: int):
         self.set(Config(timeout=value))
 
     @property
+    def hold_browser_open(self) -> bool:
+        return False  # todo: finish implementation
+
+    @hold_browser_open.setter
+    def hold_browser_open(self, value: bool):
+        pass  # todo: finish implementation
+
+    @property
     def driver(self) -> WebDriver:
-        # return selene.support.past.factory.ensure_driver_started(selene.support.past.config.browser_name)
-        return self.__storage[0].driver
+        stored = self._get.driver
+        is_alive = lambda: on_error_return_false(stored.title is not None)
+
+        if stored and stored.session_id and is_alive() and stored.name == self.browser_name:
+            return stored
+
+        stored.quit()
+
+        # todo: do we need here pass self.desired_capabilities too?
+        new = {
+            'chrome': lambda: Chrome(executable_path=ChromeDriverManager().install(),
+                                     options=ChromeOptions()),
+            'firefox': lambda: Firefox(executable_path=GeckoDriverManager().install())
+        }.get(self.browser_name, 'chrome')()
+
+        if not self.hold_browser_open:
+            atexit.register(new.quit)
+
+        self.set(Config(driver=new))
+
+        return new
 
     @driver.setter
     def driver(self, value: WebDriver):
+        is_another_driver = on_error_return_false(lambda: value.session_id != self.driver.session_id)
 
-        # if selene.support.past.factory.is_another_driver(webdriver):
-        #     selene.support.past.factory.kill_all_started_drivers()
-        # selene.support.past.factory.set_shared_driver(webdriver)
+        if is_another_driver:
+            self.driver.quit()  # todo: can quit raise exception? handle then...
 
         self.set(Config(driver=value))
+
+        # noinspection PyDataclass
+        self.browser_name = value.name
+
+        # todo: should we schedule driver closing on exit here too?
+
+    # todo: consider accepting also hub url as "browser"
+    #       because in case of "remote" mode, we will not need the common "name" like
+    #       chrome or ff
+    #       but we would pass the same name somewhere in caps... to choose correct "platform"
+    #       so... then browser_name is kind of incorrect name becomes...
+    #       why then not rename browser_name here to just browser...
+    #       then... technically it might be possible to write something like:
+    #           browser.config.browser = ... :)
+    #              how can we make it impossible?
+    #              or what else better name can we choose?
+    @property
+    def browser_name(self) -> str:
+        return 'chrome'  # todo: finish implementation
+
+    @browser_name.setter
+    def browser_name(self, value: str):
+        # todo: should we kill current driver if browser_name is changed?
+        #       or should we open one more? so aftewards the user can switch...
+        #       what about making such "mode" also configurable? ;)
+        pass  # todo: finish implementation
+
+    # todo: consider deprecating changing opts like timeout after driver was created
+    #       make driver be recreated in such cases
+    #       but again... what about making this configurable too? as a "mode"...
 
     # --- consider to depracate --- #
 
@@ -105,6 +172,7 @@ class SharedConfig(Config):
         pass
 
 
+# todo: consider moving to shared/browser.py
 class SharedBrowser(Browser):
     def __init__(self, config: SharedConfig):
         self._latest_screenshot = NoneObject('selene.SharedBrowser._latest_screenshot')
@@ -175,6 +243,9 @@ class SharedBrowser(Browser):
     def title(self):
         warnings.warn('use browser.driver.title or browser.get(query.title) instead', DeprecationWarning)
         return self.driver.title
+
+
+# todo: consider moving to shared/__init__.py
 
 
 config = SharedConfig()
