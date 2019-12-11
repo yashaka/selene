@@ -19,8 +19,10 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from typing import Union, Tuple, List
+import warnings
+from typing import Union, Tuple, List, Type
 
+from dataclasses import dataclass
 from selenium.webdriver.common.by import By
 
 
@@ -49,6 +51,19 @@ def on_error_return_false(no_args_predicate):
         return no_args_predicate()
     except Exception:
         return False
+
+@dataclass
+class Warn:
+    message: str
+    category: Type[Warning]
+
+    def when(self, fn):
+        warnings.warn(self.message, self.category)
+        return fn()
+
+
+def warn(message: str, category: Type[Warning]):
+    return Warn(message, category)
 
 
 def is_absolute_url(relative_or_absolute_url: str) -> bool:

@@ -21,8 +21,7 @@
 # SOFTWARE.
 from typing import List
 
-from selene.browser import Browser
-from selene.element import Element
+from selene.entity import Browser, Element
 from selene.wait import Query
 
 

@@ -23,36 +23,39 @@
 from typing import List, Any
 
 from selene.common import predicate
-from selene.support.past.driver import SeleneDriver
-from selene.support.past.elements import SeleneCollection, SeleneElement
+from selene.entity import SeleneCollection, SeleneElement, Browser
 from selene.condition import Condition
 
 # todo: consider the following type aliases
 # ElementCondition = Condition[SeleneElement]
 # CollectionCondition = Condition[SeleneCollection]
-# BrowserCondition = Condition[SeleneDriver]
+# BrowserCondition = Condition[Browser]
 
 
+# todo: consider moving to selene.match.element.is_visible, etc...
 element_is_visible: Condition[SeleneElement] = \
     Condition.raise_if_not('is visible', lambda element: element().is_displayed())
 
-element_is_hidden: Condition[SeleneElement] = Condition.as_not(element_is_visible, 'is hidden')
+element_is_hidden: Condition[SeleneElement] = \
+    Condition.as_not(element_is_visible, 'is hidden')
 
 element_is_enabled: Condition[SeleneElement] = \
     Condition.raise_if_not('is enabled', lambda element: element().is_enabled())
 
-element_is_disabled: Condition[SeleneElement] = Condition.as_not(element_is_enabled)
+element_is_disabled: Condition[SeleneElement] = \
+    Condition.as_not(element_is_enabled)
 
 element_is_present: Condition[SeleneElement] = \
-    Condition.raise_if_not('is visible', lambda element: element() is not None)
+    Condition.raise_if_not('is present in DOM', lambda element: element() is not None)
 
-element_is_absent: Condition[SeleneElement] = Condition.as_not(element_is_present)
+element_is_absent: Condition[SeleneElement] = \
+    Condition.as_not(element_is_present)
 
-element_is_focused: Condition[SeleneElement] = Condition.raise_if_not(
-    'is focused',
-    # todo: change in the following line to element.execute_script or element.config.driver.execute_script
-    lambda element: element() == element._webdriver.execute_script('return document.activeElement')
-)
+element_is_focused: Condition[SeleneElement] = \
+    Condition.raise_if_not(
+        'is focused',
+        # todo: change in the following line to element.execute_script or element.config.driver.execute_script
+        lambda element: element() == element._webdriver.execute_script('return document.activeElement'))
 
 
 def element_has_text(expected: str,
@@ -61,9 +64,10 @@ def element_has_text(expected: str,
     def text(element: SeleneElement) -> str:
         return element().text
 
-    return Condition.raise_if_not_actual(describing_matched_to + ' ' + expected,
-                                         text,
-                                         compared_by_predicate_to(expected))
+    return Condition.raise_if_not_actual(
+        describing_matched_to + ' ' + expected,
+        text,
+        compared_by_predicate_to(expected))
 
 
 def element_has_exact_text(expected: str) -> Condition[SeleneElement]:
@@ -77,31 +81,36 @@ def element_has_attribute(name: str):
     def attribute_values(collection: SeleneCollection) -> List[str]:
         return [element.get_attribute(name) for element in collection()]
 
-    raw_attribute_condition = Condition.raise_if_not_actual('has attribute ' + name,
-                                                            attribute_value,
-                                                            predicate.is_truthy)
+    raw_attribute_condition = Condition.raise_if_not_actual(
+        'has attribute ' + name,
+        attribute_value,
+        predicate.is_truthy)
 
     class ConditionWithValues(Condition[SeleneElement]):
 
         def value(self, expected: str) -> Condition[SeleneElement]:
-            return Condition.raise_if_not_actual(f"has attribute '{name}' with value '{expected}'",
-                                                 attribute_value,
-                                                 predicate.equals(expected))
+            return Condition.raise_if_not_actual(
+                f"has attribute '{name}' with value '{expected}'",
+                attribute_value,
+                predicate.equals(expected))
 
         def value_containing(self, expected: str) -> Condition[SeleneElement]:
-            return Condition.raise_if_not_actual(f"has attribute '{name}' with value containing '{expected}'",
-                                                 attribute_value,
-                                                 predicate.includes(expected))
+            return Condition.raise_if_not_actual(
+                f"has attribute '{name}' with value containing '{expected}'",
+                attribute_value,
+                predicate.includes(expected))
 
-        def values(self, *expected: List[str]) -> Condition[SeleneCollection]:
-            return Condition.raise_if_not_actual(f"has attribute '{name}' with values '{expected}'",
-                                                 attribute_values,
-                                                 predicate.equals_to_list(expected))
+        def values(self, *expected: str) -> Condition[SeleneCollection]:
+            return Condition.raise_if_not_actual(
+                f"has attribute '{name}' with values '{expected}'",
+                attribute_values,
+                predicate.equals_to_list(expected))
 
-        def values_containing(self, *expected: List[str]) -> Condition[SeleneCollection]:
-            return Condition.raise_if_not_actual(f"has attribute '{name}' with values containing '{expected}'",
-                                                 attribute_values,
-                                                 predicate.equals_by_contains_to_list(expected))
+        def values_containing(self, *expected: str) -> Condition[SeleneCollection]:
+            return Condition.raise_if_not_actual(
+                f"has attribute '{name}' with values containing '{expected}'",
+                attribute_values,
+                predicate.equals_by_contains_to_list(expected))
 
     return ConditionWithValues(str(raw_attribute_condition), raw_attribute_condition.call)
 
@@ -157,7 +166,7 @@ def collection_has_size_less_than_or_equal(expected: int) -> Condition[SeleneCol
 
 
 # todo: make it cofigurable whether assert only visible texts or ot
-def collection_has_texts(self, *expected: List[str]) -> Condition[SeleneCollection]:
+def collection_has_texts(self, *expected: str) -> Condition[SeleneCollection]:
     def visible_texts(collection: SeleneCollection) -> List[str]:
         return [webelement.text for webelement in collection() if webelement.is_displayed()]
 
@@ -166,81 +175,92 @@ def collection_has_texts(self, *expected: List[str]) -> Condition[SeleneCollecti
                                          predicate.equals_by_contains_to_list(expected))
 
 
-def collection_has_exact_texts(self, *expected: List[str]) -> Condition[SeleneCollection]:
+def collection_has_exact_texts(self, *expected: str) -> Condition[SeleneCollection]:
     def visible_texts(collection: SeleneCollection) -> List[str]:
         return [webelement.text for webelement in collection() if webelement.is_displayed()]
 
-    return Condition.raise_if_not_actual(f'has exact texts {expected}',
-                                         visible_texts,
-                                         predicate.equals_to_list(expected))
+    return Condition.raise_if_not_actual(
+        f'has exact texts {expected}',
+        visible_texts,
+        predicate.equals_to_list(expected))
 
 
 # todo: consider refactoring the code like below by moving outside fns like url, title, etc...
 # todo: probably we will do that nevertheless when reusing "commands&queries" inside element class definitions
 def browser_has_url(expected: str,
                     describing_matched_to='has url',
-                    compared_by_predicate_to=predicate.equals) -> Condition[SeleneDriver]:
-    def url(browser: SeleneDriver) -> str:
-        return browser().current_url
+                    compared_by_predicate_to=predicate.equals) -> Condition[Browser]:
+    def url(browser: Browser) -> str:
+        return browser.driver.current_url
 
-    return Condition.raise_if_not_actual(f'{describing_matched_to} + {expected}',
-                                         url,
-                                         compared_by_predicate_to(expected))
+    return Condition.raise_if_not_actual(
+        f'{describing_matched_to} + {expected}',
+        url,
+        compared_by_predicate_to(expected))
 
 
-def browser_has_url_containing(expected: str) -> Condition[SeleneDriver]:
+def browser_has_url_containing(expected: str) -> Condition[Browser]:
     return browser_has_url(expected, 'has url containing', predicate.includes)
 
 
 def browser_has_title(expected: str,
                       describing_matched_to='has title',
-                      compared_by_predicate_to=predicate.equals) -> Condition[SeleneDriver]:
-    def title(browser: SeleneDriver) -> str:
-        return browser().title
+                      compared_by_predicate_to=predicate.equals) -> Condition[Browser]:
+    def title(browser: Browser) -> str:
+        return browser.driver.title
 
-    return Condition.raise_if_not_actual(f'{describing_matched_to} + {expected}',
-                                         title,
-                                         compared_by_predicate_to(expected))
+    return Condition.raise_if_not_actual(
+        f'{describing_matched_to} + {expected}',
+        title,
+        compared_by_predicate_to(expected))
 
 
-def browser_has_title_containing(expected: str) -> Condition[SeleneDriver]:
+def browser_has_title_containing(expected: str) -> Condition[Browser]:
     return browser_has_title(expected, 'has title containing', predicate.includes)
 
 
 def browser_has_tabs_number(expected: int,
                             describing_matched_to='has tabs number',
-                            compared_by_predicate_to=predicate.equals) -> Condition[SeleneDriver]:
-    def tabs_number(browser: SeleneDriver) -> int:
-        return len(browser().window_handles)
+                            compared_by_predicate_to=predicate.equals) -> Condition[Browser]:
+    def tabs_number(browser: Browser) -> int:
+        return len(browser.driver.window_handles)
 
-    return Condition.raise_if_not_actual(f'{describing_matched_to} {expected}',
-                                         tabs_number,
-                                         compared_by_predicate_to(expected))
-
-
-def browser_has_tabs_number_greater_than(expected: int) -> Condition[SeleneDriver]:
-    return browser_has_tabs_number(expected, 'has tabs number greater than', predicate.is_greater_than)
+    return Condition.raise_if_not_actual(
+        f'{describing_matched_to} {expected}',
+        tabs_number,
+        compared_by_predicate_to(expected))
 
 
-def browser_has_tabs_number_greater_than_or_equal(expected: int) -> Condition[SeleneDriver]:
-    return browser_has_tabs_number(expected, 'has tabs number greater than or equal',
-                                   predicate.is_greater_than_or_equal)
+def browser_has_tabs_number_greater_than(expected: int) -> Condition[Browser]:
+    return browser_has_tabs_number(
+        expected, 'has tabs number greater than',
+        predicate.is_greater_than)
 
 
-def browser_has_tabs_number_less_than(expected: int) -> Condition[SeleneDriver]:
-    return browser_has_tabs_number(expected, 'has tabs number less than', predicate.is_less_than)
+def browser_has_tabs_number_greater_than_or_equal(expected: int) -> Condition[Browser]:
+    return browser_has_tabs_number(
+        expected, 'has tabs number greater than or equal',
+        predicate.is_greater_than_or_equal)
 
 
-def browser_has_tabs_number_less_than_or_equal(expected: int) -> Condition[SeleneDriver]:
-    return browser_has_tabs_number(expected, 'has tabs number less than or equal', predicate.is_less_than_or_equal)
+def browser_has_tabs_number_less_than(expected: int) -> Condition[Browser]:
+    return browser_has_tabs_number(
+        expected, 'has tabs number less than', predicate.is_less_than)
+
+
+def browser_has_tabs_number_less_than_or_equal(expected: int) -> Condition[Browser]:
+    return browser_has_tabs_number(
+        expected, 'has tabs number less than or equal',
+        predicate.is_less_than_or_equal)
 
 
 def browser_has_js_returned(expected: Any,
                             script: str,
-                            *args) -> Condition[SeleneDriver]:
-    def script_result(browser: SeleneDriver):
-        return browser().execute_script(script, *args)
+                            *args) -> Condition[Browser]:
+    def script_result(browser: Browser):
+        return browser.driver.execute_script(script, *args)
 
-    return Condition.raise_if_not_actual(f'has the ```{script}``` script returned {expected}',
-                                         script_result,
-                                         predicate.equals(expected))
+    return Condition.raise_if_not_actual(
+        f'has the ```{script}``` script returned {expected}',
+        script_result,
+        predicate.equals(expected))

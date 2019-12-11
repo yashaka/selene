@@ -73,7 +73,7 @@ class SharedConfig(Config):
     @property
     def driver(self) -> WebDriver:
         stored = self._get.driver
-        is_alive = lambda: on_error_return_false(stored.title is not None)
+        is_alive = on_error_return_false(lambda: stored.title is not None)
 
         if stored and \
                 stored.session_id and \
@@ -82,7 +82,8 @@ class SharedConfig(Config):
 
             return stored
 
-        stored.quit()  # todo: can this raise exception? that we need to supress...
+        if stored:
+            stored.quit()  # todo: can this raise exception? that we need to supress...
 
         # todo: do we need here pass self.desired_capabilities too?
         new = {
@@ -108,7 +109,7 @@ class SharedConfig(Config):
         self.set(Config(driver=value))
 
         # noinspection PyDataclass
-        self.browser_name = value.name
+        self.browser_name = value and value.name
 
         # todo: should we schedule driver closing on exit here too?
 
@@ -149,8 +150,8 @@ class SharedConfig(Config):
         warnings.warn('might be deprecated', PendingDeprecationWarning)
         pass
 
-    @lru_cache()
     @property
+    @lru_cache()
     def counter(self):
         warnings.warn('might be deprecated', PendingDeprecationWarning)
         return itertools.count(start=int(round(time.time() * 1000)))

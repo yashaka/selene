@@ -122,6 +122,9 @@ class Condition(Callable[[E], None]):
 
         return fn
 
+    def __call__(self, *args, **kwargs):
+        return self._fn(*args, **kwargs)
+
     def __str__(self):
         return self._description
 

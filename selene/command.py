@@ -21,7 +21,7 @@
 # SOFTWARE.
 from typing import Union
 
-from selene.element import Element
+from selene.entity import Element
 from selene.wait import Command
 
 

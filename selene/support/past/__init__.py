@@ -19,13 +19,17 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from selene.element import Element
-from selene.support.browser.shared import browser
+
+from selene.entity import Element, Collection
+from selene.support.shared import browser
+from selene.support.past.support import by  # todo: make analog in selene.*
+from selene.support.conditions import be, have
+from selene.support.conditions.be import not_
 
 
 def s(css_selector_or_by: str) -> Element:
     return browser.element(css_selector_or_by)
 
 
-def ss(css_selector_or_by: str) -> Element:
+def ss(css_selector_or_by: str) -> Collection:
     return browser.all(css_selector_or_by)

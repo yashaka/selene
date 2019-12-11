@@ -29,6 +29,7 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.remote.webdriver import WebDriver
 
 # todo: consider making these dataclasses be Mapping-like, so can be used in the 'dict' context
+from selene.common import fp
 from selene.common.helpers import as_dict
 
 
@@ -39,7 +40,7 @@ class WaitHooks:
 
 @dataclass(frozen=True)
 class Hooks:
-    wait: WaitHooks
+    wait: WaitHooks = WaitHooks(failure=fp.identity)
 
 
 @dataclass(frozen=True)
@@ -51,7 +52,7 @@ class Config:  # todo: consider making a base Config class unfrozen, and then us
     type_by_js: bool = None
     window_width: int = None
     window_height: int = None
-    hooks: Hooks = None
+    hooks: Hooks = Hooks()
 
     def with_(self, config: Config) -> Config:
-        return Config(**{**as_dict(self), **config})
+        return Config(**{**as_dict(self), **as_dict(config)})

@@ -28,8 +28,8 @@ from selene.support.shared.browser import SharedBrowser
 from selene.support.shared.config import SharedConfig
 
 
-config = SharedConfig()
+config = SharedConfig(timeout=4)
 
-config.set(Config(timeout=4))
+# config.set(Config(timeout=4))
 
 browser = SharedBrowser(config)
