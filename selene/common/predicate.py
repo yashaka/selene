@@ -55,8 +55,13 @@ def includes_word(expected):
     return lambda actual: expected in re.split(r'\s+', actual)
 
 
-list_compare_by = lambda f: lambda x, *xs: lambda y, *ys: \
-    True if x is None and y is None else bool(f(x)(y)) and list_compare_by(f)(*xs or None)(*ys or None)
+seq_compare_by = lambda f: lambda x, *xs: lambda y, *ys: \
+    True if x is None and y is None else bool(f(x)(y)) and seq_compare_by(f)(*xs or (None, ))(*ys or (None, ))
+
+
+list_compare_by = lambda f: lambda expected: lambda actual: \
+    seq_compare_by(f)(*expected)(*actual)
+
 
 equals_to_list = list_compare_by(equals)
 equals_by_contains_to_list = list_compare_by(includes)

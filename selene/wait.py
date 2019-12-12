@@ -93,9 +93,10 @@ class Wait(Generic[E]):
 
                     failure = TimeoutException(
                         f'''
-            Timed out after {timeout}s, while waiting for:
-            {entity}.{fn}
-            Reason: {reason_string}''',
+
+Timed out after {timeout}s, while waiting for:
+{entity}.{fn}
+Reason: {reason_string}''',
                         screen,
                         stacktrace)
 
