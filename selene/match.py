@@ -166,7 +166,7 @@ def collection_has_size_less_than_or_equal(expected: int) -> Condition[SeleneCol
 
 
 # todo: make it cofigurable whether assert only visible texts or ot
-def collection_has_texts(self, *expected: str) -> Condition[SeleneCollection]:
+def collection_has_texts(*expected: str) -> Condition[SeleneCollection]:
     def visible_texts(collection: SeleneCollection) -> List[str]:
         return [webelement.text for webelement in collection() if webelement.is_displayed()]
 
@@ -175,7 +175,7 @@ def collection_has_texts(self, *expected: str) -> Condition[SeleneCollection]:
                                          predicate.equals_by_contains_to_list(expected))
 
 
-def collection_has_exact_texts(self, *expected: str) -> Condition[SeleneCollection]:
+def collection_has_exact_texts(*expected: str) -> Condition[SeleneCollection]:
     def visible_texts(collection: SeleneCollection) -> List[str]:
         return [webelement.text for webelement in collection() if webelement.is_displayed()]
 
