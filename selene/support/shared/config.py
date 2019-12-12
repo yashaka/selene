@@ -77,7 +77,7 @@ class SharedConfig(Config):
 
         if stored and \
                 stored.session_id and \
-                is_alive() and \
+                is_alive and \
                 stored.name == self.browser_name:
 
             return stored
