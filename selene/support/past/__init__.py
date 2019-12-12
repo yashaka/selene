@@ -21,7 +21,7 @@
 # SOFTWARE.
 
 from selene.entity import Element, Collection
-from selene.support.shared import browser
+from selene.support.shared import browser, config
 from selene.support.past.support import by  # todo: make analog in selene.*
 from selene.support.conditions import be, have
 from selene.support.conditions.be import not_
