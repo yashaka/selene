@@ -23,6 +23,7 @@
 from selene.support.past import *
 
 
+# todo: ensure conditions are rendered correctly in error messages
 def test_selene_demo():
     # todo: uncomment and fix (fails with dataclasses.FrozenInstanceError: cannot assign to field 'timeout')
     # config.timeout = 6
@@ -49,8 +50,7 @@ def test_selene_demo():
     tasks.filtered_by(not_(have.css_class('completed'))).should(have.texts('1', '2'))
 
     s(by.link_text('Active')).click()
-    # todo: uncomment & fix (problem with slice args)
-    # tasks[:2].should(have.texts('1', '2'))
+    tasks[:2].should(have.texts('1', '2'))
     tasks[2].should(be.hidden)
 
     s(by.id('toggle-all')).click()

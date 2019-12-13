@@ -333,7 +333,7 @@ class Collection(WaitingEntity):
 
     def __getitem__(self, index_or_slice: Union[int, slice]) -> Union[Element, Collection]:
         if isinstance(index_or_slice, slice):
-            return self.sliced(slice.start, slice.stop, slice.step)
+            return self.sliced(index_or_slice.start, index_or_slice.stop, index_or_slice.step)
 
         return self.element(index_or_slice)
 
