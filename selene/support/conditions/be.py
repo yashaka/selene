@@ -24,6 +24,7 @@ import warnings
 from selene import match
 from selene.common import fp
 from selene.common.helpers import warn
+from selene.condition import Condition
 from selene.support.past import conditions  # todo: remove
 
 
@@ -47,7 +48,7 @@ blank = match.element_is_blank
 
 def not_(condition_to_be_inverted):
     warnings.warn('might be deprecated; use Condition.as_not instead', PendingDeprecationWarning)
-    return conditions.not_(condition_to_be_inverted)
+    return Condition.as_not(condition_to_be_inverted)
 
 
 clickable = warn('might be deprecated', PendingDeprecationWarning)\

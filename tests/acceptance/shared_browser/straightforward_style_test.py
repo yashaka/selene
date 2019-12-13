@@ -31,8 +31,8 @@ def test_selene_demo():
     active_tasks = tasks.filtered_by(have.css_class('active'))
 
     browser.open_url('https://todomvc4tasj.herokuapp.com/')
-    is_TodoMVC_loaded = 'return (Object.keys(require.s.contexts._.defined).length === 39)'
-    browser.should(have.js_returned_true(is_TodoMVC_loaded))
+    is_todo_mvc_loaded = 'return (Object.keys(require.s.contexts._.defined).length === 39)'
+    browser.should(have.js_returned_true(is_todo_mvc_loaded))
 
     for task_text in ['1', '2', '3']:
         s('#new-todo').set_value(task_text).press_enter()
@@ -45,9 +45,8 @@ def test_selene_demo():
     active_tasks.should(have.size(2))
 
     tasks.filtered_by(have.css_class('completed')).should(have.texts('3'))
-    # todo: uncomment & fix (problem with not_)
-    # tasks.element_by(not_(have.css_class('completed'))).should(have.text('1'))
-    # tasks.filtered_by(not_(have.css_class('completed'))).should(have.texts('1', '2'))
+    tasks.element_by(not_(have.css_class('completed'))).should(have.text('1'))
+    tasks.filtered_by(not_(have.css_class('completed'))).should(have.texts('1', '2'))
 
     s(by.link_text('Active')).click()
     # todo: uncomment & fix (problem with slice args)

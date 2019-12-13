@@ -152,4 +152,4 @@ def js_returned(expected: Any, script: str, *args) -> Condition[Browser]:
 
 def not_(condition_to_be_inverted):
     warnings.warn('might be deprecated; use Condition.as_not instead', PendingDeprecationWarning)
-    return conditions.not_(condition_to_be_inverted)
+    return Condition.as_not(condition_to_be_inverted)
