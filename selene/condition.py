@@ -59,8 +59,9 @@ class Condition(Callable[[E], None]):
 
     @classmethod
     def as_not(cls, condition: Condition[E], description: str = None) -> Condition[E]:
+        # todo: how will it work composed conditions?
         condition_words = str(condition).split(' ')
-        is_or_have = condition_words[1]
+        is_or_have = condition_words[0]
         name = ' '.join(condition_words[1:])
         no_or_not = 'not' if is_or_have == 'is' else 'no'
         new_description = description or f'{is_or_have} {no_or_not} {name}'
@@ -70,7 +71,7 @@ class Condition(Callable[[E], None]):
                 condition.call(entity)
             except Exception:
                 return
-            raise ConditionNotMatchedError()
+            raise ConditionNotMatchedError()  # todo: try to handle printing actual values here too...
 
         return cls(new_description, fn)
 
@@ -134,6 +135,9 @@ class Condition(Callable[[E], None]):
         return self._fn(*args, **kwargs)
 
     def __str__(self):
+        # todo: consider changing has to have on the fly for CollectionConditions
+        # todo: or changing in collection locator rendering `all` to `collection`
+        # todo: or changing in match.* names from collection_has_* to all_have_*
         return self._description
 
     def and_(self, condition: Condition[E]) -> Condition[E]:
@@ -141,3 +145,8 @@ class Condition(Callable[[E], None]):
 
     def or_(self, condition: Condition[E]) -> Condition[E]:
         return Condition.by_or(self, condition)
+
+
+def not_(condition_to_be_inverted: Condition):
+    warnings.warn('might be deprecated; use Condition.as_not instead', PendingDeprecationWarning)
+    return condition_to_be_inverted.not_

@@ -24,7 +24,7 @@ from selene.entity import Element, Collection
 from selene.support.shared import browser, config
 from selene.support.past.support import by  # todo: make analog in selene.*
 from selene.support.conditions import be, have
-from selene.support.conditions.be import not_
+from selene.condition import not_
 
 
 def s(css_selector_or_by: str) -> Element:

@@ -24,6 +24,7 @@ import warnings
 from selene import match
 from selene.common.helpers import warn
 from selene.condition import Condition
+from selene.support.conditions import not_
 
 
 visible = match.element_is_visible
@@ -42,11 +43,6 @@ blank = match.element_is_blank
 
 
 # --- Deprecated --- #
-
-
-def not_(condition_to_be_inverted: Condition):
-    warnings.warn('might be deprecated; use Condition.as_not instead', PendingDeprecationWarning)
-    return condition_to_be_inverted.not_
 
 
 clickable = warn('might be deprecated', PendingDeprecationWarning)\

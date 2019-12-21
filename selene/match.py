@@ -23,7 +23,6 @@
 from typing import List, Any
 
 from selene.common import predicate
-from selene.condition import Condition
 from selene.entity import Collection, Element, Browser
 from selene.conditions import ElementCondition, CollectionCondition, BrowserCondition
 

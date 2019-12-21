@@ -35,12 +35,15 @@ def test_selene_demo():
     browser.should(have.js_returned_true(is_todo_mvc_loaded))
 
     for text in ['1', '2', '3']:
-        s('#new-todo').type(text).press_enter().should(have.attribute('value').value(''))
+        s('#new-todo')\
+            .type(text).should(have.no.value(''))\
+            .press_enter().should(have.attribute('value').value(''))  # todo: ensure autocomplete works here too...
     tasks.should(have.texts('1', '2', '3')).should(have.css_class('active'))
     s('#todo-count').should(have.text('3'))
 
     tasks[2].s('.toggle').click()
     active_tasks.should(have.texts('1', '2'))
+    active_tasks.should(have.no.texts('1', '2', '3'))
     active_tasks.should(have.size(2))
 
     tasks.filtered_by(have.css_class('completed')).should(have.texts('3'))
@@ -49,7 +52,8 @@ def test_selene_demo():
 
     s(by.link_text('Active')).click()
     tasks[:2].should(have.texts('1', '2'))
-    tasks[2].should(be.hidden)
+    tasks[2].should(be.hidden)  # same as: ...
+    tasks[2].should(be.not_.visible)
 
     s(by.id('toggle-all')).click()
     s('//*[@id="clear-completed"]').click()
