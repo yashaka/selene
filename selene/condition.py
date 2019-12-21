@@ -99,9 +99,11 @@ class Condition(Callable[[E], None]):
                             predicate: Predicate[R]) -> Condition[E]:
 
         def fn(entity: E) -> None:
+            query_to_str = str(query)
+            result = query.__name__ if query_to_str.startswith('<function') else query_to_str
             actual = query(entity)
             if not predicate(actual):
-                raise AssertionError(f'actual {query}: {actual}')
+                raise AssertionError(f'actual {result}: {actual}')
 
         return cls(description, fn)
 

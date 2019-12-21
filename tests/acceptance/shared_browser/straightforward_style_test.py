@@ -20,10 +20,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from selene.support.past import *
+from selene.api import *
 
 
-# todo: ensure conditions are rendered correctly in error messages
 def test_selene_demo():
     # todo: uncomment and fix (fails with dataclasses.FrozenInstanceError: cannot assign to field 'timeout')
     # config.timeout = 6
@@ -35,8 +34,8 @@ def test_selene_demo():
     is_todo_mvc_loaded = 'return (Object.keys(require.s.contexts._.defined).length === 39)'
     browser.should(have.js_returned_true(is_todo_mvc_loaded))
 
-    for task_text in ['1', '2', '3']:
-        s('#new-todo').set_value(task_text).press_enter()
+    for text in ['1', '2', '3']:
+        s('#new-todo').type(text).press_enter()
     tasks.should(have.texts('1', '2', '3')).should(have.css_class('active'))
     s('#todo-count').should(have.text('3'))
 

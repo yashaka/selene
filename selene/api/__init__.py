@@ -20,7 +20,4 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from selene.support.past import config, browser, browsers
-from selene.support.past.support.jquery_style_selectors import s, ss
-from selene.support.past.support import by
-from selene.support.conditions import be, have
+from selene.support.past import *
