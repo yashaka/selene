@@ -34,16 +34,16 @@ from selene.support.past import conditions  # todo: remove
 #     });
 
 
-def exact_text(value) -> Condition[SeleneElement]:
+def exact_text(value) -> match.ElementCondition:
     return match.element_has_exact_text(value)
 
 
 # todo: consider accepting int
-def text(partial_value) -> Condition[SeleneElement]:
+def text(partial_value) -> match.ElementCondition:
     return match.element_has_text(partial_value)
 
 
-def attribute(name: str, value: str = None) -> Condition[SeleneElement]:
+def attribute(name: str, value: str = None) -> match.ElementCondition:
     if value:
         warnings.warn(
             'passing second argument is deprecated; use have.attribute(foo).value(bar) instead',
@@ -53,103 +53,103 @@ def attribute(name: str, value: str = None) -> Condition[SeleneElement]:
     return match.element_has_attribute(name)
 
 
-def value(text) -> Condition[SeleneElement]:
+def value(text) -> match.ElementCondition:
     return match.element_has_value(text)
 
 
-def value_containing(partial_text) -> Condition[SeleneElement]:
+def value_containing(partial_text) -> match.ElementCondition:
     return match.element_has_value_containing(partial_text)
 
 
-def css_class(name) -> Condition[SeleneElement]:
+def css_class(name) -> match.ElementCondition:
     return match.element_has_css_class(name)
 
 
 # *** SeleneCollection conditions ***
 
 
-def size(number: int) -> Condition[SeleneCollection]:
+def size(number: int) -> match.CollectionCondition:
     return match.collection_has_size(number)
 
 
-def size_less_than(number: int) -> Condition[SeleneCollection]:
+def size_less_than(number: int) -> match.CollectionCondition:
     return match.collection_has_size_less_than(number)
 
 
-def size_less_than_or_equal(number: int) -> Condition[SeleneCollection]:
+def size_less_than_or_equal(number: int) -> match.CollectionCondition:
     return match.collection_has_size_less_than_or_equal(number)
 
 
-def size_greater_than(number: int) -> Condition[SeleneCollection]:
+def size_greater_than(number: int) -> match.CollectionCondition:
     return match.collection_has_size_greater_than(number)
 
 
-def size_at_least(number: int) -> Condition[SeleneCollection]:
+def size_at_least(number: int) -> match.CollectionCondition:
     warnings.warn('might be deprecated; use have.size_greater_than_or_equal instead', PendingDeprecationWarning)
     return match.collection_has_size_greater_than_or_equal(number)
 
 
-def size_greater_than_or_equal(number: int) -> Condition[SeleneCollection]:
+def size_greater_than_or_equal(number: int) -> match.CollectionCondition:
     return match.collection_has_size_greater_than_or_equal(number)
 
 
 # todo: consider accepting ints
-def texts(*partial_values: str) -> Condition[SeleneCollection]:
+def texts(*partial_values: str) -> match.CollectionCondition:
     return match.collection_has_texts(*partial_values)
 
 
-def exact_texts(*values: str) -> Condition[SeleneCollection]:
+def exact_texts(*values: str) -> match.CollectionCondition:
     return match.collection_has_exact_texts(*values)
 
 
-def url(exact_value: str) -> Condition[Browser]:
+def url(exact_value: str) -> match.BrowserCondition:
     return match.browser_has_url(exact_value)
 
 
-def url_containing(partial_value: str) -> Condition[Browser]:
+def url_containing(partial_value: str) -> match.BrowserCondition:
     return match.browser_has_url_containing(partial_value)
 
 
-def title(exact_value: str) -> Condition[Browser]:
+def title(exact_value: str) -> match.BrowserCondition:
     return match.browser_has_title(exact_value)
 
 
-def title_containing(partial_value: str) -> Condition[Browser]:
+def title_containing(partial_value: str) -> match.BrowserCondition:
     return match.browser_has_title_containing(partial_value)
 
 
-def tabs_number(value: int) -> Condition[Browser]:
+def tabs_number(value: int) -> match.BrowserCondition:
     return match.browser_has_tabs_number(value)
 
 
-def tabs_number_less_than(value: int) -> Condition[Browser]:
+def tabs_number_less_than(value: int) -> match.BrowserCondition:
     return match.browser_has_tabs_number_less_than(value)
 
 
-def tabs_number_less_than_or_equal(value: int) -> Condition[Browser]:
+def tabs_number_less_than_or_equal(value: int) -> match.BrowserCondition:
     return match.browser_has_tabs_number_less_than_or_equal(value)
 
 
-def tabs_number_greater_than(value: int) -> Condition[Browser]:
+def tabs_number_greater_than(value: int) -> match.BrowserCondition:
     return match.browser_has_tabs_number_greater_than(value)
 
 
-def tabs_number_greater_than_or_equal(value: int) -> Condition[Browser]:
+def tabs_number_greater_than_or_equal(value: int) -> match.BrowserCondition:
     return match.browser_has_tabs_number_greater_than_or_equal(value)
 
 
-def js_returned_true(script_to_return_bool: str) -> Condition[Browser]:
+def js_returned_true(script_to_return_bool: str) -> match.BrowserCondition:
     warnings.warn('might be deprecated; use have.js_returned(True, ...) instead', PendingDeprecationWarning)
     return match.browser_has_js_returned(True, script_to_return_bool)
 
 
-def js_returned(expected: Any, script: str, *args) -> Condition[Browser]:
+def js_returned(expected: Any, script: str, *args) -> match.BrowserCondition:
     return match.browser_has_js_returned(expected, script, *args)
 
 
 # --- Deprecated --- #
 
 
-def not_(condition_to_be_inverted):
+def not_(condition_to_be_inverted: Condition):
     warnings.warn('might be deprecated; use Condition.as_not instead', PendingDeprecationWarning)
-    return Condition.as_not(condition_to_be_inverted)
+    return condition_to_be_inverted.not_

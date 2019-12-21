@@ -22,6 +22,7 @@
 
 from __future__ import annotations
 
+import warnings
 from typing import List, TypeVar, Callable
 
 from selene.support.past.exceptions import ConditionNotMatchedError
@@ -40,7 +41,7 @@ class Condition(Callable[[E], None]):
             for condition in conditions:
                 condition.call(entity)
 
-        return Condition(' and '.join(map(str, conditions)), fn)
+        return cls(' and '.join(map(str, conditions)), fn)
 
     @classmethod
     def by_or(cls, *conditions):
@@ -54,7 +55,7 @@ class Condition(Callable[[E], None]):
                     errors.append(e)
             raise AssertionError('; '.join(map(str, errors)))
 
-        return Condition(' or '.join(map(str, conditions)), fn)
+        return cls(' or '.join(map(str, conditions)), fn)
 
     @classmethod
     def as_not(cls, condition: Condition[E], description: str = None) -> Condition[E]:
@@ -71,7 +72,7 @@ class Condition(Callable[[E], None]):
                 return
             raise ConditionNotMatchedError()
 
-        return Condition(new_description, fn)
+        return cls(new_description, fn)
 
     # function throwIfNot<E>(predicate: (entity: E) => Promise<boolean>): Lambda<E, void> {
     #     return async (entity: E) => {
@@ -89,7 +90,7 @@ class Condition(Callable[[E], None]):
             if not predicate(entity):
                 raise ConditionNotMatchedError()
 
-        return Condition(description, fn)
+        return cls(description, fn)
 
     @classmethod
     def raise_if_not_actual(cls,
@@ -102,7 +103,7 @@ class Condition(Callable[[E], None]):
             if not predicate(actual):
                 raise AssertionError(f'actual {query}: {actual}')
 
-        return Condition(description, fn)
+        return cls(description, fn)
 
     def __init__(self, description: str, fn: Lambda[E, None]):
         self._description = description
@@ -121,6 +122,11 @@ class Condition(Callable[[E], None]):
                 return False
 
         return fn
+
+    @property
+    def not_(self) -> Condition[E]:
+        warnings.warn('might be renamed and deprecated...', PendingDeprecationWarning)
+        return self.__class__.as_not(self)
 
     def __call__(self, *args, **kwargs):
         return self._fn(*args, **kwargs)

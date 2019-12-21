@@ -37,8 +37,7 @@ def test_selene_demo():
 
     for task_text in ['1', '2', '3']:
         s('#new-todo').set_value(task_text).press_enter()
-    # todo: uncomment & fix (should_each is not implemented yet)
-    # tasks.should(have.texts('1', '2', '3')).should_each(have.css_class('active'))
+    tasks.should(have.texts('1', '2', '3')).should(have.css_class('active'))
     s('#todo-count').should(have.text('3'))
 
     tasks[2].s('.toggle').click()

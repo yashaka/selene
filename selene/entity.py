@@ -33,7 +33,6 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.switch_to import SwitchTo
 from selenium.webdriver.remote.webelement import WebElement
 
-from selene.common import fp
 from selene.config import Config
 from selene.wait import Wait, Command, Query
 from selene.condition import Condition
@@ -382,6 +381,16 @@ class Collection(WaitingEntity):
                     lambda: [element.element(*by)() for element in self.cached]),
             self.config)
 
+    # --- Assertable --- #
+
+    def should(self, condition: Union[CollectionCondition, ElementCondition]) -> Collection:
+        if isinstance(condition, ElementCondition):
+            for element in self:
+                element.should(condition)
+        else:
+            super().should(condition)
+        return self
+
 
 class SeleneCollection(Collection):  # todo: consider deprecating this name
     pass
@@ -490,3 +499,6 @@ class Browser(WaitingEntity):
 
 class SeleneDriver(Browser):
     pass
+
+
+from selene.conditions import CollectionCondition, ElementCondition
