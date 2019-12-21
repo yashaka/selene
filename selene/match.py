@@ -70,7 +70,7 @@ def element_has_exact_text(expected: str) -> ElementCondition:
     return element_has_text(expected, 'has exact text', predicate.equals)
 
 
-def element_has_attribute(name: str) -> ElementCondition:
+def element_has_attribute(name: str):
     def attribute_value(element: Element) -> str:
         return element().get_attribute(name)
 

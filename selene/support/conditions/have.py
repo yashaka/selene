@@ -43,7 +43,7 @@ def text(partial_value) -> match.ElementCondition:
     return match.element_has_text(partial_value)
 
 
-def attribute(name: str, value: str = None) -> match.ElementCondition:
+def attribute(name: str, value: str = None):
     if value:
         warnings.warn(
             'passing second argument is deprecated; use have.attribute(foo).value(bar) instead',

@@ -35,7 +35,7 @@ def test_selene_demo():
     browser.should(have.js_returned_true(is_todo_mvc_loaded))
 
     for text in ['1', '2', '3']:
-        s('#new-todo').type(text).press_enter()
+        s('#new-todo').type(text).press_enter().should(have.attribute('value').value(''))
     tasks.should(have.texts('1', '2', '3')).should(have.css_class('active'))
     s('#todo-count').should(have.text('3'))
 
