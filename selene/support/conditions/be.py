@@ -52,7 +52,6 @@ def not_(condition_to_be_inverted: Condition):
 clickable = warn('might be deprecated', PendingDeprecationWarning)\
     .when(lambda: match.element_is_visible.and_(match.element_is_enabled))
 
-
 empty = warn('might be deprecated, use have.size(0) instead', PendingDeprecationWarning) \
     .when(lambda: match.collection_has_size(0))
 

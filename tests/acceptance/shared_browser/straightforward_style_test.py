@@ -53,4 +53,4 @@ def test_selene_demo():
 
     s(by.id('toggle-all')).click()
     s('//*[@id="clear-completed"]').click()
-    tasks.should(be.empty)  # todo: be.empty should look like deprecated...
+    tasks.should(be.empty)
