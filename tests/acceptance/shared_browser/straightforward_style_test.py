@@ -24,8 +24,7 @@ from selene.api import *
 
 
 def test_selene_demo():
-    # todo: uncomment and fix (fails with dataclasses.FrozenInstanceError: cannot assign to field 'timeout')
-    # config.timeout = 6
+    config.browser_name = 'firefox'  # chrome was default
 
     tasks = ss('#todo-list>li')
     active_tasks = tasks.filtered_by(have.css_class('active'))
@@ -48,7 +47,9 @@ def test_selene_demo():
 
     tasks.filtered_by(have.css_class('completed')).should(have.texts('3'))
     tasks.element_by(not_(have.css_class('completed'))).should(have.text('1'))
-    tasks.filtered_by(not_(have.css_class('completed'))).should(have.texts('1', '2'))
+    # or
+    tasks.element_by(have.no.css_class('completed')).should(have.text('1'))
+    tasks.filtered_by(have.no.css_class('completed')).should(have.texts('1', '2'))
 
     s(by.link_text('Active')).click()
     tasks[:2].should(have.texts('1', '2'))

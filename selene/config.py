@@ -46,10 +46,10 @@ class Hooks:
 @dataclass(frozen=True)
 class Config:  # todo: consider making a base Config class unfrozen, and then use frozen version in browser
     driver: WebDriver = None
-    timeout: int = None
-    base_url: str = None
-    set_value_by_js: bool = None
-    type_by_js: bool = None
+    timeout: int = 4
+    base_url: str = ''
+    set_value_by_js: bool = False
+    type_by_js: bool = False
     window_width: int = None
     window_height: int = None
     hooks: Hooks = Hooks()

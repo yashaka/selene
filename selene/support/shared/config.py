@@ -39,40 +39,19 @@ from selene.common.helpers import on_error_return_false
 from selene.config import Config
 
 
+# noinspection PyDataclass
 class SharedConfig(Config):
+    def __setattr__(self, attr, value):
+        """unfreeze self"""
+        object.__setattr__(self, attr, value)
 
-    _storage: List[Config] = []
+    hold_browser_open: bool = False
 
-    def set(self, config: Config):
-        if not self._storage:
-            self._storage.append(config)
-        else:
-            stored = self._storage.pop()
-            self._storage.append(stored.with_(config))
-
-    @property
-    def _get(self) -> Config:  # todo: consider renaming to _stored or _shared
-        return self._storage[0]
-
-    @property
-    def timeout(self) -> int:
-        return self._get.timeout
-
-    @timeout.setter
-    def timeout(self, value: int):
-        self.set(Config(timeout=value))
-
-    @property
-    def hold_browser_open(self) -> bool:
-        return False  # todo: finish implementation
-
-    @hold_browser_open.setter
-    def hold_browser_open(self, value: bool):
-        pass  # todo: finish implementation
+    _driver: WebDriver = None
 
     @property
     def driver(self) -> WebDriver:
-        stored = self._get.driver
+        stored = self._driver
         is_alive = on_error_return_false(lambda: stored.title is not None)
 
         if stored and \
@@ -95,20 +74,20 @@ class SharedConfig(Config):
         if not self.hold_browser_open:
             atexit.register(new.quit)
 
-        self.set(Config(driver=new))
+        self._driver = new
 
         return new
 
     @driver.setter
     def driver(self, value: WebDriver):
-        is_another_driver = on_error_return_false(lambda: value.session_id != self.driver.session_id)
+        stored = self._driver
+        is_another_driver = on_error_return_false(lambda: value.session_id != stored.session_id)
 
         if is_another_driver:
-            self.driver.quit()  # todo: can quit raise exception? handle then...
+            stored.quit()  # todo: can quit raise exception? handle then...
 
-        self.set(Config(driver=value))
+        self._driver = value
 
-        # noinspection PyDataclass
         self.browser_name = value and value.name
 
         # todo: should we schedule driver closing on exit here too?
@@ -123,16 +102,19 @@ class SharedConfig(Config):
     #           browser.config.browser = ... :)
     #              how can we make it impossible?
     #              or what else better name can we choose?
+
+    _browser_name: str = 'chrome'
+
     @property
     def browser_name(self) -> str:
-        return 'chrome'  # todo: finish implementation
+        return self._browser_name
 
     @browser_name.setter
     def browser_name(self, value: str):
+        self._browser_name = value
         # todo: should we kill current driver if browser_name is changed?
-        #       or should we open one more? so aftewards the user can switch...
+        #       or should we open one more? so afterwards the user can switch...
         #       what about making such "mode" also configurable? ;)
-        pass  # todo: finish implementation
 
     # todo: consider deprecating changing opts like timeout after driver was created
     #       make driver be recreated in such cases

@@ -207,7 +207,7 @@ class Element(WaitingEntity):
 
         from selene import command
         self.wait.for_(command.js.type(keys) if self.config.type_by_js
-                          else Command(f'type: {keys}', fn))
+                       else Command(f'type: {keys}', fn))
 
         return self
 
