@@ -3,6 +3,9 @@
 ## 2.0.0 (todo)
 - planned api changes:
   - all.first() to all.first
+  
+## 1.0.1 (released on 28.12.2019)
+- no changes; just releasing latest version (before refactoring) as stable
 
 ## 1.0.0ax (next from master branch)
 - removed
