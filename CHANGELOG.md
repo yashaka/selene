@@ -1,8 +1,16 @@
 # Changelog
 
-## 2.0.0 (todo)
-- planned api changes:
-  - all.first() to all.first
+## 2.0.0a1 (to be released on 28.12.2019)
+- complete reincarnation of Selene :) so far:
+  - no test coverage; 
+  - no hooks (and so no screenshots in error messages); 
+  - no temporal support for 1.0.0 aliases for some methods
+    - will be added as deprecated and kept for some time to allow smoother migration
+
+  - old implementation of everything still exists in `selene.support.past.*`
+  
+## 1.0.1 (released on 28.12.2019)
+- no changes; just releasing latest version (before refactoring) as stable
 
 ## 1.0.0ax (next from master branch)
 - removed

@@ -1,7 +1,7 @@
 from setuptools import setup
 from selene import version
 
-description = 'Concise API for selenium in Python + Ajax support + PageObjects (Selenide port from Java to Python)'
+description = 'User-oriented browser tests in Python (Selenide port to Python)'
 # long_description = 'see http://github.com/yashaka/selene/ for more docs...'
 
 setup(
@@ -21,10 +21,10 @@ setup(
               'selene.support',
               'selene.support.conditions'],
     include_package_data=True,
-    install_requires=['selenium', 'webdriver_manager', 'future', 'backports.functools_lru_cache', 'six'],
+    install_requires=['selenium==3.141.0', 'webdriver_manager', 'future', 'backports.functools_lru_cache', 'six'],
     platforms='any',
     zip_safe=False,
-    keywords=['testing', 'selenium==3.141.0', 'selenide', 'browser', 'pageobject', 'widget', 'wrapper'],
+    keywords=['testing', 'selenium', 'selenide', 'browser', 'pageobject', 'widget', 'wrapper'],
     classifiers=[
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
