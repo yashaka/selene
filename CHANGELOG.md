@@ -1,8 +1,16 @@
 # Changelog
 
-## 2.0.0a1 (to be released on 28.12.2019)
-- complete reincarnation of Selene :) so far:
+## 2.0.0a2 (to be released on 30.12.2019)
+- fixed packages to be published
+
+## 2.0.0a1 (released on 28.12.2019, broken:))
+- complete reincarnation of Selene for python version >= 3.7 :). Current limitations:
   - no test coverage; 
+  - do updated docs
+    - you can check the only one working test at `tests/acceptance/shared_browser/straightforward_style_test.py`
+    - and use it as a fast intro 
+    - keep in mind that it describes old style + new style; 
+    - so you will not see there some guides for newer style; wait for that;)
   - no hooks (and so no screenshots in error messages); 
   - no temporal support for 1.0.0 aliases for some methods
     - will be added as deprecated and kept for some time to allow smoother migration
