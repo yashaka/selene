@@ -21,6 +21,7 @@
 # SOFTWARE.
 from selene.condition import Condition
 from selene.entity import Browser, Element, Collection
+from selene.condition import not_  # todo: remove once deprecating finished
 
 
 class ElementCondition(Condition[Element]):

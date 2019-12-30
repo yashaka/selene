@@ -1,6 +1,12 @@
 # Changelog
 
-## 2.0.0a2 (to be released on 30.12.2019)
+## 2.0.0a3 (to be released on 30.12.2019)
+- removed from selene.support.past all not used old implementations
+- tuned selene.__init__ imports to have browser (reimported from selene.support.shared)
+- fixed extra modules in build for publishing
+- removed six from dependencies in setup.py
+
+## 2.0.0a2 (released on 30.12.2019)
 - fixed packages to be published
 
 ## 2.0.0a1 (released on 28.12.2019, broken:))

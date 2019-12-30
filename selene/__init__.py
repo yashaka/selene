@@ -22,3 +22,4 @@
 
 from selene.support.past.support import by
 from selene.support.conditions import be, have
+from selene.support.shared import browser, config  # todo: consider removing from "base" api imports
