@@ -48,6 +48,7 @@ class SharedConfig(Config):
     hold_browser_open: bool = False
 
     _driver: WebDriver = None
+    _browser_name: str
 
     @property
     def driver(self) -> WebDriver:
@@ -69,7 +70,7 @@ class SharedConfig(Config):
             'chrome': lambda: Chrome(executable_path=ChromeDriverManager().install(),
                                      options=ChromeOptions()),
             'firefox': lambda: Firefox(executable_path=GeckoDriverManager().install())
-        }.get(self.browser_name, 'chrome')()
+        }.get(self.browser_name)()
 
         if not self.hold_browser_open:
             atexit.register(new.quit)
@@ -103,11 +104,9 @@ class SharedConfig(Config):
     #              how can we make it impossible?
     #              or what else better name can we choose?
 
-    _browser_name: str = 'chrome'
-
     @property
     def browser_name(self) -> str:
-        return self._browser_name
+        return self._browser_name or 'chrome'
 
     @browser_name.setter
     def browser_name(self, value: str):
@@ -122,32 +121,41 @@ class SharedConfig(Config):
 
     # --- consider to depracate --- #
 
+    _poll_during_waits: int
+
     @property
     def poll_during_waits(self) -> int:
         warnings.warn('might be deprecated', PendingDeprecationWarning)
-        return 100
+        return self._poll_during_waits or 100
 
     @poll_during_waits.setter
-    def poll_during_waits(self, value):
+    def poll_during_waits(self, value: int):
         warnings.warn('might be deprecated', PendingDeprecationWarning)
-        pass
+        self._poll_during_waits = value
+
+    _counter = None
 
     @property
     @lru_cache()
     def counter(self):
         warnings.warn('might be deprecated', PendingDeprecationWarning)
-        return itertools.count(start=int(round(time.time() * 1000)))
+        return self._counter or itertools.count(start=int(round(time.time() * 1000)))
 
     @counter.setter
     def counter(self, value):
         warnings.warn('might be deprecated', PendingDeprecationWarning)
-        pass
+        self._counter = value
+
+    _reports_folder: str
 
     @property
     def reports_folder(self) -> str:
         warnings.warn('might be deprecated', PendingDeprecationWarning)
-        counter = itertools.count(start=int(round(time.time() * 1000)))
-        return os.path.join(os.path.expanduser('~'), '.selene', 'screenshots', str(next(self.counter)))
+        return self._reports_folder or os.path.join(
+            os.path.expanduser('~'),
+            '.selene',
+            'screenshots',
+            str(next(self.counter)))
 
     @reports_folder.setter
     def reports_folder(self, value):

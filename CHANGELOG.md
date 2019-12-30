@@ -1,6 +1,9 @@
-# Changelog
+# ChangelogChangelog
 
-## 2.0.0a3 (to be released on 30.12.2019)
+## 2.0.0a4 (to be released on 30.12.2019)
+- fixed default browser_name handling in shared config; implemented some old opts in config
+
+## 2.0.0a3 (released on 30.12.2019)
 - removed from selene.support.past all not used old implementations
 - tuned selene.__init__ imports to have browser (reimported from selene.support.shared)
 - fixed extra modules in build for publishing
