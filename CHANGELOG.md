@@ -1,6 +1,9 @@
 # ChangelogChangelog
 
-## 2.0.0a4 (to be released on 30.12.2019)
+## 2.0.0a5 (to be released on 31.12.2019)
+- fixed autocomplete for *.should methods
+
+## 2.0.0a4 (released on 30.12.2019)
 - fixed default browser_name handling in shared config; implemented some old opts in config
 
 ## 2.0.0a3 (released on 30.12.2019)

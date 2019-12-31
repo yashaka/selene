@@ -269,6 +269,14 @@ class Element(WaitingEntity):
     # def outer_html(self) -> str:
     #     return self.wait.for_(query.outer_html)
 
+    # --- Assertable --- #
+
+    # we need this method here in order to make autocompletion work...
+    # unfortunately the "base class" version is not enough
+    def should(self, condition: ElementCondition) -> Element:
+        super().should(condition)
+        return self
+
 
 class SeleneElement(Element):  # todo: consider deprecating this name
     pass
@@ -493,6 +501,14 @@ class Browser(WaitingEntity):
         self.driver.execute_script('window.sessionStorage.clear();')
         return self
 
+    # --- Assertable --- #
+
+    # we need this method here in order to make autocompletion work...
+    # unfortunately the "base class" version is not enough
+    def should(self, condition: BrowserCondition) -> Browser:
+        super().should(condition)
+        return self
+
 
 # --- Deprecated --- #  todo: remove in future versions
 
@@ -501,4 +517,4 @@ class SeleneDriver(Browser):
     pass
 
 
-from selene.conditions import CollectionCondition, ElementCondition
+from selene.conditions import CollectionCondition, ElementCondition, BrowserCondition
