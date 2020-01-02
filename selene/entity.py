@@ -789,7 +789,7 @@ class Browser(WaitingEntity):
 
     @property
     def switch_to(self) -> SwitchTo:
-        return self.driver.switch_to.alert
+        return self.driver.switch_to
 
     # todo: should we add also a shortcut for self.driver.switch_to.alert ?
     #       if we don't need to switch_to.'back' after switch to alert - then for sure we should...

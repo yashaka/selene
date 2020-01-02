@@ -4,6 +4,7 @@
 - fixed autocomplete for *.should methods
 - reflected all "old and redundant" SeleneElement methods as deprecated in Element
   - added corresponding conditions
+- fixed browser.switch_to
 
 ## 2.0.0a4 (released on 30.12.2019)
 - fixed default browser_name handling in shared config; implemented some old opts in config
