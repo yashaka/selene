@@ -25,6 +25,7 @@ from selene.entity import Element
 from selene.wait import Command
 
 
+# noinspection PyPep8Naming
 class js:
     @classmethod
     def set_value(cls, value: Union[str, int]) -> Command[Element]:

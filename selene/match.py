@@ -22,10 +22,10 @@
 
 from typing import List, Any
 
+from selene import query
 from selene.common import predicate
 from selene.entity import Collection, Element, Browser
 from selene.conditions import ElementCondition, CollectionCondition, BrowserCondition
-
 
 # todo: consider moving to selene.match.element.is_visible, etc...
 element_is_visible: ElementCondition = \
@@ -56,17 +56,96 @@ element_is_focused: ElementCondition = \
 def element_has_text(expected: str,
                      describing_matched_to='has text',
                      compared_by_predicate_to=predicate.includes) -> ElementCondition:
-    def text(element: Element) -> str:
-        return element().text
-
     return ElementCondition.raise_if_not_actual(
         describing_matched_to + ' ' + expected,
-        text,
+        query.text,
         compared_by_predicate_to(expected))
 
 
 def element_has_exact_text(expected: str) -> ElementCondition:
     return element_has_text(expected, 'has exact text', predicate.equals)
+
+
+def element_has_js_property(name: str):  # todo: should we keep simpler but less obvious name - *_has_property ?
+    def property_value(element: Element) -> str:
+        return element().get_property(name)
+
+    def property_values(collection: Collection) -> List[str]:
+        return [element.get_property(name) for element in collection()]
+
+    raw_property_condition = ElementCondition.raise_if_not_actual(
+        'has js property ' + name,
+        property_value,
+        predicate.is_truthy)
+
+    class ConditionWithValues(ElementCondition):
+
+        def value(self, expected: str) -> ElementCondition:
+            return ElementCondition.raise_if_not_actual(
+                f"has js property '{name}' with value '{expected}'",
+                property_value,
+                predicate.equals(expected))
+
+        def value_containing(self, expected: str) -> ElementCondition:
+            return ElementCondition.raise_if_not_actual(
+                f"has js property '{name}' with value containing '{expected}'",
+                property_value,
+                predicate.includes(expected))
+
+        def values(self, *expected: str) -> CollectionCondition:
+            return CollectionCondition.raise_if_not_actual(
+                f"has js property '{name}' with values '{expected}'",
+                property_values,
+                predicate.equals_to_list(expected))
+
+        def values_containing(self, *expected: str) -> CollectionCondition:
+            return CollectionCondition.raise_if_not_actual(
+                f"has js property '{name}' with values containing '{expected}'",
+                property_values,
+                predicate.equals_by_contains_to_list(expected))
+
+    return ConditionWithValues(str(raw_property_condition), raw_property_condition.call)
+
+
+def element_has_css_property(name: str):
+    def property_value(element: Element) -> str:
+        return element().value_of_css_property(name)
+
+    def property_values(collection: Collection) -> List[str]:
+        return [element.value_of_css_property(name) for element in collection()]
+
+    raw_property_condition = ElementCondition.raise_if_not_actual(
+        'has css property ' + name,
+        property_value,
+        predicate.is_truthy)
+
+    class ConditionWithValues(ElementCondition):
+
+        def value(self, expected: str) -> ElementCondition:
+            return ElementCondition.raise_if_not_actual(
+                f"has css property '{name}' with value '{expected}'",
+                property_value,
+                predicate.equals(expected))
+
+        def value_containing(self, expected: str) -> ElementCondition:
+            return ElementCondition.raise_if_not_actual(
+                f"has css property '{name}' with value containing '{expected}'",
+                property_value,
+                predicate.includes(expected))
+
+        def values(self, *expected: str) -> CollectionCondition:
+            return CollectionCondition.raise_if_not_actual(
+                f"has css property '{name}' with values '{expected}'",
+                property_values,
+                predicate.equals_to_list(expected))
+
+        def values_containing(self, *expected: str) -> CollectionCondition:
+            return CollectionCondition.raise_if_not_actual(
+                f"has css property '{name}' with values containing '{expected}'",
+                property_values,
+                predicate.equals_by_contains_to_list(expected))
+
+    return ConditionWithValues(str(raw_property_condition), raw_property_condition.call)
 
 
 def element_has_attribute(name: str):
@@ -126,11 +205,24 @@ def element_has_css_class(expected: str) -> ElementCondition:
         return element().get_attribute('class')
 
     return ElementCondition.raise_if_not_actual(f"has css class '{expected}'",
-                                         class_attribute_value,
-                                         predicate.includes_word(expected))
+                                                class_attribute_value,
+                                                predicate.includes_word(expected))
 
 
 element_is_blank: ElementCondition = element_has_exact_text('').and_(element_has_value(''))
+
+
+def element_has_tag(expected: str,
+                    describing_matched_to='has tag',
+                    compared_by_predicate_to=predicate.equals) -> ElementCondition:
+    return ElementCondition.raise_if_not_actual(
+        f'{describing_matched_to} + {expected}',
+        query.tag,
+        compared_by_predicate_to(expected))
+
+
+def element_has_tag_containing(expected: str) -> ElementCondition:
+    return element_has_tag(expected, 'has tag containing', predicate.includes)
 
 
 def collection_has_size(expected: int,
@@ -140,8 +232,8 @@ def collection_has_size(expected: int,
         return len(collection())
 
     return CollectionCondition.raise_if_not_actual(f'{describing_matched_to} {expected}',
-                                         size,
-                                         compared_by_predicate_to(expected))
+                                                   size,
+                                                   compared_by_predicate_to(expected))
 
 
 def collection_has_size_greater_than(expected: int) -> CollectionCondition:
@@ -166,8 +258,8 @@ def collection_has_texts(*expected: str) -> CollectionCondition:
         return [webelement.text for webelement in collection() if webelement.is_displayed()]
 
     return CollectionCondition.raise_if_not_actual(f'has texts {expected}',
-                                         visible_texts,
-                                         predicate.equals_by_contains_to_list(expected))
+                                                   visible_texts,
+                                                   predicate.equals_by_contains_to_list(expected))
 
 
 def collection_has_exact_texts(*expected: str) -> CollectionCondition:

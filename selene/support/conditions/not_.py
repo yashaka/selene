@@ -85,6 +85,66 @@ def attribute(name: str, value: str = None):
     return negated
 
 
+def js_property(name: str, value: str = None):
+    if value:
+        warnings.warn(
+            'passing second argument is deprecated; use have.js_property(foo).value(bar) instead',
+            DeprecationWarning)
+        return match.element_has_js_property(name).value(value).not_
+
+    original = match.element_has_js_property(name)
+    negated = original.not_
+
+    def value(self, expected: str) -> match.ElementCondition:
+        return original.value(expected).not_
+
+    def value_containing(self, expected: str) -> match.ElementCondition:
+        return original.value_containing(expected).not_
+
+    def values(self, *expected: str) -> match.CollectionCondition:
+        return original.values(*expected).not_
+
+    def values_containing(self, *expected: str) -> match.CollectionCondition:
+        return original.values_containing(*expected).not_
+
+    negated.value = value
+    negated.value_containing = value_containing
+    negated.values = values
+    negated.values_containing = values_containing
+
+    return negated
+
+
+def css_property(name: str, value: str = None):
+    if value:
+        warnings.warn(
+            'passing second argument is deprecated; use have.css_property(foo).value(bar) instead',
+            DeprecationWarning)
+        return match.element_has_css_property(name).value(value).not_
+
+    original = match.element_has_css_property(name)
+    negated = original.not_
+
+    def value(self, expected: str) -> match.ElementCondition:
+        return original.value(expected).not_
+
+    def value_containing(self, expected: str) -> match.ElementCondition:
+        return original.value_containing(expected).not_
+
+    def values(self, *expected: str) -> match.CollectionCondition:
+        return original.values(*expected).not_
+
+    def values_containing(self, *expected: str) -> match.CollectionCondition:
+        return original.values_containing(*expected).not_
+
+    negated.value = value
+    negated.value_containing = value_containing
+    negated.values = values
+    negated.values_containing = values_containing
+
+    return negated
+
+
 def value(text) -> match.ElementCondition:
     return match.element_has_value(text).not_
 
@@ -95,6 +155,14 @@ def value_containing(partial_text) -> match.ElementCondition:
 
 def css_class(name) -> match.ElementCondition:
     return match.element_has_css_class(name).not_
+
+
+def tag(name: str) -> match.ElementCondition:
+    return match.element_has_tag(name).not_
+
+
+def tag_containing(name: str) -> match.ElementCondition:
+    return match.element_has_tag_containing(name).not_
 
 
 # *** SeleneCollection conditions ***

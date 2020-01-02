@@ -25,10 +25,11 @@ from __future__ import annotations
 import warnings
 
 from abc import abstractmethod, ABC
-from typing import TypeVar, Union, List
+from typing import TypeVar, Union, List, Dict, Any
 
 from selenium.webdriver import ActionChains
 from selenium.webdriver.android.webdriver import WebDriver
+from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.switch_to import SwitchTo
 from selenium.webdriver.remote.webelement import WebElement
@@ -107,6 +108,7 @@ class WaitingEntity(Matchable, Configured):
         self.wait.for_(command)
         return self
 
+    # todo: what about `entity[query.something]` syntax over or in addition to `entity.get(query.something)` ?
     def get(self, query: Query[E, R]) -> R:
         return self.wait.for_(query)
 
@@ -162,10 +164,6 @@ class Element(WaitingEntity):
                     lambda: self().find_element(*by)),
             self.config)
 
-    def s(self, css_or_xpath_or_by: Union[str, tuple]) -> Element:
-        warnings.warn('deprecated; use browser.element(...).element(...) instead', DeprecationWarning)
-        return self.element(css_or_xpath_or_by)
-
     def all(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection:
         by = to_by(css_or_xpath_or_by)
 
@@ -173,10 +171,6 @@ class Element(WaitingEntity):
             Locator(f'{self}.all({by})',
                     lambda: self().find_elements(*by)),
             self.config)
-
-    def ss(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection:
-        warnings.warn('deprecated; use browser.element(...).all(...) instead', DeprecationWarning)
-        return self.all(css_or_xpath_or_by)
 
     # --- Commands --- #
 
@@ -198,9 +192,15 @@ class Element(WaitingEntity):
         self.wait.for_(command.js.set_value(value) if self.config.set_value_by_js
                        else Command(f'set value: {value}', fn))
 
+        # todo: consider returning self.cached, since after first successful call,
+        #       all next ones should normally pass
+        #       no waiting will be needed normally
+        #       if yes - then we should pass fn commands to wait.for_ so the latter will return webelement to cache
+        #       also it will make sense to make this behaviour configurable...
         return self
 
     def type(self, keys: Union[str, int]) -> Element:
+        # todo: do we need a separate send_keys method?
         def fn(element: Element):
             webelement = element()
             webelement.send_keys(str(keys))
@@ -222,6 +222,10 @@ class Element(WaitingEntity):
 
     def clear(self) -> Element:
         self.wait.command('clear', lambda element: element().clear())
+        return self
+
+    def submit(self) -> Element:
+        self.wait.command('submit', lambda element: element().submit())
         return self
 
     # todo: do we need config.click_by_js?
@@ -273,9 +277,314 @@ class Element(WaitingEntity):
 
     # we need this method here in order to make autocompletion work...
     # unfortunately the "base class" version is not enough
-    def should(self, condition: ElementCondition) -> Element:
+    def should(self, condition: ElementCondition, timeout: int = None) -> Element:
+        if timeout:
+            warnings.warn(
+                "using timeout argument is deprecated; "
+                "use `browser.element('#foo').with_(Config(timeout=6)).should(be.enabled)` style instead",
+                DeprecationWarning)
+            return self.with_(Config(timeout=timeout)).should(condition)
+
         super().should(condition)
         return self
+
+    # --- Deprecated --- #
+
+    def get_actual_webelement(self) -> WebElement:
+        warnings.warn(
+            "considering to be deprecated; use element as callable instead, like: browser.element('#foo')()",
+            PendingDeprecationWarning)
+        return self()
+
+    def caching(self) -> Element:
+        warnings.warn("deprecated; use `cached` property instead: browser.element('#foo')", DeprecationWarning)
+        return self.cached
+
+    def s(self, css_or_xpath_or_by: Union[str, tuple]) -> Element:
+        warnings.warn(
+            "considering to deprecate; consider using `element` instead: browser.element('#foo').element('.bar')",
+            PendingDeprecationWarning)
+        return self.element(css_or_xpath_or_by)
+
+    def find(self, css_or_xpath_or_by: Union[str, tuple]) -> Element:
+        warnings.warn(
+            "considering to deprecate; consider using `element` instead: browser.element('#foo').element('.bar')",
+            PendingDeprecationWarning)
+        return self.element(css_or_xpath_or_by)
+
+    def ss(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection:
+        warnings.warn(
+            "considering to deprecate; consider using `all` instead: browser.element('#foo').all('.bar')",
+            PendingDeprecationWarning)
+        return self.all(css_or_xpath_or_by)
+
+    def find_all(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection:
+        warnings.warn(
+            "considering to deprecate; consider using `all` instead: browser.element('#foo').all('.bar')",
+            PendingDeprecationWarning)
+        return self.all(css_or_xpath_or_by)
+
+    def elements(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection:
+        warnings.warn(
+            "considering to deprecate; consider using `all` instead: browser.element('#foo').all('.bar')",
+            PendingDeprecationWarning)
+        return self.all(css_or_xpath_or_by)
+
+    @property
+    def parent_element(self):
+        warnings.warn(
+            "considering to deprecate because such impl makes less sens for mobile automation; "
+            "consider using corresponding xpath instead if you really need it for web:"
+            "browser.element('#foo').element('..')",
+            PendingDeprecationWarning)
+        return self.element('..')
+
+    @property
+    def following_sibling(self):
+        warnings.warn(
+            "considering to deprecate because such impl makes less sens for mobile automation; "
+            "consider using corresponding xpath instead if you really need it for web:"
+            "browser.element('#foo').element('./following-sibling::*')",
+            PendingDeprecationWarning)
+        return self.element('./following-sibling::*')
+
+    @property
+    def first_child(self):
+        warnings.warn(
+            "considering to deprecate because such impl makes less sens for mobile automation; "
+            "consider using corresponding xpath instead if you really need it for web: "
+            "browser.element('#foo').element('./*[1]')",
+            PendingDeprecationWarning)
+        return self.element('./*[1]')
+
+    def assure(self, condition: ElementCondition, timeout=None) -> Element:
+        warnings.warn(
+            "deprecated; use `should` method instead: browser.element('#foo').should(be.enabled)",
+            DeprecationWarning)
+        return self.should(condition, timeout)
+
+    def should_be(self, condition: ElementCondition, timeout=None) -> Element:
+        warnings.warn(
+            "deprecated; use `should` method with `be.*` style conditions instead: "
+            "browser.element('#foo').should(be.enabled)",
+            DeprecationWarning)
+        return self.should(condition, timeout)
+
+    def should_have(self, condition: ElementCondition, timeout=None) -> Element:
+        warnings.warn(
+            "deprecated; use `should` method with `have.*` style conditions instead: "
+            "browser.element('#foo').should(have.text('bar')",
+            DeprecationWarning)
+        return self.should(condition, timeout)
+
+    def should_not(self, condition: ElementCondition, timeout=None) -> Element:
+        warnings.warn(
+            "deprecated; use `should` method with `be.not.*` or `have.no.*` style conditions instead: "
+            "`browser.element('#foo').should(be.not.enabled).should(have.no.css_class('bar')`, "
+            "you also can build your own inverted conditions by: `not_ok = Condition.as_not(have.text('Ok'))`",
+            DeprecationWarning)
+        return self.should(condition, timeout)
+
+    def assure_not(self, condition: ElementCondition, timeout=None) -> Element:
+        warnings.warn(
+            "deprecated; use `should` method with `be.not.*` or `have.no.*` style conditions instead: "
+            "`browser.element('#foo').should(be.not.enabled).should(have.no.css_class('bar')`, "
+            "you also can build your own inverted conditions by: `not_ok = Condition.as_not(have.text('Ok'))`",
+            DeprecationWarning)
+        return self.should(condition, timeout)
+
+    def should_not_be(self, condition: ElementCondition, timeout=None) -> Element:
+        warnings.warn(
+            "deprecated; use `should` method with `be.not.*` or `have.no.*` style conditions instead: "
+            "`browser.element('#foo').should(be.not.enabled).should(have.no.css_class('bar')`, "
+            "you also can build your own inverted conditions by: `not_ok = Condition.as_not(have.text('Ok'))`",
+            DeprecationWarning)
+        return self.should(condition, timeout)
+
+    def should_not_have(self, condition: ElementCondition, timeout=None) -> Element:
+        warnings.warn(
+            "deprecated; use `should` method with `be.not.*` or `have.no.*` style conditions instead: "
+            "`browser.element('#foo').should(be.not.enabled).should(have.no.css_class('bar')`, "
+            "you also can build your own inverted conditions by: `not_ok = Condition.as_not(have.text('Ok'))`",
+            DeprecationWarning)
+        return self.should(condition, timeout)
+
+    def set(self, value: Union[str, int]) -> Element:
+        warnings.warn(
+            "deprecated; use `set_value` method instead",
+            DeprecationWarning)
+        return self.set_value(value)
+
+    def scroll_to(self):
+        warnings.warn(
+            "deprecated; use `browser.element('#foo').perform(command.js.scroll_into_view)` style instead",
+            DeprecationWarning)
+        from selene import command
+        self.perform(command.js.scroll_into_view)
+        return self
+
+    def press_down(self):
+        warnings.warn(
+            "deprecated; use `browser.element('#foo').type(Keys.ARROW_DOWN)` style instead",
+            DeprecationWarning)
+        return self.type(Keys.ARROW_DOWN)
+
+    def find_element(self, by=By.ID, value=None):
+        self.wait.command('find element', lambda element: element().find_element(by, value))
+        return self
+
+    def find_elements(self, by=By.ID, value=None):
+        self.wait.command('find elements', lambda element: element().find_elements(by, value))
+        return self
+
+    def send_keys(self, *value) -> Element:
+        warnings.warn(
+            "considering to deprecate; consider using `type` method instead",
+            PendingDeprecationWarning)
+        self.wait.command('send keys', lambda element: element().send_keys(*value))
+        return self
+
+    @property
+    def tag_name(self) -> str:
+        warnings.warn(
+            "deprecated; use `browser.element('#foo').get(query.tag_name)` style instead",
+            DeprecationWarning)
+        from selene import query
+        return self.get(query.tag)
+
+    @property
+    def text(self) -> str:
+        warnings.warn(
+            "deprecated; use `browser.element('#foo').get(query.text)` style instead",
+            DeprecationWarning)
+        from selene import query
+        return self.get(query.text)
+
+    def attribute(self, name: str) -> str:
+        warnings.warn(
+            "deprecated; use `browser.element('#foo').get(query.attribute('name'))` style instead",
+            DeprecationWarning)
+        from selene import query
+        return self.get(query.attribute(name))
+
+    def js_property(self, name: str) -> str:
+        warnings.warn(
+            "deprecated; use `browser.element('#foo').get(query.js_property('name'))` style instead",
+            DeprecationWarning)
+        from selene import query
+        return self.get(query.js_property(name))
+
+    def value_of_css_property(self, name: str) -> str:
+        warnings.warn(
+            "deprecated; use `browser.element('#foo').get(query.css_property('name'))` style instead",
+            DeprecationWarning)
+        from selene import query
+        return self.get(query.css_property(name))
+
+    def get_attribute(self, name: str) -> str:
+        warnings.warn(
+            "deprecated; use `browser.element('#foo').get(query.attribute('name'))` style instead",
+            DeprecationWarning)
+        from selene import query
+        return self.get(query.attribute(name))
+
+    def get_property(self, name: str) -> str:
+        warnings.warn(
+            "deprecated; use `browser.element('#foo').get(query.js_property('name'))` style instead",
+            DeprecationWarning)
+        from selene import query
+        return self.get(query.js_property(name))
+
+    def is_selected(self) -> bool:
+        warnings.warn(
+            "deprecated; use `browser.element('#foo').matching(be.selected)` style instead",
+            DeprecationWarning)
+        from selene.support.conditions import be
+        return self.matching(be.selected)
+
+    def is_enabled(self):
+        warnings.warn(
+            "deprecated; use `browser.element('#foo').matching(be.enabled)` style instead",
+            DeprecationWarning)
+        from selene.support.conditions import be
+        return self.matching(be.enabled)
+
+    def is_displayed(self):
+        warnings.warn(
+            "deprecated; use `browser.element('#foo').matching(be.visible)` style instead",
+            DeprecationWarning)
+        from selene.support.conditions import be
+        return self.matching(be.visible)
+
+    @property
+    def location(self) -> Dict[str, int]:
+        warnings.warn(
+            "deprecated; use `browser.element('#foo').get(query.location)` style instead",
+            DeprecationWarning)
+        from selene import query
+        return self.get(query.location)
+
+    @property
+    def location_once_scrolled_into_view(self) -> Dict[str, int]:
+        warnings.warn(
+            "deprecated; use `browser.element('#foo').get(query.location_once_scrolled_into_view)` style instead",
+            DeprecationWarning)
+        from selene import query
+        return self.get(query.location_once_scrolled_into_view)
+
+    @property
+    def size(self) -> Dict[str, Any]:
+        warnings.warn(
+            "deprecated; use `browser.element('#foo').get(query.size)` style instead",
+            DeprecationWarning)
+        from selene import query
+        return self.get(query.size)
+
+    @property
+    def rect(self) -> Dict[str, Any]:
+        warnings.warn(
+            "deprecated; use `browser.element('#foo').get(query.rect)` style instead",
+            DeprecationWarning)
+        from selene import query
+        return self.get(query.rect)
+
+    @property
+    def screenshot_as_base64(self) -> Any:
+        warnings.warn(
+            "deprecated; use `browser.element('#foo').get(query.screenshot_as_base64)` style instead",
+            DeprecationWarning)
+        from selene import query
+        return self.get(query.screenshot_as_base64)
+
+    @property
+    def screenshot_as_png(self) -> Any:
+        warnings.warn(
+            "deprecated; use `browser.element('#foo').get(query.screenshot_as_base64)` style instead",
+            DeprecationWarning)
+        from selene import query
+        return self.get(query.screenshot_as_png)
+
+    def screenshot(self, filename: str) -> bool:
+        warnings.warn(
+            "deprecated; use `browser.element('#foo').get(query.screenshot('filename'))` style instead",
+            DeprecationWarning)
+        from selene import query
+        return self.get(query.screenshot(filename))
+
+    @property
+    def parent(self):
+        warnings.warn(
+            "deprecated; use `browser.element('#foo').config.driver` style for the majority of cases",
+            DeprecationWarning)
+        return self.get(Query('parent search context', lambda element: element().parent))
+
+    @property
+    def id(self):
+        warnings.warn(
+            "deprecated; use `browser.element('#foo').get(query.internal_id)` style instead",
+            DeprecationWarning)
+        from selene import query
+        return self.get(query.internal_id)
 
 
 class SeleneElement(Element):  # todo: consider deprecating this name
@@ -494,7 +803,7 @@ class Browser(WaitingEntity):
         self.driver.quit()
 
     def clear_local_storage(self) -> Browser:
-        self.driver.execute_script('window.localStorage.clear();') # todo: should we catch and ignore errors?
+        self.driver.execute_script('window.localStorage.clear();')  # todo: should we catch and ignore errors?
         return self
 
     def clear_session_storage(self) -> Browser:

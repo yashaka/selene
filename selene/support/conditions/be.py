@@ -23,12 +23,12 @@ import warnings
 
 from selene import match
 from selene.common.helpers import warn
-from selene.condition import Condition
 from selene.support.conditions import not_
 
 
 visible = match.element_is_visible
 hidden = match.element_is_hidden
+selected = match.element_is_selected
 
 present = match.element_is_present
 in_dom = match.element_is_present    # todo: do we need both present and in_dom?

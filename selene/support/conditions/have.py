@@ -35,6 +35,27 @@ def text(partial_value) -> match.ElementCondition:
     return match.element_has_text(partial_value)
 
 
+# todo: should we use here js.property style (and below for js.returned(...))
+def js_property(name: str, value: str = None):
+    if value:
+        warnings.warn(
+            'passing second argument is deprecated; use have.js_property(foo).value(bar) instead',
+            DeprecationWarning)
+        return match.element_has_js_property(name).value(value)
+
+    return match.element_has_js_property(name)
+
+
+def css_property(name: str, value: str = None):
+    if value:
+        warnings.warn(
+            'passing second argument is deprecated; use have.css_property(foo).value(bar) instead',
+            DeprecationWarning)
+        return match.element_has_css_property(name).value(value)
+
+    return match.element_has_css_property(name)
+
+
 def attribute(name: str, value: str = None):
     if value:
         warnings.warn(
@@ -55,6 +76,14 @@ def value_containing(partial_text) -> match.ElementCondition:
 
 def css_class(name) -> match.ElementCondition:
     return match.element_has_css_class(name)
+
+
+def tag(name: str) -> match.ElementCondition:
+    return match.element_has_tag(name)
+
+
+def tag_containing(name: str) -> match.ElementCondition:
+    return match.element_has_tag_containing(name)
 
 
 # *** SeleneCollection conditions ***

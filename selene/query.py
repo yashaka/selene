@@ -19,7 +19,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from typing import List
+from typing import List, Dict, Any
 
 from selene.entity import Browser, Element
 from selene.wait import Query
@@ -40,8 +40,65 @@ outer_html = attribute('outerHTML')
 
 value = attribute('value')
 
+tag: Query[Element, str] = Query('tag name', lambda element: element().tag_name)
+
+text: Query[Element, str] = Query('text', lambda element: element().text)
+
+# todo: do we need condition for the following?
+location_once_scrolled_into_view: Query[Element, Dict[str, int]] = \
+    Query('location once scrolled into view', lambda element: element().location_once_scrolled_into_view)
+
+# todo: what to do now with collection.size? and have.size* ? o_O
+size: Query[Element, Dict[str, Any]] = \
+    Query('size', lambda element: element().size)
+
+# todo: do we need condition for the following?
+location: Query[Element, Dict[str, int]] = \
+    Query('location', lambda element: element().location)
+
+# todo: do we need condition for the following?
+rect: Query[Element, Dict[str, Any]] = \
+    Query('rect', lambda element: element().rect)
+
+screenshot_as_base64: Query[Element, Any] = \
+    Query('screenshot as base64', lambda element: element().screenshot_as_base64)
+
+screenshot_as_png: Query[Element, Any] = \
+    Query('screenshot as png', lambda element: element().screenshot_as_png)
+
+
+def screenshot(filename: str) -> Query[Element, bool]:
+    def fn(element: Element) -> str:
+        return element().screenshot(filename)
+
+    return Query(f'screenshot {filename}', fn)
+
+
+# not needed, because interfere with "parent element" meaning and usually can be workaround via element.config.driver
+# parent: Query[Element, Any] = \
+#     Query('parent', lambda element: element().parent)
+# todo: but should we add it with another name?
+
+
+internal_id: Query[Element, Any] = Query('internal id', lambda element: element().id)
+
+
+def css_property(name: str) -> Query[Element, str]:
+    def fn(element: Element) -> str:
+        return element().value_of_css_property(name)
+
+    return Query(f'css property {name}', fn)
+
+
+def js_property(name: str) -> Query[Element, str]:
+    def fn(element: Element) -> str:
+        return element().get_property(name)
+
+    return Query(f'js property {name}', fn)
+
 
 # --- Browser queries --- #
+
 
 url: Query[Browser, str] = Query('url', lambda browser: browser.driver.current_url)
 

@@ -148,5 +148,5 @@ class Condition(Callable[[E], None]):
 
 
 def not_(condition_to_be_inverted: Condition):
-    warnings.warn('might be deprecated; use Condition.as_not instead', PendingDeprecationWarning)
+    warnings.warn('might be deprecated; consider using Condition.as_not instead', PendingDeprecationWarning)
     return condition_to_be_inverted.not_
