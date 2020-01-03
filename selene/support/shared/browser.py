@@ -41,6 +41,9 @@ class SharedBrowser(Browser):
     def config(self) -> SharedConfig:
         return self._config
 
+    def with_(self, config: Config = None, **config_as_kwargs) -> Browser:
+        return Browser(self.config.with_(config, **config_as_kwargs))
+
     # --- deprecated --- #
 
     @property

@@ -30,11 +30,13 @@ def test_selene_demo():
     tasks = ss('#todo-list>li')
     active_tasks = tasks.filtered_by(have.css_class('active'))
 
+    # browser.with_(timeout=config.timeout*2).open('https://todomvc4tasj.herokuapp.com/')
     browser.open('https://todomvc4tasj.herokuapp.com/')
     open_url('https://www.yahoo.com/')  # or like this
     browser.driver.get('http://google.com')  # just in case, you can use the driver directly too
     browser.driver().get('https://todomvc4tasj.herokuapp.com/')  # temporary this works too;)
     is_todo_mvc_loaded = 'return (Object.keys(require.s.contexts._.defined).length === 39)'
+    # browser.with_(timeout=config.timeout*2).should(have.js_returned_true(is_todo_mvc_loaded)) # todo: make it work
     browser.should(have.js_returned_true(is_todo_mvc_loaded))
 
     for text in ['1', '2', '3']:

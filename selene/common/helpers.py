@@ -29,7 +29,8 @@ from selenium.webdriver.common.by import By
 def as_dict(o, skip_empty=True):
     return {k: v
             for k, v in o.__dict__.items()
-            if not (skip_empty and v is None)}
+            if not (skip_empty and v is None) and not k.startswith('_')
+            } if o else {}
 
 
 def to_by(selector_or_by: Union[str, tuple]) -> Tuple[str, str]:

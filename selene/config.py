@@ -54,5 +54,5 @@ class Config:  # todo: consider making a base Config class unfrozen, and then us
     window_height: int = None
     hooks: Hooks = Hooks()
 
-    def with_(self, config: Config) -> Config:
-        return Config(**{**as_dict(self), **as_dict(config)})
+    def with_(self, config: Config = None, **config_as_kwargs) -> Config:
+        return self.__class__(**{**as_dict(self), **as_dict(config), **config_as_kwargs})

@@ -143,8 +143,8 @@ class Element(WaitingEntity):
 
     # --- Configured --- #
 
-    def with_(self, config: Config) -> Element:
-        return Element(self._locator, self.config.with_(config))
+    def with_(self, config: Config = None, **config_as_kwargs) -> Element:
+        return Element(self._locator, self.config.with_(config, **config_as_kwargs))
 
     # --- Located --- #
 
@@ -601,8 +601,8 @@ class Collection(WaitingEntity):
         self._locator = locator
         super().__init__(config)
 
-    def with_(self, config: Config) -> Collection:
-        return Collection(self._locator, self.config.with_(config))
+    def with_(self, config: Config = None, **config_as_kwargs) -> Collection:
+        return Collection(self._locator, self.config.with_(config, **config_as_kwargs))
 
     def __str__(self):
         return str(self._locator)
@@ -817,8 +817,8 @@ class Browser(WaitingEntity):
         super().__init__(config)
 
     # todo: consider implement it as context manager too...
-    def with_(self, config: Config) -> Browser:
-        return Browser(self.config.with_(config))
+    def with_(self, config: Config = None, **config_as_kwargs) -> Browser:
+        return Browser(self.config.with_(config, **config_as_kwargs))
 
     def __str__(self):
         return 'browser'
