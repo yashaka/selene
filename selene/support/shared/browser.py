@@ -43,12 +43,24 @@ class SharedBrowser(Browser):
 
     # --- deprecated --- #
 
+    @property
+    def driver(self) -> WebDriver:
+        webdriver: WebDriver = self.config.driver
+
+        def return_driver(this) -> WebDriver:
+            warnings.warn('deprecated; use `browser.driver` over `browser.driver()`', DeprecationWarning)
+            return webdriver
+
+        webdriver.__class__.__call__ = return_driver
+
+        return webdriver
+
     def quit_driver(self):
-        warnings.warn('use browser.quit() instead', DeprecationWarning)
+        warnings.warn('deprecated; use browser.quit() instead', DeprecationWarning)
         self.quit()
 
     def close(self):
-        warnings.warn('use browser.close_current_tab() instead', DeprecationWarning)
+        warnings.warn('deprecated; use browser.close_current_tab() instead', DeprecationWarning)
         self.close_current_tab()
 
     def set_driver(self, webdriver: WebDriver):

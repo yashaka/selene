@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 from selene.api import *
+from selene.browser import open_url
 
 
 def test_selene_demo():
@@ -29,7 +30,10 @@ def test_selene_demo():
     tasks = ss('#todo-list>li')
     active_tasks = tasks.filtered_by(have.css_class('active'))
 
-    browser.open_url('https://todomvc4tasj.herokuapp.com/')
+    browser.open('https://todomvc4tasj.herokuapp.com/')
+    open_url('https://www.yahoo.com/')  # or like this
+    browser.driver.get('http://google.com')  # just in case, you can use the driver directly too
+    browser.driver().get('https://todomvc4tasj.herokuapp.com/')  # temporary this works too;)
     is_todo_mvc_loaded = 'return (Object.keys(require.s.contexts._.defined).length === 39)'
     browser.should(have.js_returned_true(is_todo_mvc_loaded))
 

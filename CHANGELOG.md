@@ -1,9 +1,13 @@
 # ChangelogChangelog
 
 ## 2.0.0a5 (to be released on 03.01.2020)
+- enhanced migratability of 2.*:
+    - reflected all "old and redundant" SeleneElement methods as deprecated in Element
+      - added corresponding conditions
+    - reflected all "old and redundant" SeleneCollection methods as deprecated in Collection
+      - did not add methods that were already deprecated in 1.*
+    - temporally added selene.browser module to reflect browser.* methods from 1.* as deprecated
 - fixed autocomplete for *.should methods
-- reflected all "old and redundant" SeleneElement methods as deprecated in Element
-  - added corresponding conditions
 - fixed browser.switch_to
 
 ## 2.0.0a4 (released on 30.12.2019)

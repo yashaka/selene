@@ -154,6 +154,11 @@ class Element(WaitingEntity):
     def __call__(self) -> WebElement:
         return self._locator()
 
+    @property
+    def cached(self) -> Element:
+        webelement = self()
+        return Element(Locator(f'{self}.cached', lambda: webelement), self.config)
+
     # --- Relative location --- #
 
     def element(self, css_or_xpath_or_by: Union[str, tuple]) -> Element:
@@ -297,7 +302,7 @@ class Element(WaitingEntity):
         return self()
 
     def caching(self) -> Element:
-        warnings.warn("deprecated; use `cached` property instead: browser.element('#foo')", DeprecationWarning)
+        warnings.warn("deprecated; use `cached` property instead: browser.element('#foo').cached", DeprecationWarning)
         return self.cached
 
     def s(self, css_or_xpath_or_by: Union[str, tuple]) -> Element:
@@ -700,13 +705,107 @@ class Collection(WaitingEntity):
 
     # --- Assertable --- #
 
-    def should(self, condition: Union[CollectionCondition, ElementCondition]) -> Collection:
+    def should(self, condition: Union[CollectionCondition, ElementCondition], timeout: int = None) -> Collection:
         if isinstance(condition, ElementCondition):
             for element in self:
+                if timeout:
+                    warnings.warn(
+                        "using timeout argument is deprecated; "
+                        "use `browser.all('.foo').with_(Config(timeout=6)).should(have.size(0))` style instead",
+                        DeprecationWarning)
+                    element.with_(Config(timeout=timeout)).should(condition)
                 element.should(condition)
         else:
+            if timeout:
+                warnings.warn(
+                    "using timeout argument is deprecated; "
+                    "use `browser.all('.foo').with_(Config(timeout=6)).should(have.size(0))` style instead",
+                    DeprecationWarning)
+                self.with_(Config(timeout=timeout)).should(condition)
             super().should(condition)
         return self
+
+    # --- Deprecated --- #
+
+    def get_actual_webelements(self) -> List[WebElement]:
+        warnings.warn(
+            "considering to be deprecated; use collection as callable instead, like: browser.all('.foo')()",
+            PendingDeprecationWarning)
+        return self()
+
+    def caching(self) -> Collection:
+        warnings.warn("deprecated; use `cached` property instead: browser.all('#foo').cached", DeprecationWarning)
+        return self.cached
+
+    def all_by(self, condition: Condition[Element]) -> Collection:
+        warnings.warn(
+            "deprecated; use `filtered_by` instead: browser.all('.foo').filtered_by(be.enabled)",
+            DeprecationWarning)
+        return self.filtered_by(condition)
+
+    def size(self):
+        warnings.warn(
+            "deprecated; use `len` standard function instead: len(browser.all('.foo'))",
+            DeprecationWarning)
+        return len(self)
+
+    def should_each(self, condition: ElementCondition, timeout=None) -> Collection:
+        warnings.warn(
+            "deprecated; use `should` method instead: browser.all('.foo').should(have.css_class('bar'))",
+            DeprecationWarning)
+        return self.should(condition, timeout)
+
+    def assure(self, condition: Union[CollectionCondition, ElementCondition], timeout=None) -> Collection:
+        warnings.warn(
+            "deprecated; use `should` method instead: browser.all('.foo').should(have.size(0))",
+            DeprecationWarning)
+        return self.should(condition, timeout)
+
+    def should_be(self, condition: Union[CollectionCondition, ElementCondition], timeout=None) -> Collection:
+        warnings.warn(
+            "deprecated; use `should` method with `be.*` style conditions instead: "
+            "browser.all('.foo').should(be.*)",
+            DeprecationWarning)
+        return self.should(condition, timeout)
+
+    def should_have(self, condition: Union[CollectionCondition, ElementCondition], timeout=None) -> Collection:
+        warnings.warn(
+            "deprecated; use `should` method with `have.*` style conditions instead: "
+            "browser.all('.foo').should(have.size(0))",
+            DeprecationWarning)
+        return self.should(condition, timeout)
+
+    def should_not(self, condition: Union[CollectionCondition, ElementCondition], timeout=None) -> Collection:
+        warnings.warn(
+            "deprecated; use `should` method with `be.not.*` or `have.no.*` style conditions instead: "
+            "`browser.all('.foo').should(have.no.size(2))`, "
+            "you also can build your own inverted conditions by: `not_zero = Condition.as_not(have.size(0'))`",
+            DeprecationWarning)
+        return self.should(condition, timeout)
+
+    def assure_not(self, condition: Union[CollectionCondition, ElementCondition], timeout=None) -> Collection:
+        warnings.warn(
+            "deprecated; use `should` method with `be.not.*` or `have.no.*` style conditions instead: "
+            "`browser.all('.foo').should(have.no.size(2))`, "
+            "you also can build your own inverted conditions by: `not_zero = Condition.as_not(have.size(0'))`",
+            DeprecationWarning)
+        return self.should(condition, timeout)
+
+    def should_not_be(self, condition: Union[CollectionCondition, ElementCondition], timeout=None) -> Collection:
+        warnings.warn(
+            "deprecated; use `should` method with `be.not.*` or `have.no.*` style conditions instead: "
+            "`browser.all('.foo').should(have.no.size(2))`, "
+            "you also can build your own inverted conditions by: `not_zero = Condition.as_not(have.size(0'))`",
+            DeprecationWarning)
+        return self.should(condition, timeout)
+
+    def should_not_have(self, condition: Union[CollectionCondition, ElementCondition], timeout=None) -> Collection:
+        warnings.warn(
+            "deprecated; use `should` method with `be.not.*` or `have.no.*` style conditions instead: "
+            "`browser.element('#foo').should(have.no.size(2))`, "
+            "you also can build your own inverted conditions by: `not_zero = Condition.as_not(have.size(0'))`",
+            DeprecationWarning)
+        return self.should(condition, timeout)
 
 
 class SeleneCollection(Collection):  # todo: consider deprecating this name
@@ -723,6 +822,8 @@ class Browser(WaitingEntity):
 
     def __str__(self):
         return 'browser'
+
+    # todo: consider making it callable ...
 
     @property
     def driver(self) -> WebDriver:
@@ -818,6 +919,80 @@ class Browser(WaitingEntity):
         super().should(condition)
         return self
 
+    # --- Deprecated --- #
+
+    def close(self) -> Browser:
+        warnings.warn("deprecated; use a `close_current_tab` method instead", DeprecationWarning)
+
+        return self.close_current_tab()
+
+    def quit_driver(self) -> None:
+        warnings.warn("deprecated; use a `quit` method instead", DeprecationWarning)
+        self.quit()
+
+    @classmethod
+    def wrap(cls, webdriver: WebDriver):
+        warnings.warn(
+            "deprecated; use a normal constructor style instead: "
+            "`Browser(Config(driver=webdriver))`",
+            DeprecationWarning)
+        return Browser(Config(driver=webdriver))
+
+    def s(self, css_or_xpath_or_by: Union[str, tuple]) -> Element:
+        warnings.warn(
+            "deprecated; use an `element` method instead: "
+            "`browser.element('#foo')`",
+            DeprecationWarning)
+
+        return self.element(css_or_xpath_or_by)
+
+    def find(self, css_or_xpath_or_by: Union[str, tuple]) -> Element:
+        warnings.warn(
+            "deprecated; use an `element` method instead: "
+            "`browser.element('#foo')`",
+            DeprecationWarning)
+
+        return self.element(css_or_xpath_or_by)
+
+    def ss(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection:
+        warnings.warn(
+            "deprecated; use an `all` method instead: "
+            "`browser.all('.foo')`",
+            DeprecationWarning)
+
+        return self.all(css_or_xpath_or_by)
+
+    def find_all(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection:
+        warnings.warn(
+            "deprecated; use an `all` method instead: "
+            "`browser.all('.foo')`",
+            DeprecationWarning)
+
+        return self.all(css_or_xpath_or_by)
+
+    def elements(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection:
+        warnings.warn(
+            "deprecated; use an `all` method instead: "
+            "`browser.all('.foo')`",
+            DeprecationWarning)
+
+        return self.all(css_or_xpath_or_by)
+
+    def find_elements(self, by=By.ID, value=None):
+        warnings.warn(
+            "deprecated; use instead: `browser.driver.find_elements(...)`",
+            DeprecationWarning)
+        return self.driver.find_elements(by, value)
+
+    def find_element(self, by=By.ID, value=None):
+        warnings.warn(
+            "deprecated; use instead: `browser.driver.find_element(...)`",
+            DeprecationWarning)
+        return self.driver.find_element(by, value)
+
+
+from selene.conditions import CollectionCondition, ElementCondition, BrowserCondition
+
 
 # --- Deprecated --- #  todo: remove in future versions
 
@@ -825,5 +1000,3 @@ class Browser(WaitingEntity):
 class SeleneDriver(Browser):
     pass
 
-
-from selene.conditions import CollectionCondition, ElementCondition, BrowserCondition
