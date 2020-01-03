@@ -27,7 +27,7 @@ from selene.support.past.elements import SeleneElement
 from selene.support.past.helpers import merge
 from selene.support.conditions import be
 from selene.support.conditions import have
-from selene.support.past.support.jquery_style_selectors import s, ss
+from selene.support.jquery_style_selectors import s, ss
 
 
 class SelectList(object):

@@ -25,7 +25,7 @@ from selene.support.past.browsers import BrowserName
 from selene.support.past.support import by
 from selene.support.conditions import be
 from selene.support.conditions import have
-from selene.support.past.support.jquery_style_selectors import s, ss
+from selene.support.jquery_style_selectors import s, ss
 
 
 def x_test_filter_tasks():

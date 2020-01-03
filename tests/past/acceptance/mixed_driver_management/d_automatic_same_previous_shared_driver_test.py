@@ -26,7 +26,7 @@ from selenium.common.exceptions import TimeoutException
 from selene.support.past import browser, config
 from selene.support.conditions import have
 
-from selene.support.past.support.jquery_style_selectors import s, ss
+from selene.support.jquery_style_selectors import s, ss
 
 
 todomvc_url = 'https://todomvc4tasj.herokuapp.com/'

@@ -28,7 +28,7 @@ from selene.support.conditions import have
 
 from selene.support.past.bys import by_link_text
 from selene.support.past.conditions import exact_text
-from selene.support.past.support.jquery_style_selectors import s, ss
+from selene.support.jquery_style_selectors import s, ss
 
 
 class TestTodoMVC(object):

@@ -27,7 +27,7 @@ from tests.base_test import *
 
 from selene.support.past.bys import by_link_text
 from selene.support.past.conditions import exact_text
-from selene.support.past.support.jquery_style_selectors import s, ss
+from selene.support.jquery_style_selectors import s, ss
 
 APP_URL = 'https://todomvc4tasj.herokuapp.com/'
 

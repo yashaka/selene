@@ -24,7 +24,7 @@ import os
 
 from selene.support.past.conditions import exact_text
 from selene.support.past.browser import open_url, set_driver, driver
-from selene.support.past.support.jquery_style_selectors import s
+from selene.support.jquery_style_selectors import s
 from tests.past.acceptance.helpers.helper import get_test_driver
 
 start_page = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/start_page.html'

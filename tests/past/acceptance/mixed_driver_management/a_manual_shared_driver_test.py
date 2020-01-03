@@ -25,7 +25,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 from selene.support.past import browser
 from selene.support.conditions import have
-from selene.support.past.support.jquery_style_selectors import s, ss
+from selene.support.jquery_style_selectors import s, ss
 
 todomvc_url = 'https://todomvc4tasj.herokuapp.com/'
 is_TodoMVC_loaded = 'return (Object.keys(require.s.contexts._.defined).length === 39)'

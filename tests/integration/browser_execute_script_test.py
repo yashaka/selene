@@ -23,7 +23,7 @@
 import os
 
 from selene.support.past import browser, config
-from selene.support.past.support.jquery_style_selectors import s
+from selene.support.jquery_style_selectors import s
 
 start_page = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/start_page.html'
 

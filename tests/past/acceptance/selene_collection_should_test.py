@@ -25,7 +25,7 @@ from selenium.common.exceptions import TimeoutException
 
 from selene.support.past.browser import *
 from selene.support.conditions import have
-from selene.support.past.support.jquery_style_selectors import ss
+from selene.support.jquery_style_selectors import ss
 from tests.past.acceptance.helpers.helper import get_test_driver
 from tests.past.acceptance.helpers.todomvc import given_active
 

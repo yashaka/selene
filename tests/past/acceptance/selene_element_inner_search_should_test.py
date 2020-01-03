@@ -21,7 +21,7 @@
 # SOFTWARE.
 
 from selene.support.conditions import have
-from selene.support.past.support.jquery_style_selectors import s
+from selene.support.jquery_style_selectors import s
 from tests.past.acceptance.helpers.helper import get_test_driver
 
 __author__ = 'yashaka'

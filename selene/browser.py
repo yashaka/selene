@@ -25,7 +25,7 @@ from typing import Union
 
 from selenium.webdriver.remote.webdriver import WebDriver
 
-from selene.entity import Collection
+from selene.entity import Collection, Element
 from selene.config import Config
 from selene.support.shared import config, browser
 
@@ -39,6 +39,13 @@ def driver() -> WebDriver:
         DeprecationWarning)
 
     return browser.config.driver
+
+
+def quit():
+    warnings.warn(
+        'deprecated; use explicit browser.* style when browser is imported from selene.support.shared',
+        DeprecationWarning)
+    browser.quit()
 
 
 def quit_driver():
@@ -71,7 +78,21 @@ def open_url(absolute_or_relative_url):
     return browser.open(absolute_or_relative_url)
 
 
+def element(css_or_xpath_or_by: Union[str, tuple]) -> Element:
+    warnings.warn(
+        'deprecated; use explicit browser.* style when browser is imported from selene.support.shared',
+        DeprecationWarning)
+    return browser.element(css_or_xpath_or_by)
+
+
 def elements(css_or_xpath_or_by: Union[str, tuple]) -> Collection:
+    warnings.warn(
+        'deprecated; use explicit browser.* style when browser is imported from selene.support.shared',
+        DeprecationWarning)
+    return browser.all(css_or_xpath_or_by)
+
+
+def all(css_or_xpath_or_by: Union[str, tuple]) -> Collection:
     warnings.warn(
         'deprecated; use explicit browser.* style when browser is imported from selene.support.shared',
         DeprecationWarning)
@@ -109,6 +130,15 @@ def latest_screenshot():
 
 
 def wait_to(webdriver_condition, timeout=None, polling=None):
+    warnings.warn(
+        'deprecated; use explicit browser.* style when browser is imported from selene.support.shared',
+        DeprecationWarning)
+    tuned_browser = browser if timeout is None else browser.with_(Config(timeout=timeout))
+
+    return tuned_browser.should(webdriver_condition)
+
+
+def should(webdriver_condition, timeout=None, polling=None):
     warnings.warn(
         'deprecated; use explicit browser.* style when browser is imported from selene.support.shared',
         DeprecationWarning)
