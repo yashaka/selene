@@ -1,6 +1,9 @@
-# ChangelogChangelog
+# Changelog
 
-## 2.0.0a5 (to be released on 03.01.2020)
+## 2.0.0a6 (to be released on 0?.01.2020)
+- todo: fix `entity.with_(...)`
+
+## 2.0.0a5 (released on 03.01.2020)
 - enhanced migratability of 2.*:
     - reflected all "old and redundant" SeleneElement methods as deprecated in Element
       - added corresponding conditions
@@ -10,6 +13,8 @@
     - moved jquery_style_selectors.py module back to selene.support
 - fixed autocomplete for *.should methods
 - fixed browser.switch_to
+- added `entity.with_(timeout=6)` style in addition to `entity.with_(Config(timeout=6))`
+  - where entity = browser | element | collection
 
 ### known issues:
 - entity.with_ does not work in case of shared browser :(
