@@ -25,7 +25,7 @@ from selene.browser import open_url
 
 
 def test_selene_demo():
-    config.browser_name = 'firefox'  # chrome was default
+    # config.browser_name = 'firefox'  # chrome was default
 
     tasks = ss('#todo-list>li').with_(timeout=config.timeout/2)
     active_tasks = tasks.filtered_by(have.css_class('active'))
