@@ -60,19 +60,6 @@ def on_error_return_false(no_args_predicate):
     except Exception:
         return False
 
-@dataclass
-class Warn:
-    message: str
-    category: Type[Warning]
-
-    def when(self, fn):
-        warnings.warn(self.message, self.category)
-        return fn()
-
-
-def warn(message: str, category: Type[Warning]):
-    return Warn(message, category)
-
 
 def is_absolute_url(relative_or_absolute_url: str) -> bool:
     url = relative_or_absolute_url.lower()

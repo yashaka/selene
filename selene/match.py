@@ -19,7 +19,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
+import warnings
 from typing import List, Any
 
 from selene import query
@@ -39,6 +39,9 @@ element_is_enabled: ElementCondition = \
 
 element_is_disabled: ElementCondition = \
     ElementCondition.as_not(element_is_enabled)
+
+element_is_clickable: ElementCondition = \
+    element_is_visible.and_(element_is_enabled)
 
 element_is_present: ElementCondition = \
     ElementCondition.raise_if_not('is present in DOM', lambda element: element() is not None)
@@ -223,6 +226,16 @@ def element_has_tag(expected: str,
 
 def element_has_tag_containing(expected: str) -> ElementCondition:
     return element_has_tag(expected, 'has tag containing', predicate.includes)
+
+
+def _is_collection_empty(collection: Collection) -> bool:
+    warnings.warn('match.collection_is_empty or be.empty is deprecated; '
+                  'use more explicit and obvious have.size(0) instead', DeprecationWarning)
+    return len(collection()) == 0
+
+
+collection_is_empty: CollectionCondition = \
+    CollectionCondition.raise_if_not('is empty', _is_collection_empty)
 
 
 def collection_has_size(expected: int,

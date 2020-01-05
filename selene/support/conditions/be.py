@@ -22,8 +22,7 @@
 import warnings
 
 from selene import match
-from selene.common.helpers import warn
-from selene.support.conditions import not_
+from selene.support.conditions import not_  # don't remove this line
 
 
 visible = match.element_is_visible
@@ -39,17 +38,11 @@ absent = match.element_is_absent
 enabled = match.element_is_enabled
 disabled = match.element_is_disabled
 
+clickable = match.element_is_clickable
+
 blank = match.element_is_blank
 
 
 # --- Deprecated --- #
 
-
-clickable = warn('might be deprecated', PendingDeprecationWarning)\
-    .when(lambda: match.element_is_visible.and_(match.element_is_enabled))
-
-empty = warn('might be deprecated, use have.size(0) instead', PendingDeprecationWarning) \
-    .when(lambda: match.collection_has_size(0))
-
-or_not_to_be = warn('deprecated, probably you have never used it:)', DeprecationWarning) \
-    .when(lambda: None)
+empty = match.collection_is_empty

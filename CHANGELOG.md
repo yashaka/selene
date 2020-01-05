@@ -1,6 +1,12 @@
 # Changelog
 
-## 2.0.0a6 (to be released on 05.01.2020)
+## 2.0.0a7 (to be released on 06.01.2020)
+- removed some deprecation markings
+  - from selene.common.helpers warn helpers
+  - from selene.condition.not_, selene.condition.Condition#not_
+  - from be.clickable
+
+## 2.0.0a6 (released on 05.01.2020)
 - fixed `entity.with_(...)`
   - where entity = browser | element | collection
 

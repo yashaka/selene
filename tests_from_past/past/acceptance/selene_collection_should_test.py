@@ -20,4 +20,30 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-VERSION = '2.0.0a7'
+import pytest
+from selenium.common.exceptions import TimeoutException
+
+from selene.support.past.browser import *
+from selene.support.conditions import have
+from selene.support.jquery_style_selectors import ss
+from tests_from_past.past.acceptance import get_test_driver
+from tests_from_past.past.acceptance import given_active
+
+
+def setup_module(m):
+    set_driver(get_test_driver())
+
+
+def teardown_module(m):
+    driver().quit()
+
+
+def test_should_passes():
+    given_active("a", "b")
+    ss("#todo-list>li").should(have.exact_texts("a", "b"))
+
+
+def test_should_fails():
+    given_active("a", "b")
+    with pytest.raises(TimeoutException):
+        ss("#todo-list>li").should(have.exact_texts("a.", "b."), timeout=0.1)

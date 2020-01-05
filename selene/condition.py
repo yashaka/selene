@@ -127,8 +127,7 @@ class Condition(Callable[[E], None]):
         return fn
 
     @property
-    def not_(self) -> Condition[E]:
-        warnings.warn('might be renamed and deprecated...', PendingDeprecationWarning)
+    def not_(self) -> Condition[E]:  # todo: better name?
         return self.__class__.as_not(self)
 
     def __call__(self, *args, **kwargs):
@@ -147,6 +146,5 @@ class Condition(Callable[[E], None]):
         return Condition.by_or(self, condition)
 
 
-def not_(condition_to_be_inverted: Condition):
-    warnings.warn('might be deprecated; consider using Condition.as_not instead', PendingDeprecationWarning)
+def not_(condition_to_be_inverted: Condition):  # todo: do we really need it?
     return condition_to_be_inverted.not_

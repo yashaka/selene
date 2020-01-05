@@ -20,4 +20,22 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-VERSION = '2.0.0a7'
+import pytest
+
+from selene.support.past.browser import driver, set_driver
+from tests_from_past.past.acceptance import get_test_driver
+
+
+@pytest.fixture(scope='class')
+def setup(request):
+    set_driver(get_test_driver())
+
+    def teardown():
+        driver().quit()
+
+    request.addfinalizer(teardown)
+
+
+@pytest.mark.usefixtures("setup")
+class BaseTest(object):
+    pass

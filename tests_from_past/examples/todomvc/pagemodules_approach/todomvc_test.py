@@ -20,4 +20,38 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-VERSION = '2.0.0a7'
+from selene.support.past.browser import execute_script
+from tests_from_past.examples.todomvc.pagemodules_approach.pages import tasks
+
+
+class TestTodoMVC(object):
+
+    def teardown(self):
+        execute_script('localStorage.clear()')
+
+    def test_filter_tasks(self):
+
+        tasks.visit()
+
+        tasks.add('a', 'b', 'c')
+        tasks.should_be('a', 'b', 'c')
+
+        tasks.toggle('b')
+
+        tasks.filter_active()
+        tasks.should_be('a', 'c')
+
+        tasks.filter_completed()
+        tasks.should_be('b')
+        
+    def test_clear_completed(self):
+        tasks.visit()
+
+        tasks.add('a', 'b', 'c')
+        tasks.toggle('b')
+        tasks.clear_completed()
+        
+        tasks.should_be('a', 'c')
+
+
+
