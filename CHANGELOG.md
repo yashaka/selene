@@ -1,7 +1,8 @@
 # Changelog
 
-## 2.0.0a6 (to be released on 0?.01.2020)
-- todo: fix `entity.with_(...)`
+## 2.0.0a6 (to be released on 05.01.2020)
+- fixed `entity.with_(...)`
+  - where entity = browser | element | collection
 
 ## 2.0.0a5 (released on 03.01.2020)
 - enhanced migratability of 2.*:

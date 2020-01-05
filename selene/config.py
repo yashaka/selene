@@ -23,14 +23,13 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Callable
+from typing import Callable, Optional
 
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.remote.webdriver import WebDriver
 
 # todo: consider making these dataclasses be Mapping-like, so can be used in the 'dict' context
 from selene.common import fp
-from selene.common.helpers import as_dict
 
 
 @dataclass(frozen=True)
@@ -43,16 +42,68 @@ class Hooks:
     wait: WaitHooks = WaitHooks(failure=fp.identity)
 
 
-@dataclass(frozen=True)
-class Config:  # todo: consider making a base Config class unfrozen, and then use frozen version in browser
-    driver: WebDriver = None
-    timeout: int = 4
-    base_url: str = ''
-    set_value_by_js: bool = False
-    type_by_js: bool = False
-    window_width: int = None
-    window_height: int = None
-    hooks: Hooks = Hooks()
+def _strip_first_underscore(name: str) -> str:
+    return name[1:] if name.startswith('_') else name
+
+
+class Config:
+    def __init__(self,
+                 driver: Optional[WebDriver] = None,
+                 timeout: int = 4,
+                 base_url: str = '',
+                 set_value_by_js: bool = False,
+                 type_by_js: bool = False,
+                 window_width: Optional[int] = None,
+                 window_height: Optional[int] = None,
+                 hooks: Hooks = Hooks()):
+        self._driver = driver
+        self._timeout = timeout
+        self._base_url = base_url
+        self._set_value_by_js = set_value_by_js
+        self._type_by_js = type_by_js
+        self._window_width = window_width
+        self._window_height = window_height
+        self._hooks = hooks
+
+    def as_dict(self, skip_empty=True):
+        return {_strip_first_underscore(k): v
+                for k, v in self.__dict__.items()
+                if not (skip_empty and v is None) and not k.startswith('__')
+                }
 
     def with_(self, config: Config = None, **config_as_kwargs) -> Config:
-        return self.__class__(**{**as_dict(self), **as_dict(config), **config_as_kwargs})
+        return self.__class__(**{**self.as_dict(),
+                                 **(config.as_dict() if config else {}),
+                                 **config_as_kwargs})
+
+    @property
+    def driver(self) -> Optional[WebDriver]:
+        return self._driver
+
+    @property
+    def timeout(self) -> int:
+        return self._timeout
+
+    @property
+    def base_url(self) -> str:
+        return self._base_url
+
+    @property
+    def set_value_by_js(self) -> bool:
+        return self._set_value_by_js
+
+    @property
+    def type_by_js(self) -> bool:
+        return self._type_by_js
+
+    @property
+    def window_width(self) -> Optional[int]:
+        return self._window_width
+
+    @property
+    def window_height(self) -> Optional[int]:
+        return self._window_height
+
+    @property
+    def hooks(self) -> Hooks:
+        return self._hooks
