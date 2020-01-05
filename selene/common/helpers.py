@@ -50,6 +50,10 @@ def flatten(list_of_lists: List[list]) -> list:
     return [item for sublist in list_of_lists for item in sublist]
 
 
+def dissoc(associated: dict, *keys: str) -> dict:
+    return {k:v for k,v in associated.items() if k not in keys}
+
+
 def on_error_return_false(no_args_predicate):
     try:
         return no_args_predicate()

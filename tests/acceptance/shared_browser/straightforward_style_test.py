@@ -27,17 +27,16 @@ from selene.browser import open_url
 def test_selene_demo():
     config.browser_name = 'firefox'  # chrome was default
 
-    tasks = ss('#todo-list>li')
+    tasks = ss('#todo-list>li').with_(timeout=config.timeout/2)
     active_tasks = tasks.filtered_by(have.css_class('active'))
 
-    # browser.with_(timeout=config.timeout*2).open('https://todomvc4tasj.herokuapp.com/')
-    browser.open('https://todomvc4tasj.herokuapp.com/')
+    customized = browser.with_(timeout=config.timeout*2)
+    customized.open('https://todomvc4tasj.herokuapp.com/')
     open_url('https://www.yahoo.com/')  # or like this
     browser.driver.get('http://google.com')  # just in case, you can use the driver directly too
     browser.driver().get('https://todomvc4tasj.herokuapp.com/')  # temporary this works too;)
     is_todo_mvc_loaded = 'return (Object.keys(require.s.contexts._.defined).length === 39)'
-    # browser.with_(timeout=config.timeout*2).should(have.js_returned_true(is_todo_mvc_loaded)) # todo: make it work
-    browser.should(have.js_returned_true(is_todo_mvc_loaded))
+    browser.with_(timeout=config.timeout*2).should(have.js_returned_true(is_todo_mvc_loaded)) # todo: make it work
 
     for text in ['1', '2', '3']:
         s('#new-todo')\
@@ -62,6 +61,6 @@ def test_selene_demo():
     tasks[2].should(be.hidden)  # same as: ...
     tasks[2].should(be.not_.visible)
 
-    s(by.id('toggle-all')).click()
+    s(by.id('toggle-all')).with_(timeout=config.timeout/2).click()
     s('//*[@id="clear-completed"]').click()
     tasks.should(be.empty)

@@ -28,38 +28,99 @@ import os
 import time
 import warnings
 from functools import lru_cache
-from typing import List
+from typing import Optional, TypeVar, Generic
 
 from selenium.webdriver import ChromeOptions, Chrome, Firefox
 from selenium.webdriver.remote.webdriver import WebDriver
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 
-from selene.common.helpers import on_error_return_false
-from selene.config import Config
+from selene.common.helpers import on_error_return_false, dissoc
+from selene.config import Config, Hooks
+
+
+T = TypeVar('T')
+
+
+class Source(Generic[T]):
+    def __init__(self, value: T = None):
+        self._value = value
+
+    def put(self, value: T):
+        self._value = value
+
+    @property
+    def value(self) -> T:
+        return self._value
 
 
 # noinspection PyDataclass
 class SharedConfig(Config):
-    def __setattr__(self, attr, value):
-        """unfreeze self"""
-        object.__setattr__(self, attr, value)
+    def __init__(self,
+                 # Config
+                 driver: Optional[WebDriver] = None,
+                 timeout: int = 4,  # todo: consider removing defaults
+                 base_url: str = '',
+                 set_value_by_js: bool = False,
+                 type_by_js: bool = False,
+                 window_width: Optional[int] = None,
+                 window_height: Optional[int] = None,
+                 hooks: Hooks = Hooks(),
+                 # SharedConfig
+                 source: Source[WebDriver] = Source(),
+                 browser_name: str = 'chrome',
+                 hold_browser_open: bool = False,
+                 poll_during_waits: int = 100
+                 ):
+        self._source = source
+        if driver:
+            self._source.put(driver)
+        self._browser_name = browser_name
+        self._hold_browser_open = hold_browser_open
+        self._poll_during_waits = poll_during_waits  # todo consider to depracate
+        super().__init__(driver=driver,
+                         timeout=timeout,
+                         base_url=base_url,
+                         set_value_by_js=set_value_by_js,
+                         type_by_js=type_by_js,
+                         window_width=window_width,
+                         window_height=window_height,
+                         hooks=hooks)
 
-    hold_browser_open: bool = False
+    @property
+    def hold_browser_open(self) -> bool:
+        return self._hold_browser_open
 
-    _driver: WebDriver = None
-    _browser_name: str
+    @hold_browser_open.setter
+    def hold_browser_open(self, value: bool):
+        self._hold_browser_open = value
+
+    @property
+    def browser_name(self) -> str:
+        return self._browser_name
+
+    @browser_name.setter
+    def browser_name(self, value: str):
+        self._browser_name = value
+        # todo: should we kill current driver if browser_name is changed?
+        #       or should we open one more? so afterwards the user can switch...
+        #       what about making such "mode" also configurable? ;)
+
+    # todo: consider deprecating changing opts like timeout after driver was created
+    #       make driver be recreated in such cases
+    #       but again... what about making this configurable too? as a "mode"...
+
+    # --- Config.*, overriden --- #
 
     @property
     def driver(self) -> WebDriver:
-        stored = self._driver
+        stored = self._source.value
         is_alive = on_error_return_false(lambda: stored.title is not None)
 
         if stored and \
                 stored.session_id and \
                 is_alive and \
                 stored.name == self.browser_name:
-
             return stored
 
         if stored:
@@ -75,19 +136,19 @@ class SharedConfig(Config):
         if not self.hold_browser_open:
             atexit.register(new.quit)
 
-        self._driver = new
+        self._source.put(new)
 
         return new
 
     @driver.setter
     def driver(self, value: WebDriver):
-        stored = self._driver
+        stored = self._source.value
         is_another_driver = on_error_return_false(lambda: value.session_id != stored.session_id)
 
         if is_another_driver:
             stored.quit()  # todo: can quit raise exception? handle then...
 
-        self._driver = value
+        self._source.put(value)
 
         self.browser_name = value and value.name
 
@@ -104,24 +165,7 @@ class SharedConfig(Config):
     #              how can we make it impossible?
     #              or what else better name can we choose?
 
-    @property
-    def browser_name(self) -> str:
-        return self._browser_name or 'chrome'
-
-    @browser_name.setter
-    def browser_name(self, value: str):
-        self._browser_name = value
-        # todo: should we kill current driver if browser_name is changed?
-        #       or should we open one more? so afterwards the user can switch...
-        #       what about making such "mode" also configurable? ;)
-
-    # todo: consider deprecating changing opts like timeout after driver was created
-    #       make driver be recreated in such cases
-    #       but again... what about making this configurable too? as a "mode"...
-
     # --- consider to depracate --- #
-
-    _poll_during_waits: int
 
     @property
     def poll_during_waits(self) -> int:
