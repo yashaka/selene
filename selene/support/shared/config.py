@@ -38,7 +38,6 @@ from webdriver_manager.firefox import GeckoDriverManager
 from selene.common.helpers import on_error_return_false, dissoc
 from selene.config import Config, Hooks
 
-
 T = TypeVar('T')
 
 
@@ -56,6 +55,9 @@ class Source(Generic[T]):
 
 # noinspection PyDataclass
 class SharedConfig(Config):
+    # todo: consider using SharedConfig object to be used as config only once... on init at first call to browser...
+    #       i.e. do not allow config.* = ... after first call to e.g. browser.open, etc...
+    #       since anyway this is a bad habit, better to use browser.with_(timeout=...), element.with_(...), etc.
     def __init__(self,
                  # Config
                  driver: Optional[WebDriver] = None,
@@ -68,16 +70,23 @@ class SharedConfig(Config):
                  hooks: Hooks = Hooks(),
                  # SharedConfig
                  source: Source[WebDriver] = Source(),
-                 browser_name: str = 'chrome',
+                 browser_name: str = 'chrome',  # todo: rename to config.type? config.name? config.browser?
                  hold_browser_open: bool = False,
-                 poll_during_waits: int = 100
+                 poll_during_waits: int = 100,
+                 counter=None,  # default is set below
+                 reports_folder: Optional[str] = None  # default is set below
                  ):
         self._source = source
         if driver:
             self._source.put(driver)
         self._browser_name = browser_name
         self._hold_browser_open = hold_browser_open
-        self._poll_during_waits = poll_during_waits  # todo consider to depracate
+        self._poll_during_waits = poll_during_waits  # todo consider to deprecate
+        self._counter = counter or itertools.count(start=int(round(time.time() * 1000)))  # todo: deprecate?
+        self._reports_folder = reports_folder or os.path.join(os.path.expanduser('~'),
+                                                              '.selene',
+                                                              'screenshots',
+                                                              str(next(self._counter)))
         super().__init__(driver=driver,
                          timeout=timeout,
                          base_url=base_url,
@@ -87,30 +96,7 @@ class SharedConfig(Config):
                          window_height=window_height,
                          hooks=hooks)
 
-    @property
-    def hold_browser_open(self) -> bool:
-        return self._hold_browser_open
-
-    @hold_browser_open.setter
-    def hold_browser_open(self, value: bool):
-        self._hold_browser_open = value
-
-    @property
-    def browser_name(self) -> str:
-        return self._browser_name
-
-    @browser_name.setter
-    def browser_name(self, value: str):
-        self._browser_name = value
-        # todo: should we kill current driver if browser_name is changed?
-        #       or should we open one more? so afterwards the user can switch...
-        #       what about making such "mode" also configurable? ;)
-
-    # todo: consider deprecating changing opts like timeout after driver was created
-    #       make driver be recreated in such cases
-    #       but again... what about making this configurable too? as a "mode"...
-
-    # --- Config.*, overriden --- #
+    # --- Config.driver new "shared logic" --- #
 
     @property
     def driver(self) -> WebDriver:
@@ -165,6 +151,61 @@ class SharedConfig(Config):
     #              how can we make it impossible?
     #              or what else better name can we choose?
 
+    # --- Config.* added setters --- #
+
+    @Config.timeout.setter
+    def timeout(self, value: int):
+        self._timeout = value
+
+    @Config.base_url.setter
+    def base_url(self, value: str):
+        self._base_url = value
+
+    @Config.set_value_by_js.setter
+    def set_value_by_js(self, value: bool):
+        self._set_value_by_js = value
+
+    @Config.type_by_js.setter
+    def type_by_js(self, value: bool):
+        self._type_by_js = value
+
+    @Config.window_width.setter
+    def window_width(self, value: Optional[int]):
+        self._window_width = value
+
+    @Config.window_height.setter
+    def window_height(self, value: Optional[int]):
+        self._window_height = value
+
+    @Config.hooks.setter
+    def hooks(self, value: Hooks):
+        self._hooks = value
+
+    # --- SharedConfig.* new props --- #
+
+    @property
+    def hold_browser_open(self) -> bool:
+        return self._hold_browser_open
+
+    @hold_browser_open.setter
+    def hold_browser_open(self, value: bool):
+        self._hold_browser_open = value
+
+    @property
+    def browser_name(self) -> str:
+        return self._browser_name
+
+    @browser_name.setter
+    def browser_name(self, value: str):
+        self._browser_name = value
+        # todo: should we kill current driver if browser_name is changed?
+        #       or should we open one more? so afterwards the user can switch...
+        #       what about making such "mode" also configurable? ;)
+
+    # todo: consider deprecating changing opts like timeout after driver was created
+    #       make driver be recreated in such cases
+    #       but again... what about making this configurable too? as a "mode"...
+
     # --- consider to depracate --- #
 
     @property
@@ -177,31 +218,23 @@ class SharedConfig(Config):
         warnings.warn('might be deprecated', PendingDeprecationWarning)
         self._poll_during_waits = value
 
-    _counter = None
-
     @property
     @lru_cache()
     def counter(self):
         warnings.warn('might be deprecated', PendingDeprecationWarning)
-        return self._counter or itertools.count(start=int(round(time.time() * 1000)))
+        return self._counter
 
     @counter.setter
     def counter(self, value):
         warnings.warn('might be deprecated', PendingDeprecationWarning)
         self._counter = value
 
-    _reports_folder: str
-
     @property
     def reports_folder(self) -> str:
         warnings.warn('might be deprecated', PendingDeprecationWarning)
-        return self._reports_folder or os.path.join(
-            os.path.expanduser('~'),
-            '.selene',
-            'screenshots',
-            str(next(self.counter)))
+        return self._reports_folder
 
     @reports_folder.setter
     def reports_folder(self, value):
         warnings.warn('might be deprecated', PendingDeprecationWarning)
-        pass
+        return self._reports_folder

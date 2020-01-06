@@ -1,6 +1,9 @@
 # Changelog
 
-## 2.0.0a7 (to be released on 06.01.2020)
+## 2.0.0a8 (to be released on 06.01.2020)
+- fixed config.* setters (timeout, base_url, etc...)
+
+## 2.0.0a7 (released on 05.01.2020)
 - removed some deprecation markings
   - from selene.common.helpers warn helpers
   - from selene.condition.not_, selene.condition.Condition#not_
