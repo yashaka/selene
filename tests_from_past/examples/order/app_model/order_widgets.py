@@ -22,9 +22,9 @@
 
 from future.utils import iteritems
 
-from selene.support.past import browser
-from selene.support.past.elements import SeleneElement
-from selene.support.past.helpers import merge
+from selene.api.past import browser
+from selene.api.past import SeleneElement
+from selene.api.past import merge
 from selene.support.conditions import be
 from selene.support.conditions import have
 from selene.support.jquery_style_selectors import s, ss

@@ -23,14 +23,12 @@
 import pytest
 from selenium.common.exceptions import TimeoutException
 
-from selene.support.past import config
-from selene.support.past.conditions import hidden, exist
-from selene.support.jquery_style_selectors import s
+from selene.api.past import hidden, exist
 from tests_from_past.past.acceptance import get_test_driver
 
 __author__ = 'yashaka'
 
-from selene.support.past.browser import *
+from selene.api.past import *
 from tests_from_past.past.acceptance import given_active, given_at_other_page, given_empty_tasks, given, task
 
 

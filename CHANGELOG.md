@@ -1,6 +1,26 @@
 # Changelog
 
-## 2.0.0a8 (to be released on 06.01.2020)
+## 2.0.0a9 (to be released on 07.01.2020)
+- enhanced migratability of 2.*:
+  - temporally added deprecated modules
+    - selene.elements
+    - selene.browsers
+    - selene.driver
+  - ensured proper config can be imported from selene (`from selene import config`)
+- ensured everything potentially needed in real use is available after `from selene.api import *`
+  - it includes mentioned below selene.api.base.* and selene.api.shared.* imports
+- added selene.api.base for "hardcore" users
+  - with `from selene.api.base import *`
+  - included only Browser + Config for manual driver creation
+  - and by, be, have for extra selectors and conditions
+- added selene.api.shared for "easy tests with selene" with automatic driver creation
+  - with `from selene.api.shared import *`
+  - you can get browser.* and config.* for automatically created driver, 
+    - with customization through config.*
+- added also all usually needed imports to selene.*
+- yet unsure what imports will be left in the end :) thinking...
+
+## 2.0.0a8 (released on 06.01.2020)
 - fixed config.* setters (timeout, base_url, etc...)
 
 ## 2.0.0a7 (released on 05.01.2020)

@@ -25,10 +25,10 @@ import os
 import pytest
 from selenium.common.exceptions import TimeoutException
 
-from selene.support.past import config
-from selene.support.past.conditions import url, url_containing
-from selene.support.past.browser import open_url, driver
-from selene.support.past.browser import wait_to
+from selene.api.past import config
+from selene.api.past import url, url_containing
+from selene.api.past import open_url, driver
+from selene.api.past import wait_to
 
 start_page = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/start_page.html'
 

@@ -23,7 +23,7 @@
 from selene.api import *
 
 # app_url = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/todomvcapp/home.html'
-from selene.support.past.conditions import not_
+from selene.api.past import not_
 
 app_url = 'https://todomvc4tasj.herokuapp.com/'
 # is_TodoMVC_loaded = ('return '

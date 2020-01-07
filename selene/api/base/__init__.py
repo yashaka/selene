@@ -20,9 +20,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from selene.entity import Element, Collection
-from selene.support.shared import browser, config
-from selene.support.past.support import by  # todo: make analog in selene.*
+from selene.entity import Browser
+from selene.configuration import Config
+
+from selene.support import by
+
 from selene.support.conditions import be, have
-from selene.condition import not_
-from selene.support.jquery_style_selectors import s, ss

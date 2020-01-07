@@ -22,8 +22,6 @@
 
 import os
 
-from selene.support.past.environment import *
-
 try:
     reload  # Python 2.7
 except NameError:
@@ -32,7 +30,7 @@ except NameError:
     except ImportError:
         from imp import reload  # Python 3.0 - 3.3
 
-from selene.support.past import config
+from selene.api.past import config
 
 old_timeout = config.timeout
 old_polling_interval = config.poll_during_waits

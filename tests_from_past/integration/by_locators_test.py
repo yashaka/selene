@@ -23,10 +23,10 @@
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 
-from selene.support.past import config
-from selene.support.past.common.none_object import NoneObject
-from selene.support.past.driver import SeleneDriver
-from selene.support.past.support import by
+from selene.api.past import config
+from selene.common.none_object import NoneObject
+from selene.api.past import SeleneDriver
+from selene.support import by
 from tests_from_past.integration.helpers import GivenPage
 
 __author__ = 'yashaka'

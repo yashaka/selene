@@ -24,9 +24,9 @@
 
 import os
 
-from selene.support.past import browser, config
-from selene.support.past.browsers import BrowserName
-from selene.support.past.conditions import texts, exact_text
+from selene.api.past import browser, config
+from selene.api.past import BrowserName
+from selene.api.past import texts, exact_text
 from selene.support.conditions import have
 from selene.support.jquery_style_selectors import s, ss
 

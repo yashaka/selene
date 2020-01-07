@@ -22,12 +22,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from selene.support.past import browser, config
+from selene.api.past import browser, config
 from selene.support.conditions import be
 from selene.support.conditions import have
 
-from selene.support.past.bys import by_link_text
-from selene.support.past.conditions import exact_text
+from selene.bys import by_link_text
+from selene.api.past import exact_text
 from selene.support.jquery_style_selectors import s, ss
 
 

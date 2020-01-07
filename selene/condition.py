@@ -22,10 +22,9 @@
 
 from __future__ import annotations
 
-import warnings
 from typing import List, TypeVar, Callable
 
-from selene.support.past.exceptions import ConditionNotMatchedError
+from selene.exceptions import ConditionNotMatchedError
 from selene.wait import Predicate, Lambda
 
 

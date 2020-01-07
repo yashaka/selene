@@ -20,3 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+
+class ConditionNotMatchedError(AssertionError):
+    def __init__(self, message = 'condition not matched'):
+        super(ConditionNotMatchedError, self).__init__(message)

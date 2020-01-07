@@ -23,7 +23,6 @@
 import pytest
 from selenium.common.exceptions import TimeoutException
 
-from selene.support.past.browser import *
 from selene.support.conditions import have
 from selene.support.jquery_style_selectors import ss
 from tests_from_past.past.acceptance import get_test_driver

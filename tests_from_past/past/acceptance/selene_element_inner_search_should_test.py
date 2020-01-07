@@ -20,13 +20,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from selene.support.conditions import have
-from selene.support.jquery_style_selectors import s
 from tests_from_past.past.acceptance import get_test_driver
 
 __author__ = 'yashaka'
 
-from selene.support.past.browser import *
+from selene.api.past import *
 from tests_from_past.past.acceptance import given_active
 
 

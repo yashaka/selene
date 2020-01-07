@@ -25,12 +25,12 @@ import os
 import pytest
 
 import selene
-import selene.support.past.driver
+import selene.api.past.driver
 
-from selene.support.past import config, factory
-from selene.support.past.browsers import BrowserName
-from selene.support.past.common.none_object import NoneObject
-from selene.support.past.browser import driver, set_driver, open_url
+from selene.api.past import config, factory
+from selene.api.past import BrowserName
+from selene.common.none_object import NoneObject
+from selene.api.past import driver, set_driver, open_url
 
 from tests_from_past.past.acceptance import get_test_driver
 
@@ -82,7 +82,7 @@ def x_test_ensure_driver_has_started_with_marionette():
 
 
 def test_can_get_set_shared_driver():
-    selene.support.past.driver._shared_web_driver_source.driver = NoneObject("NoneObject")
+    selene.api.past.driver._shared_web_driver_source.driver = NoneObject("NoneObject")
     shared_driver = factory.get_shared_driver()
     assert isinstance(shared_driver, NoneObject)
     factory.set_shared_driver(get_test_driver())

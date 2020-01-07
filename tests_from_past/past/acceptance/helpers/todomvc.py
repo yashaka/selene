@@ -24,11 +24,11 @@ import os
 
 from selenium.webdriver.support.wait import WebDriverWait
 
-from selene.support.past import config
-from selene.support.past.conditions import visible
-from selene.support.past.browser import driver
+from selene.api.past import config
+from selene.api.past import visible
+from selene.api.past import driver
 from selene.support.jquery_style_selectors import s
-from selene.support.past.wait import satisfied
+from selene.api.past import satisfied
 
 __author__ = 'yashaka'
 

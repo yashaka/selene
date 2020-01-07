@@ -20,3 +20,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from selene.entity import SeleneElement, SeleneCollection
+
+# todo: remove this file once deprecated SeleneElement, SeleneCollection are completely removed

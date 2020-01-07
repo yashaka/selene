@@ -23,7 +23,7 @@
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 
-from selene.support.past import browser
+from selene.api.past import browser
 from selene.support.conditions import have
 from selene.support.jquery_style_selectors import s, ss
 

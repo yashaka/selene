@@ -24,9 +24,8 @@ from tests_from_past.past.acceptance import get_test_driver
 
 __author__ = 'yashaka'
 
-from selene.support.past.browser import *
 from tests_from_past.past.acceptance import given_active
-from selene.support.past.bys import *
+from selene.bys import *
 
 
 def setup_module(m):

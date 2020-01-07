@@ -25,8 +25,8 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 
-from selene.support.past.conditions import visible
-from selene.support.past.browser import set_driver, driver, open_url
+from selene.api.past import visible
+from selene.api.past import set_driver, driver, open_url
 from selene.support.jquery_style_selectors import s
 from tests_from_past.past.acceptance import get_test_driver
 from tests.helpers import time_spent

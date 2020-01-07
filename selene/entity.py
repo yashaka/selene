@@ -34,7 +34,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.switch_to import SwitchTo
 from selenium.webdriver.remote.webelement import WebElement
 
-from selene.config import Config
+from selene.configuration import Config
 from selene.wait import Wait, Command, Query
 from selene.condition import Condition
 from selene.locator import Locator
@@ -813,7 +813,7 @@ class SeleneCollection(Collection):  # todo: consider deprecating this name
 
 
 class Browser(WaitingEntity):
-    def __init__(self, config: Config):
+    def __init__(self, config: Config): # todo: what about adding **config_as_kwargs?
         super().__init__(config)
 
     # todo: consider implement it as context manager too...

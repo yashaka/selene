@@ -23,9 +23,9 @@
 import pytest
 from selenium.common.exceptions import TimeoutException
 
-from selene.support.past import config
-from selene.support.past.common.none_object import NoneObject
-from selene.support.past.driver import SeleneDriver
+from selene.api.past import config
+from selene.common.none_object import NoneObject
+from selene.api.past import SeleneDriver
 from tests_from_past.past.acceptance import get_test_driver
 from tests_from_past.integration.helpers import GivenPage
 

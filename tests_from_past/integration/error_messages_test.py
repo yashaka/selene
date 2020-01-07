@@ -26,8 +26,8 @@ from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
 from webdriver_manager.chrome import ChromeDriverManager
 
-from selene.support.past import browser, config
-from selene.support.past.common.none_object import NoneObject
+from selene.api.past import browser, config
+from selene.common.none_object import NoneObject
 from selene.support.conditions import have
 from selene.support.jquery_style_selectors import s, ss
 from tests_from_past.integration.helpers import GivenPage

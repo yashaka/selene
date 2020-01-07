@@ -61,6 +61,6 @@ def test_selene_demo():
     tasks[2].should(be.hidden)  # same as: ...
     tasks[2].should(be.not_.visible)
 
-    s(by.id('toggle-all')).with_(timeout=config.timeout/2).click()
+    s(by.id('toggle-all')).with_(timeout=config.timeout / 2).click()
     s('//*[@id="clear-completed"]').click()
     tasks.should(be.empty)

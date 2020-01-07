@@ -36,7 +36,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 
 from selene.common.helpers import on_error_return_false, dissoc
-from selene.config import Config, Hooks
+from selene.configuration import Config, Hooks
 
 T = TypeVar('T')
 

@@ -20,4 +20,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from selene.support.past import *
+from selene.api.base import *
+
+from selene.api.shared import *
+
+from selene.support.jquery_style_selectors import s, ss
+
+from selene.condition import not_  # just in case
+
+# --- probably just for Type Hints --- #
+
+from selene.entity import Element, Collection
+from selene.condition import Condition

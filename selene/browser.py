@@ -26,7 +26,7 @@ from typing import Union
 from selenium.webdriver.remote.webdriver import WebDriver
 
 from selene.entity import Collection, Element
-from selene.config import Config
+from selene.configuration import Config
 from selene.support.shared import config, browser
 
 
@@ -69,6 +69,13 @@ def set_driver(webdriver: WebDriver):
 
     # noinspection PyDataclass
     browser.config.driver = webdriver  # todo: test it
+
+
+def open(absolute_or_relative_url):
+    warnings.warn(
+        'deprecated; use explicit browser.* style when browser is imported from selene.support.shared',
+        DeprecationWarning)
+    return browser.open(absolute_or_relative_url)
 
 
 def open_url(absolute_or_relative_url):

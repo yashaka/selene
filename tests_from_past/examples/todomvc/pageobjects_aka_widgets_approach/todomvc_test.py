@@ -20,8 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from selene.support.past import browser
-from selene.support.past.conditions import exact_text, hidden, exact_texts
+from selene.api.past import browser
+from selene.api.past import exact_text, hidden, exact_texts
 from selene.support.jquery_style_selectors import s, ss
 
 from tests_from_past.past.acceptance import get_test_driver

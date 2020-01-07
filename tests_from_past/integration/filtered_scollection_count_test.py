@@ -20,9 +20,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from selene.support.past import config
-from selene.support.past.common.none_object import NoneObject
-from selene.support.past.driver import SeleneDriver
+from selene.api.past import config
+from selene.common.none_object import NoneObject
+from selene.api.past import SeleneDriver
 from selene.support.conditions import have
 from tests_from_past.past.acceptance import get_test_driver
 from tests_from_past.integration.helpers import GivenPage

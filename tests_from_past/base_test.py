@@ -22,7 +22,7 @@
 
 import pytest
 
-from selene.support.past.browser import driver, set_driver
+from selene.api.past import driver, set_driver
 from tests_from_past.past.acceptance import get_test_driver
 
 
