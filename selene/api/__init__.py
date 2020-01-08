@@ -26,9 +26,10 @@ from selene.api.shared import *
 
 from selene.support.jquery_style_selectors import s, ss
 
-from selene.condition import not_  # just in case
+from selene.core.condition import not_  # just in case
+
 
 # --- probably just for Type Hints --- #
 
-from selene.entity import Element, Collection
-from selene.condition import Condition
+from selene.core.entity import Element, Collection
+from selene.core.condition import Condition

@@ -19,18 +19,4 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from selene.condition import Condition
-from selene.entity import Browser, Element, Collection
-from selene.condition import not_  # todo: remove once deprecating finished
 
-
-class ElementCondition(Condition[Element]):
-    pass
-
-
-class CollectionCondition(Condition[Collection]):
-    pass
-
-
-class BrowserCondition(Condition[Browser]):
-    pass

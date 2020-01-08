@@ -35,8 +35,8 @@ from selenium.webdriver.remote.webdriver import WebDriver
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 
-from selene.common.helpers import on_error_return_false, dissoc
-from selene.configuration import Config, Hooks
+from selene.common.helpers import on_error_return_false
+from selene.core.configuration import Config, Hooks
 
 T = TypeVar('T')
 

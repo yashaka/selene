@@ -22,9 +22,10 @@
 import warnings
 from typing import Any
 
-from selene import match
-from selene.support.conditions import not_ as no
+from selene.core import match
+from selene.support.conditions import not_ as _not_
 
+no = _not_
 
 def exact_text(value) -> match.ElementCondition:
     return match.element_has_exact_text(value)

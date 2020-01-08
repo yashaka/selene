@@ -25,8 +25,8 @@ from typing import Union
 
 from selenium.webdriver.remote.webdriver import WebDriver
 
-from selene.entity import Collection, Element
-from selene.configuration import Config
+from selene.core.entity import Collection, Element
+from selene.core.configuration import Config
 from selene.support.shared import config, browser
 
 

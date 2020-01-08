@@ -21,8 +21,8 @@
 # SOFTWARE.
 from typing import Union
 
-from selene.entity import Element
-from selene.wait import Command
+from selene.core.entity import Element
+from selene.core.wait import Command
 
 
 # noinspection PyPep8Naming

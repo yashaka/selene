@@ -21,7 +21,7 @@
 # SOFTWARE.
 from typing import Union
 
-from selene.entity import Element, Collection
+from selene.core.entity import Element, Collection
 from selene.support.shared import browser
 
 

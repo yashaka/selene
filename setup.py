@@ -19,6 +19,7 @@ setup(
               'selene.api.base',
               'selene.api.shared',
               'selene.common',
+              'selene.core',
               'selene.support',
               'selene.support.shared',
               'selene.support.conditions',

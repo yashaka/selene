@@ -20,8 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from selene.entity import Browser
-from selene.configuration import Config
+from selene.core.entity import Browser
+from selene.core.configuration import Config
 
 from selene.support import by
 

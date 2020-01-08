@@ -24,8 +24,8 @@ from __future__ import annotations
 
 from typing import List, TypeVar, Callable
 
-from selene.exceptions import ConditionNotMatchedError
-from selene.wait import Predicate, Lambda
+from selene.core.exceptions import ConditionNotMatchedError
+from selene.core.wait import Predicate, Lambda
 
 
 E = TypeVar('E')

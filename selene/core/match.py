@@ -22,10 +22,10 @@
 import warnings
 from typing import List, Any
 
-from selene import query
+from selene.core import query
 from selene.common import predicate
-from selene.entity import Collection, Element, Browser
-from selene.conditions import ElementCondition, CollectionCondition, BrowserCondition
+from selene.core.entity import Collection, Element, Browser
+from selene.core.conditions import ElementCondition, CollectionCondition, BrowserCondition
 
 # todo: consider moving to selene.match.element.is_visible, etc...
 element_is_visible: ElementCondition = \

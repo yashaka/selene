@@ -21,8 +21,8 @@
 # SOFTWARE.
 from typing import List, Dict, Any
 
-from selene.entity import Browser, Element
-from selene.wait import Query
+from selene.core.entity import Browser, Element
+from selene.core.wait import Query
 
 
 def attribute(name: str) -> Query[Element, str]:

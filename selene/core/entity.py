@@ -34,10 +34,10 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.switch_to import SwitchTo
 from selenium.webdriver.remote.webelement import WebElement
 
-from selene.configuration import Config
-from selene.wait import Wait, Command, Query
-from selene.condition import Condition
-from selene.locator import Locator
+from selene.core.configuration import Config
+from selene.core.wait import Wait, Command, Query
+from selene.core.condition import Condition
+from selene.core.locator import Locator
 
 from selene.common.helpers import to_by, flatten, is_absolute_url
 
@@ -193,7 +193,7 @@ class Element(WaitingEntity):
             webelement.clear()  # todo: change to impl based not on clear, because clear generates post-events...
             webelement.send_keys(str(value))
 
-        from selene import command
+        from selene.core import command
         self.wait.for_(command.js.set_value(value) if self.config.set_value_by_js
                        else Command(f'set value: {value}', fn))
 
@@ -210,7 +210,7 @@ class Element(WaitingEntity):
             webelement = element()
             webelement.send_keys(str(keys))
 
-        from selene import command
+        from selene.core import command
         self.wait.for_(command.js.type(keys) if self.config.type_by_js
                        else Command(f'type: {keys}', fn))
 
@@ -307,32 +307,32 @@ class Element(WaitingEntity):
 
     def s(self, css_or_xpath_or_by: Union[str, tuple]) -> Element:
         warnings.warn(
-            "considering to deprecate; consider using `element` instead: browser.element('#foo').element('.bar')",
-            PendingDeprecationWarning)
+            "consider using more explicit `element` instead: browser.element('#foo').element('.bar')",
+            SyntaxWarning)
         return self.element(css_or_xpath_or_by)
 
     def find(self, css_or_xpath_or_by: Union[str, tuple]) -> Element:
         warnings.warn(
-            "considering to deprecate; consider using `element` instead: browser.element('#foo').element('.bar')",
-            PendingDeprecationWarning)
+            "deprecated; consider using `element` instead: browser.element('#foo').element('.bar')",
+            DeprecationWarning)
         return self.element(css_or_xpath_or_by)
 
     def ss(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection:
         warnings.warn(
-            "considering to deprecate; consider using `all` instead: browser.element('#foo').all('.bar')",
-            PendingDeprecationWarning)
+            "consider using `all` instead: browser.element('#foo').all('.bar')",
+            SyntaxWarning)
         return self.all(css_or_xpath_or_by)
 
     def find_all(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection:
         warnings.warn(
-            "considering to deprecate; consider using `all` instead: browser.element('#foo').all('.bar')",
-            PendingDeprecationWarning)
+            "deprecated; consider using `all` instead: browser.element('#foo').all('.bar')",
+            DeprecationWarning)
         return self.all(css_or_xpath_or_by)
 
     def elements(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection:
         warnings.warn(
-            "considering to deprecate; consider using `all` instead: browser.element('#foo').all('.bar')",
-            PendingDeprecationWarning)
+            "deprecated; consider using `all` instead: browser.element('#foo').all('.bar')",
+            DeprecationWarning)
         return self.all(css_or_xpath_or_by)
 
     @property
@@ -424,7 +424,7 @@ class Element(WaitingEntity):
         warnings.warn(
             "deprecated; use `browser.element('#foo').perform(command.js.scroll_into_view)` style instead",
             DeprecationWarning)
-        from selene import command
+        from selene.core import command
         self.perform(command.js.scroll_into_view)
         return self
 
@@ -454,7 +454,7 @@ class Element(WaitingEntity):
         warnings.warn(
             "deprecated; use `browser.element('#foo').get(query.tag_name)` style instead",
             DeprecationWarning)
-        from selene import query
+        from selene.core import query
         return self.get(query.tag)
 
     @property
@@ -462,42 +462,42 @@ class Element(WaitingEntity):
         warnings.warn(
             "deprecated; use `browser.element('#foo').get(query.text)` style instead",
             DeprecationWarning)
-        from selene import query
+        from selene.core import query
         return self.get(query.text)
 
     def attribute(self, name: str) -> str:
         warnings.warn(
             "deprecated; use `browser.element('#foo').get(query.attribute('name'))` style instead",
             DeprecationWarning)
-        from selene import query
+        from selene.core import query
         return self.get(query.attribute(name))
 
     def js_property(self, name: str) -> str:
         warnings.warn(
             "deprecated; use `browser.element('#foo').get(query.js_property('name'))` style instead",
             DeprecationWarning)
-        from selene import query
+        from selene.core import query
         return self.get(query.js_property(name))
 
     def value_of_css_property(self, name: str) -> str:
         warnings.warn(
             "deprecated; use `browser.element('#foo').get(query.css_property('name'))` style instead",
             DeprecationWarning)
-        from selene import query
+        from selene.core import query
         return self.get(query.css_property(name))
 
     def get_attribute(self, name: str) -> str:
         warnings.warn(
             "deprecated; use `browser.element('#foo').get(query.attribute('name'))` style instead",
             DeprecationWarning)
-        from selene import query
+        from selene.core import query
         return self.get(query.attribute(name))
 
     def get_property(self, name: str) -> str:
         warnings.warn(
             "deprecated; use `browser.element('#foo').get(query.js_property('name'))` style instead",
             DeprecationWarning)
-        from selene import query
+        from selene.core import query
         return self.get(query.js_property(name))
 
     def is_selected(self) -> bool:
@@ -526,7 +526,7 @@ class Element(WaitingEntity):
         warnings.warn(
             "deprecated; use `browser.element('#foo').get(query.location)` style instead",
             DeprecationWarning)
-        from selene import query
+        from selene.core import query
         return self.get(query.location)
 
     @property
@@ -534,7 +534,7 @@ class Element(WaitingEntity):
         warnings.warn(
             "deprecated; use `browser.element('#foo').get(query.location_once_scrolled_into_view)` style instead",
             DeprecationWarning)
-        from selene import query
+        from selene.core import query
         return self.get(query.location_once_scrolled_into_view)
 
     @property
@@ -542,7 +542,7 @@ class Element(WaitingEntity):
         warnings.warn(
             "deprecated; use `browser.element('#foo').get(query.size)` style instead",
             DeprecationWarning)
-        from selene import query
+        from selene.core import query
         return self.get(query.size)
 
     @property
@@ -550,7 +550,7 @@ class Element(WaitingEntity):
         warnings.warn(
             "deprecated; use `browser.element('#foo').get(query.rect)` style instead",
             DeprecationWarning)
-        from selene import query
+        from selene.core import query
         return self.get(query.rect)
 
     @property
@@ -558,7 +558,7 @@ class Element(WaitingEntity):
         warnings.warn(
             "deprecated; use `browser.element('#foo').get(query.screenshot_as_base64)` style instead",
             DeprecationWarning)
-        from selene import query
+        from selene.core import query
         return self.get(query.screenshot_as_base64)
 
     @property
@@ -566,14 +566,14 @@ class Element(WaitingEntity):
         warnings.warn(
             "deprecated; use `browser.element('#foo').get(query.screenshot_as_base64)` style instead",
             DeprecationWarning)
-        from selene import query
+        from selene.core import query
         return self.get(query.screenshot_as_png)
 
     def screenshot(self, filename: str) -> bool:
         warnings.warn(
             "deprecated; use `browser.element('#foo').get(query.screenshot('filename'))` style instead",
             DeprecationWarning)
-        from selene import query
+        from selene.core import query
         return self.get(query.screenshot(filename))
 
     @property
@@ -588,7 +588,7 @@ class Element(WaitingEntity):
         warnings.warn(
             "deprecated; use `browser.element('#foo').get(query.internal_id)` style instead",
             DeprecationWarning)
-        from selene import query
+        from selene.core import query
         return self.get(query.internal_id)
 
 
@@ -640,6 +640,7 @@ class Collection(WaitingEntity):
 
     @property
     def first(self):
+        warnings.warn('in the past you used .first() method, now use .first as property', SyntaxWarning)
         return self.element(0)
 
     def sliced(self, start: int, stop: int, step: int = 1) -> Collection:
@@ -678,7 +679,7 @@ class Collection(WaitingEntity):
                 if element.matching(condition):
                     return element()
 
-            from selene import query
+            from selene.core import query
             outer_htmls = [query.outer_html(element) for element in cached]
 
             raise AssertionError(
@@ -864,7 +865,7 @@ class Browser(WaitingEntity):
         return self
 
     def switch_to_next_tab(self) -> Browser:
-        from selene import query
+        from selene.core import query
         self.driver.switch_to.window(query.next_tab(self))
 
         # todo: should we user waiting version here (and in other similar cases)?
@@ -875,13 +876,13 @@ class Browser(WaitingEntity):
         return self
 
     def switch_to_previous_tab(self) -> Browser:
-        from selene import query
+        from selene.core import query
         self.driver.switch_to.window(query.previous_tab(self))
         return self
 
     def switch_to_tab(self, index_or_name: Union[int, str]) -> Browser:
         if isinstance(index_or_name, int):
-            from selene import query
+            from selene.core import query
             self.driver.switch_to(query.tab(index_or_name)(self))
         else:
             self.driver.switch_to.window(index_or_name)
@@ -991,7 +992,7 @@ class Browser(WaitingEntity):
         return self.driver.find_element(by, value)
 
 
-from selene.conditions import CollectionCondition, ElementCondition, BrowserCondition
+from selene.core.conditions import CollectionCondition, ElementCondition, BrowserCondition
 
 
 # --- Deprecated --- #  todo: remove in future versions

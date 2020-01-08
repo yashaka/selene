@@ -19,11 +19,11 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-import warnings
 
-from selene import match
-from selene.support.conditions import not_  # don't remove this line
+from selene.core import match
+from selene.support.conditions import not_  as _not_
 
+not_ = _not_
 
 visible = match.element_is_visible
 hidden = match.element_is_hidden

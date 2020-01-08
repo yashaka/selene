@@ -19,36 +19,17 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
-# todo: uncomment this once deprecared selene.browser module is removed
-# from selene.support.shared import browser as _shared_browser_with_automatic_driver_initialization
-# browser = _shared_browser_with_automatic_driver_initialization
+from selene.core.condition import Condition
+from selene.core.entity import Browser, Element, Collection
 
 
-from selene.support import by as _by_style_selectors
-by = _by_style_selectors
+class ElementCondition(Condition[Element]):
+    pass
 
 
-from selene.support.conditions import be as _be_style_conditions
-be = _be_style_conditions
+class CollectionCondition(Condition[Collection]):
+    pass
 
 
-from selene.support.conditions import have as _have_style_conditions
-have = _have_style_conditions
-
-
-from selene.support.shared import config as _shared_config_to_customize_shared_browser_before_use
-config = _shared_config_to_customize_shared_browser_before_use
-
-
-from selene.core.entity import Browser as _custom_browser
-Browser = _custom_browser
-
-
-from selene.core.configuration import Config as _custom_config_for_custom_browser
-Config = _custom_config_for_custom_browser
-
-
-# todo: consider moving all selene.* modules somewhere deeper (for example into selene.core.*)
-#       then import here only selene.api.base
-#       maybe do this in >= 3
+class BrowserCondition(Condition[Browser]):
+    pass

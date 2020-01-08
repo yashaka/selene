@@ -1,6 +1,23 @@
 # Changelog
 
-## 2.0.0a9 (to be released on 07.01.2020)
+## 2.0.0a10 (released on 08.01.2020)
+- enhanced migratability
+  - added syntax warning to collection.first with a hint 
+    - to use .first as a property over .first() as a method
+  - added selene.wait.py with wait_for alias (deprecated)
+- moved all new modules from selene to selene.core
+  - old deprecated modules will be removed in beta
+- tuned imports to be cleaner
+  - try to import everything `from selene import ...`
+    - the main things you might need are: browser, config, by, be, have, Browser, Config
+      - yet browser here, is old deprecated selene.browser module... 
+      - so temporary import browser from selene.support.shared 
+        - later once selene.browser.py is removed, you can import new browser object from selene too
+    - only s and ss you will not find there, 
+      - but you can import them from selene.support.jquery_style_selectors as in 1.*
+- changed DeprecationWarning to SyntaxWarning for element.s and element.ss
+
+## 2.0.0a9 (released on 07.01.2020)
 - enhanced migratability of 2.*:
   - temporally added deprecated modules
     - selene.elements

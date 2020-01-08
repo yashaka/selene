@@ -20,6 +20,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from selene.entity import SeleneDriver
+from selene.core.entity import SeleneDriver
 
 # todo: remove this file once deprecated SeleneDriver is completely removed
