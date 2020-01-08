@@ -32,6 +32,7 @@ from selenium.webdriver.remote.webdriver import WebDriver
 from selene.common import fp
 
 
+# todo: should we unfreeze them too? as we did with Config?
 @dataclass(frozen=True)
 class WaitHooks:
     failure: Callable[[TimeoutException], Exception]

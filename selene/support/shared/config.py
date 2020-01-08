@@ -237,4 +237,4 @@ class SharedConfig(Config):
     @reports_folder.setter
     def reports_folder(self, value):
         warnings.warn('might be deprecated', PendingDeprecationWarning)
-        return self._reports_folder
+        self._reports_folder = value

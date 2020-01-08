@@ -306,9 +306,9 @@ class Element(WaitingEntity):
         return self.cached
 
     def s(self, css_or_xpath_or_by: Union[str, tuple]) -> Element:
-        warnings.warn(
-            "consider using more explicit `element` instead: browser.element('#foo').element('.bar')",
-            SyntaxWarning)
+        # warnings.warn(
+        #     "consider using more explicit `element` instead: browser.element('#foo').element('.bar')",
+        #     SyntaxWarning)
         return self.element(css_or_xpath_or_by)
 
     def find(self, css_or_xpath_or_by: Union[str, tuple]) -> Element:
@@ -318,9 +318,9 @@ class Element(WaitingEntity):
         return self.element(css_or_xpath_or_by)
 
     def ss(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection:
-        warnings.warn(
-            "consider using `all` instead: browser.element('#foo').all('.bar')",
-            SyntaxWarning)
+        # warnings.warn(
+        #     "consider using `all` instead: browser.element('#foo').all('.bar')",
+        #     SyntaxWarning)
         return self.all(css_or_xpath_or_by)
 
     def find_all(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection:

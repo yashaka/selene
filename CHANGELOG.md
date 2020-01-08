@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.0.0a11 (released on 08.01.2020)
+- added logging screenshot and page source hooks for failures of any waiting in shared browser behaviour
+  - this is enabled by default, no option in config.* to disable such behaviour
+  - yet you can turn it off by `config.hooks = Hooks(wait=WaitHooks(failure=lambda e: e)`
+    - but the style/syntax of setting hooks is not completely defined, it may change in future...
+- removed  SyntaxWarning for element.s and element.ss
+
 ## 2.0.0a10 (released on 08.01.2020)
 - enhanced migratability
   - added syntax warning to collection.first with a hint 
