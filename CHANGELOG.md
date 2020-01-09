@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.0a11 (released on 09.01.2020)
+- fixed [#195](https://github.com/yashaka/selene/issues/195): added len(collection)
+
 ## 2.0.0a11 (released on 08.01.2020)
 - added logging screenshot and page source hooks for failures of any waiting in shared browser behaviour
   - this is enabled by default, no option in config.* to disable such behaviour
