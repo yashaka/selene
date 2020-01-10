@@ -110,23 +110,21 @@ def take_screenshot(path=None, filename=None):
     warnings.warn(
         'deprecated; use explicit browser.* style when browser is imported from selene.support.shared',
         DeprecationWarning)
-    if not path:
-        path = browser.config.reports_folder
-    if not filename:
-        id = next(config.counter)
-        filename = f'screen_{id}'
+    return browser.take_screenshot(path, filename)
 
-    screenshot_path = os.path.join(path, f'{filename}.png')
 
-    folder = os.path.dirname(screenshot_path)
-    if not os.path.exists(folder):
-        os.makedirs(folder)
+def save_screenshot(file):
+    warnings.warn(
+        'deprecated; use explicit browser.* style when browser is imported from selene.support.shared',
+        DeprecationWarning)
+    return browser.save_screenshot(file)
 
-    browser.driver.save_screenshot(screenshot_path)
 
-    browser._latest_screenshot = screenshot_path
-
-    return screenshot_path
+def save_page_source(file):
+    warnings.warn(
+        'deprecated; use explicit browser.* style when browser is imported from selene.support.shared',
+        DeprecationWarning)
+    return browser.save_page_source(file)
 
 
 def latest_screenshot():
@@ -134,6 +132,13 @@ def latest_screenshot():
         'deprecated; use explicit browser.* style when browser is imported from selene.support.shared',
         DeprecationWarning)
     return browser._latest_screenshot
+
+
+def latest_page_source():
+    warnings.warn(
+        'deprecated; use explicit browser.* style when browser is imported from selene.support.shared',
+        DeprecationWarning)
+    return browser._latest_page_source
 
 
 def wait_to(webdriver_condition, timeout=None, polling=None):

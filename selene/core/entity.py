@@ -747,6 +747,18 @@ class Collection(WaitingEntity):
             DeprecationWarning)
         return self.filtered_by(condition)
 
+    def filter_by(self, condition: Condition[Element]) -> Collection:
+        warnings.warn(
+            "deprecated; use `filtered_by` instead: browser.all('.foo').filtered_by(be.enabled)",
+            DeprecationWarning)
+        return self.filtered_by(condition)
+
+    def find_by(self, condition: Condition[Element]) -> Element:
+        warnings.warn(
+            "deprecated; use `element_by` instead: browser.all('.foo').element_by(be.enabled)",
+            DeprecationWarning)
+        return self.element_by(condition)
+
     def size(self):
         warnings.warn(
             "deprecated; use `len` standard function instead: len(browser.all('.foo'))",

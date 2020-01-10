@@ -1,6 +1,19 @@
 # Changelog
 
-## 2.0.0a11 (released on 09.01.2020)
+## 2.0.0a* (to be released on *.01.2020)
+- add working with remote driver through shared config
+
+## 2.0.0a13 (to be released on 10.01.2020)
+- added temporary Collection#filter_by as deprecated 
+- added temporary Collection#find_by as deprecated 
+- fixed shared browser.latest_screenshot (and added browser.latest_page_source)
+  - made it as property (as method it will still work as deprecated)
+    - actually if you `from selene import browser` 
+    - you will get deprecated browser module with latest_screenshot as method
+    - the warning then will tell you to use import `from selene.support.shared import browser`
+    - which will have it as a property
+
+## 2.0.0a12 (released on 09.01.2020)
 - fixed [#195](https://github.com/yashaka/selene/issues/195): added len(collection)
 
 ## 2.0.0a11 (released on 08.01.2020)
