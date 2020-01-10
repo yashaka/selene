@@ -86,19 +86,16 @@ class Wait(Generic[E]):
                     reason_message = str(reason)
 
                     reason_string = '{name}: {message}'.format(name=reason.__class__.__name__, message=reason_message)
-                    screen = getattr(reason, 'screen', None)
-                    stacktrace = getattr(reason, 'stacktrace', None)
+                    # todo: think on how can we improve logging failures in selene, e.g. reverse msg and stacktrace
+                    # stacktrace = getattr(reason, 'stacktrace', None)
                     timeout = self._timeout
                     entity = self._entity
 
-                    failure = TimeoutException(
-                        f'''
+                    failure = TimeoutException(f'''
 
 Timed out after {timeout}s, while waiting for:
 {entity}.{fn}
-Reason: {reason_string}''',
-                        screen,
-                        stacktrace)
+Reason: {reason_string}''')
 
                     raise self._hook_failure(failure)
 

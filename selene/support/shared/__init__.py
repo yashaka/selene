@@ -27,6 +27,7 @@ import functools
 import os
 import warnings
 
+from selene.common.fp import pipe
 from selene.core.exceptions import TimeoutException
 from selenium.webdriver.remote.webdriver import WebDriver
 
@@ -41,29 +42,19 @@ browser = SharedBrowser(config)
 
 def _save_and_log_screenshot(error: TimeoutException) -> Exception:
     path = browser.save_screenshot()
-    return TimeoutException(
-        error.msg + f'''
-Screenshot: file://{path}''',
-        error.screen,
-        error.stacktrace)
+    return TimeoutException(error.msg + f'''
+Screenshot: file://{path}''')
 
 
 def _save_and_log_page_source(error: TimeoutException) -> Exception:
     filename = browser.latest_screenshot.replace('.png', '.html') if browser.latest_screenshot else None
     path = browser.save_page_source(filename)
-    return TimeoutException(
-        error.msg + f'''
-PageSource: file://{path}''',
-        error.screen,
-        error.stacktrace)
-
-
-def _pipe(*functions):
-    return functools.reduce(lambda f, g: lambda x: f(g(x)), functions[::-1], lambda x: x)
+    return TimeoutException(error.msg + f'''
+PageSource: file://{path}''')
 
 
 # todo: consider more flat style: Hooks(wait_failure=_save_and_log_screenshot)
 # todo: consider making screenshots configurable (turn on/off)
-config.hooks = Hooks(wait=WaitHooks(failure=_pipe(
+config.hooks = Hooks(wait=WaitHooks(failure=pipe(
     _save_and_log_screenshot,
     _save_and_log_page_source)))

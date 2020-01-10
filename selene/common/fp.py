@@ -19,6 +19,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+import functools
 from typing import TypeVar
 
 
@@ -27,3 +28,7 @@ T = TypeVar("T")
 
 def identity(it: T) -> T:
     return it
+
+
+def pipe(*functions):
+    return functools.reduce(lambda f, g: lambda x: f(g(x)), functions[::-1], lambda x: x)

@@ -22,9 +22,15 @@
 
 
 class TimeoutException(AssertionError):
-    pass
+
+    def __init__(self, msg=None):
+        self.msg = msg
+
+    def __str__(self):
+        exception_msg = "Message: %s\n" % self.msg
+        return exception_msg
 
 
 class ConditionNotMatchedError(AssertionError):
     def __init__(self, message = 'condition not matched'):
-        super(ConditionNotMatchedError, self).__init__(message)
+        super().__init__(message)
