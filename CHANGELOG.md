@@ -1,34 +1,37 @@
 # Changelog
 
-## 2.0.0a* (to be released on *.01.2020)
-- consider allowing resetting config.hook_wait_failure through = None, instead of = lambda e: e
+## 2.0.0b1 (to be released on *.01.2020)
+- remove all deprecated things and stay calm:)
 
-## 2.0.0a14 (to be released on 10.01.2020)
+## 2.0.0a14 (released on 10.01.2020)
 - removed deprecation from shared.browser.save_screenshot, save_page_source, latest_screenshot, latest_page_source
   - since they nevertheless are used internally by selene
-  - and methods looks like better named than original selenium ones, like get_screenshot_as_png :)
-- refactored hooks to the style: config.hook_wait_failure = lambda e: e
+  - and methods looks like better named than original selenium ones, like `get_screenshot_as_png` :)
+- refactored hooks to the style: `config.hook_wait_failure = lambda e: e`
   - the hook should be a function that receives failure as argument, 
   - process it, and return back potentially new failure object
   - by default it's just an "identity" function, returning itself
     - for shared config the default is overwritten by hook adding screenshot and page_source to the failure message
+    - to disable default screenshot and page_source on failure
+      - just do `config.hook_wait_failure = None`
+        - yet, we may add in future explicit things like `config.screenshot_on_failure = False # True by default`
   - no other hooks avaialbe so far... somewhen in future we will add more hooks, 
-    - like config.hook_wait_command, etc.
-- fixed original collection.all and collection.map implementations (were broken in previous versions)
-- marked collection.all with FutureWarning (yet unclear what naming would be best)
-- renamed collection.map to collection.all_first, marked it as FutureWarning (yet unclear what naming would be best)
+    - like `config.hook_wait_command`, etc.
+- fixed original `collection.all` and `collection.map` implementations (were broken in previous versions)
+- marked `collection.all` with FutureWarning (yet unclear what naming would be best)
+- renamed `collection.map` to `collection.all_first`, marked it as FutureWarning (yet unclear what naming would be best)
 - added collection.collected(finder)
   - as a more low level, and more universal approach over collection.all and collection.all_first/map
     - given books = browser.all('.books')
     - then
-    - books.all('.author) == books.collected(lambda book: book.all('.author'))
+    - `books.all('.author) == books.collected(lambda book: book.all('.author'))`
       - reflects all authors of all books
-    - books.all_first('.author) == books.collected(lambda book: book.element('.author'))
+    - `books.all_first('.author) == books.collected(lambda book: book.element('.author'))`
       - reflects only first authors of all books
       - pay attention... all_first is not same as all(...).first:
-        - books.all('.author).first != books.all_first('.author)
-        - books.all('.author).first == books.collected(lambda book: book.all('.author')).first
-        - books.all('.author).first == books.first.element('.author')
+        - `books.all('.author).first != books.all_first('.author)`
+        - `books.all('.author).first == books.collected(lambda book: book.all('.author')).first`
+        - `books.all('.author).first == books.first.element('.author')`
           - i.e. reflecting only the first author of the first book
 - switched in wait from webdriver TimeoutException to selene.core.exceptions.TimeoutException
   - actually no need to reuse webdriver one
@@ -37,7 +40,7 @@
   - but... just left some comments for future... 
   - it's too complicated to be implemennted in a consistent way in selene. 
   - so far the main strategy is just to create an instance on your own 
-  - and then set it in config by config.driver = webdriver.Remote(....), KISS ;)
+  - and then set it in config by `config.driver = webdriver.Remote(...)`, KISS ;)
 
 ## 2.0.0a13 (released on 10.01.2020)
 - added temporary Collection#filter_by as deprecated 

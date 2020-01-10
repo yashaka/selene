@@ -184,7 +184,8 @@ class SharedConfig(Config):
 
     @Config.hook_wait_failure.setter
     def hook_wait_failure(self, value: Callable[[TimeoutException], Exception]):
-        self._hook_wait_failure = value
+        default = lambda e: e
+        self._hook_wait_failure = value or default
 
     # --- SharedConfig.* new props --- #
 
