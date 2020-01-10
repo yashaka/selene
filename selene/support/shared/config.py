@@ -210,31 +210,31 @@ class SharedConfig(Config):
 
     @property
     def poll_during_waits(self) -> int:
-        warnings.warn('might be deprecated', PendingDeprecationWarning)
+        warnings.warn('browser.poll_during_waits might be deprecated', PendingDeprecationWarning)
         return self._poll_during_waits or 100
 
     @poll_during_waits.setter
     def poll_during_waits(self, value: int):
-        warnings.warn('might be deprecated', PendingDeprecationWarning)
+        warnings.warn('browser.poll_during_waits= might be deprecated', PendingDeprecationWarning)
         self._poll_during_waits = value
 
     @property
     @lru_cache()
     def counter(self):
-        warnings.warn('might be deprecated', PendingDeprecationWarning)
+        warnings.warn('browser.counter might be deprecated', PendingDeprecationWarning)
         return self._counter
 
     @counter.setter
     def counter(self, value):
-        warnings.warn('might be deprecated', PendingDeprecationWarning)
+        warnings.warn('browser.counter= might be deprecated', PendingDeprecationWarning)
         self._counter = value
 
     @property
     def reports_folder(self) -> str:
-        warnings.warn('might be deprecated', PendingDeprecationWarning)
+        warnings.warn('browser.reports_folder might be deprecated', PendingDeprecationWarning)
         return self._reports_folder
 
     @reports_folder.setter
     def reports_folder(self, value):
-        warnings.warn('might be deprecated', PendingDeprecationWarning)
+        warnings.warn('browser.reports_folder= might be deprecated', PendingDeprecationWarning)
         self._reports_folder = value

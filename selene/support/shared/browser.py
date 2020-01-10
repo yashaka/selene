@@ -71,7 +71,7 @@ class SharedBrowser(Browser):
         return file
 
     def save_screenshot(self, file: str = None):
-        warnings.warn('might be deprecated', FutureWarning)
+        warnings.warn('browser.save_screenshot might be deprecated', FutureWarning)
 
         if not file:
             file = self._next_generated_absolute_filename(suffix='.png')
@@ -82,7 +82,7 @@ class SharedBrowser(Browser):
 
     @property
     def latest_screenshot(self) -> str:
-        warnings.warn('might be deprecated', FutureWarning)
+        warnings.warn('browser.latest_screenshot property might be deprecated in future', FutureWarning)
 
         class CallableString(str):
             def __new__(cls, value):
@@ -99,7 +99,7 @@ class SharedBrowser(Browser):
 
     # todo: consider moving this to browser command.save_page_source(filename)
     def save_page_source(self, file: str = None):
-        warnings.warn('might be deprecated', FutureWarning)
+        warnings.warn('browser.save_page_source(file) might be deprecated in future', FutureWarning)
 
         if not file:
             file = self._next_generated_absolute_filename(suffix='.html')
@@ -124,7 +124,7 @@ class SharedBrowser(Browser):
 
     @property
     def latest_page_source(self):
-        warnings.warn('might be deprecated', FutureWarning)
+        warnings.warn('browser.latest_page_source prop might be deprecated in future', FutureWarning)
         return self._latest_page_source
 
     def quit_driver(self):
