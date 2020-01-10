@@ -30,7 +30,7 @@ import warnings
 from functools import lru_cache
 from typing import Optional, TypeVar, Generic
 
-from selenium.webdriver import ChromeOptions, Chrome, Firefox
+from selenium.webdriver import ChromeOptions, Chrome, Firefox, Remote
 from selenium.webdriver.remote.webdriver import WebDriver
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
@@ -106,7 +106,7 @@ class SharedConfig(Config):
         if stored and \
                 stored.session_id and \
                 is_alive and \
-                stored.name == self.browser_name:
+                stored.name == self.browser_name:  # forces browser restart if config.browser_name was re-changed
             return stored
 
         if stored:
@@ -118,6 +118,10 @@ class SharedConfig(Config):
                                      options=ChromeOptions()),
             'firefox': lambda: Firefox(executable_path=GeckoDriverManager().install())
         }.get(self.browser_name)()
+
+        # todo: think on something like:
+        #             'remote': lambda: Remote(**self.browser_name)
+        #         }.get(self.browser_name if isinstance(self.browser_name, str) else 'remote')()
 
         if not self.hold_browser_open:
             atexit.register(new.quit)
@@ -136,7 +140,7 @@ class SharedConfig(Config):
 
         self._source.put(value)
 
-        self.browser_name = value and value.name
+        self.browser_name = value and value.name  # overwrites default browser_name
 
         # todo: should we schedule driver closing on exit here too?
 
@@ -192,13 +196,13 @@ class SharedConfig(Config):
         self._hold_browser_open = value
 
     @property
-    def browser_name(self) -> str:
+    def browser_name(self) -> str:  # todo: consider renaming to... config.name? config.executor?
         return self._browser_name
 
     @browser_name.setter
     def browser_name(self, value: str):
         self._browser_name = value
-        # todo: should we kill current driver if browser_name is changed?
+        # todo: should we kill current driver if browser_name is changed? (now it's killed on next driver ask)
         #       or should we open one more? so afterwards the user can switch...
         #       what about making such "mode" also configurable? ;)
 
