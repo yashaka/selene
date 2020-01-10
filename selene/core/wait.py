@@ -26,7 +26,7 @@ import time
 from abc import abstractmethod, ABC
 from typing import Generic, Callable, TypeVar
 
-from selenium.common.exceptions import TimeoutException
+from selene.core.exceptions import TimeoutException
 
 from selene.common.fp import identity
 

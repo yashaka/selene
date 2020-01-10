@@ -21,6 +21,10 @@
 # SOFTWARE.
 
 
+class TimeoutException(AssertionError):
+    pass
+
+
 class ConditionNotMatchedError(AssertionError):
     def __init__(self, message = 'condition not matched'):
         super(ConditionNotMatchedError, self).__init__(message)

@@ -20,6 +20,9 @@
         - books.all('.author).first == books.collected(lambda book: book.all('.author')).first
         - books.all('.author).first == books.first.element('.author')
           - i.e. reflecting only the first author of the first book
+- switched in wait from webdriver TimeoutException to selene.core.exceptions.TimeoutException
+  - actually no need to reuse webdriver one
+  - and this might help with reporting selene failure in allure reports, let's see...
 
 ## 2.0.0a13 (released on 10.01.2020)
 - added temporary Collection#filter_by as deprecated 

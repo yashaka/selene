@@ -25,7 +25,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Callable, Optional
 
-from selenium.common.exceptions import TimeoutException
+from selene.core.exceptions import TimeoutException
 from selenium.webdriver.remote.webdriver import WebDriver
 
 # todo: consider making these dataclasses be Mapping-like, so can be used in the 'dict' context

@@ -27,7 +27,7 @@ import functools
 import os
 import warnings
 
-from selenium.common.exceptions import TimeoutException
+from selene.core.exceptions import TimeoutException
 from selenium.webdriver.remote.webdriver import WebDriver
 
 from selene.core.configuration import Hooks, WaitHooks
