@@ -2,9 +2,11 @@
 
 ## 2.0.0a* (to be released on *.01.2020)
 - consider allowing resetting config.hook_wait_failure through = None, instead of = lambda e: e
-- revisit deprecation of shared.browser.save_screenshot, since it's nevertheless is used internally by selene
 
 ## 2.0.0a14 (to be released on 10.01.2020)
+- removed deprecation from shared.browser.save_screenshot, save_page_source, latest_screenshot, latest_page_source
+  - since they nevertheless are used internally by selene
+  - and methods looks like better named than original selenium ones, like get_screenshot_as_png :)
 - refactored hooks to the style: config.hook_wait_failure = lambda e: e
   - the hook should be a function that receives failure as argument, 
   - process it, and return back potentially new failure object
