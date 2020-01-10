@@ -31,7 +31,6 @@ from selene.common.fp import pipe
 from selene.core.exceptions import TimeoutException
 from selenium.webdriver.remote.webdriver import WebDriver
 
-from selene.core.configuration import Hooks, WaitHooks
 from selene.support.shared.browser import SharedBrowser
 from selene.support.shared.config import SharedConfig
 
@@ -53,8 +52,8 @@ def _save_and_log_page_source(error: TimeoutException) -> Exception:
 PageSource: file://{path}''')
 
 
-# todo: consider more flat style: Hooks(wait_failure=_save_and_log_screenshot)
 # todo: consider making screenshots configurable (turn on/off)
-config.hooks = Hooks(wait=WaitHooks(failure=pipe(
+config.hook_wait_failure = pipe(
     _save_and_log_screenshot,
-    _save_and_log_page_source)))
+    _save_and_log_page_source
+)

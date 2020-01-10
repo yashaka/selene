@@ -28,7 +28,7 @@ import os
 import time
 import warnings
 from functools import lru_cache
-from typing import Optional, TypeVar, Generic
+from typing import Optional, TypeVar, Generic, Callable
 
 from selenium.webdriver import ChromeOptions, Chrome, Firefox, Remote
 from selenium.webdriver.remote.webdriver import WebDriver
@@ -36,7 +36,8 @@ from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 
 from selene.common.helpers import on_error_return_false
-from selene.core.configuration import Config, Hooks
+from selene.core.configuration import Config
+from selene.core.exceptions import TimeoutException
 
 T = TypeVar('T')
 
@@ -67,7 +68,7 @@ class SharedConfig(Config):
                  type_by_js: bool = False,
                  window_width: Optional[int] = None,
                  window_height: Optional[int] = None,
-                 hooks: Hooks = Hooks(),
+                 hook_wait_failure: Callable[[TimeoutException], Exception] = lambda e: e,
                  # SharedConfig
                  source: Source[WebDriver] = Source(),
                  browser_name: str = 'chrome',  # todo: rename to config.type? config.name? config.browser?
@@ -94,7 +95,7 @@ class SharedConfig(Config):
                          type_by_js=type_by_js,
                          window_width=window_width,
                          window_height=window_height,
-                         hooks=hooks)
+                         hook_wait_failure=hook_wait_failure)
 
     # --- Config.driver new "shared logic" --- #
 
@@ -181,9 +182,9 @@ class SharedConfig(Config):
     def window_height(self, value: Optional[int]):
         self._window_height = value
 
-    @Config.hooks.setter
-    def hooks(self, value: Hooks):
-        self._hooks = value
+    @Config.hook_wait_failure.setter
+    def hook_wait_failure(self, value: Callable[[TimeoutException], Exception]):
+        self._hook_wait_failure = value
 
     # --- SharedConfig.* new props --- #
 

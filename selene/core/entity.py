@@ -75,7 +75,7 @@ class WaitingEntity(Matchable, Configured):
         self._config = config
         self._wait = Wait(self,
                           at_most=config.timeout,
-                          or_fail_with=config.hooks.wait.failure)
+                          or_fail_with=config.hook_wait_failure)
 
     @property
     def wait(self) -> Wait[E]:

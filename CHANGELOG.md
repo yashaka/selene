@@ -1,9 +1,17 @@
 # Changelog
 
 ## 2.0.0a* (to be released on *.01.2020)
-- add working with remote driver through shared config
+- consider allowing resetting config.hook_wait_failure through = None, instead of = lambda e: e
+- revisit deprecation of shared.browser.save_screenshot, since it's nevertheless is used internally by selene
 
 ## 2.0.0a14 (to be released on 10.01.2020)
+- refactored hooks to the style: config.hook_wait_failure = lambda e: e
+  - the hook should be a function that receives failure as argument, 
+  - process it, and return back potentially new failure object
+  - by default it's just an "identity" function, returning itself
+    - for shared config the default is overwritten by hook adding screenshot and page_source to the failure message
+  - no other hooks avaialbe so far... somewhen in future we will add more hooks, 
+    - like config.hook_wait_command, etc.
 - fixed original collection.all and collection.map implementations (were broken in previous versions)
 - marked collection.all with FutureWarning (yet unclear what naming would be best)
 - renamed collection.map to collection.all_first, marked it as FutureWarning (yet unclear what naming would be best)

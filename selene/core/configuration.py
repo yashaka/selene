@@ -22,25 +22,10 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 from typing import Callable, Optional
 
 from selene.core.exceptions import TimeoutException
 from selenium.webdriver.remote.webdriver import WebDriver
-
-# todo: consider making these dataclasses be Mapping-like, so can be used in the 'dict' context
-from selene.common import fp
-
-
-# todo: should we unfreeze them too? as we did with Config?
-@dataclass(frozen=True)
-class WaitHooks:
-    failure: Callable[[TimeoutException], Exception]
-
-
-@dataclass(frozen=True)
-class Hooks:
-    wait: WaitHooks = WaitHooks(failure=fp.identity)
 
 
 def _strip_first_underscore(name: str) -> str:
@@ -48,6 +33,12 @@ def _strip_first_underscore(name: str) -> str:
 
 
 class Config:
+    # todo: add hooks:
+    #            hook_wait_command: Callable[[Command], None]
+    #            hook_...
+    #       consider impementing some hooks as generators...
+    #       hook generally should allow to do some processing before and after e.g. command
+    #       think on better name depending on hook type (generator vs standard fn)
     def __init__(self,
                  driver: Optional[WebDriver] = None,
                  timeout: int = 4,
@@ -56,7 +47,9 @@ class Config:
                  type_by_js: bool = False,
                  window_width: Optional[int] = None,
                  window_height: Optional[int] = None,
-                 hooks: Hooks = Hooks()):
+                 hook_wait_failure: Callable[[TimeoutException], Exception] = lambda e: e,
+                 ):
+
         self._driver = driver
         self._timeout = timeout
         self._base_url = base_url
@@ -64,7 +57,7 @@ class Config:
         self._type_by_js = type_by_js
         self._window_width = window_width
         self._window_height = window_height
-        self._hooks = hooks
+        self._hook_wait_failure = hook_wait_failure
 
     def as_dict(self, skip_empty=True):
         return {_strip_first_underscore(k): v
@@ -106,5 +99,5 @@ class Config:
         return self._window_height
 
     @property
-    def hooks(self) -> Hooks:
-        return self._hooks
+    def hook_wait_failure(self) -> Callable[[TimeoutException], Exception]:
+        return self._hook_wait_failure
