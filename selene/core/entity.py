@@ -25,7 +25,7 @@ from __future__ import annotations
 import warnings
 
 from abc import abstractmethod, ABC
-from typing import TypeVar, Union, List, Dict, Any
+from typing import TypeVar, Union, List, Dict, Any, Callable
 
 from selenium.webdriver import ActionChains
 from selenium.webdriver.android.webdriver import WebDriver
@@ -691,20 +691,63 @@ class Collection(WaitingEntity):
 
         return Element(Locator(f'{self}.element_by({condition})', find), self.config)
 
+    # todo: consider adding ss alias
     def all(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection:
+        warnings.warn('might be renamed or deprecated in future; '
+                      'all is actually a shortcut for collected(lambda element: element.all(selector)...'
+                      'but we also have all_first and...'
+                      'it is yet unclear what name would be best for all_first as addition to all... '
+                      'all_first might confuse with all(...).first... I mean: '
+                      'all_first(selector) is actually '
+                      'collected(lambda e: e.element(selector)) '
+                      'but it is not the same as '
+                      'all(selector).first '
+                      'that is collected(lambda e: e.all(selector)).first ... o_O ', FutureWarning)
         by = to_by(css_or_xpath_or_by)
+
+        # todo: consider implement it through calling self.collected
+        #       because actually the impl is self.collected(lambda element: element.all(selector))
 
         return Collection(
             Locator(f'{self}.all({by})',
                     lambda: flatten([webelement.find_elements(*by) for webelement in self()])),
             self.config)
 
-    def map(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection:
+    # todo: consider adding s alias
+    def all_first(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection:
+        warnings.warn('might be renamed or deprecated in future; '
+                      'it is yet unclear what name would be best... '
+                      'all_first might confuse with all(...).first... I mean: '
+                      'all_first(selector) is actually '
+                      'collected(lambda e: e.element(selector)) '
+                      'but it is not the same as '
+                      'all(selector).first '
+                      'that is collected(lambda e: e.all(selector)).first ... o_O ', FutureWarning)
         by = to_by(css_or_xpath_or_by)
 
+        # todo: consider implement it through calling self.collected
+        #       because actually the impl is self.collected(lambda element: element.element(selector))
+
         return Collection(
-            Locator(f'{self}.map({by})',
-                    lambda: [element.element(*by)() for element in self.cached]),
+            Locator(f'{self}.all_first({by})',
+                    lambda: [webelement.find_element(*by) for webelement in self()]),
+            self.config)
+
+    def collected(self, finder: Callable[[Element], Union[Element, Collection]]) -> Collection:
+        # todo: consider adding predefined queries to be able to write
+        #         collected(query.element(selector))
+        #       over
+        #         collected(lambda element: element.element(selector))
+        #       and
+        #         collected(query.all(selector))
+        #       over
+        #         collected(lambda element: element.all(selector))
+        #       consider also putting such element builders like to find.* module instead of query.* module
+        #       because they are not supposed to be used in entity.get(*) context defined for other query.* fns
+
+        return Collection(
+            Locator(f'{self}.collected({finder})',
+                    lambda: flatten([finder(element)() for element in self.cached])),
             self.config)
 
     # --- Assertable --- #

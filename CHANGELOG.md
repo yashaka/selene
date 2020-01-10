@@ -3,7 +3,25 @@
 ## 2.0.0a* (to be released on *.01.2020)
 - add working with remote driver through shared config
 
-## 2.0.0a13 (to be released on 10.01.2020)
+## 2.0.0a14 (to be released on 10.01.2020)
+- fixed original collection.all and collection.map implementations (were broken in previous versions)
+- marked collection.all with FutureWarning (yet unclear what naming would be best)
+- renamed collection.map to collection.all_first, marked it as FutureWarning (yet unclear what naming would be best)
+- added collection.collected(finder)
+  - as a more low level, and more universal approach over collection.all and collection.all_first/map
+    - given books = browser.all('.books')
+    - then
+    - books.all('.author) == books.collected(lambda book: book.all('.author'))
+      - reflects all authors of all books
+    - books.all_first('.author) == books.collected(lambda book: book.element('.author'))
+      - reflects only first authors of all books
+      - pay attention... all_first is not same as all(...).first:
+        - books.all('.author).first != books.all_first('.author)
+        - books.all('.author).first == books.collected(lambda book: book.all('.author')).first
+        - books.all('.author).first == books.first.element('.author')
+          - i.e. reflecting only the first author of the first book
+
+## 2.0.0a13 (released on 10.01.2020)
 - added temporary Collection#filter_by as deprecated 
 - added temporary Collection#find_by as deprecated 
 - fixed shared browser.latest_screenshot (and added browser.latest_page_source)

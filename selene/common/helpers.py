@@ -47,7 +47,7 @@ def to_by(selector_or_by: Union[str, tuple]) -> Tuple[str, str]:
 
 
 def flatten(list_of_lists: List[list]) -> list:
-    return [item for sublist in list_of_lists for item in sublist]
+    return [item for sublist in list_of_lists for item in (sublist if isinstance(sublist, list) else [sublist])]
 
 
 def dissoc(associated: dict, *keys: str) -> dict:
