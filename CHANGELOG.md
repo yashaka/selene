@@ -3,6 +3,7 @@
 ## next
 - case insensitive versions of conditions like have.attribute(...).value(...)
 - consider moving screenshots-related hooks from SharedBrowser to SharedConfig
+- consider making have.size to work with elements too...
 
 ## 2.0.0b1 (to be released on *.01.2020)
 - remove all deprecated things and stay calm:)
@@ -12,6 +13,9 @@
 
 ## 2.0.0a15 (to be released on 13.01.2020)
 - fixed len(collection) to wait if collection can't be found
+- made query.size to work with both element and collection
+  - element.get(query.size) will return the size of the element (as a Dict)
+  - collection.get(query.size) will return the size of collection (as int)
 - added shared config.save_screenshot_on_failure (True by default)
 - added shared config.save_page_source_on_failure (True by default)
 - refactored and hardened behaviour of shared config

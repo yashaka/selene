@@ -19,7 +19,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Union
 
 from selene.core.entity import Browser, Element, Collection
 from selene.core.wait import Query
@@ -48,9 +48,9 @@ text: Query[Element, str] = Query('text', lambda element: element().text)
 location_once_scrolled_into_view: Query[Element, Dict[str, int]] = \
     Query('location once scrolled into view', lambda element: element().location_once_scrolled_into_view)
 
-# todo: what to do now with collection.size? and have.size* ? o_O
-size: Query[Element, Dict[str, Any]] = \
-    Query('size', lambda element: element().size)
+# todo: what to do now with have.size* ? o_O
+size: Union[Query[Element, Dict[str, Any]], Query[Collection, int]] = \
+    Query('size', lambda entity: entity().size if isinstance(entity, Element) else len(entity()))
 
 # todo: do we need condition for the following?
 location: Query[Element, Dict[str, int]] = \
@@ -98,9 +98,6 @@ def js_property(name: str) -> Query[Element, str]:
 
 
 # --- Collection queries --- #
-
-length: Query[Collection, int] = \
-    Query('length', lambda collection: len(collection()))
 
 # --- Browser queries --- #
 

@@ -622,7 +622,7 @@ class Collection(WaitingEntity):
 
     def __len__(self):
         from selene.core import query
-        return self.get(query.length)
+        return self.get(query.size)
 
     # todo: add config.index_collection_from_1, disabled by default
     def element(self, index: int) -> Element:
