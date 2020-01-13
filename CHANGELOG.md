@@ -7,7 +7,11 @@
 ## 2.0.0b1 (to be released on *.01.2020)
 - remove all deprecated things and stay calm:)
 
+## 2.0.0a*
+- consider making query.size to work with both collection and element
+
 ## 2.0.0a15 (to be released on 13.01.2020)
+- fixed len(collection) to wait if collection can't be found
 - added shared config.save_screenshot_on_failure (True by default)
 - added shared config.save_page_source_on_failure (True by default)
 - refactored and hardened behaviour of shared config

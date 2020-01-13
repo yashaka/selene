@@ -21,7 +21,7 @@
 # SOFTWARE.
 from typing import List, Dict, Any
 
-from selene.core.entity import Browser, Element
+from selene.core.entity import Browser, Element, Collection
 from selene.core.wait import Query
 
 
@@ -96,6 +96,11 @@ def js_property(name: str) -> Query[Element, str]:
 
     return Query(f'js property {name}', fn)
 
+
+# --- Collection queries --- #
+
+length: Query[Collection, int] = \
+    Query('length', lambda collection: len(collection()))
 
 # --- Browser queries --- #
 
