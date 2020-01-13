@@ -294,7 +294,7 @@ def browser_has_url(expected: str,
         return browser.driver.current_url
 
     return BrowserCondition.raise_if_not_actual(
-        f'{describing_matched_to} + {expected}',
+        f"{describing_matched_to} '{expected}'",
         url,
         compared_by_predicate_to(expected))
 
@@ -310,7 +310,7 @@ def browser_has_title(expected: str,
         return browser.driver.title
 
     return BrowserCondition.raise_if_not_actual(
-        f'{describing_matched_to} + {expected}',
+        f"{describing_matched_to} '{expected}'",
         title,
         compared_by_predicate_to(expected))
 

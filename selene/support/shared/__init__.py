@@ -20,16 +20,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-
 from __future__ import annotations
 
-import functools
-import os
-import warnings
 
 from selene.common.fp import pipe
 from selene.core.exceptions import TimeoutException
-from selenium.webdriver.remote.webdriver import WebDriver
 
 from selene.support.shared.browser import SharedBrowser
 from selene.support.shared.config import SharedConfig
@@ -37,23 +32,3 @@ from selene.support.shared.config import SharedConfig
 config = SharedConfig()
 
 browser = SharedBrowser(config)
-
-
-def _save_and_log_screenshot(error: TimeoutException) -> Exception:
-    path = browser.save_screenshot()
-    return TimeoutException(error.msg + f'''
-Screenshot: file://{path}''')
-
-
-def _save_and_log_page_source(error: TimeoutException) -> Exception:
-    filename = browser.latest_screenshot.replace('.png', '.html') if browser.latest_screenshot else None
-    path = browser.save_page_source(filename)
-    return TimeoutException(error.msg + f'''
-PageSource: file://{path}''')
-
-
-# todo: consider making screenshots configurable (turn on/off)
-config.hook_wait_failure = pipe(
-    _save_and_log_screenshot,
-    _save_and_log_page_source
-)

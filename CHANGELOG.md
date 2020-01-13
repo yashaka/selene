@@ -1,7 +1,17 @@
 # Changelog
 
+## next
+- case insensitive versions of conditions like have.attribute(...).value(...)
+- consider moving screenshots-related hooks from SharedBrowser to SharedConfig
+
 ## 2.0.0b1 (to be released on *.01.2020)
 - remove all deprecated things and stay calm:)
+
+## 2.0.0a15 (to be released on 13.01.2020)
+- added shared config.save_screenshot_on_failure (True by default)
+- added shared config.save_page_source_on_failure (True by default)
+- refactored and hardened behaviour of shared config
+  - refactored waiting (moved base wait impl for entities to config.wait(entity)
 
 ## 2.0.0a14 (released on 10.01.2020)
 - removed deprecation from shared.browser.save_screenshot, save_page_source, latest_screenshot, latest_page_source

@@ -27,6 +27,8 @@ from typing import Callable, Optional
 from selene.core.exceptions import TimeoutException
 from selenium.webdriver.remote.webdriver import WebDriver
 
+from selene.core.wait import Wait
+
 
 def _strip_first_underscore(name: str) -> str:
     return name[1:] if name.startswith('_') else name
@@ -42,22 +44,22 @@ class Config:
     def __init__(self,
                  driver: Optional[WebDriver] = None,
                  timeout: int = 4,
+                 hook_wait_failure: Callable[[TimeoutException], Exception] = lambda e: e,
                  base_url: str = '',
                  set_value_by_js: bool = False,
                  type_by_js: bool = False,
                  window_width: Optional[int] = None,
                  window_height: Optional[int] = None,
-                 hook_wait_failure: Callable[[TimeoutException], Exception] = lambda e: e,
                  ):
 
         self._driver = driver
         self._timeout = timeout
+        self._hook_wait_failure = hook_wait_failure
         self._base_url = base_url
         self._set_value_by_js = set_value_by_js
         self._type_by_js = type_by_js
         self._window_width = window_width
         self._window_height = window_height
-        self._hook_wait_failure = hook_wait_failure
 
     def as_dict(self, skip_empty=True):
         return {_strip_first_underscore(k): v
@@ -79,6 +81,13 @@ class Config:
         return self._timeout
 
     @property
+    def hook_wait_failure(self) -> Callable[[TimeoutException], Exception]:
+        return self._hook_wait_failure
+
+    def wait(self, entity):
+        return Wait(entity, at_most=self.timeout, or_fail_with=self.hook_wait_failure)
+
+    @property
     def base_url(self) -> str:
         return self._base_url
 
@@ -97,7 +106,3 @@ class Config:
     @property
     def window_height(self) -> Optional[int]:
         return self._window_height
-
-    @property
-    def hook_wait_failure(self) -> Callable[[TimeoutException], Exception]:
-        return self._hook_wait_failure

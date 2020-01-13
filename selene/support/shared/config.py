@@ -56,6 +56,7 @@ class Source(Generic[T]):
 
 # noinspection PyDataclass
 class SharedConfig(Config):
+
     # todo: consider using SharedConfig object to be used as config only once... on init at first call to browser...
     #       i.e. do not allow config.* = ... after first call to e.g. browser.open, etc...
     #       since anyway this is a bad habit, better to use browser.with_(timeout=...), element.with_(...), etc.
@@ -70,9 +71,11 @@ class SharedConfig(Config):
                  window_height: Optional[int] = None,
                  hook_wait_failure: Callable[[TimeoutException], Exception] = lambda e: e,
                  # SharedConfig
-                 source: Source[WebDriver] = Source(),
+                 source: Source[WebDriver] = Source(),  # don't use it:) it's for internal selene use:)
                  browser_name: str = 'chrome',  # todo: rename to config.type? config.name? config.browser?
                  hold_browser_open: bool = False,
+                 save_screenshot_on_failure: bool = True,
+                 save_page_source_on_failure: bool = True,
                  poll_during_waits: int = 100,
                  counter=None,  # default is set below
                  reports_folder: Optional[str] = None  # default is set below
@@ -82,6 +85,8 @@ class SharedConfig(Config):
             self._source.put(driver)
         self._browser_name = browser_name
         self._hold_browser_open = hold_browser_open
+        self._save_screenshot_on_failure = save_screenshot_on_failure
+        self._save_page_source_on_failure = save_page_source_on_failure
         self._poll_during_waits = poll_during_waits  # todo consider to deprecate
         self._counter = counter or itertools.count(start=int(round(time.time() * 1000)))  # todo: deprecate?
         self._reports_folder = reports_folder or os.path.join(os.path.expanduser('~'),
@@ -196,6 +201,22 @@ class SharedConfig(Config):
     @hold_browser_open.setter
     def hold_browser_open(self, value: bool):
         self._hold_browser_open = value
+
+    @property
+    def save_screenshot_on_failure(self) -> bool:
+        return self._save_screenshot_on_failure
+
+    @save_screenshot_on_failure.setter
+    def save_screenshot_on_failure(self, value: bool):
+        self._save_screenshot_on_failure = value
+
+    @property
+    def save_page_source_on_failure(self) -> bool:
+        return self._save_page_source_on_failure
+
+    @save_page_source_on_failure.setter
+    def save_page_source_on_failure(self, value: bool):
+        self._save_page_source_on_failure = value
 
     @property
     def browser_name(self) -> str:  # todo: consider renaming to... config.name? config.executor?

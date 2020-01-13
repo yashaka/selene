@@ -73,13 +73,10 @@ class WaitingEntity(Matchable, Configured):
 
     def __init__(self, config: Config):
         self._config = config
-        self._wait = Wait(self,
-                          at_most=config.timeout,
-                          or_fail_with=config.hook_wait_failure)
 
     @property
     def wait(self) -> Wait[E]:
-        return self._wait
+        return self.config.wait(self)
 
     def perform(self, command: Command[E]) -> E:
         """Useful to call external commands.
@@ -872,7 +869,7 @@ class SeleneCollection(Collection):  # todo: consider deprecating this name
 
 
 class Browser(WaitingEntity):
-    def __init__(self, config: Config): # todo: what about adding **config_as_kwargs?
+    def __init__(self, config: Config):  # todo: what about adding **config_as_kwargs?
         super().__init__(config)
 
     # todo: consider implement it as context manager too...
@@ -1058,4 +1055,3 @@ from selene.core.conditions import CollectionCondition, ElementCondition, Browse
 
 class SeleneDriver(Browser):
     pass
-

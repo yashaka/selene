@@ -21,13 +21,17 @@
 # SOFTWARE.
 import os
 import warnings
+from functools import lru_cache
 from typing import Union
 
 from selenium.webdriver.remote.webdriver import WebDriver
 
+from selene.common.fp import pipe, identity
 from selene.core.entity import Browser, Collection
 from selene.core.configuration import Config
 from selene.common.none_object import NoneObject
+from selene.core.exceptions import TimeoutException
+from selene.core.wait import Wait
 from selene.support.shared.config import SharedConfig
 
 
@@ -37,9 +41,32 @@ class SharedBrowser(Browser):
         self._latest_page_source = NoneObject('selene.SharedBrowser._latest_page_source')
         super().__init__(config)
 
+    def _inject_screenshot_and_page_source_pre_hooks(self, config: SharedConfig):
+        # todo: consider moving hooks to class methods accepting browser as argument
+        def save_and_log_screenshot(error: TimeoutException) -> Exception:
+            path = self.save_screenshot()
+            return TimeoutException(error.msg + f'''
+Screenshot: file://{path}''')
+
+        def save_and_log_page_source(error: TimeoutException) -> Exception:
+            filename = self.latest_screenshot.replace('.png', '.html') if self.latest_screenshot else None
+            path = self.save_page_source(filename)
+            return TimeoutException(error.msg + f'''
+PageSource: file://{path}''')
+
+        hooks = tuple(filter(None, [
+            save_and_log_screenshot if config.save_screenshot_on_failure else None,
+            save_and_log_page_source if config.save_page_source_on_failure else None,
+            config.hook_wait_failure
+        ]))
+
+        return pipe(*hooks)
+
     @property
     def config(self) -> SharedConfig:
-        return self._config
+        # todo: consider moving base hooks (screnshot and pagesource) to the SharedConfig
+        #       it will make config reuse in browser.* entities less dependent on "custom shared" logic...
+        return self._config.with_(hook_wait_failure=self._inject_screenshot_and_page_source_pre_hooks(self._config))
 
     def with_(self, config: Config = None, **config_as_kwargs) -> Browser:
         return Browser(self.config.with_(config, **config_as_kwargs))
@@ -87,6 +114,7 @@ class SharedBrowser(Browser):
         class CallableString(str):
             def __new__(cls, value):
                 obj = str.__new__(cls, value)
+                obj._value = value
                 return obj
 
             def __call__(self, *args, **kwargs):
@@ -94,6 +122,9 @@ class SharedBrowser(Browser):
                               'use browser.latest_screenshot as a property. ',
                               DeprecationWarning)
                 return self[:]
+
+            def __bool__(self):
+                return bool(self._value)
 
         return CallableString(self._latest_screenshot)
 
