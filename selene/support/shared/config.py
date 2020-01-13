@@ -35,9 +35,12 @@ from selenium.webdriver.remote.webdriver import WebDriver
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 
+from selene.common.fp import pipe
 from selene.common.helpers import on_error_return_false
 from selene.core.configuration import Config
 from selene.core.exceptions import TimeoutException
+from selene.core.wait import Wait
+from selene.support.webdriver import Help
 
 T = TypeVar('T')
 
@@ -78,7 +81,9 @@ class SharedConfig(Config):
                  save_page_source_on_failure: bool = True,
                  poll_during_waits: int = 100,
                  counter=None,  # default is set below
-                 reports_folder: Optional[str] = None  # default is set below
+                 reports_folder: Optional[str] = None,  # default is set below
+                 last_screenshot: Optional[str] = None,
+                 last_page_source: Optional[str] = None,
                  ):
         self._source = source
         if driver:
@@ -93,6 +98,8 @@ class SharedConfig(Config):
                                                               '.selene',
                                                               'screenshots',
                                                               str(next(self._counter)))
+        self._last_screenshot = last_screenshot
+        self._last_page_source = last_page_source
         super().__init__(driver=driver,
                          timeout=timeout,
                          base_url=base_url,
@@ -161,6 +168,48 @@ class SharedConfig(Config):
     #              how can we make it impossible?
     #              or what else better name can we choose?
 
+    def generate_filename(self, prefix='', suffix=''):
+        path = self.reports_folder
+        next_id = next(self.counter)
+        filename = f'{prefix}{next_id}{suffix}'
+        file = os.path.join(path, f'{filename}')
+
+        folder = os.path.dirname(file)
+        if not os.path.exists(folder):
+            os.makedirs(folder)
+
+        return file
+
+    def _inject_screenshot_and_page_source_pre_hooks(self, hook):
+        # todo: consider moving hooks to class methods accepting config as argument
+        #       or refactor somehow to eliminate all times defining hook fns
+        def save_and_log_screenshot(error: TimeoutException) -> Exception:
+            path = Help(self.driver).save_screenshot(self.generate_filename(suffix='.png'))
+            self._last_screenshot = path
+            return TimeoutException(error.msg + f'''
+Screenshot: file://{path}''')
+
+        def save_and_log_page_source(error: TimeoutException) -> Exception:
+            filename = self.last_screenshot.replace('.png', '.html') if self.last_screenshot \
+                else self.generate_filename(suffix='.html')
+            path = Help(self.driver).save_page_source(filename)
+            self._last_page_source = path
+            return TimeoutException(error.msg + f'''
+PageSource: file://{path}''')
+
+        hooks = tuple(filter(None, [
+            save_and_log_screenshot if self.save_screenshot_on_failure else None,
+            save_and_log_page_source if self.save_page_source_on_failure else None,
+            hook
+        ]))
+
+        return pipe(*hooks)
+
+    # todo: do we really need this overwritten clone?
+    def wait(self, entity):
+        hook = self._inject_screenshot_and_page_source_pre_hooks(self.hook_wait_failure)
+        return Wait(entity, at_most=self.timeout, or_fail_with=hook)
+
     # --- Config.* added setters --- #
 
     @Config.timeout.setter
@@ -187,12 +236,36 @@ class SharedConfig(Config):
     def window_height(self, value: Optional[int]):
         self._window_height = value
 
+    # not sure why this code does not let the base property being overwritten o_O :(
+    # maybe because @Config.hook_wait_failure.setter is defined afterwards mixing things out
+    # @Config.hook_wait_failure.getter   # both this
+    # @property                          # and this did not work
+    # def hook_wait_failure(self) -> Callable[[TimeoutException], Exception]:
+    #     return self._inject_screenshot_and_page_source_pre_hooks(self._hook_wait_failure)
+    # finally decided to implement needed pre-hooks injection in the self.wait(entity) method
+
     @Config.hook_wait_failure.setter
     def hook_wait_failure(self, value: Callable[[TimeoutException], Exception]):
         default = lambda e: e
         self._hook_wait_failure = value or default
 
     # --- SharedConfig.* new props --- #
+
+    @property
+    def last_screenshot(self) -> str:
+        return self._last_screenshot
+
+    @last_screenshot.setter
+    def last_screenshot(self, value: str):
+        self._last_screenshot = value
+
+    @property
+    def last_page_source(self) -> str:
+        return self._last_page_source
+
+    @last_page_source.setter
+    def last_page_source(self, value: str):
+        self._last_page_source = value
 
     @property
     def hold_browser_open(self) -> bool:

@@ -22,7 +22,7 @@
 import os
 import warnings
 from functools import lru_cache
-from typing import Union
+from typing import Union, Optional
 
 from selenium.webdriver.remote.webdriver import WebDriver
 
@@ -33,6 +33,7 @@ from selene.common.none_object import NoneObject
 from selene.core.exceptions import TimeoutException
 from selene.core.wait import Wait
 from selene.support.shared.config import SharedConfig
+from selene.support.webdriver import Help
 
 
 class SharedBrowser(Browser):
@@ -41,32 +42,9 @@ class SharedBrowser(Browser):
         self._latest_page_source = NoneObject('selene.SharedBrowser._latest_page_source')
         super().__init__(config)
 
-    def _inject_screenshot_and_page_source_pre_hooks(self, config: SharedConfig):
-        # todo: consider moving hooks to class methods accepting browser as argument
-        def save_and_log_screenshot(error: TimeoutException) -> Exception:
-            path = self.save_screenshot()
-            return TimeoutException(error.msg + f'''
-Screenshot: file://{path}''')
-
-        def save_and_log_page_source(error: TimeoutException) -> Exception:
-            filename = self.latest_screenshot.replace('.png', '.html') if self.latest_screenshot else None
-            path = self.save_page_source(filename)
-            return TimeoutException(error.msg + f'''
-PageSource: file://{path}''')
-
-        hooks = tuple(filter(None, [
-            save_and_log_screenshot if config.save_screenshot_on_failure else None,
-            save_and_log_page_source if config.save_page_source_on_failure else None,
-            config.hook_wait_failure
-        ]))
-
-        return pipe(*hooks)
-
     @property
     def config(self) -> SharedConfig:
-        # todo: consider moving base hooks (screnshot and pagesource) to the SharedConfig
-        #       it will make config reuse in browser.* entities less dependent on "custom shared" logic...
-        return self._config.with_(hook_wait_failure=self._inject_screenshot_and_page_source_pre_hooks(self._config))
+        return self._config
 
     def with_(self, config: Config = None, **config_as_kwargs) -> Browser:
         return Browser(self.config.with_(config, **config_as_kwargs))
@@ -85,31 +63,24 @@ PageSource: file://{path}''')
 
         return webdriver
 
-    def _next_generated_absolute_filename(self, prefix='', suffix=''):
-        path = self.config.reports_folder
-        next_id = next(self.config.counter)
-        filename = f'{prefix}{next_id}{suffix}'
-        file = os.path.join(path, f'{filename}')
-
-        folder = os.path.dirname(file)
-        if not os.path.exists(folder):
-            os.makedirs(folder)
-
-        return file
-
     def save_screenshot(self, file: str = None):
         # warnings.warn('browser.save_screenshot might be deprecated', FutureWarning)
 
         if not file:
-            file = self._next_generated_absolute_filename(suffix='.png')
+            file = self.config.generate_filename(suffix='.png')
 
-        # todo: refactor to catch errors smartly in get_screenshot_as_file
-        self._latest_screenshot = file if self.driver.get_screenshot_as_file(file) else None
-        return self._latest_screenshot
+        # todo: refactor to catch errors smartly in get_screenshot_as_file. or not needed?
+        self.config.last_screenshot = Help(self.driver).save_screenshot(file)
+
+        return self.config.last_screenshot
+
+    @property
+    def last_screenshot(self) -> str:
+        return self.config.last_screenshot
 
     @property
     def latest_screenshot(self) -> str:
-        # warnings.warn('browser.latest_screenshot property might be deprecated in future', FutureWarning)
+        warnings.warn('deprecated, use browser.last_screenshot property', DeprecationWarning)
 
         class CallableString(str):
             def __new__(cls, value):
@@ -119,44 +90,36 @@ PageSource: file://{path}''')
 
             def __call__(self, *args, **kwargs):
                 warnings.warn('browser.latest_screenshot() is deprecated, '
-                              'use browser.latest_screenshot as a property. ',
+                              'use browser.last_screenshot as a property. ',
                               DeprecationWarning)
                 return self[:]
 
             def __bool__(self):
                 return bool(self._value)
 
-        return CallableString(self._latest_screenshot)
+        return CallableString(self.last_screenshot)
 
     # todo: consider moving this to browser command.save_page_source(filename)
-    def save_page_source(self, file: str = None):
+    def save_page_source(self, file: str = None) -> Optional[str]:
         # warnings.warn('browser.save_page_source(file) might be deprecated in future', FutureWarning)
 
         if not file:
-            file = self._next_generated_absolute_filename(suffix='.html')
+            file = self.config.generate_filename(suffix='.html')
 
-        if not file.lower().endswith('.html'):
-            warnings.warn("name used for saved pagesource does not match file "
-                          "type. It should end with an `.html` extension", UserWarning)
+        saved_file = Help(self.driver).save_page_source(file)
 
-        html = self.driver.page_source
+        self.config.last_page_source = saved_file
 
-        try:
-            with open(file, 'w') as f:
-                f.write(html)
-        except IOError:
-            self._latest_page_source = None
-        finally:
-            del html
+        return saved_file
 
-        self._latest_page_source = file
-
-        return file
+    @property
+    def last_page_source(self) -> str:
+        return self.config.last_page_source
 
     @property
     def latest_page_source(self):
-        # warnings.warn('browser.latest_page_source prop might be deprecated in future', FutureWarning)
-        return self._latest_page_source
+        warnings.warn('browser.latest_page_source prop is deprecated, use browser.last_page_source', DeprecationWarning)
+        return self.config.last_page_source
 
     def quit_driver(self):
         warnings.warn('deprecated; use browser.quit() instead', DeprecationWarning)

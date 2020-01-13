@@ -2,14 +2,17 @@
 
 ## next
 - case insensitive versions of conditions like have.attribute(...).value(...)
-- consider moving screenshots-related hooks from SharedBrowser to SharedConfig
+  - experimental impl was already added in 2.0.0a16
 - consider making have.size to work with elements too...
 
 ## 2.0.0b1 (to be released on *.01.2020)
 - remove all deprecated things and stay calm:)
 
 ## 2.0.0a16
-- todo: fix absent screenshots on `browser.element(...).with_(timeout=...).*`
+- fixed absent screenshots for customized elements through with_
+  - e.g. in `browser.element(...).with_(timeout=...).should(be.visible)`
+  - as impl: moved main auto-saving screens/page_source logic to SharedConfig
+  - deprecated latest_* methods in Browser in favour of last_*
 - added experimental syntax for ignore_case in:
   - `browser.element(...).should(have.attribute('foo').value('bar', ignore_case=True)`
   - `browser.element(...).should(have.attribute('foo').value_containing('bar', ignore_case=True)`
