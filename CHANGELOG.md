@@ -8,7 +8,11 @@
 ## 2.0.0b1 (to be released on *.01.2020)
 - remove all deprecated things and stay calm:)
 
-## 2.0.0a16
+## 2.0.0a17 (to be released on 14-15.01.2020)
+- todo: separate core from shared selene api
+- todo: update docs
+
+## 2.0.0a16 (released on 13.01.2020)
 - fixed absent screenshots for customized elements through with_
   - e.g. in `browser.element(...).with_(timeout=...).should(be.visible)`
   - as impl: moved main auto-saving screens/page_source logic to SharedConfig
