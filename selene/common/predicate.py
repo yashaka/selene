@@ -27,8 +27,12 @@ def is_truthy(something):
     return bool(something) if not something == '' else True
 
 
-def equals(expected):
-    return lambda actual: expected == actual
+def equals_ignoring_case(expected):
+    return lambda actual: str(expected).lower() == str(actual).lower()
+
+
+def equals(expected, ignore_case=False):
+    return lambda actual: expected == actual if not ignore_case else equals_ignoring_case(expected)
 
 
 def is_greater_than(expected):
@@ -47,12 +51,20 @@ def is_less_than_or_equal(expected):
     return lambda actual: actual <= expected
 
 
-def includes(expected):
-    return lambda actual: expected in actual
+def includes_ignoring_case(expected):
+    return lambda actual: str(expected).lower() in str(actual).lower()
 
 
-def includes_word(expected):
-    return lambda actual: expected in re.split(r'\s+', actual)
+def includes(expected, ignore_case=False):
+    return lambda actual: expected in actual if not ignore_case else includes_ignoring_case(expected)
+
+
+def includes_word_ignoring_case(expected):
+    return lambda actual: str(expected).lower() in re.split(r'\s+', str(actual).lower())
+
+
+def includes_word(expected, ignore_case=False):
+    return lambda actual: expected in re.split(r'\s+', actual) if not ignore_case else includes_ignoring_case(expected)
 
 
 seq_compare_by = lambda f: lambda x, *xs: lambda y, *ys: \

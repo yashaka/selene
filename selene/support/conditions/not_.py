@@ -64,11 +64,11 @@ def attribute(name: str, value: str = None):
     original = _match.element_has_attribute(name)
     negated = original.not_
 
-    def value(self, expected: str) -> _match.ElementCondition:
-        return original.value(expected).not_
+    def value(self, expected: str, ignore_case=False) -> _match.ElementCondition:
+        return original.value(expected, ignore_case).not_
 
-    def value_containing(self, expected: str) -> _match.ElementCondition:
-        return original.value_containing(expected).not_
+    def value_containing(self, expected: str, ignore_case=False) -> _match.ElementCondition:
+        return original.value_containing(expected, ignore_case).not_
 
     def values(self, *expected: str) -> _match.CollectionCondition:
         return original.values(*expected).not_

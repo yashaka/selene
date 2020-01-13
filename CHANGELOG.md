@@ -8,10 +8,27 @@
 ## 2.0.0b1 (to be released on *.01.2020)
 - remove all deprecated things and stay calm:)
 
-## 2.0.0a*
-- consider making query.size to work with both collection and element
+## 2.0.0a16
+- todo: fix absent screenshots on `browser.element(...).with_(timeout=...).*`
+- added experimental syntax for ignore_case in:
+  - `browser.element(...).should(have.attribute('foo').value('bar', ignore_case=True)`
+  - `browser.element(...).should(have.attribute('foo').value_containing('bar', ignore_case=True)`
+  - open points:
+    - while it's more or less ok here... but is it ok in:
+      - `browser.all(...).should(have.texts('a', 'b', 'c', ignore_case=True')`
+      - or better?
+      - `browser.element(...).should(have.texts_ignoring_case('a', 'b', 'c')`
+      - taking into account that one day there might be an ask for:
+        - `browser.all(...).should(have.texts('a', 'b', 'c', in_any_order=True)`
+        - or
+        - `browser.all(...).should(have.texts_in_any_order('a', 'b', 'c')`
+        - seems like better to have options over predefined names... to combine them whatever you like
+          - but what then to do with conditions like value_containing? move _containing to option to?
+            - `browser.element(...).should(have.value('a', contained=True, ignore_case=True')`
+            - ooo, and this is also technically possible:
+              - `browser.element(...).should(have.value('a').contained.ignoring_case)`
 
-## 2.0.0a15 (to be released on 13.01.2020)
+## 2.0.0a15 (released on 13.01.2020)
 - fixed len(collection) to wait if collection can't be found
 - made query.size to work with both element and collection
   - element.get(query.size) will return the size of the element (as a Dict)

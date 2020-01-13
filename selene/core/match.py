@@ -165,17 +165,21 @@ def element_has_attribute(name: str):
 
     class ConditionWithValues(ElementCondition):
 
-        def value(self, expected: str) -> ElementCondition:
+        def value(self, expected: str, ignore_case=False) -> ElementCondition:
+            if ignore_case:
+                warnings.warn('ignore_case syntax is experimental and might change in future', FutureWarning)
             return ElementCondition.raise_if_not_actual(
                 f"has attribute '{name}' with value '{expected}'",
                 attribute_value,
-                predicate.equals(expected))
+                predicate.equals(expected, ignore_case))
 
-        def value_containing(self, expected: str) -> ElementCondition:
+        def value_containing(self, expected: str, ignore_case=False) -> ElementCondition:
+            if ignore_case:
+                warnings.warn('ignore_case syntax is experimental and might change in future', FutureWarning)
             return ElementCondition.raise_if_not_actual(
                 f"has attribute '{name}' with value containing '{expected}'",
                 attribute_value,
-                predicate.includes(expected))
+                predicate.includes(expected, ignore_case))
 
         def values(self, *expected: str) -> CollectionCondition:
             return CollectionCondition.raise_if_not_actual(
