@@ -1,17 +1,20 @@
-# Selene - User-oriented Web UI browser tests in Python 
-(Selenide port to Python)
+# Selene - User-oriented Web UI browser tests in Python (Selenide port)
 
-[![Build Status](https://travis-ci.org/yashaka/selene.svg?branch=master)](https://travis-ci.org/yashaka/selene) [![codecov](https://codecov.io/gh/yashaka/selene/branch/master/graph/badge.svg)](https://codecov.io/gh/yashaka/selene) [![Gitter](https://badges.gitter.im/gitterHQ/gitter.svg)](https://gitter.im/automician/selene)
+[![Build Status](https://travis-ci.org/yashaka/selene.svg?branch=master)](https://travis-ci.org/yashaka/selene)
+[![codecov](https://codecov.io/gh/yashaka/selene/branch/master/graph/badge.svg)](https://codecov.io/gh/yashaka/selene)
+![Free](https://img.shields.io/badge/free-open--source-green.svg)
+[![MIT License](http://img.shields.io/badge/license-MIT-green.svg)](https://github.com/yashaka/selene/blob/master/LICENSE)
 
-community in russian: [![Join the chat at https://t.me/selene_py_ru](https://img.shields.io/badge/join%20chat-telegram-blue.svg)](https://t.me/selene_py_ru)
+[![Gitter](https://badges.gitter.im/gitterHQ/gitter.svg)](https://gitter.im/automician/selene)
+[![Присоединяйся к чату https://t.me/selene_py_ru](https://img.shields.io/badge/%D1%87%D0%B0%D1%82-telegram-blue)](https://t.me/selene_py_ru)
 
 
 Main features:
 
-- User-oriented API for Selenium Webdriver (code like speak common English)
-- Ajax support (Smart implicit waiting and retry mechanism)
-- PageObjects support (all elements are lazy-evaluated objects)
-- Automatic driver management (no need to install and setup driver for quick local execution)
+- **User-oriented API for Selenium Webdriver** (code like speak common English)
+- **Ajax support** (Smart implicit waiting and retry mechanism)
+- **PageObjects support** (all elements are lazy-evaluated objects)
+- **Automatic driver management** (no need to install and setup driver for quick local execution)
 
 
 Selene was inspired by [Selenide](http://selenide.org/) from Java world.
@@ -20,6 +23,8 @@ Tests with Selene can be built either in a simple straightforward "selenide' sty
 
 ## Table of content
 
+* [Versions](#versions)
+    * [Migration Guide](#migration-guide)
 * [Prerequisites](#prerequisites)
 * [Installation](#installation)
 * [Usage](#usage)
@@ -30,8 +35,41 @@ Tests with Selene can be built either in a simple straightforward "selenide' sty
 * [Tutorials](#tutorials)
 * [Examples](#more-examples)
 * [Contributing](#contributing)
-* [Release process](#release-process)
+* [Release Process](#release-process)
 * [Changelog](#changelog)
+
+## Versions
+  
+* Latest recommended version to use is [2.0.0a18](https://pypi.org/project/selene/2.0.0a18/
+)
+  * it's a completely new version of selene, with improved API and speed
+  * supports python >= 3.7
+  * it's incompatible with [1.x](https://github.com/yashaka/selene/tree/1.x)
+  * current master branch is pointed to 2.x
+  * yet in pre-alpha stage, refining API, improving "migratability", and testing
+  * it looks pretty stable, but not fully proven yet
+    * mainly tested on production code base of a few users who successfully migrated from 1.x to 2.x
+
+* Latest version marked as stable is: [1.0.1](https://pypi.org/project/selene/1.0.1/)
+  * it is main version used by most selene users during last 2 years
+  * it was proven to be stable for production use
+  * its sources can be found at [1.x](https://github.com/yashaka/selene/tree/1.x) branch.
+  * supports python 2.7, 3.5, 3.6, 3.7
+  
+### Migration guide
+
+GIVEN on 1.0.1:
+* upgrade to python 3.7
+* update selene to 2.0.0aLATEST
+  * find&replace the collection.first() method from `.first()` to `.first`
+  * ensure all conditions like `text('foo')` are used via `be.*` or `have.*` syntax
+    * example: 
+      * find&replace all 
+        * `(text('foo'))` to `(have.text('foo'))`
+        * `(be.visible)` to `(be.visible)`
+      * and add corresponding imports: `from selene import be, have`
+  * fix another broken imports if available
+  * run tests, read deprecation warnings, and refactor to new style recommended in warning messages
 
 ## Prerequisites
 
