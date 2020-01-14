@@ -16,8 +16,6 @@ setup(
     # long_description=long_description,
     packages=['selene',
               'selene.api',
-              'selene.api.base',
-              'selene.api.shared',
               'selene.common',
               'selene.core',
               'selene.support',

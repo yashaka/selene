@@ -20,14 +20,28 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from selene.api.base import *
+# --- BASE -- #
 
-from selene.api.shared import *
+from selene.core.entity import Browser
+from selene.core.configuration import Config
 
+from selene.support import by
+
+from selene.support.conditions import be, have
+
+# --- ADVANCED --- #
+
+from selene.core import query, command
 from selene.core.condition import not_  # just in case
+
+# --- SHARED --- #
+
+from selene.support.shared import browser, config
+from selene.support.shared.jquery_style import s, ss
 
 
 # --- probably just for Type Hints --- #
 
 from selene.core.entity import Element, Collection
 from selene.core.condition import Condition
+from selene.core.conditions import ElementCondition, CollectionCondition, BrowserCondition

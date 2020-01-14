@@ -26,3 +26,5 @@ from selene.core.configuration import Config
 from selene.support import by
 
 from selene.support.conditions import be, have
+
+# todo: probably we don't need it... it's currently removed from distribution

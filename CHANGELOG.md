@@ -22,7 +22,14 @@
 ## 2.0.0aNEXT (to be released on 14-15.01.2020)
 - DOING: update docs
 
-## 2.0.0a17 (to be released on 14.01.2020)
+## 2.0.0a18 (to be released on 14-15.01.2020)
+- removed s, ss from selene.support.shared (were added by mistake in a17)
+- removed selene.api.base and selene.api.shared from distribution
+  - even selene.api is not needed anymore... let's not use it... 
+  - it was needed in the past for * style imports, 
+    - but nevertheless it's a bad practice to do so... 
+
+## 2.0.0a17 (released on 14.01.2020)
 - deprecated selene.config, use `from selene.support.shared import config` instead
   - where you also can find shared browser: `from selene.support.shared import browser, config`
   - you also can go the minimalistic way with the only `browser` import:
