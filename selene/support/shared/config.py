@@ -309,6 +309,48 @@ PageSource: file://{path}''')
     # --- consider to depracate --- #
 
     @property
+    def cash_elements(self) -> bool:
+        warnings.warn('browser.cash_elements does not work now, '
+                      'and probably will be renamed when implemented',
+                      FutureWarning)
+        return False
+
+    @cash_elements.setter
+    def cash_elements(self, value: bool):
+        warnings.warn('browser.cash_elements does not work now, '
+                      'and probably will be renamed when implemented',
+                      FutureWarning)
+        pass
+
+    @property
+    def start_maximized(self):
+        warnings.warn('browser.start_maximized does not work now, '
+                      'and probably will be deprecated or renamed when implemented',
+                      FutureWarning)
+        return False
+
+    @start_maximized.setter
+    def start_maximized(self, value):
+        warnings.warn('browser.start_maximized does not work now, '
+                      'and probably will be deprecated or renamed when implemented',
+                      FutureWarning)
+        pass
+
+    @property
+    def desired_capabilities(self):
+        warnings.warn('browser.desired_capabilities does not work now, '
+                      'and probably will be deprecated completely',
+                      FutureWarning)
+        return None
+
+    @desired_capabilities.setter
+    def desired_capabilities(self, value):
+        warnings.warn('browser.desired_capabilities does not work now, '
+                      'and probably will be deprecated completely',
+                      FutureWarning)
+        pass
+
+    @property
     def poll_during_waits(self) -> int:
         warnings.warn('browser.poll_during_waits might be deprecated', PendingDeprecationWarning)
         return self._poll_during_waits or 100

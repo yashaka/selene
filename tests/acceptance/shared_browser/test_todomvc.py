@@ -1,10 +1,11 @@
-from selene import browser, have, config
+from selene import have
+from selene.support.shared import browser
 
 
 def test_complete_task():
-    # config.timeout = 6
-    # config.save_screenshot_on_failure = False
-    # config.save_page_source_on_failure = False
+    # browser.config.timeout = 6
+    # browser.config.save_screenshot_on_failure = False
+    # browser.config.save_page_source_on_failure = False
     browser.open('http://todomvc.com/examples/emberjs/')
 
     browser.element('#new-todo').type('a').press_enter()

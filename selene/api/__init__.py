@@ -24,8 +24,6 @@ from selene.api.base import *
 
 from selene.api.shared import *
 
-from selene.support.jquery_style_selectors import s, ss
-
 from selene.core.condition import not_  # just in case
 
 

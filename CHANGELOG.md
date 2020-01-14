@@ -1,16 +1,42 @@
 # Changelog
 
 ## next
+- consider adding element.press(*keys) over element.send_keys(*value)
+- consider renaming `config.browser_name` to just `config.name`
+- consider adding config.quit_user_driver_on_exit (maybe even True by default, maybe not...)
 - case insensitive versions of conditions like have.attribute(...).value(...)
   - experimental impl was already added in 2.0.0a16
 - consider making have.size to work with elements too...
+- maybe somewhen in 3.0 consider adding selene.support.shared.selenide module
+  - with selenide style api
+    - like s, ss, open_url
+    - SelenideElement#find, #find_all
+    - ElementsCollection#find, #filter, #get
+    - etc.
+- what about ActionChains?
 
 ## 2.0.0b1 (to be released on *.01.2020)
 - remove all deprecated things and stay calm:)
+- or maybe remove all deprecated stuff only in 3.0?
 
-## 2.0.0a17 (to be released on 14-15.01.2020)
-- todo: separate core from shared selene api
-- todo: update docs
+## 2.0.0aNEXT (to be released on 14-15.01.2020)
+- DOING: update docs
+
+## 2.0.0a17 (to be released on 14.01.2020)
+- deprecated selene.config, use `from selene.support.shared import config` instead
+  - where you also can find shared browser: `from selene.support.shared import browser, config`
+  - you also can go the minimalistic way with the only `browser` import:
+    - `from selene.support.shared import browser`
+    - `browser.config.browser_name = 'firefox'`
+    - `browser.config.base_url= 'https://google.com'`
+    - `browser.config.timeout = 2`
+    - `browser.open('/ncr/')`
+- deprecated selene.support.jquery_style_selectors
+  - because it's technically is based on selene.support.shared.*, so was structured incorrectly
+  - use selene.support.shared.jquery_style instead
+- separate core from shared selene api in selene.*
+  - now to get shared browser or config you have to import them explicitly from selene.support.shared
+  - added some base docs into selene.__init__ 
 
 ## 2.0.0a16 (released on 13.01.2020)
 - fixed absent screenshots for customized elements through with_

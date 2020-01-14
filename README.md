@@ -8,8 +8,7 @@ community in russian: [![Join the chat at https://t.me/selene_py_ru](https://img
 
 Main features:
 
-- Concise API for Selenium
-- jQuery-style selectors
+- User-oriented API for Selenium Webdriver
 - Ajax support
 - PageObjects support
 - Automatic driver management
