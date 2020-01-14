@@ -1,8 +1,9 @@
 from setuptools import setup
 from selene import version
+from os.path import dirname, join, abspath
 
-description = 'User-oriented browser tests in Python (Selenide port to Python)'
-# long_description = 'see http://github.com/yashaka/selene/ for more docs...'
+description = 'User-oriented browser tests in Python (Selenide port)'
+long_description = open(join(abspath(dirname(__file__)), "README.md")).read()
 
 setup(
     name='selene',
@@ -13,7 +14,8 @@ setup(
     author='Iakiv Kramarenko',
     author_email='yashaka@gmail.com',
     description=description,
-    # long_description=long_description,
+    long_description=long_description,
+    long_description_content_type='text/markdown',
     packages=['selene',
               'selene.api',
               'selene.common',

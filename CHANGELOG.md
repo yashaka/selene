@@ -25,10 +25,12 @@
 - deprecated finally `send_keys`, added `press(*keys)` instead
   - use `type` for 'typing text', use `press` or `press_enter` & co for 'pressing keys' 
 - removed s, ss from selene.support.shared (were added by mistake in a17)
+  - yet unsure... maybe it was a good idea... to keep s, ss in shared.__init__.py too... let's think on this more...
 - removed selene.api.base and selene.api.shared from distribution
   - even selene.api is not needed anymore... let's not use it... 
   - it was needed in the past for * style imports, 
     - but nevertheless it's a bad practice to do so... 
+- updated readme and project long description for pypy
 
 ## 2.0.0a17 (released on 14.01.2020)
 - deprecated selene.config, use `from selene.support.shared import config` instead
