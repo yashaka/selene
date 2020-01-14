@@ -1,7 +1,6 @@
 # Changelog
 
 ## next
-- consider adding element.press(*keys) over element.send_keys(*value)
 - consider renaming `config.browser_name` to just `config.name`
 - consider adding config.quit_user_driver_on_exit (maybe even True by default, maybe not...)
 - case insensitive versions of conditions like have.attribute(...).value(...)
@@ -23,6 +22,8 @@
 - DOING: update docs
 
 ## 2.0.0a18 (to be released on 14-15.01.2020)
+- deprecated finally `send_keys`, added `press(*keys)` instead
+  - use `type` for 'typing text', use `press` or `press_enter` & co for 'pressing keys' 
 - removed s, ss from selene.support.shared (were added by mistake in a17)
 - removed selene.api.base and selene.api.shared from distribution
   - even selene.api is not needed anymore... let's not use it... 

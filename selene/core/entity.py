@@ -201,26 +201,30 @@ class Element(WaitingEntity):
         #       also it will make sense to make this behaviour configurable...
         return self
 
-    def type(self, keys: Union[str, int]) -> Element:
+    def type(self, text: Union[str, int]) -> Element:
         # todo: do we need a separate send_keys method?
         def fn(element: Element):
             webelement = element()
-            webelement.send_keys(str(keys))
+            webelement.send_keys(str(text))
 
         from selene.core import command
-        self.wait.for_(command.js.type(keys) if self.config.type_by_js
-                       else Command(f'type: {keys}', fn))
+        self.wait.for_(command.js.type(text) if self.config.type_by_js
+                       else Command(f'type: {text}', fn))
 
         return self
 
+    def press(self, *keys) -> Element:
+        self.wait.command(f'press keys: {keys}', lambda element: element().send_keys(*keys))
+        return self
+
     def press_enter(self) -> Element:
-        return self.type(Keys.ENTER)
+        return self.press(Keys.ENTER)
 
     def press_escape(self) -> Element:
-        return self.type(Keys.ESCAPE)
+        return self.press(Keys.ESCAPE)
 
     def press_tab(self) -> Element:
-        return self.type(Keys.TAB)
+        return self.press(Keys.TAB)
 
     def clear(self) -> Element:
         self.wait.command('clear', lambda element: element().clear())
@@ -441,8 +445,9 @@ class Element(WaitingEntity):
 
     def send_keys(self, *value) -> Element:
         warnings.warn(
-            "considering to deprecate; consider using `type` method instead",
-            PendingDeprecationWarning)
+            "send_keys is deprecated because the name is not user-oriented in context of web ui e2e tests; "
+            "use `type` for 'typing text', press(*key) or press_* for 'pressing keys' methods instead",
+            DeprecationWarning)
         self.wait.command('send keys', lambda element: element().send_keys(*value))
         return self
 
