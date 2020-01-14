@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2015-2020 Iakiv Kramarenko
+# Copyright (c) 2015-2019 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -20,64 +20,48 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from selenium.webdriver.common.by import By
+from selene import bys
 
 
 def css(selector):
-    return By.CSS_SELECTOR, selector
+    return bys.by_css(selector)
 
 
 def xpath(selector):
-    return By.XPATH, selector
+    return bys.by_xpath(selector)
 
 
 def id(attribute_value):
-    return By.ID, attribute_value
+    return bys.by_id(attribute_value)
 
 
 def name(attribute_value):
-    return By.NAME, attribute_value
+    return bys.by_name(attribute_value)
 
 
-def link_text(value):
-    return By.LINK_TEXT, value
+def link_text(text):
+    return bys.by_link_text(text)
 
 
-def partial_link_text(value):
-    return By.PARTIAL_LINK_TEXT, value
+def partial_link_text(text):
+    return bys.by_partial_link_text(text)
 
 
-def _escape_text_quotes_for_xpath(text):
-    return 'concat("", "%s")' % (
-        str(
-            "\", '\"', \"".join(
-                text.split('"'))))
+def text(element_text):
+    return bys.by_text(element_text)
 
 
-def text(value):
-    return xpath('.//*[text()[normalize-space(.) = '
-                    + _escape_text_quotes_for_xpath(value)
-                    + ']]')
+def partial_text(element_text):
+    return bys.by_partial_text(element_text)
 
 
-def partial_text(value):
-    return xpath('.//*[text()[contains(normalize-space(.), '
-                    + _escape_text_quotes_for_xpath(value)
-                    + ')]]')
-
-
-# todo: deprecate be_* ? since they hide "xpath" logic, which may not be working in all cases
-#       for example in case of mobile...
-#       maybe the only good thing to keep is by.text and by.partial_text
-
-
-def be_following_sibling(with_tag: str = '*'):
-    return xpath(f'./following-sibling::{with_tag}')
+def be_following_sibling():
+    return bys.following_sibling()
 
 
 def be_parent():
-    return xpath('..')
+    return bys.parent()
 
 
-def be_first_child(with_tag: str = '*'):
-    return xpath(f'./{with_tag}[1]')
+def be_first_child():
+    return bys.first_child()

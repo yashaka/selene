@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2015-2020 Iakiv Kramarenko
+# Copyright (c) 2015-2019 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -20,29 +20,34 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from selene.core import match
-from selene.support.conditions import not_  as _not_
-
-not_ = _not_
-
-visible = match.element_is_visible
-hidden = match.element_is_hidden
-selected = match.element_is_selected
-
-present = match.element_is_present
-in_dom = match.element_is_present    # todo: do we need both present and in_dom?
-existing = match.element_is_present  # todo: consider deprecating
-
-absent = match.element_is_absent
-
-enabled = match.element_is_enabled
-disabled = match.element_is_disabled
-
-clickable = match.element_is_clickable
-
-blank = match.element_is_blank
+from selene import conditions
 
 
-# --- Deprecated --- #
+# *** Condition builders ***
 
-empty = match.collection_is_empty
+
+def not_(condition_to_be_inverted):
+    return conditions.not_(condition_to_be_inverted)
+
+
+# *** SeleneElement conditions ***
+
+
+visible = conditions.visible
+in_dom = conditions.in_dom
+enabled = conditions.enabled
+existing = conditions.exist
+clickable = conditions.clickable
+hidden = conditions.hidden
+blank = conditions.blank
+
+
+# *** SeleneCollection conditions ***
+
+
+empty = conditions.empty
+
+
+# *** Other conditions ***
+
+or_not_to_be = conditions.or_not_to_be

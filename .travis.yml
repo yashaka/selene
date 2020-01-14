@@ -3,11 +3,12 @@ sudo: true
 dist: xenial
 
 addons:
-  firefox: "71.0"
+  firefox: "46.0"
   chrome: "stable"
 
 language: python
 python:
+  - "3.6"
   - "3.7"
 
 before_install:

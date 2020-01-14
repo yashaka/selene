@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2015-2020 Iakiv Kramarenko
+# Copyright (c) 2015-2019 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -27,12 +27,8 @@ def is_truthy(something):
     return bool(something) if not something == '' else True
 
 
-def equals_ignoring_case(expected):
-    return lambda actual: str(expected).lower() == str(actual).lower()
-
-
-def equals(expected, ignore_case=False):
-    return lambda actual: expected == actual if not ignore_case else equals_ignoring_case(expected)
+def equals(expected):
+    return lambda actual: expected == actual
 
 
 def is_greater_than(expected):
@@ -51,29 +47,16 @@ def is_less_than_or_equal(expected):
     return lambda actual: actual <= expected
 
 
-def includes_ignoring_case(expected):
-    return lambda actual: str(expected).lower() in str(actual).lower()
+def includes(expected):
+    return lambda actual: expected in actual
 
 
-def includes(expected, ignore_case=False):
-    return lambda actual: expected in actual if not ignore_case else includes_ignoring_case(expected)
+def includes_word(expected):
+    return lambda actual: expected in re.split(r'\s+', actual)
 
 
-def includes_word_ignoring_case(expected):
-    return lambda actual: str(expected).lower() in re.split(r'\s+', str(actual).lower())
-
-
-def includes_word(expected, ignore_case=False):
-    return lambda actual: expected in re.split(r'\s+', actual) if not ignore_case else includes_ignoring_case(expected)
-
-
-seq_compare_by = lambda f: lambda x, *xs: lambda y, *ys: \
-    True if x is None and y is None else bool(f(x)(y)) and seq_compare_by(f)(*xs or (None, ))(*ys or (None, ))
-
-
-list_compare_by = lambda f: lambda expected: lambda actual: \
-    seq_compare_by(f)(*expected)(*actual)
-
+list_compare_by = lambda f: lambda x, *xs: lambda y, *ys: \
+    True if x is None and y is None else bool(f(x)(y)) and list_compare_by(f)(*xs or None)(*ys or None)
 
 equals_to_list = list_compare_by(equals)
 equals_by_contains_to_list = list_compare_by(includes)

@@ -1,9 +1,8 @@
 from setuptools import setup
 from selene import version
-from os.path import dirname, join, abspath
 
-description = 'User-oriented browser tests in Python (Selenide port)'
-long_description = open(join(abspath(dirname(__file__)), "README.md")).read()
+description = 'Concise API for selenium in Python + Ajax support + PageObjects (Selenide port from Java to Python)'
+# long_description = 'see http://github.com/yashaka/selene/ for more docs...'
 
 setup(
     name='selene',
@@ -14,21 +13,18 @@ setup(
     author='Iakiv Kramarenko',
     author_email='yashaka@gmail.com',
     description=description,
-    long_description=long_description,
-    long_description_content_type='text/markdown',
+    # long_description=long_description,
     packages=['selene',
               'selene.api',
+              'selene.abctypes',
               'selene.common',
-              'selene.core',
               'selene.support',
-              'selene.support.shared',
-              'selene.support.conditions',
-              ],
+              'selene.support.conditions'],
     include_package_data=True,
-    install_requires=['selenium==3.141.0', 'webdriver_manager', 'future', 'backports.functools_lru_cache'],
+    install_requires=['selenium', 'webdriver_manager', 'future', 'backports.functools_lru_cache', 'six'],
     platforms='any',
     zip_safe=False,
-    keywords=['testing', 'selenium', 'selenide', 'browser', 'pageobject', 'widget', 'wrapper'],
+    keywords=['testing', 'selenium==3.141.0', 'selenide', 'browser', 'pageobject', 'widget', 'wrapper'],
     classifiers=[
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
