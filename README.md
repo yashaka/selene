@@ -1,29 +1,122 @@
-# Selene - Concise API for Selenium in Python 
-(Selenide port in Python)
+# Selene - User-oriented Web UI browser tests in Python (Selenide port)
 
-[![Build Status](https://travis-ci.org/yashaka/selene.svg?branch=master)](https://travis-ci.org/yashaka/selene) [![codecov](https://codecov.io/gh/yashaka/selene/branch/master/graph/badge.svg)](https://codecov.io/gh/yashaka/selene) [![Gitter](https://badges.gitter.im/gitterHQ/gitter.svg)](https://gitter.im/automician/selene)
+[![Build Status](https://travis-ci.org/yashaka/selene.svg?branch=master)](https://travis-ci.org/yashaka/selene)
+[![codecov](https://codecov.io/gh/yashaka/selene/branch/master/graph/badge.svg)](https://codecov.io/gh/yashaka/selene)
+![Free](https://img.shields.io/badge/free-open--source-green.svg)
+[![MIT License](http://img.shields.io/badge/license-MIT-green.svg)](https://github.com/yashaka/selene/blob/master/LICENSE)
 
-community in russian: [![Join the chat at https://t.me/selene_py_ru](https://img.shields.io/badge/join%20chat-telegram-blue.svg)](https://t.me/selene_py_ru)
+[![Gitter](https://badges.gitter.im/gitterHQ/gitter.svg)](https://gitter.im/automician/selene)
+[![Присоединяйся к чату https://t.me/selene_py_ru](https://img.shields.io/badge/%D1%87%D0%B0%D1%82-telegram-blue)](https://t.me/selene_py_ru)
 
 
 Main features:
 
-- Concise API for Selenium
-- jQuery-style selectors
-- Ajax support
-- PageObjects support
-- Automatic driver management
+- **User-oriented API for Selenium Webdriver** (code like speak common English)
+- **Ajax support** (Smart implicit waiting and retry mechanism)
+- **PageObjects support** (all elements are lazy-evaluated objects)
+- **Automatic driver management** (no need to install and setup driver for quick local execution)
 
 
 Selene was inspired by [Selenide](http://selenide.org/) from Java world.
 
 Tests with Selene can be built either in a simple straightforward "selenide' style or with PageObjects composed from Widgets i.e. reusable element components.
 
-NOTE: This is still an alpha version. Lately selene was completely refactored, and have changed API a bit. So if you have been using it before (versions <= 0.0.8), then upgrading to next version may break your tests. Read changelog before upgrading to be prepared;)
+## Table of content
+
+* [Versions](#versions)
+    * [Migration Guide](#migration-guide)
+* [Prerequisites](#prerequisites)
+* [Installation](#installation)
+* [Usage](#usage)
+    * [Quick Start](#quick-start)
+    * [Core API](#core-api)
+    * [Automatic Driver and Browser Management](#automatic-driver-and-browser-management)
+    * [Advanced API](#advanced-api)
+* [Tutorials](#tutorials)
+* [Examples](#more-examples)
+* [Contributing](#contributing)
+* [Release Process](#release-process)
+* [Changelog](#changelog)
+
+## Versions
+  
+* Latest recommended version to use is [2.0.0a18](https://pypi.org/project/selene/2.0.0a18/
+)
+  * it's a completely new version of selene, with improved API and speed
+  * supports python >= 3.7
+  * it's incompatible with [1.x](https://github.com/yashaka/selene/tree/1.x)
+  * current master branch is pointed to 2.x
+  * yet in pre-alpha stage, refining API, improving "migratability", and testing
+  * it looks pretty stable, but not fully proven yet
+    * mainly tested on production code base of a few users who successfully migrated from 1.x to 2.x
+
+* Latest version marked as stable is: [1.0.1](https://pypi.org/project/selene/1.0.1/)
+  * it is main version used by most selene users during last 2 years
+  * it was proven to be stable for production use
+  * its sources can be found at [1.x](https://github.com/yashaka/selene/tree/1.x) branch.
+  * supports python 2.7, 3.5, 3.6, 3.7
+  
+### Migration guide
+
+GIVEN on 1.0.1:
+* upgrade to python 3.7
+* update selene to 2.0.0aLATEST
+  * find&replace the collection.first() method from `.first()` to `.first`
+  * ensure all conditions like `text('foo')` are used via `be.*` or `have.*` syntax
+    * example: 
+      * find&replace all 
+        * `(text('foo'))` to `(have.text('foo'))`
+        * `(be.visible)` to `(be.visible)`
+      * and add corresponding imports: `from selene import be, have`
+  * fix another broken imports if available
+  * run tests, read deprecation warnings, and refactor to new style recommended in warning messages
+
+## Prerequisites
+
+[Python >= 3.7](https://www.python.org/downloads/release/python-370/)
+
+Given [pyenv](https://github.com/pyenv/pyenv) installed, installing needed version of Python is pretty simple:
+
+    $ pyenv install 3.7.3
+    $ pyenv global 3.7.3
+    $ python -V
+    Python 3.7.3
 
 ## Installation
 
-### latest development version 
+### poetry + pyenv (recommended)
+
+GIVEN [poetry](https://poetry.eustace.io/) and [pyenv](https://github.com/pyenv/pyenv) installed ...
+
+AND
+
+    $ poetry new my-tests-with-selene
+    $ cd my-tests-with-selene
+    $ pyenv local 3.7.3
+    
+WHEN latest stable version:
+
+    $ poetry add selene
+
+WHEN latest pre-release version:
+
+    $ poetry add selene --allow-prereleases
+
+THEN
+
+    $ poetry install
+
+### pip
+
+Latest stable version:
+
+    $ pip install selene
+
+Latest pre-release version:
+
+    $ pip install selene --pre
+
+### from sources
 
     $ git clone https://github.com/yashaka/selene.git
     $ python setup.py install
@@ -31,455 +124,248 @@ NOTE: This is still an alpha version. Lately selene was completely refactored, a
 or using pip:
 
     $ pip install git+https://github.com/yashaka/selene.git
+    
 
-[It is preferable also to use  local virtualenv](https://gist.github.com/yashaka/a547c6e0df5f6c973acc04655b6e3072).
+## Usage
 
-### latest published pre-release version (currently this is recommended option unless selene 1.0 will be released):
+### Quick Start
 
-    pip install selene --pre
-
-### latest release version (versions <= 0.0.8 will become outdated soon)
-
-    pip install selene
-
-## Quick Start
-
-### Basic Usage: 4 pillars of Selene
-
-All Selene API consists just from 4 pillars:
-
-1. Browser Actions (including finding elements)
-2. Custom Selectors
-3. Assertion Conditions
-4. Custom Configuration
-
-And one more not mandatory bonus:
-
-`5.` concise jquery-style shortcuts for finding elements
-
-All pillars are reflected in corresponding selene python modules and their methods.
-
-#### 1. Browser Actions: [browser.*](https://github.com/yashaka/selene/blob/master/selene/browser.py)
-e.g. `browser.open_url('https://todomvc4tasj.herokuapp.com')`
-
-e.g. `browser.element('#new-todo')`
-
-e.g. `browser.all('#todo-list>li')`
-
-Once you have the elements, of course you can do some actions on them:
-
-e.g. `browser.element('#new-todo').set_value('do something').press_enter()`
-
-e.g. `browser.all('#todo-list>li').first().find('.toggle').click()`
-
-#### 2. Custom Selectors: [by.*](https://github.com/yashaka/selene/blob/master/selene/support/by.py)
-By default element finders (`browser.element`, `browser.all`) accept css selectors as strings, but you can use any custom selector from the `by` module.
-
-e.g. `browser.element(by.link_text("Active")).click()`
-
-#### 3. Assertion Conditions: [be.*](https://github.com/yashaka/selene/blob/master/selene/support/conditions/be.py) and [have.*](https://github.com/yashaka/selene/blob/master/selene/support/conditions/have.py)
-Assertion conditions are used in "assertion actions" on elements.
-
-e.g. `browser.element("#new-todo").should(be.blank)` or the same `browser.element("#new-todo").should(have.value(''))`
-
-e.g. `browser.all('#todo-list>li').should(have.exact_texts('do something', 'do more'))`
-
-e.g. `browser.all('#todo-list>li').should(be.empty)`
-
-#### 4. Custom Configuration: [config.*](https://github.com/yashaka/selene/blob/master/selene/config.py)
-e.g. `config.browser_name = 'chrome'`
-
-You can omit custom configuration and Selene will use default values, e.g. browser_name is equal to `'firefox'` by default
-
-Config options can be also overriden with corresponding system variables (see [#51](https://github.com/yashaka/selene/issues/51) for more details)
-
-#### 5. Concise jquery-style shortcuts for finding elements:
-e.g. `s('#new-todo')` instead of `browser.element('#new-todo')`
-
-e.g. `ss('#todo-list>li')` instead of `browser.all('#todo-list>li')`
-
-#### Imports
-
-You can access to all main Selene API via single "wildcard" import:
-```
-from selene.api import *
-```
-
-If you don't like "wildcard" imports, you can use direct module imports or direct module functions import;) no problem:)
-
-### OOP sidenotes...
-If you did not like the "non-OOP" module functions from above, don't panic, you can use the same API via creating SeleneDriver objects...
-
-You can find more explanations a bit further in this Readme.
-
-### Basic example
+Simply...
 
 ```python
-from selene.api import *
+from selene.support.shared import browser
+from selene import by, be, have
 
-
-class TestTodoMVC(object):
-
-    def test_selene_demo(self):
-        tasks = ss("#todo-list>li")
-        active_tasks = tasks.filtered_by(have.css_class("active"))
-
-        browser.open_url('https://todomvc4tasj.herokuapp.com')
-
-        s("#new-todo").should(be.blank)
-
-        for task_text in ["1", "2", "3"]:
-            s("#new-todo").set_value(task_text).press_enter()
-        tasks.should(have.exact_texts("1", "2", "3")).should_each(have.css_class("active"))
-        s("#todo-count").should(have.text('3'))
-
-        tasks[2].s(".toggle").click()
-        active_tasks.should(have.texts("1", "2"))
-        active_tasks.should(have.size(2))
-
-        tasks.filtered_by(have.css_class("completed")).should(have.texts("3"))
-
-        s(by.link_text("Active")).click()
-        tasks[:2].should(have.texts("1", "2"))
-        tasks[2].should(be.hidden)
-
-        s("#toggle-all").click()
-        s("#clear-completed").click()
-        tasks.should(be.empty)
+browser.open('https://google.com/ncr')
+browser.element(by.name('q')).should(be.blank)\
+    .type('selenium').press_enter()
+browser.all('.srg .g').should(have.size(10))\
+    .first.should(have.text('Selenium automates browsers'))
 ```
 
-This should be completely enough to start writing your tests.
-
-### Next steps...
-
-In case you need to reuse some parts elsewhere - go ahead and move your locators:
-```python
-    tasks = ss("#todo-list>li")
-    active = have.css_class("active")
-    completed = have.css_class("completed")
-```
-to some class and so implement a PageObject pattern.
-
-You can also use alias methods for your taste:
+OR with custom setup
 
 ```python
-tasks[2].s(".toggle").click()
-```
-instead of
-```python
-tasks[2].element(".toggle").click()
+from selene.support.shared import browser
+from selene import by, be, have
+
+browser.config.browser_name = 'firefox'
+browser.config.base_url = 'https://google.com'
+browser.config.timeout = 2
+# browser.config.* = ...
+
+browser.open('/ncr')
+browser.element(by.name('q')).should(be.blank)\
+    .type('selenium').press_enter()
+browser.all('.srg .g').should(have.size(10))\
+    .first.should(have.text('Selenium automates browsers'))
 ```
 
----
+OR more Selenide from java style:
 
 ```python
-s("#todo-list").ss("li")
-```
-instead of
-```python
-s("#todo-list").all("li")
-```
+from selene.support.shared import config, browser
+from selene import by, be, have
+from selene.support.shared.jquery_style import s, ss
 
----
 
-```python
-tasks.assure(empty)
-```
-or
-```python
-tasks.should_be(empty)
-```
-instead of
-```python
-tasks.should(be.empty)
+config.browser_name = 'firefox'
+config.base_url = 'https://google.com'
+config.timeout = 2
+# config.* = ...
+
+browser.open('/ncr')
+s(by.name('q')).should(be.blank)\
+    .type('selenium').press_enter()
+ss('.srg .g').should(have.size(10))\
+    .first.should(have.text('Selenium automates browsers'))
 ```
 
----
+### Core Api
 
-all the following names means the same: `assure`, `should`, `should_be`, `should_have`
-Just the first `assure` sounds good with any condition:
-* `assure(visible)` :)
-* `assure(text('foo')` :)
+Given:
 
-but others may not:
+    from selenium.webdriver import Chrome
 
-* `should(visible)` :(
-* `should(text('foo'))` :(
+AND chromedriver executable available in $PATH
 
-so you have to choose proper "condition" version each time:
+WHEN:
 
-* `should(be.visible` :)
-* `should(have.text('foo'))` :)
+    from selene import Browser, Config
 
-or proper "should" alias:
+    browser = Browser(Config(
+        driver=Chrome(),
+        base_url='https://google.com',
+        timeout=2))
 
-* `should_be(visible)` :)
-* `should_have(text('foo'))` :)
+AND (uncomment if needed):
 
-though these versions are less laconic than when using `assure`.
-Compare:
+    # import atexit
+    # atexit.register(browser.quit)
 
-* `assure(text('foo')` :)
-* `should_have(text('foo'))` :|
-* `should(have.text('foo'))` :|
+AND:
 
-But regardless being less concise, the latest version gives you better autocomplete abilities when you don't remember all conditions:
+    browser.open('/ncr')
 
-* `assure(.` :(
-* `should(have. ...` :)
+AND:
 
-There seems to be no "the only best option". You can use the style you prefer more;)
+    # browser.element('//*[@name="q"]')).type('selenium').press_enter()
+    # OR...
 
-### Automatic driver management
+    # browser.element('[name=q]')).type('selenium').press_enter()
+    # OR...
+    
+    from selene import by
+    
+    # browser.element(by.name('q')).type('selenium').press_enter()
+    # OR...for total readability
+    
+    query = browser.element(by.name('q'))  # actual search doesn't start here, the element is "lazy"          
+         # here the actual webelement is found
+    query.type('selenium').press_enter()       
+                          # and here it's located again, i.e. the element is "dynamic"
+        
+AND (in case we need to filter collection of items by some condition like visibility):
 
-By default all "search elements" methods (`s`, `ss`) and other browser actions methods like `open_url` - use shared driver.
-Shared driver is initialized automatically and uses Firefox driver by default.
-
-#### Configuring shared browser and automatic driver executable installation
-
-If you want other shared browser's driver, you can customize it explicitly:
-```python
-from selene import config
-from selene.browsers import Browser
-
-config.browser_name = Browser.CHROME
-```
-
-In order to make it work, you only need to have Chrome browser installed. 
-
-But you don't need to install chromedriver executable, it will be installed automatically for you, if neeeded, thanks to integrated [webdriver_manager](https://github.com/SergeyPirogov/webdriver_manager)
-
-#### Disabling automatic driver executable installation
-
-In case you want to use your own executable, you can install it by you own and configure [webdriver_manager correspondingly](https://github.com/SergeyPirogov/webdriver_manager#configuration)
-
-#### Disabling automatic driver management
-
-You also can disable automatic driver initialization by providing your own driver instance:
-
-```python
-from selene import browser 
-from selenium import webdriver
-
-# this allows you to provide additional driver customization
-def setup_module(m):
-    driver = webdriver.Remote(
-        command_executor='http://127.0.0.1:4444/wd/hub',
-        desired_capabilities={'browserName': 'htmlunit',
-                              'version': '2',
-                              'javascriptEnabled': True})
-    browser.set_driver(driver)
-
-
-# then you have to close driver manually
-def teardown_module(m):
+    from selene import be
+    
+    results = browser.all('.srg .g').filtered_by(be.visible)
+    
+THEN:
+    from selene import have
+    
+    # results.should(have.size(10))
+    # results.first.should(have.text('Selenium automates browsers'))
+    # OR...
+    
+    results.should(have.size(10))\
+        .first.should(have.text('Selenium automates browsers'))
+        
+FINALLY (if not registered "atexit" before):
+    
     browser.quit()
-```
-
-### Explicit SeleneDriver
-
-In addition to s, ss "static" methods (from selene.tools) to represent elements on the page, you can use their "object oriented" alternatives from SeleneDriver:
-
-```python
-from selene.driver import SeleneDriver
-from selenium.webdriver import Firefox
-from selene.support.conditions import have
-
-driver = SeleneDriver.wrap(Firefox())
-#...
-def test_selene_demo():
-    tasks = driver.ss("#todo-list>li")
-
-    driver.get('http://todomvc4tasj.herokuapp.com')
-
-    for task_text in ["1", "2", "3"]:
-        driver.s("#new-todo").set_value(task_text).press_enter()
-
-    tasks.should(have.texts("1", "2", "3"))
-```
-
-or even in more readable way:
-
-```python
-from selene.driver import SeleneDriver
-from selenium.webdriver import Firefox
-from selene.support.conditions import have
-
-driver = SeleneDriver.wrap(Firefox())
-#...
-def test_selene_demo():
-    tasks = driver.all("#todo-list>li")
-
-    driver.get('http://todomvc4tasj.herokuapp.com')
-
-    for task_text in ["1", "2", "3"]:
-        driver.element("#new-todo").set_value(task_text).press_enter()
-
-    tasks.should(have.texts("1", "2", "3"))
-```
-
-This approach may be useful in case you need to deal with different webdriver instances at the same time. (todo: examples will be provided later)
-
-### Simple PageObjects Example
-Here is a simple example of PageObjects implementation (inspired by [selenide google search example](https://github.com/selenide-examples/google/tree/master/test/org/selenide/examples/google/selenide_page_object)):
-
-```python
-from selene.browser import open_url
-from selene.support.jquery_style_selectors import s, ss
-from selene.support.conditions import have
-
-class GooglePage(object):
-    def open(self):
-        open_url("http://google.com/ncr")
-        return self
-
-    def search(self, text):
-        s("[name='q']").set(text).press_enter()
-        return SearchResultsPage()
-
-class SearchResultsPage(object):
-    def __init__(self):
-        self.results = ss(".srg .g")
-
-def test_google_search():
-    google = GooglePage().open()
-    search = google.search("selene")
-    search.results[0].should(have.text("In Greek mythology, Selene is the goddess of the moon"))  # :D
-```
-
-That's it. Selene encourages to start writing tests in the simplest way. And add more layers of abstraction only by real demand. 
-
-### Reporting
-So far reporting capabilities are reflected only in a detailed error messages.
-For example the following code
-```python
-from selene.support.jquery_style_selectors import ss
-from selene.support.conditions import be
-#...
-ss("#todo-list>li")[2].should(be.hidden)
-```
-in case of failure will result in exception raised with message:
-```
-       TimeoutException: Message:
-                   failed while waiting 4 seconds
-                   to assert Hidden
-                   for element found by: ('css selector', '#new-todo')
-```
-
----
-
-And the the following "more complex" locating code
-```python
-from selene.support.jquery_style_selectors import ss
-from selene.support.conditions import be
-#...
-ss("#todo-list>li")[2].should(be.hidden)
-```
-in case of failure will result in exception raised with message:
-```
-       TimeoutException: Message:
-                   failed while waiting 4 seconds
-                   to assert Hidden
-                   for element found by: ('By.Selene', ('css selector', '#todo-list>li')[2]")
-```
-
-Here the "stringified locator" is a bit more complicated for eyes. You can decode from it the following information:
-_"inside the list of elements available by css selector '#todo-list>li' selene was trying to find element with index [2]"_
-
-**NOTE** 
-If you use pytest, it is recommended to [disable too detailed traceback printing](http://doc.pytest.org/en/latest/usage.html#modifying-python-traceback-printing), e.g. by using one of the following command-line options:
-```
-pytest --tb=short   # shorter traceback format
-pytest --tb=native  # Python standard library formatting
-```
-
-### PageObjects composed with Widgets
-Sometimes your UI is build with many "reusable" widgets or components. If you follow general "Test Automation Pyramid" guidelines, most probably you have not too much of automated selenium tests. And "simple pageobjects" will be pretty enough for your tests.
-But in case you need to write a tone of UI tests, and you need correspondent DRY solution for your reusable components then this section may be for you. 
-
-Selene encourages to use [composition over inheritance](http://en.wikipedia.org/wiki/Composition_over_inheritance) to reuse parts of web application like sidepanels, headers, footers, main contents, search forms, etc. This especially may be usefull in the case of over-complicated single-page applications. Consequently we can naturally model our app under test even with a SinglePageObject composed with Widgets, that can be loaded on demand.
-
-Below you can find an example of Widgets (aka ElementObjects, aka "[PageObjects by Fowler](http://martinfowler.com/bliki/PageObject.html)".
-The application under test - [TodoMvc](todomvc4tasj.herokuapp.com) is very simple. It is completely does not make sense to use Widgets here:). But we use it just as an example of implementation.
-```python
-from selene.conditions import exact_text, hidden, exact_texts
-from selene.browser import set_driver, driver
-from selene.support.jquery_style_selectors import ss, s
-from selenium import webdriver
-from selene.support.conditions import have, be
-
-from helpers.todomvc import given_active
 
 
-def setup_module(m):
-    set_driver(webdriver.Firefox())
+### Automatic Driver and Browser Management
+
+Instead of:
+
+    from selene import Browser, Config
+
+    browser = Browser(Config(
+        driver=Chrome(),
+        base_url='https://google.com',
+        timeout=2))
+        
+You can simply use the browser and config instance predefined for you in `selene.support.shared` module:
+
+    from selene.support.shared import browser, config
+
+    # ... do the same with browser.*
+    
+So you don't need to create you driver instance manually. It will be created for you automatically. 
+
+Yet, if you need some special case, like working with remote driver, etc., you can still use shared browser object, while providing driver to it through: 
+
+    config.driver = my_remote_driver_instance
+    # or
+    browser.config.driver = my_remote_driver_instance
+    
+### Advanced API
+    
+Sometimes you might need some extra actions on elements, e.g. for workaround something through js:
+
+    from selene import command
+
+    browser.element('#not-in-view').perform(command.js.scroll_into_view)
+    
+Probably you think that will need something like:
+
+    from selene import query
+
+    product_text = browser.element('#to-assert-something-non-standard').get(query.text)
+    price = my_int_from(product_text)
+    assert price > 100
+
+But usually it's either better to implement your custom condition:
+
+    browser.element('#to-assert-something-non-standard').should(have_in_text_the_int_number_more_than(100))
+
+Where the ``have_in_text_the_int_number_more_than`` is your defined custom condition. Such condition-based alternative will be less fragile, because python's assert does not have "implicit waiting", like selene's should ;)
 
 
-def teardown_module(m):
-    driver().quit()
-
-class Task(object):
-
-    def __init__(self, container):
-        self.container = container
-
-    def toggle(self):
-        self.container.element(".toggle").click()
-        return self
+Furthermore, the good test is when you totally control your test data, and instead:
 
 
-class Tasks(object):
+    product = browser.element('#to-remember-for-future')
 
-    def _elements(self):
-        return ss("#todo-list>li")
+    product_text_before = product.get(query.text)
+    price_before = my_int_from(product_text_before)
 
-    def _task_element(self, text):
-        return self._elements().element_by(have.exact_text(text))
+    # ... do something
 
-    def task(self, text):
-        return Task(self._task_element(text))
+    product_text_after = product.get(query.text)
+    price_after = my_int_from(product_text_after)
 
-    def should_be(self, *texts):
-        self._elements().should(have.exact_texts(*texts))
+    assert price_after > price_before
 
 
-class Footer(object):
-    def __init__(self):
-        self.container = s("#footer")
-        self.clear_completed = self.container.element("#clear-completed")
+Normally, better would be to refactor to something like:
 
-    def should_have_items_left(self, number_of_active_tasks):
-        self.container.element("#todo-count>strong").should(have.exact_text(str(number_of_active_tasks)))
+    product = browser.element('#to-remember-for-future')
 
+    product.should(have.text('100$'))
 
-class TodoMVC(object):
-    def __init__(self):
-        self.container = s("#todoapp")
-        self.tasks = Tasks()
-        self.footer = Footer()
+    # ... do something
 
-    def clear_completed(self):
-        self.footer.clear_completed.click()
-        self.footer.clear_completed.should(be.hidden)
-        return self
+    product.should(have.text('125$'))
 
 
-def test_complete_task():
-    given_active("a", "b")
+You might think you need something like:
 
-    app = TodoMVC()
+    from selene import query
 
-    app.tasks.task("b").toggle()
-    app.clear_completed()
-    app.tasks.should_be("a")
-    app.footer.should_have_items_left(1)
+    if browser.element('#i-might-say-yes-or-no').get(query.text) == 'yes':
+        # do something...
 
-```
+Or:
 
-### More examples
+    from selene import query
 
-See [/tests/](https://github.com/yashaka/selene/tree/master/tests) files for more examples of usage.
-E.g. one more [PageObject with Widgets example](https://github.com/yashaka/selene/blob/master/tests/examples/order/app_model/order_widgets.py) and its [acceptance test](https://github.com/yashaka/selene/blob/master/tests/examples/order/order_test.py).
+    if browser.all('.option').get(query.size) >= 2:
+        # do something...
+
+
+Maybe one day, you really find a use case:) But for above cases, probably easier would be:
+
+    if browser.element('#i-might-say-yes-or-no').wait_until(have.text('yes'):
+        # do something
+
+    # ...
+
+    if browser.all('.i-will-appear').wait_until(have.size_greater_than_or_equal(2)):
+        # do something
+
+Or, by using non-waiting versions, if "you are in a rush:)":
+
+    if browser.element('#i-might-say-yes-or-no').matching(have.text('yes'):
+        # do something
+
+    # ...
+
+    if browser.all('.i-will-appear').matching(have.size_greater_than_or_equal(2)):
+        # do something
+
+
+
+## Tutorials
+
+
+TBD
+
+## More examples
+
+TBD
 
 ## Changelog
 

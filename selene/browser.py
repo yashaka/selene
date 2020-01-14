@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2015-2019 Iakiv Kramarenko
+# Copyright (c) 2015-2020 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -19,113 +19,156 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
 import os
+import warnings
+from typing import Union
 
 from selenium.webdriver.remote.webdriver import WebDriver
 
-import selene.config
-import selene.driver
-import selene.factory
-from selene import helpers
-from selene.common.none_object import NoneObject
-from selene.elements import SeleneElement, SeleneCollection
-from selene.wait import wait_for
+from selene.core.entity import Collection, Element
+from selene.core.configuration import Config
+from selene.support.shared import browser
 
 
-def quit_driver():
-    driver().quit()
+# todo: just remove this file, once deprecation is totally applied
+
+
+def driver() -> WebDriver:
+    warnings.warn('selene.browser.driver is deprecated, '
+                  'use `from selene.support.shared import browser` import',
+                  DeprecationWarning)
+
+    return browser.config.driver
 
 
 def quit():
-    quit_driver()
+    warnings.warn('selene.browser.quit is deprecated, '
+                  'use `from selene.support.shared import browser` import',
+                  DeprecationWarning)
+    browser.quit()
+
+
+def quit_driver():
+    warnings.warn('selene.browser.quit_driver is deprecated, '
+                  'use `from selene.support.shared import browser` import',
+                  DeprecationWarning)
+    browser.quit()
 
 
 def close():
-    driver().close()
+    warnings.warn('selene.browser.close is deprecated, '
+                  'use `from selene.support.shared import browser` import',
+                  DeprecationWarning)
+    browser.close_current_tab()
 
 
-def set_driver(webdriver):
-    # type: (WebDriver) -> None
-    if selene.factory.is_another_driver(webdriver):
-        selene.factory.kill_all_started_drivers()
-    selene.factory.set_shared_driver(webdriver)
+def set_driver(webdriver: WebDriver):
+    warnings.warn('selene.browser.set_driver is deprecated, '
+                  'use `from selene.support.shared import browser` import',
+                  DeprecationWarning)
+
+    # noinspection PyDataclass
+    browser.config.driver = webdriver  # todo: test it
 
 
-def driver():
-    # type: () -> WebDriver
-    return selene.factory.ensure_driver_started(selene.config.browser_name)
+def open(absolute_or_relative_url):
+    warnings.warn('selene.browser.open is deprecated, '
+                  'use `from selene.support.shared import browser` import',
+                  DeprecationWarning)
+    return browser.open(absolute_or_relative_url)
 
 
 def open_url(absolute_or_relative_url):
-    """
-    Loads a web page in the current browser session.
-    :param absolgenerateute_or_relative_url:
-        an absolute url to web page in case of config.base_url is not specified,
-        otherwise - relative url correspondingly
-
-    :Usage:
-        open_url('http://mydomain.com/subpage1')
-        open_url('http://mydomain.com/subpage2')
-        # OR
-        config.base_url = 'http://mydomain.com'
-        open_url('/subpage1')
-        open_url('/subpage2')
-    """
-    # todo: refactor next line when app_host is removed
-    base_url = selene.config.app_host if selene.config.app_host else selene.config.base_url
-    driver().get(base_url + absolute_or_relative_url)
+    warnings.warn('selene.browser.open_url is deprecated, '
+                  'use `from selene.support.shared import browser` import',
+                  DeprecationWarning)
+    return browser.open(absolute_or_relative_url)
 
 
-def element(css_selector_or_by):
-    return SeleneElement.by_css_or_by(css_selector_or_by, selene.driver._shared_driver)
+def element(css_or_xpath_or_by: Union[str, tuple]) -> Element:
+    warnings.warn('selene.browser.element is deprecated, '
+                  'use `from selene.support.shared import browser` import',
+                  DeprecationWarning)
+    return browser.element(css_or_xpath_or_by)
 
 
-def elements(css_selector_or_by):
-    return SeleneCollection.by_css_or_by(css_selector_or_by, selene.driver._shared_driver)
+def elements(css_or_xpath_or_by: Union[str, tuple]) -> Collection:
+    warnings.warn('selene.browser.elements is deprecated, '
+                  'use `from selene.support.shared import browser` import',
+                  DeprecationWarning)
+    return browser.all(css_or_xpath_or_by)
 
-def all(css_selector_or_by):
-    return elements(css_selector_or_by)
 
-
-_latest_screenshot = NoneObject("selene.browser._latest_screenshot")
+def all(css_or_xpath_or_by: Union[str, tuple]) -> Collection:
+    warnings.warn('selene.browser.all is deprecated, '
+                  'use `from selene.support.shared import browser` import',
+                  DeprecationWarning)
+    return browser.all(css_or_xpath_or_by)
 
 
 def take_screenshot(path=None, filename=None):
-    if not path:
-        path = selene.config.reports_folder
-    if not filename:
-        filename = "screen_{id}".format(id=next(selene.config.counter))
+    warnings.warn('selene.browser.take_screenshot is deprecated, '
+                  'use `from selene.support.shared import browser` import',
+                  DeprecationWarning)
+    return browser.take_screenshot(path, filename)
 
-    screenshot_path = helpers.take_screenshot(driver(), path, filename)
 
-    global _latest_screenshot
-    _latest_screenshot = screenshot_path
+def save_screenshot(file):
+    warnings.warn('selene.browser.save_screenshot is deprecated, '
+                  'use `from selene.support.shared import browser` import',
+                  DeprecationWarning)
+    return browser.save_screenshot(file)
 
-    return screenshot_path
+
+def save_page_source(file):
+    warnings.warn('selene.browser.save_page_source is deprecated, '
+                  'use `from selene.support.shared import browser` import',
+                  DeprecationWarning)
+    return browser.save_page_source(file)
 
 
 def latest_screenshot():
-    return _latest_screenshot
+    warnings.warn('selene.browser.latest_screenshot is deprecated, '
+                  'use `from selene.support.shared import browser` import',
+                  DeprecationWarning)
+    return browser._latest_screenshot
 
 
-# todo: consider adding aliases, like: wait_until, wait_brhwser_to
+def latest_page_source():
+    warnings.warn('selene.browser.latest_page_source is deprecated, '
+                  'use `from selene.support.shared import browser` import',
+                  DeprecationWarning)
+    return browser._latest_page_source
+
+
 def wait_to(webdriver_condition, timeout=None, polling=None):
-    if timeout is None:
-        timeout = selene.config.timeout
-    if polling is None:
-        polling = selene.config.poll_during_waits
+    warnings.warn('selene.browser.wait_to is deprecated, '
+                  'use `from selene.support.shared import browser` import, '
+                  'and also use browser.should style',
+                  DeprecationWarning)
+    tuned_browser = browser if timeout is None else browser.with_(Config(timeout=timeout))
 
-    return wait_for(driver(), webdriver_condition, timeout, polling)
+    return tuned_browser.should(webdriver_condition)
 
 
 def should(webdriver_condition, timeout=None, polling=None):
-    return wait_to(webdriver_condition, timeout, polling)
+    warnings.warn('selene.browser.should is deprecated, '
+                  'use `from selene.support.shared import browser` import',
+                  DeprecationWarning)
+    tuned_browser = browser if timeout is None else browser.with_(Config(timeout=timeout))
+
+    return tuned_browser.should(webdriver_condition)
 
 
 def execute_script(script, *args):
-    return driver().execute_script(script, *args)
+    warnings.warn('selene.browser.execute_script is deprecated, '
+                  'use `from selene.support.shared import browser` import',
+                  DeprecationWarning)
+    return browser.driver.execute_script(script, *args)
 
 
 def title():
-    return driver().title
+    warnings.warn('selene.browser.title is deprecated, '
+                  'use `from selene.support.shared import browser` import',
+                  DeprecationWarning)
+    return browser.driver.title

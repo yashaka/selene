@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2015-2019 Iakiv Kramarenko
+# Copyright (c) 2015-2020 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -20,4 +20,4 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-VERSION = '1.0.0a16'
+VERSION = '2.0.0a18'
