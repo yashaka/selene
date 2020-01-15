@@ -24,6 +24,12 @@
 ## 2.0.0a19 (to be released on 15-20.01.2020)
 - removed backports.functools.lru_cache from project dependencies
 - removed selene.version.py (moved version to selene.__init__.__version__)
+- deprecated: by.be_following_sibling, be_parent, be_first_child
+  - use xpath explicitly to not hide complexity in workaround
+  - yet you can create you own xpath helpers to to show that you are using xpath but in a more readable style
+    - like: x.following_sibling, ...
+  - the only exception is by.text
+    - it uses xpath under the hood, but so complicated that no way to use it explicitly :)
 
 ## 2.0.0a18 (released on 14.01.2020)
 - deprecated finally `send_keys`, added `press(*keys)` instead

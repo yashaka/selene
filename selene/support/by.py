@@ -19,6 +19,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+import warnings
 
 from selenium.webdriver.common.by import By
 
@@ -72,12 +73,15 @@ def partial_text(value):
 
 
 def be_following_sibling(with_tag: str = '*'):
+    warnings.warn('deprecated; use xpath explicitly to not hide complexity in workaround', DeprecationWarning)
     return xpath(f'./following-sibling::{with_tag}')
 
 
 def be_parent():
+    warnings.warn('deprecated; use xpath explicitly to not hide complexity in workaround', DeprecationWarning)
     return xpath('..')
 
 
 def be_first_child(with_tag: str = '*'):
+    warnings.warn('deprecated; use xpath explicitly to not hide complexity in workaround', DeprecationWarning)
     return xpath(f'./{with_tag}[1]')
