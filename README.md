@@ -7,6 +7,7 @@
 
 [![Gitter](https://badges.gitter.im/gitterHQ/gitter.svg)](https://gitter.im/automician/selene)
 [![Присоединяйся к чату https://t.me/selene_py_ru](https://img.shields.io/badge/%D1%87%D0%B0%D1%82-telegram-blue)](https://t.me/selene_py_ru)
+[![Учи Selene https://leanpub.com/selene-automation-ru](https://img.shields.io/badge/%D0%BA%D0%BD%D0%B8%D0%B3%D0%B0-leanpub-9cf)](https://leanpub.com/selene-automation-ru)
 
 
 Main features:
