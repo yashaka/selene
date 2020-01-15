@@ -1,5 +1,5 @@
 from setuptools import setup
-from selene import version
+from selene import __version__
 from os.path import dirname, join, abspath
 
 description = 'User-oriented browser tests in Python (Selenide port)'
@@ -7,9 +7,9 @@ long_description = open(join(abspath(dirname(__file__)), "README.md")).read()
 
 setup(
     name='selene',
-    version=version.VERSION,
+    version=__version__,
     url='http://github.com/yashaka/selene/',
-    download_url='https://github.com/yashaka/selene/tarball/' + version.VERSION,
+    download_url='https://github.com/yashaka/selene/tarball/' + __version__,
     license='MIT',
     author='Iakiv Kramarenko',
     author_email='yashaka@gmail.com',

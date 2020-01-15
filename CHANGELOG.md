@@ -21,7 +21,11 @@
 ## 2.0.0aNEXT (to be released on 14-15.01.2020)
 - DOING: update docs
 
-## 2.0.0a18 (to be released on 14-15.01.2020)
+## 2.0.0a19 (to be released on 15-20.01.2020)
+- removed backports.functools.lru_cache from project dependencies
+- removed selene.version.py (moved version to selene.__init__.__version__)
+
+## 2.0.0a18 (released on 14.01.2020)
 - deprecated finally `send_keys`, added `press(*keys)` instead
   - use `type` for 'typing text', use `press` or `press_enter` & co for 'pressing keys' 
 - removed s, ss from selene.support.shared (were added by mistake in a17)
