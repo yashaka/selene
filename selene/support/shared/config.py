@@ -361,22 +361,18 @@ PageSource: file://{path}''')
         self._poll_during_waits = value
 
     @property
-    @lru_cache()
     def counter(self):
-        warnings.warn('browser.counter might be deprecated', PendingDeprecationWarning)
         return self._counter
 
     @counter.setter
     def counter(self, value):
-        warnings.warn('browser.counter= might be deprecated', PendingDeprecationWarning)
         self._counter = value
 
+    # todo: do we need something predefined like selenide Configuration.reportsUrl ?
     @property
     def reports_folder(self) -> str:
-        warnings.warn('browser.reports_folder might be deprecated', PendingDeprecationWarning)
         return self._reports_folder
 
     @reports_folder.setter
     def reports_folder(self, value):
-        warnings.warn('browser.reports_folder= might be deprecated', PendingDeprecationWarning)
         self._reports_folder = value

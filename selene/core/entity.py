@@ -646,7 +646,11 @@ class Collection(WaitingEntity):
 
     @property
     def first(self):
-        warnings.warn('in the past you used .first() method, now use .first as property', SyntaxWarning)
+        """
+        in the past you used .first() was a method, now it's a property: .first
+        probably when migrating to 2.* your code was broken here with an attribute error.
+        just change .first() to .first everywhere in you code base;)
+        """
         return self.element(0)
 
     def sliced(self, start: int, stop: int, step: int = 1) -> Collection:
