@@ -293,6 +293,11 @@ PageSource: file://{path}''')
 
     @property
     def browser_name(self) -> str:  # todo: consider renaming to... config.name? config.executor?
+        # seems like renaming to config.name is a bad idea,
+        # because config can be accessed from element.config too
+        # then element.config.name would be irrelevant
+        # element.config.executor - yet might be ok...
+        # but should not then executor accept and remote url of the hub?
         return self._browser_name
 
     @browser_name.setter

@@ -1,7 +1,6 @@
 # Changelog
 
 ## next
-- consider renaming `config.browser_name` to just `config.name`
 - consider adding config.quit_user_driver_on_exit (maybe even True by default, maybe not...)
 - case insensitive versions of conditions like have.attribute(...).value(...)
   - experimental impl was already added in 2.0.0a16
@@ -19,9 +18,12 @@
 - or maybe remove all deprecated stuff only in 3.0?
 
 ## 2.0.0aNEXT (to be released on 14-15.01.2020)
+- config.browser_name -> config.name was bad idea
+  - but config.executor accepting both 'chrome'/'firefox' or 'http://<remoteurl>'
+    - might be a good idea... think on it... 
 - DOING: update docs
 
-## 2.0.0a19 (to be released on 15-20.01.2020)
+## 2.0.0a19 (released on 16.01.2020)
 - removed deprecation from shared.config.counter and reports_folder
 - removed backports.functools-lru-cache from project dependencies
 - removed six from explicit project dependencies
