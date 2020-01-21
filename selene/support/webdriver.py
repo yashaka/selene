@@ -37,7 +37,7 @@ class Help:
         html = self._driver.page_source
 
         try:
-            with open(file, 'w') as f:
+            with open(file, 'w', encoding="utf-8") as f:
                 f.write(html)
         except IOError:
             return None
