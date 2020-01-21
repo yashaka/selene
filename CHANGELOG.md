@@ -23,6 +23,10 @@
     - might be a good idea... think on it... 
 - DOING: update docs
 
+## 2.0.0a20 (released on 21.01.2020)
+- Fixed UnicodeEncodeError: 'charmap' codec
+  - thanks to [PR-197](https://github.com/yashaka/selene/pull/197) from @ak40u
+
 ## 2.0.0a19 (released on 16.01.2020)
 - removed deprecation from shared.config.counter and reports_folder
 - removed backports.functools-lru-cache from project dependencies

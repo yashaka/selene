@@ -126,10 +126,19 @@ class SharedConfig(Config):
             stored.quit()  # todo: can this raise exception? that we need to supress...
 
         # todo: do we need here pass self.desired_capabilities too?
+
+        set_chrome = lambda: Chrome(
+            executable_path=ChromeDriverManager().install(),
+            options=ChromeOptions())
+
+        set_firefox = lambda: Firefox(
+            executable_path=GeckoDriverManager().install())
+
+        # set_remote = lambda: Remote()  # todo: do we really need it? :)
+
         new = {
-            'chrome': lambda: Chrome(executable_path=ChromeDriverManager().install(),
-                                     options=ChromeOptions()),
-            'firefox': lambda: Firefox(executable_path=GeckoDriverManager().install())
+            'chrome': set_chrome,
+            'firefox': set_firefox
         }.get(self.browser_name)()
 
         # todo: think on something like:
