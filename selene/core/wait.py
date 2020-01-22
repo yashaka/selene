@@ -24,7 +24,7 @@ from __future__ import annotations
 
 import time
 from abc import abstractmethod, ABC
-from typing import Generic, Callable, TypeVar
+from typing import Generic, Callable, TypeVar, Optional
 
 from selene.core.exceptions import TimeoutException
 
@@ -68,10 +68,10 @@ class Command(Query[T, None]):
 class Wait(Generic[E]):
 
     # todo: provide the smallest possible timeout default, something like 1ms
-    def __init__(self, entity: E, at_most: int, or_fail_with: Callable[[TimeoutException], Exception] = identity):
+    def __init__(self, entity: E, at_most: int, or_fail_with: Optional[Callable[[TimeoutException], Exception]] = None):
         self._entity = entity
         self._timeout = at_most
-        self._hook_failure = or_fail_with
+        self._hook_failure = or_fail_with or identity
 
     # todo: consider renaming to `def to(...)`, though will sound awkward when wait.to(condition)
     def for_(self, fn: Callable[[E], R]) -> R:

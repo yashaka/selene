@@ -31,4 +31,6 @@ def identity(it: T) -> T:
 
 
 def pipe(*functions):
-    return functools.reduce(lambda f, g: lambda x: f(g(x)), functions[::-1], lambda x: x)
+    return functools.reduce(
+        lambda f, g: lambda x: f(g(x)), functions[::-1],
+        lambda x: x) if functions else None

@@ -287,7 +287,8 @@ class Element(WaitingEntity):
         if timeout:
             warnings.warn(
                 "using timeout argument is deprecated; "
-                "use `browser.element('#foo').with_(Config(timeout=6)).should(be.enabled)` style instead",
+                "use `browser.element('#foo').with_(Config(timeout=6)).should(be.enabled)`"
+                "or just `...with_(timeout=6).should(...` style instead",
                 DeprecationWarning)
             return self.with_(Config(timeout=timeout)).should(condition)
 
@@ -765,7 +766,8 @@ class Collection(WaitingEntity):
                 if timeout:
                     warnings.warn(
                         "using timeout argument is deprecated; "
-                        "use `browser.all('.foo').with_(Config(timeout=6)).should(have.size(0))` style instead",
+                        "use `browser.all('.foo').with_(Config(timeout=6)).should(have.size(0))`"
+                        "or just `...with_(timeout=6).should(...` style instead",
                         DeprecationWarning)
                     element.with_(Config(timeout=timeout)).should(condition)
                 element.should(condition)
@@ -773,7 +775,8 @@ class Collection(WaitingEntity):
             if timeout:
                 warnings.warn(
                     "using timeout argument is deprecated; "
-                    "use `browser.all('.foo').with_(Config(timeout=6)).should(have.size(0))` style instead",
+                    "use `browser.all('.foo').with_(Config(timeout=6)).should(have.size(0))` "
+                    "or just `...with_(timeout=6).should(...` style instead",
                     DeprecationWarning)
                 self.with_(Config(timeout=timeout)).should(condition)
             super().should(condition)

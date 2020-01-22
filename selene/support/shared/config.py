@@ -72,7 +72,7 @@ class SharedConfig(Config):
                  type_by_js: bool = False,
                  window_width: Optional[int] = None,
                  window_height: Optional[int] = None,
-                 hook_wait_failure: Callable[[TimeoutException], Exception] = lambda e: e,
+                 hook_wait_failure: Optional[Callable[[TimeoutException], Exception]] = None,
                  # SharedConfig
                  source: Source[WebDriver] = Source(),  # don't use it:) it's for internal selene use:)
                  browser_name: str = 'chrome',  # todo: rename to config.type? config.name? config.browser?

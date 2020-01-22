@@ -23,6 +23,9 @@
     - might be a good idea... think on it... 
 - DOING: update docs
 
+## 2.0.0a21 (released on 21.01.2020)
+- fixed hooks for entities created via entity.with_(Config(...))
+
 ## 2.0.0a20 (released on 21.01.2020)
 - Fixed UnicodeEncodeError: 'charmap' codec
   - thanks to [PR-197](https://github.com/yashaka/selene/pull/197) from @ak40u

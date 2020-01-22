@@ -44,7 +44,7 @@ class Config:
     def __init__(self,
                  driver: Optional[WebDriver] = None,
                  timeout: int = 4,
-                 hook_wait_failure: Callable[[TimeoutException], Exception] = lambda e: e,
+                 hook_wait_failure: Optional[Callable[[TimeoutException], Exception]] = None,
                  base_url: str = '',
                  set_value_by_js: bool = False,
                  type_by_js: bool = False,
