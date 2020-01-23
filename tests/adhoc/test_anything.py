@@ -19,10 +19,15 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from selene import Config, be
+from selene import Config, be, command
 from selene.core.exceptions import TimeoutException
 from selene.support.jquery_style_selectors import s
 from selene.support.shared import browser
+
+
+# def test_basic_case():
+#     browser.open('http://todomvc4tasj.herokuapp.com/')
+#     browser.element('#new-todo').perform(command.js.type(' lk@ї\nи₴"j;k*7 \n')).press_enter()
 
 
 # def kuku_hook(error):
