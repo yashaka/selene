@@ -29,6 +29,9 @@
     BECAUSE another has it's own config with its own last_screenshot source
     
   - todo: fix?
+  
+## 2.0.0a22 (released on 22.01.2020)
+- todo: add something like element.click_with_offset
 
 ## 2.0.0a21 (released on 22.01.2020)
 - fixed hooks for entities created via entity.with_(Config(...))
