@@ -20,6 +20,12 @@
 - new features:
   - tbd
   
+## 1.0.2
+- marking latest implementation as stable
+
+## 1.0.1
+- was a broken release :(
+
 ## 1.0.0a16
 - new features:
   - added `SeleneElement#matching(condition)` and `SeleneCollection#matching(condition)` 
