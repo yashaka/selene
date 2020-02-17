@@ -32,6 +32,9 @@
   
 ## 2.0.0a22 (released on 22.01.2020)
 - todo: add something like element.click_with_offset
+- todo: add something like browser.perform(switch_to_tab('my tab title'))
+  - maybe make browser.switch ... to work with retry logic
+    or make separate command.switch...
 
 ## 2.0.0a21 (released on 22.01.2020)
 - fixed hooks for entities created via entity.with_(Config(...))

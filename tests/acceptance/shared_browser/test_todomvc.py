@@ -3,6 +3,7 @@ from selene.support.shared import browser
 
 
 def test_complete_task():
+    # browser.config.driver =
     # browser.config.hook_wait_failure=\
     #     lambda error: TimeoutException(error.msg.replace('file://', ''))
     # browser.config.timeout = 6
