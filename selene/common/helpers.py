@@ -47,6 +47,7 @@ def to_by(selector_or_by: Union[str, tuple]) -> Tuple[str, str]:
 
 
 def flatten(list_of_lists: List[list]) -> list:
+    # todo: consider adding skip_none=False option
     return [item for sublist in list_of_lists for item in (sublist if isinstance(sublist, list) else [sublist])]
 
 

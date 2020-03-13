@@ -754,7 +754,7 @@ class Collection(WaitingEntity):
         #       because they are not supposed to be used in entity.get(*) context defined for other query.* fns
 
         return Collection(
-            Locator(f'{self}.collected({finder})',
+            Locator(f'{self}.collected({finder})', # todo: consider skipping None while flattening
                     lambda: flatten([finder(element)() for element in self.cached])),
             self.config)
 

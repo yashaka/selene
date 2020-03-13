@@ -12,6 +12,9 @@
     - ElementsCollection#find, #filter, #get
     - etc.
 - what about ActionChains?
+- what about soft assertions in selene?
+- improve stacktraces
+  - consider using something like `__tracebackhide__ = True`
 
 ## 2.0.0b1 (to be released on *.01.2020)
 - remove all deprecated things and stay calm:)
@@ -30,11 +33,50 @@
     
   - todo: fix?
   
-## 2.0.0a22 (released on 22.01.2020)
+## 2.0.0a23 (to be released on ?.03.2020)
 - todo: add something like element.click_with_offset
 - todo: add something like browser.perform(switch_to_tab('my tab title'))
   - maybe make browser.switch ... to work with retry logic
     or make separate command.switch...
+- ensure we can't element.type on invisible element; add test for that
+- use __all__ in selene api imports, etc
+  - The variable __all__ is a list of public objects of that module, as interpreted by import *. ... In other words, __all__ is a list of strings defining what symbols in a module will be exported when from <module> import * is used on the module
+
+- todo: consider adding `element_by_its` and `filtered_by_their` as in example below:
+
+```
+# Given
+#
+#    .result
+#        .result-title
+#        .result-url
+#        .result-snippet
+
+
+results = browser.all('.result')
+results.element_by(lambda result: 
+    have.text('browser tests in Python')(result.element('.result-title')))
+    .element('.result-url').click()
+# or maybe
+rusults.element_by_its('.result-title', have.text('browser tests in Python'))
+    .element('.result-url').click()
+
+# rusults.filtered_by_their('.result-title', have.text('Python'))
+    .should(have.size(...))
+
+# or even...
+rusults.element_by(lambda it: Result(it).title, have.text('browser tests in Python'))
+    .element('.result-url').click()
+
+# or probably better
+rusults.element_by_its(lambda it: Result(it).title, have.text('browser tests in Python'))
+    .element('.result-url').click()
+```
+  
+## 2.0.0a22 (to be released on ?.03.2020)
+- fixed `have.texts` when actual collection has bigger size than actual
+- todo: add browser.actions
+  - can we add retries to it?
 
 ## 2.0.0a21 (released on 22.01.2020)
 - fixed hooks for entities created via entity.with_(Config(...))

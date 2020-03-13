@@ -56,7 +56,12 @@ def includes_ignoring_case(expected):
 
 
 def includes(expected, ignore_case=False):
-    return lambda actual: expected in actual if not ignore_case else includes_ignoring_case(expected)
+    def fn(actual):
+        try:
+            return expected in actual if not ignore_case else includes_ignoring_case(expected)
+        except TypeError:
+            return False
+    return fn
 
 
 def includes_word_ignoring_case(expected):
