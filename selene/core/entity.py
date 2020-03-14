@@ -898,6 +898,16 @@ class Browser(WaitingEntity):
     def driver(self) -> WebDriver:
         return self.config.driver
 
+    # @property
+    # def actions(self) -> ActionChains:
+    #     """
+    #     It's kind of just a shortcut for pretty low level actions from selenium webdriver
+    #     Yet unsure about this property here:)
+    #     comparing to usual high level Selene API...
+    #     Maybe later it would be better to make own Actions with selene-style retries, etc.
+    #     """
+    #     return ActionChains(self.config.driver)
+
     # --- Element builders --- #
 
     def element(self, css_or_xpath_or_by: Union[str, tuple]) -> Element:

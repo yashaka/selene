@@ -12,6 +12,7 @@
     - ElementsCollection#find, #filter, #get
     - etc.
 - what about ActionChains?
+  - with retries?
 - what about soft assertions in selene?
 - improve stacktraces
   - consider using something like `__tracebackhide__ = True`
@@ -75,8 +76,6 @@ rusults.element_by_its(lambda it: Result(it).title, have.text('browser tests in 
   
 ## 2.0.0a22 (to be released on ?.03.2020)
 - fixed `have.texts` when actual collection has bigger size than actual
-- todo: add browser.actions
-  - can we add retries to it?
 
 ## 2.0.0a21 (released on 22.01.2020)
 - fixed hooks for entities created via entity.with_(Config(...))

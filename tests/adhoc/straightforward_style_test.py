@@ -32,11 +32,11 @@ def test_selene_demo():
 
     customized = browser.with_(timeout=config.timeout*2)
     customized.open('https://todomvc4tasj.herokuapp.com/')
-    open_url('https://www.yahoo.com/')  # or like this
-    browser.driver.get('http://google.com')  # just in case, you can use the driver directly too
-    browser.driver().get('https://todomvc4tasj.herokuapp.com/')  # temporary this works too;)
+    # open_url('https://www.yahoo.com/')  # or like this
+    # browser.driver.get('http://google.com')  # just in case, you can use the driver directly too
+    # browser.driver().get('https://todomvc4tasj.herokuapp.com/')  # temporary this works too;)
     is_todo_mvc_loaded = 'return (Object.keys(require.s.contexts._.defined).length === 39)'
-    browser.with_(timeout=config.timeout*2).should(have.js_returned_true(is_todo_mvc_loaded)) # todo: make it work
+    browser.with_(timeout=config.timeout*4).should(have.js_returned_true(is_todo_mvc_loaded))  # todo: make it work
 
     for text in ['1', '2', '3']:
         s('#new-todo')\
@@ -68,5 +68,6 @@ def test_selene_demo():
     tasks.all_first('label').should(have.texts('1', '2'))
 
     s(by.id('toggle-all')).with_(timeout=config.timeout / 2).click()
+    # browser.actions.click(s('//*[@id="clear-completed"]')()).perform()
     s('//*[@id="clear-completed"]').click()
     tasks.should(be.empty)
