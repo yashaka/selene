@@ -48,8 +48,8 @@
   
 ## 2.0.0a22 (to be released on ?.03.2020)
 
+- fixed [#206 – "After manually quitting, setting a new driver fails"](https://github.com/yashaka/selene/issues/206)
 - fixed `have.texts` when actual collection has bigger size than actual
-
 - added (yet marked with "experimental" warning)
   - `element_by_its`
   - `filtered_by_their`
