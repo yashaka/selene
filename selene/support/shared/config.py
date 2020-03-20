@@ -52,6 +52,9 @@ class Source(Generic[T]):
     def put(self, value: T):
         self._value = value
 
+    def clear(self):
+        self._value = None
+
     @property
     def value(self) -> T:
         return self._value
@@ -152,13 +155,18 @@ class SharedConfig(Config):
 
         return new
 
+    def quit_driver(self):
+        self._source.value.quit()
+        self._source.clear()
+
     @driver.setter
     def driver(self, value: WebDriver):
         stored = self._source.value
         is_another_driver = on_error_return_false(lambda: value.session_id != stored.session_id)
 
         if is_another_driver:
-            stored.quit()  # todo: can quit raise exception? handle then...
+            # todo: do we really need to quit old driver?
+            self.quit_driver()  # todo: can quit raise exception? handle then...
 
         self._source.put(value)
 
