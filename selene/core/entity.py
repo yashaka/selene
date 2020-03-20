@@ -676,13 +676,110 @@ class Collection(WaitingEntity):
     def to(self, stop: int) -> Collection:
         return self[:stop]
 
-    def filtered_by(self, condition: Condition[Element]) -> Collection:
+    def filtered_by(self,
+                   condition: Union[
+                       Condition[Element],
+                       Callable[[E], None]]) -> Collection:
+        condition = condition if isinstance(condition, Condition) \
+            else Condition(str(condition), condition)
+
         return Collection(
             Locator(f'{self}.filtered_by({condition})',
                     lambda: [element() for element in self.cached if element.matching(condition)]),
             self.config)
 
-    def element_by(self, condition: Condition[Element]) -> Element:
+    def filtered_by_their(
+            self,
+            selector_or_callable: Union[str,
+                                        tuple,
+                                        Callable[[Element], Element]],
+            condition: Condition[Element]) -> Collection:
+        """
+        :param selector_or_callable:
+            - selector may be a str with css/xpath selector or tuple with by.* locator
+            - callable should be a function on element that returns element
+        :param condition: a condition to
+        :return: collection subset with inner/relative element matching condition
+
+        GIVEN html elements somewhere in DOM::
+            .result
+                .result-title
+                .result-url
+                .result-snippet
+
+        THEN::
+
+            browser.all('.result')\
+                .filtered_by_their('.result-title', have.text('Selene'))\
+                .should(have.size(3))
+
+        ... is a shortcut for::
+
+            browser.all('.result')\
+                .filtered_by_their(lambda it: have.text(text)(it.element('.result-title')))\
+                .should(have.size(3))
+
+        OR with PageObject:
+
+        THEN::
+
+            results.element_by_its(lambda it: Result(it).title, have.text(text))\
+                .should(have.size(3))
+
+        Shortcut for::
+
+            results.element_by(lambda it: have.text(text)(Result(it).title))\
+                .should(have.size(3))
+
+        WHERE::
+
+            results = browser.all('.result')
+            class Result:
+                def __init__(self, element):
+                    self.element = element
+                    self.title = self.element.element('.result-title')
+                    self.url = self.element.element('.result-url')
+            # ...
+        """
+        warnings.warn(
+            'filtered_by_their is experimental; might be renamed or removed in future',
+            FutureWarning)
+
+        def find_in(parent: Element):
+            if callable(selector_or_callable):
+                return selector_or_callable(parent)
+            else:
+                return parent.element(selector_or_callable)
+
+        return self.filtered_by(lambda it: condition(find_in(it)))
+
+    def element_by(self,
+                   condition: Union[
+                       Condition[Element],
+                       Callable[[E], None]]) -> Element:
+        # todo: In the implementation below...
+        #       We use condition in context of "matching", i.e. as a predicate...
+        #       why then not accept Callable[[E], bool] also?
+        #       (as you remember, Condition is Callable[[E], None] throwing Error)
+        #       This will allow the following code be possible
+        #           results.element_by(lambda it:
+        #               Result(it).title.matching(have.text(text)))
+        #       instead of:
+        #           results.element_by(lambda it: have.text(text)(
+        #                              Result(it).title))
+        #       in addition to:
+        #           results.element_by_its(lambda it:
+        #               Result(it).title, have.text(text))
+        #       Open Points:
+        #       - do we need element_by_its, if we allow Callable[[E], bool] ?
+        #       - if we add elements_by_its, do we need then to accept Callable[[E], bool] ?
+        #       - probably... Callable[[E], bool] will lead to worse error messages,
+        #         in such case we ignore thrown error's message
+        #         - hm... ut seems like we nevertheless ignore it...
+        #           we use element.matching(condition) below
+        condition = condition if isinstance(condition, Condition) \
+            else Condition(str(condition), condition)
+
         def find() -> WebElement:
             cached = self.cached
 
@@ -698,6 +795,77 @@ class Collection(WaitingEntity):
                 f'from webelements collection:\n[{outer_htmls}]')
 
         return Element(Locator(f'{self}.element_by({condition})', find), self.config)
+
+    def element_by_its(
+            self,
+            selector_or_callable: Union[str,
+                                        tuple,
+                                        Callable[[Element], Element]],
+            condition: Condition[Element]) -> Element:
+        """
+        :param selector_or_callable:
+            - selector may be a str with css/xpath selector or tuple with by.* locator
+            - callable should be a function on element that returns element
+        :param condition: a condition to
+        :return: element from collection that has inner/relative element matching condition
+
+        GIVEN html elements somewhere in DOM::
+            .result
+                .result-title
+                .result-url
+                .result-snippet
+
+        THEN::
+
+            browser.all('.result')\
+                .element_by_its('.result-title', have.text(text))\
+                .element('.result-url').click()
+
+        ... is a shortcut for::
+
+            browser.all('.result')\
+                .element_by(lambda it: have.text(text)(it.element('.result-title')))\
+                .element('.result-url').click()
+
+        OR with PageObject:
+
+        THEN::
+
+            Result(results.element_by_its(lambda it: Result(it).title, have.text(text)))\
+                .url.click()
+
+        Shortcut for::
+
+            Result(results.element_by(lambda it: have.text(text)(Result(it).title)))\
+                .url.click()
+
+        WHERE::
+
+            results = browser.all('.result')
+            class Result:
+                def __init__(self, element):
+                    self.element = element
+                    self.title = self.element.element('.result-title')
+                    self.url = self.element.element('.result-url')
+            # ...
+        """
+        # todo: main questions to answer before removing warning:
+        #       - isn't it enough to allow Callable[[Element], bool] as condition?
+        #           browser.all('.result').element_by(
+        #               lambda it: it.element('.result-title').matching(have.text('browser tests in Python')))
+        #               .element('.result-url').click()
+        #       - how to improve error messages in case we pass lambda (not a fun with good name/str repr)?
+        warnings.warn(
+            'element_by_its is experimental; might be renamed or removed in future',
+            FutureWarning)
+
+        def find_in(parent: Element):
+            if callable(selector_or_callable):
+                return selector_or_callable(parent)
+            else:
+                return parent.element(selector_or_callable)
+
+        return self.element_by(lambda it: condition(find_in(it)))
 
     # todo: consider adding ss alias
     def all(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection:
@@ -754,7 +922,7 @@ class Collection(WaitingEntity):
         #       because they are not supposed to be used in entity.get(*) context defined for other query.* fns
 
         return Collection(
-            Locator(f'{self}.collected({finder})', # todo: consider skipping None while flattening
+            Locator(f'{self}.collected({finder})',  # todo: consider skipping None while flattening
                     lambda: flatten([finder(element)() for element in self.cached])),
             self.config)
 

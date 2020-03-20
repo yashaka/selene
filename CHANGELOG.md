@@ -16,6 +16,8 @@
 - what about soft assertions in selene?
 - improve stacktraces
   - consider using something like `__tracebackhide__ = True`
+- consider adding more readable alias to by tuple, like in:
+  `css_or_xpath_or_by: Union[str, tuple]`
 
 ## 2.0.0b1 (to be released on *.01.2020)
 - remove all deprecated things and stay calm:)
@@ -43,7 +45,15 @@
 - use __all__ in selene api imports, etc
   - The variable __all__ is a list of public objects of that module, as interpreted by import *. ... In other words, __all__ is a list of strings defining what symbols in a module will be exported when from <module> import * is used on the module
 
-- todo: consider adding `element_by_its` and `filtered_by_their` as in example below:
+  
+## 2.0.0a22 (to be released on ?.03.2020)
+
+- fixed `have.texts` when actual collection has bigger size than actual
+
+- added (yet marked with "experimental" warning)
+  - `element_by_its`
+  - `filtered_by_their`
+  - ... see code examples below:
 
 ```
 # Given
@@ -53,30 +63,45 @@
 #        .result-url
 #        .result-snippet
 
+# in addition to
 
 results = browser.all('.result')
-results.element_by(lambda result: 
-    have.text('browser tests in Python')(result.element('.result-title')))
+results.element_by(lambda result: have.text('browser tests in Python')(
+                          result.element('.result-title')))\
     .element('.result-url').click()
-# or maybe
+
+# you can now write:
 rusults.element_by_its('.result-title', have.text('browser tests in Python'))
     .element('.result-url').click()
 
 # rusults.filtered_by_their('.result-title', have.text('Python'))
     .should(have.size(...))
 
-# or even...
-rusults.element_by(lambda it: Result(it).title, have.text('browser tests in Python'))
+# or even
+class Result:
+    def __init__(self, element):
+        self.element = element
+        self.title = self.element.element('.result-title')
+        self.url = self.element.element('.result-url')
+
+Result(rusults.element_by_its(lambda it: Result(it).title, have.text('browser tests in Python')))\
+    .url.click()
+
+# it's yet marked as experimental because probably it would be enough
+# to make it possible to accept Callable[[Element], bool] in element_by to allow:
+
+rusults.element_by(
+    lambda it: it.element('.result-title').matching(have.text('browser tests in Python')))
     .element('.result-url').click()
 
-# or probably better
-rusults.element_by_its(lambda it: Result(it).title, have.text('browser tests in Python'))
-    .element('.result-url').click()
+# moreover... if failed, the error becomes weird if using lambdas:
+
+# Timed out after 4s, while waiting for:
+# browser.all(('css selector', '.result')).element_by(<function Collection.element_by_its.<locals>.<lambda> at 0x10df67f28>).element(('css selector', '.result-url')).click
+# Reason: AssertionError: Cannot find element by condition «<function Collection.element_by_its.<locals>.<lambda> at 0x10df67f28>» from webelements collection:
+
 ```
-  
-## 2.0.0a22 (to be released on ?.03.2020)
-- fixed `have.texts` when actual collection has bigger size than actual
-
+  -  
 ## 2.0.0a21 (released on 22.01.2020)
 - fixed hooks for entities created via entity.with_(Config(...))
 
