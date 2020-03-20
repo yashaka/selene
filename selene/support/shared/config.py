@@ -219,6 +219,9 @@ PageSource: file://{path}''')
         hook = self._inject_screenshot_and_page_source_pre_hooks(self.hook_wait_failure)
         return Wait(entity, at_most=self.timeout, or_fail_with=hook)
 
+    def reset_source(self):
+        self._source = Source()
+
     # --- Config.* added setters --- #
 
     @Config.timeout.setter

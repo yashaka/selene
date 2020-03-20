@@ -981,7 +981,6 @@ class Browser(WaitingEntity):
 
     def quit(self) -> None:
         self.driver.quit()
-        self.config._source.put(None)
 
     def clear_local_storage(self) -> Browser:
         self.driver.execute_script('window.localStorage.clear();')  # todo: should we catch and ignore errors?
