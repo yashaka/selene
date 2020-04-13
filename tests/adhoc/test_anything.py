@@ -19,7 +19,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from selene import Config, be, command
+from selene import Config, be, command, have
 from selene.core.exceptions import TimeoutException
 from selene.support.jquery_style_selectors import s
 from selene.support.shared import browser
@@ -40,3 +40,10 @@ from selene.support.shared import browser
 #
 #     browser.open("https://google.com")
 #     s("child").with_(Config(timeout=4)).should(be.visible)
+
+
+# def test_collected():
+#     browser.open('http://todomvc.com/examples/emberjs/')
+#     browser.element('#new-todo').type('a').press_enter()
+#     browser.all('li').collected(lambda its: its.element('.toggle'))\
+#         .should(have.size(4))

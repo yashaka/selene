@@ -5,11 +5,13 @@
 ![Free](https://img.shields.io/badge/free-open--source-green.svg)
 [![MIT License](http://img.shields.io/badge/license-MIT-green.svg)](https://github.com/yashaka/selene/blob/master/LICENSE)
 
-[![Join chat https://t.me/selene_py](https://img.shields.io/badge/chat-telegram-blue)](https://t.me/selene_py)
-[![Присоединяйся к чату https://t.me/selene_py_ru](https://img.shields.io/badge/%D1%87%D0%B0%D1%82-telegram-blue)](https://t.me/selene_py_ru)
-[![Gitter](https://badges.gitter.im/gitterHQ/gitter.svg)](https://gitter.im/automician/selene)
-[![Учи Selene https://leanpub.com/selene-automation-ru](https://img.shields.io/badge/%D0%BA%D0%BD%D0%B8%D0%B3%D0%B0-leanpub-9cf)](https://leanpub.com/selene-automation-ru)
-[![Запишись на курс http://autotest.how/selene](https://img.shields.io/badge/%D0%BD%D0%B0%D0%B1%D0%BE%D1%80-%D0%BD%D0%B0%20%D0%BA%D1%83%D1%80%D1%81-brightgreen)](http://autotest.how/selene)
+[![Join telegram chat https://t.me/selene_py](https://img.shields.io/badge/chat-telegram-blue)](https://t.me/selene_py)
+[![Присоединяйся к чату https://t.me/selene_py_ru](https://img.shields.io/badge/%D1%87%D0%B0%D1%82-telegram-red)](https://t.me/selene_py_ru)
+
+[![Sign up for a course http://autotest.how/selene](https://img.shields.io/badge/course-sign_up-blue)](http://autotest.how/selene)
+[![Запишись на курс http://autotest.how/selene-ru](https://img.shields.io/badge/%D0%BD%D0%B0%D0%B1%D0%BE%D1%80-%D0%BD%D0%B0%20%D0%BA%D1%83%D1%80%D1%81-red)](http://autotest.how/selene-ru)
+[![Учи Selene https://leanpub.com/selene-automation-ru](https://img.shields.io/badge/%D0%BA%D0%BD%D0%B8%D0%B3%D0%B0-leanpub-red)](https://leanpub.com/selene-automation-ru)
+[![Реєструйся на курс http://autotest.how/selene-uk](https://img.shields.io/badge/%D0%BD%D0%B0%D0%B1%D1%96%D1%80-%D0%BD%D0%B0_%D0%BA%D1%83%D1%80%D1%81-yellow)](http://autotest.how/selene-uk)
 
 
 Main features:
