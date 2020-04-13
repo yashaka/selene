@@ -27,8 +27,8 @@ from selene.core.wait import Command
 
 # noinspection PyPep8Naming
 class js:
-    @classmethod
-    def set_value(cls, value: Union[str, int]) -> Command[Element]:
+    @staticmethod
+    def set_value(value: Union[str, int]) -> Command[Element]:
         def fn(element: Element):
             element.execute_script(
                 """return (function(element, text) {
@@ -46,8 +46,8 @@ class js:
 
         return Command(f'set value by js: {value}', fn)
 
-    @classmethod
-    def type(cls, keys: Union[str, int]) -> Command[Element]:
+    @staticmethod
+    def type(keys: Union[str, int]) -> Command[Element]:
         def fn(element: Element):
             element.execute_script(
                 """return (function(element, textToAppend) {
