@@ -73,6 +73,22 @@ class Wait(Generic[E]):
         self._timeout = at_most
         self._hook_failure = or_fail_with or identity
 
+    def at_most(self, timeout: int) -> Wait[E]:
+        return Wait(self._entity, timeout, self._hook_failure)
+
+    def or_fail_with(self,
+                     hook_failure: Optional[Callable[
+                         [TimeoutException],
+                         Exception]]
+                     ) -> Wait[E]:
+
+        return Wait(self._entity, self._timeout, hook_failure)
+
+    @property
+    def hook_failure(self) -> Optional[Callable[[TimeoutException], Exception]]:
+        # todo: hook_failure or failure_hook?
+        return self._hook_failure
+
     # todo: consider renaming to `def to(...)`, though will sound awkward when wait.to(condition)
     def for_(self, fn: Callable[[E], R]) -> R:
         finish_time = time.time() + self._timeout
@@ -95,6 +111,7 @@ class Wait(Generic[E]):
 
 Timed out after {timeout}s, while waiting for:
 {entity}.{fn}
+
 Reason: {reason_string}''')
 
                     raise self._hook_failure(failure)

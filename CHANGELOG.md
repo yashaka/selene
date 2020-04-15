@@ -35,8 +35,10 @@
     BECAUSE another has it's own config with its own last_screenshot source
     
   - todo: fix?
+- todo consider adding element.caching as lazy version of element.cached
+- consider adding hold_browser_opened_on_failure
   
-## 2.0.0a23 (to be released on ?.03.2020)
+## 2.0.0a25 (to be released on ?.05.2020)
 - todo: add something like element.click_with_offset
 - todo: add something like browser.perform(switch_to_tab('my tab title'))
   - maybe make browser.switch ... to work with retry logic
@@ -44,9 +46,49 @@
 - ensure we can't element.type on invisible element; add test for that
 - use __all__ in selene api imports, etc
   - The variable __all__ is a list of public objects of that module, as interpreted by import *. ... In other words, __all__ is a list of strings defining what symbols in a module will be exported when from <module> import * is used on the module
+  
+  
+## 2.0.0a24 (to be released on ?.05.2020)
+- todo: improve for other all.* methods (in addition to improved errors from browser.all.element_by)
 
   
-## 2.0.0a22 (to be released on ?.03.2020)
+## 2.0.0a23 (to be released on 15.04.2020)
+
+- fixed element.cached to not fail on non-existing element
+
+- fixed conditions that "compare lists" (like "have.exact_texts")
+  - failed earlier if one collection (expected or actual) was empty
+
+- added logging of webelement outer html to the error message of failed waiting for element
+  - if actually webelement was found, but something was wrong with it (like hidden or non-interactable)
+  
+- improved errors from browser.all.element_by
+  - todo: improve for other all.* methods
+
+was:
+
+```
+Timed out after 4s, while waiting for:
+browser.all(('css selector', '#task-list>li')).element_by(has exact text a).double click
+Reason: AssertionError: Cannot find element by condition «has exact text a» from webelements collection:
+[[]]
+```
+
+now:
+
+```
+Timed out after 4s, while waiting for:
+browser.all(('css selector', '#task-list>li')).element_by(has exact text a).double click
+
+Reason: AssertionError: 
+	Cannot find element by condition «has exact text a» 
+	Among browser.all(('css selector', '#task-list>li'))
+	Actual webelements collection:
+	[]
+```
+
+  
+## 2.0.0a22 (released on 20.03.2020)
 
 - fixed [#206 – "After manually quitting, setting a new driver fails"](https://github.com/yashaka/selene/issues/206)
 - fixed `have.texts` when actual collection has bigger size than actual

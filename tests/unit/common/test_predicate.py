@@ -37,8 +37,18 @@ class Test__equals_by_contains_to_list:
         actual = ['>a<']
         assert not equals_by_contains_to_list(expected)(actual)
 
+    def test_expected_list_is_bigger_and_actual_is_empty(self):
+        expected = ['a', 'b']
+        actual = []
+        assert not equals_by_contains_to_list(expected)(actual)
+
     def test_expected_list_is_smaller(self):
         expected = ['a']
+        actual = ['>a<', '>b<']
+        assert not equals_by_contains_to_list(expected)(actual)
+
+    def test_expected_list_is_smaller_and_empty(self):
+        expected = []
         actual = ['>a<', '>b<']
         assert not equals_by_contains_to_list(expected)(actual)
 
@@ -53,12 +63,27 @@ class Test__equals_to_list:
         actual = ['a', 'b']
         assert equals_to_list(expected)(actual)
 
+    def test_same_size_and_empty(self):
+        expected = []
+        actual = []
+        assert equals_to_list(expected)(actual)
+
     def test_expected_list_is_bigger(self):
         expected = ['a', 'b']
         actual = ['a']
         assert not equals_to_list(expected)(actual)
 
+    def test_expected_list_is_bigger_and_actual_is_empty(self):
+        expected = ['a']
+        actual = []
+        assert not equals_to_list(expected)(actual)
+
     def test_expected_list_is_smaller(self):
         expected = ['a']
         actual = ['a', 'b']
+        assert not equals_to_list(expected)(actual)
+
+    def test_expected_list_is_smaller_and_empty(self):
+        expected = []
+        actual = ['a']
         assert not equals_to_list(expected)(actual)

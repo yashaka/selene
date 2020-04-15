@@ -47,3 +47,28 @@ from selene.support.shared import browser
 #     browser.element('#new-todo').type('a').press_enter()
 #     browser.all('li').collected(lambda its: its.element('.toggle'))\
 #         .should(have.size(4))
+
+
+# def test_temp():
+    # browser.open('http://todomvc.com/examples/emberjs/')
+    # browser.open('https://todomvc4tasj.herokuapp.com/')
+    # is_todo_mvc_loaded = 'return (Object.keys(require.s.contexts._.defined).length === 39)'
+    # browser.with_(timeout=browser.config.timeout*4).should(have.js_returned_true(is_todo_mvc_loaded))
+
+    # browser.element('#new-todo').type('a').press_enter()
+    # browser.all('#task-list>li').element_by(have.exact_text('a.')).double_click()
+    # browser.all('#todo-list>li').element_by(have.exact_text('a.')).double_click()
+    # browser.element('//*[@id="task-list"]//li[.//text()="a"]').double_click()
+    # browser.all('#todo-list>li').element_by(have.exact_text('a')).double_click()\
+    #     .type("b").press_enter()
+
+    # browser.element('#new-todo').type('first task').press_enter()
+    # browser.element('#new-todo').type('a').press_enter()
+    # browser.all('#todo-list>li').should(have.exact_texts('first task', 'a'))
+    #
+    # browser.all('#todo-list>li').element_by(have.exact_text('a')).double_click()
+    # browser.element('.edit').type('b').press_enter()
+
+    # browser.element('#new-todo').with_(Config(timeout=2)).should(have.value('foo'))
+    # browser.all('#todo-list>li').should(have.exact_texts('a'))
+

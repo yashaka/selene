@@ -214,13 +214,10 @@ Screenshot: file://{path}''')
             return TimeoutException(error.msg + f'''
 PageSource: file://{path}''')
 
-        hooks = tuple(filter(None, [
+        return pipe(
             save_and_log_screenshot if self.save_screenshot_on_failure else None,
             save_and_log_page_source if self.save_page_source_on_failure else None,
-            hook
-        ]))
-
-        return pipe(*hooks)
+            hook)
 
     # todo: do we really need this overwritten clone?
     def wait(self, entity):

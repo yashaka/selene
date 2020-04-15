@@ -34,12 +34,14 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.switch_to import SwitchTo
 from selenium.webdriver.remote.webelement import WebElement
 
+from selene.common.fp import pipe
 from selene.core.configuration import Config
 from selene.core.wait import Wait, Command, Query
 from selene.core.condition import Condition
 from selene.core.locator import Locator
 
 from selene.common.helpers import to_by, flatten, is_absolute_url
+from selene.core.exceptions import TimeoutException
 
 E = TypeVar('E', bound='Assertable')
 R = TypeVar('R')
@@ -132,6 +134,24 @@ class WaitingEntity(Matchable, Configured):
 
 class Element(WaitingEntity):
 
+    @staticmethod
+    def _log_webelement_outer_html_for(element: Element) -> Callable[[TimeoutException], Exception]:
+
+        def log_webelement_outer_html(error: TimeoutException) -> Exception:
+            from selene.core import query
+            from selene.core.match import element_is_present
+
+            cached = element.cached
+
+            if cached.matching(element_is_present):
+                return TimeoutException(
+                    error.msg +
+                    f'\nActual webelement: {query.outer_html(element)}')
+            else:
+                return error
+
+        return log_webelement_outer_html
+
     # todo: should we move locator based init and with_ to Located base abstract class?
 
     def __init__(self, locator: Locator[WebElement], config: Config):
@@ -151,10 +171,38 @@ class Element(WaitingEntity):
     def __call__(self) -> WebElement:
         return self._locator()
 
+    # --- WaitingEntity --- #
+
     @property
-    def cached(self) -> Element:
-        webelement = self()
-        return Element(Locator(f'{self}.cached', lambda: webelement), self.config)
+    def wait(self) -> Wait[E]:  # todo:  will not it break code like browser.with_(timeout=...)?
+        # todo: fix that will disable/break shared hooks (snapshots)
+        # return Wait(self,  # todo:  isn't it slower to create it each time from scratch? move to __init__?
+        #             at_most=self.config.timeout,
+        #             or_fail_with=pipe(
+        #                 Element._log_webelement_outer_html_for(self),
+        #                 self.config.hook_wait_failure))
+        return super().wait.or_fail_with(pipe(
+            Element._log_webelement_outer_html_for(self),
+            super().wait.hook_failure))
+
+    @property
+    def cached(self) -> Element:  # todo: do we need caching ? with lazy save of webelement to cache
+
+        cache = None
+        error = None
+        try:
+            cache = self()
+        except Exception as e:
+            error = e
+
+        def get_webelement():
+            if cache:
+                return cache
+            raise error
+
+        return Element(Locator(f'{self}.cached',
+                               lambda: get_webelement()),
+                       self.config)
 
     # --- Relative location --- #
 
@@ -677,9 +725,9 @@ class Collection(WaitingEntity):
         return self[:stop]
 
     def filtered_by(self,
-                   condition: Union[
-                       Condition[Element],
-                       Callable[[E], None]]) -> Collection:
+                    condition: Union[
+                        Condition[Element],
+                        Callable[[E], None]]) -> Collection:
         condition = condition if isinstance(condition, Condition) \
             else Condition(str(condition), condition)
 
@@ -791,8 +839,10 @@ class Collection(WaitingEntity):
             outer_htmls = [query.outer_html(element) for element in cached]
 
             raise AssertionError(
-                f'Cannot find element by condition «{condition}» ' +
-                f'from webelements collection:\n[{outer_htmls}]')
+                f'\n\tCannot find element by condition «{condition}» '
+                f'\n\tAmong {self}'
+                f'\n\tActual webelements collection:'
+                f'\n\t{outer_htmls}')  # todo: isn't it better to print it all the time via hook, like for Element?
 
         return Element(Locator(f'{self}.element_by({condition})', find), self.config)
 
