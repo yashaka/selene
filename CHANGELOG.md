@@ -18,6 +18,10 @@
   - consider using something like `__tracebackhide__ = True`
 - consider adding more readable alias to by tuple, like in:
   `css_or_xpath_or_by: Union[str, tuple]`
+- what about `element('#go-forward').with_(retry = (times=2, dismiss_element='#confirm')).click()`?
+  - and even `browser.element('#loading-bar').with(condition=lambda: element('#loading-bar').matching(be.visible)).should(be.hidden)`
+    - or even browser.when.element('#loading-bar', matching=be.visible).then.element('#loading-bar').should(be.hidden)
+    - how in such case the '#loading-bar' can be reused as element?
 
 ## 2.0.0b1 (to be released on *.01.2020)
 - remove all deprecated things and stay calm:)
@@ -38,7 +42,7 @@
 - todo consider adding element.caching as lazy version of element.cached
 - consider adding hold_browser_opened_on_failure
   
-## 2.0.0a25 (to be released on ?.05.2020)
+## 2.0.0a26 (to be released on ?.05.2020)
 - todo: add something like element.click_with_offset
 - todo: add something like browser.perform(switch_to_tab('my tab title'))
   - maybe make browser.switch ... to work with retry logic
@@ -46,13 +50,20 @@
 - ensure we can't element.type on invisible element; add test for that
 - use __all__ in selene api imports, etc
   - The variable __all__ is a list of public objects of that module, as interpreted by import *. ... In other words, __all__ is a list of strings defining what symbols in a module will be exported when from <module> import * is used on the module
-  
-  
-## 2.0.0a24 (to be released on ?.05.2020)
-- todo: improve for other all.* methods (in addition to improved errors from browser.all.element_by)
 
   
-## 2.0.0a23 (to be released on 15.04.2020)
+## 2.0.0a25 (to be released on ?.05.2020)
+- todo: improve for other all.* methods (in addition to improved errors from browser.all.element_by)
+- todo: why in the past we had when outer_html this: '<button class="destroy" type="submit" displayed:false></button>'
+  - but now we have this: '<button class="destroy" type="submit"></button>'?
+    - can we improve it?
+    
+    
+## 2.0.0a24 (to be released on 17.05.2020)
+- fixed [#210](https://github.com/yashaka/selene/issues/210)
+  - When Installing Using Pip -- UnicodeDecodeError: 'charmap' codec can't decode byte
+  
+## 2.0.0a23 (released on 15.04.2020)
 
 - fixed element.cached to not fail on non-existing element
 
