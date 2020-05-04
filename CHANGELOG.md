@@ -57,6 +57,8 @@
 - todo: why in the past we had when outer_html this: '<button class="destroy" type="submit" displayed:false></button>'
   - but now we have this: '<button class="destroy" type="submit"></button>'?
     - can we improve it?
+- add browser.all('.item').last?
+- make browser.switch_to.frame to accept element
     
     
 ## 2.0.0a24 (to be released on 17.05.2020)
