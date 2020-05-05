@@ -84,6 +84,9 @@ class Config:
     def hook_wait_failure(self) -> Callable[[TimeoutException], Exception]:
         return self._hook_wait_failure
 
+    # def hook_wait_success(self)
+    # def hook_wait(self)
+
     def wait(self, entity):
         return Wait(entity, at_most=self.timeout, or_fail_with=self.hook_wait_failure)
 

@@ -22,6 +22,10 @@
   - and even `browser.element('#loading-bar').with(condition=lambda: element('#loading-bar').matching(be.visible)).should(be.hidden)`
     - or even browser.when.element('#loading-bar', matching=be.visible).then.element('#loading-bar').should(be.hidden)
     - how in such case the '#loading-bar' can be reused as element?
+  - other ideas
+    - custom action condition
+      - element('#can-be-not-ready').when.click().then.element('#some-new-element').should(be.visible)
+      - element('#can-be-not-ready').with_(hook_wait=lambda: be.visible(element('#some-new-element))).click()
 
 ## 2.0.0b1 (to be released on *.01.2020)
 - remove all deprecated things and stay calm:)
