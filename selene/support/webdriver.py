@@ -24,10 +24,15 @@ from typing import Optional
 
 from selenium.webdriver.remote.webdriver import WebDriver
 
+from selene.common.helpers import on_error_return_false
+
 
 class Help:
     def __init__(self, driver: WebDriver):
         self._driver = driver
+
+    def has_browser_still_alive(self):
+        return on_error_return_false(lambda: self._driver.title is not None)
 
     def save_page_source(self, file: str) -> Optional[str]:
         if not file.lower().endswith('.html'):

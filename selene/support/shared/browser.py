@@ -27,6 +27,7 @@ from typing import Union, Optional
 from selenium.webdriver.remote.webdriver import WebDriver
 
 from selene.common.fp import pipe, identity
+from selene.common.helpers import is_absolute_url
 from selene.core.entity import Browser, Collection
 from selene.core.configuration import Config
 from selene.common.none_object import NoneObject
@@ -48,6 +49,25 @@ class SharedBrowser(Browser):
 
     def with_(self, config: Config = None, **config_as_kwargs) -> Browser:
         return Browser(self.config.with_(config, **config_as_kwargs))
+
+    def open(self, relative_or_absolute_url: str):
+        # this -->
+        width = self.config.window_width
+        height = self.config.window_height
+
+        if width and height:
+            self.driver.set_window_size(int(width), int(height))
+
+        is_absolute = is_absolute_url(relative_or_absolute_url)
+        base_url = self.config.base_url
+        url = relative_or_absolute_url if is_absolute else base_url + relative_or_absolute_url
+        # <-- part is duplicated,
+        # --- originally defined in Browser
+        # --- todo: consider refactoring
+
+        self.config.get_or_create_driver().get(url)
+
+        return self
 
     # --- deprecated --- #
 
@@ -133,7 +153,11 @@ class SharedBrowser(Browser):
         self.close_current_tab()
 
     def set_driver(self, webdriver: WebDriver):
-        warnings.warn('use config.driver = webdriver instead', DeprecationWarning)
+        warnings.warn(
+            'use config.driver = webdriver '
+            'or '
+            'config.set_driver = lambda: webdriver '
+            'instead', DeprecationWarning)
 
         # noinspection PyDataclass
         self.config.driver = webdriver  # todo: test it

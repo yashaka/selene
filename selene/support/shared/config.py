@@ -24,12 +24,14 @@ from __future__ import annotations
 
 import atexit
 import itertools
+import multiprocessing
 import os
 import time
 import warnings
 from functools import lru_cache
 from typing import Optional, TypeVar, Generic, Callable
 
+from selenium.common.exceptions import WebDriverException
 from selenium.webdriver import ChromeOptions, Chrome, Firefox, Remote
 from selenium.webdriver.remote.webdriver import WebDriver
 from webdriver_manager.chrome import ChromeDriverManager
@@ -60,6 +62,74 @@ class Source(Generic[T]):
         return self._value
 
 
+class _LazyDriver:
+
+    def __init__(self, config: SharedConfig):
+        self._config = config
+        self._closed: Optional[bool] = None
+        self._stored: Optional[WebDriver] = None
+
+    @property
+    def _set_driver(self) -> Callable[[], WebDriver]:
+        return self._config.set_driver
+
+    @property
+    def _hold_browser_open(self):
+        return self._config.hold_browser_open
+
+    def has_webdriver_started(self):
+        return self._stored is not None
+
+    def has_browser_alive(self):
+        return Help(self._stored).has_browser_still_alive()
+
+    @property
+    def instance(self) -> WebDriver:
+        if self._closed:
+            raise RuntimeError(
+                'Webdriver has been closed. '
+                'You need to call open(url) '
+                'to open a browser again.'
+            )
+
+        if not self.has_webdriver_started():
+            raise RuntimeError(
+                f'No webdriver is bound to current process: '
+                f'{multiprocessing.current_process().pid}. '
+                f'You need to call .open(url) first.'
+            )
+
+        return self._stored
+
+    def _create(self) -> WebDriver:
+        self._stored = self._set_driver()
+
+        if not self._hold_browser_open:
+            atexit.register(self._stored.quit)
+
+        self._closed = False
+
+        return self._stored
+
+    def get_or_create(self) -> WebDriver:
+        if self.has_browser_alive():
+            return self._stored
+
+        if self.has_webdriver_started():
+            self.quit()
+
+        return self._create()
+
+    def quit(self):
+        if self.has_webdriver_started():
+            try:  # todo: do we need this try/except?
+                self._stored.quit()
+            except WebDriverException:
+                pass
+
+            self._closed = True
+
+
 # noinspection PyDataclass
 class SharedConfig(Config):
 
@@ -77,7 +147,8 @@ class SharedConfig(Config):
                  window_height: Optional[int] = None,
                  hook_wait_failure: Optional[Callable[[TimeoutException], Exception]] = None,
                  # SharedConfig
-                 source: Source[WebDriver] = Source(),  # don't use it:) it's for internal selene use:)
+                 set_driver: Callable[[], WebDriver] = None,
+                 source: _LazyDriver = None,
                  browser_name: str = 'chrome',  # todo: rename to config.type? config.name? config.browser?
                  hold_browser_open: bool = False,
                  save_screenshot_on_failure: bool = True,
@@ -88,11 +159,43 @@ class SharedConfig(Config):
                  last_screenshot: Optional[str] = None,
                  last_page_source: Optional[str] = None,
                  ):
-        self._source = source
-        if driver:
-            self._source.put(driver)
+
         self._browser_name = browser_name
         self._hold_browser_open = hold_browser_open
+
+        def set_chrome_or_firefox_from_webdriver_manager():
+            # todo: consider simplifying implementation to simple if-else
+
+            # todo: do we need here pass self.desired_capabilities too?
+
+            def set_chrome():
+                return Chrome(
+                    executable_path=ChromeDriverManager().install(),
+                    options=ChromeOptions()
+                )
+
+            def set_firefox():
+                return Firefox(
+                    executable_path=GeckoDriverManager().install()
+                )
+
+            # set_remote = lambda: Remote()  # todo: do we really need it? :)
+
+            # todo: think on something like:
+            #             'remote': lambda: Remote(**self.browser_name)
+            #         }.get(self.browser_name if isinstance(self.browser_name, str) else 'remote')()
+
+            return {
+                'chrome': set_chrome,
+                'firefox': set_firefox
+            }.get(self.browser_name)()
+
+        if driver and not set_driver:
+            self._set_driver = lambda: driver
+        else:
+            self._set_driver = set_driver or set_chrome_or_firefox_from_webdriver_manager
+        self._source = source or _LazyDriver(self)
+
         self._save_screenshot_on_failure = save_screenshot_on_failure
         self._save_page_source_on_failure = save_page_source_on_failure
         self._poll_during_waits = poll_during_waits  # todo consider to deprecate
@@ -116,63 +219,37 @@ class SharedConfig(Config):
 
     @property
     def driver(self) -> WebDriver:
-        stored = self._source.value
-        is_alive = on_error_return_false(lambda: stored.title is not None)
 
-        if stored and \
-                stored.session_id and \
-                is_alive and \
-                stored.name == self.browser_name:  # forces browser restart if config.browser_name was re-changed
-            return stored
+        return self._source.instance
 
-        if stored:
-            stored.quit()  # todo: can this raise exception? that we need to supress...
+        # in the past we forced browser to restart
+        # if the config.browser_name was changed to a new version...
+        # now we removed this to keep things KISS
+        # and potentially less conflict with e.g. Appium...
+        # we also checked browser session_id ... why?
+        # if stored and \
+        #       stored.session_id and \
+        #       stored.name == self.browser_name:
+        #     return stored
 
-        # todo: do we need here pass self.desired_capabilities too?
-
-        set_chrome = lambda: Chrome(
-            executable_path=ChromeDriverManager().install(),
-            options=ChromeOptions())
-
-        set_firefox = lambda: Firefox(
-            executable_path=GeckoDriverManager().install())
-
-        # set_remote = lambda: Remote()  # todo: do we really need it? :)
-
-        new = {
-            'chrome': set_chrome,
-            'firefox': set_firefox
-        }.get(self.browser_name)()
-
-        # todo: think on something like:
-        #             'remote': lambda: Remote(**self.browser_name)
-        #         }.get(self.browser_name if isinstance(self.browser_name, str) else 'remote')()
-
-        if not self.hold_browser_open:
-            atexit.register(new.quit)
-
-        self._source.put(new)
-
-        return new
+    def get_or_create_driver(self) -> WebDriver:
+        return self._source.get_or_create()
 
     def quit_driver(self):
-        self._source.value.quit()
-        self._source.clear()
+        self._source.quit()
 
     @driver.setter
     def driver(self, value: WebDriver):
-        stored = self._source.value
-        is_another_driver = on_error_return_false(lambda: value.session_id != stored.session_id)
+        self.set_driver = lambda: value
 
-        if is_another_driver:
-            # todo: do we really need to quit old driver?
-            self.quit_driver()  # todo: can quit raise exception? handle then...
+    @property
+    def set_driver(self):
+        return self._set_driver
 
-        self._source.put(value)
-
-        self.browser_name = value and value.name  # overwrites default browser_name
-
-        # todo: should we schedule driver closing on exit here too?
+    @set_driver.setter
+    def set_driver(self, value: Callable[[], WebDriver]):
+        self._source.quit()  # todo: do we need to quit it? or better check if it's same or not?
+        self._set_driver = value
 
     # todo: consider accepting also hub url as "browser"
     #       because in case of "remote" mode, we will not need the common "name" like

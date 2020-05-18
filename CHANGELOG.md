@@ -45,8 +45,11 @@
   - todo: fix?
 - todo consider adding element.caching as lazy version of element.cached
 - consider adding hold_browser_opened_on_failure
+- consider browser.open() over browser.open('') (use some smart defaults)
+- consider cofig.headless = False like in selenide 
+  - `this.browser = new Browser(config.browser(), config.headless());`
   
-## 2.0.0a26 (to be released on ?.05.2020)
+## 2.0.0a27 (to be released on ?.05.2020)
 - todo: add something like element.click_with_offset
 - todo: add something like browser.perform(switch_to_tab('my tab title'))
   - maybe make browser.switch ... to work with retry logic
@@ -56,7 +59,7 @@
   - The variable __all__ is a list of public objects of that module, as interpreted by import *. ... In other words, __all__ is a list of strings defining what symbols in a module will be exported when from <module> import * is used on the module
 
   
-## 2.0.0a25 (to be released on ?.05.2020)
+## 2.0.0a26 (to be released on ?.06.2020)
 - todo: improve for other all.* methods (in addition to improved errors from browser.all.element_by)
 - todo: why in the past we had when outer_html this: '<button class="destroy" type="submit" displayed:false></button>'
   - but now we have this: '<button class="destroy" type="submit"></button>'?
@@ -64,6 +67,25 @@
 - add browser.all('.item').last?
 - make browser.switch_to.frame to accept element
     
+## 2.0.0a25 (to be released on ?.05.2020)
+- fixing [#172](https://github.com/yashaka/selene/issues/172)
+  - added `shared.config.set_driver: Callable[[], WebDriver]`
+    as alternative to `shared.config.driver: WebDriver`
+    - now if config.set_driver is set - it will be used 
+      to create and reload the driver instance according to your needs
+    - setting `shared.config.driver = my_driver` is equivalent to setting 
+      then `shared.config.set_driver = lambda: my_driver`
+    - only `shared.browser.open(url)` now makes `set_driver` 
+      to be triggered on first start and if driver was crashed or quit
+      - i.e. if driver is crashed
+        any further action on `shared.browser.element` will crash too
+        unless you call `shared.browser.open` again
+        - browser.open will also crash 
+          if you used `shared.config.driver = my_driver` before
+- **removed** implementation of "re-creating browser" if shared.config.browser_name was changed
+  - this should make shared.browser more friendly with Appium
+  - and nevertheless shared.config should be used only "after quit and before open"... 
+      
     
 ## 2.0.0a24 (to be released on 17.05.2020)
 - fixed [#210](https://github.com/yashaka/selene/issues/210)
