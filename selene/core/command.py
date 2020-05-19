@@ -51,7 +51,8 @@ class js:
         def fn(element: Element):
             element.execute_script(
                 """return (function(element, textToAppend) {
-                    var text = element.getAttribute('value') + textToAppend
+                    var value = element.value || '';
+                    var text = value + textToAppend;
                     var maxlength = element.getAttribute('maxlength') === null
                         ? -1
                         : parseInt(element.getAttribute('maxlength'));

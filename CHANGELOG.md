@@ -49,7 +49,7 @@
 - consider cofig.headless = False like in selenide 
   - `this.browser = new Browser(config.browser(), config.headless());`
   
-## 2.0.0a28 (to be released on ?.05.2020)
+## 2.0.0a29 (to be released on ?.05.2020)
 - todo: add something like element.click_with_offset
 - todo: add something like browser.perform(switch_to_tab('my tab title'))
   - maybe make browser.switch ... to work with retry logic
@@ -59,7 +59,7 @@
   - The variable __all__ is a list of public objects of that module, as interpreted by import *. ... In other words, __all__ is a list of strings defining what symbols in a module will be exported when from <module> import * is used on the module
 
   
-## 2.0.0a27 (to be released on ?.06.2020)
+## 2.0.0a28 (to be released on ?.06.2020)
 - todo: improve for other all.* methods (in addition to improved errors from browser.all.element_by)
 - todo: why in the past we had when outer_html this: '<button class="destroy" type="submit" displayed:false></button>'
   - but now we have this: '<button class="destroy" type="submit"></button>'?
@@ -67,7 +67,10 @@
 - add browser.all('.item').last?
 - make browser.switch_to.frame to accept element
 
-## 2.0.0a26 (to be released on 19.05.2020)
+## 2.0.0a27 (to be released on 19.05.2020)
+- fixed command.js.type and configuration.type_by_js + element.type
+
+## 2.0.0a26 (released on 19.05.2020)
 - if driver was set like `shared.config.driver = my_custom_driver`
   - then it's not mandatory to call `shared.browser.open` first
     
