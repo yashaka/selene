@@ -101,7 +101,7 @@ class _LazyDriver:
 
         return self._stored
 
-    def _create(self) -> WebDriver:
+    def create(self) -> WebDriver:
         self._stored = self._set_driver()
 
         if not self._hold_browser_open:
@@ -118,7 +118,7 @@ class _LazyDriver:
         if self.has_webdriver_started():
             self.quit()
 
-        return self._create()
+        return self.create()
 
     def quit(self):
         if self.has_webdriver_started():
@@ -162,6 +162,7 @@ class SharedConfig(Config):
 
         self._browser_name = browser_name
         self._hold_browser_open = hold_browser_open
+        self._source = source or _LazyDriver(self)
 
         def set_chrome_or_firefox_from_webdriver_manager():
             # todo: consider simplifying implementation to simple if-else
@@ -191,10 +192,15 @@ class SharedConfig(Config):
             }.get(self.browser_name)()
 
         if driver and not set_driver:
+            '''
+            each time we are setting not None driver, 
+            we have to not forget to call self._source.create()
+            todo: how can we improve cohesion here? and reduce risks?
+            '''
             self._set_driver = lambda: driver
+            self._source.create()
         else:
             self._set_driver = set_driver or set_chrome_or_firefox_from_webdriver_manager
-        self._source = source or _LazyDriver(self)
 
         self._save_screenshot_on_failure = save_screenshot_on_failure
         self._save_page_source_on_failure = save_page_source_on_failure
@@ -241,6 +247,7 @@ class SharedConfig(Config):
     @driver.setter
     def driver(self, value: WebDriver):
         self.set_driver = lambda: value
+        self._source.create()
 
     @property
     def set_driver(self):
