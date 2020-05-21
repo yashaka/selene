@@ -41,7 +41,8 @@ def to_by(selector_or_by: Union[str, tuple]) -> Tuple[str, str]:
         return (By.XPATH, selector_or_by) if (
                 selector_or_by.startswith('/') or
                 selector_or_by.startswith('./') or
-                selector_or_by.startswith('..')) \
+                selector_or_by.startswith('..') or
+                selector_or_by.startswith('(')) \
             else (By.CSS_SELECTOR, selector_or_by)
     raise TypeError('selector_or_by should be str with CSS selector or XPATH selector or Tuple[by:str, value:str]')
 
