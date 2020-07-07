@@ -129,6 +129,7 @@ Latest pre-release version:
 
 or using pip:
 
+    $ pip install webdriver_manager
     $ pip install git+https://github.com/yashaka/selene.git
     
 
