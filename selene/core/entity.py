@@ -905,6 +905,7 @@ class Collection(WaitingEntity):
         #               lambda it: it.element('.result-title').matching(have.text('browser tests in Python')))
         #               .element('.result-url').click()
         #       - how to improve error messages in case we pass lambda (not a fun with good name/str repr)?
+        #       - what about accepting collection condition? should we allow it?
         warnings.warn(
             'element_by_its is experimental; might be renamed or removed in future',
             FutureWarning)

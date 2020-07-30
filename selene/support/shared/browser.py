@@ -48,7 +48,7 @@ class SharedBrowser(Browser):
         return self._config
 
     def with_(self, config: Config = None, **config_as_kwargs) -> Browser:
-        return Browser(self.config.with_(config, **config_as_kwargs))
+        return SharedBrowser(self.config.with_(config, **config_as_kwargs))
 
     def open(self, relative_or_absolute_url: str):
         # this -->

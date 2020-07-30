@@ -21,7 +21,6 @@
 # SOFTWARE.
 
 from selene.api import *
-from selene.browser import open_url
 
 
 def test_selene_demo():

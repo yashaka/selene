@@ -211,7 +211,7 @@ Or, by using non-waiting versions, if "you are in a rush:)"::
 # """
 # todo: add here some type imports like Element, Collection, etc.
 
-__version__ = '2.0.0a29'
+__version__ = '2.0.0a30'
 
 # --- DEPRECATED, and will be removed soon --- #
 
