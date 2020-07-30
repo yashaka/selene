@@ -105,7 +105,7 @@ class _LazyDriver:
         self._stored = self._set_driver()
 
         if not self._hold_browser_open:
-            atexit.register(self._stored.quit)
+            atexit.register(self.quit)
 
         self._closed = False
 
@@ -121,7 +121,7 @@ class _LazyDriver:
         return self.create()
 
     def quit(self):
-        if self.has_webdriver_started():
+        if self.has_webdriver_started() and not self._closed:
             try:  # todo: do we need this try/except?
                 self._stored.quit()
             except WebDriverException:

@@ -27,11 +27,11 @@
       - element('#can-be-not-ready').when.click().then.element('#some-new-element').should(be.visible)
       - element('#can-be-not-ready').with_(hook_wait=lambda: be.visible(element('#some-new-element))).click()
 
-## 2.0.0b1 (to be released on *.01.2020)
+## 2.0.0b1 (to be released on??.??.2020)
 - remove all deprecated things and stay calm:)
 - or maybe remove all deprecated stuff only in 3.0?
 
-## 2.0.0aNEXT (to be released on 14-15.01.2020)
+## 2.0.0aNEXT (to be released on ??.??.2020)
 - config.browser_name -> config.name was bad idea
   - but config.executor accepting both 'chrome'/'firefox' or 'http://<remoteurl>'
     - might be a good idea... think on it... 
@@ -49,7 +49,7 @@
 - consider cofig.headless = False like in selenide 
   - `this.browser = new Browser(config.browser(), config.headless());`
   
-## 2.0.0a2x+1 (to be released on ?.05.2020)
+## 2.0.0a2x+1 (to be released on ?.??.2020)
 - todo: add something like element.click_with_offset
 - todo: add something like browser.perform(switch_to_tab('my tab title'))
   - maybe make browser.switch ... to work with retry logic
@@ -59,13 +59,18 @@
   - The variable __all__ is a list of public objects of that module, as interpreted by import *. ... In other words, __all__ is a list of strings defining what symbols in a module will be exported when from <module> import * is used on the module
 
   
-## 2.0.0a2x (to be released on ?.06.2020)
+## 2.0.0a2x (to be released on ?.08.2020)
 - todo: improve for other all.* methods (in addition to improved errors from browser.all.element_by)
 - todo: why in the past we had when outer_html this: '<button class="destroy" type="submit" displayed:false></button>'
   - but now we have this: '<button class="destroy" type="submit"></button>'?
     - can we improve it?
 - add browser.all('.item').last?
 - make browser.switch_to.frame to accept element
+
+## 2.0.0a29 (released on 30.07.2020)
+- fixed shared browser automatic quit on process exit
+  - that led to session error 
+    in case you quit shared browser manually in your fixture
 
 ## 2.0.0a28 (released on 21.05.2020)
 - added support of xpath to start with `(` in `s(selector)`, etc.

@@ -46,7 +46,7 @@ Tests with Selene can be built either in a simple straightforward "selenide' sty
 
 ## Versions
   
-* Latest recommended version to use is [2.0.0a28](https://pypi.org/project/selene/2.0.0a24/
+* Latest recommended version to use is [2.0.0a29](https://pypi.org/project/selene/2.0.0a29/
 )
   * it's a completely new version of selene, with improved API and speed
   * supports python >= 3.7
@@ -102,13 +102,13 @@ AND
     $ cd my-tests-with-selene
     $ pyenv local 3.7.3
 
+WHEN latest pre-release recommended version:
+
+    $ poetry add selene --allow-prereleases
+
 WHEN latest stable version:
 
     $ poetry add selene
-
-WHEN latest pre-release version:
-
-    $ poetry add selene --allow-prereleases
 
 THEN
 
@@ -116,15 +116,19 @@ THEN
 
 ### pip
 
+Latest recommended pre-release alpha version:
+
+    $ pip install selene --pre
+
 Latest stable version:
 
     $ pip install selene
 
-Latest pre-release version:
-
-    $ pip install selene --pre
-
 ### from sources
+
+GIVEN webdriver and webdriver_manager are already installed
+
+THEN
 
     $ git clone https://github.com/yashaka/selene.git
     $ python setup.py install
