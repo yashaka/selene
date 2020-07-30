@@ -59,8 +59,10 @@ Tests with Selene can be built either in a simple straightforward "selenide' sty
 * Latest version marked as stable is: [1.0.2](https://pypi.org/project/selene/1.0.2/)
   * it is main version used by most selene users during last 2 years
   * it was proven to be stable for production use
-  * its sources can be found at [1.x](https://github.com/yashaka/selene/tree/1.x) branch.
+  * its sources and corresponding README version can be found at [1.x](https://github.com/yashaka/selene/tree/1.x) branch.
   * supports python 2.7, 3.5, 3.6, 3.7
+  
+THIS README DESCRIBES THE USAGE OF THE PRE-RELEASE version of Selene. For older docs look at [1.x](https://github.com/yashaka/selene/tree/1.x) branch.
   
 ### Migration guide
 
