@@ -163,7 +163,7 @@ class SharedBrowser(Browser):
         self.config.driver = webdriver  # todo: test it
 
     def open_url(self, absolute_or_relative_url):
-        warnings.warn('use browser.open = webdriver instead', DeprecationWarning)
+        warnings.warn('use browser.open instead', DeprecationWarning)
         return self.open(absolute_or_relative_url)
 
     def elements(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection:
