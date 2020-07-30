@@ -17,3 +17,4 @@ build
 geckodriver.log
 skip-covered/
 .python-version
+tests/adhoc/test_anything.py

@@ -71,8 +71,8 @@ GIVEN on 1.0.1:
 * update selene to 2.0.0aLATEST
   * find&replace the collection.first() method from `.first()` to `.first`
   * ensure all conditions like `text('foo')` are used via `be.*` or `have.*` syntax
-    * example: 
-      * find&replace all 
+    * example:
+      * find&replace all
         * `(text('foo'))` to `(have.text('foo'))`
         * `(be.visible)` to `(be.visible)`
       * and add corresponding imports: `from selene import be, have`
@@ -101,7 +101,7 @@ AND
     $ poetry new my-tests-with-selene
     $ cd my-tests-with-selene
     $ pyenv local 3.7.3
-    
+
 WHEN latest stable version:
 
     $ poetry add selene
@@ -193,177 +193,208 @@ ss('.srg .g').should(have.size(10))\
 
 Given:
 
-    from selenium.webdriver import Chrome
+```python
+from selenium.webdriver import Chrome
+```
 
 AND chromedriver executable available in $PATH
 
 WHEN:
+```python
+from selene import Browser, Config
 
-    from selene import Browser, Config
-
-    browser = Browser(Config(
-        driver=Chrome(),
-        base_url='https://google.com',
-        timeout=2))
+browser = Browser(Config(
+    driver=Chrome(),
+    base_url='https://google.com',
+    timeout=2))
+```
 
 AND (uncomment if needed):
 
-    # import atexit
-    # atexit.register(browser.quit)
+```python
+# import atexit
+# atexit.register(browser.quit)
+```
 
 AND:
 
-    browser.open('/ncr')
+```python
+browser.open('/ncr')
+```
 
 AND:
 
-    # browser.element('//*[@name="q"]')).type('selenium').press_enter()
-    # OR...
+```python
+# browser.element('//*[@name="q"]')).type('selenium').press_enter()
+# OR...
 
-    # browser.element('[name=q]')).type('selenium').press_enter()
-    # OR...
-    
-    from selene import by
-    
-    # browser.element(by.name('q')).type('selenium').press_enter()
-    # OR...for total readability
-    
-    query = browser.element(by.name('q'))  # actual search doesn't start here, the element is "lazy"          
-         # here the actual webelement is found
-    query.type('selenium').press_enter()       
-                          # and here it's located again, i.e. the element is "dynamic"
-        
+# browser.element('[name=q]')).type('selenium').press_enter()
+# OR...
+
+from selene import by
+
+# browser.element(by.name('q')).type('selenium').press_enter()
+# OR...for total readability
+
+query = browser.element(by.name('q'))  # actual search doesn't start here, the element is "lazy"          
+     # here the actual webelement is found
+query.type('selenium').press_enter()       
+                      # and here it's located again, i.e. the element is "dynamic"
+```
+
 AND (in case we need to filter collection of items by some condition like visibility):
 
-    from selene import be
-    
-    results = browser.all('.srg .g').filtered_by(be.visible)
-    
-THEN:
-    from selene import have
-    
-    # results.should(have.size(10))
-    # results.first.should(have.text('Selenium automates browsers'))
-    # OR...
-    
-    results.should(have.size(10))\
-        .first.should(have.text('Selenium automates browsers'))
-        
-FINALLY (if not registered "atexit" before):
-    
-    browser.quit()
+```python
+from selene import be
 
+results = browser.all('.srg .g').filtered_by(be.visible)
+```
+
+THEN:
+
+```python
+from selene import have
+
+# results.should(have.size(10))
+# results.first.should(have.text('Selenium automates browsers'))
+# OR...
+
+results.should(have.size(10))\
+    .first.should(have.text('Selenium automates browsers'))
+```
+
+FINALLY (if not registered "atexit" before):
+
+```python
+browser.quit()
+```
 
 ### Automatic Driver and Browser Management
 
 Instead of:
 
-    from selene import Browser, Config
+```python
+from selene import Browser, Config
 
-    browser = Browser(Config(
-        driver=Chrome(),
-        base_url='https://google.com',
-        timeout=2))
-        
+browser = Browser(Config(
+    driver=Chrome(),
+    base_url='https://google.com',
+    timeout=2))
+```
 You can simply use the browser and config instance predefined for you in `selene.support.shared` module:
 
-    from selene.support.shared import browser, config
+```python
+from selene.support.shared import browser, config
 
-    # ... do the same with browser.*
-    
-So you don't need to create you driver instance manually. It will be created for you automatically. 
+# ... do the same with browser.*
+```
+So you don't need to create you driver instance manually. It will be created for you automatically.
 
-Yet, if you need some special case, like working with remote driver, etc., you can still use shared browser object, while providing driver to it through: 
+Yet, if you need some special case, like working with remote driver, etc., you can still use shared browser object, while providing driver to it through:
 
-    config.driver = my_remote_driver_instance
-    # or
-    browser.config.driver = my_remote_driver_instance
-    
+```python
+config.driver = my_remote_driver_instance
+# or
+browser.config.driver = my_remote_driver_instance
+```
+
 ### Advanced API
-    
+
 Sometimes you might need some extra actions on elements, e.g. for workaround something through js:
 
-    from selene import command
+```python
+from selene import command
 
-    browser.element('#not-in-view').perform(command.js.scroll_into_view)
-    
+browser.element('#not-in-view').perform(command.js.scroll_into_view)
+```
+
 Probably you think that will need something like:
 
-    from selene import query
+```python
+from selene import query
 
-    product_text = browser.element('#to-assert-something-non-standard').get(query.text)
-    price = my_int_from(product_text)
-    assert price > 100
+product_text = browser.element('#to-assert-something-non-standard').get(query.text)
+price = my_int_from(product_text)
+assert price > 100
+```
 
 But usually it's either better to implement your custom condition:
 
-    browser.element('#to-assert-something-non-standard').should(have_in_text_the_int_number_more_than(100))
+```python
+browser.element('#to-assert-something-non-standard').should(have_in_text_the_int_number_more_than(100))
+```
 
-Where the ``have_in_text_the_int_number_more_than`` is your defined custom condition. Such condition-based alternative will be less fragile, because python's assert does not have "implicit waiting", like selene's should ;)
+Where the `have_in_text_the_int_number_more_than` is your defined custom condition. Such condition-based alternative will be less fragile, because python's assert does not have "implicit waiting", like selene's should ;)
 
 
 Furthermore, the good test is when you totally control your test data, and instead:
 
+```python
+product = browser.element('#to-remember-for-future')
 
-    product = browser.element('#to-remember-for-future')
+product_text_before = product.get(query.text)
+price_before = my_int_from(product_text_before)
 
-    product_text_before = product.get(query.text)
-    price_before = my_int_from(product_text_before)
+# ... do something
 
-    # ... do something
+product_text_after = product.get(query.text)
+price_after = my_int_from(product_text_after)
 
-    product_text_after = product.get(query.text)
-    price_after = my_int_from(product_text_after)
-
-    assert price_after > price_before
-
+assert price_after > price_before
+```
 
 Normally, better would be to refactor to something like:
 
-    product = browser.element('#to-remember-for-future')
+```python
+product = browser.element('#to-remember-for-future')
 
-    product.should(have.text('100$'))
+product.should(have.text('100$'))
 
-    # ... do something
+# ... do something
 
-    product.should(have.text('125$'))
-
-
+product.should(have.text('125$'))
+```
 You might think you need something like:
 
-    from selene import query
+```python
+from selene import query
 
-    if browser.element('#i-might-say-yes-or-no').get(query.text) == 'yes':
-        # do something...
+if browser.element('#i-might-say-yes-or-no').get(query.text) == 'yes':
+    # do something...
+```
 
 Or:
 
-    from selene import query
+```python
+from selene import query
 
-    if browser.all('.option').get(query.size) >= 2:
-        # do something...
-
+if browser.all('.option').get(query.size) >= 2:
+    # do something...
+```
 
 Maybe one day, you really find a use case:) But for above cases, probably easier would be:
 
-    if browser.element('#i-might-say-yes-or-no').wait_until(have.text('yes'):
-        # do something
+```python
+if browser.element('#i-might-say-yes-or-no').wait_until(have.text('yes'):
+    # do something
 
-    # ...
+# ...
 
-    if browser.all('.i-will-appear').wait_until(have.size_greater_than_or_equal(2)):
-        # do something
+if browser.all('.i-will-appear').wait_until(have.size_greater_than_or_equal(2)):
+    # do something
+```
 
 Or, by using non-waiting versions, if "you are in a rush:)":
 
-    if browser.element('#i-might-say-yes-or-no').matching(have.text('yes'):
-        # do something
+```python
+if browser.element('#i-might-say-yes-or-no').matching(have.text('yes'):
+    # do something
 
-    # ...
+# ...
 
-    if browser.all('.i-will-appear').matching(have.size_greater_than_or_equal(2)):
-        # do something
-
+if browser.all('.i-will-appear').matching(have.size_greater_than_or_equal(2)):
+    # do something
+```
 
 
 ## Tutorials
