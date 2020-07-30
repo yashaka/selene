@@ -70,6 +70,8 @@
 ## 2.0.0a30 (released on 30.07.2020)
 - fixed selene.support.shared.browser.with_
   - to return SharedBrowser instance instead of Browser instance
+- made browser.config.hold_browser_open to influence browser quit logic 
+  - even if set after calling browser.open or resetting browser.config.driver
 
 ## 2.0.0a29 (released on 30.07.2020)
 - fixed shared browser automatic quit on process exit

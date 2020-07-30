@@ -104,8 +104,11 @@ class _LazyDriver:
     def create(self) -> WebDriver:
         self._stored = self._set_driver()
 
-        if not self._hold_browser_open:
-            atexit.register(self.quit)
+        def quit_if_not_asked_to_hold():
+            if not self._hold_browser_open:
+                self.quit()
+
+        atexit.register(quit_if_not_asked_to_hold)
 
         self._closed = False
 
