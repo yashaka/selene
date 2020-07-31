@@ -66,10 +66,15 @@
     - can we improve it?
 - add browser.all('.item').last?
 - make browser.switch_to.frame to accept element
+- deprecate be.present
+
+## 2.0.0a31 (released on 31.07.2020)
+- fixed type hints in `*.should(here)`
+  - latest PyCharm 2020.2 revealed the hidden issue with typing
 
 ## 2.0.0a30 (released on 30.07.2020)
 - fixed selene.support.shared.browser.with_
-  - to return SharedBrowser instance instead of Browser instance
+  - to return sharedbrowser instance instead of browser instance
 - made browser.config.hold_browser_open to influence browser quit logic 
   - even if set after calling browser.open or resetting browser.config.driver
 
@@ -91,8 +96,8 @@
     
 ## 2.0.0a25 (released on 18.05.2020)
 - fixing [#172](https://github.com/yashaka/selene/issues/172)
-  - added `shared.config.set_driver: Callable[[], WebDriver]`
-    as alternative to `shared.config.driver: WebDriver`
+  - added `shared.config.set_driver: callable[[], webdriver]`
+    as alternative to `shared.config.driver: webdriver`
     - now if config.set_driver is set - it will be used 
       to create and reload the driver instance according to your needs
     - setting `shared.config.driver = my_driver` is equivalent to setting 
@@ -105,13 +110,13 @@
         - browser.open will also crash 
           if you used `shared.config.driver = my_driver` before
 - **removed** implementation of "re-creating browser" if shared.config.browser_name was changed
-  - this should make shared.browser more friendly with Appium
+  - this should make shared.browser more friendly with appium
   - and nevertheless shared.config should be used only "after quit and before open"... 
       
     
 ## 2.0.0a24 (to be released on 17.05.2020)
 - fixed [#210](https://github.com/yashaka/selene/issues/210)
-  - When Installing Using Pip -- UnicodeDecodeError: 'charmap' codec can't decode byte
+  - when installing using pip -- unicodedecodeerror: 'charmap' codec can't decode byte
   
 ## 2.0.0a23 (released on 15.04.2020)
 
@@ -129,29 +134,29 @@
 was:
 
 ```
-Timed out after 4s, while waiting for:
+timed out after 4s, while waiting for:
 browser.all(('css selector', '#task-list>li')).element_by(has exact text a).double click
-Reason: AssertionError: Cannot find element by condition «has exact text a» from webelements collection:
+reason: assertionerror: cannot find element by condition «has exact text a» from webelements collection:
 [[]]
 ```
 
 now:
 
 ```
-Timed out after 4s, while waiting for:
+timed out after 4s, while waiting for:
 browser.all(('css selector', '#task-list>li')).element_by(has exact text a).double click
 
-Reason: AssertionError: 
-	Cannot find element by condition «has exact text a» 
-	Among browser.all(('css selector', '#task-list>li'))
-	Actual webelements collection:
+reason: assertionerror: 
+	cannot find element by condition «has exact text a» 
+	among browser.all(('css selector', '#task-list>li'))
+	actual webelements collection:
 	[]
 ```
 
   
 ## 2.0.0a22 (released on 20.03.2020)
 
-- fixed [#206 – "After manually quitting, setting a new driver fails"](https://github.com/yashaka/selene/issues/206)
+- fixed [#206 – "after manually quitting, setting a new driver fails"](https://github.com/yashaka/selene/issues/206)
 - fixed `have.texts` when actual collection has bigger size than actual
 - added (yet marked with "experimental" warning)
   - `element_by_its`
@@ -159,7 +164,7 @@ Reason: AssertionError:
   - ... see code examples below:
 
 ```
-# Given
+# given
 #
 #    .result
 #        .result-title
@@ -169,39 +174,39 @@ Reason: AssertionError:
 # in addition to
 
 results = browser.all('.result')
-results.element_by(lambda result: have.text('browser tests in Python')(
+results.element_by(lambda result: have.text('browser tests in python')(
                           result.element('.result-title')))\
     .element('.result-url').click()
 
 # you can now write:
-rusults.element_by_its('.result-title', have.text('browser tests in Python'))
+rusults.element_by_its('.result-title', have.text('browser tests in python'))
     .element('.result-url').click()
 
-# rusults.filtered_by_their('.result-title', have.text('Python'))
+# rusults.filtered_by_their('.result-title', have.text('python'))
     .should(have.size(...))
 
 # or even
-class Result:
+class result:
     def __init__(self, element):
         self.element = element
         self.title = self.element.element('.result-title')
         self.url = self.element.element('.result-url')
 
-Result(rusults.element_by_its(lambda it: Result(it).title, have.text('browser tests in Python')))\
+result(rusults.element_by_its(lambda it: result(it).title, have.text('browser tests in python')))\
     .url.click()
 
 # it's yet marked as experimental because probably it would be enough
-# to make it possible to accept Callable[[Element], bool] in element_by to allow:
+# to make it possible to accept callable[[element], bool] in element_by to allow:
 
 rusults.element_by(
-    lambda it: it.element('.result-title').matching(have.text('browser tests in Python')))
+    lambda it: it.element('.result-title').matching(have.text('browser tests in python')))
     .element('.result-url').click()
 
 # moreover... if failed, the error becomes weird if using lambdas:
 
-# Timed out after 4s, while waiting for:
-# browser.all(('css selector', '.result')).element_by(<function Collection.element_by_its.<locals>.<lambda> at 0x10df67f28>).element(('css selector', '.result-url')).click
-# Reason: AssertionError: Cannot find element by condition «<function Collection.element_by_its.<locals>.<lambda> at 0x10df67f28>» from webelements collection:
+# timed out after 4s, while waiting for:
+# browser.all(('css selector', '.result')).element_by(<function collection.element_by_its.<locals>.<lambda> at 0x10df67f28>).element(('css selector', '.result-url')).click
+# reason: assertionerror: cannot find element by condition «<function collection.element_by_its.<locals>.<lambda> at 0x10df67f28>» from webelements collection:
 
 ```
   -  

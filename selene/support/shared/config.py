@@ -412,7 +412,7 @@ PageSource: file://{path}''')
     #       make driver be recreated in such cases
     #       but again... what about making this configurable too? as a "mode"...
 
-    # --- consider to depracate --- #
+    # --- consider to deprecate --- #
 
     @property
     def cash_elements(self) -> bool:

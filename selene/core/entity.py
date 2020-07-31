@@ -88,7 +88,7 @@ class WaitingEntity(Matchable, Configured):
         or some custom defined by selene user:
             element.perform(my_action.triple_click)
 
-        You might think that it will be usefull to use these methods also in Selene internally
+        You might think that it will be useful to use these methods also in Selene internally
         in order to define built in commands e.g. in Element class, like:
 
             def click(self):
@@ -331,7 +331,7 @@ class Element(WaitingEntity):
 
     # we need this method here in order to make autocompletion work...
     # unfortunately the "base class" version is not enough
-    def should(self, condition: ElementCondition, timeout: int = None) -> Element:
+    def should(self, condition: Condition[Element], timeout: int = None) -> Element:
         if timeout:
             warnings.warn(
                 "using timeout argument is deprecated; "
@@ -979,8 +979,9 @@ class Collection(WaitingEntity):
 
     # --- Assertable --- #
 
-    def should(self, condition: Union[CollectionCondition, ElementCondition], timeout: int = None) -> Collection:
+    def should(self, condition: Union[Condition[Collection], Condition[Element]], timeout: int = None) -> Collection:
         if isinstance(condition, ElementCondition):
+            # todo: consider deprecating... makes everything too complicated...
             for element in self:
                 if timeout:
                     warnings.warn(
