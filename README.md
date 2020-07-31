@@ -75,6 +75,8 @@ GIVEN on 1.0.1:
       * find&replace all
         * `(text('foo'))` to `(have.text('foo'))`
         * `(be.visible)` to `(be.visible)`
+      * smarter find&replace (with some manual refactoring)
+        * `.should(x, timeout=y)` to `.with_(timeout=y).should(x)`
       * and add corresponding imports: `from selene import be, have`
   * fix another broken imports if available
   * run tests, read deprecation warnings, and refactor to new style recommended in warning messages
