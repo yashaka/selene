@@ -434,32 +434,32 @@ class Element(WaitingEntity):
 
     def should_not(self, condition: ElementCondition, timeout=None) -> Element:
         warnings.warn(
-            "deprecated; use `should` method with `be.not.*` or `have.no.*` style conditions instead: "
-            "`browser.element('#foo').should(be.not.enabled).should(have.no.css_class('bar')`, "
+            "deprecated; use `should` method with `be.not_.*` or `have.no.*` style conditions instead: "
+            "`browser.element('#foo').should(be.not_.enabled).should(have.no.css_class('bar')`, "
             "you also can build your own inverted conditions by: `not_ok = Condition.as_not(have.text('Ok'))`",
             DeprecationWarning)
         return self.should(condition, timeout)
 
     def assure_not(self, condition: ElementCondition, timeout=None) -> Element:
         warnings.warn(
-            "deprecated; use `should` method with `be.not.*` or `have.no.*` style conditions instead: "
-            "`browser.element('#foo').should(be.not.enabled).should(have.no.css_class('bar')`, "
+            "deprecated; use `should` method with `be.not_.*` or `have.no.*` style conditions instead: "
+            "`browser.element('#foo').should(be.not_.enabled).should(have.no.css_class('bar')`, "
             "you also can build your own inverted conditions by: `not_ok = Condition.as_not(have.text('Ok'))`",
             DeprecationWarning)
         return self.should(condition, timeout)
 
     def should_not_be(self, condition: ElementCondition, timeout=None) -> Element:
         warnings.warn(
-            "deprecated; use `should` method with `be.not.*` or `have.no.*` style conditions instead: "
-            "`browser.element('#foo').should(be.not.enabled).should(have.no.css_class('bar')`, "
+            "deprecated; use `should` method with `be.not_.*` or `have.no.*` style conditions instead: "
+            "`browser.element('#foo').should(be.not_.enabled).should(have.no.css_class('bar')`, "
             "you also can build your own inverted conditions by: `not_ok = Condition.as_not(have.text('Ok'))`",
             DeprecationWarning)
         return self.should(condition, timeout)
 
     def should_not_have(self, condition: ElementCondition, timeout=None) -> Element:
         warnings.warn(
-            "deprecated; use `should` method with `be.not.*` or `have.no.*` style conditions instead: "
-            "`browser.element('#foo').should(be.not.enabled).should(have.no.css_class('bar')`, "
+            "deprecated; use `should` method with `be.not_.*` or `have.no.*` style conditions instead: "
+            "`browser.element('#foo').should(be.not_.enabled).should(have.no.css_class('bar')`, "
             "you also can build your own inverted conditions by: `not_ok = Condition.as_not(have.text('Ok'))`",
             DeprecationWarning)
         return self.should(condition, timeout)
@@ -1066,7 +1066,7 @@ class Collection(WaitingEntity):
 
     def should_not(self, condition: Union[CollectionCondition, ElementCondition], timeout=None) -> Collection:
         warnings.warn(
-            "deprecated; use `should` method with `be.not.*` or `have.no.*` style conditions instead: "
+            "deprecated; use `should` method with `be.not_.*` or `have.no.*` style conditions instead: "
             "`browser.all('.foo').should(have.no.size(2))`, "
             "you also can build your own inverted conditions by: `not_zero = Condition.as_not(have.size(0'))`",
             DeprecationWarning)
@@ -1074,7 +1074,7 @@ class Collection(WaitingEntity):
 
     def assure_not(self, condition: Union[CollectionCondition, ElementCondition], timeout=None) -> Collection:
         warnings.warn(
-            "deprecated; use `should` method with `be.not.*` or `have.no.*` style conditions instead: "
+            "deprecated; use `should` method with `be.not_.*` or `have.no.*` style conditions instead: "
             "`browser.all('.foo').should(have.no.size(2))`, "
             "you also can build your own inverted conditions by: `not_zero = Condition.as_not(have.size(0'))`",
             DeprecationWarning)
@@ -1082,7 +1082,7 @@ class Collection(WaitingEntity):
 
     def should_not_be(self, condition: Union[CollectionCondition, ElementCondition], timeout=None) -> Collection:
         warnings.warn(
-            "deprecated; use `should` method with `be.not.*` or `have.no.*` style conditions instead: "
+            "deprecated; use `should` method with `be.not_.*` or `have.no.*` style conditions instead: "
             "`browser.all('.foo').should(have.no.size(2))`, "
             "you also can build your own inverted conditions by: `not_zero = Condition.as_not(have.size(0'))`",
             DeprecationWarning)
@@ -1090,7 +1090,7 @@ class Collection(WaitingEntity):
 
     def should_not_have(self, condition: Union[CollectionCondition, ElementCondition], timeout=None) -> Collection:
         warnings.warn(
-            "deprecated; use `should` method with `be.not.*` or `have.no.*` style conditions instead: "
+            "deprecated; use `should` method with `be.not_.*` or `have.no.*` style conditions instead: "
             "`browser.element('#foo').should(have.no.size(2))`, "
             "you also can build your own inverted conditions by: `not_zero = Condition.as_not(have.size(0'))`",
             DeprecationWarning)
