@@ -289,7 +289,7 @@ class SharedConfig(Config):
         #       or refactor somehow to eliminate all times defining hook fns
         def save_and_log_screenshot(error: TimeoutException) -> Exception:
             path = Help(self.driver).save_screenshot(self.generate_filename(suffix='.png'))
-            self._last_screenshot = path
+            self.last_screenshot = path
             return TimeoutException(error.msg + f'''
 Screenshot: file://{path}''')
 
@@ -297,7 +297,7 @@ Screenshot: file://{path}''')
             filename = self.last_screenshot.replace('.png', '.html') if self.last_screenshot \
                 else self.generate_filename(suffix='.html')
             path = Help(self.driver).save_page_source(filename)
-            self._last_page_source = path
+            self.last_page_source = path
             return TimeoutException(error.msg + f'''
 PageSource: file://{path}''')
 
