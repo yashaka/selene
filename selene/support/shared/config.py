@@ -29,7 +29,7 @@ import os
 import time
 import warnings
 from functools import lru_cache
-from typing import Optional, TypeVar, Generic, Callable
+from typing import Optional, TypeVar, Generic, Callable, Union
 
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver import ChromeOptions, Chrome, Firefox, Remote
@@ -159,8 +159,8 @@ class SharedConfig(Config):
                  poll_during_waits: int = 100,
                  counter=None,  # default is set below
                  reports_folder: Optional[str] = None,  # default is set below
-                 last_screenshot: Optional[str] = None,
-                 last_page_source: Optional[str] = None,
+                 last_screenshot: Union[Optional[str], Source[str]] = None,
+                 last_page_source: Union[Optional[str], Source[str]] = None,
                  ):
 
         self._browser_name = browser_name
@@ -213,8 +213,12 @@ class SharedConfig(Config):
                                                               '.selene',
                                                               'screenshots',
                                                               str(next(self._counter)))
-        self._last_screenshot = Source(last_screenshot)
-        self._last_page_source = Source(last_page_source)
+        self._last_screenshot = \
+            last_screenshot if isinstance(last_screenshot, Source) \
+            else Source(last_screenshot)
+        self._last_page_source = \
+            last_page_source if isinstance(last_page_source, Source) \
+            else Source(last_page_source)
         super().__init__(driver=driver,
                          timeout=timeout,
                          base_url=base_url,

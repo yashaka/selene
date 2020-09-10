@@ -70,8 +70,11 @@
 - repeat fix of #225 to other options in shared config, refactor it... 
   - should we make original config (not shared) mutable?
 
-## 2.0.0a32 (released on 10.09.2020)
+## 2.0.0a33 (released on 10.09.2020)
 - fixed [#225](https://github.com/yashaka/selene/issues/225): Failed to get last_screenshot from shared browser if element with custom config failed
+
+## 2.0.0a32 (released on 10.09.2020)
+- broken release:)
 
 ## 2.0.0a31 (released on 31.07.2020)
 - fixed type hints in `*.should(here)`
