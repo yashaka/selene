@@ -67,6 +67,11 @@
 - add browser.all('.item').last?
 - make browser.switch_to.frame to accept element
 - deprecate be.present
+- repeat fix of #225 to other options in shared config, refactor it... 
+  - should we make original config (not shared) mutable?
+
+## 2.0.0a32 (released on 10.09.2020)
+- fixed [#225](https://github.com/yashaka/selene/issues/225): Failed to get last_screenshot from shared browser if element with custom config failed
 
 ## 2.0.0a31 (released on 31.07.2020)
 - fixed type hints in `*.should(here)`
@@ -179,10 +184,10 @@ results.element_by(lambda result: have.text('browser tests in python')(
     .element('.result-url').click()
 
 # you can now write:
-rusults.element_by_its('.result-title', have.text('browser tests in python'))
+results.element_by_its('.result-title', have.text('browser tests in python'))
     .element('.result-url').click()
 
-# rusults.filtered_by_their('.result-title', have.text('python'))
+# results.filtered_by_their('.result-title', have.text('python'))
     .should(have.size(...))
 
 # or even
@@ -192,13 +197,13 @@ class result:
         self.title = self.element.element('.result-title')
         self.url = self.element.element('.result-url')
 
-result(rusults.element_by_its(lambda it: result(it).title, have.text('browser tests in python')))\
+result(results.element_by_its(lambda it: result(it).title, have.text('browser tests in python')))\
     .url.click()
 
 # it's yet marked as experimental because probably it would be enough
 # to make it possible to accept callable[[element], bool] in element_by to allow:
 
-rusults.element_by(
+results.element_by(
     lambda it: it.element('.result-title').matching(have.text('browser tests in python')))
     .element('.result-url').click()
 

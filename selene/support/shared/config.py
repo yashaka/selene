@@ -213,8 +213,8 @@ class SharedConfig(Config):
                                                               '.selene',
                                                               'screenshots',
                                                               str(next(self._counter)))
-        self._last_screenshot = last_screenshot
-        self._last_page_source = last_page_source
+        self._last_screenshot = Source(last_screenshot)
+        self._last_page_source = Source(last_page_source)
         super().__init__(driver=driver,
                          timeout=timeout,
                          base_url=base_url,
@@ -354,19 +354,19 @@ PageSource: file://{path}''')
 
     @property
     def last_screenshot(self) -> str:
-        return self._last_screenshot
+        return self._last_screenshot.value
 
     @last_screenshot.setter
     def last_screenshot(self, value: str):
-        self._last_screenshot = value
+        self._last_screenshot.put(value)
 
     @property
     def last_page_source(self) -> str:
-        return self._last_page_source
+        return self._last_page_source.value
 
     @last_page_source.setter
     def last_page_source(self, value: str):
-        self._last_page_source = value
+        self._last_page_source.put(value)
 
     @property
     def hold_browser_open(self) -> bool:
