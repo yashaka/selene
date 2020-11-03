@@ -50,7 +50,7 @@ class Config:
                  type_by_js: bool = False,
                  window_width: Optional[int] = None,
                  window_height: Optional[int] = None,
-                 ):
+                 log_outer_html: bool = True):
 
         self._driver = driver
         self._timeout = timeout
@@ -60,6 +60,7 @@ class Config:
         self._type_by_js = type_by_js
         self._window_width = window_width
         self._window_height = window_height
+        self._log_outer_html = log_outer_html
 
     def as_dict(self, skip_empty=True):
         return {_strip_first_underscore(k): v
@@ -109,3 +110,7 @@ class Config:
     @property
     def window_height(self) -> Optional[int]:
         return self._window_height
+
+    @property
+    def log_outer_html(self) -> bool:
+        return self._log_outer_html
