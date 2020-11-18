@@ -171,7 +171,7 @@ class SharedBrowser(Browser):
         return self.all(css_or_xpath_or_by)
 
     def wait_to(self, webdriver_condition, timeout=None, polling=None):
-        warnings.warn('use browser.should instead of wait_to', DeprecationWarning)
+        warnings.warn('use browser.should instead of browser.wait_to or wait_to', DeprecationWarning)
         tuned_self = self if timeout is None else self.with_(Config(timeout=timeout))
 
         return tuned_self.should(webdriver_condition)
