@@ -163,21 +163,21 @@ class SharedBrowser(Browser):
         self.config.driver = webdriver  # todo: test it
 
     def open_url(self, absolute_or_relative_url):
-        warnings.warn('use browser.open instead', DeprecationWarning)
+        warnings.warn('use browser.open instead of browser.open_url or open_url', DeprecationWarning)
         return self.open(absolute_or_relative_url)
 
     def elements(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection:
-        warnings.warn('use browser.all instead', DeprecationWarning)
+        warnings.warn('use browser.all instead of browser.elements or elements', DeprecationWarning)
         return self.all(css_or_xpath_or_by)
 
     def wait_to(self, webdriver_condition, timeout=None, polling=None):
-        warnings.warn('use browser.should instead', DeprecationWarning)
+        warnings.warn('use browser.should instead of browser.wait_to or wait_to', DeprecationWarning)
         tuned_self = self if timeout is None else self.with_(Config(timeout=timeout))
 
         return tuned_self.should(webdriver_condition)
 
     def execute_script(self, script, *args):
-        warnings.warn('use browser.driver.execute_script instead', DeprecationWarning)
+        warnings.warn('use browser.driver.execute_script instead of execute_script', DeprecationWarning)
         return self.driver.execute_script(script, *args)
 
     def title(self):
