@@ -149,6 +149,7 @@ class SharedConfig(Config):
                  window_width: Optional[int] = None,
                  window_height: Optional[int] = None,
                  hook_wait_failure: Optional[Callable[[TimeoutException], Exception]] = None,
+                 log_outer_html_on_failure: bool = False,
                  # SharedConfig
                  set_driver: Callable[[], WebDriver] = None,
                  source: _LazyDriver = None,
@@ -166,6 +167,7 @@ class SharedConfig(Config):
         self._browser_name = browser_name
         self._hold_browser_open = hold_browser_open
         self._source = source or _LazyDriver(self)
+        self._log_outer_html_on_failure = log_outer_html_on_failure
 
         def set_chrome_or_firefox_from_webdriver_manager():
             # todo: consider simplifying implementation to simple if-else
@@ -226,7 +228,8 @@ class SharedConfig(Config):
                          type_by_js=type_by_js,
                          window_width=window_width,
                          window_height=window_height,
-                         hook_wait_failure=hook_wait_failure)
+                         hook_wait_failure=hook_wait_failure,
+                         log_outer_html_on_failure=log_outer_html_on_failure)
 
     # --- Config.driver new "shared logic" --- #
 
@@ -340,6 +343,10 @@ PageSource: file://{path}''')
     @Config.window_height.setter
     def window_height(self, value: Optional[int]):
         self._window_height = value
+
+    @Config.log_outer_html_on_failure.setter
+    def log_outer_html_on_failure(self, value: bool):
+        self._log_outer_html_on_failure = value
 
     # not sure why this code does not let the base property being overwritten o_O :(
     # maybe because @Config.hook_wait_failure.setter is defined afterwards mixing things out
