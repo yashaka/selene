@@ -181,9 +181,16 @@ class Element(WaitingEntity):
         #             or_fail_with=pipe(
         #                 Element._log_webelement_outer_html_for(self),
         #                 self.config.hook_wait_failure))
-        return super().wait.or_fail_with(pipe(
-            Element._log_webelement_outer_html_for(self),
-            super().wait.hook_failure))
+        if self.config.log_outer_html_on_failure:
+            '''
+            todo: remove this part completely from core.entity logic
+                  move it to support.shared.config
+            '''
+            return super().wait.or_fail_with(pipe(
+                Element._log_webelement_outer_html_for(self),
+                super().wait.hook_failure))
+        else:
+            return super().wait
 
     @property
     def cached(self) -> Element:  # todo: do we need caching ? with lazy save of webelement to cache
@@ -836,13 +843,22 @@ class Collection(WaitingEntity):
                     return element()
 
             from selene.core import query
-            outer_htmls = [query.outer_html(element) for element in cached]
 
-            raise AssertionError(
-                f'\n\tCannot find element by condition «{condition}» '
-                f'\n\tAmong {self}'
-                f'\n\tActual webelements collection:'
-                f'\n\t{outer_htmls}')  # todo: isn't it better to print it all the time via hook, like for Element?
+            if self.config.log_outer_html_on_failure:
+                '''
+                todo: move it support.shared.config
+                '''
+                outer_htmls = [query.outer_html(element) for element in cached]
+
+                raise AssertionError(
+                    f'\n\tCannot find element by condition «{condition}» '
+                    f'\n\tAmong {self}'
+                    f'\n\tActual webelements collection:'
+                    f'\n\t{outer_htmls}')  # todo: isn't it better to print it all the time via hook, like for Element?
+            else:
+                raise AssertionError(
+                    f'\n\tCannot find element by condition «{condition}» '
+                    f'\n\tAmong {self}')
 
         return Element(Locator(f'{self}.element_by({condition})', find), self.config)
 

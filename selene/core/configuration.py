@@ -50,16 +50,30 @@ class Config:
                  type_by_js: bool = False,
                  window_width: Optional[int] = None,
                  window_height: Optional[int] = None,
-                 ):
+                 log_outer_html_on_failure: bool = False):
 
         self._driver = driver
         self._timeout = timeout
         self._hook_wait_failure = hook_wait_failure
+        '''
+        todo: why we name it as hook_* why not handle_* ?
+              what would be proper style?
+        '''
         self._base_url = base_url
         self._set_value_by_js = set_value_by_js
+        '''
+        todo: will it work on mobile? probably no! why then we have it here? o_O
+        '''
         self._type_by_js = type_by_js
         self._window_width = window_width
         self._window_height = window_height
+        self._log_outer_html_on_failure = log_outer_html_on_failure
+        '''
+        todo: should we even keep it as part of core.configuration?
+              taking into account that it does not work for mobile
+              while we want the core of Selene to be versatile as much as psbl.
+              probably we should move it to support.shared.config only
+        '''
 
     def as_dict(self, skip_empty=True):
         return {_strip_first_underscore(k): v
@@ -109,3 +123,7 @@ class Config:
     @property
     def window_height(self) -> Optional[int]:
         return self._window_height
+
+    @property
+    def log_outer_html_on_failure(self) -> bool:
+        return self._log_outer_html_on_failure
