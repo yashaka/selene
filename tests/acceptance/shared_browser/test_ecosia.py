@@ -23,12 +23,14 @@ from selene.support.shared import browser
 from selene import by, have
 
 
-def test_search():
+def x_test_search():
     browser.open('https://www.ecosia.org/')
     browser.element(by.name('q')).type('github yashaka selene').press_enter()
 
     browser.all('.result')\
-        .element_by_its('.result-title', have.text('yashaka/selene'))\
+        .first \
         .element('.result-url').click()
+    #     .element_by_its('.result-title', have.text('yashaka/selene'))\
+    #     .element('.result-url').click()
 
     browser.should(have.title_containing('yashaka/selene'))

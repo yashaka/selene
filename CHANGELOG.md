@@ -69,6 +69,10 @@
 - deprecate be.present
 - repeat fix of #225 to other options in shared config, refactor it... 
   - should we make original config (not shared) mutable?
+    
+## 2.0.0a34 (released on 22.12.2020)
+- fixed [#231](https://github.com/yashaka/selene/issues/225): Need additional option to turn off logging outerHTML
+  - added support.shared.config.log_outer_html_on_failure (`False` by default)
 
 ## 2.0.0a33 (released on 10.09.2020)
 - fixed [#225](https://github.com/yashaka/selene/issues/225): Failed to get last_screenshot from shared browser if element with custom config failed
