@@ -19,40 +19,16 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
-from selene.api.past import config
-from selene.api.past import css_class
-from selene.common.none_object import NoneObject
-from selene.api.past import SeleneDriver
-from tests_from_past.past.acceptance import get_test_driver
-from tests_from_past.integration.helpers import GivenPage
-
-__author__ = 'yashaka'
-
-driver = NoneObject('driver')  # type: SeleneDriver
-GIVEN_PAGE = NoneObject('GivenPage')  # type: GivenPage
-WHEN = GIVEN_PAGE  # type: GivenPage
-original_timeout = config.timeout
+from selene import have
+from tests.integration.helpers.givenpage import GivenPage
 
 
-def setup_module(m):
-    global driver
-    driver = SeleneDriver.wrap(get_test_driver())
-    global GIVEN_PAGE
-    GIVEN_PAGE = GivenPage(driver)
-    global WHEN
-    WHEN = GIVEN_PAGE
+def test_waits_nothing(session_browser):
+    page = GivenPage(session_browser.driver)
+    page.opened_empty()
+    elements = session_browser.all('li').filtered_by(have.css_class('will-appear'))
 
-
-def teardown_module(m):
-    driver.quit()
-
-
-def test_waits_nothing():
-    GIVEN_PAGE.opened_empty()
-    elements = driver.all('li').filtered_by(css_class('will-appear'))
-
-    WHEN.load_body('''
+    page.load_body('''
                    <ul>Hello to:
                        <li>Anonymous</li>
                        <li class='will-appear'>Bob</li>
@@ -60,7 +36,7 @@ def test_waits_nothing():
                    </ul>''')
     assert len(elements) == 2
 
-    WHEN.load_body_with_timeout('''
+    page.load_body_with_timeout('''
                                 <ul>Hello to:
                                     <li>Anonymous</li>
                                     <li class='will-appear'>Bob</li>
