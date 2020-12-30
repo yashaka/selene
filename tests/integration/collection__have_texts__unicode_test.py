@@ -26,23 +26,10 @@ import os
 
 from selene import have
 
-
 start_page = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/start_page.html'
-
-
-def test_ru_text(session_browser):
-    session_browser.open(start_page)
-
-    session_browser.element("#ru-text").should(have.exact_text(u"Селен"))
 
 
 def test_ru_text_with_array(session_browser):
     session_browser.open(start_page)
 
-    session_browser.all(".list > li").should(have.texts(u"Один", u"Два", u"Три"))
-
-
-def test_ru_text_in_selector(session_browser):
-    session_browser.open(start_page)
-
-    session_browser.element("#селен").should(have.exact_text(u"Сайт селена"))
+    session_browser.all('.list > li').should(have.texts(u'Один', u'Два', u'Три'))

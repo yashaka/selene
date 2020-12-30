@@ -23,39 +23,36 @@
 import os
 
 import pytest
-from selenium.common.exceptions import TimeoutException
 
-from selene.api.past import config
-from selene.api.past import url, url_containing
-from selene.api.past import open_url, driver
-from selene.api.past import wait_to
+from selene import have
+from selene.core.exceptions import TimeoutException
 
 start_page = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/start_page.html'
 
 
-original_timeout = config.timeout
+def test_should_wait_for_exact_url(session_browser):
+    session_browser.open(start_page)
+    session_browser.should(have.url(session_browser.driver.current_url))
 
 
-def setup_module(m):
-    config.browser_name = "chrome"
+def test_should_wait_for_part_of_url(session_browser):
+    session_browser.open(start_page)
+    session_browser.should(have.url_containing('start_page.html'))
 
 
-def teardown_function(f):
-    config.timeout = original_timeout
+def test_fails_on_timeout_during_waiting_for_exact_url(session_browser):
+    browser = session_browser.with_(timeout=0.1)
 
+    browser.open(start_page)
 
-def test_can_wait_for_exact_url():
-    open_url(start_page)
-    wait_to(url(driver().current_url))
-
-
-def test_can_wait_for_part_of_url():
-    open_url(start_page)
-    wait_to(url_containing("start_page.html"))
-
-
-def test_should_wait_and_fail_for_incorrect_url():
-    config.timeout = 0.1
     with pytest.raises(TimeoutException):
-        open_url(start_page)
-        wait_to(url("xttp:/"))
+        browser.should(have.url('xttp:/'))
+
+
+def test_fails_on_timeout_during_waiting_for_part_of_url(session_browser):
+    browser = session_browser.with_(timeout=0.1)
+
+    browser.open(start_page)
+
+    with pytest.raises(TimeoutException):
+        browser.should(have.url_containing('xttp:/'))
