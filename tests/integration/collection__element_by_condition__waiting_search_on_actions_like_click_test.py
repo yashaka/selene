@@ -76,9 +76,9 @@ def test_waits_first_for_present_in_dom_then_visibility(session_browser):
     assert ("second" in session_browser.driver.current_url) is True
 
 
-@pytest.mark.parametrize('session_browser', [0.25], indirect=['session_browser'])
 def test_fails_on_timeout_during_waiting_for_visibility(session_browser):
-    page = GivenPage(session_browser.driver)
+    browser = session_browser.with_(timeout=0.25)
+    page = GivenPage(browser.driver)
     page.opened_with_body(
             '''
             <a href='#second' style='display:none'>go to Heading 2</a>
@@ -88,14 +88,14 @@ def test_fails_on_timeout_during_waiting_for_visibility(session_browser):
             500)
 
     with pytest.raises(TimeoutException):
-        session_browser.all('a').element_by(have.exact_text('go to Heading 2')).click()
+        browser.all('a').element_by(have.exact_text('go to Heading 2')).click()
 
-    assert ("second" in session_browser.driver.current_url) is False
+    assert ("second" in browser.driver.current_url) is False
 
 
-@pytest.mark.parametrize('session_browser', [0.25], indirect=['session_browser'])
 def test_fails_on_timeout_during_waits_for_present_in_dom_and_visibility(session_browser):
-    page = GivenPage(session_browser.driver)
+    browser = session_browser.with_(timeout=0.25)
+    page = GivenPage(browser.driver)
     page.opened_with_body(
             '''
             <h2 id="second">Heading 2</h2>''')
@@ -106,14 +106,14 @@ def test_fails_on_timeout_during_waits_for_present_in_dom_and_visibility(session
             500)
 
     with pytest.raises(TimeoutException):
-        session_browser.all('a').element_by(have.exact_text('go to Heading 2')).click()
+        browser.all('a').element_by(have.exact_text('go to Heading 2')).click()
 
-    assert ("second" in session_browser.driver.current_url) is False
+    assert ("second" in browser.driver.current_url) is False
 
 
-@pytest.mark.parametrize('session_browser', [0.25], indirect=['session_browser'])
 def test_fails_on_timeout_during_waits_first_for_present_in_dom_then_visibility(session_browser):
-    page = GivenPage(session_browser.driver)
+    browser = session_browser.with_(timeout=0.25)
+    page = GivenPage(browser.driver)
     page.opened_with_body(
             '''
             <h2 id="second">Heading 2</h2>''')
@@ -127,6 +127,6 @@ def test_fails_on_timeout_during_waits_first_for_present_in_dom_then_visibility(
             500)
 
     with pytest.raises(TimeoutException):
-        session_browser.all('a').element_by(have.exact_text('go to Heading 2')).click()
+        browser.all('a').element_by(have.exact_text('go to Heading 2')).click()
 
-    assert ("second" in session_browser.driver.current_url) is False
+    assert ("second" in browser.driver.current_url) is False
