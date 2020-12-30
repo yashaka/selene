@@ -21,7 +21,8 @@
 # SOFTWARE.
 
 import pytest
-from selenium.common.exceptions import TimeoutException
+
+from selene.core.exceptions import TimeoutException
 from tests.integration.helpers.givenpage import GivenPage
 
 
