@@ -28,7 +28,7 @@ def test_search_is_lazy_and_does_not_start_on_creation_for_both_collection_and_i
 
     non_existent_element = session_browser.all('.will-appear')[1]
 
-    assert str(non_existent_element.driver)
+    assert str(non_existent_element)
 
 
 def test_search_is_postponed_until_actual_action_like_questioning_displayed(session_browser):
