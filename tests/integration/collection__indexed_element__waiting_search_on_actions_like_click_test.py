@@ -74,7 +74,6 @@ def test_waits_first_for_present_in_dom_then_visibility(session_browser):
     assert ("second" in session_browser.driver.current_url) is True
 
 
-# todo: there should be each such test method for each "passing" test from above...
 @pytest.mark.parametrize('session_browser', [0.25], indirect=['session_browser'])
 def test_fails_on_timeout_during_waiting_for_visibility(session_browser):
     page = GivenPage(session_browser.driver)
@@ -82,6 +81,45 @@ def test_fails_on_timeout_during_waiting_for_visibility(session_browser):
             '''
             <a href='#second' style='display:none'>go to Heading 2</a>
             <h2 id='second'>Heading 2</h2>''')\
+        .execute_script_with_timeout(
+            'document.getElementsByTagName("a")[0].style = "display:block";',
+            500)
+
+    with pytest.raises(TimeoutException):
+        session_browser.all('a')[0].click()
+
+    assert ("second" in session_browser.driver.current_url) is False
+
+
+@pytest.mark.parametrize('session_browser', [0.25], indirect=['session_browser'])
+def test_fails_on_timeout_waits_for_present_in_dom_and_visibility(session_browser):
+    page = GivenPage(session_browser.driver)
+    page.opened_with_body(
+            '''
+            <h2 id="second">Heading 2</h2>''')
+    page.load_body_with_timeout(
+            '''
+            <a href="#second">go to Heading 2</a>
+            <h2 id="second">Heading 2</h2>''',
+            500)
+
+    with pytest.raises(TimeoutException):
+        session_browser.all('a')[0].click()
+
+    assert ("second" in session_browser.driver.current_url) is False
+
+
+@pytest.mark.parametrize('session_browser', [0.25], indirect=['session_browser'])
+def test_fails_on_timeout_waits_first_for_present_in_dom_then_visibility(session_browser):
+    page = GivenPage(session_browser.driver)
+    page.opened_with_body(
+            '''
+            <h2 id="second">Heading 2</h2>''')
+    page.load_body_with_timeout(
+            '''
+            <a href="#second" style="display:none">go to Heading 2</a>
+            <h2 id="second">Heading 2</h2>''',
+            250)\
         .execute_script_with_timeout(
             'document.getElementsByTagName("a")[0].style = "display:block";',
             500)
