@@ -19,44 +19,15 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
 import pytest
-from selenium.common.exceptions import TimeoutException
 
-from selene.api.past import config
-from selene.common.none_object import NoneObject
-from selene.api.past import SeleneDriver
-from tests_from_past.past.acceptance import get_test_driver
-from tests_from_past.integration.helpers import GivenPage
-
-__author__ = 'yashaka'
-
-driver = NoneObject('driver')  # type: SeleneDriver
-GIVEN_PAGE = NoneObject('GivenPage')  # type: GivenPage
-WHEN = GIVEN_PAGE  # type: GivenPage
-original_timeout = config.timeout
+from selene.core.exceptions import TimeoutException
+from tests.integration.helpers.givenpage import GivenPage
 
 
-def setup_module(m):
-    global driver
-    driver = SeleneDriver.wrap(get_test_driver())
-    global GIVEN_PAGE
-    GIVEN_PAGE = GivenPage(driver)
-    global WHEN
-    WHEN = GIVEN_PAGE
-
-
-def teardown_module(m):
-    driver.quit()
-
-
-def setup_function(fn):
-    global original_timeout
-
-
-def test_waits_for_visibility():
-    GIVEN_PAGE\
-        .opened_with_body(
+def test_waits_for_visibility(session_browser):
+    page = GivenPage(session_browser.driver)
+    page.opened_with_body(
             '''
             <a href="#second" style="display:none">go to Heading 2</a>
             <h2 id="second">Heading 2</h2>''')\
@@ -64,29 +35,32 @@ def test_waits_for_visibility():
             'document.getElementsByTagName("a")[0].style = "display:block";',
             500)
 
-    driver.all('a')[0].click()
-    assert ("second" in driver.current_url) is True
+    session_browser.all('a')[0].click()
+
+    assert ("second" in session_browser.driver.current_url) is True
 
 
-def test_waits_for_present_in_dom_and_visibility():
-    GIVEN_PAGE.opened_with_body(
+def test_waits_for_present_in_dom_and_visibility(session_browser):
+    page = GivenPage(session_browser.driver)
+    page.opened_with_body(
             '''
             <h2 id="second">Heading 2</h2>''')
-    WHEN.load_body_with_timeout(
+    page.load_body_with_timeout(
             '''
             <a href="#second">go to Heading 2</a>
             <h2 id="second">Heading 2</h2>''',
             500)
 
-    driver.all('a')[0].click()
-    assert ("second" in driver.current_url) is True
+    session_browser.all('a')[0].click()
+    assert ("second" in session_browser.driver.current_url) is True
 
 
-def test_waits_first_for_present_in_dom_then_visibility():
-    GIVEN_PAGE.opened_with_body(
+def test_waits_first_for_present_in_dom_then_visibility(session_browser):
+    page = GivenPage(session_browser.driver)
+    page.opened_with_body(
             '''
             <h2 id="second">Heading 2</h2>''')
-    WHEN.load_body_with_timeout(
+    page.load_body_with_timeout(
             '''
             <a href="#second" style="display:none">go to Heading 2</a>
             <h2 id="second">Heading 2</h2>''',
@@ -95,15 +69,16 @@ def test_waits_first_for_present_in_dom_then_visibility():
             'document.getElementsByTagName("a")[0].style = "display:block";',
             500)
 
-    driver.all('a')[0].click()
-    assert ("second" in driver.current_url) is True
+    session_browser.all('a')[0].click()
+
+    assert ("second" in session_browser.driver.current_url) is True
 
 
 # todo: there should be each such test method for each "passing" test from above...
-def test_fails_on_timeout_during_waiting_for_visibility():
-    config.timeout = 0.25
-    GIVEN_PAGE\
-        .opened_with_body(
+@pytest.mark.parametrize('session_browser', [0.25], indirect=['session_browser'])
+def test_fails_on_timeout_during_waiting_for_visibility(session_browser):
+    page = GivenPage(session_browser.driver)
+    page.opened_with_body(
             '''
             <a href='#second' style='display:none'>go to Heading 2</a>
             <h2 id='second'>Heading 2</h2>''')\
@@ -112,6 +87,6 @@ def test_fails_on_timeout_during_waiting_for_visibility():
             500)
 
     with pytest.raises(TimeoutException):
-        driver.all('a')[0].click()
-    assert ("second" in driver.current_url) is False
+        session_browser.all('a')[0].click()
 
+    assert ("second" in session_browser.driver.current_url) is False
