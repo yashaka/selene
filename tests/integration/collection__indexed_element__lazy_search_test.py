@@ -23,16 +23,16 @@ from tests.integration.helpers.givenpage import GivenPage
 
 
 def test_search_is_lazy_and_does_not_start_on_creation_for_both_collection_and_indexed(session_browser):
-    page = GivenPage(session_browser)
+    page = GivenPage(session_browser.driver)
     page.opened_empty()
 
     non_existent_element = session_browser.all('.will-appear')[1]
 
-    assert str(non_existent_element)
+    assert str(non_existent_element.driver)
 
 
 def test_search_is_postponed_until_actual_action_like_questioning_displayed(session_browser):
-    page = GivenPage(session_browser)
+    page = GivenPage(session_browser.driver)
     page.opened_empty()
 
     element = session_browser.all('.will-appear')[1]
@@ -47,7 +47,7 @@ def test_search_is_postponed_until_actual_action_like_questioning_displayed(sess
 
 
 def test_search_is_updated_on_next_actual_action_like_questioning_displayed(session_browser):
-    page = GivenPage(session_browser)
+    page = GivenPage(session_browser.driver)
     page.opened_empty()
 
     element = session_browser.all('.will-appear')[1]
