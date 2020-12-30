@@ -22,20 +22,13 @@
 
 import os
 
-from selene.api.past import browser, config
-from selene.api.past import open_url
-from selene.support.jquery_style_selectors import s
 
 start_page = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/start_page.html'
 
 
-def setup_module(m):
-    config.browser_name = "chrome"
+def test_can_scroll_to(session_browser):
+    session_browser.open(start_page)
 
+    session_browser.element("#invisible_link").scroll_to().click()
 
-def test_can_scroll_to():
-    open_url(start_page)
-    # logging.warning(driver().current_url)
-    # driver().set_window_size(300, 400)
-    s("#invisible_link").scroll_to().click()
-    assert "header" in browser.driver().current_url
+    assert "header" in session_browser.driver.current_url
