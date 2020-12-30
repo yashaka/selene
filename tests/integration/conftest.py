@@ -13,5 +13,10 @@ def session_driver():
 
 
 @pytest.fixture(scope='function')
-def session_browser(session_driver):
-    yield Browser(Config(driver=session_driver))
+def session_browser(session_driver, request):
+    try:
+        timeout = request.param
+    except AttributeError:
+        timeout = Config().timeout
+        print(timeout)
+    yield Browser(Config(driver=session_driver, timeout=timeout))
