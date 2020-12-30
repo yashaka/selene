@@ -20,40 +20,21 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from selene.api.past import config
-from selene.common.none_object import NoneObject
-from selene.api.past import SeleneDriver
-from tests_from_past.past.acceptance import get_test_driver
-from tests_from_past.integration.helpers import GivenPage
+import os
 
-__author__ = 'yashaka'
+import pytest
 
-driver = NoneObject('driver')  # type: SeleneDriver
-GIVEN_PAGE = NoneObject('GivenPage')  # type: GivenPage
-WHEN = GIVEN_PAGE  # type: GivenPage
-original_timeout = config.timeout
+from selene import be, have
+from selene.support import by
+
+start_page = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/start_page.html'
 
 
-def setup_module(m):
-    global driver
-    driver = SeleneDriver.wrap(get_test_driver())
-    global GIVEN_PAGE
-    GIVEN_PAGE = GivenPage(driver)
-    global WHEN
-    WHEN = GIVEN_PAGE
+@pytest.fixture(scope='function', autouse=True)
+def open_start_page(session_browser):
+    session_browser.open(start_page)
+    session_browser.element("#hidden_button").should(be.in_dom).should(be.hidden)
 
 
-def teardown_module(m):
-    driver.quit()
-
-
-def test_counts_invisible_tasks():
-    GIVEN_PAGE.opened_empty()
-    elements = driver.all('.will-appear')
-
-    WHEN.load_body('''
-                   <ul>Hello to:
-                       <li class='will-appear'>Bob</li>
-                       <li class='will-appear' style='display:none'>Kate</li>
-                   </ul>''')
-    assert len(elements) == 2
+def test_find_selene_collection_from_hidden_context(session_browser):
+    session_browser.element("#hidden_button").all(by.be_following_sibling()).should(have.size(6))

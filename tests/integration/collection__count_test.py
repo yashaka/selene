@@ -19,38 +19,19 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
-import os
-
-from selene.api.past import browser, config
-from selene.api.past import in_dom, hidden, text, size
-from selene.support import by
-from selene.support.jquery_style_selectors import s
-
-start_page = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/start_page.html'
+from tests.integration.helpers.givenpage import GivenPage
 
 
-def setup_module(m):
-    config.browser_name = "chrome"
-    browser.open_url(start_page)
-    s("#hidden_button").should_be(in_dom).should_be(hidden)
+def test_counts_invisible_tasks(session_browser):
+    page = GivenPage(session_browser.driver)
+    page.opened_empty()
 
+    elements = session_browser.all('.will-appear')
 
-def test_get_actual_hidden_webelement():
-    s("#hidden_button").get_actual_webelement()
+    page.load_body('''
+                   <ul>Hello to:
+                       <li class='will-appear'>Bob</li>
+                       <li class='will-appear' style='display:none'>Kate</li>
+                   </ul>''')
 
-
-def test_find_selenium_element_from_hidden_element():
-    s("#hidden_button").find_element(*by.be_following_sibling())
-
-
-def test_find_selenium_elements_from_hidden_element():
-    s("#hidden_button").find_elements(*by.be_following_sibling())
-
-
-def test_find_selene_element_from_hidden_element():
-    s("#hidden_button").following_sibling.should_have(text("Inner Link"))
-
-
-def test_find_selene_collection_from_hidden_context():
-    s("#hidden_button").ss(by.be_following_sibling()).should_have(size(6))
+    assert len(elements) == 2
