@@ -19,47 +19,13 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
-from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
-
-from selene.api.past import config
-from selene.common.none_object import NoneObject
-from selene.api.past import SeleneDriver
-from selene.support import by
-from tests_from_past.integration.helpers import GivenPage
-
-__author__ = 'yashaka'
-
-driver = NoneObject('driver')  # type: SeleneDriver
-GIVEN_PAGE = NoneObject('GivenPage')  # type: GivenPage
-WHEN = GIVEN_PAGE  # type: GivenPage
-original_timeout = config.timeout
+from selene import by
+from tests.integration.helpers.givenpage import GivenPage
 
 
-def setup_module(m):
-    global driver
-    driver = SeleneDriver.wrap(webdriver.Chrome(ChromeDriverManager().install()))
-    global GIVEN_PAGE
-    GIVEN_PAGE = GivenPage(driver)
-    global WHEN
-    WHEN = GIVEN_PAGE
-
-
-def teardown_module(m):
-    global original_timeout
-    config.timeout = original_timeout
-    driver.quit()
-
-
-def setup_function(fn):
-    config.timeout = original_timeout
-
-
-
-def test_complex_locator_based_on_by_locators():
-    GIVEN_PAGE\
-        .opened_with_body(
+def test_complex_locator_based_on_by_locators(session_browser):
+    page = GivenPage(session_browser.driver)
+    page.opened_with_body(
             '''
             <div id="container">
                 <div>
@@ -83,18 +49,19 @@ def test_complex_locator_based_on_by_locators():
             <h2 id="second">Heading 2</h2>
             ''')
 
-    driver.element('#container')\
+    session_browser.element('#container')\
         .element(by.text('Second'))\
         .element(by.be_parent())\
         .element(by.be_following_sibling())\
         .element(by.be_first_child())\
         .click()
-    assert ('second' in driver.current_url) is True
+
+    assert ('second' in session_browser.driver.current_url) is True
 
 
-def test_complex_locator_based_on_selene_element_relative_elements():
-    GIVEN_PAGE\
-        .opened_with_body(
+def test_complex_locator_based_on_selene_element_relative_elements(session_browser):
+    page = GivenPage(session_browser.driver)
+    page.opened_with_body(
             '''
             <div id="container">
                 <div>
@@ -118,10 +85,10 @@ def test_complex_locator_based_on_selene_element_relative_elements():
             <h2 id="second">Heading 2</h2>
             ''')
 
-    driver.element('#container')\
+    session_browser.element('#container')\
         .element(by.partial_text('Sec'))\
         .parent_element\
         .following_sibling\
         .first_child\
         .click()
-    assert ('second' in driver.current_url) is True
+    assert ('second' in session_browser.driver.current_url) is True
