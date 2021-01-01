@@ -22,20 +22,44 @@
 
 import os
 
-from selene.api.past import open_url, driver
-from selene.support.jquery_style_selectors import s
+from selenium.common.exceptions import NoAlertPresentException
 
 start_page = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/start_page.html'
 
 
-# todo: ensure works and enabled
-def x_test_can_accept_alert():
-    open_url(start_page)
-    s("#alert_btn").click()
-    driver().switch_to.alert.accept()
+def test_can_accept_alert(session_browser):
+    session_browser.open(start_page)
+
+    session_browser.element("#alert_btn").click()
+    session_browser.driver.switch_to.alert.accept()
+
+    try:
+        session_browser.driver.switch_to.alert
+        assert False, 'actual: alert presents, expected: alert not present'
+    except NoAlertPresentException:
+        assert True
 
 
-def x_test_can_dismiss_confirm_dialog():
-    open_url(start_page)
-    s("#alert_btn").click()
-    driver().switch_to.alert.dismiss()
+def test_can_dismiss_confirm_dialog(session_browser):
+    session_browser.open(start_page)
+
+    session_browser.element("#alert_btn").click()
+    session_browser.driver.switch_to.alert.dismiss()
+
+    try:
+        session_browser.driver.switch_to.alert
+        assert False, 'actual: alert presents, expected: alert not present'
+    except NoAlertPresentException:
+        assert True
+
+
+def test_alert_is_present(session_browser):
+    session_browser.open(start_page)
+
+    session_browser.element("#alert_btn").click()
+
+    try:
+        session_browser.driver.switch_to.alert
+        assert True
+    except NoAlertPresentException:
+        assert False, 'actual: alert not present, expected: alert is present'
