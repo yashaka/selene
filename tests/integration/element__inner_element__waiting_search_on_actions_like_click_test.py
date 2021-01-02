@@ -158,7 +158,7 @@ def test_fails_on_timeout_during_waiting_for_inner_visibility(session_browser):
 
 
 def test_fails_on_timeout_during_waiting_for_inner_presence_in_dom_and_visibility(session_browser):
-    browser = session_browser.with_(timeout=0.25)
+    browser = session_browser.with_(timeout=0.1)
     page = GivenPage(browser.driver)
     page.opened_with_body(
         '''
