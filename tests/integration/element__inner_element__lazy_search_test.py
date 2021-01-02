@@ -77,4 +77,4 @@ def test_search_finds_exactly_inside_parent(session_browser):
 
     session_browser.element('p').element('a').click()
 
-    assert ("second" in session_browser.driver.current_url) is True
+    assert "second" in session_browser.driver.current_url

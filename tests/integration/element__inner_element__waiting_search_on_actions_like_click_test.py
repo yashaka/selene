@@ -39,7 +39,7 @@ def test_waits_for_inner_visibility(session_browser):
 
     session_browser.element('p').element('a').click()
 
-    assert ('second' in session_browser.driver.current_url) is True
+    assert "second" in session_browser.driver.current_url
 
 
 def test_waits_for_inner_presence_in_dom_and_visibility(session_browser):
@@ -59,7 +59,7 @@ def test_waits_for_inner_presence_in_dom_and_visibility(session_browser):
 
     session_browser.element('p').element('a').click()
 
-    assert ('second' in session_browser.driver.current_url) is True
+    assert "second" in session_browser.driver.current_url
 
 
 def test_waits_first_for_inner_presence_in_dom_then_visibility(session_browser):
@@ -82,7 +82,7 @@ def test_waits_first_for_inner_presence_in_dom_then_visibility(session_browser):
 
     session_browser.element('p').element('a').click()
 
-    assert ('second' in session_browser.driver.current_url) is True
+    assert "second" in session_browser.driver.current_url
 
 
 def test_waits_first_for_parent_in_dom_then_inner_in_dom_then_visibility(session_browser):
@@ -107,7 +107,7 @@ def test_waits_first_for_parent_in_dom_then_inner_in_dom_then_visibility(session
 
     session_browser.element('p').element('a').click()
 
-    assert ('second' in session_browser.driver.current_url) is True
+    assert "second" in session_browser.driver.current_url
 
 
 def test_waits_first_for_parent_in_dom_then_visible_then_inner_in_dom_then_visibility(session_browser):
@@ -135,7 +135,7 @@ def test_waits_first_for_parent_in_dom_then_visible_then_inner_in_dom_then_visib
 
     session_browser.element('p').element('a').click()
 
-    assert ('second' in session_browser.driver.current_url) is True
+    assert "second" in session_browser.driver.current_url
 
 
 def test_fails_on_timeout_during_waiting_for_inner_visibility(session_browser):
@@ -154,7 +154,7 @@ def test_fails_on_timeout_during_waiting_for_inner_visibility(session_browser):
     with pytest.raises(TimeoutException):
         browser.element('p').element('a').click()
 
-    assert ('second' in browser.driver.current_url) is False
+    assert "second" not in browser.driver.current_url
 
 
 def test_fails_on_timeout_during_waiting_for_inner_presence_in_dom_and_visibility(session_browser):
@@ -176,7 +176,7 @@ def test_fails_on_timeout_during_waiting_for_inner_presence_in_dom_and_visibilit
     with pytest.raises(TimeoutException):
         browser.element('p').element('a').click()
 
-    assert ('second' in browser.driver.current_url) is False
+    assert "second" not in browser.driver.current_url
 
 
 def test_fails_on_timeout_during_waiting_first_for_inner_presence_in_dom_then_visibility(session_browser):
@@ -201,7 +201,7 @@ def test_fails_on_timeout_during_waiting_first_for_inner_presence_in_dom_then_vi
     with pytest.raises(TimeoutException):
         browser.element('p').element('a').click()
 
-    assert ('second' in browser.driver.current_url) is False
+    assert "second" not in browser.driver.current_url
 
 
 def test_fails_on_timeout_during_waiting_first_for_parent_in_dom_then_inner_in_dom_then_visibility(session_browser):
@@ -228,7 +228,7 @@ def test_fails_on_timeout_during_waiting_first_for_parent_in_dom_then_inner_in_d
     with pytest.raises(TimeoutException):
         browser.element('p').element('a').click()
 
-    assert ('second' in browser.driver.current_url) is False
+    assert "second" not in browser.driver.current_url
 
 
 def test_fails_on_timeout_during_waiting_first_for_parent_in_dom_then_visible_then_inner_in_dom_then_visibility(
@@ -259,4 +259,4 @@ def test_fails_on_timeout_during_waiting_first_for_parent_in_dom_then_visible_th
     with pytest.raises(TimeoutException):
         browser.element('p').element('a').click()
 
-    assert ('second' in browser.driver.current_url) is False
+    assert "second" not in browser.driver.current_url

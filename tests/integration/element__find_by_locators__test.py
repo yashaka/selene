@@ -56,7 +56,7 @@ def test_complex_locator_based_on_by_locators(session_browser):
         .element(by.be_first_child())\
         .click()
 
-    assert ('second' in session_browser.driver.current_url) is True
+    assert "second" in session_browser.driver.current_url
 
 
 def test_complex_locator_based_on_selene_element_relative_elements(session_browser):
@@ -91,4 +91,4 @@ def test_complex_locator_based_on_selene_element_relative_elements(session_brows
         .following_sibling\
         .first_child\
         .click()
-    assert ('second' in session_browser.driver.current_url) is True
+    assert "second" in session_browser.driver.current_url

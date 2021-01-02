@@ -38,7 +38,7 @@ def test_waits_for_visibility(session_browser):
 
     session_browser.element('a').click()
 
-    assert ("second" in session_browser.driver.current_url) is True
+    assert "second" in session_browser.driver.current_url
 
 
 def test_waits_for_present_in_dom_and_visibility(session_browser):
@@ -54,7 +54,7 @@ def test_waits_for_present_in_dom_and_visibility(session_browser):
 
     session_browser.element('a').click()
 
-    assert ("second" in session_browser.driver.current_url) is True
+    assert "second" in session_browser.driver.current_url
 
 
 def test_waits_first_for_present_in_dom_then_visibility(session_browser):
@@ -73,7 +73,7 @@ def test_waits_first_for_present_in_dom_then_visibility(session_browser):
 
     session_browser.element('a').click()
 
-    assert ("second" in session_browser.driver.current_url) is True
+    assert "second" in session_browser.driver.current_url
 
 
 def test_fails_on_timeout_during_waiting_for_visibility(session_browser):
@@ -90,7 +90,7 @@ def test_fails_on_timeout_during_waiting_for_visibility(session_browser):
     with pytest.raises(TimeoutException):
         browser.element("a").click()
 
-    assert ("second" in browser.driver.current_url) is False
+    assert "second" not in session_browser.driver.current_url
 
 
 def test_fails_on_timeout_during_waits_for_present_in_dom_and_visibility(session_browser):
@@ -108,7 +108,7 @@ def test_fails_on_timeout_during_waits_for_present_in_dom_and_visibility(session
     with pytest.raises(TimeoutException):
         browser.element("a").click()
 
-    assert ("second" in browser.driver.current_url) is False
+    assert "second" not in session_browser.driver.current_url
 
 
 def test_fails_on_timeout_during_waits_first_for_present_in_dom_then_visibility(session_browser):
@@ -129,4 +129,4 @@ def test_fails_on_timeout_during_waits_first_for_present_in_dom_then_visibility(
     with pytest.raises(TimeoutException):
         browser.element("a").click()
 
-    assert ("second" in browser.driver.current_url) is False
+    assert "second" not in session_browser.driver.current_url

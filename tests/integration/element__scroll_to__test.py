@@ -22,11 +22,11 @@
 
 import os
 
-
 start_page = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/start_page.html'
 
 
 def test_can_scroll_to(session_browser):
+    session_browser.driver.set_window_size(300, 400)
     session_browser.open(start_page)
 
     session_browser.element("#invisible_link").scroll_to().click()
