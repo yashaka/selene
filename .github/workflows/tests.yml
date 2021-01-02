@@ -1,6 +1,6 @@
 name: tests
 
-on: [push, pull_request_target]
+on: [push, pull_request]
 
 jobs:
 
@@ -35,14 +35,9 @@ jobs:
 
       - name: Test selene with pytest
         run: |
-          pipenv run py.test -sv --cov-config .coveragerc --cov-report html:skip-covered --cov-report term:skip-covered --cov=selene  --cov-report xml:coverage.xml --tb=short tests/ --junitxml=junit-report.xml
+          pipenv run py.test -sv --cov-config .coveragerc --cov-report html:skip-covered --cov-report term:skip-covered --cov=selene  --cov-report xml:coverage.xml --tb=short tests/
           mkdir -p Artifacts/skip-covered
           cp -r skip-covered Artifacts/skip-covered
-
-      - name: Test Report
-        uses: mikepenz/action-junit-report@v1.2.0
-        with:
-          report_paths: 'junit-report.xml'
 
       # can be improved by flags/options
       - name: Code Coverage
