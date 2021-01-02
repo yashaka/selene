@@ -20,22 +20,32 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import pytest
+
+from selene.core.exceptions import TimeoutException
 from selene.support.conditions import have
-
-from selene.api.past import browser
-from selene.support.jquery_style_selectors import s, ss
-
+from selene.support.shared import browser, config
 
 todomvc_url = 'https://todomvc4tasj.herokuapp.com/'
 is_TodoMVC_loaded = 'return (Object.keys(require.s.contexts._.defined).length === 39)'
 
+original_timeout = config.timeout
+
+
+def teardown_module():
+    config.timeout = original_timeout
+
 
 def test_add_tasks():
-    browser.open_url(todomvc_url)
-    browser.should(have.js_returned_true(is_TodoMVC_loaded))
+    browser.open(todomvc_url)
+    browser.should(have.js_returned(True, is_TodoMVC_loaded))
 
-    s('#new-todo').set_value('a').press_enter()
-    s('#new-todo').set_value('b').press_enter()
-    s('#new-todo').set_value('c').press_enter()
+    browser.element('#new-todo').set_value('a').press_enter()
+    browser.element('#new-todo').set_value('b').press_enter()
+    browser.element('#new-todo').set_value('c').press_enter()
 
-    ss("#todo-list>li").should(have.texts('a', 'b', 'c'))
+    config.timeout = 0.2
+    with pytest.raises(TimeoutException) as ex:
+        browser.all("#todo-list>li").should(have.size(3))
+
+    assert "actual size: 6" in ex.value.msg
