@@ -41,12 +41,13 @@ jobs:
 
       # can be improved by flags/options
       - name: Code Coverage
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v1.1.1
         with:
           file: ./coverage.xml # optional
           flags: unittests # optional
-          name: codecov-umbrella # optional
+          name: selene-codecov # optional
           fail_ci_if_error: true # optional (default = false)
+          verbose: true
 
       # can be organized better
       - name: Upload pytest test results
