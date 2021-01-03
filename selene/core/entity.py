@@ -354,7 +354,7 @@ class Element(WaitingEntity):
 
     def get_actual_webelement(self) -> WebElement:
         warnings.warn(
-            "considering to be deprecated; use element as callable instead, like: browser.element('#foo')()",
+            "considering to be deprecated; usel element as callabe instead, like: browser.element('#foo')()",
             PendingDeprecationWarning)
         return self()
 
@@ -492,10 +492,16 @@ class Element(WaitingEntity):
         return self.type(Keys.ARROW_DOWN)
 
     def find_element(self, by=By.ID, value=None):
+        warnings.warn(
+            "deprecated; use `browser.element('#foo').should(be.in_dom)().find_element(by, value)` style instead",
+            DeprecationWarning)
         self.wait.command('find element', lambda element: element().find_element(by, value))
         return self
 
     def find_elements(self, by=By.ID, value=None):
+        warnings.warn(
+            "deprecated; use `browser.element('#foo').should(be.in_dom)().find_elements(by, value)` style instead",
+            DeprecationWarning)
         self.wait.command('find elements', lambda element: element().find_elements(by, value))
         return self
 
@@ -637,7 +643,7 @@ class Element(WaitingEntity):
     @property
     def parent(self):
         warnings.warn(
-            "deprecated; use `browser.element('#foo').config.driver` style for the majority of cases",
+            "deprecated; use `browser.element('#foo')().parent` style for the majority of cases",
             DeprecationWarning)
         return self.get(Query('parent search context', lambda element: element().parent))
 

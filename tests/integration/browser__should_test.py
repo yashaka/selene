@@ -23,39 +23,16 @@
 import os
 
 import pytest
-from selenium.common.exceptions import TimeoutException
 
-from selene.api.past import config
-from selene.api.past import url, url_containing
-from selene.api.past import open_url, driver
-from selene.api.past import wait_to
-
-start_page = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/start_page.html'
+from selene import have
+from selene.core.exceptions import TimeoutException
 
 
-original_timeout = config.timeout
-
-
-def setup_module(m):
-    config.browser_name = "chrome"
-
-
-def teardown_function(f):
-    config.timeout = original_timeout
-
-
-def test_can_wait_for_exact_url():
-    open_url(start_page)
-    wait_to(url(driver().current_url))
-
-
-def test_can_wait_for_part_of_url():
-    open_url(start_page)
-    wait_to(url_containing("start_page.html"))
-
-
-def test_should_wait_and_fail_for_incorrect_url():
-    config.timeout = 0.1
-    with pytest.raises(TimeoutException):
-        open_url(start_page)
-        wait_to(url("xttp:/"))
+def x_test_waiting_for_conditions_like_url_containing(session_browser):
+    """
+    todo: GivenPage(...).opened_with_body(...)\
+            .execute_script('script should click on link after 500ms'
+                            'link should follow to #second')
+          browser.should(have.url_containing('#second'))
+          assert 'second' in browser.driver.current_url
+    """

@@ -26,6 +26,13 @@
     - custom action condition
       - element('#can-be-not-ready').when.click().then.element('#some-new-element').should(be.visible)
       - element('#can-be-not-ready').with_(hook_wait=lambda: be.visible(element('#some-new-element))).click()
+- improve error messages
+  - should we come back to the "actual vs expected" style in error messages?
+  
+## 2.0.1
+- add hooks
+- refine API  
+  - remove deprecated things
 
 ## 2.0.0b1 (to be released on??.??.2020)
 - remove all deprecated things and stay calm:)
@@ -69,6 +76,9 @@
 - deprecate be.present
 - repeat fix of #225 to other options in shared config, refactor it... 
   - should we make original config (not shared) mutable?
+    
+## 2.0.0a35 (to be released on ??.01.2021)
+- added command.js.click
     
 ## 2.0.0a34 (released on 22.12.2020)
 - fixed [#231](https://github.com/yashaka/selene/issues/225): Need additional option to turn off logging outerHTML

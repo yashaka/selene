@@ -19,23 +19,18 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
-import os
-
-from selene.api.past import browser, config
-from selene.api.past import open_url
-from selene.support.jquery_style_selectors import s
-
-start_page = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/start_page.html'
+from tests.integration.helpers.givenpage import GivenPage
 
 
-def setup_module(m):
-    config.browser_name = "chrome"
+def test_counts_invisible_tasks(session_browser):
+    GivenPage(session_browser.driver).opened_with_body(
+        '''
+        <ul>Hello to:
+            <li class='will-appear'>Bob</li>
+            <li class='will-appear' style='display:none'>Kate</li>
+        </ul>
+        ''')
 
+    collection = session_browser.element('ul').all('.will-appear')
 
-def test_can_scroll_to():
-    open_url(start_page)
-    # logging.warning(driver().current_url)
-    # driver().set_window_size(300, 400)
-    s("#invisible_link").scroll_to().click()
-    assert "header" in browser.driver().current_url
+    assert len(collection) == 2

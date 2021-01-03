@@ -22,35 +22,41 @@
 
 import os
 
-from selene.api.past import browser, config
-from selene.api.past import in_dom, hidden, text, size
-from selene.support import by
-from selene.support.jquery_style_selectors import s
+import pytest
+
+from selene import have
+from selene.core.exceptions import TimeoutException
 
 start_page = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/start_page.html'
 
 
-def setup_module(m):
-    config.browser_name = "chrome"
-    browser.open_url(start_page)
-    s("#hidden_button").should_be(in_dom).should_be(hidden)
+def test_have_url(session_browser):
+    session_browser.open(start_page)
+    session_browser.should(have.url(session_browser.driver.current_url))
+    session_browser.should(have.no.url(session_browser.driver.current_url[:-1]))
 
 
-def test_get_actual_hidden_webelement():
-    s("#hidden_button").get_actual_webelement()
+def test_have_url_containing(session_browser):
+    session_browser.open(start_page)
+    session_browser.should(have.url_containing('start_page.html'))
+    session_browser.should(have.no.url_containing('start_page.xhtml'))
 
 
-def test_find_selenium_element_from_hidden_element():
-    s("#hidden_button").find_element(*by.be_following_sibling())
+def test_fails_on_timeout_during_waiting_for_exact_url(session_browser):
+    browser = session_browser.with_(timeout=0.1)
+
+    browser.open(start_page)
+
+    with pytest.raises(TimeoutException):
+        browser.should(have.url('xttp:/'))
+        # TODO: check message too
 
 
-def test_find_selenium_elements_from_hidden_element():
-    s("#hidden_button").find_elements(*by.be_following_sibling())
+def test_fails_on_timeout_during_waiting_for_part_of_url(session_browser):
+    browser = session_browser.with_(timeout=0.1)
 
+    browser.open(start_page)
 
-def test_find_selene_element_from_hidden_element():
-    s("#hidden_button").following_sibling.should_have(text("Inner Link"))
-
-
-def test_find_selene_collection_from_hidden_context():
-    s("#hidden_button").ss(by.be_following_sibling()).should_have(size(6))
+    with pytest.raises(TimeoutException):
+        browser.should(have.url_containing('xttp:/'))
+        # TODO: check message too
