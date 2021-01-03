@@ -20,40 +20,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from selene.api.past import config
-from selene.common.none_object import NoneObject
-from selene.api.past import SeleneDriver
-from tests_from_past.past.acceptance import get_test_driver
-from tests_from_past.integration.helpers import GivenPage
 
-__author__ = 'yashaka'
-
-driver = NoneObject('driver')  # type: SeleneDriver
-GIVEN_PAGE = NoneObject('GivenPage')  # type: GivenPage
-WHEN = GIVEN_PAGE  # type: GivenPage
-original_timeout = config.timeout
-
-
-def setup_module(m):
-    global driver
-    driver = SeleneDriver.wrap(get_test_driver())
-    global GIVEN_PAGE
-    GIVEN_PAGE = GivenPage(driver)
-    global WHEN
-    WHEN = GIVEN_PAGE
-
-
-def teardown_module(m):
-    driver.quit()
-
-
-def test_counts_invisible_tasks():
-    GIVEN_PAGE.opened_empty()
-    elements = driver.element('ul').all('.will-appear')
-
-    WHEN.load_body('''
-                   <ul>Hello to:
-                       <li class='will-appear'>Bob</li>
-                       <li class='will-appear' style='display:none'>Kate</li>
-                   </ul>''')
-    assert len(elements) == 2
+def x_test_working_with_kind_of_unexpected_dialogs():
+    """
+    implement test for page with alert-like-window that appears each second time
+    after click on a button
+    test should use wait_until in if clause to check alert appeared
+        if yes
+            wait for it to disappear
+        else
+            do nothing
+    :return:
+    """

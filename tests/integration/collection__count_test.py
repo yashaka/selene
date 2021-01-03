@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # MIT License
 #
 # Copyright (c) 2015-2020 Iakiv Kramarenko
@@ -21,30 +19,19 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
-import os
-
-from selene.api.past import browser, config
-from selene.api.past import BrowserName
-from selene.api.past import texts, exact_text
-from selene.support.conditions import have
-from selene.support.jquery_style_selectors import s, ss
-
-start_page = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/start_page.html'
+from tests.integration.helpers.givenpage import GivenPage
 
 
-def setup_module(m):
-    config.browser_name = BrowserName.CHROME
-    browser.open_url(start_page)
+def test_counts_invisible_tasks(session_browser):
+    page = GivenPage(session_browser.driver)
+    page.opened_empty()
 
+    elements = session_browser.all('.will-appear')
 
-def test_ru_text():
-    s("#ru-text").should_have(exact_text(u"Селен"))
+    page.load_body('''
+                   <ul>Hello to:
+                       <li class='will-appear'>Bob</li>
+                       <li class='will-appear' style='display:none'>Kate</li>
+                   </ul>''')
 
-
-def test_ru_text_with_array():
-    ss(".list > li").should_have(texts(u"Один", u"Два", u"Три"))
-
-
-def test_ru_text_in_selector():
-    s("#селен").should(have.exact_text(u"Сайт селена"))
+    assert len(elements) == 2

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # MIT License
 #
 # Copyright (c) 2015-2020 Iakiv Kramarenko
@@ -22,20 +24,17 @@
 
 import os
 
-from selene.api.past import open_url, driver
-from selene.support.jquery_style_selectors import s
-
-start_page = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/start_page.html'
+from selene import have
+from tests.integration.helpers.givenpage import GivenPage
 
 
-# todo: ensure works and enabled
-def x_test_can_accept_alert():
-    open_url(start_page)
-    s("#alert_btn").click()
-    driver().switch_to.alert.accept()
+def test_unicode_text_with_array(session_browser):
+    GivenPage(session_browser.driver).opened_with_body(
+        '''
+        <ul>Привет:
+           <li>Саше</li>
+           <li>Яше</li>
+        </ul>
+        ''')
 
-
-def x_test_can_dismiss_confirm_dialog():
-    open_url(start_page)
-    s("#alert_btn").click()
-    driver().switch_to.alert.dismiss()
+    session_browser.all('li').should(have.texts('Саше', 'Яше'))
