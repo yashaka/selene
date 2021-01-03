@@ -42,7 +42,7 @@ def test_waits_for_visibility_minimum_needed_time(session_browser):
     element.click()
 
     stamp_after = time.time_ns()
-    deviation_ms = 100
+    deviation_ms = 200
     assert stamp_after - stamp_before < (500 + deviation_ms) * 1000000
     assert "second" in session_browser.driver.current_url
 
