@@ -1,5 +1,3 @@
-sudo: required
-sudo: true
 dist: xenial
 
 addons:
