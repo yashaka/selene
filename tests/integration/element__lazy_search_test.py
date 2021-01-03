@@ -19,11 +19,11 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
+from selene import be
 from tests.integration.helpers.givenpage import GivenPage
 
 
-def test_search_is_lazy_and_does_not_start_on_creation(session_browser):
+def test_search_does_not_start_on_creation(session_browser):
     page = GivenPage(session_browser.driver)
     page.opened_empty()
 
@@ -32,23 +32,25 @@ def test_search_is_lazy_and_does_not_start_on_creation(session_browser):
     assert str(non_existent_element)
 
 
-def test_search_is_postponed_until_actual_action_like_questioning_displayed(session_browser):
+def test_search_is_postponed_until_actual_action_like_questioning_displayed(
+        session_browser):
     page = GivenPage(session_browser.driver)
     page.opened_empty()
 
     element = session_browser.element('#will-be-existing-element-id')
     page.load_body('<h1 id="will-be-existing-element-id">Hello kitty:*</h1>')
 
-    assert element.is_displayed() is True
+    assert element().is_displayed() is True
 
 
-def test_search_is_updated_on_next_actual_action_like_questioning_displayed(session_browser):
+def test_search_is_updated_on_next_actual_action_like_questioning_displayed(
+        session_browser):
     page = GivenPage(session_browser.driver)
     page.opened_empty()
 
     element = session_browser.element('#will-be-existing-element-id')
     page.load_body('<h1 id="will-be-existing-element-id">Hello kitty:*</h1>')
-    assert element.is_displayed() is True
+    assert element().is_displayed() is True
 
     page.load_body('<h1 id="will-be-existing-element-id" style="display:none">Hello kitty:*</h1>')
-    assert element.is_displayed() is False
+    assert element().is_displayed() is False

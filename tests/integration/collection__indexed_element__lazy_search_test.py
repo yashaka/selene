@@ -22,7 +22,7 @@
 from tests.integration.helpers.givenpage import GivenPage
 
 
-def test_search_is_lazy_and_does_not_start_on_creation_for_both_collection_and_indexed(session_browser):
+def test_search_does_not_start_on_creation(session_browser):
     page = GivenPage(session_browser.driver)
     page.opened_empty()
 
@@ -31,7 +31,8 @@ def test_search_is_lazy_and_does_not_start_on_creation_for_both_collection_and_i
     assert str(non_existent_element)
 
 
-def test_search_is_postponed_until_actual_action_like_questioning_displayed(session_browser):
+def test_search_is_postponed_until_actual_action_like_questioning_displayed(
+        session_browser):
     page = GivenPage(session_browser.driver)
     page.opened_empty()
 
@@ -43,10 +44,11 @@ def test_search_is_postponed_until_actual_action_like_questioning_displayed(sess
                        <li class="will-appear">Kate</li>
                    </ul>''')
 
-    assert element.is_displayed() is True
+    assert element().is_displayed() is True
 
 
-def test_search_is_updated_on_next_actual_action_like_questioning_displayed(session_browser):
+def test_search_is_updated_on_next_actual_action_like_questioning_displayed(
+        session_browser):
     page = GivenPage(session_browser.driver)
     page.opened_empty()
 
@@ -58,7 +60,7 @@ def test_search_is_updated_on_next_actual_action_like_questioning_displayed(sess
                        <li class="will-appear">Kate</li>
                    </ul>''')
 
-    assert element.is_displayed() is True
+    assert element().is_displayed() is True
 
     page.load_body('''
                    <ul>Hello to:
@@ -66,4 +68,4 @@ def test_search_is_updated_on_next_actual_action_like_questioning_displayed(sess
                        <li class="will-appear" style="display:none">Kate</li>
                    </ul>''')
 
-    assert element.is_displayed() is False
+    assert element().is_displayed() is False

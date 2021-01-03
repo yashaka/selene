@@ -73,3 +73,10 @@ class js:
             """return (function(element) { 
                 element.scrollIntoView(true); 
             })(arguments[0]);"""))
+
+    click = Command(
+        'scroll into view',
+        lambda element: element.execute_script(
+            """return (function(element) { 
+                element.click(); 
+            })(arguments[0]);"""))

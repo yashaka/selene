@@ -30,17 +30,22 @@ from tests.integration.helpers.givenpage import GivenPage
 
 
 def exception_message(ex):
-    return [line.strip() if not re.match(r'\s*screenshot: .*?/\.selene/screenshots/\d+?/screen_\d+\.png\s*', line)
+    msg_simplified = \
+        re.sub(r'\(Session info: .*\)', '(Session info: *)', str(ex.value.msg))
+    screenshot_pattern = \
+        r'\s*screenshot: .*?/\.selene/screenshots/\d+?/screen_\d+\.png\s*'
+    return [line.strip() if not re.match(screenshot_pattern, line)
             else 'screenshot: //.selene/screenshots/*/screen_*.png'
-            for line in str(ex.value.msg).strip().splitlines()]
+            for line in msg_simplified.strip().splitlines()]
 
 
-def test_element_search_fails_with_message_when_explicitly_waits_for_condition(session_browser):
+def test_element_search_fails_with_message_when_explicitly_waits_for_condition(
+        session_browser):
     browser = session_browser.with_(timeout=0.1)
-    page = GivenPage(browser.driver)
-    page.opened_with_body('''
-    <label id='element'>Hello world!</label>
-    ''')
+    GivenPage(browser.driver).opened_with_body(
+        '''
+        <label id='element'>Hello world!</label>
+        ''')
 
     with pytest.raises(TimeoutException) as ex:
         browser.element('#element').should(have.exact_text('Hello wor'))
@@ -52,7 +57,8 @@ def test_element_search_fails_with_message_when_explicitly_waits_for_condition(s
             'Reason: AssertionError: actual text: Hello world!']
 
 
-def test_element_search_fails_with_message_when_implicitly_waits_for_condition(session_browser):
+def test_element_search_fails_with_message_when_implicitly_waits_for_condition(
+        session_browser):
     browser = session_browser.with_(timeout=0.1)
     page = GivenPage(browser.driver)
     page.opened_with_body('''
@@ -67,7 +73,7 @@ def test_element_search_fails_with_message_when_implicitly_waits_for_condition(s
             "browser.element(('css selector', '#hidden-button')).click",
             '',
             'Reason: ElementNotInteractableException: Message: element not interactable',
-            '(Session info: chrome=87.0.4280.88)']
+            '(Session info: *)']
 
 
 def test_inner_element_search_fails_with_message_when_implicitly_waits_for_condition_mismatch_on_inner_element(
@@ -89,7 +95,7 @@ def test_inner_element_search_fails_with_message_when_implicitly_waits_for_condi
             "'#hidden-button')).click",
             '',
             'Reason: ElementNotInteractableException: Message: element not interactable',
-            '(Session info: chrome=87.0.4280.88)']
+            '(Session info: *)']
 
 
 def test_inner_element_search_fails_with_message_when_implicitly_waits_for_condition_mismatched_on_parent_element(
@@ -111,7 +117,7 @@ def test_inner_element_search_fails_with_message_when_implicitly_waits_for_condi
             "selector', '#button')).click",
             '',
             'Reason: ElementNotInteractableException: Message: element not interactable',
-            '(Session info: chrome=87.0.4280.88)']
+            '(Session info: *)']
 
 
 def test_inner_element_search_fails_with_message_when_implicitly_waits_for_condition_failed_on_parent_element(
@@ -134,7 +140,7 @@ def test_inner_element_search_fails_with_message_when_implicitly_waits_for_condi
             '',
             'Reason: NoSuchElementException: Message: no such element: Unable to locate '
             'element: {"method":"css selector","selector":"#not-existing"}',
-            '(Session info: chrome=87.0.4280.88)']
+            '(Session info: *)']
 
 
 def test_indexed_selement_search_fails_with_message_when_implicitly_waits_for_condition_failed_on_collection(

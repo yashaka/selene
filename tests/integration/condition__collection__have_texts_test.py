@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # MIT License
 #
 # Copyright (c) 2015-2020 Iakiv Kramarenko
@@ -22,31 +24,17 @@
 
 import os
 
-import pytest
-
-from selene import be, have
-from selene.support import by
-
-start_page = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/start_page.html'
+from selene import have
+from tests.integration.helpers.givenpage import GivenPage
 
 
-@pytest.fixture(scope='function', autouse=True)
-def open_start_page(session_browser):
-    session_browser.open(start_page)
-    session_browser.element("#hidden_button").should(be.in_dom).should(be.hidden)
+def test_unicode_text_with_array(session_browser):
+    GivenPage(session_browser.driver).opened_with_body(
+        '''
+        <ul>Привет:
+           <li>Саше</li>
+           <li>Яше</li>
+        </ul>
+        ''')
 
-
-def test_get_actual_hidden_webelement(session_browser):
-    session_browser.element("#hidden_button").get_actual_webelement()
-
-
-def test_find_selenium_element_from_hidden_element(session_browser):
-    session_browser.element("#hidden_button").find_element(*by.be_following_sibling())
-
-
-def test_find_selenium_elements_from_hidden_element(session_browser):
-    session_browser.element("#hidden_button").find_elements(*by.be_following_sibling())
-
-
-def test_find_selene_element_from_hidden_element(session_browser):
-    session_browser.element("#hidden_button").following_sibling.should(have.text("Inner Link"))
+    session_browser.all('li').should(have.texts('Саше', 'Яше'))

@@ -19,18 +19,20 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from tests.integration.helpers.givenpage import GivenPage
+
+import os
+
+import pytest
+
+from selene import have
+from selene.core.exceptions import TimeoutException
 
 
-def test_counts_invisible_tasks(session_browser):
-    page = GivenPage(session_browser.driver)
-    page.opened_empty()
-
-    elements = session_browser.element('ul').all('.will-appear')
-    page.load_body('''
-                   <ul>Hello to:
-                       <li class='will-appear'>Bob</li>
-                       <li class='will-appear' style='display:none'>Kate</li>
-                   </ul>''')
-
-    assert len(elements) == 2
+def x_test_waiting_for_conditions_like_url_containing(session_browser):
+    """
+    todo: GivenPage(...).opened_with_body(...)\
+            .execute_script('script should click on link after 500ms'
+                            'link should follow to #second')
+          browser.should(have.url_containing('#second'))
+          assert 'second' in browser.driver.current_url
+    """

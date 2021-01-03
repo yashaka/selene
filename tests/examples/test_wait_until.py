@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # MIT License
 #
 # Copyright (c) 2015-2020 Iakiv Kramarenko
@@ -22,14 +20,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import os
 
-from selene import have
-
-start_page = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/start_page.html'
-
-
-def test_ru_text_with_array(session_browser):
-    session_browser.open(start_page)
-
-    session_browser.all('.list > li').should(have.texts(u'Один', u'Два', u'Три'))
+def x_test_working_with_progress_bars():
+    """
+    implement test for page with progress bar that appears after timeout each second time
+    after click on a button
+    test should use wait_until in if clause to check if progress bar appeared
+        if yes
+            wait for it to disappear
+        else
+            do nothing
+    :return:
+    """

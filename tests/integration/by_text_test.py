@@ -19,38 +19,44 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from selene import be, command
+from selene import by
 from tests.integration.helpers.givenpage import GivenPage
 
 
-def test_can_scroll_to_element_manually(session_browser):
-    session_browser.driver.set_window_size(1000, 100)
-    GivenPage(session_browser.driver).opened_with_body(
+def test_nested_elements_search(session_browser):
+    page = GivenPage(session_browser.driver)
+    page.opened_with_body(
         '''
-        <div id="paragraph" style="margin: 400px">
+        <div id="container">
+            <div>
+                <div>
+                    <label>First</label>
+                </div>
+                <div>
+                    <a href="#first">go to Heading 1</a>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <label>Second</label>
+                    <div>
+                        <a href="#second">go to Heading 2</a>
+                        <a href="#third">go to Heading 3</a>
+                    </div>
+                </div>
+                <div>
+                </div>
+            </div>
         </div>
-        <a id="not-viewable-link" href="#header"/>
-        <h1 id="header">Heading 1</h2>
-        ''')
-    element = session_browser.element("#not-viewable-link")
-
-    element.perform(command.js.scroll_into_view)
-
-    element.click()  # we can click even if we did not make the scrolling
-    # TODO: find the way to assert that scroll worked!
-    assert "header" in session_browser.driver.current_url
-
-
-def test_can_scroll_to_element_automatically(session_browser):
-    session_browser.driver.set_window_size(1000, 100)
-    GivenPage(session_browser.driver).opened_with_body(
-        '''
-        <div id="paragraph" style="margin: 400px">
-        </div>
-        <a id="not-viewable-link" href="#header"/>
-        <h1 id="header">Heading 1</h2>
+        <h1 id="first">Heading 1</h2>
+        <h2 id="second">Heading 2</h2>
+        <h2 id="third">Heading 3</h2>
         ''')
 
-    session_browser.element("#not-viewable-link").click()
+    session_browser.element('#container') \
+        .element(by.text('Second')) \
+        .element('./following-sibling::*') \
+        .element(by.partial_text('Heading 3')) \
+        .click()
 
-    assert "header" in session_browser.driver.current_url
+    assert "third" in session_browser.driver.current_url

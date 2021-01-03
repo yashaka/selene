@@ -19,39 +19,19 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
-import os
-
-import pytest
-
-from selene import have
-
-start_page = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/start_page.html'
+from tests.integration.helpers.givenpage import GivenPage
 
 
-def test_wait_until_can_wait_for_exact_url(session_browser):
-    session_browser.open(start_page)
-    assert session_browser.wait_until(have.url(session_browser.driver.current_url))
+def test_counts_invisible_tasks(session_browser):
+    page = GivenPage(session_browser.driver)
+    page.opened_empty()
 
+    elements = session_browser.all('.will-appear')
 
-def test_wait_until_can_wait_for_part_of_url(session_browser):
-    session_browser.open(start_page)
-    assert session_browser.wait_until(have.url_containing('start_page.html'))
+    page.load_body('''
+                   <ul>Hello to:
+                       <li class='will-appear'>Bob</li>
+                       <li class='will-appear' style='display:none'>Kate</li>
+                   </ul>''')
 
-
-def test_fail_with_timeout_during_wait_exact_url_with_incorrect_url(session_browser):
-    browser = session_browser.with_(timeout=0.1)
-
-    browser.open(start_page)
-
-    with pytest.raises(AssertionError):
-        assert browser.wait_until(have.url('xttp:/'))
-
-
-def test_fail_with_timeout_during_wait_part_of_url_with_incorrect_url(session_browser):
-    browser = session_browser.with_(timeout=0.1)
-
-    browser.open(start_page)
-
-    with pytest.raises(AssertionError):
-        assert browser.wait_until(have.url_containing('xttp:/'))
+    assert len(elements) == 2

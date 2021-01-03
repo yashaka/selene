@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # MIT License
 #
 # Copyright (c) 2015-2020 Iakiv Kramarenko
@@ -21,21 +19,18 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
-import os
-
-from selene import have
-
-start_page = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/start_page.html'
+from tests.integration.helpers.givenpage import GivenPage
 
 
-def test_ru_text(session_browser):
-    session_browser.open(start_page)
+def test_counts_invisible_tasks(session_browser):
+    GivenPage(session_browser.driver).opened_with_body(
+        '''
+        <ul>Hello to:
+            <li class='will-appear'>Bob</li>
+            <li class='will-appear' style='display:none'>Kate</li>
+        </ul>
+        ''')
 
-    session_browser.element('#ru-text').should(have.exact_text(u'Селен'))
+    collection = session_browser.element('ul').all('.will-appear')
 
-
-def test_ru_text_in_selector(session_browser):
-    session_browser.open(start_page)
-
-    session_browser.element('#селен').should(have.exact_text(u'Сайт селена'))
+    assert len(collection) == 2

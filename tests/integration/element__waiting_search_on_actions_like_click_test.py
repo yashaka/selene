@@ -19,6 +19,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+import time
 
 import pytest
 
@@ -26,7 +27,7 @@ from selene.core.exceptions import TimeoutException
 from tests.integration.helpers.givenpage import GivenPage
 
 
-def test_waits_for_visibility(session_browser):
+def test_waits_for_visibility_minimum_needed_time(session_browser):
     page = GivenPage(session_browser.driver)
     page.opened_with_body(
             '''
@@ -35,9 +36,14 @@ def test_waits_for_visibility(session_browser):
         .execute_script_with_timeout(
             'document.getElementsByTagName("a")[0].style = "display:block";',
             500)
+    element = session_browser.element('a')
+    stamp_before = time.time_ns()
 
-    session_browser.element('a').click()
+    element.click()
 
+    stamp_after = time.time_ns()
+    deviation_ms = 100
+    assert stamp_after - stamp_before < (500 + deviation_ms) * 1000000
     assert "second" in session_browser.driver.current_url
 
 
@@ -51,8 +57,9 @@ def test_waits_for_present_in_dom_and_visibility(session_browser):
             <a href="#second">go to Heading 2</a>
             <h2 id="second">Heading 2</h2>''',
             500)
+    element = session_browser.element('a')
 
-    session_browser.element('a').click()
+    element.click()
 
     assert "second" in session_browser.driver.current_url
 
@@ -70,8 +77,9 @@ def test_waits_first_for_present_in_dom_then_visibility(session_browser):
         .execute_script_with_timeout(
             'document.getElementsByTagName("a")[0].style = "display:block";',
             500)
+    element = session_browser.element('a')
 
-    session_browser.element('a').click()
+    element.click()
 
     assert "second" in session_browser.driver.current_url
 
@@ -86,14 +94,16 @@ def test_fails_on_timeout_during_waiting_for_visibility(session_browser):
         .execute_script_with_timeout(
             'document.getElementsByTagName("a")[0].style = "display:block";',
             500)
+    element = browser.element("a")
 
     with pytest.raises(TimeoutException):
-        browser.element("a").click()
+        element.click()
 
     assert "second" not in session_browser.driver.current_url
 
 
-def test_fails_on_timeout_during_waits_for_present_in_dom_and_visibility(session_browser):
+def test_fails_on_timeout_during_waits_for_present_in_dom_and_visibility(
+        session_browser):
     browser = session_browser.with_(timeout=0.25)
     page = GivenPage(browser.driver)
     page.opened_with_body(
@@ -104,14 +114,16 @@ def test_fails_on_timeout_during_waits_for_present_in_dom_and_visibility(session
             <a href="#second">go to Heading 2</a>
             <h2 id="second">Heading 2</h2>''',
             500)
+    element = browser.element("a")
 
     with pytest.raises(TimeoutException):
-        browser.element("a").click()
+        element.click()
 
     assert "second" not in session_browser.driver.current_url
 
 
-def test_fails_on_timeout_during_waits_first_for_present_in_dom_then_visibility(session_browser):
+def test_fails_on_timeout_during_waits_first_for_present_in_dom_then_visibility(
+        session_browser):
     browser = session_browser.with_(timeout=0.25)
     page = GivenPage(browser.driver)
     page.opened_with_body(
@@ -125,8 +137,9 @@ def test_fails_on_timeout_during_waits_first_for_present_in_dom_then_visibility(
         .execute_script_with_timeout(
             'document.getElementsByTagName("a")[0].style = "display:block";',
             500)
+    element = browser.element("a")
 
     with pytest.raises(TimeoutException):
-        browser.element("a").click()
+        element.click()
 
     assert "second" not in session_browser.driver.current_url

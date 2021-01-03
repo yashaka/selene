@@ -20,39 +20,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import os
 
-import pytest
-
-from selene import have
-from selene.core.exceptions import TimeoutException
-
-start_page = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/start_page.html'
-
-
-def test_should_wait_for_exact_url(session_browser):
-    session_browser.open(start_page)
-    session_browser.should(have.url(session_browser.driver.current_url))
-
-
-def test_should_wait_for_part_of_url(session_browser):
-    session_browser.open(start_page)
-    session_browser.should(have.url_containing('start_page.html'))
-
-
-def test_fails_on_timeout_during_waiting_for_exact_url(session_browser):
-    browser = session_browser.with_(timeout=0.1)
-
-    browser.open(start_page)
-
-    with pytest.raises(TimeoutException):
-        browser.should(have.url('xttp:/'))
-
-
-def test_fails_on_timeout_during_waiting_for_part_of_url(session_browser):
-    browser = session_browser.with_(timeout=0.1)
-
-    browser.open(start_page)
-
-    with pytest.raises(TimeoutException):
-        browser.should(have.url_containing('xttp:/'))
+def x_test_working_with_kind_of_unexpected_dialogs():
+    """
+    implement test for page with alert-like-window that appears each second time
+    after click on a button
+    test should use wait_until in if clause to check alert appeared
+        if yes
+            wait for it to disappear
+        else
+            do nothing
+    :return:
+    """

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # MIT License
 #
 # Copyright (c) 2015-2020 Iakiv Kramarenko
@@ -19,38 +21,19 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from selene import be, command
+from selene import have
 from tests.integration.helpers.givenpage import GivenPage
 
 
-def test_can_scroll_to_element_manually(session_browser):
-    session_browser.driver.set_window_size(1000, 100)
+def test_unicode_text(session_browser):
     GivenPage(session_browser.driver).opened_with_body(
         '''
-        <div id="paragraph" style="margin: 400px">
-        </div>
-        <a id="not-viewable-link" href="#header"/>
-        <h1 id="header">Heading 1</h2>
-        ''')
-    element = session_browser.element("#not-viewable-link")
-
-    element.perform(command.js.scroll_into_view)
-
-    element.click()  # we can click even if we did not make the scrolling
-    # TODO: find the way to assert that scroll worked!
-    assert "header" in session_browser.driver.current_url
-
-
-def test_can_scroll_to_element_automatically(session_browser):
-    session_browser.driver.set_window_size(1000, 100)
-    GivenPage(session_browser.driver).opened_with_body(
-        '''
-        <div id="paragraph" style="margin: 400px">
-        </div>
-        <a id="not-viewable-link" href="#header"/>
-        <h1 id="header">Heading 1</h2>
+        <ul>Привет:
+           <li>Саше</li>
+           <li>Яше</li>
+        </ul>
         ''')
 
-    session_browser.element("#not-viewable-link").click()
+    element = session_browser.element('li')
 
-    assert "header" in session_browser.driver.current_url
+    element.should(have.exact_text('Саше')).should(have.text('Са'))

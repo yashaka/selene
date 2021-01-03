@@ -24,17 +24,39 @@ import os
 
 import pytest
 
-from selene import be, have
-from selene.support import by
+from selene import have
+from selene.core.exceptions import TimeoutException
 
 start_page = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/start_page.html'
 
 
-@pytest.fixture(scope='function', autouse=True)
-def open_start_page(session_browser):
+def test_have_url(session_browser):
     session_browser.open(start_page)
-    session_browser.element("#hidden_button").should(be.in_dom).should(be.hidden)
+    session_browser.should(have.url(session_browser.driver.current_url))
+    session_browser.should(have.no.url(session_browser.driver.current_url[:-1]))
 
 
-def test_find_selene_collection_from_hidden_context(session_browser):
-    session_browser.element("#hidden_button").all(by.be_following_sibling()).should(have.size(6))
+def test_have_url_containing(session_browser):
+    session_browser.open(start_page)
+    session_browser.should(have.url_containing('start_page.html'))
+    session_browser.should(have.no.url_containing('start_page.xhtml'))
+
+
+def test_fails_on_timeout_during_waiting_for_exact_url(session_browser):
+    browser = session_browser.with_(timeout=0.1)
+
+    browser.open(start_page)
+
+    with pytest.raises(TimeoutException):
+        browser.should(have.url('xttp:/'))
+        # TODO: check message too
+
+
+def test_fails_on_timeout_during_waiting_for_part_of_url(session_browser):
+    browser = session_browser.with_(timeout=0.1)
+
+    browser.open(start_page)
+
+    with pytest.raises(TimeoutException):
+        browser.should(have.url_containing('xttp:/'))
+        # TODO: check message too

@@ -31,10 +31,10 @@ def test_can_accept_alert(session_browser):
     session_browser.open(start_page)
 
     session_browser.element("#alert_btn").click()
-    session_browser.driver.switch_to.alert.accept()
+    session_browser.switch_to.alert.accept()
 
     try:
-        session_browser.driver.switch_to.alert
+        session_browser.switch_to.alert.accept()
         assert False, 'actual: alert presents, expected: alert not present'
     except NoAlertPresentException:
         assert True
@@ -44,10 +44,10 @@ def test_can_dismiss_confirm_dialog(session_browser):
     session_browser.open(start_page)
 
     session_browser.element("#alert_btn").click()
-    session_browser.driver.switch_to.alert.dismiss()
+    session_browser.switch_to.alert.dismiss()
 
     try:
-        session_browser.driver.switch_to.alert
+        session_browser.switch_to.alert.accept()
         assert False, 'actual: alert presents, expected: alert not present'
     except NoAlertPresentException:
         assert True
@@ -59,7 +59,7 @@ def test_alert_is_present(session_browser):
     session_browser.element("#alert_btn").click()
 
     try:
-        session_browser.driver.switch_to.alert
+        session_browser.switch_to.alert.accept()
         assert True
     except NoAlertPresentException:
         assert False, 'actual: alert not present, expected: alert is present'

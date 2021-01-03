@@ -19,38 +19,35 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from selene import be, command
+
+from selene import be, have
 from tests.integration.helpers.givenpage import GivenPage
 
 
-def test_can_scroll_to_element_manually(session_browser):
-    session_browser.driver.set_window_size(1000, 100)
+def test_should(session_browser):
     GivenPage(session_browser.driver).opened_with_body(
         '''
-        <div id="paragraph" style="margin: 400px">
-        </div>
-        <a id="not-viewable-link" href="#header"/>
-        <h1 id="header">Heading 1</h2>
+        <button id="hidden" style="display: none">Press me</button>
         ''')
-    element = session_browser.element("#not-viewable-link")
 
-    element.perform(command.js.scroll_into_view)
+    hidden_element = session_browser.element("#hidden")
 
-    element.click()  # we can click even if we did not make the scrolling
-    # TODO: find the way to assert that scroll worked!
-    assert "header" in session_browser.driver.current_url
+    hidden_element.should(be.in_dom).should(be.hidden)
 
 
-def test_can_scroll_to_element_automatically(session_browser):
-    session_browser.driver.set_window_size(1000, 100)
+def test_action_on_element_found_from_hidden_element(session_browser):
     GivenPage(session_browser.driver).opened_with_body(
         '''
-        <div id="paragraph" style="margin: 400px">
+        <button id="hidden" style="display: none">Press me</button>
+        <div>
+            <a href="#first">go to Heading 1</a>
+            <a href="#second">go to Heading 2</a>
         </div>
-        <a id="not-viewable-link" href="#header"/>
-        <h1 id="header">Heading 1</h2>
+        <h1 id="first">Heading 1</h2>
+        <h2 id="second">Heading 2</h2>
         ''')
+    hidden_element = session_browser.element("#hidden")
 
-    session_browser.element("#not-viewable-link").click()
+    hidden_element.element('./following-sibling::*/a[2]').click()
 
-    assert "header" in session_browser.driver.current_url
+    assert 'second' in session_browser.driver.current_url
