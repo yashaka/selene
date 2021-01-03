@@ -1,0 +1,60 @@
+name: tests
+
+on: [push, pull_request]
+
+jobs:
+
+  test:
+    name: Test selene
+    runs-on: ubuntu-20.04
+    env:
+      DISPLAY: ":99"
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.7'
+
+      # can be packaged as Docker-image
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pipenv
+          pipenv install --dev
+          pipenv graph
+
+      # can be packaged as Docker-image
+      - name: Install Chrome & xvfb
+        run: |
+          sudo apt-get install google-chrome-stable xvfb
+          sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
+
+      - name: Test selene with pytest
+        run: |
+          pipenv run py.test -sv --cov-config .coveragerc --cov-report html:skip-covered --cov-report term:skip-covered --cov=selene  --cov-report xml:coverage.xml --tb=short tests/
+          mkdir -p Artifacts/skip-covered
+          cp -r skip-covered Artifacts/skip-covered
+
+      # can be improved by flags/options
+      - name: Code Coverage
+        uses: codecov/codecov-action@v1.1.1
+        with:
+          file: ./coverage.xml # optional
+          flags: unittests # optional
+          name: selene-codecov # optional
+          fail_ci_if_error: true # optional (default = false)
+          verbose: true
+
+      # can be organized better
+      - name: Upload pytest test results
+        uses: actions/upload-artifact@v2
+        with:
+          name: Code coverage
+          path: |
+            Artifacts
+            coverage.xml
+        if: ${{ always() }}
