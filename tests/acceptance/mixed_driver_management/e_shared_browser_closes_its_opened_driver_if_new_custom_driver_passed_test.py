@@ -20,22 +20,22 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from selene.api.past import browser
-from selene.support.conditions import have
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
 
-from selene.support.jquery_style_selectors import s, ss
-
-
-todomvc_url = 'https://todomvc4tasj.herokuapp.com/'
-is_TodoMVC_loaded = 'return (Object.keys(require.s.contexts._.defined).length === 39)'
+from selene.support.shared import browser
+from selene.support.webdriver import Help
 
 
-def test_add_tasks():
-    browser.open_url(todomvc_url)
-    browser.should(have.js_returned_true(is_TodoMVC_loaded))
+def teardown_module():
+    browser.quit()
 
-    s('#new-todo').set_value('a').press_enter()
-    s('#new-todo').set_value('b').press_enter()
-    s('#new-todo').set_value('c').press_enter()
 
-    ss("#todo-list>li").should(have.texts('a', 'b', 'c'))
+def test_automatic_quit_for_previous_driver():
+    driver_from_test_d = browser.config.driver
+    assert Help(driver_from_test_d).has_browser_still_alive() is True
+
+    browser.config.driver = webdriver.Chrome(ChromeDriverManager().install())
+
+    assert Help(driver_from_test_d).has_browser_still_alive() is False
+    assert Help(browser.driver).has_browser_still_alive() is True

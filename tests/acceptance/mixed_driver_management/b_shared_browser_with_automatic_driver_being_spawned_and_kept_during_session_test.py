@@ -20,35 +20,22 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import pytest
-from selenium.common.exceptions import TimeoutException
-
-from selene.api.past import browser, config
 from selene.support.conditions import have
-
-from selene.support.jquery_style_selectors import s, ss
-
-
-todomvc_url = 'https://todomvc4tasj.herokuapp.com/'
-is_TodoMVC_loaded = 'return (Object.keys(require.s.contexts._.defined).length === 39)'
-
-original_timeout = config.timeout
+from selene.support.shared import browser
+from tests.acceptance.mixed_driver_management import todomvc
 
 
-def teardown_module(m):
-    config.timeout = original_timeout
+def test_todomvc_starts_with_cleaned_storage_at_new_browser():
+    # When
+    browser.open(todomvc.url)
 
-#todo: enable test
-def xtest_add_tasks():
-    browser.open_url(todomvc_url)
-    browser.should(have.js_returned_true(is_TodoMVC_loaded))
+    # Then
+    (browser.all("#todo-list>li")
+     .should(have.size(0))
+     .should(have.no.texts('todo from A test')))
 
-    s('#new-todo').set_value('a').press_enter()
-    s('#new-todo').set_value('b').press_enter()
-    s('#new-todo').set_value('c').press_enter()
+    # When
+    browser.element('#new-todo').set_value('todo from B test').press_enter()
 
-    config.timeout = 0.5
-    with pytest.raises(TimeoutException) as ex:
-        ss("#todo-list>li").should(have.size(3))
-
-    assert "actual: 6" in ex.value.msg
+    # Then
+    browser.all("#todo-list>li").should(have.texts('todo from B test'))
