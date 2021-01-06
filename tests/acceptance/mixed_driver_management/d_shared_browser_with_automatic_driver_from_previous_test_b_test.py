@@ -21,21 +21,14 @@
 # SOFTWARE.
 
 from selene.support.conditions import have
-
-from selene.api.past import browser
-from selene.support.jquery_style_selectors import s, ss
-
-
-todomvc_url = 'https://todomvc4tasj.herokuapp.com/'
-is_TodoMVC_loaded = 'return (Object.keys(require.s.contexts._.defined).length === 39)'
+from selene.support.shared import browser
+from tests.acceptance.mixed_driver_management import todomvc
 
 
-def test_add_tasks():
-    browser.open_url(todomvc_url)
-    browser.should(have.js_returned_true(is_TodoMVC_loaded))
+def test_todomvc_shares_todos_in_same_browser_session():
+    # When
+    browser.open(todomvc.url)
 
-    s('#new-todo').set_value('a').press_enter()
-    s('#new-todo').set_value('b').press_enter()
-    s('#new-todo').set_value('c').press_enter()
-
-    ss("#todo-list>li").should(have.texts('a', 'b', 'c'))
+    # Then
+    (browser.all("#todo-list>li")
+     .should(have.texts('todo from B test')))

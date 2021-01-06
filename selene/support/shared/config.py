@@ -102,6 +102,9 @@ class _LazyDriver:
         return self._stored
 
     def create(self) -> WebDriver:
+        # self.quit()
+        # this is not needed because with call _source.quit() on config.set_driver = ...
+
         self._stored = self._set_driver()
 
         def quit_if_not_asked_to_hold():
@@ -152,7 +155,7 @@ class SharedConfig(Config):
                  log_outer_html_on_failure: bool = False,
                  # SharedConfig
                  set_driver: Callable[[], WebDriver] = None,
-                 source: _LazyDriver = None,
+                 source: _LazyDriver = None,  # todo: type should not be _LazyDriver but something like Source ...
                  browser_name: str = 'chrome',  # todo: rename to config.type? config.name? config.browser?
                  hold_browser_open: bool = False,
                  save_screenshot_on_failure: bool = True,
@@ -169,33 +172,6 @@ class SharedConfig(Config):
         self._source = source or _LazyDriver(self)
         self._log_outer_html_on_failure = log_outer_html_on_failure
 
-        def set_chrome_or_firefox_from_webdriver_manager():
-            # todo: consider simplifying implementation to simple if-else
-
-            # todo: do we need here pass self.desired_capabilities too?
-
-            def set_chrome():
-                return Chrome(
-                    executable_path=ChromeDriverManager().install(),
-                    options=ChromeOptions()
-                )
-
-            def set_firefox():
-                return Firefox(
-                    executable_path=GeckoDriverManager().install()
-                )
-
-            # set_remote = lambda: Remote()  # todo: do we really need it? :)
-
-            # todo: think on something like:
-            #             'remote': lambda: Remote(**self.browser_name)
-            #         }.get(self.browser_name if isinstance(self.browser_name, str) else 'remote')()
-
-            return {
-                'chrome': set_chrome,
-                'firefox': set_firefox
-            }.get(self.browser_name)()
-
         if driver and not set_driver:
             '''
             each time we are setting not None driver, 
@@ -205,7 +181,9 @@ class SharedConfig(Config):
             self._set_driver = lambda: driver
             self._source.create()
         else:
-            self._set_driver = set_driver or set_chrome_or_firefox_from_webdriver_manager
+            auto_set_driver = \
+                lambda: self._set_chrome_or_firefox_from_webdriver_manager()
+            self._set_driver = set_driver or auto_set_driver
 
         self._save_screenshot_on_failure = save_screenshot_on_failure
         self._save_page_source_on_failure = save_page_source_on_failure
@@ -231,6 +209,33 @@ class SharedConfig(Config):
                          hook_wait_failure=hook_wait_failure,
                          log_outer_html_on_failure=log_outer_html_on_failure)
 
+    def _set_chrome_or_firefox_from_webdriver_manager(self):
+        # todo: consider simplifying implementation to simple if-else
+
+        # todo: do we need here pass self.desired_capabilities too?
+
+        def get_chrome():
+            return Chrome(
+                executable_path=ChromeDriverManager().install(),
+                options=ChromeOptions()
+            )
+
+        def get_firefox():
+            return Firefox(
+                executable_path=GeckoDriverManager().install()
+            )
+
+        # set_remote = lambda: Remote()  # todo: do we really need it? :)
+
+        # todo: think on something like:
+        #             'remote': lambda: Remote(**self.browser_name)
+        #         }.get(self.browser_name if isinstance(self.browser_name, str) else 'remote')()
+
+        return {
+            'chrome': get_chrome,
+            'firefox': get_firefox
+        }.get(self.browser_name)()
+
     # --- Config.driver new "shared logic" --- #
 
     @property
@@ -252,12 +257,21 @@ class SharedConfig(Config):
         return self._source.get_or_create()
 
     def quit_driver(self):
-        self._source.quit()
+        warnings.warn('shared.config.quit_driver is deprecated, '
+                      'use shared.config.reset_driver instead',
+                      DeprecationWarning)
+        self.reset_driver()
+
+    def reset_driver(self):
+        self.set_driver = \
+            lambda: self._set_chrome_or_firefox_from_webdriver_manager()
 
     @driver.setter
     def driver(self, value: WebDriver):
-        self.set_driver = lambda: value
-        self._source.create()
+        # todo: why the following field is called like a setter but we assign a getter to it? o_O
+        self.set_driver = lambda: value  # it's pretty weird that we set value here
+        self._source.create()  # to be used in this create under the hood...
+        # too much of magic :( todo: consider refactoring
 
     @property
     def set_driver(self):
@@ -465,7 +479,6 @@ PageSource: file://{path}''')
         warnings.warn('browser.desired_capabilities does not work now, '
                       'and probably will be deprecated completely',
                       FutureWarning)
-        pass
 
     @property
     def poll_during_waits(self) -> int:

@@ -27,7 +27,10 @@ from selenium.webdriver.remote.webdriver import WebDriver
 from selene.common.helpers import on_error_return_false
 
 
-class Help:
+class Help:  # todo: should we make it private? like call it _Help (or think on better name)
+    # what about this style for example: ExtendedWebdriver(driver).is_alive() ?
+    # over: Help(driver).has_browser_still_alive() ?
+
     def __init__(self, driver: WebDriver):
         self._driver = driver
 

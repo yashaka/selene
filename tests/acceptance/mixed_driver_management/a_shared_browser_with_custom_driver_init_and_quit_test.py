@@ -23,29 +23,22 @@
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 
-from selene.api.past import browser
 from selene.support.conditions import have
-from selene.support.jquery_style_selectors import s, ss
+from selene.support.shared import browser
+from tests.acceptance.mixed_driver_management import todomvc
 
 
-def setup_module(m):
-    browser.set_driver(webdriver.Chrome(ChromeDriverManager().install()))  # todo: was firefox here... should it be here?
+def setup_module():
+    browser.config.driver = webdriver.Chrome(ChromeDriverManager().install())
 
 
-def teardown_module(m):
-    browser.driver().quit()
+def teardown_module():
+    browser.quit()
 
 
-todomvc_url = 'https://todomvc4tasj.herokuapp.com/'
-is_TodoMVC_loaded = 'return (Object.keys(require.s.contexts._.defined).length === 39)'
+def test_todomvc_can_add_todos():
+    browser.open(todomvc.url)
 
+    browser.element('#new-todo').set_value('todo from A test').press_enter()
 
-def test_add_tasks():
-    browser.open_url(todomvc_url)
-    browser.should(have.js_returned_true(is_TodoMVC_loaded))
-
-    s('#new-todo').set_value('a').press_enter()
-    s('#new-todo').set_value('b').press_enter()
-    s('#new-todo').set_value('c').press_enter()
-
-    ss("#todo-list>li").should(have.texts('a', 'b', 'c'))
+    browser.all("#todo-list>li").should(have.texts('todo from A test'))

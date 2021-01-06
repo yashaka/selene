@@ -142,7 +142,7 @@ class SharedBrowser(Browser):
         return self.config.last_page_source
 
     def quit(self) -> None:
-        self.config.quit_driver()
+        self.config.reset_driver()
 
     def quit_driver(self):
         warnings.warn('deprecated; use browser.quit() instead', DeprecationWarning)
