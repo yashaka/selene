@@ -6,10 +6,10 @@
 [![MIT License](http://img.shields.io/badge/license-MIT-green.svg)](https://github.com/yashaka/selene/blob/master/LICENSE)
 [![Project Template](http://img.shields.io/badge/project-template-9cf.svg)](https://github.com/yashaka/python-web-test)
 
-![GitHub views](https://raw.githubusercontent.com/aleksandr-kotlyar/selene/traffic/traffic-selene/views.svg)
-![GitHub views per week](https://raw.githubusercontent.com/aleksandr-kotlyar/selene/traffic/traffic-selene/views_per_week.svg)
-![GitHub clones](https://raw.githubusercontent.com/aleksandr-kotlyar/selene/traffic/traffic-selene/clones.svg)
-![GitHub clones per week](https://raw.githubusercontent.com/aleksandr-kotlyar/selene/traffic/traffic-selene/clones_per_week.svg)
+![GitHub views](https://raw.githubusercontent.com/yashaka/selene/traffic/traffic-selene/views.svg)
+![GitHub views per week](https://raw.githubusercontent.com/yashaka/selene/traffic/traffic-selene/views_per_week.svg)
+![GitHub clones](https://raw.githubusercontent.com/yashaka/selene/traffic/traffic-selene/clones.svg)
+![GitHub clones per week](https://raw.githubusercontent.com/yashaka/selene/traffic/traffic-selene/clones_per_week.svg)
 
 [![Join telegram chat https://t.me/selene_py](https://img.shields.io/badge/chat-telegram-blue)](https://t.me/selene_py)
 [![Присоединяйся к чату https://t.me/selene_py_ru](https://img.shields.io/badge/%D1%87%D0%B0%D1%82-telegram-red)](https://t.me/selene_py_ru)
