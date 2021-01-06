@@ -6,6 +6,7 @@
 [![MIT License](http://img.shields.io/badge/license-MIT-green.svg)](https://github.com/yashaka/selene/blob/master/LICENSE)
 [![Project Template](http://img.shields.io/badge/project-template-9cf.svg)](https://github.com/yashaka/python-web-test)
 
+![GitHub stats in](https://raw.githubusercontent.com/yashaka/selene/traffic/traffic-selene/in_2021.svg)
 ![GitHub views](https://raw.githubusercontent.com/yashaka/selene/traffic/traffic-selene/views.svg)
 ![GitHub views per week](https://raw.githubusercontent.com/yashaka/selene/traffic/traffic-selene/views_per_week.svg)
 ![GitHub clones](https://raw.githubusercontent.com/yashaka/selene/traffic/traffic-selene/clones.svg)
