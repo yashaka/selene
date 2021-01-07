@@ -98,8 +98,8 @@ html_theme = 'alabaster'
 # html_theme_options = {}
 
 html_sidebars = {
-	'index': ['sidebarintro.html', 'sourcelink.html', 'localtoc.html','searchbox.html', 'hacks.html'],
-    '**':    ['sidebarintro.html', 'sourcelink.html', 'globaltoc.html','searchbox.html','hacks.html']
+	'index': ['sidebarintro.html', 'sourcelink.html', 'localtoc.html', 'searchbox.html', 'hacks.html'],
+    '**':    ['sidebarintro.html', 'sourcelink.html', 'globaltoc.html', 'searchbox.html', 'hacks.html']
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
