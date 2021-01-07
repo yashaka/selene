@@ -24,9 +24,9 @@ from __future__ import annotations
 
 from typing import Callable, Optional
 
-from selene.core.exceptions import TimeoutException
 from selenium.webdriver.remote.webdriver import WebDriver
 
+from selene.core.exceptions import TimeoutException
 from selene.core.wait import Wait
 
 

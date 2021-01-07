@@ -861,10 +861,10 @@ class Collection(WaitingEntity):
                     f'\n\tAmong {self}'
                     f'\n\tActual webelements collection:'
                     f'\n\t{outer_htmls}')  # todo: isn't it better to print it all the time via hook, like for Element?
-            else:
-                raise AssertionError(
-                    f'\n\tCannot find element by condition «{condition}» '
-                    f'\n\tAmong {self}')
+
+            raise AssertionError(
+                f'\n\tCannot find element by condition «{condition}» '
+                f'\n\tAmong {self}')
 
         return Element(Locator(f'{self}.element_by({condition})', find), self.config)
 

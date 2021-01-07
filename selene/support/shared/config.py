@@ -174,7 +174,7 @@ class SharedConfig(Config):
 
         if driver and not set_driver:
             '''
-            each time we are setting not None driver, 
+            each time we are setting not None driver,
             we have to not forget to call self._source.create()
             todo: how can we improve cohesion here? and reduce risks?
             '''
@@ -451,7 +451,6 @@ PageSource: file://{path}''')
         warnings.warn('browser.cash_elements does not work now, '
                       'and probably will be renamed when implemented',
                       FutureWarning)
-        pass
 
     @property
     def start_maximized(self):
@@ -465,14 +464,12 @@ PageSource: file://{path}''')
         warnings.warn('browser.start_maximized does not work now, '
                       'and probably will be deprecated or renamed when implemented',
                       FutureWarning)
-        pass
 
     @property
     def desired_capabilities(self):
         warnings.warn('browser.desired_capabilities does not work now, '
                       'and probably will be deprecated completely',
                       FutureWarning)
-        return None
 
     @desired_capabilities.setter
     def desired_capabilities(self, value):

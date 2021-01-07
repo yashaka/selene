@@ -97,4 +97,3 @@ from selene.support.shared import browser
 #     s('#regpass2').type('lkdjsf58788')
 #     s('#reg_accept_conditions').click()
 #     s('#registration2_link').click()
-

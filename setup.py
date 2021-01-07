@@ -1,9 +1,11 @@
-from setuptools import setup
-from selene import __version__
 from os.path import dirname, join, abspath
 
+from setuptools import setup
+
+from selene import __version__
+
 description = 'User-oriented browser tests in Python (Selenide port)'
-long_description = open(join(abspath(dirname(__file__)), "README.md" ), encoding="utf8").read()
+long_description = open(join(abspath(dirname(__file__)), "README.md"), encoding="utf8").read()
 
 setup(
     name='selene',
