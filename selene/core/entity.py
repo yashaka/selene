@@ -145,8 +145,8 @@ class Element(WaitingEntity):
 
             if cached.matching(element_is_present):
                 return TimeoutException(
-                    error.msg +
-                    f'\nActual webelement: {query.outer_html(element)}')
+                    error.msg
+                    + f'\nActual webelement: {query.outer_html(element)}')
             else:
                 return error
 
@@ -699,8 +699,8 @@ class Collection(WaitingEntity):
 
             if length <= index:
                 raise AssertionError(
-                    f'Cannot get element with index {index} ' +
-                    f'from webelements collection with length {length}')
+                    f'Cannot get element with index {index} '
+                    + f'from webelements collection with length {length}')
 
             return webelements[index]
 
