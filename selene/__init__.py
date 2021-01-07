@@ -62,17 +62,17 @@ AND::
 
     # browser.element('[name=q]')).type('selenium').press_enter()
     # OR...
-    
+
     from selene import by
-    
+
     # browser.element(by.name('q')).type('selenium').press_enter()
     # OR...for total readability
-    
+
     query = browser.element(by.name('q'))  # actual search doesn't start here, the element is "lazy"
          # here the actual webelement is found
     query.type('selenium').press_enter()
                           # and here it's located again, i.e. the element is "dynamic"
-    
+
 """
 
 
@@ -82,7 +82,7 @@ be = _be_style_conditions
 AND (in case we need to filter collection of items by some condition like visibility)::
 
     from selene import be
-    
+
     results = browser.all('.srg .g').filtered_by(be.visible)
 """
 
@@ -92,16 +92,16 @@ have = _have_style_conditions
 """
 THEN::
     from selene import have
-    
+
     # results.should(have.size(10))
     # results.first.should(have.text('Selenium automates browsers'))
     # OR...
-    
+
     results.should(have.size(10))\
         .first.should(have.text('Selenium automates browsers'))
-        
+
 FINALLY (if not registered "atexit" before)::
-    
+
     browser.quit()
 """
 
