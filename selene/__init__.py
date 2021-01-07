@@ -69,7 +69,7 @@ AND::
     # OR...for total readability
     
     query = browser.element(by.name('q'))  # actual search doesn't start here, the element is "lazy"
-         # here the actual webelement is found 
+         # here the actual webelement is found
     query.type('selenium').press_enter()
                           # and here it's located again, i.e. the element is "dynamic"
     
