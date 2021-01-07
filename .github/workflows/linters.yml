@@ -16,4 +16,4 @@ jobs:
       - name: Pycodestyle code conventions
         run: |
           pip install pycodestyle
-          pycodestyle $(pwd) --ignore=E501,E116,W503 --exclude=.venv,tests_from_past
+          pycodestyle $(pwd) --ignore=E501,W503 --exclude=.venv,tests_from_past
