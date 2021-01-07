@@ -19,44 +19,44 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
-import os
-
 import pytest
 
 from selene import have
 from selene.core.exceptions import TimeoutException
-
-start_page = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/start_page.html'
+from tests.integration.helpers.givenpage import GivenPage
 
 
 def test_have_url(session_browser):
-    session_browser.open(start_page)
+    GivenPage(session_browser.driver).opened_empty()
     session_browser.should(have.url(session_browser.driver.current_url))
     session_browser.should(have.no.url(session_browser.driver.current_url[:-1]))
 
 
 def test_have_url_containing(session_browser):
-    session_browser.open(start_page)
-    session_browser.should(have.url_containing('start_page.html'))
+    GivenPage(session_browser.driver).opened_empty()
+    session_browser.should(have.url_containing('empty.html'))
     session_browser.should(have.no.url_containing('start_page.xhtml'))
 
 
 def test_fails_on_timeout_during_waiting_for_exact_url(session_browser):
     browser = session_browser.with_(timeout=0.1)
 
-    browser.open(start_page)
+    GivenPage(browser.driver).opened_empty()
 
-    with pytest.raises(TimeoutException):
+    with pytest.raises(TimeoutException) as err:
         browser.should(have.url('xttp:/'))
-        # TODO: check message too
+    assert "Timed out after 0.1s, while waiting for:" in err.value.msg
+    assert "browser.has url" in err.value.msg
+    assert 'Reason: AssertionError: actual url:' in err.value.msg
 
 
 def test_fails_on_timeout_during_waiting_for_part_of_url(session_browser):
     browser = session_browser.with_(timeout=0.1)
 
-    browser.open(start_page)
+    GivenPage(browser.driver).opened_empty()
 
-    with pytest.raises(TimeoutException):
+    with pytest.raises(TimeoutException) as err:
         browser.should(have.url_containing('xttp:/'))
-        # TODO: check message too
+    assert "Timed out after 0.1s, while waiting for:" in err.value.msg
+    assert "browser.has url containing" in err.value.msg
+    assert 'Reason: AssertionError: actual url:' in err.value.msg
