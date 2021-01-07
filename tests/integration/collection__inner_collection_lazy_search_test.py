@@ -86,4 +86,3 @@ def test_searches_exactly_inside_parent(session_browser):
         <li class='forgotten'>Joe</li>''')
 
     assert len(elements) == 2
-
