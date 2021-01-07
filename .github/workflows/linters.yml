@@ -1,0 +1,19 @@
+name: linters
+
+on: [push, pull_request]
+
+jobs:
+
+  Pycodestyle:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.7'
+      - name: Pycodestyle code conventions
+        run: |
+          pip install pycodestyle
+          pycodestyle $(pwd) --ignore=E501,E116,W503 --exclude=.venv,tests_from_past
