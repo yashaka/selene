@@ -21,7 +21,7 @@
 # SOFTWARE.
 
 from selene.core import match
-from selene.support.conditions import not_  as _not_
+from selene.support.conditions import not_ as _not_
 
 not_ = _not_
 

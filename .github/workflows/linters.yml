@@ -1,0 +1,36 @@
+name: linters
+
+on: [push, pull_request]
+
+jobs:
+
+  Pycodestyle-conventions:
+    name: Lint Pycodestyle Code Conventions
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.7'
+      - name: Pycodestyle Code Conventions
+        run: |
+          pip install pycodestyle
+          pycodestyle $(pwd) --ignore=E501,W503,E402,E731  --exclude=.venv,tests_from_past
+
+  Pycodestyle-full-report:
+    name: Lint Pycodestyle Full Report
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.7'
+      - name: Pycodestyle Full Report
+        run: |
+          pip install pycodestyle
+          pycodestyle $(pwd) --ignore=W503  --exclude=.venv,tests_from_past
+        continue-on-error: true
