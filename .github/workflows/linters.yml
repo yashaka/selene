@@ -17,7 +17,7 @@ jobs:
       - name: Pycodestyle Code Conventions
         run: |
           pip install pycodestyle
-          pycodestyle $(pwd) --ignore=E501,W503,E402,E731  --exclude=.venv,tests_from_past
+          pycodestyle $(pwd) --ignore=E501,W503,E402,E731 --exclude=.venv,tests_from_past
 
   Pycodestyle-full-report:
     name: Lint Pycodestyle Full Report
@@ -32,5 +32,39 @@ jobs:
       - name: Pycodestyle Full Report
         run: |
           pip install pycodestyle
-          pycodestyle $(pwd) --ignore=W503  --exclude=.venv,tests_from_past
+          pycodestyle $(pwd) --ignore=W503 --exclude=.venv,tests_from_past
         continue-on-error: true
+
+  Pylint-conventions:
+    name: Lint Pylint Code Conventions
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.7'
+      - name: Pylint Code Conventions
+        run: |
+          pip install pylint
+          touch __init__.py
+          pylint $(pwd) --rcfile=.pylintrc --disable="$(cat .pylint-disabled-rules)" --ignore-patterns=.venv,tests_from_past
+          rm __init__.py
+
+  Pylint-full-report:
+    name: Lint Pylint Full Report
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.7'
+      - name: Pylint Full Report
+        run: |
+          pip install pylint
+          touch __init__.py
+          pylint $(pwd) --rcfile=.pylintrc --disable="" --ignore-patterns=.venv,tests_from_past --exit-zero
+          rm __init__.py
