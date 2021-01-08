@@ -174,7 +174,7 @@ class SharedConfig(Config):
 
         if driver and not set_driver:
             '''
-            each time we are setting not None driver, 
+            each time we are setting not None driver,
             we have to not forget to call self._source.create()
             todo: how can we improve cohesion here? and reduce risks?
             '''

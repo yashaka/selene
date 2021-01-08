@@ -6,10 +6,11 @@
 [![MIT License](http://img.shields.io/badge/license-MIT-green.svg)](https://github.com/yashaka/selene/blob/master/LICENSE)
 [![Project Template](http://img.shields.io/badge/project-template-9cf.svg)](https://github.com/yashaka/python-web-test)
 
-![GitHub views](https://raw.githubusercontent.com/aleksandr-kotlyar/selene/traffic/traffic-selene/views.svg)
-![GitHub views per week](https://raw.githubusercontent.com/aleksandr-kotlyar/selene/traffic/traffic-selene/views_per_week.svg)
-![GitHub clones](https://raw.githubusercontent.com/aleksandr-kotlyar/selene/traffic/traffic-selene/clones.svg)
-![GitHub clones per week](https://raw.githubusercontent.com/aleksandr-kotlyar/selene/traffic/traffic-selene/clones_per_week.svg)
+![GitHub stats in](https://raw.githubusercontent.com/yashaka/selene/traffic/traffic-selene/in_2021.svg)
+![GitHub views](https://raw.githubusercontent.com/yashaka/selene/traffic/traffic-selene/views.svg)
+![GitHub views per week](https://raw.githubusercontent.com/yashaka/selene/traffic/traffic-selene/views_per_week.svg)
+![GitHub clones](https://raw.githubusercontent.com/yashaka/selene/traffic/traffic-selene/clones.svg)
+![GitHub clones per week](https://raw.githubusercontent.com/yashaka/selene/traffic/traffic-selene/clones_per_week.svg)
 
 [![Join telegram chat https://t.me/selene_py](https://img.shields.io/badge/chat-telegram-blue)](https://t.me/selene_py)
 [![Присоединяйся к чату https://t.me/selene_py_ru](https://img.shields.io/badge/%D1%87%D0%B0%D1%82-telegram-red)](https://t.me/selene_py_ru)
@@ -423,21 +424,7 @@ TBD
 
 ## Contributing
 
-Before implementing your ideas, it is recommended first to create a corresponding issue and discuss the plan to be approved;)
-Also consider first to help with issues marked with help_needed label ;)
-
-1. Clone project git clone https://github.com/yashaka/selene.git
-2. Install pipenv via pip install pipenv
-3. cd selene
-4. pipenv install --dev
-
-5. Add a "feature request" Issue to this project.
-6. Discuss its need and possible implementation. And once approved...
-7. Fork the project ( https://github.com/[my-github-username]/selene/fork )
-8. Create your feature branch (`git checkout -b my-new-feature`)
-9. Commit your changes (`git commit -am 'Add some feature'`)
-10. Push to the branch (`git push origin my-new-feature`)
-11. Create a new Pull Request
+[see CONTRIBUTING.md](https://github.com/yashaka/selene/blob/master/CONTRIBUTING.md)
 
 ## Release process
 

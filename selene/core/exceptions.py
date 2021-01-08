@@ -32,5 +32,5 @@ class TimeoutException(AssertionError):
 
 
 class ConditionNotMatchedError(AssertionError):
-    def __init__(self, message = 'condition not matched'):
+    def __init__(self, message='condition not matched'):
         super().__init__(message)

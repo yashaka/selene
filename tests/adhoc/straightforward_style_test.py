@@ -26,16 +26,16 @@ from selene.api import *
 def test_selene_demo():
     # config.browser_name = 'firefox'  # chrome was default
 
-    tasks = ss('#todo-list>li').with_(timeout=config.timeout/2)
+    tasks = ss('#todo-list>li').with_(timeout=config.timeout / 2)
     active_tasks = tasks.filtered_by(have.css_class('active'))
 
-    customized = browser.with_(timeout=config.timeout*2)
+    customized = browser.with_(timeout=config.timeout * 2)
     customized.open('https://todomvc4tasj.herokuapp.com/')
     # open_url('https://www.yahoo.com/')  # or like this
     # browser.driver.get('http://google.com')  # just in case, you can use the driver directly too
     # browser.driver().get('https://todomvc4tasj.herokuapp.com/')  # temporary this works too;)
     is_todo_mvc_loaded = 'return (Object.keys(require.s.contexts._.defined).length === 39)'
-    browser.with_(timeout=config.timeout*4).should(have.js_returned(True, is_todo_mvc_loaded))  # todo: make it work
+    browser.with_(timeout=config.timeout * 4).should(have.js_returned(True, is_todo_mvc_loaded))  # todo: make it work
 
     for text in ['1', '2', '3']:
         s('#new-todo')\
