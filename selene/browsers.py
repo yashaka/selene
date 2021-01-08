@@ -46,7 +46,6 @@ class _ClassPropertyDescriptor(object):
         return self
 
 
-
 def _classproperty(func):
     if not isinstance(func, (classmethod, staticmethod)):
         func = classmethod(func)

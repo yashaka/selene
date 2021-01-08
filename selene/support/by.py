@@ -56,15 +56,17 @@ def _escape_text_quotes_for_xpath(text):
 
 
 def text(value):
-    return xpath('.//*[text()[normalize-space(.) = '
-                    + _escape_text_quotes_for_xpath(value)
-                    + ']]')
+    return xpath(
+        './/*[text()[normalize-space(.) = '
+        + _escape_text_quotes_for_xpath(value)
+        + ']]')
 
 
 def partial_text(value):
-    return xpath('.//*[text()[contains(normalize-space(.), '
-                    + _escape_text_quotes_for_xpath(value)
-                    + ')]]')
+    return xpath(
+        './/*[text()[contains(normalize-space(.), '
+        + _escape_text_quotes_for_xpath(value)
+        + ')]]')
 
 
 # todo: deprecate be_* ? since they hide "xpath" logic, which may not be working in all cases
