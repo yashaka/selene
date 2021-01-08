@@ -2,20 +2,26 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 462,
-    "uniques": 134
+    "count": 521,
+    "uniques": 147
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 234,
-    "uniques": 17
+    "count": 272,
+    "uniques": 18
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 177,
+    "count": 191,
     "uniques": 10
+  },
+  {
+    "path": "/yashaka/selene/projects/2",
+    "title": "Selene 2.0.0 stable release",
+    "count": 64,
+    "uniques": 4
   },
   {
     "path": "/yashaka/selene/pull/237",
@@ -26,14 +32,14 @@
   {
     "path": "/yashaka/selene/projects",
     "title": "Projects · yashaka/selene · GitHub",
-    "count": 46,
+    "count": 56,
     "uniques": 5
   },
   {
-    "path": "/yashaka/selene/projects/2",
-    "title": "Selene 2.0.0 stable release",
-    "count": 46,
-    "uniques": 4
+    "path": "/yashaka/selene/actions",
+    "title": "Actions · yashaka/selene · GitHub",
+    "count": 44,
+    "uniques": 3
   },
   {
     "path": "/yashaka/selene/pull/241",
@@ -46,12 +52,6 @@
     "title": "Github actions: put tests on github workflows · Issue #240 · yashaka/selene",
     "count": 36,
     "uniques": 9
-  },
-  {
-    "path": "/yashaka/selene/actions",
-    "title": "Actions · yashaka/selene · GitHub",
-    "count": 36,
-    "uniques": 3
   },
   {
     "path": "/yashaka/selene/issues/203",
