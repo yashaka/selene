@@ -19,11 +19,10 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from selene.support.shared import browser
 from selene import by, have
 
 
-def test_search():
+def test_search(browser):
     browser.open('https://www.ecosia.org/')
     browser.element(by.name('q')).type('github yashaka selene').press_enter()
 

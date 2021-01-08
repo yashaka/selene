@@ -19,16 +19,16 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
-import os
-
 from selenium.common.exceptions import NoAlertPresentException
 
-start_page = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/start_page.html'
+from tests.integration.helpers.givenpage import GivenPage
 
 
 def test_can_accept_alert(session_browser):
-    session_browser.open(start_page)
+    GivenPage(session_browser.driver).opened_with_body("""
+        <p>
+        <input id="alert_btn" type="button" onclick="alert('Good morning')" value="Run">
+        </p>""")
 
     session_browser.element("#alert_btn").click()
     session_browser.switch_to.alert.accept()
@@ -41,7 +41,10 @@ def test_can_accept_alert(session_browser):
 
 
 def test_can_dismiss_confirm_dialog(session_browser):
-    session_browser.open(start_page)
+    GivenPage(session_browser.driver).opened_with_body("""
+        <p>
+        <input id="alert_btn" type="button" onclick="alert('Good morning')" value="Run">
+        </p>""")
 
     session_browser.element("#alert_btn").click()
     session_browser.switch_to.alert.dismiss()
@@ -54,7 +57,10 @@ def test_can_dismiss_confirm_dialog(session_browser):
 
 
 def test_alert_is_present(session_browser):
-    session_browser.open(start_page)
+    GivenPage(session_browser.driver).opened_with_body("""
+        <p>
+        <input id="alert_btn" type="button" onclick="alert('Good morning')" value="Run">
+        </p>""")
 
     session_browser.element("#alert_btn").click()
 
