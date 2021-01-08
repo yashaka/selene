@@ -22,12 +22,12 @@
 from selene import by, have
 
 
-def test_search(session_browser):
-    session_browser.open('https://www.ecosia.org/')
-    session_browser.element(by.name('q')).type('github yashaka selene').press_enter()
+def test_search(browser):
+    browser.open('https://www.ecosia.org/')
+    browser.element(by.name('q')).type('github yashaka selene').press_enter()
 
-    session_browser.all('.result') \
+    browser.all('.result') \
         .first \
         .element('.result-url').click()
 
-    session_browser.should(have.title_containing('yashaka/selene'))
+    browser.should(have.title_containing('yashaka/selene'))

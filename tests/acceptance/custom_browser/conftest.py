@@ -13,5 +13,5 @@ def session_driver():
 
 
 @pytest.fixture(scope='function')
-def session_browser(session_driver):
+def browser(session_driver):
     yield Browser(Config(driver=session_driver))
