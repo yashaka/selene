@@ -45,8 +45,8 @@ def test_fails_on_timeout_during_waiting_for_exact_url(session_browser):
 
     with pytest.raises(TimeoutException) as error:
         browser.should(have.url('xttp:/'))
-    assert f"browser.has url 'xttp:/'" in error.value.msg
-    assert 'Reason: AssertionError: actual url:' in error.value.msg
+    assert "has url 'xttp:/'" in error.value.msg
+    assert 'AssertionError: actual url:' in error.value.msg
 
 
 def test_fails_on_timeout_during_waiting_for_part_of_url(session_browser):
@@ -56,5 +56,5 @@ def test_fails_on_timeout_during_waiting_for_part_of_url(session_browser):
 
     with pytest.raises(TimeoutException) as error:
         browser.should(have.url_containing('xttp:/'))
-    assert f"browser.has url containing 'xttp:/'" in error.value.msg
-    assert 'Reason: AssertionError: actual url:' in error.value.msg
+    assert "has url containing 'xttp:/'" in error.value.msg
+    assert 'AssertionError: actual url:' in error.value.msg
