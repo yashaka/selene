@@ -48,8 +48,7 @@ class js_returned_true(object):
         result = driver.execute_script(self.script)
         if not result:
             return False
-        else:
-            return driver
+        return driver
 
 
 def open_todomvc():

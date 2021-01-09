@@ -147,8 +147,7 @@ class Element(WaitingEntity):
                 return TimeoutException(
                     error.msg
                     + f'\nActual webelement: {query.outer_html(element)}')
-            else:
-                return error
+            return error
 
         return log_webelement_outer_html
 
@@ -189,8 +188,7 @@ class Element(WaitingEntity):
             return super().wait.or_fail_with(pipe(
                 Element._log_webelement_outer_html_for(self),
                 super().wait.hook_failure))
-        else:
-            return super().wait
+        return super().wait
 
     @property
     def cached(self) -> Element:  # todo: do we need caching ? with lazy save of webelement to cache
@@ -809,8 +807,7 @@ class Collection(WaitingEntity):
         def find_in(parent: Element):
             if callable(selector_or_callable):
                 return selector_or_callable(parent)
-            else:
-                return parent.element(selector_or_callable)
+            return parent.element(selector_or_callable)
 
         return self.filtered_by(lambda it: condition(find_in(it)))
 
@@ -861,10 +858,10 @@ class Collection(WaitingEntity):
                     f'\n\tAmong {self}'
                     f'\n\tActual webelements collection:'
                     f'\n\t{outer_htmls}')  # todo: isn't it better to print it all the time via hook, like for Element?
-            else:
-                raise AssertionError(
-                    f'\n\tCannot find element by condition «{condition}» '
-                    f'\n\tAmong {self}')
+
+            raise AssertionError(
+                f'\n\tCannot find element by condition «{condition}» '
+                f'\n\tAmong {self}')
 
         return Element(Locator(f'{self}.element_by({condition})', find), self.config)
 
@@ -935,8 +932,7 @@ class Collection(WaitingEntity):
         def find_in(parent: Element):
             if callable(selector_or_callable):
                 return selector_or_callable(parent)
-            else:
-                return parent.element(selector_or_callable)
+            return parent.element(selector_or_callable)
 
         return self.element_by(lambda it: condition(find_in(it)))
 
