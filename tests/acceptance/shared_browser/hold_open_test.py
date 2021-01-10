@@ -8,6 +8,7 @@ def setup_module():
 
 def teardown_module():
     config.hold_browser_open = SharedConfig().hold_browser_open
+    browser.quit()
 
 
 def test_open_browser_with_hold():
