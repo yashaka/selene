@@ -24,10 +24,12 @@ import os
 
 from selene.support.shared import config
 from tests.examples.order.app_model.order_widgets import Order
+from tests.acceptance.helpers.helper import get_test_driver
 
 
 def setup_function():
     config.timeout = 4
+    config.driver = get_test_driver()
     config.base_url = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../../resources/orderapp/'
 
 
