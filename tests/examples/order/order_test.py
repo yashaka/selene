@@ -22,21 +22,17 @@
 
 import os
 
-from selene.api.past import config
-from selene.api.past import set_driver, driver
-from tests_from_past.past.acceptance import get_test_driver
-from tests_from_past.examples.order import Order
+from selene.support.shared import config
+from tests.examples.order.app_model.order_widgets import Order
 
 
-def setup_function(m):
+def setup_function():
     config.timeout = 4
-    set_driver(get_test_driver())
-    config.app_host = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../../resources/orderapp/'
+    config.base_url = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../../resources/orderapp/'
 
 
-def teardown_function(m):
-    driver().quit()
-    config.app_host = ''
+def teardown_function():
+    config.driver.quit()
 
 
 def test_it_fills_order():

@@ -22,18 +22,14 @@
 
 from future.utils import iteritems
 
-from selene.api.past import browser
-from selene.api.past import SeleneElement
-from selene.api.past import merge
-from selene.support.conditions import be
-from selene.support.conditions import have
-from selene.support.jquery_style_selectors import s, ss
+from selene.core.entity import Element
+from selene.support.conditions import be, have
+from selene.support.shared import browser
 
 
-class SelectList(object):
+class SelectList:
     def __init__(self, element):
-        # type: (SeleneElement) -> None
-        self._element = element
+        self._element: Element = element
 
     def open(self):
         self._element.click()
@@ -53,6 +49,17 @@ class SelectList(object):
     def set(self, value):
         self.open()
         self.select_by_value(value)
+
+
+def merge(*dict_args):
+    """
+    Given any number of dicts, shallow copy and merge into a new dict,
+    precedence goes to key value pairs in latter dicts.
+    """
+    result = {}
+    for dictionary in dict_args:
+        result.update(dictionary)
+    return result
 
 
 class Filler(object):
@@ -78,12 +85,12 @@ class Filler(object):
 
 class Order(object):
     def __init__(self):
-        self.details = self.Details(s('#order_details'))
-        self.add_item = s('#add_item')
-        self.items = self.Items(ss('[id^="item"]'))
+        self.details = self.Details(browser.element('#order_details'))
+        self.add_item = browser.element('#add_item')
+        self.items = self.Items(browser.all('[id^="item"]'))
 
     def open(self):
-        browser.open_url('order.html')
+        browser.open('order.html')
 
     def add_item_with(self, **name_and_other_data):
         self.add_item.click()
@@ -115,7 +122,8 @@ class Order(object):
                 self.other_data = container.s('.item_other_data')
 
                 self.show_advanced_options_selector = container.s('.show_advanced_options_selector')
-                self.advanced_options_selector = self.AdvancedOptionsSelector(self._container.s('.advanced_options_selector'))
+                self.advanced_options_selector = self.AdvancedOptionsSelector(
+                    self._container.s('.advanced_options_selector'))
                 self.show_advanced_options = container.s('.show_advanced_options')
                 self.advanced_options = self.AdvancedOptions(self._container.ss('.advanced_options .options_list li'))
 
@@ -168,5 +176,3 @@ class Order(object):
                 def __init__(self):
                     # todo: implement...
                     pass
-
-
