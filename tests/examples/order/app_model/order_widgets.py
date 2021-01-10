@@ -75,7 +75,7 @@ class Filler(object):
             fill_with({"field1_should_be_set_first"="value"},
                       {"field_dependent_on_field1"="other value", "other_field": "some other value"})
         """
-        if not opts: opts = {}
+        opts = {} if not opts else opts
         list_of_opts = [merge(opts, opts_as_kwargs)] + list(other_opts)
         for options in list_of_opts:
             for (field, value) in iteritems(options):
