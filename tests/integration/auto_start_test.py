@@ -20,35 +20,42 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import os
-
-from selene.api.past import exact_text
-from selene.api.past import open_url, set_driver, driver
-from selene.support.jquery_style_selectors import s
-from tests_from_past.past.acceptance import get_test_driver
-
-start_page = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/start_page.html'
+from selene import have
+from selene.support.shared import browser, config
+from tests.integration.helpers.givenpage import GivenPage
+from tests_from_past.past.acceptance.helpers.helper import get_test_driver
 
 
 def test_manual_start():
     driver = get_test_driver()
-    set_driver(driver)
-    open_url(start_page)
-    s("#header").should_have(exact_text("Selene"))
+    config.driver = driver
+
+    GivenPage(browser.driver).opened_with_body(
+        '<h1 id="header">Selene</h1>')
+
+    browser.element("#header").should(have.exact_text("Selene"))
 
 
 def test_manual_start_2():
-    open_url(start_page)
-    s("#selene_link").should_have(exact_text("Selene site"))
+    GivenPage(browser.driver).opened_with_body(
+        '<a id="selene_link">Selene site</a>')
+
+    browser.element("#selene_link").should(have.exact_text("Selene site"))
+
 
 def test_auto_start():
-    open_url(start_page)
-    s("#header").should_have(exact_text("Selene"))
+    GivenPage(browser.driver).opened_with_body(
+        '<h1 id="header">Selene</h1>')
+
+    browser.element("#header").should(have.exact_text("Selene"))
 
 
 def test_auto_start_2():
-    open_url(start_page)
-    s("#selene_link").should_have(exact_text("Selene site"))
+    GivenPage(browser.driver).opened_with_body(
+        '<a id="selene_link">Selene site</a>')
 
-def teardown_module(m):
-    driver().quit()
+    browser.element("#selene_link").should(have.exact_text("Selene site"))
+
+
+def teardown_module():
+    browser.driver.quit()
