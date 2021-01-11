@@ -24,17 +24,109 @@
 
 import os
 
+import pytest
+
 from selene import have
+from selene.core.exceptions import TimeoutException
+from selene.support.shared import browser
 from tests.integration.helpers.givenpage import GivenPage
 
 
 def test_unicode_text_with_array(session_browser):
     GivenPage(session_browser.driver).opened_with_body(
         '''
-        <ul>Привет:
-           <li>Саше</li>
-           <li>Яше</li>
+        <ul>Hello:
+           <li>Alex</li>
+           <li>Yakov</li>
         </ul>
         ''')
 
-    session_browser.all('li').should(have.texts('Саше', 'Яше'))
+    session_browser.all('li').should(have.texts('Alex', 'Yakov'))
+
+
+def test_should_have_no_texts(session_browser):
+    GivenPage(session_browser.driver).opened_with_body(
+        '''
+        <ul>Hello:
+           <li>Alex</li>
+           <li>Yakov</li>
+        </ul>
+        ''')
+
+    session_browser.all('li').should(have.no.texts('Rainbow'))
+
+
+def test_should_have_no_text(session_browser):
+    GivenPage(session_browser.driver).opened_with_body(
+        '''
+        <ul>Hello:
+           <li>Yakov</li>
+           <li>Yakov</li>
+        </ul>
+        ''')
+
+    session_browser.all('li').should(have.no.text('L'))
+
+
+def test_have_texts_throws_exception(session_browser):
+    browser = session_browser.with_(timeout=0.1)
+    GivenPage(browser.driver).opened_with_body(
+        '''
+        <ul>Hello:
+           <li>Alex</li>
+           <li>Yakov</li>
+        </ul>
+        ''')
+
+    with pytest.raises(TimeoutException) as error:
+        browser.all('li').should(have.texts('Alex'))
+    assert "browser.all(('css selector', 'li')).has texts ('Alex',)" in error.value.msg
+    assert "Reason: AssertionError: actual visible_texts: ['Alex', 'Yakov']" in error.value.msg
+
+
+def test_have_text_throws_exception(session_browser):
+    browser = session_browser.with_(timeout=0.1)
+    GivenPage(browser.driver).opened_with_body(
+        '''
+        <ul>Hello:
+           <li>Alex</li>
+           <li>Alex</li>
+        </ul>
+        ''')
+
+    with pytest.raises(TimeoutException) as error:
+        browser.all('li').should(have.text('Yakov'))
+    assert "browser.all(('css selector', 'li')).cached[0].has text Yakov" in error.value.msg
+    assert "Reason: AssertionError: actual text: Alex" in error.value.msg
+
+
+def test_have_no_text_throws_exception(session_browser):
+    browser = session_browser.with_(timeout=0.1)
+    GivenPage(browser.driver).opened_with_body(
+        '''
+        <ul>Hello:
+           <li>Alex</li>
+           <li>Alex</li>
+        </ul>
+        ''')
+
+    with pytest.raises(TimeoutException) as error:
+        browser.all('li').should(have.no.text('Alex'))
+    assert "browser.all(('css selector', 'li')).cached[0].has no text Alex" in error.value.msg
+    assert "Reason: ConditionNotMatchedError: condition not matched" in error.value.msg
+
+
+def test_have_no_texts_throws_exception(session_browser):
+    browser = session_browser.with_(timeout=0.1)
+    GivenPage(browser.driver).opened_with_body(
+        '''
+        <ul>Hello:
+           <li>Alex</li>
+           <li>Yakov</li>
+        </ul>
+        ''')
+
+    with pytest.raises(TimeoutException) as error:
+        browser.all('li').should(have.no.texts('Alex', 'Yakov'))
+    assert "browser.all(('css selector', 'li')).has no texts ('Alex', 'Yakov')" in error.value.msg
+    assert "Reason: ConditionNotMatchedError: condition not matched" in error.value.msg
