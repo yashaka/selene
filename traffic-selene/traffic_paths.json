@@ -2,50 +2,50 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 583,
-    "uniques": 158
+    "count": 644,
+    "uniques": 170
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 291,
-    "uniques": 18
+    "count": 313,
+    "uniques": 19
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 232,
-    "uniques": 10
+    "count": 238,
+    "uniques": 11
   },
   {
     "path": "/yashaka/selene/projects/2",
     "title": "Selene 2.0.0 stable release",
-    "count": 83,
+    "count": 95,
     "uniques": 6
   },
   {
     "path": "/yashaka/selene/projects",
     "title": "Projects · yashaka/selene · GitHub",
-    "count": 69,
+    "count": 77,
     "uniques": 5
   },
   {
     "path": "/yashaka/selene/pull/237",
     "title": "WIP #203 tests_past_from_past migration to selene 2.x version by aleksandr-ko...",
-    "count": 63,
-    "uniques": 3
+    "count": 65,
+    "uniques": 4
   },
   {
     "path": "/yashaka/selene/actions",
     "title": "Actions · yashaka/selene · GitHub",
-    "count": 48,
+    "count": 52,
     "uniques": 3
   },
   {
     "path": "/yashaka/selene/pull/259",
     "title": "#257 get rid of start page; assert error messages of browser.conditions by al...",
-    "count": 42,
-    "uniques": 3
+    "count": 45,
+    "uniques": 5
   },
   {
     "path": "/yashaka/selene/pull/241",
@@ -54,9 +54,9 @@
     "uniques": 10
   },
   {
-    "path": "/yashaka/selene/issues/240",
-    "title": "Github actions: put tests on github workflows · Issue #240 · yashaka/selene",
-    "count": 36,
-    "uniques": 9
+    "path": "/yashaka/selene/graphs/contributors",
+    "title": "Contributors to yashaka/selene",
+    "count": 37,
+    "uniques": 4
   }
 ]
