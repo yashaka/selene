@@ -1,18 +1,18 @@
 [
   {
     "referrer": "github.com",
-    "count": 264,
-    "uniques": 30
-  },
-  {
-    "referrer": "Google",
-    "count": 127,
-    "uniques": 82
+    "count": 310,
+    "uniques": 35
   },
   {
     "referrer": "ecosia.org",
-    "count": 104,
-    "uniques": 27
+    "count": 148,
+    "uniques": 44
+  },
+  {
+    "referrer": "Google",
+    "count": 130,
+    "uniques": 84
   },
   {
     "referrer": "pypi.org",
@@ -21,7 +21,7 @@
   },
   {
     "referrer": "selene-docs-test.readthedocs.io",
-    "count": 10,
+    "count": 12,
     "uniques": 3
   },
   {
