@@ -32,7 +32,7 @@ from selene.support.shared import browser
 from tests.integration.helpers.givenpage import GivenPage
 
 
-def test_unicode_text_with_array(session_browser):
+def test_should_have_texts(session_browser):
     GivenPage(session_browser.driver).opened_with_body(
         '''
         <ul>Hello:
