@@ -68,12 +68,14 @@ class Filler(object):
 
     def fill_with(self, opts=None, *other_opts, **opts_as_kwargs):
         """
-        fills fields of self with values passed in dicts in one of the following ways:
-        as one dict via **kwargs in case the order of fields does not matter:
+        fills fields of self with values passed in dicts
+        in one of the following ways:
+        - as one dict via **kwargs in case the order of fields does not matter:
             fill_with(some_field="value", some_other_field="other value")
-        as many dicts via *args if the order for some fields does matter:
+        - as many dicts via *args if the order for some fields does matter:
             fill_with({"field1_should_be_set_first"="value"},
-                      {"field_dependent_on_field1"="other value", "other_field": "some other value"})
+                      {"field_dependent_on_field1"="other value",
+                       "other_field": "some other value"})
         """
         opts = {} if not opts else opts
         list_of_opts = [merge(opts, opts_as_kwargs)] + list(other_opts)
@@ -121,11 +123,14 @@ class Order(object):
                 self.name = container.s('.item_name')
                 self.other_data = container.s('.item_other_data')
 
-                self.show_advanced_options_selector = container.s('.show_advanced_options_selector')
+                self.show_advanced_options_selector = \
+                    container.s('.show_advanced_options_selector')
                 self.advanced_options_selector = self.AdvancedOptionsSelector(
                     self._container.s('.advanced_options_selector'))
-                self.show_advanced_options = container.s('.show_advanced_options')
-                self.advanced_options = self.AdvancedOptions(self._container.ss('.advanced_options .options_list li'))
+                self.show_advanced_options = \
+                    container.s('.show_advanced_options')
+                self.advanced_options = self.AdvancedOptions(
+                    self._container.ss('.advanced_options .options_list li'))
 
                 self.clear_options = container.s('.clear_options')
 
@@ -142,9 +147,12 @@ class Order(object):
             class AdvancedOptionsSelector(object):
                 def __init__(self, container):
                     self._container = container
-                    self.add_options_filter = container.s('.add_options_filter')
-                    self.apply_filtered_options = container.s('.apply_filtered_options')
-                    self.filters_elements = container.ss('[id^="options_filter"]')
+                    self.add_options_filter = \
+                        container.s('.add_options_filter')
+                    self.apply_filtered_options = \
+                        container.s('.apply_filtered_options')
+                    self.filters_elements = \
+                        container.ss('[id^="options_filter"]')
 
                 def filter(self, index):
                     return self.OptionsFilter(self.filters_elements[index])
@@ -159,8 +167,10 @@ class Order(object):
 
                 class OptionsFilter(object):
                     def __init__(self, container):
-                        self.option_type = SelectList(container.s('.options_scope_type'))
-                        self.scope = SelectList(container.s('.options_scope'))
+                        self.option_type = \
+                            SelectList(container.s('.options_scope_type'))
+                        self.scope = \
+                            SelectList(container.s('.options_scope'))
 
             class AdvancedOptions(object):
                 def __init__(self, elements):
