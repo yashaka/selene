@@ -37,7 +37,7 @@ from selenium.webdriver.remote.webelement import WebElement
 from selene.common.fp import pipe
 from selene.core.configuration import Config
 from selene.core.wait import Wait, Command, Query
-from selene.core.condition import Condition
+from selene.core.condition import Condition, not_
 from selene.core.locator import Locator
 
 from selene.common.helpers import to_by, flatten, is_absolute_url
@@ -445,7 +445,7 @@ class Element(WaitingEntity):
             "`browser.element('#foo').should(be.not_.enabled).should(have.no.css_class('bar')`, "
             "you also can build your own inverted conditions by: `not_ok = Condition.as_not(have.text('Ok'))`",
             DeprecationWarning)
-        return self.should(condition, timeout)
+        return self.should(not_(condition), timeout)
 
     def assure_not(self, condition: ElementCondition, timeout=None) -> Element:
         warnings.warn(
@@ -453,7 +453,7 @@ class Element(WaitingEntity):
             "`browser.element('#foo').should(be.not_.enabled).should(have.no.css_class('bar')`, "
             "you also can build your own inverted conditions by: `not_ok = Condition.as_not(have.text('Ok'))`",
             DeprecationWarning)
-        return self.should(condition, timeout)
+        return self.should(not_(condition), timeout)
 
     def should_not_be(self, condition: ElementCondition, timeout=None) -> Element:
         warnings.warn(
@@ -461,7 +461,7 @@ class Element(WaitingEntity):
             "`browser.element('#foo').should(be.not_.enabled).should(have.no.css_class('bar')`, "
             "you also can build your own inverted conditions by: `not_ok = Condition.as_not(have.text('Ok'))`",
             DeprecationWarning)
-        return self.should(condition, timeout)
+        return self.should(not_(condition), timeout)
 
     def should_not_have(self, condition: ElementCondition, timeout=None) -> Element:
         warnings.warn(
@@ -469,7 +469,7 @@ class Element(WaitingEntity):
             "`browser.element('#foo').should(be.not_.enabled).should(have.no.css_class('bar')`, "
             "you also can build your own inverted conditions by: `not_ok = Condition.as_not(have.text('Ok'))`",
             DeprecationWarning)
-        return self.should(condition, timeout)
+        return self.should(not_(condition), timeout)
 
     def set(self, value: Union[str, int]) -> Element:
         warnings.warn(
@@ -1092,7 +1092,7 @@ class Collection(WaitingEntity):
             "`browser.all('.foo').should(have.no.size(2))`, "
             "you also can build your own inverted conditions by: `not_zero = Condition.as_not(have.size(0'))`",
             DeprecationWarning)
-        return self.should(condition, timeout)
+        return self.should(not_(condition), timeout)
 
     def assure_not(self, condition: Union[CollectionCondition, ElementCondition], timeout=None) -> Collection:
         warnings.warn(
@@ -1100,7 +1100,7 @@ class Collection(WaitingEntity):
             "`browser.all('.foo').should(have.no.size(2))`, "
             "you also can build your own inverted conditions by: `not_zero = Condition.as_not(have.size(0'))`",
             DeprecationWarning)
-        return self.should(condition, timeout)
+        return self.should(not_(condition), timeout)
 
     def should_not_be(self, condition: Union[CollectionCondition, ElementCondition], timeout=None) -> Collection:
         warnings.warn(
@@ -1108,7 +1108,7 @@ class Collection(WaitingEntity):
             "`browser.all('.foo').should(have.no.size(2))`, "
             "you also can build your own inverted conditions by: `not_zero = Condition.as_not(have.size(0'))`",
             DeprecationWarning)
-        return self.should(condition, timeout)
+        return self.should(not_(condition), timeout)
 
     def should_not_have(self, condition: Union[CollectionCondition, ElementCondition], timeout=None) -> Collection:
         warnings.warn(
@@ -1116,7 +1116,7 @@ class Collection(WaitingEntity):
             "`browser.element('#foo').should(have.no.size(2))`, "
             "you also can build your own inverted conditions by: `not_zero = Condition.as_not(have.size(0'))`",
             DeprecationWarning)
-        return self.should(condition, timeout)
+        return self.should(not_(condition), timeout)
 
 
 class SeleneCollection(Collection):  # todo: consider deprecating this name
