@@ -22,13 +22,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import os
-
 import pytest
-
 from selene import have
 from selene.core.exceptions import TimeoutException
-from selene.support.shared import browser
 from tests.integration.helpers.givenpage import GivenPage
 
 
