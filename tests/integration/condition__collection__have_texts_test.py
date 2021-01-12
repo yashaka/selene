@@ -86,8 +86,8 @@ def test_have_texts_throws_exception(session_browser):
 
     with pytest.raises(TimeoutException) as error:
         browser.all('li').should(have.texts('Alex'))
-    assert "browser.all(('css selector', 'li')).has texts ('Alex',)" in error.value.msg
-    assert "Reason: AssertionError: actual visible_texts: ['Alex', 'Yakov']" in error.value.msg
+    assert "has texts ('Alex',)" in error.value.msg
+    assert "AssertionError: actual visible_texts: ['Alex', 'Yakov']" in error.value.msg
 
 
 def test_have_text_throws_exception(session_browser):
@@ -102,8 +102,8 @@ def test_have_text_throws_exception(session_browser):
 
     with pytest.raises(TimeoutException) as error:
         browser.all('li').should(have.text('Yakov'))
-    assert "browser.all(('css selector', 'li')).cached[0].has text Yakov" in error.value.msg
-    assert "Reason: AssertionError: actual text: Alex" in error.value.msg
+    assert "has text Yakov" in error.value.msg
+    assert "AssertionError: actual text: Alex" in error.value.msg
 
 
 def test_have_no_text_throws_exception(session_browser):
@@ -118,8 +118,8 @@ def test_have_no_text_throws_exception(session_browser):
 
     with pytest.raises(TimeoutException) as error:
         browser.all('li').should(have.no.text('Alex'))
-    assert "browser.all(('css selector', 'li')).cached[0].has no text Alex" in error.value.msg
-    assert "Reason: ConditionNotMatchedError: condition not matched" in error.value.msg
+    assert "has no text Alex" in error.value.msg
+    assert "ConditionNotMatchedError: condition not matched" in error.value.msg
 
 
 def test_have_no_texts_throws_exception(session_browser):
@@ -134,5 +134,6 @@ def test_have_no_texts_throws_exception(session_browser):
 
     with pytest.raises(TimeoutException) as error:
         browser.all('li').should(have.no.texts('Alex', 'Yakov'))
-    assert "browser.all(('css selector', 'li')).has no texts ('Alex', 'Yakov')" in error.value.msg
-    assert "Reason: ConditionNotMatchedError: condition not matched" in error.value.msg
+    # todo: why do we have `has` below, should not it be `have`?
+    assert "has no texts ('Alex', 'Yakov')" in error.value.msg
+    assert "ConditionNotMatchedError: condition not matched" in error.value.msg
