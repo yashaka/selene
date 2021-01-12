@@ -62,7 +62,7 @@ def merge(*dict_args):
     return result
 
 
-class Filler(object):  # todo: rename to Fields?
+class Fields(object):  # todo: rename to Fields?
     def __init__(self, element):
         self._element = element
 
@@ -107,7 +107,7 @@ class Order(object):
             self.salutation_options = container.ss('#salutation option')
 
         def fill_with(self, opts=None, *other_opts, **opts_as_kwargs):
-            Filler(self).fill_with(opts, *other_opts, **opts_as_kwargs)
+            Fields(self).fill_with(opts, *other_opts, **opts_as_kwargs)
             return self
 
     class Items(object):
@@ -135,7 +135,7 @@ class Order(object):
                 self.clear_options = container.s('.clear_options')
 
             def fill_with(self, opts=None, *other_opts, **opts_as_kwargs):
-                Filler(self).fill_with(opts, *other_opts, **opts_as_kwargs)
+                Fields(self).fill_with(opts, *other_opts, **opts_as_kwargs)
                 return self
 
             def add_advanced_options(self, *options_data):
@@ -159,7 +159,7 @@ class Order(object):
 
                 def add_filter_with(self, *opts_sequence):
                     self.add_options_filter.click()
-                    Filler(self.filter(-1)).fill_with(*opts_sequence)
+                    Fields(self.filter(-1)).fill_with(*opts_sequence)
                     return self
 
                 def should_be_hidden(self):
