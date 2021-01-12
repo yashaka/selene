@@ -46,7 +46,7 @@ class SelectList:
     def select_by_exact_text(self, text):
         self._options().element_by(have.exact_text(text)).click()
 
-    def set(self, value):
+    def set_value(self, value):
         self.open()
         self.select_by_value(value)
 
@@ -62,7 +62,7 @@ def merge(*dict_args):
     return result
 
 
-class Filler(object):
+class Filler(object):  # todo: rename to Fields?
     def __init__(self, element):
         self._element = element
 
@@ -81,7 +81,7 @@ class Filler(object):
         list_of_opts = [merge(opts, opts_as_kwargs)] + list(other_opts)
         for options in list_of_opts:
             for (field, value) in iteritems(options):
-                getattr(self._element, field).set(value)
+                getattr(self._element, field).set_value(value)
         return self
 
 
@@ -180,7 +180,7 @@ class Order(object):
                     self._elements.should(have.exact_texts(*texts))
 
                 def should_be_empty(self):
-                    self._elements.should(be.empty)
+                    self._elements.should(have.size(0))
 
             class AdvancedOption(object):
                 def __init__(self):
