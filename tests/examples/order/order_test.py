@@ -26,7 +26,7 @@ from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 
 from selene.support.shared import config
-from tests.examples.order.app_model.order_widgets import Order
+from tests.examples.order.model.widgets import Order
 
 
 def setup_function():
