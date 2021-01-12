@@ -74,7 +74,7 @@ def test_should_have_no_text(session_browser):
     session_browser.all('li').should(have.no.text('L'))
 
 
-def test_have_texts_throws_exception(session_browser):
+def test_have_texts_exception(session_browser):
     browser = session_browser.with_(timeout=0.1)
     GivenPage(browser.driver).opened_with_body(
         '''
@@ -90,7 +90,7 @@ def test_have_texts_throws_exception(session_browser):
     assert "AssertionError: actual visible_texts: ['Alex', 'Yakov']" in error.value.msg
 
 
-def test_have_text_throws_exception(session_browser):
+def test_have_text_exception(session_browser):
     browser = session_browser.with_(timeout=0.1)
     GivenPage(browser.driver).opened_with_body(
         '''
@@ -106,7 +106,7 @@ def test_have_text_throws_exception(session_browser):
     assert "AssertionError: actual text: Alex" in error.value.msg
 
 
-def test_have_no_text_throws_exception(session_browser):
+def test_have_no_text_exception(session_browser):
     browser = session_browser.with_(timeout=0.1)
     GivenPage(browser.driver).opened_with_body(
         '''
@@ -122,7 +122,7 @@ def test_have_no_text_throws_exception(session_browser):
     assert "ConditionNotMatchedError: condition not matched" in error.value.msg
 
 
-def test_have_no_texts_throws_exception(session_browser):
+def test_have_no_texts_exception(session_browser):
     browser = session_browser.with_(timeout=0.1)
     GivenPage(browser.driver).opened_with_body(
         '''
@@ -137,3 +137,4 @@ def test_have_no_texts_throws_exception(session_browser):
     # todo: why do we have `has` below, should not it be `have`?
     assert "has no texts ('Alex', 'Yakov')" in error.value.msg
     assert "ConditionNotMatchedError: condition not matched" in error.value.msg
+    # todo: should not we see here actual texts in log too?
