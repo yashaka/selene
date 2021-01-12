@@ -22,15 +22,18 @@
 
 import os
 
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
+
 from selene.support.shared import config
 from tests.examples.order.app_model.order_widgets import Order
-from tests.acceptance.helpers.helper import get_test_driver
 
 
 def setup_function():
     config.timeout = 4
-    config.driver = get_test_driver()
-    config.base_url = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../../resources/orderapp/'
+    config.driver = webdriver.Chrome(ChromeDriverManager().install())
+    config.base_url = 'file://' + os.path.abspath(os.path.dirname(__file__)) \
+                      + '/../../resources/orderapp/'
 
 
 def teardown_function():
@@ -41,17 +44,22 @@ def test_it_fills_order():
     order = Order()
 
     order.open()
-    order.details.fill_with(first_name='Johanna', last_name='Smith', salutation='Mrs')
+    order.details.fill_with(
+        first_name='Johanna',
+        last_name='Smith',
+        salutation='Mrs')
 
-    item = order.add_item_with(name='New Test Item', other_data='Some other specific data')
+    item = order.add_item_with(
+        name='New Test Item',
+        other_data='Some other specific data')
     item.show_advanced_options_selector.click()
     item.add_advanced_options(
         [{'option_type': 'type1'}, {'scope': 'optionscope2fortype1'}],
-        [{'option_type': 'type2'}, {'scope': 'optionscope3fortype2'}]
-    )
+        [{'option_type': 'type2'}, {'scope': 'optionscope3fortype2'}])
 
     item.show_advanced_options.click()
-    item.advanced_options.should_be('optionscope2fortype1', 'optionscope3fortype2')
+    item.advanced_options.should_be(
+        'optionscope2fortype1', 'optionscope3fortype2')
 
     item.clear_options.click()
     item.advanced_options.should_be_empty()
