@@ -6,11 +6,12 @@ from selene.support.webdriver import Help
 
 
 def setup_function():
+    browser.quit()
     browser.config.hold_browser_open = SharedConfig().hold_browser_open
     """setting to default"""
 
 
-def teardown_function():
+def teardown_module():
     browser.config.hold_browser_open = SharedConfig().hold_browser_open
     browser.quit()
 
@@ -30,6 +31,20 @@ def test_hold_on_explicit_true():
     browser.open('http://todomvc.com/examples/emberjs/')
     browser.element('#new-todo').type('a').press_enter()
 
+    atexit._run_exitfuncs()
+    browser.element('#new-todo').type('b').press_enter()
+
+    browser.all('#todo-list>li').should(have.texts('a', 'b'))
+
+
+def x_test_hold_on_explicit_true__when__set_after_open():
+    """
+    todo: probably it will not work right now... should we bother?
+    """
+    browser.open('http://todomvc.com/examples/emberjs/')
+    browser.element('#new-todo').type('a').press_enter()
+
+    browser.config.hold_browser_open = True
     atexit._run_exitfuncs()
     browser.element('#new-todo').type('b').press_enter()
 
