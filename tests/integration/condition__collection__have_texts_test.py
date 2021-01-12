@@ -36,24 +36,30 @@ def test_should_have_texts(session_browser):
     GivenPage(session_browser.driver).opened_with_body(
         '''
         <ul>Hello:
-           <li>Alex</li>
-           <li>Yakov</li>
+           <li>Alex!</li>
+           <li>Yakov!</li>
         </ul>
         ''')
 
+    session_browser.all('li').should(have.texts('', ''))  # funny:) but as it is
     session_browser.all('li').should(have.texts('Alex', 'Yakov'))
+    session_browser.all('li').should(have.texts('Alex!', 'Yakov!'))
 
 
 def test_should_have_no_texts(session_browser):
     GivenPage(session_browser.driver).opened_with_body(
         '''
         <ul>Hello:
-           <li>Alex</li>
-           <li>Yakov</li>
+           <li>Alex!</li>
+           <li>Yakov!</li>
         </ul>
         ''')
 
-    session_browser.all('li').should(have.no.texts('Alex', 'Yakiv.'))
+    session_browser.all('li').should(have.no.texts(' ', ' '))
+    session_browser.all('li').should(have.no.texts('', 'Yakov!!'))
+    session_browser.all('li').should(have.no.texts('Alex!', 'Yakov!!'))
+    session_browser.all('li').should(have.no.texts('Alex!', 'Yakov!', ''))
+    session_browser.all('li').should(have.no.texts('Alex!'))
 
 
 def test_should_have_no_text(session_browser):
