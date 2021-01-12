@@ -53,7 +53,7 @@ def test_should_have_no_texts(session_browser):
         </ul>
         ''')
 
-    session_browser.all('li').should(have.no.texts('Rainbow'))
+    session_browser.all('li').should(have.no.texts('Alex', 'Yakiv.'))
 
 
 def test_should_have_no_text(session_browser):
