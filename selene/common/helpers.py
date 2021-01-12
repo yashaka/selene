@@ -60,7 +60,7 @@ def dissoc(associated: dict, *keys: str) -> dict:
 def on_error_return_false(no_args_predicate):
     try:
         return no_args_predicate()
-    except Exception:
+    except:
         return False
 
 
