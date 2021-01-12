@@ -103,6 +103,20 @@ def test_should_have_text(session_browser):
 
     session_browser.all('li').should(have.text('ako'))
     session_browser.all('li').should(have.text(''))
+    # todo: this test is a bit weird here...
+    # the file is called condition__collection__have_texts_test.py
+    # specifying that here we tests collection conditions...
+    # but have.text is not a collection condition
+    # it is an element condition applied to collection
+    # i am not sure that this file is a correct place for such test
+    # but we are going to change how a collection can apply an element condition
+    # to assert its content
+    # we either go `collection.should_each(have.text(''))` way
+    # or `collection.should(have.text('').each)` way
+    # in the former case probably
+    #   we will move this test to condition__element__have_texts_test.py
+    # in the latter case probably we keep it here
+    # for now let's keep it here, and then we see...
 
 
 def test_should_have_text_exception(session_browser):
