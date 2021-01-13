@@ -2,20 +2,20 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 745,
-    "uniques": 207
+    "count": 702,
+    "uniques": 190
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 338,
-    "uniques": 20
+    "count": 327,
+    "uniques": 17
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 279,
-    "uniques": 12
+    "count": 258,
+    "uniques": 9
   },
   {
     "path": "/yashaka/selene/projects/2",
@@ -25,14 +25,8 @@
   },
   {
     "path": "/yashaka/selene/projects",
-    "title": "Projects · yashaka/selene · GitHub",
-    "count": 91,
-    "uniques": 6
-  },
-  {
-    "path": "/yashaka/selene/pull/237",
-    "title": "WIP #203 tests_past_from_past migration to selene 2.x version by aleksandr-ko...",
-    "count": 65,
+    "title": "Projects · yashaka/selene",
+    "count": 89,
     "uniques": 4
   },
   {
@@ -48,15 +42,21 @@
     "uniques": 5
   },
   {
-    "path": "/yashaka/selene/graphs/contributors",
-    "title": "Contributors to yashaka/selene",
-    "count": 43,
-    "uniques": 6
+    "path": "/yashaka/selene/pull/241",
+    "title": "Selene GitHub ci by aleksandr-kotlyar · Pull Request #241 · yashaka/selene",
+    "count": 41,
+    "uniques": 10
   },
   {
     "path": "/yashaka/selene/pulse",
     "title": "Pulse · yashaka/selene",
-    "count": 42,
+    "count": 41,
     "uniques": 2
+  },
+  {
+    "path": "/yashaka/selene/graphs/contributors",
+    "title": "Contributors to yashaka/selene",
+    "count": 38,
+    "uniques": 6
   }
 ]
