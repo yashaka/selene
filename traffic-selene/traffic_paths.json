@@ -2,19 +2,19 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 815,
-    "uniques": 230
+    "count": 823,
+    "uniques": 238
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 330,
+    "count": 327,
     "uniques": 17
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 278,
+    "count": 270,
     "uniques": 11
   },
   {
@@ -32,13 +32,13 @@
   {
     "path": "/yashaka/selene/actions",
     "title": "Actions · yashaka/selene · GitHub",
-    "count": 58,
+    "count": 55,
     "uniques": 4
   },
   {
     "path": "/yashaka/selene/pulse",
     "title": "Pulse · yashaka/selene",
-    "count": 49,
+    "count": 47,
     "uniques": 2
   },
   {
@@ -48,15 +48,15 @@
     "uniques": 5
   },
   {
-    "path": "/yashaka/selene/pull/241",
-    "title": "Selene GitHub ci by aleksandr-kotlyar · Pull Request #241 · yashaka/selene",
-    "count": 41,
-    "uniques": 10
-  },
-  {
     "path": "/yashaka/selene/graphs/contributors",
     "title": "Contributors to yashaka/selene",
-    "count": 41,
+    "count": 39,
     "uniques": 6
+  },
+  {
+    "path": "/yashaka/selene/issues/250",
+    "title": "[tests] add negative tests for collection conditions `have.text`, `have.texts...",
+    "count": 38,
+    "uniques": 4
   }
 ]
