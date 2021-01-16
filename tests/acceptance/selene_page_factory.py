@@ -19,24 +19,51 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
 import os
 
-import selene
-from selene.api.past import BrowserName
-from selene.api.past import exact_text
-from selene.api.past import open_url
-from selene.support.jquery_style_selectors import s
+from selene import have
+from selene.support.shared import browser
+from tests.integration.helpers.givenpage import GivenPage
 
-start_page = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/start_page.html'
+empty_page = 'file://{}/../../resources/empty.html'.format(
+    os.path.abspath(os.path.dirname(__file__)))
+
+
+def setup_function():
+    browser.quit()
+
+
+def teardown_function():
+    browser.config.browser_name = 'chrome'
 
 
 def test_can_init_default_browser_on_visit():
-    open_url(start_page)
-    s("#header").should_have(exact_text("Selene"))
+    browser.open(empty_page)
+    GivenPage(browser.driver).opened_with_body(
+        '''
+        <h1 id="header">Selene</h1>''')
+
+    browser.element("#header").should(have.exact_text("Selene"))
+    assert browser.driver.name == 'chrome'
 
 
 def test_can_init_custom_browser_on_visit():
-    selene.config.browser_name = BrowserName.MARIONETTE
-    open_url(start_page)
-    s("#selene_link").should_have(exact_text("Selene site"))
+    browser.config.browser_name = 'firefox'
+
+    browser.open(empty_page)
+    GivenPage(browser.driver).opened_with_body(
+        '''
+        <a id="selene_link">Selene site</a>''')
+
+    browser.element("#selene_link").should(have.exact_text("Selene site"))
+    assert browser.driver.name == 'firefox'
+
+
+def test_can_init_default_browser_after_custom():
+    browser.open(empty_page)
+    GivenPage(browser.driver).opened_with_body(
+        '''
+        <h1 id="header">Selene</h1>''')
+
+    browser.element("#header").should(have.exact_text("Selene"))
+    assert browser.driver.name == 'chrome'
