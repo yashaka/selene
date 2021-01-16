@@ -39,7 +39,7 @@ class TestTodoMVC:
         tasks = browser.all("#todo-list>li")
         active_tasks = tasks.filtered_by(have.css_class("active"))
 
-        browser.open_url(app_url)
+        browser.open(app_url)
         browser.should(have.js_returned(True, is_TodoMVC_loaded))
 
         for task_text in ["1", "2", "3"]:
@@ -47,7 +47,7 @@ class TestTodoMVC:
         tasks.should(have.texts("1", "2", "3")).should_each(have.css_class("active"))
         browser.element("#todo-count").should(have.text('3'))
 
-        tasks[2].s(".toggle").click()
+        tasks[2].element(".toggle").click()
         active_tasks.should(have.texts("1", "2"))
         active_tasks.should(have.size(2))
 
