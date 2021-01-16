@@ -19,28 +19,35 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
 
-import os
-
-from selene.api.past import browser, config
-from selene.support.jquery_style_selectors import s
-
-start_page = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/start_page.html'
+from selene.support.shared import browser
+from tests.integration.helpers.givenpage import GivenPage
 
 
-def setup_module(m):
-    config.browser_name = "chrome"
+def setup_module():
+    browser.set_driver(webdriver.Chrome(ChromeDriverManager().install()))
+    browser.driver().set_window_size(300, 400)
 
 
 def test_can_scroll_to_via_js():
-    browser.open_url(start_page)
-    # logging.warning(browser.driver().current_url)
-    # browser.driver().set_window_size(300, 400)
-    link = s("#invisible_link")
+    GivenPage(browser.driver).opened_with_body(
+        '''
+        <div id="paragraph" style="margin: 400px">
+        </div>
+        <a id="not-viewable-link" href="#header"/>
+        <h1 id="header">Heading 1</h2>
+        ''')
+    link = browser.element("#not-viewable-link")
     # browser.driver().execute_script("arguments[0].scrollIntoView();", link)
     # - this code does not work because SeleneElement is not JSON serializable, and I don't know the way to fix it
     #   - because all available in python options needs a change to json.dumps call - adding a second parameter to it
     #     and specify a custom encoder, but we can't change this call inside selenium webdriver implementation
-    browser.driver().execute_script("arguments[0].scrollIntoView();", link.get_actual_webelement())
+
+    browser.execute_script("arguments[0].scrollIntoView();", link())
     link.click()
-    assert "header" in browser.driver().current_url
+    # actually, selene .click() scrolls to any element in dom, so it's not an option fo
+    # in this case we should find another way to check page is scrolled down or to choose another script.
+
+    assert "header" in browser.driver.current_url
