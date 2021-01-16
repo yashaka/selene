@@ -19,23 +19,34 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
-import pytest
-
-from selene.api.past import driver, set_driver
-from tests_from_past.past.acceptance import get_test_driver
+from selene.support.shared import browser
+from tests.examples.todomvc.pagemodules_approach.pages import tasks
 
 
-@pytest.fixture(scope='class')
-def setup(request):
-    set_driver(get_test_driver())
+class TestTodoMVC:
 
-    def teardown():
-        driver().quit()
+    def teardown(self):
+        browser.execute_script('localStorage.clear()')
 
-    request.addfinalizer(teardown)
+    def test_filter_tasks(self):
+        tasks.visit()
 
+        tasks.add('a', 'b', 'c')
+        tasks.should_be('a', 'b', 'c')
 
-@pytest.mark.usefixtures("setup")
-class BaseTest(object):
-    pass
+        tasks.toggle('b')
+
+        tasks.filter_active()
+        tasks.should_be('a', 'c')
+
+        tasks.filter_completed()
+        tasks.should_be('b')
+
+    def test_clear_completed(self):
+        tasks.visit()
+
+        tasks.add('a', 'b', 'c')
+        tasks.toggle('b')
+        tasks.clear_completed()
+
+        tasks.should_be('a', 'c')

@@ -19,50 +19,35 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-import os
-
-from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
-
+from selene import have, by, be
 from selene.support.shared import config, browser
-from tests.examples.widgets_aka_components_page_objects_style_for_spa_apps \
-    .model.widgets import Order
 
 
 def setup_function():
-    config.timeout = 4
-    browser.set_driver(webdriver.Chrome(ChromeDriverManager().install()))
-    config.base_url = 'file://{}/../../resources/orderapp/'.format(
-        os.path.abspath(os.path.dirname(__file__)))
+    browser.config.browser_name = 'firefox'
 
 
 def teardown_function():
     browser.quit()
+    browser.config.browser_name = 'chrome'
 
 
-def test_it_fills_order():
-    order = Order()
+def test_filter_tasks():
+    browser.open('https://todomvc4tasj.herokuapp.com')
+    clear_completed_js_loaded = "return $._data($('#clear-completed').get(0), 'events').hasOwnProperty('click')"
+    browser.wait_to(have.js_returned(True, clear_completed_js_loaded), timeout=config.timeout * 3)
 
-    order.open()
-    order.details.fill_with(
-        first_name='Johanna',
-        last_name='Smith',
-        salutation='Mrs')
+    browser.element('#new-todo').set_value('a').press_enter()
+    browser.element('#new-todo').set_value('b').press_enter()
+    browser.element('#new-todo').set_value('c').press_enter()
+    browser.all('#todo-list li').should(have.exact_texts('a', 'b', 'c'))
 
-    item = order.add_item_with(
-        name='New Test Item',
-        other_data='Some other specific data')
-    item.show_advanced_options_selector.click()
-    item.add_advanced_options(
-        [{'option_type': 'type1'}, {'scope': 'optionscope2fortype1'}],
-        [{'option_type': 'type2'}, {'scope': 'optionscope3fortype2'}])
+    browser.all('#todo-list li').element_by(have.exact_text('b')).element('.toggle').click()
+    browser.element(by.link_text('Active')).click()
+    browser.all('#todo-list li').filtered_by(be.visible).should(have.exact_texts('a', 'c'))
 
-    item.show_advanced_options.click()
-    item.advanced_options.should_be(
-        'optionscope2fortype1', 'optionscope3fortype2')
+    browser.element(by.link_text('Completed')).click()
+    browser.all('#todo-list li').filtered_by(be.visible).should(have.exact_texts('b'))
 
-    item.clear_options.click()
-    item.advanced_options.should_be_empty()
-
-    item.show_advanced_options_selector.click()
-    item.advanced_options_selector.should_be_hidden()
+    browser.element(by.link_text('All')).click()
+    browser.all('#todo-list li').filtered_by(be.visible).should(have.exact_texts('a', 'b', 'c'))
