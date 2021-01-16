@@ -19,91 +19,85 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
+from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 
-from selene.api.past import visible
-from selene.api.past import set_driver, driver, open_url
-from selene.support.jquery_style_selectors import s
-from tests_from_past.past.acceptance import get_test_driver
+from selene import be
+
+from selene.support.shared import browser
+from tests.acceptance.helpers.helper import get_test_driver
+from tests.acceptance.helpers.todomvc import TODOMVC_URL
 from tests.helpers import time_spent
-from tests_from_past.past.acceptance import TODOMVC_URL
 
-browser = None
-shaded_browser = None
+selenium_browser: WebDriver
 
 
-def setup_function(f):
-    global browser
-    global shaded_browser
+def setup_function():
+    global selenium_browser
+    selenium_browser = get_test_driver()
+    selenium_browser.get(TODOMVC_URL)
+    WebDriverWait(selenium_browser, 4).until(
+        expected_conditions.visibility_of_element_located((By.CSS_SELECTOR, "#new-todo")))
 
-    set_driver(get_test_driver())
-    open_url(TODOMVC_URL)
-    s("#new-todo").should_be(visible)
-
-    browser = get_test_driver()
-    browser.get(TODOMVC_URL)
-    WebDriverWait(browser, 4).until(expected_conditions.visibility_of_element_located((By.CSS_SELECTOR, "#new-todo")))
-
-    shaded_browser = get_test_driver()
+    browser.set_driver(get_test_driver())
+    browser.open(TODOMVC_URL)
+    browser.element("#new-todo").should(be.visible)
 
 
-def teardown_function(f):
-    global browser
-    global shaded_browser
+def teardown_function():
+    global selenium_browser
+    selenium_browser.quit()
     browser.quit()
-    driver().quit()
-    shaded_browser.quit()
 
 
 def create_tasks_with_raw_selenium():
-    global browser
-    new_todo = browser.find_element_by_css_selector("#new-todo")
+    global selenium_browser
+    new_todo = selenium_browser.find_element_by_css_selector("#new-todo")
     for task_text in map(str, range(10)):
         new_todo.send_keys(task_text + Keys.ENTER)
 
 
 def create_tasks_with_selenium_with_research():
-    global browser
+    global selenium_browser
     for task_text in map(str, range(10)):
-        new_todo = browser.find_element_by_css_selector("#new-todo")
+        new_todo = selenium_browser.find_element_by_css_selector("#new-todo")
         new_todo.send_keys(task_text + Keys.ENTER)
 
 
 def create_tasks_with_selene_and_send_keys():
     for task_text in map(str, range(10)):
-        s("#new-todo").send_keys(task_text + Keys.ENTER)
+        browser.element("#new-todo").send_keys(task_text + Keys.ENTER)
 
 
 def create_tasks_with_selene_with_cash():
-    new_todo = s("#new-todo").caching()
+    new_todo = browser.element("#new-todo").caching()
     for task_text in map(str, range(10)):
         new_todo.send_keys(task_text + Keys.ENTER)
 
 
 # todo: review these tests
 
-# def test_selene_is_almost_as_fast_selenium_with_research_and_initial_wait_for_visibility():
-#     selene_time = time_spent(create_tasks_with_selene_and_send_keys)
-#     selenium_time = time_spent(create_tasks_with_selenium_with_research)
-#     # print("%s vs %s" % (selene_time, selenium_time))
-#     assert selene_time < 1.75 * selenium_time
-#     # assert selene_time < 1.12 * selenium_time
+def test_selene_is_almost_as_fast_selenium_with_research_and_initial_wait_for_visibility():
+    selene_time = time_spent(create_tasks_with_selene_and_send_keys)
+    selenium_time = time_spent(create_tasks_with_selenium_with_research)
+    print("%s vs %s" % (selene_time, selenium_time))
+    assert selene_time < 1.75 * selenium_time
+    assert selene_time < 1.12 * selenium_time
 
 
-def x_test_selene_is_from_32_to_75_percents_slower_than_raw_selenium():
+def test_selene_is_from_32_to_75_percents_slower_than_raw_selenium():
     selene_time = time_spent(create_tasks_with_selene_and_send_keys)
     selenium_time = time_spent(create_tasks_with_raw_selenium)
-    # print("%s vs %s" % (selene_time, selenium_time))
+    print("%s vs %s" % (selene_time, selenium_time))
     assert selene_time <= 1.75 * selenium_time
 
 
-# def test_cashed_selene_is_almost_as_fast_raw_selenium():
-#     selene_time = time_spent(create_tasks_with_selene_with_cash)
-#     selenium_time = time_spent(create_tasks_with_raw_selenium)
-#     # print("%s vs %s" % (selene_time, selenium_time))
-#     assert selene_time < 1.15 * selenium_time
-#     # assert selene_time < 1.12 * selenium_time
+def test_cashed_selene_is_almost_as_fast_raw_selenium():
+    selene_time = time_spent(create_tasks_with_selene_with_cash)
+    selenium_time = time_spent(create_tasks_with_raw_selenium)
+    print("%s vs %s" % (selene_time, selenium_time))
+    assert selene_time < 1.15 * selenium_time
+    assert selene_time < 1.12 * selenium_time
