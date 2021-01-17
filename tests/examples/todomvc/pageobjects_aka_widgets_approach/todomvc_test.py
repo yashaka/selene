@@ -31,7 +31,7 @@ def setup_module():
     browser.set_driver(webdriver.Chrome(ChromeDriverManager().install()))
 
 
-def teardown_function():
+def teardown_module():
     browser.quit()
 
 

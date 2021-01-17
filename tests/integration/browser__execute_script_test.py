@@ -31,6 +31,10 @@ def setup_module():
     browser.driver().set_window_size(300, 400)
 
 
+def teardown_module():
+    browser.quit()
+
+
 def test_can_scroll_to_via_js():
     GivenPage(browser.driver).opened_with_body(
         '''

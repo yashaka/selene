@@ -25,7 +25,7 @@ from selene import have
 from selene.support.shared import browser
 from tests.integration.helpers.givenpage import GivenPage
 
-empty_page = 'file://{}/../../resources/empty.html'.format(
+empty_page = 'file://{}/../resources/empty.html'.format(
     os.path.abspath(os.path.dirname(__file__)))
 
 
@@ -35,6 +35,7 @@ def setup_function():
 
 def teardown_function():
     browser.config.browser_name = 'chrome'
+    browser.quit()
 
 
 def test_can_init_default_browser_on_visit():
