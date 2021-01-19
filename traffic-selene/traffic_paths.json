@@ -2,43 +2,37 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 816,
-    "uniques": 259
+    "count": 805,
+    "uniques": 257
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 200,
-    "uniques": 9
+    "count": 185,
+    "uniques": 7
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 195,
-    "uniques": 15
+    "count": 178,
+    "uniques": 13
   },
   {
     "path": "/yashaka/selene/projects/2",
     "title": "Selene 2.0.0 stable release · GitHub",
-    "count": 89,
-    "uniques": 7
+    "count": 80,
+    "uniques": 6
   },
   {
     "path": "/yashaka/selene/projects",
     "title": "Projects · yashaka/selene · GitHub",
-    "count": 79,
+    "count": 70,
     "uniques": 7
-  },
-  {
-    "path": "/yashaka/selene/pulse",
-    "title": "Pulse · yashaka/selene",
-    "count": 48,
-    "uniques": 2
   },
   {
     "path": "/yashaka/selene/issues/250",
     "title": "[tests] add negative tests for collection conditions `have.text`, `have.texts...",
-    "count": 45,
+    "count": 46,
     "uniques": 5
   },
   {
@@ -48,15 +42,21 @@
     "uniques": 5
   },
   {
+    "path": "/yashaka/selene/pulse",
+    "title": "Pulse · yashaka/selene",
+    "count": 45,
+    "uniques": 2
+  },
+  {
     "path": "/yashaka/selene/pull/281",
     "title": "Coverage: condition have.text, have.no.text, have.texts, have.no.texts and ex...",
-    "count": 37,
+    "count": 39,
     "uniques": 4
   },
   {
     "path": "/yashaka/selene/actions",
     "title": "Actions · yashaka/selene",
-    "count": 35,
+    "count": 36,
     "uniques": 3
   }
 ]
