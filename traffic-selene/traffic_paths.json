@@ -2,44 +2,32 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 735,
-    "uniques": 259
-  },
-  {
-    "path": "/yashaka/selene/issues",
-    "title": "Issues · yashaka/selene · GitHub",
-    "count": 147,
-    "uniques": 12
+    "count": 706,
+    "uniques": 262
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 139,
+    "count": 125,
     "uniques": 7
   },
   {
-    "path": "/yashaka/selene/projects/2",
-    "title": "Selene 2.0.0 stable release · GitHub",
-    "count": 64,
-    "uniques": 6
+    "path": "/yashaka/selene/issues",
+    "title": "Issues · yashaka/selene · GitHub",
+    "count": 111,
+    "uniques": 12
   },
   {
     "path": "/yashaka/selene/projects",
     "title": "Projects · yashaka/selene · GitHub",
-    "count": 55,
-    "uniques": 7
+    "count": 46,
+    "uniques": 8
   },
   {
-    "path": "/yashaka/selene/pull/259",
-    "title": "#257 get rid of start page; assert error messages of browser.conditions by al...",
-    "count": 45,
-    "uniques": 5
-  },
-  {
-    "path": "/yashaka/selene/issues/250",
-    "title": "[tests] add negative tests for collection conditions `have.text`, `have.texts...",
-    "count": 41,
-    "uniques": 4
+    "path": "/yashaka/selene/projects/2",
+    "title": "Selene 2.0.0 stable release · GitHub",
+    "count": 46,
+    "uniques": 6
   },
   {
     "path": "/yashaka/selene/pull/281",
@@ -50,13 +38,25 @@
   {
     "path": "/yashaka/selene/pulse",
     "title": "Pulse · yashaka/selene",
-    "count": 34,
+    "count": 32,
     "uniques": 2
   },
   {
-    "path": "/yashaka/selene/issues/264",
-    "title": "Pycodestyle checker · Issue #264 · yashaka/selene",
-    "count": 29,
-    "uniques": 2
+    "path": "/yashaka/selene/pull/259",
+    "title": "#257 get rid of start page; assert error messages of browser.conditions by al...",
+    "count": 30,
+    "uniques": 5
+  },
+  {
+    "path": "/yashaka/selene/pull/279",
+    "title": "migrate-tests-to-v2: auto_start_test.py by aleksandr-kotlyar · Pull Request #...",
+    "count": 28,
+    "uniques": 3
+  },
+  {
+    "path": "/yashaka/selene/pull/276",
+    "title": "add tests for shared browser hold_browser_open config by aleksandr-kotlyar · ...",
+    "count": 25,
+    "uniques": 3
   }
 ]
