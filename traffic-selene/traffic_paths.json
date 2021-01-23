@@ -2,32 +2,26 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 675,
-    "uniques": 265
-  },
-  {
-    "path": "/yashaka/selene/issues",
-    "title": "Issues · yashaka/selene · GitHub",
-    "count": 92,
-    "uniques": 12
+    "count": 627,
+    "uniques": 248
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 85,
-    "uniques": 7
+    "count": 79,
+    "uniques": 6
+  },
+  {
+    "path": "/yashaka/selene/issues",
+    "title": "Issues · yashaka/selene · GitHub",
+    "count": 70,
+    "uniques": 11
   },
   {
     "path": "/yashaka/selene/pull/281",
     "title": "Coverage: condition have.text, have.no.text, have.texts, have.no.texts and ex...",
     "count": 39,
     "uniques": 4
-  },
-  {
-    "path": "/yashaka/selene/projects",
-    "title": "Projects · yashaka/selene · GitHub",
-    "count": 33,
-    "uniques": 7
   },
   {
     "path": "/yashaka/selene/pull/279",
@@ -38,14 +32,14 @@
   {
     "path": "/yashaka/selene/pulse",
     "title": "Pulse · yashaka/selene",
-    "count": 28,
+    "count": 26,
     "uniques": 2
   },
   {
-    "path": "/yashaka/selene/projects/2",
-    "title": "Selene 2.0.0 stable release · GitHub",
-    "count": 27,
-    "uniques": 4
+    "path": "/yashaka/selene/projects",
+    "title": "Projects · yashaka/selene · GitHub",
+    "count": 25,
+    "uniques": 7
   },
   {
     "path": "/yashaka/selene/pull/276",
@@ -58,5 +52,11 @@
     "title": "migrate-tests-to-v2: order_test moved to tests; by aleksandr-kotlyar · Pull R...",
     "count": 24,
     "uniques": 2
+  },
+  {
+    "path": "/yashaka/selene/search",
+    "title": "Search · yashaka/selene · GitHub",
+    "count": 23,
+    "uniques": 8
   }
 ]
