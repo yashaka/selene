@@ -2,20 +2,20 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 627,
-    "uniques": 248
+    "count": 591,
+    "uniques": 238
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 79,
+    "count": 51,
     "uniques": 6
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 70,
-    "uniques": 11
+    "count": 46,
+    "uniques": 10
   },
   {
     "path": "/yashaka/selene/pull/281",
@@ -24,39 +24,39 @@
     "uniques": 4
   },
   {
-    "path": "/yashaka/selene/pull/279",
-    "title": "migrate-tests-to-v2: auto_start_test.py by aleksandr-kotlyar · Pull Request #...",
-    "count": 28,
-    "uniques": 3
-  },
-  {
-    "path": "/yashaka/selene/pulse",
-    "title": "Pulse · yashaka/selene",
-    "count": 26,
-    "uniques": 2
-  },
-  {
-    "path": "/yashaka/selene/projects",
-    "title": "Projects · yashaka/selene · GitHub",
-    "count": 25,
-    "uniques": 7
-  },
-  {
-    "path": "/yashaka/selene/pull/276",
-    "title": "add tests for shared browser hold_browser_open config by aleksandr-kotlyar · ...",
-    "count": 25,
-    "uniques": 3
-  },
-  {
-    "path": "/yashaka/selene/pull/278",
-    "title": "migrate-tests-to-v2: order_test moved to tests; by aleksandr-kotlyar · Pull R...",
-    "count": 24,
-    "uniques": 2
+    "path": "/yashaka/selene/tree/master/selene",
+    "title": "selene/selene at master · yashaka/selene · GitHub",
+    "count": 23,
+    "uniques": 11
   },
   {
     "path": "/yashaka/selene/search",
     "title": "Search · yashaka/selene · GitHub",
     "count": 23,
     "uniques": 8
+  },
+  {
+    "path": "/yashaka/selene/issues/128",
+    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
+    "count": 21,
+    "uniques": 20
+  },
+  {
+    "path": "/yashaka/selene/pull/283",
+    "title": "Resurrect examples test suite on selene v2 version by aleksandr-kotlyar · Pul...",
+    "count": 20,
+    "uniques": 1
+  },
+  {
+    "path": "/yashaka/selene/projects",
+    "title": "Projects · yashaka/selene · GitHub",
+    "count": 19,
+    "uniques": 7
+  },
+  {
+    "path": "/yashaka/selene/blob/master/README.md",
+    "title": "selene/README.md at master · yashaka/selene · GitHub",
+    "count": 18,
+    "uniques": 13
   }
 ]
