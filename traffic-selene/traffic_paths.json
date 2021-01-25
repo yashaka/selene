@@ -2,44 +2,32 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 591,
-    "uniques": 238
-  },
-  {
-    "path": "/yashaka/selene/pulls",
-    "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 51,
-    "uniques": 6
+    "count": 543,
+    "uniques": 217
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 46,
-    "uniques": 10
+    "count": 42,
+    "uniques": 8
+  },
+  {
+    "path": "/yashaka/selene/pulls",
+    "title": "Pull requests · yashaka/selene · GitHub",
+    "count": 36,
+    "uniques": 4
   },
   {
     "path": "/yashaka/selene/pull/281",
     "title": "Coverage: condition have.text, have.no.text, have.texts, have.no.texts and ex...",
-    "count": 39,
+    "count": 27,
     "uniques": 4
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene",
-    "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 23,
-    "uniques": 11
-  },
-  {
-    "path": "/yashaka/selene/search",
-    "title": "Search · yashaka/selene · GitHub",
-    "count": 23,
-    "uniques": 8
   },
   {
     "path": "/yashaka/selene/issues/128",
     "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 21,
-    "uniques": 20
+    "count": 23,
+    "uniques": 21
   },
   {
     "path": "/yashaka/selene/pull/283",
@@ -48,15 +36,27 @@
     "uniques": 1
   },
   {
-    "path": "/yashaka/selene/projects",
-    "title": "Projects · yashaka/selene · GitHub",
+    "path": "/yashaka/selene/tree/master/selene",
+    "title": "selene/selene at master · yashaka/selene · GitHub",
+    "count": 19,
+    "uniques": 8
+  },
+  {
+    "path": "/yashaka/selene/search",
+    "title": "Search · yashaka/selene · GitHub",
     "count": 19,
     "uniques": 7
   },
   {
     "path": "/yashaka/selene/blob/master/README.md",
     "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 18,
-    "uniques": 13
+    "count": 16,
+    "uniques": 12
+  },
+  {
+    "path": "/yashaka/selene/pull/279",
+    "title": "migrate-tests-to-v2: auto_start_test.py by aleksandr-kotlyar · Pull Request #...",
+    "count": 15,
+    "uniques": 3
   }
 ]
