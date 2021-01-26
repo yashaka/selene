@@ -2,26 +2,14 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 543,
-    "uniques": 217
+    "count": 437,
+    "uniques": 176
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 42,
+    "count": 37,
     "uniques": 8
-  },
-  {
-    "path": "/yashaka/selene/pulls",
-    "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 36,
-    "uniques": 4
-  },
-  {
-    "path": "/yashaka/selene/pull/281",
-    "title": "Coverage: condition have.text, have.no.text, have.texts, have.no.texts and ex...",
-    "count": 27,
-    "uniques": 4
   },
   {
     "path": "/yashaka/selene/issues/128",
@@ -44,19 +32,31 @@
   {
     "path": "/yashaka/selene/search",
     "title": "Search · yashaka/selene · GitHub",
-    "count": 19,
+    "count": 15,
     "uniques": 7
+  },
+  {
+    "path": "/yashaka/selene/pulls",
+    "title": "Pull requests · yashaka/selene · GitHub",
+    "count": 15,
+    "uniques": 2
   },
   {
     "path": "/yashaka/selene/blob/master/README.md",
     "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 16,
-    "uniques": 12
+    "count": 14,
+    "uniques": 11
   },
   {
-    "path": "/yashaka/selene/pull/279",
-    "title": "migrate-tests-to-v2: auto_start_test.py by aleksandr-kotlyar · Pull Request #...",
-    "count": 15,
+    "path": "/yashaka/selene/pull/281",
+    "title": "Coverage: condition have.text, have.no.text, have.texts, have.no.texts and ex...",
+    "count": 14,
     "uniques": 3
+  },
+  {
+    "path": "/yashaka/selene/tree/master/docs",
+    "title": "selene/docs at master · yashaka/selene · GitHub",
+    "count": 10,
+    "uniques": 7
   }
 ]
