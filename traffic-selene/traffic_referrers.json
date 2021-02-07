@@ -1,16 +1,21 @@
 [
   {
     "referrer": "Google",
-    "count": 213,
-    "uniques": 120
+    "count": 214,
+    "uniques": 125
   },
   {
     "referrer": "github.com",
-    "count": 78,
-    "uniques": 43
+    "count": 71,
+    "uniques": 40
   },
   {
-    "referrer": "ecosia.org",
+    "referrer": "yandex.ru",
+    "count": 14,
+    "uniques": 10
+  },
+  {
+    "referrer": "qiita.com",
     "count": 14,
     "uniques": 7
   },
@@ -20,14 +25,9 @@
     "uniques": 11
   },
   {
-    "referrer": "yandex.ru",
+    "referrer": "ecosia.org",
     "count": 12,
-    "uniques": 8
-  },
-  {
-    "referrer": "qiita.com",
-    "count": 12,
-    "uniques": 7
+    "uniques": 6
   },
   {
     "referrer": "qwiki.nixsolutions.com",
@@ -35,13 +35,13 @@
     "uniques": 2
   },
   {
-    "referrer": "automation-remarks.com",
-    "count": 4,
-    "uniques": 4
-  },
-  {
     "referrer": "pypi.org",
     "count": 4,
+    "uniques": 3
+  },
+  {
+    "referrer": "automation-remarks.com",
+    "count": 3,
     "uniques": 3
   },
   {
