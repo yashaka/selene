@@ -2,21 +2,21 @@
   {
     "referrer": "Google",
     "count": 214,
-    "uniques": 125
+    "uniques": 120
   },
   {
     "referrer": "github.com",
-    "count": 71,
+    "count": 68,
     "uniques": 40
   },
   {
     "referrer": "yandex.ru",
-    "count": 14,
-    "uniques": 10
+    "count": 13,
+    "uniques": 9
   },
   {
     "referrer": "qiita.com",
-    "count": 14,
+    "count": 13,
     "uniques": 7
   },
   {
@@ -26,8 +26,8 @@
   },
   {
     "referrer": "ecosia.org",
-    "count": 12,
-    "uniques": 6
+    "count": 11,
+    "uniques": 5
   },
   {
     "referrer": "qwiki.nixsolutions.com",
@@ -35,18 +35,18 @@
     "uniques": 2
   },
   {
+    "referrer": "selene-docs-test.readthedocs.io",
+    "count": 4,
+    "uniques": 4
+  },
+  {
     "referrer": "pypi.org",
     "count": 4,
     "uniques": 3
   },
   {
-    "referrer": "automation-remarks.com",
-    "count": 3,
-    "uniques": 3
-  },
-  {
-    "referrer": "selene-docs-test.readthedocs.io",
-    "count": 3,
-    "uniques": 3
+    "referrer": "away.vk.com",
+    "count": 2,
+    "uniques": 2
   }
 ]
