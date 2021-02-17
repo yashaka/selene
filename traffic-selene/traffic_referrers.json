@@ -1,27 +1,22 @@
 [
   {
     "referrer": "Google",
-    "count": 176,
-    "uniques": 104
+    "count": 177,
+    "uniques": 103
   },
   {
     "referrer": "github.com",
-    "count": 40,
-    "uniques": 30
+    "count": 36,
+    "uniques": 29
   },
   {
     "referrer": "ecosia.org",
-    "count": 24,
-    "uniques": 5
+    "count": 17,
+    "uniques": 3
   },
   {
     "referrer": "qiita.com",
-    "count": 12,
-    "uniques": 5
-  },
-  {
-    "referrer": "automated-testing.info",
-    "count": 6,
+    "count": 13,
     "uniques": 6
   },
   {
@@ -30,18 +25,23 @@
     "uniques": 6
   },
   {
-    "referrer": "qwiki.nixsolutions.com",
-    "count": 6,
-    "uniques": 3
-  },
-  {
     "referrer": "automation-remarks.com",
-    "count": 4,
-    "uniques": 4
+    "count": 5,
+    "uniques": 5
   },
   {
     "referrer": "yandex.ru",
-    "count": 4,
+    "count": 5,
+    "uniques": 5
+  },
+  {
+    "referrer": "automated-testing.info",
+    "count": 5,
+    "uniques": 5
+  },
+  {
+    "referrer": "DuckDuckGo",
+    "count": 5,
     "uniques": 4
   },
   {
