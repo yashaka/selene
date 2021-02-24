@@ -386,7 +386,7 @@ if browser.all('.option').get(query.size) >= 2:
 Maybe one day, you really find a use case:) But for above cases, probably easier would be:
 
 ```python
-if browser.element('#i-might-say-yes-or-no').wait_until(have.text('yes'):
+if browser.element('#i-might-say-yes-or-no').wait_until(have.text('yes')):
     # do something
 
 # ...
@@ -398,7 +398,7 @@ if browser.all('.i-will-appear').wait_until(have.size_greater_than_or_equal(2)):
 Or, by using non-waiting versions, if "you are in a rush:)":
 
 ```python
-if browser.element('#i-might-say-yes-or-no').matching(have.text('yes'):
+if browser.element('#i-might-say-yes-or-no').matching(have.text('yes')):
     # do something
 
 # ...
