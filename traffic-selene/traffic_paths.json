@@ -2,13 +2,13 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 429,
-    "uniques": 203
+    "count": 439,
+    "uniques": 208
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 29,
+    "count": 28,
     "uniques": 13
   },
   {
@@ -18,22 +18,22 @@
     "uniques": 14
   },
   {
+    "path": "/yashaka/selene/issues/188",
+    "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
+    "count": 19,
+    "uniques": 12
+  },
+  {
     "path": "/yashaka/selene/commits/master",
     "title": "Commits · yashaka/selene · GitHub",
-    "count": 18,
-    "uniques": 11
+    "count": 17,
+    "uniques": 10
   },
   {
     "path": "/yashaka/selene/issues/128",
     "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 16,
-    "uniques": 16
-  },
-  {
-    "path": "/yashaka/selene/issues/188",
-    "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
-    "count": 16,
-    "uniques": 11
+    "count": 15,
+    "uniques": 15
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
@@ -54,9 +54,9 @@
     "uniques": 8
   },
   {
-    "path": "/yashaka/selene/pulls",
-    "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 8,
+    "path": "/yashaka/selene/blob/master/README.md",
+    "title": "selene/README.md at master · yashaka/selene · GitHub",
+    "count": 9,
     "uniques": 6
   }
 ]
