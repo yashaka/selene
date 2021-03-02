@@ -2,14 +2,14 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 444,
-    "uniques": 190
+    "count": 495,
+    "uniques": 200
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 37,
-    "uniques": 15
+    "count": 62,
+    "uniques": 14
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
@@ -18,45 +18,45 @@
     "uniques": 14
   },
   {
-    "path": "/yashaka/selene/issues/188",
-    "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
-    "count": 20,
-    "uniques": 12
-  },
-  {
-    "path": "/yashaka/selene/issues/128",
-    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 17,
-    "uniques": 17
-  },
-  {
     "path": "/yashaka/selene/commits/master",
     "title": "Commits · yashaka/selene · GitHub",
     "count": 17,
     "uniques": 10
   },
   {
+    "path": "/yashaka/selene/issues/128",
+    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
+    "count": 16,
+    "uniques": 16
+  },
+  {
+    "path": "/yashaka/selene/issues/188",
+    "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
+    "count": 16,
+    "uniques": 11
+  },
+  {
+    "path": "/yashaka/selene/issues/288",
+    "title": "upgrade to python 3.7 · Issue #288 · yashaka/selene",
+    "count": 16,
+    "uniques": 8
+  },
+  {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 14,
+    "count": 13,
     "uniques": 9
+  },
+  {
+    "path": "/yashaka/selene/pulls",
+    "title": "Pull requests · yashaka/selene · GitHub",
+    "count": 13,
+    "uniques": 8
   },
   {
     "path": "/yashaka/selene/issues/285",
     "title": "ModuleNotFoundError: No module named 'selene.support.shared' · Issue #285 · y...",
     "count": 12,
     "uniques": 5
-  },
-  {
-    "path": "/yashaka/selene/pulls",
-    "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 11,
-    "uniques": 8
-  },
-  {
-    "path": "/yashaka/selene/tree/master/tests/examples",
-    "title": "selene/tests/examples at master · yashaka/selene · GitHub",
-    "count": 9,
-    "uniques": 8
   }
 ]
