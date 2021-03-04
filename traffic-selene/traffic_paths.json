@@ -2,8 +2,8 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 467,
-    "uniques": 180
+    "count": 457,
+    "uniques": 182
   },
   {
     "path": "/yashaka/selene/issues",
@@ -15,7 +15,13 @@
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
     "count": 26,
-    "uniques": 15
+    "uniques": 14
+  },
+  {
+    "path": "/yashaka/selene/releases",
+    "title": "Releases · yashaka/selene · GitHub",
+    "count": 26,
+    "uniques": 4
   },
   {
     "path": "/yashaka/selene/pulls",
@@ -26,8 +32,8 @@
   {
     "path": "/yashaka/selene/issues/128",
     "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 20,
-    "uniques": 17
+    "count": 22,
+    "uniques": 18
   },
   {
     "path": "/yashaka/selene/issues/288",
@@ -42,9 +48,9 @@
     "uniques": 10
   },
   {
-    "path": "/yashaka/selene/tree/master/tests",
-    "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 12,
+    "path": "/yashaka/selene/projects",
+    "title": "Projects · yashaka/selene",
+    "count": 11,
     "uniques": 8
   },
   {
@@ -52,11 +58,5 @@
     "title": "ModuleNotFoundError: No module named 'selene.support.shared' · Issue #285 · y...",
     "count": 11,
     "uniques": 4
-  },
-  {
-    "path": "/yashaka/selene/projects",
-    "title": "Projects · yashaka/selene",
-    "count": 10,
-    "uniques": 7
   }
 ]
