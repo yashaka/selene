@@ -2,38 +2,38 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 457,
-    "uniques": 182
+    "count": 452,
+    "uniques": 181
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 72,
-    "uniques": 13
+    "count": 69,
+    "uniques": 12
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 26,
-    "uniques": 14
+    "count": 28,
+    "uniques": 15
   },
   {
     "path": "/yashaka/selene/releases",
     "title": "Releases · yashaka/selene · GitHub",
-    "count": 26,
-    "uniques": 4
+    "count": 27,
+    "uniques": 5
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 24,
-    "uniques": 9
+    "count": 22,
+    "uniques": 8
   },
   {
     "path": "/yashaka/selene/issues/128",
     "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 22,
-    "uniques": 18
+    "count": 21,
+    "uniques": 17
   },
   {
     "path": "/yashaka/selene/issues/288",
@@ -44,14 +44,14 @@
   {
     "path": "/yashaka/selene/issues/188",
     "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
-    "count": 15,
-    "uniques": 10
+    "count": 13,
+    "uniques": 8
   },
   {
-    "path": "/yashaka/selene/projects",
-    "title": "Projects · yashaka/selene",
-    "count": 11,
-    "uniques": 8
+    "path": "/yashaka/selene/tree/master/selene/core",
+    "title": "selene/selene/core at master · yashaka/selene · GitHub",
+    "count": 13,
+    "uniques": 6
   },
   {
     "path": "/yashaka/selene/issues/285",
