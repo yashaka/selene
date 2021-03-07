@@ -6,9 +6,7 @@ jobs:
 
   test:
     name: Test selene
-    runs-on: ubuntu-20.04
-    env:
-      DISPLAY: ":99"
+    runs-on: ubuntu-latest
     steps:
 
       - name: Checkout code
@@ -26,12 +24,6 @@ jobs:
           pip install pipenv
           pipenv install --dev
           pipenv graph
-
-      # can be packaged as Docker-image
-      - name: Install Chrome & xvfb
-        run: |
-          sudo apt-get install google-chrome-stable xvfb
-          sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
 
       - name: Test selene with pytest
         run: |
