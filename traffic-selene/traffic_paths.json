@@ -2,61 +2,61 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 444,
-    "uniques": 193
+    "count": 462,
+    "uniques": 192
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 70,
-    "uniques": 12
+    "count": 85,
+    "uniques": 13
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 30,
-    "uniques": 19
+    "count": 29,
+    "uniques": 18
   },
   {
     "path": "/yashaka/selene/issues/128",
     "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 27,
-    "uniques": 18
+    "count": 28,
+    "uniques": 19
   },
   {
     "path": "/yashaka/selene/releases",
     "title": "Releases · yashaka/selene · GitHub",
-    "count": 27,
-    "uniques": 5
+    "count": 28,
+    "uniques": 6
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 21,
-    "uniques": 7
+    "count": 25,
+    "uniques": 6
   },
   {
     "path": "/yashaka/selene/issues/288",
     "title": "upgrade to python 3.7 · Issue #288 · yashaka/selene",
-    "count": 19,
+    "count": 22,
     "uniques": 10
+  },
+  {
+    "path": "/yashaka/selene/issues/289",
+    "title": "Prepare to good-first-issue · Issue #289 · yashaka/selene · GitHub",
+    "count": 14,
+    "uniques": 4
   },
   {
     "path": "/yashaka/selene/issues/188",
     "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
-    "count": 13,
-    "uniques": 8
+    "count": 12,
+    "uniques": 7
   },
   {
     "path": "/yashaka/selene/tree/master/selene/core",
     "title": "selene/selene/core at master · yashaka/selene · GitHub",
     "count": 12,
     "uniques": 6
-  },
-  {
-    "path": "/yashaka/selene/issues/285",
-    "title": "ModuleNotFoundError: No module named 'selene.support.shared' · Issue #285 · y...",
-    "count": 11,
-    "uniques": 4
   }
 ]
