@@ -2,14 +2,14 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 516,
-    "uniques": 207
+    "count": 471,
+    "uniques": 188
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 97,
-    "uniques": 17
+    "count": 96,
+    "uniques": 16
   },
   {
     "path": "/yashaka/selene/issues/128",
@@ -18,21 +18,9 @@
     "uniques": 22
   },
   {
-    "path": "/yashaka/selene/tree/master/selene",
-    "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 31,
-    "uniques": 19
-  },
-  {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 28,
-    "uniques": 7
-  },
-  {
-    "path": "/yashaka/selene/releases",
-    "title": "Releases · yashaka/selene · GitHub",
-    "count": 28,
+    "count": 27,
     "uniques": 6
   },
   {
@@ -40,6 +28,18 @@
     "title": "upgrade to python 3.7 · Issue #288 · yashaka/selene",
     "count": 22,
     "uniques": 10
+  },
+  {
+    "path": "/yashaka/selene/tree/master/selene",
+    "title": "selene/selene at master · yashaka/selene · GitHub",
+    "count": 21,
+    "uniques": 15
+  },
+  {
+    "path": "/yashaka/selene/releases",
+    "title": "Releases · yashaka/selene · GitHub",
+    "count": 21,
+    "uniques": 4
   },
   {
     "path": "/yashaka/selene/issues/289",
@@ -54,9 +54,9 @@
     "uniques": 8
   },
   {
-    "path": "/yashaka/selene/tree/master/selene/core",
-    "title": "selene/selene/core at master · yashaka/selene · GitHub",
+    "path": "/yashaka/selene/projects",
+    "title": "Projects · yashaka/selene",
     "count": 13,
-    "uniques": 7
+    "uniques": 5
   }
 ]
