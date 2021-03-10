@@ -1,6 +1,6 @@
 # Selene - User-oriented Web UI browser tests in Python (Selenide port)
 
-![selene tests](https://github.com/yashaka/selene/workflows/tests/badge.svg)
+[![tests](https://github.com/yashaka/selene/actions/workflows/tests.yml/badge.svg)](https://github.com/yashaka/selene/actions/workflows/tests.yml)
 [![codecov](https://codecov.io/gh/yashaka/selene/branch/master/graph/badge.svg)](https://codecov.io/gh/yashaka/selene)
 ![Free](https://img.shields.io/badge/free-open--source-green.svg)
 [![MIT License](http://img.shields.io/badge/license-MIT-green.svg)](https://github.com/yashaka/selene/blob/master/LICENSE)
