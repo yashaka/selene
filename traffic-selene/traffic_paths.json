@@ -2,56 +2,56 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 559,
-    "uniques": 221
+    "count": 571,
+    "uniques": 224
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 108,
+    "count": 106,
     "uniques": 18
   },
   {
     "path": "/yashaka/selene/issues/287",
     "title": "from selenium to selene · Issue #287 · yashaka/selene · GitHub",
-    "count": 44,
-    "uniques": 10
+    "count": 46,
+    "uniques": 14
   },
   {
     "path": "/yashaka/selene/issues/128",
     "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 38,
-    "uniques": 25
+    "count": 37,
+    "uniques": 24
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
     "count": 30,
-    "uniques": 6
+    "uniques": 5
   },
   {
     "path": "/yashaka/selene/releases",
     "title": "Releases · yashaka/selene · GitHub",
-    "count": 26,
+    "count": 28,
     "uniques": 5
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 25,
-    "uniques": 16
+    "count": 23,
+    "uniques": 14
   },
   {
     "path": "/yashaka/selene/issues/288",
-    "title": "upgrade to python 3.7 · Issue #288 · yashaka/selene",
-    "count": 22,
-    "uniques": 10
+    "title": "upgrade to python 3.7 · Issue #288 · yashaka/selene · GitHub",
+    "count": 23,
+    "uniques": 11
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 15,
-    "uniques": 13
+    "count": 17,
+    "uniques": 14
   },
   {
     "path": "/yashaka/selene/issues/289",
