@@ -72,7 +72,6 @@ class Configured(ABC):
 
 
 class WaitingEntity(Matchable, Configured):
-
     def __init__(self, config: Config):
         self._config = config
 
@@ -133,10 +132,10 @@ class WaitingEntity(Matchable, Configured):
 
 
 class Element(WaitingEntity):
-
     @staticmethod
-    def _log_webelement_outer_html_for(element: Element) -> Callable[[TimeoutException], Exception]:
-
+    def _log_webelement_outer_html_for(
+        element: Element,
+    ) -> Callable[[TimeoutException], Exception]:
         def log_webelement_outer_html(error: TimeoutException) -> Exception:
             from selene.core import query
             from selene.core.match import element_is_present
@@ -146,7 +145,8 @@ class Element(WaitingEntity):
             if cached.matching(element_is_present):
                 return TimeoutException(
                     error.msg
-                    + f'\nActual webelement: {query.outer_html(element)}')
+                    + f'\nActual webelement: {query.outer_html(element)}'
+                )
             else:
                 return error
 
@@ -161,7 +161,9 @@ class Element(WaitingEntity):
     # --- Configured --- #
 
     def with_(self, config: Config = None, **config_as_kwargs) -> Element:
-        return Element(self._locator, self.config.with_(config, **config_as_kwargs))
+        return Element(
+            self._locator, self.config.with_(config, **config_as_kwargs)
+        )
 
     # --- Located --- #
 
@@ -174,7 +176,8 @@ class Element(WaitingEntity):
     # --- WaitingEntity --- #
 
     @property
-    def wait(self) -> Wait[E]:  # todo:  will not it break code like browser.with_(timeout=...)?
+    def wait(self) -> Wait[E]:
+        # todo:  will not it break code like browser.with_(timeout=...)?
         # todo: fix that will disable/break shared hooks (snapshots)
         # return Wait(self,  # todo:  isn't it slower to create it each time from scratch? move to __init__?
         #             at_most=self.config.timeout,
@@ -182,18 +185,22 @@ class Element(WaitingEntity):
         #                 Element._log_webelement_outer_html_for(self),
         #                 self.config.hook_wait_failure))
         if self.config.log_outer_html_on_failure:
-            '''
+            """
             todo: remove this part completely from core.entity logic
                   move it to support.shared.config
-            '''
-            return super().wait.or_fail_with(pipe(
-                Element._log_webelement_outer_html_for(self),
-                super().wait.hook_failure))
+            """
+            return super().wait.or_fail_with(
+                pipe(
+                    Element._log_webelement_outer_html_for(self),
+                    super().wait.hook_failure,
+                )
+            )
         else:
             return super().wait
 
     @property
-    def cached(self) -> Element:  # todo: do we need caching ? with lazy save of webelement to cache
+    def cached(self) -> Element:
+        # todo: do we need caching ? with lazy save of webelement to cache
 
         cache = None
         error = None
@@ -207,9 +214,9 @@ class Element(WaitingEntity):
                 return cache
             raise error
 
-        return Element(Locator(f'{self}.cached',
-                               lambda: get_webelement()),
-                       self.config)
+        return Element(
+            Locator(f'{self}.cached', lambda: get_webelement()), self.config
+        )
 
     # --- Relative location --- #
 
@@ -217,17 +224,17 @@ class Element(WaitingEntity):
         by = to_by(css_or_xpath_or_by)
 
         return Element(
-            Locator(f'{self}.element({by})',
-                    lambda: self().find_element(*by)),
-            self.config)
+            Locator(f'{self}.element({by})', lambda: self().find_element(*by)),
+            self.config,
+        )
 
     def all(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection:
         by = to_by(css_or_xpath_or_by)
 
         return Collection(
-            Locator(f'{self}.all({by})',
-                    lambda: self().find_elements(*by)),
-            self.config)
+            Locator(f'{self}.all({by})', lambda: self().find_elements(*by)),
+            self.config,
+        )
 
     # --- Commands --- #
 
@@ -246,8 +253,12 @@ class Element(WaitingEntity):
             webelement.send_keys(str(value))
 
         from selene.core import command
-        self.wait.for_(command.js.set_value(value) if self.config.set_value_by_js
-                       else Command(f'set value: {value}', fn))
+
+        self.wait.for_(
+            command.js.set_value(value)
+            if self.config.set_value_by_js
+            else Command(f'set value: {value}', fn)
+        )
 
         # todo: consider returning self.cached, since after first successful call,
         #       all next ones should normally pass
@@ -263,13 +274,19 @@ class Element(WaitingEntity):
             webelement.send_keys(str(text))
 
         from selene.core import command
-        self.wait.for_(command.js.type(text) if self.config.type_by_js
-                       else Command(f'type: {text}', fn))
+
+        self.wait.for_(
+            command.js.type(text)
+            if self.config.type_by_js
+            else Command(f'type: {text}', fn)
+        )
 
         return self
 
     def press(self, *keys) -> Element:
-        self.wait.command(f'press keys: {keys}', lambda element: element().send_keys(*keys))
+        self.wait.command(
+            f'press keys: {keys}', lambda element: element().send_keys(*keys)
+        )
         return self
 
     def press_enter(self) -> Element:
@@ -310,17 +327,26 @@ class Element(WaitingEntity):
 
     def double_click(self) -> Element:
         actions: ActionChains = ActionChains(self.config.driver)
-        self.wait.command('double click', lambda element: actions.double_click(element()).perform())
+        self.wait.command(
+            'double click',
+            lambda element: actions.double_click(element()).perform(),
+        )
         return self
 
     def context_click(self) -> Element:
         actions: ActionChains = ActionChains(self.config.driver)
-        self.wait.command('context click', lambda element: actions.context_click(element()).perform())
+        self.wait.command(
+            'context click',
+            lambda element: actions.context_click(element()).perform(),
+        )
         return self
 
     def hover(self) -> Element:
         actions: ActionChains = ActionChains(self.config.driver)
-        self.wait.command('hover', lambda element: actions.move_to_element(element()).perform())
+        self.wait.command(
+            'hover',
+            lambda element: actions.move_to_element(element()).perform(),
+        )
         return self
 
     # todo: should we reflect queries as self methods? or not...
@@ -338,13 +364,16 @@ class Element(WaitingEntity):
 
     # we need this method here in order to make autocompletion work...
     # unfortunately the "base class" version is not enough
-    def should(self, condition: Condition[Element], timeout: int = None) -> Element:
+    def should(
+        self, condition: Condition[Element], timeout: int = None
+    ) -> Element:
         if timeout:
             warnings.warn(
                 "using timeout argument is deprecated; "
                 "use `browser.element('#foo').with_(Config(timeout=6)).should(be.enabled)`"
                 "or just `...with_(timeout=6).should(...` style instead",
-                DeprecationWarning)
+                DeprecationWarning,
+            )
             return self.with_(Config(timeout=timeout)).should(condition)
 
         super().should(condition)
@@ -355,11 +384,15 @@ class Element(WaitingEntity):
     def get_actual_webelement(self) -> WebElement:
         warnings.warn(
             "considering to be deprecated; usel element as callabe instead, like: browser.element('#foo')()",
-            PendingDeprecationWarning)
+            PendingDeprecationWarning,
+        )
         return self()
 
     def caching(self) -> Element:
-        warnings.warn("deprecated; use `cached` property instead: browser.element('#foo').cached", DeprecationWarning)
+        warnings.warn(
+            "deprecated; use `cached` property instead: browser.element('#foo').cached",
+            DeprecationWarning,
+        )
         return self.cached
 
     def s(self, css_or_xpath_or_by: Union[str, tuple]) -> Element:
@@ -371,7 +404,8 @@ class Element(WaitingEntity):
     def find(self, css_or_xpath_or_by: Union[str, tuple]) -> Element:
         warnings.warn(
             "deprecated; consider using `element` instead: browser.element('#foo').element('.bar')",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         return self.element(css_or_xpath_or_by)
 
     def ss(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection:
@@ -383,13 +417,15 @@ class Element(WaitingEntity):
     def find_all(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection:
         warnings.warn(
             "deprecated; consider using `all` instead: browser.element('#foo').all('.bar')",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         return self.all(css_or_xpath_or_by)
 
     def elements(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection:
         warnings.warn(
             "deprecated; consider using `all` instead: browser.element('#foo').all('.bar')",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         return self.all(css_or_xpath_or_by)
 
     @property
@@ -398,7 +434,8 @@ class Element(WaitingEntity):
             "considering to deprecate because such impl makes less sens for mobile automation; "
             "consider using corresponding xpath instead if you really need it for web:"
             "browser.element('#foo').element('..')",
-            PendingDeprecationWarning)
+            PendingDeprecationWarning,
+        )
         return self.element('..')
 
     @property
@@ -407,7 +444,8 @@ class Element(WaitingEntity):
             "considering to deprecate because such impl makes less sens for mobile automation; "
             "consider using corresponding xpath instead if you really need it for web:"
             "browser.element('#foo').element('./following-sibling::*')",
-            PendingDeprecationWarning)
+            PendingDeprecationWarning,
+        )
         return self.element('./following-sibling::*')
 
     @property
@@ -416,27 +454,33 @@ class Element(WaitingEntity):
             "considering to deprecate because such impl makes less sens for mobile automation; "
             "consider using corresponding xpath instead if you really need it for web: "
             "browser.element('#foo').element('./*[1]')",
-            PendingDeprecationWarning)
+            PendingDeprecationWarning,
+        )
         return self.element('./*[1]')
 
     def assure(self, condition: ElementCondition, timeout=None) -> Element:
         warnings.warn(
             "deprecated; use `should` method instead: browser.element('#foo').should(be.enabled)",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         return self.should(condition, timeout)
 
     def should_be(self, condition: ElementCondition, timeout=None) -> Element:
         warnings.warn(
             "deprecated; use `should` method with `be.*` style conditions instead: "
             "browser.element('#foo').should(be.enabled)",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         return self.should(condition, timeout)
 
-    def should_have(self, condition: ElementCondition, timeout=None) -> Element:
+    def should_have(
+        self, condition: ElementCondition, timeout=None
+    ) -> Element:
         warnings.warn(
             "deprecated; use `should` method with `have.*` style conditions instead: "
             "browser.element('#foo').should(have.text('bar')",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         return self.should(condition, timeout)
 
     def should_not(self, condition: ElementCondition, timeout=None) -> Element:
@@ -444,7 +488,8 @@ class Element(WaitingEntity):
             "deprecated; use `should` method with `be.not_.*` or `have.no.*` style conditions instead: "
             "`browser.element('#foo').should(be.not_.enabled).should(have.no.css_class('bar')`, "
             "you also can build your own inverted conditions by: `not_ok = Condition.as_not(have.text('Ok'))`",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         return self.should(not_(condition), timeout)
 
     def assure_not(self, condition: ElementCondition, timeout=None) -> Element:
@@ -452,207 +497,265 @@ class Element(WaitingEntity):
             "deprecated; use `should` method with `be.not_.*` or `have.no.*` style conditions instead: "
             "`browser.element('#foo').should(be.not_.enabled).should(have.no.css_class('bar')`, "
             "you also can build your own inverted conditions by: `not_ok = Condition.as_not(have.text('Ok'))`",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         return self.should(not_(condition), timeout)
 
-    def should_not_be(self, condition: ElementCondition, timeout=None) -> Element:
+    def should_not_be(
+        self, condition: ElementCondition, timeout=None
+    ) -> Element:
         warnings.warn(
             "deprecated; use `should` method with `be.not_.*` or `have.no.*` style conditions instead: "
             "`browser.element('#foo').should(be.not_.enabled).should(have.no.css_class('bar')`, "
             "you also can build your own inverted conditions by: `not_ok = Condition.as_not(have.text('Ok'))`",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         return self.should(not_(condition), timeout)
 
-    def should_not_have(self, condition: ElementCondition, timeout=None) -> Element:
+    def should_not_have(
+        self, condition: ElementCondition, timeout=None
+    ) -> Element:
         warnings.warn(
             "deprecated; use `should` method with `be.not_.*` or `have.no.*` style conditions instead: "
             "`browser.element('#foo').should(be.not_.enabled).should(have.no.css_class('bar')`, "
             "you also can build your own inverted conditions by: `not_ok = Condition.as_not(have.text('Ok'))`",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         return self.should(not_(condition), timeout)
 
     def set(self, value: Union[str, int]) -> Element:
         warnings.warn(
-            "deprecated; use `set_value` method instead",
-            DeprecationWarning)
+            "deprecated; use `set_value` method instead", DeprecationWarning
+        )
         return self.set_value(value)
 
     def scroll_to(self):
         warnings.warn(
             "deprecated; use `browser.element('#foo').perform(command.js.scroll_into_view)` style instead",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         from selene.core import command
+
         self.perform(command.js.scroll_into_view)
         return self
 
     def press_down(self):
         warnings.warn(
             "deprecated; use `browser.element('#foo').type(Keys.ARROW_DOWN)` style instead",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         return self.type(Keys.ARROW_DOWN)
 
     def find_element(self, by=By.ID, value=None):
         warnings.warn(
             "deprecated; use `browser.element('#foo').should(be.in_dom)().find_element(by, value)` style instead",
-            DeprecationWarning)
-        self.wait.command('find element', lambda element: element().find_element(by, value))
+            DeprecationWarning,
+        )
+        self.wait.command(
+            'find element', lambda element: element().find_element(by, value)
+        )
         return self
 
     def find_elements(self, by=By.ID, value=None):
         warnings.warn(
             "deprecated; use `browser.element('#foo').should(be.in_dom)().find_elements(by, value)` style instead",
-            DeprecationWarning)
-        self.wait.command('find elements', lambda element: element().find_elements(by, value))
+            DeprecationWarning,
+        )
+        self.wait.command(
+            'find elements', lambda element: element().find_elements(by, value)
+        )
         return self
 
     def send_keys(self, *value) -> Element:
         warnings.warn(
             "send_keys is deprecated because the name is not user-oriented in context of web ui e2e tests; "
             "use `type` for 'typing text', press(*key) or press_* for 'pressing keys' methods instead",
-            DeprecationWarning)
-        self.wait.command('send keys', lambda element: element().send_keys(*value))
+            DeprecationWarning,
+        )
+        self.wait.command(
+            'send keys', lambda element: element().send_keys(*value)
+        )
         return self
 
     @property
     def tag_name(self) -> str:
         warnings.warn(
             "deprecated; use `browser.element('#foo').get(query.tag_name)` style instead",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         from selene.core import query
+
         return self.get(query.tag)
 
     @property
     def text(self) -> str:
         warnings.warn(
             "deprecated; use `browser.element('#foo').get(query.text)` style instead",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         from selene.core import query
+
         return self.get(query.text)
 
     def attribute(self, name: str) -> str:
         warnings.warn(
             "deprecated; use `browser.element('#foo').get(query.attribute('name'))` style instead",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         from selene.core import query
+
         return self.get(query.attribute(name))
 
     def js_property(self, name: str) -> str:
         warnings.warn(
             "deprecated; use `browser.element('#foo').get(query.js_property('name'))` style instead",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         from selene.core import query
+
         return self.get(query.js_property(name))
 
     def value_of_css_property(self, name: str) -> str:
         warnings.warn(
             "deprecated; use `browser.element('#foo').get(query.css_property('name'))` style instead",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         from selene.core import query
+
         return self.get(query.css_property(name))
 
     def get_attribute(self, name: str) -> str:
         warnings.warn(
             "deprecated; use `browser.element('#foo').get(query.attribute('name'))` style instead",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         from selene.core import query
+
         return self.get(query.attribute(name))
 
     def get_property(self, name: str) -> str:
         warnings.warn(
             "deprecated; use `browser.element('#foo').get(query.js_property('name'))` style instead",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         from selene.core import query
+
         return self.get(query.js_property(name))
 
     def is_selected(self) -> bool:
         warnings.warn(
             "deprecated; use `browser.element('#foo').matching(be.selected)` style instead",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         from selene.support.conditions import be
+
         return self.matching(be.selected)
 
     def is_enabled(self):
         warnings.warn(
             "deprecated; use `browser.element('#foo').matching(be.enabled)` style instead",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         from selene.support.conditions import be
+
         return self.matching(be.enabled)
 
     def is_displayed(self):
         warnings.warn(
             "deprecated; use `browser.element('#foo').matching(be.visible)` style instead",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         from selene.support.conditions import be
+
         return self.matching(be.visible)
 
     @property
     def location(self) -> Dict[str, int]:
         warnings.warn(
             "deprecated; use `browser.element('#foo').get(query.location)` style instead",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         from selene.core import query
+
         return self.get(query.location)
 
     @property
     def location_once_scrolled_into_view(self) -> Dict[str, int]:
         warnings.warn(
             "deprecated; use `browser.element('#foo').get(query.location_once_scrolled_into_view)` style instead",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         from selene.core import query
+
         return self.get(query.location_once_scrolled_into_view)
 
     @property
     def size(self) -> Dict[str, Any]:
         warnings.warn(
             "deprecated; use `browser.element('#foo').get(query.size)` style instead",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         from selene.core import query
+
         return self.get(query.size)
 
     @property
     def rect(self) -> Dict[str, Any]:
         warnings.warn(
             "deprecated; use `browser.element('#foo').get(query.rect)` style instead",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         from selene.core import query
+
         return self.get(query.rect)
 
     @property
     def screenshot_as_base64(self) -> Any:
         warnings.warn(
             "deprecated; use `browser.element('#foo').get(query.screenshot_as_base64)` style instead",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         from selene.core import query
+
         return self.get(query.screenshot_as_base64)
 
     @property
     def screenshot_as_png(self) -> Any:
         warnings.warn(
             "deprecated; use `browser.element('#foo').get(query.screenshot_as_base64)` style instead",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         from selene.core import query
+
         return self.get(query.screenshot_as_png)
 
     def screenshot(self, filename: str) -> bool:
         warnings.warn(
             "deprecated; use `browser.element('#foo').get(query.screenshot('filename'))` style instead",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         from selene.core import query
+
         return self.get(query.screenshot(filename))
 
     @property
     def parent(self):
         warnings.warn(
             "deprecated; use `browser.element('#foo')().parent` style for the majority of cases",
-            DeprecationWarning)
-        return self.get(Query('parent search context', lambda element: element().parent))
+            DeprecationWarning,
+        )
+        return self.get(
+            Query('parent search context', lambda element: element().parent)
+        )
 
     @property
     def id(self):
         warnings.warn(
             "deprecated; use `browser.element('#foo').get(query.internal_id)` style instead",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         from selene.core import query
+
         return self.get(query.internal_id)
 
 
@@ -666,7 +769,9 @@ class Collection(WaitingEntity):
         super().__init__(config)
 
     def with_(self, config: Config = None, **config_as_kwargs) -> Collection:
-        return Collection(self._locator, self.config.with_(config, **config_as_kwargs))
+        return Collection(
+            self._locator, self.config.with_(config, **config_as_kwargs)
+        )
 
     def __str__(self):
         return str(self._locator)
@@ -677,7 +782,9 @@ class Collection(WaitingEntity):
     @property
     def cached(self) -> Collection:
         webelements = self()
-        return Collection(Locator(f'{self}.cached', lambda: webelements), self.config)
+        return Collection(
+            Locator(f'{self}.cached', lambda: webelements), self.config
+        )
 
     def __iter__(self):
         i = 0
@@ -689,6 +796,7 @@ class Collection(WaitingEntity):
 
     def __len__(self):
         from selene.core import query
+
         return self.get(query.size)
 
     # todo: add config.index_collection_from_1, disabled by default
@@ -700,7 +808,8 @@ class Collection(WaitingEntity):
             if length <= index:
                 raise AssertionError(
                     f'Cannot get element with index {index} '
-                    + f'from webelements collection with length {length}')
+                    + f'from webelements collection with length {length}'
+                )
 
             return webelements[index]
 
@@ -723,11 +832,17 @@ class Collection(WaitingEntity):
 
             return webelements[start:stop:step]
 
-        return Collection(Locator(f'{self}[{start}:{stop}:{step}]', find), self.config)
+        return Collection(
+            Locator(f'{self}[{start}:{stop}:{step}]', find), self.config
+        )
 
-    def __getitem__(self, index_or_slice: Union[int, slice]) -> Union[Element, Collection]:
+    def __getitem__(
+        self, index_or_slice: Union[int, slice]
+    ) -> Union[Element, Collection]:
         if isinstance(index_or_slice, slice):
-            return self.sliced(index_or_slice.start, index_or_slice.stop, index_or_slice.step)
+            return self.sliced(
+                index_or_slice.start, index_or_slice.stop, index_or_slice.step
+            )
 
         return self.element(index_or_slice)
 
@@ -737,24 +852,32 @@ class Collection(WaitingEntity):
     def to(self, stop: int) -> Collection:
         return self[:stop]
 
-    def filtered_by(self,
-                    condition: Union[
-                        Condition[Element],
-                        Callable[[E], None]]) -> Collection:
-        condition = condition if isinstance(condition, Condition) \
+    def filtered_by(
+        self, condition: Union[Condition[Element], Callable[[E], None]]
+    ) -> Collection:
+        condition = (
+            condition
+            if isinstance(condition, Condition)
             else Condition(str(condition), condition)
+        )
 
         return Collection(
-            Locator(f'{self}.filtered_by({condition})',
-                    lambda: [element() for element in self.cached if element.matching(condition)]),
-            self.config)
+            Locator(
+                f'{self}.filtered_by({condition})',
+                lambda: [
+                    element()
+                    for element in self.cached
+                    if element.matching(condition)
+                ],
+            ),
+            self.config,
+        )
 
     def filtered_by_their(
-            self,
-            selector_or_callable: Union[str,
-                                        tuple,
-                                        Callable[[Element], Element]],
-            condition: Condition[Element]) -> Collection:
+        self,
+        selector_or_callable: Union[str, tuple, Callable[[Element], Element]],
+        condition: Condition[Element],
+    ) -> Collection:
         """
         :param selector_or_callable:
             - selector may be a str with css/xpath selector or tuple with by.* locator
@@ -804,7 +927,8 @@ class Collection(WaitingEntity):
         """
         warnings.warn(
             'filtered_by_their is experimental; might be renamed or removed in future',
-            FutureWarning)
+            FutureWarning,
+        )
 
         def find_in(parent: Element):
             if callable(selector_or_callable):
@@ -814,10 +938,9 @@ class Collection(WaitingEntity):
 
         return self.filtered_by(lambda it: condition(find_in(it)))
 
-    def element_by(self,
-                   condition: Union[
-                       Condition[Element],
-                       Callable[[E], None]]) -> Element:
+    def element_by(
+        self, condition: Union[Condition[Element], Callable[[E], None]]
+    ) -> Element:
         # todo: In the implementation below...
         #       We use condition in context of "matching", i.e. as a predicate...
         #       why then not accept Callable[[E], bool] also?
@@ -838,8 +961,11 @@ class Collection(WaitingEntity):
         #         in such case we ignore thrown error's message
         #         - hm... ut seems like we nevertheless ignore it...
         #           we use element.matching(condition) below
-        condition = condition if isinstance(condition, Condition) \
+        condition = (
+            condition
+            if isinstance(condition, Condition)
             else Condition(str(condition), condition)
+        )
 
         def find() -> WebElement:
             cached = self.cached
@@ -851,29 +977,32 @@ class Collection(WaitingEntity):
             from selene.core import query
 
             if self.config.log_outer_html_on_failure:
-                '''
+                """
                 todo: move it support.shared.config
-                '''
+                """
                 outer_htmls = [query.outer_html(element) for element in cached]
 
                 raise AssertionError(
                     f'\n\tCannot find element by condition «{condition}» '
                     f'\n\tAmong {self}'
                     f'\n\tActual webelements collection:'
-                    f'\n\t{outer_htmls}')  # todo: isn't it better to print it all the time via hook, like for Element?
+                    f'\n\t{outer_htmls}'
+                )  # todo: isn't it better to print it all the time via hook, like for Element?
             else:
                 raise AssertionError(
                     f'\n\tCannot find element by condition «{condition}» '
-                    f'\n\tAmong {self}')
+                    f'\n\tAmong {self}'
+                )
 
-        return Element(Locator(f'{self}.element_by({condition})', find), self.config)
+        return Element(
+            Locator(f'{self}.element_by({condition})', find), self.config
+        )
 
     def element_by_its(
-            self,
-            selector_or_callable: Union[str,
-                                        tuple,
-                                        Callable[[Element], Element]],
-            condition: Condition[Element]) -> Element:
+        self,
+        selector_or_callable: Union[str, tuple, Callable[[Element], Element]],
+        condition: Condition[Element],
+    ) -> Element:
         """
         :param selector_or_callable:
             - selector may be a str with css/xpath selector or tuple with by.* locator
@@ -930,7 +1059,8 @@ class Collection(WaitingEntity):
         #       - what about accepting collection condition? should we allow it?
         warnings.warn(
             'element_by_its is experimental; might be renamed or removed in future',
-            FutureWarning)
+            FutureWarning,
+        )
 
         def find_in(parent: Element):
             if callable(selector_or_callable):
@@ -942,47 +1072,65 @@ class Collection(WaitingEntity):
 
     # todo: consider adding ss alias
     def all(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection:
-        warnings.warn('might be renamed or deprecated in future; '
-                      'all is actually a shortcut for collected(lambda element: element.all(selector)...'
-                      'but we also have all_first and...'
-                      'it is yet unclear what name would be best for all_first as addition to all... '
-                      'all_first might confuse with all(...).first... I mean: '
-                      'all_first(selector) is actually '
-                      'collected(lambda e: e.element(selector)) '
-                      'but it is not the same as '
-                      'all(selector).first '
-                      'that is collected(lambda e: e.all(selector)).first ... o_O ', FutureWarning)
+        warnings.warn(
+            'might be renamed or deprecated in future; '
+            'all is actually a shortcut for collected(lambda element: element.all(selector)...'
+            'but we also have all_first and...'
+            'it is yet unclear what name would be best for all_first as addition to all... '
+            'all_first might confuse with all(...).first... I mean: '
+            'all_first(selector) is actually '
+            'collected(lambda e: e.element(selector)) '
+            'but it is not the same as '
+            'all(selector).first '
+            'that is collected(lambda e: e.all(selector)).first ... o_O ',
+            FutureWarning,
+        )
         by = to_by(css_or_xpath_or_by)
 
         # todo: consider implement it through calling self.collected
         #       because actually the impl is self.collected(lambda element: element.all(selector))
 
         return Collection(
-            Locator(f'{self}.all({by})',
-                    lambda: flatten([webelement.find_elements(*by) for webelement in self()])),
-            self.config)
+            Locator(
+                f'{self}.all({by})',
+                lambda: flatten(
+                    [webelement.find_elements(*by) for webelement in self()]
+                ),
+            ),
+            self.config,
+        )
 
     # todo: consider adding s alias
     def all_first(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection:
-        warnings.warn('might be renamed or deprecated in future; '
-                      'it is yet unclear what name would be best... '
-                      'all_first might confuse with all(...).first... I mean: '
-                      'all_first(selector) is actually '
-                      'collected(lambda e: e.element(selector)) '
-                      'but it is not the same as '
-                      'all(selector).first '
-                      'that is collected(lambda e: e.all(selector)).first ... o_O ', FutureWarning)
+        warnings.warn(
+            'might be renamed or deprecated in future; '
+            'it is yet unclear what name would be best... '
+            'all_first might confuse with all(...).first... I mean: '
+            'all_first(selector) is actually '
+            'collected(lambda e: e.element(selector)) '
+            'but it is not the same as '
+            'all(selector).first '
+            'that is collected(lambda e: e.all(selector)).first ... o_O ',
+            FutureWarning,
+        )
         by = to_by(css_or_xpath_or_by)
 
         # todo: consider implement it through calling self.collected
         #       because actually the impl is self.collected(lambda element: element.element(selector))
 
         return Collection(
-            Locator(f'{self}.all_first({by})',
-                    lambda: [webelement.find_element(*by) for webelement in self()]),
-            self.config)
+            Locator(
+                f'{self}.all_first({by})',
+                lambda: [
+                    webelement.find_element(*by) for webelement in self()
+                ],
+            ),
+            self.config,
+        )
 
-    def collected(self, finder: Callable[[Element], Union[Element, Collection]]) -> Collection:
+    def collected(
+        self, finder: Callable[[Element], Union[Element, Collection]]
+    ) -> Collection:
         # todo: consider adding predefined queries to be able to write
         #         collected(query.element(selector))
         #       over
@@ -995,13 +1143,22 @@ class Collection(WaitingEntity):
         #       because they are not supposed to be used in entity.get(*) context defined for other query.* fns
 
         return Collection(
-            Locator(f'{self}.collected({finder})',  # todo: consider skipping None while flattening
-                    lambda: flatten([finder(element)() for element in self.cached])),
-            self.config)
+            Locator(
+                f'{self}.collected({finder})',  # todo: consider skipping None while flattening
+                lambda: flatten(
+                    [finder(element)() for element in self.cached]
+                ),
+            ),
+            self.config,
+        )
 
     # --- Assertable --- #
 
-    def should(self, condition: Union[Condition[Collection], Condition[Element]], timeout: int = None) -> Collection:
+    def should(
+        self,
+        condition: Union[Condition[Collection], Condition[Element]],
+        timeout: int = None,
+    ) -> Collection:
         if isinstance(condition, ElementCondition):
             # todo: consider deprecating... makes everything too complicated...
             for element in self:
@@ -1010,7 +1167,8 @@ class Collection(WaitingEntity):
                         "using timeout argument is deprecated; "
                         "use `browser.all('.foo').with_(Config(timeout=6)).should(have.size(0))`"
                         "or just `...with_(timeout=6).should(...` style instead",
-                        DeprecationWarning)
+                        DeprecationWarning,
+                    )
                     element.with_(Config(timeout=timeout)).should(condition)
                 element.should(condition)
         else:
@@ -1019,7 +1177,8 @@ class Collection(WaitingEntity):
                     "using timeout argument is deprecated; "
                     "use `browser.all('.foo').with_(Config(timeout=6)).should(have.size(0))` "
                     "or just `...with_(timeout=6).should(...` style instead",
-                    DeprecationWarning)
+                    DeprecationWarning,
+                )
                 self.with_(Config(timeout=timeout)).should(condition)
             super().should(condition)
         return self
@@ -1029,93 +1188,139 @@ class Collection(WaitingEntity):
     def get_actual_webelements(self) -> List[WebElement]:
         warnings.warn(
             "considering to be deprecated; use collection as callable instead, like: browser.all('.foo')()",
-            PendingDeprecationWarning)
+            PendingDeprecationWarning,
+        )
         return self()
 
     def caching(self) -> Collection:
-        warnings.warn("deprecated; use `cached` property instead: browser.all('#foo').cached", DeprecationWarning)
+        warnings.warn(
+            "deprecated; use `cached` property instead: browser.all('#foo').cached",
+            DeprecationWarning,
+        )
         return self.cached
 
     def all_by(self, condition: Condition[Element]) -> Collection:
         warnings.warn(
             "deprecated; use `filtered_by` instead: browser.all('.foo').filtered_by(be.enabled)",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         return self.filtered_by(condition)
 
     def filter_by(self, condition: Condition[Element]) -> Collection:
         warnings.warn(
             "deprecated; use `filtered_by` instead: browser.all('.foo').filtered_by(be.enabled)",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         return self.filtered_by(condition)
 
     def find_by(self, condition: Condition[Element]) -> Element:
         warnings.warn(
             "deprecated; use `element_by` instead: browser.all('.foo').element_by(be.enabled)",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         return self.element_by(condition)
 
     def size(self):
         warnings.warn(
             "deprecated; use `len` standard function instead: len(browser.all('.foo'))",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         return len(self)
 
-    def should_each(self, condition: ElementCondition, timeout=None) -> Collection:
+    def should_each(
+        self, condition: ElementCondition, timeout=None
+    ) -> Collection:
         warnings.warn(
             "deprecated; use `should` method instead: browser.all('.foo').should(have.css_class('bar'))",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         return self.should(condition, timeout)
 
-    def assure(self, condition: Union[CollectionCondition, ElementCondition], timeout=None) -> Collection:
+    def assure(
+        self,
+        condition: Union[CollectionCondition, ElementCondition],
+        timeout=None,
+    ) -> Collection:
         warnings.warn(
             "deprecated; use `should` method instead: browser.all('.foo').should(have.size(0))",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         return self.should(condition, timeout)
 
-    def should_be(self, condition: Union[CollectionCondition, ElementCondition], timeout=None) -> Collection:
+    def should_be(
+        self,
+        condition: Union[CollectionCondition, ElementCondition],
+        timeout=None,
+    ) -> Collection:
         warnings.warn(
             "deprecated; use `should` method with `be.*` style conditions instead: "
             "browser.all('.foo').should(be.*)",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         return self.should(condition, timeout)
 
-    def should_have(self, condition: Union[CollectionCondition, ElementCondition], timeout=None) -> Collection:
+    def should_have(
+        self,
+        condition: Union[CollectionCondition, ElementCondition],
+        timeout=None,
+    ) -> Collection:
         warnings.warn(
             "deprecated; use `should` method with `have.*` style conditions instead: "
             "browser.all('.foo').should(have.size(0))",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         return self.should(condition, timeout)
 
-    def should_not(self, condition: Union[CollectionCondition, ElementCondition], timeout=None) -> Collection:
+    def should_not(
+        self,
+        condition: Union[CollectionCondition, ElementCondition],
+        timeout=None,
+    ) -> Collection:
         warnings.warn(
             "deprecated; use `should` method with `be.not_.*` or `have.no.*` style conditions instead: "
             "`browser.all('.foo').should(have.no.size(2))`, "
             "you also can build your own inverted conditions by: `not_zero = Condition.as_not(have.size(0'))`",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         return self.should(not_(condition), timeout)
 
-    def assure_not(self, condition: Union[CollectionCondition, ElementCondition], timeout=None) -> Collection:
+    def assure_not(
+        self,
+        condition: Union[CollectionCondition, ElementCondition],
+        timeout=None,
+    ) -> Collection:
         warnings.warn(
             "deprecated; use `should` method with `be.not_.*` or `have.no.*` style conditions instead: "
             "`browser.all('.foo').should(have.no.size(2))`, "
             "you also can build your own inverted conditions by: `not_zero = Condition.as_not(have.size(0'))`",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         return self.should(not_(condition), timeout)
 
-    def should_not_be(self, condition: Union[CollectionCondition, ElementCondition], timeout=None) -> Collection:
+    def should_not_be(
+        self,
+        condition: Union[CollectionCondition, ElementCondition],
+        timeout=None,
+    ) -> Collection:
         warnings.warn(
             "deprecated; use `should` method with `be.not_.*` or `have.no.*` style conditions instead: "
             "`browser.all('.foo').should(have.no.size(2))`, "
             "you also can build your own inverted conditions by: `not_zero = Condition.as_not(have.size(0'))`",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         return self.should(not_(condition), timeout)
 
-    def should_not_have(self, condition: Union[CollectionCondition, ElementCondition], timeout=None) -> Collection:
+    def should_not_have(
+        self,
+        condition: Union[CollectionCondition, ElementCondition],
+        timeout=None,
+    ) -> Collection:
         warnings.warn(
             "deprecated; use `should` method with `be.not_.*` or `have.no.*` style conditions instead: "
             "`browser.element('#foo').should(have.no.size(2))`, "
             "you also can build your own inverted conditions by: `not_zero = Condition.as_not(have.size(0'))`",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         return self.should(not_(condition), timeout)
 
 
@@ -1124,7 +1329,9 @@ class SeleneCollection(Collection):  # todo: consider deprecating this name
 
 
 class Browser(WaitingEntity):
-    def __init__(self, config: Config):  # todo: what about adding **config_as_kwargs?
+    def __init__(
+        self, config: Config
+    ):  # todo: what about adding **config_as_kwargs?
         super().__init__(config)
 
     # todo: consider implement it as context manager too...
@@ -1156,17 +1363,21 @@ class Browser(WaitingEntity):
         by = to_by(css_or_xpath_or_by)
 
         return Element(
-            Locator(f'{self}.element({by})',
-                    lambda: self.driver.find_element(*by)),
-            self.config)
+            Locator(
+                f'{self}.element({by})', lambda: self.driver.find_element(*by)
+            ),
+            self.config,
+        )
 
     def all(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection:
         by = to_by(css_or_xpath_or_by)
 
         return Collection(
-            Locator(f'{self}.all({by})',
-                    lambda: self.driver.find_elements(*by)),
-            self.config)
+            Locator(
+                f'{self}.all({by})', lambda: self.driver.find_elements(*by)
+            ),
+            self.config,
+        )
 
     # --- High Level Commands--- #
 
@@ -1179,13 +1390,18 @@ class Browser(WaitingEntity):
 
         is_absolute = is_absolute_url(relative_or_absolute_url)
         base_url = self.config.base_url
-        url = relative_or_absolute_url if is_absolute else base_url + relative_or_absolute_url
+        url = (
+            relative_or_absolute_url
+            if is_absolute
+            else base_url + relative_or_absolute_url
+        )
 
         self.driver.get(url)
         return self
 
     def switch_to_next_tab(self) -> Browser:
         from selene.core import query
+
         self.driver.switch_to.window(query.next_tab(self))
 
         # todo: should we user waiting version here (and in other similar cases)?
@@ -1197,12 +1413,14 @@ class Browser(WaitingEntity):
 
     def switch_to_previous_tab(self) -> Browser:
         from selene.core import query
+
         self.driver.switch_to.window(query.previous_tab(self))
         return self
 
     def switch_to_tab(self, index_or_name: Union[int, str]) -> Browser:
         if isinstance(index_or_name, int):
             from selene.core import query
+
             self.driver.switch_to(query.tab(index_or_name)(self))
         else:
             self.driver.switch_to.window(index_or_name)
@@ -1225,7 +1443,9 @@ class Browser(WaitingEntity):
         self.driver.quit()
 
     def clear_local_storage(self) -> Browser:
-        self.driver.execute_script('window.localStorage.clear();')  # todo: should we catch and ignore errors?
+        self.driver.execute_script(
+            'window.localStorage.clear();'
+        )  # todo: should we catch and ignore errors?
         return self
 
     def clear_session_storage(self) -> Browser:
@@ -1243,12 +1463,17 @@ class Browser(WaitingEntity):
     # --- Deprecated --- #
 
     def close(self) -> Browser:
-        warnings.warn("deprecated; use a `close_current_tab` method instead", DeprecationWarning)
+        warnings.warn(
+            "deprecated; use a `close_current_tab` method instead",
+            DeprecationWarning,
+        )
 
         return self.close_current_tab()
 
     def quit_driver(self) -> None:
-        warnings.warn("deprecated; use a `quit` method instead", DeprecationWarning)
+        warnings.warn(
+            "deprecated; use a `quit` method instead", DeprecationWarning
+        )
         self.quit()
 
     @classmethod
@@ -1256,14 +1481,16 @@ class Browser(WaitingEntity):
         warnings.warn(
             "deprecated; use a normal constructor style instead: "
             "`Browser(Config(driver=webdriver))`",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         return Browser(Config(driver=webdriver))
 
     def s(self, css_or_xpath_or_by: Union[str, tuple]) -> Element:
         warnings.warn(
             "deprecated; use an `element` method instead: "
             "`browser.element('#foo')`",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
 
         return self.element(css_or_xpath_or_by)
 
@@ -1271,7 +1498,8 @@ class Browser(WaitingEntity):
         warnings.warn(
             "deprecated; use an `element` method instead: "
             "`browser.element('#foo')`",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
 
         return self.element(css_or_xpath_or_by)
 
@@ -1279,7 +1507,8 @@ class Browser(WaitingEntity):
         warnings.warn(
             "deprecated; use an `all` method instead: "
             "`browser.all('.foo')`",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
 
         return self.all(css_or_xpath_or_by)
 
@@ -1287,7 +1516,8 @@ class Browser(WaitingEntity):
         warnings.warn(
             "deprecated; use an `all` method instead: "
             "`browser.all('.foo')`",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
 
         return self.all(css_or_xpath_or_by)
 
@@ -1295,24 +1525,31 @@ class Browser(WaitingEntity):
         warnings.warn(
             "deprecated; use an `all` method instead: "
             "`browser.all('.foo')`",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
 
         return self.all(css_or_xpath_or_by)
 
     def find_elements(self, by=By.ID, value=None):
         warnings.warn(
             "deprecated; use instead: `browser.driver.find_elements(...)`",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         return self.driver.find_elements(by, value)
 
     def find_element(self, by=By.ID, value=None):
         warnings.warn(
             "deprecated; use instead: `browser.driver.find_element(...)`",
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         return self.driver.find_element(by, value)
 
 
-from selene.core.conditions import CollectionCondition, ElementCondition, BrowserCondition
+from selene.core.conditions import (
+    CollectionCondition,
+    ElementCondition,
+    BrowserCondition,
+)
 
 
 # --- Deprecated --- #  todo: remove in future versions

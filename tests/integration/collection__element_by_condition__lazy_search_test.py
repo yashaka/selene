@@ -23,45 +23,63 @@ from selene import have
 from tests.integration.helpers.givenpage import GivenPage
 
 
-def test_search_is_lazy_and_does_not_start_on_creation_for_both_collection_and_indexed(session_browser):
+def test_search_is_lazy_and_does_not_start_on_creation_for_both_collection_and_indexed(
+    session_browser,
+):
     page = GivenPage(session_browser.driver)
     page.opened_empty()
 
-    non_existent_element = session_browser.all('.non-existing').element_by(have.exact_text('Kate'))
+    non_existent_element = session_browser.all('.non-existing').element_by(
+        have.exact_text('Kate')
+    )
 
     assert str(non_existent_element)
 
 
-def test_search_is_postponed_until_actual_action_like_questioning_displayed(session_browser):
+def test_search_is_postponed_until_actual_action_like_questioning_displayed(
+    session_browser,
+):
     page = GivenPage(session_browser.driver)
     page.opened_empty()
-    element = session_browser.all('.will-appear').element_by(have.exact_text('Kate'))
+    element = session_browser.all('.will-appear').element_by(
+        have.exact_text('Kate')
+    )
 
-    page.load_body('''
+    page.load_body(
+        '''
                    <ul>Hello to:
                        <li class="will-appear">Bob</li>
                        <li class="will-appear">Kate</li>
-                   </ul>''')
+                   </ul>'''
+    )
 
     assert element().is_displayed() is True
 
 
-def test_search_is_updated_on_next_actual_action_like_questioning_displayed(session_browser):
+def test_search_is_updated_on_next_actual_action_like_questioning_displayed(
+    session_browser,
+):
     page = GivenPage(session_browser.driver)
     page.opened_empty()
-    element = session_browser.all('.will-appear').element_by(have.css_class('special'))
+    element = session_browser.all('.will-appear').element_by(
+        have.css_class('special')
+    )
 
-    page.load_body('''
+    page.load_body(
+        '''
                    <ul>Hello to:
                        <li class="will-appear">Bob</li>
                        <li class="will-appear special">Kate</li>
-                   </ul>''')
+                   </ul>'''
+    )
 
     assert element().is_displayed() is True
 
-    page.load_body('''
+    page.load_body(
+        '''
                    <ul>Hello to:
                        <li class="will-appear">Bob</li>
                        <li class="will-appear special" style="display:none">Kate</li>
-                   </ul>''')
+                   </ul>'''
+    )
     assert element().is_displayed() is False

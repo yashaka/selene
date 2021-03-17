@@ -32,40 +32,48 @@ def test_search_does_not_start_on_creation(session_browser):
 
 
 def test_search_is_postponed_until_actual_action_like_questioning_displayed(
-        session_browser):
+    session_browser,
+):
     page = GivenPage(session_browser.driver)
     page.opened_empty()
 
     element = session_browser.all('.will-appear')[1]
 
-    page.load_body('''
+    page.load_body(
+        '''
                    <ul>Hello to:
                        <li class="will-appear">Bob</li>
                        <li class="will-appear">Kate</li>
-                   </ul>''')
+                   </ul>'''
+    )
 
     assert element().is_displayed() is True
 
 
 def test_search_is_updated_on_next_actual_action_like_questioning_displayed(
-        session_browser):
+    session_browser,
+):
     page = GivenPage(session_browser.driver)
     page.opened_empty()
 
     element = session_browser.all('.will-appear')[1]
 
-    page.load_body('''
+    page.load_body(
+        '''
                    <ul>Hello to:
                        <li class="will-appear">Bob</li>
                        <li class="will-appear">Kate</li>
-                   </ul>''')
+                   </ul>'''
+    )
 
     assert element().is_displayed() is True
 
-    page.load_body('''
+    page.load_body(
+        '''
                    <ul>Hello to:
                        <li class="will-appear">Bob</li>
                        <li class="will-appear" style="display:none">Kate</li>
-                   </ul>''')
+                   </ul>'''
+    )
 
     assert element().is_displayed() is False

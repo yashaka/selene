@@ -63,7 +63,6 @@ class Source(Generic[T]):
 
 
 class _LazyDriver:
-
     def __init__(self, config: SharedConfig):
         self._config = config
         self._closed: Optional[bool] = None
@@ -142,30 +141,33 @@ class SharedConfig(Config):
     # todo: consider using SharedConfig object to be used as config only once... on init at first call to browser...
     #       i.e. do not allow config.* = ... after first call to e.g. browser.open, etc...
     #       since anyway this is a bad habit, better to use browser.with_(timeout=...), element.with_(...), etc.
-    def __init__(self,
-                 # Config
-                 driver: Optional[WebDriver] = None,
-                 timeout: int = 4,  # todo: consider removing defaults
-                 base_url: str = '',
-                 set_value_by_js: bool = False,
-                 type_by_js: bool = False,
-                 window_width: Optional[int] = None,
-                 window_height: Optional[int] = None,
-                 hook_wait_failure: Optional[Callable[[TimeoutException], Exception]] = None,
-                 log_outer_html_on_failure: bool = False,
-                 # SharedConfig
-                 set_driver: Callable[[], WebDriver] = None,
-                 source: _LazyDriver = None,  # todo: type should not be _LazyDriver but something like Source ...
-                 browser_name: str = 'chrome',  # todo: rename to config.type? config.name? config.browser?
-                 hold_browser_open: bool = False,
-                 save_screenshot_on_failure: bool = True,
-                 save_page_source_on_failure: bool = True,
-                 poll_during_waits: int = 100,
-                 counter=None,  # default is set below
-                 reports_folder: Optional[str] = None,  # default is set below
-                 last_screenshot: Union[Optional[str], Source[str]] = None,
-                 last_page_source: Union[Optional[str], Source[str]] = None,
-                 ):
+    def __init__(
+        self,
+        # Config
+        driver: Optional[WebDriver] = None,
+        timeout: int = 4,  # todo: consider removing defaults
+        base_url: str = '',
+        set_value_by_js: bool = False,
+        type_by_js: bool = False,
+        window_width: Optional[int] = None,
+        window_height: Optional[int] = None,
+        hook_wait_failure: Optional[
+            Callable[[TimeoutException], Exception]
+        ] = None,
+        log_outer_html_on_failure: bool = False,
+        # SharedConfig
+        set_driver: Callable[[], WebDriver] = None,
+        source: _LazyDriver = None,  # todo: type should not be _LazyDriver but something like Source ...
+        browser_name: str = 'chrome',  # todo: rename to config.type? config.name? config.browser?
+        hold_browser_open: bool = False,
+        save_screenshot_on_failure: bool = True,
+        save_page_source_on_failure: bool = True,
+        poll_during_waits: int = 100,
+        counter=None,  # default is set below
+        reports_folder: Optional[str] = None,  # default is set below
+        last_screenshot: Union[Optional[str], Source[str]] = None,
+        last_page_source: Union[Optional[str], Source[str]] = None,
+    ):
 
         self._browser_name = browser_name
         self._hold_browser_open = hold_browser_open
@@ -173,41 +175,54 @@ class SharedConfig(Config):
         self._log_outer_html_on_failure = log_outer_html_on_failure
 
         if driver and not set_driver:
-            '''
+            """
             each time we are setting not None driver,
             we have to not forget to call self._source.create()
             todo: how can we improve cohesion here? and reduce risks?
-            '''
+            """
             self._set_driver = lambda: driver
             self._source.create()
         else:
-            auto_set_driver = \
+            auto_set_driver = (
                 lambda: self._set_chrome_or_firefox_from_webdriver_manager()
+            )
             self._set_driver = set_driver or auto_set_driver
 
         self._save_screenshot_on_failure = save_screenshot_on_failure
         self._save_page_source_on_failure = save_page_source_on_failure
-        self._poll_during_waits = poll_during_waits  # todo consider to deprecate
-        self._counter = counter or itertools.count(start=int(round(time.time() * 1000)))  # todo: deprecate?
-        self._reports_folder = reports_folder or os.path.join(os.path.expanduser('~'),
-                                                              '.selene',
-                                                              'screenshots',
-                                                              str(next(self._counter)))
-        self._last_screenshot = \
-            last_screenshot if isinstance(last_screenshot, Source) \
+        # todo consider to deprecate _poll_during_waits
+        self._poll_during_waits = poll_during_waits
+        # todo: deprecate _counter?
+        self._counter = counter or itertools.count(
+            start=int(round(time.time() * 1000))
+        )
+        self._reports_folder = reports_folder or os.path.join(
+            os.path.expanduser('~'),
+            '.selene',
+            'screenshots',
+            str(next(self._counter)),
+        )
+        self._last_screenshot = (
+            last_screenshot
+            if isinstance(last_screenshot, Source)
             else Source(last_screenshot)
-        self._last_page_source = \
-            last_page_source if isinstance(last_page_source, Source) \
+        )
+        self._last_page_source = (
+            last_page_source
+            if isinstance(last_page_source, Source)
             else Source(last_page_source)
-        super().__init__(driver=driver,
-                         timeout=timeout,
-                         base_url=base_url,
-                         set_value_by_js=set_value_by_js,
-                         type_by_js=type_by_js,
-                         window_width=window_width,
-                         window_height=window_height,
-                         hook_wait_failure=hook_wait_failure,
-                         log_outer_html_on_failure=log_outer_html_on_failure)
+        )
+        super().__init__(
+            driver=driver,
+            timeout=timeout,
+            base_url=base_url,
+            set_value_by_js=set_value_by_js,
+            type_by_js=type_by_js,
+            window_width=window_width,
+            window_height=window_height,
+            hook_wait_failure=hook_wait_failure,
+            log_outer_html_on_failure=log_outer_html_on_failure,
+        )
 
     def _set_chrome_or_firefox_from_webdriver_manager(self):
         # todo: consider simplifying implementation to simple if-else
@@ -217,13 +232,11 @@ class SharedConfig(Config):
         def get_chrome():
             return Chrome(
                 executable_path=ChromeDriverManager().install(),
-                options=ChromeOptions()
+                options=ChromeOptions(),
             )
 
         def get_firefox():
-            return Firefox(
-                executable_path=GeckoDriverManager().install()
-            )
+            return Firefox(executable_path=GeckoDriverManager().install())
 
         # set_remote = lambda: Remote()  # todo: do we really need it? :)
 
@@ -231,10 +244,9 @@ class SharedConfig(Config):
         #             'remote': lambda: Remote(**self.browser_name)
         #         }.get(self.browser_name if isinstance(self.browser_name, str) else 'remote')()
 
-        return {
-            'chrome': get_chrome,
-            'firefox': get_firefox
-        }.get(self.browser_name)()
+        return {'chrome': get_chrome, 'firefox': get_firefox}.get(
+            self.browser_name
+        )()
 
     # --- Config.driver new "shared logic" --- #
 
@@ -257,19 +269,24 @@ class SharedConfig(Config):
         return self._source.get_or_create()
 
     def quit_driver(self):
-        warnings.warn('shared.config.quit_driver is deprecated, '
-                      'use shared.config.reset_driver instead',
-                      DeprecationWarning)
+        warnings.warn(
+            'shared.config.quit_driver is deprecated, '
+            'use shared.config.reset_driver instead',
+            DeprecationWarning,
+        )
         self.reset_driver()
 
     def reset_driver(self):
-        self.set_driver = \
+        self.set_driver = (
             lambda: self._set_chrome_or_firefox_from_webdriver_manager()
+        )
 
     @driver.setter
     def driver(self, value: WebDriver):
         # todo: why the following field is called like a setter but we assign a getter to it? o_O
-        self.set_driver = lambda: value  # it's pretty weird that we set value here
+        self.set_driver = (
+            lambda: value
+        )  # it's pretty weird that we set value here
         self._source.create()  # to be used in this create under the hood...
         # too much of magic :( todo: consider refactoring
 
@@ -309,27 +326,45 @@ class SharedConfig(Config):
         # todo: consider moving hooks to class methods accepting config as argument
         #       or refactor somehow to eliminate all times defining hook fns
         def save_and_log_screenshot(error: TimeoutException) -> Exception:
-            path = Help(self.driver).save_screenshot(self.generate_filename(suffix='.png'))
+            path = Help(self.driver).save_screenshot(
+                self.generate_filename(suffix='.png')
+            )
             self.last_screenshot = path
-            return TimeoutException(error.msg + f'''
-Screenshot: file://{path}''')
+            return TimeoutException(
+                error.msg
+                + f'''
+Screenshot: file://{path}'''
+            )
 
         def save_and_log_page_source(error: TimeoutException) -> Exception:
-            filename = self.last_screenshot.replace('.png', '.html') if self.last_screenshot \
+            filename = (
+                self.last_screenshot.replace('.png', '.html')
+                if self.last_screenshot
                 else self.generate_filename(suffix='.html')
+            )
             path = Help(self.driver).save_page_source(filename)
             self.last_page_source = path
-            return TimeoutException(error.msg + f'''
-PageSource: file://{path}''')
+            return TimeoutException(
+                error.msg
+                + f'''
+PageSource: file://{path}'''
+            )
 
         return pipe(
-            save_and_log_screenshot if self.save_screenshot_on_failure else None,
-            save_and_log_page_source if self.save_page_source_on_failure else None,
-            hook)
+            save_and_log_screenshot
+            if self.save_screenshot_on_failure
+            else None,
+            save_and_log_page_source
+            if self.save_page_source_on_failure
+            else None,
+            hook,
+        )
 
     # todo: do we really need this overwritten clone?
     def wait(self, entity):
-        hook = self._inject_screenshot_and_page_source_pre_hooks(self.hook_wait_failure)
+        hook = self._inject_screenshot_and_page_source_pre_hooks(
+            self.hook_wait_failure
+        )
         return Wait(entity, at_most=self.timeout, or_fail_with=hook)
 
     # --- Config.* added setters --- #
@@ -371,7 +406,9 @@ PageSource: file://{path}''')
     # finally decided to implement needed pre-hooks injection in the self.wait(entity) method
 
     @Config.hook_wait_failure.setter
-    def hook_wait_failure(self, value: Callable[[TimeoutException], Exception]):
+    def hook_wait_failure(
+        self, value: Callable[[TimeoutException], Exception]
+    ):
         default = lambda e: e
         self._hook_wait_failure = value or default
 
@@ -418,7 +455,8 @@ PageSource: file://{path}''')
         self._save_page_source_on_failure = value
 
     @property
-    def browser_name(self) -> str:  # todo: consider renaming to... config.name? config.executor?
+    def browser_name(self) -> str:
+        # todo: consider renaming to... config.name? config.executor?
         # seems like renaming to config.name is a bad idea,
         # because config can be accessed from element.config too
         # then element.config.name would be irrelevant
@@ -441,53 +479,71 @@ PageSource: file://{path}''')
 
     @property
     def cash_elements(self) -> bool:
-        warnings.warn('browser.cash_elements does not work now, '
-                      'and probably will be renamed when implemented',
-                      FutureWarning)
+        warnings.warn(
+            'browser.cash_elements does not work now, '
+            'and probably will be renamed when implemented',
+            FutureWarning,
+        )
         return False
 
     @cash_elements.setter
     def cash_elements(self, value: bool):
-        warnings.warn('browser.cash_elements does not work now, '
-                      'and probably will be renamed when implemented',
-                      FutureWarning)
+        warnings.warn(
+            'browser.cash_elements does not work now, '
+            'and probably will be renamed when implemented',
+            FutureWarning,
+        )
         pass
 
     @property
     def start_maximized(self):
-        warnings.warn('browser.start_maximized does not work now, '
-                      'and probably will be deprecated or renamed when implemented',
-                      FutureWarning)
+        warnings.warn(
+            'browser.start_maximized does not work now, '
+            'and probably will be deprecated or renamed when implemented',
+            FutureWarning,
+        )
         return False
 
     @start_maximized.setter
     def start_maximized(self, value):
-        warnings.warn('browser.start_maximized does not work now, '
-                      'and probably will be deprecated or renamed when implemented',
-                      FutureWarning)
+        warnings.warn(
+            'browser.start_maximized does not work now, '
+            'and probably will be deprecated or renamed when implemented',
+            FutureWarning,
+        )
         pass
 
     @property
     def desired_capabilities(self):
-        warnings.warn('browser.desired_capabilities does not work now, '
-                      'and probably will be deprecated completely',
-                      FutureWarning)
+        warnings.warn(
+            'browser.desired_capabilities does not work now, '
+            'and probably will be deprecated completely',
+            FutureWarning,
+        )
         return None
 
     @desired_capabilities.setter
     def desired_capabilities(self, value):
-        warnings.warn('browser.desired_capabilities does not work now, '
-                      'and probably will be deprecated completely',
-                      FutureWarning)
+        warnings.warn(
+            'browser.desired_capabilities does not work now, '
+            'and probably will be deprecated completely',
+            FutureWarning,
+        )
 
     @property
     def poll_during_waits(self) -> int:
-        warnings.warn('browser.poll_during_waits might be deprecated', PendingDeprecationWarning)
+        warnings.warn(
+            'browser.poll_during_waits might be deprecated',
+            PendingDeprecationWarning,
+        )
         return self._poll_during_waits or 100
 
     @poll_during_waits.setter
     def poll_during_waits(self, value: int):
-        warnings.warn('browser.poll_during_waits= might be deprecated', PendingDeprecationWarning)
+        warnings.warn(
+            'browser.poll_during_waits= might be deprecated',
+            PendingDeprecationWarning,
+        )
         self._poll_during_waits = value
 
     @property

@@ -18,6 +18,7 @@
 #
 import os
 import sys
+
 # sys.path.insert(0, os.path.abspath('.'))
 
 
@@ -98,8 +99,20 @@ html_theme = 'alabaster'
 # html_theme_options = {}
 
 html_sidebars = {
-    'index': ['sidebarintro.html', 'sourcelink.html', 'localtoc.html', 'searchbox.html', 'hacks.html'],
-    '**': ['sidebarintro.html', 'sourcelink.html', 'globaltoc.html', 'searchbox.html', 'hacks.html']
+    'index': [
+        'sidebarintro.html',
+        'sourcelink.html',
+        'localtoc.html',
+        'searchbox.html',
+        'hacks.html',
+    ],
+    '**': [
+        'sidebarintro.html',
+        'sourcelink.html',
+        'globaltoc.html',
+        'searchbox.html',
+        'hacks.html',
+    ],
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
@@ -120,15 +133,15 @@ latex_elements = {
     # The paper size ('letterpaper' or 'a4paper').
     #
     # 'papersize': 'letterpaper',
-
+    #
     # The font size ('10pt', '11pt' or '12pt').
     #
     # 'pointsize': '10pt',
-
+    #
     # Additional stuff for the LaTeX preamble.
     #
     # 'preamble': '',
-
+    #
     # Latex figure (float) alignment
     #
     # 'figure_align': 'htbp',
@@ -138,8 +151,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'selene.tex', u'selene Documentation',
-     u'yashaka', 'manual'),
+    (master_doc, 'selene.tex', u'selene Documentation', u'yashaka', 'manual'),
 ]
 
 
@@ -147,10 +159,7 @@ latex_documents = [
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [
-    (master_doc, 'selene', u'selene Documentation',
-     [author], 1)
-]
+man_pages = [(master_doc, 'selene', u'selene Documentation', [author], 1)]
 
 
 # -- Options for Texinfo output -------------------------------------------
@@ -159,7 +168,13 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'selene', u'selene Documentation',
-     author, 'selene', 'One line description of project.',
-     'Miscellaneous'),
+    (
+        master_doc,
+        'selene',
+        u'selene Documentation',
+        author,
+        'selene',
+        'One line description of project.',
+        'Miscellaneous',
+    ),
 ]

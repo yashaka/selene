@@ -11,6 +11,7 @@ _elements = ss("#todo-list>li")
 
 app_url = 'https://todomvc4tasj.herokuapp.com/'
 
+
 def visit():
     browser.open_url(app_url)
     clear_completed_js_loaded = "return $._data($('#clear-completed').get(0), 'events').hasOwnProperty('click')"

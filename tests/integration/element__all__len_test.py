@@ -29,7 +29,8 @@ def test_counts_invisible_tasks(session_browser):
             <li class='will-appear'>Bob</li>
             <li class='will-appear' style='display:none'>Kate</li>
         </ul>
-        ''')
+        '''
+    )
 
     collection = session_browser.element('ul').all('.will-appear')
 

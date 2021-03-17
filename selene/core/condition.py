@@ -33,7 +33,6 @@ R = TypeVar('R')
 
 
 class Condition(Callable[[E], None]):
-
     @classmethod
     def by_and(cls, *conditions):
         def fn(entity):
@@ -57,7 +56,9 @@ class Condition(Callable[[E], None]):
         return cls(' or '.join(map(str, conditions)), fn)
 
     @classmethod
-    def as_not(cls, condition: Condition[E], description: str = None) -> Condition[E]:
+    def as_not(
+        cls, condition: Condition[E], description: str = None
+    ) -> Condition[E]:
         # todo: how will it work composed conditions?
         condition_words = str(condition).split(' ')
         is_or_have = condition_words[0]
@@ -83,9 +84,9 @@ class Condition(Callable[[E], None]):
     # }
 
     @classmethod
-    def raise_if_not(cls,
-                     description: str,
-                     predicate: Predicate[E]) -> Condition[E]:
+    def raise_if_not(
+        cls, description: str, predicate: Predicate[E]
+    ) -> Condition[E]:
         def fn(entity: E) -> None:
             if not predicate(entity):
                 raise ConditionNotMatchedError()
@@ -93,14 +94,16 @@ class Condition(Callable[[E], None]):
         return cls(description, fn)
 
     @classmethod
-    def raise_if_not_actual(cls,
-                            description: str,
-                            query: Lambda[E, R],
-                            predicate: Predicate[R]) -> Condition[E]:
-
+    def raise_if_not_actual(
+        cls, description: str, query: Lambda[E, R], predicate: Predicate[R]
+    ) -> Condition[E]:
         def fn(entity: E) -> None:
             query_to_str = str(query)
-            result = query.__name__ if query_to_str.startswith('<function') else query_to_str
+            result = (
+                query.__name__
+                if query_to_str.startswith('<function')
+                else query_to_str
+            )
             actual = query(entity)
             if not predicate(actual):
                 raise AssertionError(f'actual {result}: {actual}')

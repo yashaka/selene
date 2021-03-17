@@ -31,10 +31,10 @@ def test_waits_for_visibility_minimum_needed_time(session_browser):
     page.opened_with_body(
         '''
         <a href="#second" style="display:none">go to Heading 2</a>
-        <h2 id="second">Heading 2</h2>''') \
-        .execute_script_with_timeout(
-        'document.getElementsByTagName("a")[0].style = "display:block";',
-        500)
+        <h2 id="second">Heading 2</h2>'''
+    ).execute_script_with_timeout(
+        'document.getElementsByTagName("a")[0].style = "display:block";', 500
+    )
     element = session_browser.element('a')
     # stamp_before = time.time_ns()
 
@@ -50,12 +50,14 @@ def test_waits_for_present_in_dom_and_visibility(session_browser):
     page = GivenPage(session_browser.driver)
     page.opened_with_body(
         '''
-        <h2 id="second">Heading 2</h2>''')
+        <h2 id="second">Heading 2</h2>'''
+    )
     page.load_body_with_timeout(
         '''
         <a href="#second">go to Heading 2</a>
         <h2 id="second">Heading 2</h2>''',
-        500)
+        500,
+    )
     element = session_browser.element('a')
 
     element.click()
@@ -67,15 +69,16 @@ def test_waits_first_for_present_in_dom_then_visibility(session_browser):
     page = GivenPage(session_browser.driver)
     page.opened_with_body(
         '''
-        <h2 id="second">Heading 2</h2>''')
+        <h2 id="second">Heading 2</h2>'''
+    )
     page.load_body_with_timeout(
         '''
         <a href="#second" style="display:none">go to Heading 2</a>
         <h2 id="second">Heading 2</h2>''',
-        250) \
-        .execute_script_with_timeout(
-        'document.getElementsByTagName("a")[0].style = "display:block";',
-        500)
+        250,
+    ).execute_script_with_timeout(
+        'document.getElementsByTagName("a")[0].style = "display:block";', 500
+    )
     element = session_browser.element('a')
 
     element.click()
@@ -89,10 +92,10 @@ def test_fails_on_timeout_during_waiting_for_visibility(session_browser):
     page.opened_with_body(
         '''
         <a href='#second' style='display:none'>go to Heading 2</a>
-        <h2 id='second'>Heading 2</h2>''') \
-        .execute_script_with_timeout(
-        'document.getElementsByTagName("a")[0].style = "display:block";',
-        500)
+        <h2 id='second'>Heading 2</h2>'''
+    ).execute_script_with_timeout(
+        'document.getElementsByTagName("a")[0].style = "display:block";', 500
+    )
     element = browser.element("a")
 
     with pytest.raises(TimeoutException):
@@ -102,17 +105,20 @@ def test_fails_on_timeout_during_waiting_for_visibility(session_browser):
 
 
 def test_fails_on_timeout_during_waits_for_present_in_dom_and_visibility(
-        session_browser):
+    session_browser,
+):
     browser = session_browser.with_(timeout=0.25)
     page = GivenPage(browser.driver)
     page.opened_with_body(
         '''
-        <h2 id="second">Heading 2</h2>''')
+        <h2 id="second">Heading 2</h2>'''
+    )
     page.load_body_with_timeout(
         '''
         <a href="#second">go to Heading 2</a>
         <h2 id="second">Heading 2</h2>''',
-        500)
+        500,
+    )
     element = browser.element("a")
 
     with pytest.raises(TimeoutException):
@@ -122,20 +128,22 @@ def test_fails_on_timeout_during_waits_for_present_in_dom_and_visibility(
 
 
 def test_fails_on_timeout_during_waits_first_for_present_in_dom_then_visibility(
-        session_browser):
+    session_browser,
+):
     browser = session_browser.with_(timeout=0.25)
     page = GivenPage(browser.driver)
     page.opened_with_body(
         '''
-        <h2 id="second">Heading 2</h2>''')
+        <h2 id="second">Heading 2</h2>'''
+    )
     page.load_body_with_timeout(
         '''
         <a href="#second" style="display:none">go to Heading 2</a>
         <h2 id="second">Heading 2</h2>''',
-        250) \
-        .execute_script_with_timeout(
-        'document.getElementsByTagName("a")[0].style = "display:block";',
-        500)
+        250,
+    ).execute_script_with_timeout(
+        'document.getElementsByTagName("a")[0].style = "display:block";', 500
+    )
     element = browser.element("a")
 
     with pytest.raises(TimeoutException):

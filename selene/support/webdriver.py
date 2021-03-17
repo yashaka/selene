@@ -39,8 +39,11 @@ class Help:  # todo: should we make it private? like call it _Help (or think on 
 
     def save_page_source(self, file: str) -> Optional[str]:
         if not file.lower().endswith('.html'):
-            warnings.warn("name used for saved pagesource does not match file "
-                          "type. It should end with an `.html` extension", UserWarning)
+            warnings.warn(
+                "name used for saved pagesource does not match file "
+                "type. It should end with an `.html` extension",
+                UserWarning,
+            )
 
         html = self._driver.page_source
 
@@ -56,7 +59,10 @@ class Help:  # todo: should we make it private? like call it _Help (or think on 
 
     def save_screenshot(self, file: str) -> Optional[str]:
         if not file.lower().endswith('.png'):
-            warnings.warn("name used for saved pagesource does not match file "
-                          "type. It should end with an `.png` extension", UserWarning)
+            warnings.warn(
+                "name used for saved pagesource does not match file "
+                "type. It should end with an `.png` extension",
+                UserWarning,
+            )
 
         return file if self._driver.get_screenshot_as_file(file) else None

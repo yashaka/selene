@@ -13,7 +13,9 @@ def test_shared_browser_not_reopen_on_action_after_been_closed():
     with pytest.raises(RuntimeError) as error:
         browser.element('[name="q"]').click()
     assert 'Webdriver has been closed.' in str(error.value)
-    assert 'You need to call open(url) to open a browser again.' in str(error.value)
+    assert 'You need to call open(url) to open a browser again.' in str(
+        error.value
+    )
 
 
 def test_shared_browser_starts_after_unexpectedly_closed_in_previous_test():
