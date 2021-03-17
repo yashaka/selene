@@ -29,7 +29,9 @@ from tests.integration.helpers.givenpage import GivenPage
 def test_have_url(session_browser):
     GivenPage(session_browser.driver).opened_empty()
     session_browser.should(have.url(session_browser.driver.current_url))
-    session_browser.should(have.no.url(session_browser.driver.current_url[:-1]))
+    session_browser.should(
+        have.no.url(session_browser.driver.current_url[:-1])
+    )
 
 
 def test_have_url_containing(session_browser):

@@ -49,24 +49,23 @@ def partial_link_text(value):
 
 
 def _escape_text_quotes_for_xpath(text):
-    return 'concat("", "%s")' % (
-        str(
-            "\", '\"', \"".join(
-                text.split('"'))))
+    return 'concat("", "%s")' % (str("\", '\"', \"".join(text.split('"'))))
 
 
 def text(value):
     return xpath(
         './/*[text()[normalize-space(.) = '
         + _escape_text_quotes_for_xpath(value)
-        + ']]')
+        + ']]'
+    )
 
 
 def partial_text(value):
     return xpath(
         './/*[text()[contains(normalize-space(.), '
         + _escape_text_quotes_for_xpath(value)
-        + ')]]')
+        + ')]]'
+    )
 
 
 # todo: deprecate be_* ? since they hide "xpath" logic, which may not be working in all cases
@@ -75,15 +74,24 @@ def partial_text(value):
 
 
 def be_following_sibling(with_tag: str = '*'):
-    warnings.warn('deprecated; use xpath explicitly to not hide complexity in workaround', DeprecationWarning)
+    warnings.warn(
+        'deprecated; use xpath explicitly to not hide complexity in workaround',
+        DeprecationWarning,
+    )
     return xpath(f'./following-sibling::{with_tag}')
 
 
 def be_parent():
-    warnings.warn('deprecated; use xpath explicitly to not hide complexity in workaround', DeprecationWarning)
+    warnings.warn(
+        'deprecated; use xpath explicitly to not hide complexity in workaround',
+        DeprecationWarning,
+    )
     return xpath('..')
 
 
 def be_first_child(with_tag: str = '*'):
-    warnings.warn('deprecated; use xpath explicitly to not hide complexity in workaround', DeprecationWarning)
+    warnings.warn(
+        'deprecated; use xpath explicitly to not hide complexity in workaround',
+        DeprecationWarning,
+    )
     return xpath(f'./{with_tag}[1]')

@@ -28,7 +28,11 @@ from selene.api.past import exact_text
 from selene.api.past import open_url
 from selene.support.jquery_style_selectors import s
 
-start_page = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/start_page.html'
+start_page = (
+    'file://'
+    + os.path.abspath(os.path.dirname(__file__))
+    + '/../resources/start_page.html'
+)
 
 
 def test_can_init_default_browser_on_visit():

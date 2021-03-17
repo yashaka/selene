@@ -29,10 +29,20 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 from selene.api.past import config
 from selene.api.past import exact_text, visible
-from selene.api.past import open_url, take_screenshot, set_driver, driver, latest_screenshot
+from selene.api.past import (
+    open_url,
+    take_screenshot,
+    set_driver,
+    driver,
+    latest_screenshot,
+)
 from selene.support.jquery_style_selectors import s
 
-start_page = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/start_page.html'
+start_page = (
+    'file://'
+    + os.path.abspath(os.path.dirname(__file__))
+    + '/../resources/start_page.html'
+)
 original_default_screenshot_folder = config.reports_folder
 origina_timeout = config.timeout
 
@@ -62,8 +72,10 @@ def test_can_make_screenshot_with_default_name():
     open_url(start_page)
     actual = take_screenshot()
 
-    expected = os.path.join(get_default_screenshot_folder(),
-                            'screen_{id}.png'.format(id=get_screen_id()))
+    expected = os.path.join(
+        get_default_screenshot_folder(),
+        'screen_{id}.png'.format(id=get_screen_id()),
+    )
     assert expected == actual
     assert os.path.exists(actual)
 
@@ -78,36 +90,48 @@ def test_can_make_screenshot_with_custom_name():
 
 
 def test_can_save_screenshot_to_custom_folder_specified_through_config():
-    config.reports_folder = os.path.dirname(os.path.abspath(__file__)) + '/../../build/screenshots'
+    config.reports_folder = (
+        os.path.dirname(os.path.abspath(__file__)) + '/../../build/screenshots'
+    )
     open_url(start_page)
     actual = take_screenshot()
 
-    expected = os.path.join(get_default_screenshot_folder(),
-                            'screen_{id}.png'.format(id=get_screen_id()))
+    expected = os.path.join(
+        get_default_screenshot_folder(),
+        'screen_{id}.png'.format(id=get_screen_id()),
+    )
     assert expected == actual
     assert os.path.isfile(actual)
     assert os.path.exists(actual)
 
 
 def test_can_save_screenshot_to_custom_folder_specified_as_parameter():
-    screenshot_folder = os.path.dirname(os.path.abspath(__file__)) + '/../../build/screenshots'
+    screenshot_folder = (
+        os.path.dirname(os.path.abspath(__file__)) + '/../../build/screenshots'
+    )
     open_url(start_page)
     actual = take_screenshot(path=screenshot_folder)
 
-    expected = os.path.join(screenshot_folder,
-                            'screen_{id}.png'.format(id=get_screen_id()))
+    expected = os.path.join(
+        screenshot_folder, 'screen_{id}.png'.format(id=get_screen_id())
+    )
     assert expected == actual
     assert os.path.isfile(actual)
     assert os.path.exists(actual)
 
 
 def test_can_save_screenshot_to_custom_folder_with_custom_name():
-    screenshot_folder = os.path.dirname(os.path.abspath(__file__)) + '/../../build/screenshots'
+    screenshot_folder = (
+        os.path.dirname(os.path.abspath(__file__)) + '/../../build/screenshots'
+    )
     open_url(start_page)
-    actual = take_screenshot(path=screenshot_folder,
-                             filename="custom_file_in_custom_folder")
+    actual = take_screenshot(
+        path=screenshot_folder, filename="custom_file_in_custom_folder"
+    )
 
-    expected = os.path.join(screenshot_folder, 'custom_file_in_custom_folder.png')
+    expected = os.path.join(
+        screenshot_folder, 'custom_file_in_custom_folder.png'
+    )
     assert expected == actual
     assert os.path.isfile(actual)
     assert os.path.exists(actual)
@@ -118,13 +142,17 @@ def test_can_make_screenshot_automatically():
     config.timeout = 0.1
     with pytest.raises(TimeoutException) as ex:
         s("#selene_link").should_have(exact_text("Selen site"))
-    expected = os.path.join(get_default_screenshot_folder(),
-                            'screen_{id}.png'.format(id=get_screen_id()))
+    expected = os.path.join(
+        get_default_screenshot_folder(),
+        'screen_{id}.png'.format(id=get_screen_id()),
+    )
     assert os.path.exists(expected)
 
 
 def test_can_get_latest_screenshot_path():
-    config.reports_folder = os.path.dirname(os.path.abspath(__file__)) + '/../../build/screenshots'
+    config.reports_folder = (
+        os.path.dirname(os.path.abspath(__file__)) + '/../../build/screenshots'
+    )
     open_url(start_page)
     with pytest.raises(TimeoutException):
         s("#s").should_be(visible)

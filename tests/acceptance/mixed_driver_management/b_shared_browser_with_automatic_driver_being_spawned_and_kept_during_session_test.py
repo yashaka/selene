@@ -30,9 +30,11 @@ def test_todomvc_starts_with_cleaned_storage_at_new_browser():
     browser.open(todomvc.url)
 
     # Then
-    (browser.all("#todo-list>li")
-     .should(have.size(0))
-     .should(have.no.texts('todo from A test')))
+    (
+        browser.all("#todo-list>li")
+        .should(have.size(0))
+        .should(have.no.texts('todo from A test'))
+    )
 
     # When
     browser.element('#new-todo').set_value('todo from B test').press_enter()
