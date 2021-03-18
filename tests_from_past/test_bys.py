@@ -20,8 +20,20 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from selene.bys import by, by_css, by_name, by_link_text, by_partial_link_text, by_xpath, following_sibling, parent, \
-    first_child, by_text, by_partial_text, escape_text_quotes_for_xpath
+from selene.bys import (
+    by,
+    by_css,
+    by_name,
+    by_link_text,
+    by_partial_link_text,
+    by_xpath,
+    following_sibling,
+    parent,
+    first_child,
+    by_text,
+    by_partial_text,
+    escape_text_quotes_for_xpath,
+)
 
 
 def test_by_css():
@@ -58,11 +70,17 @@ def test_first_child():
 
 
 def test_by_text():
-    assert by_text("test") == ("xpath", './/*[text()[normalize-space(.) = concat("", "test")]]')
+    assert by_text("test") == (
+        "xpath",
+        './/*[text()[normalize-space(.) = concat("", "test")]]',
+    )
 
 
 def test_by_partial_text():
-    assert by_partial_text("text") == ("xpath", './/*[text()[contains(normalize-space(.), concat("", "text"))]]')
+    assert by_partial_text("text") == (
+        "xpath",
+        './/*[text()[contains(normalize-space(.), concat("", "text"))]]',
+    )
 
 
 def test_by_escape_text_quotes_for_xpath():

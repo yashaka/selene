@@ -123,14 +123,18 @@ class Order(object):
                 self.name = container.s('.item_name')
                 self.other_data = container.s('.item_other_data')
 
-                self.show_advanced_options_selector = \
-                    container.s('.show_advanced_options_selector')
+                self.show_advanced_options_selector = container.s(
+                    '.show_advanced_options_selector'
+                )
                 self.advanced_options_selector = self.AdvancedOptionsSelector(
-                    self._container.s('.advanced_options_selector'))
-                self.show_advanced_options = \
-                    container.s('.show_advanced_options')
+                    self._container.s('.advanced_options_selector')
+                )
+                self.show_advanced_options = container.s(
+                    '.show_advanced_options'
+                )
                 self.advanced_options = self.AdvancedOptions(
-                    self._container.ss('.advanced_options .options_list li'))
+                    self._container.ss('.advanced_options .options_list li')
+                )
 
                 self.clear_options = container.s('.clear_options')
 
@@ -140,19 +144,24 @@ class Order(object):
 
             def add_advanced_options(self, *options_data):
                 for filter_data in options_data:
-                    self.advanced_options_selector.add_filter_with(*filter_data)
+                    self.advanced_options_selector.add_filter_with(
+                        *filter_data
+                    )
                 self.advanced_options_selector.apply_filtered_options.click()
                 return self
 
             class AdvancedOptionsSelector(object):
                 def __init__(self, container):
                     self._container = container
-                    self.add_options_filter = \
-                        container.s('.add_options_filter')
-                    self.apply_filtered_options = \
-                        container.s('.apply_filtered_options')
-                    self.filters_elements = \
-                        container.ss('[id^="options_filter"]')
+                    self.add_options_filter = container.s(
+                        '.add_options_filter'
+                    )
+                    self.apply_filtered_options = container.s(
+                        '.apply_filtered_options'
+                    )
+                    self.filters_elements = container.ss(
+                        '[id^="options_filter"]'
+                    )
 
                 def filter(self, index):
                     return self.OptionsFilter(self.filters_elements[index])
@@ -167,10 +176,10 @@ class Order(object):
 
                 class OptionsFilter(object):
                     def __init__(self, container):
-                        self.option_type = \
-                            SelectList(container.s('.options_scope_type'))
-                        self.scope = \
-                            SelectList(container.s('.options_scope'))
+                        self.option_type = SelectList(
+                            container.s('.options_scope_type')
+                        )
+                        self.scope = SelectList(container.s('.options_scope'))
 
             class AdvancedOptions(object):
                 def __init__(self, elements):

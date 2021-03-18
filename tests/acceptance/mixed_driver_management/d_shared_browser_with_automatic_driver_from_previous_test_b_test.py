@@ -30,5 +30,4 @@ def test_todomvc_shares_todos_in_same_browser_session():
     browser.open(todomvc.url)
 
     # Then
-    (browser.all("#todo-list>li")
-     .should(have.texts('todo from B test')))
+    (browser.all("#todo-list>li").should(have.texts('todo from B test')))

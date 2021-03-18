@@ -40,31 +40,43 @@ outer_html = attribute('outerHTML')
 
 value = attribute('value')
 
-tag: Query[Element, str] = Query('tag name', lambda element: element().tag_name)
+tag: Query[Element, str] = Query(
+    'tag name', lambda element: element().tag_name
+)
 
 text: Query[Element, str] = Query('text', lambda element: element().text)
 
 # todo: do we need condition for the following?
-location_once_scrolled_into_view: Query[Element, Dict[str, int]] = \
-    Query('location once scrolled into view', lambda element: element().location_once_scrolled_into_view)
+location_once_scrolled_into_view: Query[Element, Dict[str, int]] = Query(
+    'location once scrolled into view',
+    lambda element: element().location_once_scrolled_into_view,
+)
 
 # todo: what to do now with have.size* ? o_O
-size: Union[Query[Element, Dict[str, Any]], Query[Collection, int]] = \
-    Query('size', lambda entity: entity().size if isinstance(entity, Element) else len(entity()))
+size: Union[Query[Element, Dict[str, Any]], Query[Collection, int]] = Query(
+    'size',
+    lambda entity: entity().size
+    if isinstance(entity, Element)
+    else len(entity()),
+)
 
 # todo: do we need condition for the following?
-location: Query[Element, Dict[str, int]] = \
-    Query('location', lambda element: element().location)
+location: Query[Element, Dict[str, int]] = Query(
+    'location', lambda element: element().location
+)
 
 # todo: do we need condition for the following?
-rect: Query[Element, Dict[str, Any]] = \
-    Query('rect', lambda element: element().rect)
+rect: Query[Element, Dict[str, Any]] = Query(
+    'rect', lambda element: element().rect
+)
 
-screenshot_as_base64: Query[Element, Any] = \
-    Query('screenshot as base64', lambda element: element().screenshot_as_base64)
+screenshot_as_base64: Query[Element, Any] = Query(
+    'screenshot as base64', lambda element: element().screenshot_as_base64
+)
 
-screenshot_as_png: Query[Element, Any] = \
-    Query('screenshot as png', lambda element: element().screenshot_as_png)
+screenshot_as_png: Query[Element, Any] = Query(
+    'screenshot as png', lambda element: element().screenshot_as_png
+)
 
 
 def screenshot(filename: str) -> Query[Element, bool]:
@@ -80,7 +92,9 @@ def screenshot(filename: str) -> Query[Element, bool]:
 # todo: but should we add it with another name?
 
 
-internal_id: Query[Element, Any] = Query('internal id', lambda element: element().id)
+internal_id: Query[Element, Any] = Query(
+    'internal id', lambda element: element().id
+)
 
 
 def css_property(name: str) -> Query[Element, str]:
@@ -102,13 +116,21 @@ def js_property(name: str) -> Query[Element, str]:
 # --- Browser queries --- #
 
 
-url: Query[Browser, str] = Query('url', lambda browser: browser.driver.current_url)
+url: Query[Browser, str] = Query(
+    'url', lambda browser: browser.driver.current_url
+)
 
-title: Query[Browser, str] = Query('title', lambda browser: browser.driver.title)
+title: Query[Browser, str] = Query(
+    'title', lambda browser: browser.driver.title
+)
 
-tabs: Query[Browser, List[str]] = Query('tabs', lambda browser: browser.driver.window_handles)
+tabs: Query[Browser, List[str]] = Query(
+    'tabs', lambda browser: browser.driver.window_handles
+)
 
-tabs_number: Query[Browser, int] = Query('tabs number', lambda browser: len(browser.driver.window_handles))
+tabs_number: Query[Browser, int] = Query(
+    'tabs number', lambda browser: len(browser.driver.window_handles)
+)
 
 
 def tab(index: int) -> Query[Browser, str]:
@@ -120,14 +142,17 @@ def tab(index: int) -> Query[Browser, str]:
 
 current_tab: Query[Browser, str] = Query(
     'current tab (window handle)',
-    lambda browser: browser.driver.current_window_handle)
+    lambda browser: browser.driver.current_window_handle,
+)
 
 
 def __next_tab_fn(browser: Browser) -> str:
     tabs = browser.driver.window_handles
     current = browser.driver.current_window_handle
     current_index = tabs.index(current)
-    return tabs[0] if current_index >= len(tabs) - 1 else tabs[current_index + 1]
+    return (
+        tabs[0] if current_index >= len(tabs) - 1 else tabs[current_index + 1]
+    )
 
 
 next_tab: Query[Browser, str] = Query('next tab', __next_tab_fn)
@@ -143,4 +168,6 @@ def __previous_tab_fn(browser: Browser) -> str:
 previous_tab: Query[Browser, str] = Query('previous tab', __previous_tab_fn)
 
 
-page_source: Query[Browser, str] = Query('page source', lambda browser: browser.driver.page_source)
+page_source: Query[Browser, str] = Query(
+    'page source', lambda browser: browser.driver.page_source
+)

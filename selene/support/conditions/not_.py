@@ -32,8 +32,10 @@ visible: Condition[Element] = _match.element_is_visible.not_
 hidden: Condition[Element] = _match.element_is_hidden.not_
 
 present: Condition[Element] = _match.element_is_present.not_
-in_dom: Condition[Element] = _match.element_is_present.not_    # todo: do we need both present and in_dom?
-existing: Condition[Element] = _match.element_is_present.not_  # todo: consider deprecating
+in_dom: Condition[Element] = _match.element_is_present.not_
+# todo: do we need both present and in_dom?
+# todo: consider deprecating existing
+existing: Condition[Element] = _match.element_is_present.not_
 
 absent: Condition[Element] = _match.element_is_absent.not_
 
@@ -59,7 +61,8 @@ def attribute(name: str, value: str = None):
     if value:
         warnings.warn(
             'passing second argument is deprecated; use have.attribute(foo).value(bar) instead',
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         return _match.element_has_attribute(name).value(value).not_
 
     original = _match.element_has_attribute(name)
@@ -68,7 +71,9 @@ def attribute(name: str, value: str = None):
     def value(self, expected: str, ignore_case=False) -> Condition[Element]:
         return original.value(expected, ignore_case).not_
 
-    def value_containing(self, expected: str, ignore_case=False) -> Condition[Element]:
+    def value_containing(
+        self, expected: str, ignore_case=False
+    ) -> Condition[Element]:
         return original.value_containing(expected, ignore_case).not_
 
     def values(self, *expected: str) -> Condition[Collection]:
@@ -89,7 +94,8 @@ def js_property(name: str, value: str = None):
     if value:
         warnings.warn(
             'passing second argument is deprecated; use have.js_property(foo).value(bar) instead',
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         return _match.element_has_js_property(name).value(value).not_
 
     original = _match.element_has_js_property(name)
@@ -119,7 +125,8 @@ def css_property(name: str, value: str = None):
     if value:
         warnings.warn(
             'passing second argument is deprecated; use have.css_property(foo).value(bar) instead',
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         return _match.element_has_css_property(name).value(value).not_
 
     original = _match.element_has_css_property(name)
@@ -185,7 +192,10 @@ def size_greater_than(number: int) -> Condition[Collection]:
 
 
 def size_at_least(number: int) -> Condition[Collection]:
-    warnings.warn('might be deprecated; use have.size_greater_than_or_equal instead', PendingDeprecationWarning)
+    warnings.warn(
+        'might be deprecated; use have.size_greater_than_or_equal instead',
+        PendingDeprecationWarning,
+    )
     return _match.collection_has_size_greater_than_or_equal(number).not_
 
 
@@ -239,7 +249,10 @@ def tabs_number_greater_than_or_equal(value: int) -> Condition[Browser]:
 
 
 def js_returned_true(script_to_return_bool: str) -> Condition[Browser]:
-    warnings.warn('might be deprecated; use have.js_returned(True, ...) instead', PendingDeprecationWarning)
+    warnings.warn(
+        'might be deprecated; use have.js_returned(True, ...) instead',
+        PendingDeprecationWarning,
+    )
     return _match.browser_has_js_returned(True, script_to_return_bool).not_
 
 

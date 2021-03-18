@@ -27,18 +27,22 @@ def test_waits_nothing(session_browser):
     page.opened_empty()
     elements = session_browser.all('.will-appear')
 
-    page.load_body('''
+    page.load_body(
+        '''
                    <ul>Hello to:
                        <li class='will-appear'>Bob</li>
                        <li class='will-appear' style='display:none'>Kate</li>
-                   </ul>''')
+                   </ul>'''
+    )
     assert len(elements) == 2
 
-    page.load_body_with_timeout('''
+    page.load_body_with_timeout(
+        '''
                                 <ul>Hello to:
                                     <li class='will-appear'>Bob</li>
                                     <li class='will-appear' style='display:none'>Kate</li>
                                     <li class='will-appear'>Joe</li>
                                 </ul>''',
-                                500)
+        500,
+    )
     assert len(elements) == 2

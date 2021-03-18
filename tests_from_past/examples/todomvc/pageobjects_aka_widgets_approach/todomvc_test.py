@@ -65,7 +65,9 @@ class Footer(object):
         self.clear_completed = self.container.find("#clear-completed")
 
     def should_have_items_left(self, number_of_active_tasks):
-        self.container.find("#todo-count>strong").should_have(exact_text(str(number_of_active_tasks)))
+        self.container.find("#todo-count>strong").should_have(
+            exact_text(str(number_of_active_tasks))
+        )
 
 
 class TodoMVC(object):

@@ -28,7 +28,8 @@ def test_should(session_browser):
     GivenPage(session_browser.driver).opened_with_body(
         '''
         <button id="hidden" style="display: none">Press me</button>
-        ''')
+        '''
+    )
 
     hidden_element = session_browser.element("#hidden")
 
@@ -45,7 +46,8 @@ def test_action_on_element_found_from_hidden_element(session_browser):
         </div>
         <h1 id="first">Heading 1</h2>
         <h2 id="second">Heading 2</h2>
-        ''')
+        '''
+    )
     hidden_element = session_browser.element("#hidden")
 
     hidden_element.element('./following-sibling::*/a[2]').click()

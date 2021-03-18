@@ -31,11 +31,12 @@ app_url = 'https://todomvc4tasj.herokuapp.com/'
 #                      '$._data($("#toggle-all").get(0), "events").hasOwnProperty("change") && '
 #                      '$._data($("#todo-list").get(0), "events").hasOwnProperty("change") && '
 #                      '$._data($("#clear-completed").get(0), "events").hasOwnProperty("click")')
-is_TodoMVC_loaded = 'return (Object.keys(require.s.contexts._.defined).length === 39)'
+is_TodoMVC_loaded = (
+    'return (Object.keys(require.s.contexts._.defined).length === 39)'
+)
 
 
 class TestTodoMVC(object):
-
     def test_selene_demo(self):
         tasks = ss("#todo-list>li")
         active_tasks = tasks.filtered_by(have.css_class("active"))
@@ -45,7 +46,9 @@ class TestTodoMVC(object):
 
         for task_text in ["1", "2", "3"]:
             s("#new-todo").set_value(task_text).press_enter()
-        tasks.should(have.texts("1", "2", "3")).should_each(have.css_class("active"))
+        tasks.should(have.texts("1", "2", "3")).should_each(
+            have.css_class("active")
+        )
         s("#todo-count").should(have.text('3'))
 
         tasks[2].s(".toggle").click()
@@ -53,8 +56,12 @@ class TestTodoMVC(object):
         active_tasks.should(have.size(2))
 
         tasks.filtered_by(have.css_class("completed")).should(have.texts("3"))
-        tasks.element_by(not_(have.css_class("completed"))).should(have.text("1"))
-        tasks.filtered_by(not_(have.css_class("completed"))).should(have.texts("1", "2"))
+        tasks.element_by(not_(have.css_class("completed"))).should(
+            have.text("1")
+        )
+        tasks.filtered_by(not_(have.css_class("completed"))).should(
+            have.texts("1", "2")
+        )
 
         s(by.link_text("Active")).click()
         tasks[:2].should(have.texts("1", "2"))
