@@ -32,8 +32,12 @@ def x_test_filter_tasks():
     config.browser_name = BrowserName.MARIONETTE
 
     browser.open_url('https://todomvc4tasj.herokuapp.com')
-    clear_completed_js_loaded = "return $._data($('#clear-completed').get(0), 'events').hasOwnProperty('click')"
-    browser.wait_to(have.js_returned_true(clear_completed_js_loaded), timeout=config.timeout * 3)
+    clear_completed_js_loaded = (
+        "return $._data($('#clear-completed').get(0), 'events').hasOwnProperty('click')"
+    )
+    browser.wait_to(
+        have.js_returned_true(clear_completed_js_loaded), timeout=config.timeout * 3
+    )
 
     s('#new-todo').set_value('a').press_enter()
     s('#new-todo').set_value('b').press_enter()
@@ -49,4 +53,3 @@ def x_test_filter_tasks():
 
     s(by.link_text('All')).click()
     ss('#todo-list li').filtered_by(be.visible).should(have.exact_texts('a', 'b', 'c'))
-

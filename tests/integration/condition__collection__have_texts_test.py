@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # MIT License
 #
 # Copyright (c) 2015-2021 Iakiv Kramarenko
@@ -35,7 +33,8 @@ def test_should_have_texts(session_browser):
            <li>Alex!</li>
            <li>Yakov!</li>
         </ul>
-        ''')
+        '''
+    )
 
     session_browser.all('li').should(have.texts('', ''))  # funny:) but as it is
     session_browser.all('li').should(have.texts('Alex', 'Yakov'))
@@ -50,7 +49,8 @@ def test_should_have_texts_exception(session_browser):
            <li>Alex</li>
            <li>Yakov</li>
         </ul>
-        ''')
+        '''
+    )
 
     with pytest.raises(TimeoutException) as error:
         browser.all('li').should(have.texts('Alex'))
@@ -65,7 +65,8 @@ def test_should_have_no_texts(session_browser):
            <li>Alex!</li>
            <li>Yakov!</li>
         </ul>
-        ''')
+        '''
+    )
 
     session_browser.all('li').should(have.no.texts(' ', ' '))
     session_browser.all('li').should(have.no.texts('', 'Yakov!!'))
@@ -82,7 +83,8 @@ def test_should_have_no_texts_exception(session_browser):
            <li>Alex</li>
            <li>Yakov</li>
         </ul>
-        ''')
+        '''
+    )
 
     with pytest.raises(TimeoutException) as error:
         browser.all('li').should(have.no.texts('Alex', 'Yakov'))
@@ -99,7 +101,8 @@ def test_should_have_text(session_browser):
            <li>Yakov</li>
            <li>Jakob</li>
         </ul>
-        ''')
+        '''
+    )
 
     session_browser.all('li').should(have.text('ako'))
     session_browser.all('li').should(have.text(''))
@@ -127,7 +130,8 @@ def test_should_have_text_exception(session_browser):
            <li>Alex</li>
            <li>Alex</li>
         </ul>
-        ''')
+        '''
+    )
 
     with pytest.raises(TimeoutException) as error:
         browser.all('li').should(have.text('Yakov'))
@@ -142,7 +146,8 @@ def test_should_have_no_text(session_browser):
            <li>Yakov</li>
            <li>Yakov</li>
         </ul>
-        ''')
+        '''
+    )
 
     session_browser.all('li').should(have.no.text('L'))
 
@@ -155,7 +160,8 @@ def test_should_have_no_text_exception(session_browser):
            <li>Alex</li>
            <li>Alex</li>
         </ul>
-        ''')
+        '''
+    )
 
     with pytest.raises(TimeoutException) as error:
         browser.all('li').should(have.no.text('Alex'))

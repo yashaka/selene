@@ -32,7 +32,8 @@ def test_search_does_not_start_on_creation(session_browser):
 
 
 def test_search_is_postponed_until_actual_action_like_questioning_count(
-        session_browser):
+    session_browser,
+):
     page = GivenPage(session_browser.driver)
     page.opened_empty()
 
@@ -42,13 +43,15 @@ def test_search_is_postponed_until_actual_action_like_questioning_count(
         <ul>Hello to:
             <li class='will-appear'>Bob</li>
             <li class='will-appear'>Kate</li>
-        </ul>''')
+        </ul>'''
+    )
 
     assert len(elements) == 2
 
 
 def test_search_is_updated_on_next_actual_action_like_questioning_count(
-        session_browser):
+    session_browser,
+):
     page = GivenPage(session_browser.driver)
     page.opened_empty()
     elements = session_browser.element('ul').all('.will-appear')
@@ -58,7 +61,8 @@ def test_search_is_updated_on_next_actual_action_like_questioning_count(
         <ul>Hello to:
             <li class='will-appear'>Bob</li>
             <li class='will-appear'>Kate</li>
-        </ul>''')
+        </ul>'''
+    )
     assert len(elements) == 2
 
     page.load_body(
@@ -67,7 +71,8 @@ def test_search_is_updated_on_next_actual_action_like_questioning_count(
             <li class='will-appear'>Bob</li>
             <li class='will-appear'>Kate</li>
             <li class='will-appear'>Joe</li>
-        </ul>''')
+        </ul>'''
+    )
 
     assert len(elements) == 3
 
@@ -83,6 +88,7 @@ def test_searches_exactly_inside_parent(session_browser):
             <li class='will-appear'>Bob</li>
             <li class='will-appear'>Kate</li>
         </ul>
-        <li class='forgotten'>Joe</li>''')
+        <li class='forgotten'>Joe</li>'''
+    )
 
     assert len(elements) == 2

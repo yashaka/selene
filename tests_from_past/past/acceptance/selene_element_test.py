@@ -29,7 +29,13 @@ from tests_from_past.past.acceptance import get_test_driver
 __author__ = 'yashaka'
 
 from selene.api.past import *
-from tests_from_past.past.acceptance import given_active, given_at_other_page, given_empty_tasks, given, task
+from tests_from_past.past.acceptance import (
+    given_active,
+    given_at_other_page,
+    given_empty_tasks,
+    given,
+    task,
+)
 
 
 def setup_module(m):
@@ -58,7 +64,9 @@ def test_assure_not_and_alias_methods():
 
 def test_is_displayed_fails_with_waiting_if_element_not_exist():
     given_at_other_page()
-    original_timeout = config.timeout  # todo: switch to something like s("#todo-list").with_timeout(0.1).is_displayed()
+    original_timeout = (
+        config.timeout
+    )  # todo: switch to something like s("#todo-list").with_timeout(0.1).is_displayed()
     config.timeout = 0.1
     with pytest.raises(TimeoutException):
         s("#todo-list").is_displayed()

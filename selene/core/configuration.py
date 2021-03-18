@@ -41,16 +41,18 @@ class Config:
     #       consider impementing some hooks as generators...
     #       hook generally should allow to do some processing before and after e.g. command
     #       think on better name depending on hook type (generator vs standard fn)
-    def __init__(self,
-                 driver: Optional[WebDriver] = None,
-                 timeout: int = 4,
-                 hook_wait_failure: Optional[Callable[[TimeoutException], Exception]] = None,
-                 base_url: str = '',
-                 set_value_by_js: bool = False,
-                 type_by_js: bool = False,
-                 window_width: Optional[int] = None,
-                 window_height: Optional[int] = None,
-                 log_outer_html_on_failure: bool = False):
+    def __init__(
+        self,
+        driver: WebDriver | None = None,
+        timeout: int = 4,
+        hook_wait_failure: Callable[[TimeoutException], Exception] | None = None,
+        base_url: str = '',
+        set_value_by_js: bool = False,
+        type_by_js: bool = False,
+        window_width: int | None = None,
+        window_height: int | None = None,
+        log_outer_html_on_failure: bool = False,
+    ):
 
         self._driver = driver
         self._timeout = timeout
@@ -76,18 +78,23 @@ class Config:
         '''
 
     def as_dict(self, skip_empty=True):
-        return {_strip_first_underscore(k): v
-                for k, v in self.__dict__.items()
-                if not (skip_empty and v is None) and not k.startswith('__')
-                }
+        return {
+            _strip_first_underscore(k): v
+            for k, v in self.__dict__.items()
+            if not (skip_empty and v is None) and not k.startswith('__')
+        }
 
     def with_(self, config: Config = None, **config_as_kwargs) -> Config:
-        return self.__class__(**{**self.as_dict(),
-                                 **(config.as_dict() if config else {}),
-                                 **config_as_kwargs})
+        return self.__class__(
+            **{
+                **self.as_dict(),
+                **(config.as_dict() if config else {}),
+                **config_as_kwargs,
+            }
+        )
 
     @property
-    def driver(self) -> Optional[WebDriver]:
+    def driver(self) -> WebDriver | None:
         return self._driver
 
     @property
@@ -117,11 +124,11 @@ class Config:
         return self._type_by_js
 
     @property
-    def window_width(self) -> Optional[int]:
+    def window_width(self) -> int | None:
         return self._window_width
 
     @property
-    def window_height(self) -> Optional[int]:
+    def window_height(self) -> int | None:
         return self._window_height
 
     @property

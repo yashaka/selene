@@ -25,10 +25,12 @@ from tests.integration.helpers.givenpage import GivenPage
 
 
 def test_can_accept_alert(session_browser):
-    GivenPage(session_browser.driver).opened_with_body("""
+    GivenPage(session_browser.driver).opened_with_body(
+        """
         <p>
         <input id="alert_btn" type="button" onclick="alert('Good morning')" value="Run">
-        </p>""")
+        </p>"""
+    )
 
     session_browser.element("#alert_btn").click()
     session_browser.switch_to.alert.accept()
@@ -41,10 +43,12 @@ def test_can_accept_alert(session_browser):
 
 
 def test_can_dismiss_confirm_dialog(session_browser):
-    GivenPage(session_browser.driver).opened_with_body("""
+    GivenPage(session_browser.driver).opened_with_body(
+        """
         <p>
         <input id="alert_btn" type="button" onclick="alert('Good morning')" value="Run">
-        </p>""")
+        </p>"""
+    )
 
     session_browser.element("#alert_btn").click()
     session_browser.switch_to.alert.dismiss()
@@ -57,10 +61,12 @@ def test_can_dismiss_confirm_dialog(session_browser):
 
 
 def test_alert_is_present(session_browser):
-    GivenPage(session_browser.driver).opened_with_body("""
+    GivenPage(session_browser.driver).opened_with_body(
+        """
         <p>
         <input id="alert_btn" type="button" onclick="alert('Good morning')" value="Run">
-        </p>""")
+        </p>"""
+    )
 
     session_browser.element("#alert_btn").click()
 

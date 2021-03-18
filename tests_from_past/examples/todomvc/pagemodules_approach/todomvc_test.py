@@ -24,8 +24,7 @@ from selene.api.past import execute_script
 from tests_from_past.examples.todomvc.pagemodules_approach.pages import tasks
 
 
-class TestTodoMVC(object):
-
+class TestTodoMVC:
     def teardown(self):
         execute_script('localStorage.clear()')
 
@@ -43,15 +42,12 @@ class TestTodoMVC(object):
 
         tasks.filter_completed()
         tasks.should_be('b')
-        
+
     def test_clear_completed(self):
         tasks.visit()
 
         tasks.add('a', 'b', 'c')
         tasks.toggle('b')
         tasks.clear_completed()
-        
+
         tasks.should_be('a', 'c')
-
-
-

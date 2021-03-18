@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # MIT License
 #
 # Copyright (c) 2015-2021 Iakiv Kramarenko
@@ -32,7 +30,8 @@ def test_unicode_text(session_browser):
            <li>Саше</li>
            <li>Яше</li>
         </ul>
-        ''')
+        '''
+    )
 
     element = session_browser.element('li')
 

@@ -20,16 +20,17 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from builtins import object
 
 
-class NoneObject(object):
+class NoneObject:
     def __init__(self, description):
         # type: (str) -> None
         self.description = description
 
     def __getattr__(self, item):
-        raise AttributeError("'NoneObject' for '%s' has no attribute '%s'" % (self.description, item))
+        raise AttributeError(
+            f"'NoneObject' for '{self.description}' has no attribute '{item}'"
+        )
 
     def __bool__(self):
         return False

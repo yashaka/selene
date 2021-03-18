@@ -36,11 +36,15 @@ __author__ = 'yashaka'
 
 # TODOMVC_URL = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../../resources/todomvcapp/home.html'
 TODOMVC_URL = 'https://todomvc4tasj.herokuapp.com/'
-OTHER_PAGE_URL = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/orderapp/order.html'
+OTHER_PAGE_URL = (
+    'file://'
+    + os.path.abspath(os.path.dirname(__file__))
+    + '/../resources/orderapp/order.html'
+)
 is_TodoMVC_loaded = 'return (Object.keys(require.s.contexts._.defined).length === 39)'
 
 
-class js_returned_true(object):
+class js_returned_true:
     def __init__(self, script):
         self.script = script
 
@@ -55,8 +59,7 @@ class js_returned_true(object):
 def open_todomvc():
     # todo: refactor to use repo copy of todomvc
     driver().get(TODOMVC_URL)
-    WebDriverWait(driver(), config.timeout).until(
-        js_returned_true(is_TodoMVC_loaded))
+    WebDriverWait(driver(), config.timeout).until(js_returned_true(is_TodoMVC_loaded))
 
 
 def given_at_other_page():
@@ -79,7 +82,8 @@ def given(*tasks):
         str(json.dumps(tasks))
         .replace('"', '\\"')
         .replace('\\\\"', '\\\\\\"')
-        .replace("False", "false"))
+        .replace("False", "false")
+    )
 
     execute_js(script)
 
@@ -96,5 +100,6 @@ def task(taskText, is_completed=False):
 
 def given_active(*taskTexts):
     return given(*[task(text) for text in taskTexts])
+
 
 when_active = given_active

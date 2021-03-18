@@ -1,5 +1,3 @@
-# coding=utf-8
-
 # MIT License
 #
 # Copyright (c) 2015-2021 Iakiv Kramarenko
@@ -31,13 +29,14 @@ from selene.api.past import exact_text
 from selene.support.jquery_style_selectors import s, ss
 
 
-class TestTodoMVC(object):
-
+class TestTodoMVC:
     def test_filter_tasks(self):
         browser.open_url('https://todomvc4tasj.herokuapp.com/')
         clear_completed_js_loaded = "return $._data($('#clear-completed').get(0), 'events').hasOwnProperty('click')"
-        browser.wait_to(have.js_returned_true(clear_completed_js_loaded), timeout=config.timeout * 3)
-        browser.wait_to(have.title(u'TroopJS • TodoMVC'))
+        browser.wait_to(
+            have.js_returned_true(clear_completed_js_loaded), timeout=config.timeout * 3
+        )
+        browser.wait_to(have.title('TroopJS • TodoMVC'))
 
         s('#new-todo').should(be.enabled).set_value('a').press_enter()
         s('#new-todo').should(be.enabled).set_value('b').press_enter()
@@ -52,5 +51,3 @@ class TestTodoMVC(object):
 
         s(by_link_text("Completed")).click()
         ss("#todo-list>li").filtered_by(be.visible).should(have.texts('b'))
-
-

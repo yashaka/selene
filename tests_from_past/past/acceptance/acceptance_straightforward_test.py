@@ -34,8 +34,7 @@ app_url = 'https://todomvc4tasj.herokuapp.com/'
 is_TodoMVC_loaded = 'return (Object.keys(require.s.contexts._.defined).length === 39)'
 
 
-class TestTodoMVC(object):
-
+class TestTodoMVC:
     def test_selene_demo(self):
         tasks = ss("#todo-list>li")
         active_tasks = tasks.filtered_by(have.css_class("active"))
@@ -54,7 +53,9 @@ class TestTodoMVC(object):
 
         tasks.filtered_by(have.css_class("completed")).should(have.texts("3"))
         tasks.element_by(not_(have.css_class("completed"))).should(have.text("1"))
-        tasks.filtered_by(not_(have.css_class("completed"))).should(have.texts("1", "2"))
+        tasks.filtered_by(not_(have.css_class("completed"))).should(
+            have.texts("1", "2")
+        )
 
         s(by.link_text("Active")).click()
         tasks[:2].should(have.texts("1", "2"))

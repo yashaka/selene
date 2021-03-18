@@ -26,8 +26,6 @@ def test_search(browser):
     browser.open('https://www.ecosia.org/')
     browser.element(by.name('q')).type('github yashaka selene').press_enter()
 
-    browser.all('.result') \
-        .first \
-        .element('.result-url').click()
+    browser.all('.result').first.element('.result-url').click()
 
     browser.should(have.title_containing('yashaka/selene'))

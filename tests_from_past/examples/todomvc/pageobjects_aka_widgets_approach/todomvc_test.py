@@ -36,7 +36,7 @@ def teardown_module(m):
     browser.driver().quit()
 
 
-class Task(object):
+class Task:
     def __init__(self, container):
         self.container = container
 
@@ -45,7 +45,7 @@ class Task(object):
         return self
 
 
-class Tasks(object):
+class Tasks:
     def _elements(self):
         return ss("#todo-list>li")
 
@@ -59,16 +59,18 @@ class Tasks(object):
         self._elements().should_have(exact_texts(*texts))
 
 
-class Footer(object):
+class Footer:
     def __init__(self):
         self.container = s("#footer")
         self.clear_completed = self.container.find("#clear-completed")
 
     def should_have_items_left(self, number_of_active_tasks):
-        self.container.find("#todo-count>strong").should_have(exact_text(str(number_of_active_tasks)))
+        self.container.find("#todo-count>strong").should_have(
+            exact_text(str(number_of_active_tasks))
+        )
 
 
-class TodoMVC(object):
+class TodoMVC:
     def __init__(self):
         self.container = s("#todoapp")
         self.tasks = Tasks()

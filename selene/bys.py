@@ -76,16 +76,20 @@ def first_child():
 
 def by_text(element_text):
     warnings.warn('deprecated; use by.* from selene.support.by', DeprecationWarning)
-    return by_xpath('.//*[text()[normalize-space(.) = '
-                    + escape_text_quotes_for_xpath(element_text)
-                    + ']]')
+    return by_xpath(
+        './/*[text()[normalize-space(.) = '
+        + escape_text_quotes_for_xpath(element_text)
+        + ']]'
+    )
 
 
 def by_partial_text(element_text):
     warnings.warn('deprecated; use by.* from selene.support.by', DeprecationWarning)
-    return by_xpath('.//*[text()[contains(normalize-space(.), '
-                    + escape_text_quotes_for_xpath(element_text)
-                    + ')]]')
+    return by_xpath(
+        './/*[text()[contains(normalize-space(.), '
+        + escape_text_quotes_for_xpath(element_text)
+        + ')]]'
+    )
 
 
 def with_text(element_text):
@@ -95,7 +99,4 @@ def with_text(element_text):
 
 def escape_text_quotes_for_xpath(text):
     warnings.warn('deprecated; use by.* from selene.support.by', DeprecationWarning)
-    return 'concat("", "%s")' % (
-        str(
-            "\", '\"', \"".join(
-                text.split('"'))))
+    return 'concat("", "%s")' % (str("\", '\"', \"".join(text.split('"'))))

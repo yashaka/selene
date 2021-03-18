@@ -44,7 +44,8 @@ def js_property(name: str, value: str = None):
     if value:
         warnings.warn(
             'passing second argument is deprecated; use have.js_property(foo).value(bar) instead',
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         return match.element_has_js_property(name).value(value)
 
     return match.element_has_js_property(name)
@@ -54,7 +55,8 @@ def css_property(name: str, value: str = None):
     if value:
         warnings.warn(
             'passing second argument is deprecated; use have.css_property(foo).value(bar) instead',
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         return match.element_has_css_property(name).value(value)
 
     return match.element_has_css_property(name)
@@ -64,7 +66,8 @@ def attribute(name: str, value: str = None):
     if value:
         warnings.warn(
             'passing second argument is deprecated; use have.attribute(foo).value(bar) instead',
-            DeprecationWarning)
+            DeprecationWarning,
+        )
         return match.element_has_attribute(name).value(value)
 
     return match.element_has_attribute(name)
@@ -110,7 +113,10 @@ def size_greater_than(number: int) -> Condition[Collection]:
 
 
 def size_at_least(number: int) -> Condition[Collection]:
-    warnings.warn('might be deprecated; use have.size_greater_than_or_equal instead', PendingDeprecationWarning)
+    warnings.warn(
+        'might be deprecated; use have.size_greater_than_or_equal instead',
+        PendingDeprecationWarning,
+    )
     return match.collection_has_size_greater_than_or_equal(number)
 
 
@@ -164,7 +170,10 @@ def tabs_number_greater_than_or_equal(value: int) -> Condition[Browser]:
 
 
 def js_returned_true(script_to_return_bool: str) -> Condition[Browser]:
-    warnings.warn('might be deprecated; use have.js_returned(True, ...) instead', PendingDeprecationWarning)
+    warnings.warn(
+        'might be deprecated; use have.js_returned(True, ...) instead',
+        PendingDeprecationWarning,
+    )
     return match.browser_has_js_returned(True, script_to_return_bool)
 
 

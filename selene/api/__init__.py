@@ -44,4 +44,8 @@ from selene.support.shared.jquery_style import s, ss
 
 from selene.core.entity import Element, Collection
 from selene.core.condition import Condition
-from selene.core.conditions import ElementCondition, CollectionCondition, BrowserCondition
+from selene.core.conditions import (
+    ElementCondition,
+    CollectionCondition,
+    BrowserCondition,
+)

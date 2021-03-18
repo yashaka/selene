@@ -34,13 +34,17 @@ def test_selene_demo():
     # open_url('https://www.yahoo.com/')  # or like this
     # browser.driver.get('http://google.com')  # just in case, you can use the driver directly too
     # browser.driver().get('https://todomvc4tasj.herokuapp.com/')  # temporary this works too;)
-    is_todo_mvc_loaded = 'return (Object.keys(require.s.contexts._.defined).length === 39)'
-    browser.with_(timeout=config.timeout * 4).should(have.js_returned(True, is_todo_mvc_loaded))  # todo: make it work
+    is_todo_mvc_loaded = (
+        'return (Object.keys(require.s.contexts._.defined).length === 39)'
+    )
+    browser.with_(timeout=config.timeout * 4).should(
+        have.js_returned(True, is_todo_mvc_loaded)
+    )  # todo: make it work
 
     for text in ['1', '2', '3']:
-        s('#new-todo')\
-            .type(text).should(have.no.value(''))\
-            .press_enter().should(have.attribute('value').value(''))  # todo: ensure autocomplete works here too...
+        s('#new-todo').type(text).should(have.no.value('')).press_enter().should(
+            have.attribute('value').value('')
+        )  # todo: ensure autocomplete works here too...
     tasks.should(have.texts('1', '2', '3')).should(have.css_class('active'))
     browser.element('#todo-count').should(have.text('3'))
 
