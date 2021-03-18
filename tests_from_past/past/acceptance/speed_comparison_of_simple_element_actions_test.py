@@ -46,7 +46,11 @@ def setup_function(f):
 
     browser = get_test_driver()
     browser.get(TODOMVC_URL)
-    WebDriverWait(browser, 4).until(expected_conditions.visibility_of_element_located((By.CSS_SELECTOR, "#new-todo")))
+    WebDriverWait(browser, 4).until(
+        expected_conditions.visibility_of_element_located(
+            (By.CSS_SELECTOR, "#new-todo")
+        )
+    )
 
     shaded_browser = get_test_driver()
 

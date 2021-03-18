@@ -25,7 +25,6 @@ from selene.common.predicate import equals_by_contains_to_list
 
 # noinspection PyPep8Naming
 class Test__equals_by_contains_to_list:
-
     def test_same_size(self):
         expected = ['a']
         actual = ['>a<']

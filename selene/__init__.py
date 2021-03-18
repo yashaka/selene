@@ -21,7 +21,11 @@
 # SOFTWARE.
 
 
-from selene.core.entity import Browser as _custom_browser, Config as _custom_config_for_custom_browser
+from selene.core.entity import (
+    Browser as _custom_browser,
+    Config as _custom_config_for_custom_browser,
+)
+
 Config = _custom_config_for_custom_browser
 Browser = _custom_browser
 """
@@ -53,6 +57,7 @@ AND::
 
 
 from selene.support import by as _by_style_selectors
+
 by = _by_style_selectors
 """
 AND::
@@ -77,6 +82,7 @@ AND::
 
 
 from selene.support.conditions import be as _be_style_conditions
+
 be = _be_style_conditions
 """
 AND (in case we need to filter collection of items by some condition like visibility)::
@@ -88,6 +94,7 @@ AND (in case we need to filter collection of items by some condition like visibi
 
 
 from selene.support.conditions import have as _have_style_conditions
+
 have = _have_style_conditions
 """
 THEN::
@@ -110,6 +117,7 @@ FINALLY (if not registered "atexit" before)::
 ####################
 
 from selene.core import command as _advanced_commands
+
 command = _advanced_commands
 """
 Sometimes you might need some extra actions on elements,
@@ -121,6 +129,7 @@ e.g. for workaround something through js::
 """
 
 from selene.core import query as _advanced_queries
+
 query = _advanced_queries
 # its = _advanced_queries  # todo: do we really need it too? for better readability: .get(its.text)
 """
@@ -217,4 +226,5 @@ __version__ = '2.0.0a35'
 
 
 from selene.support.shared.deprecated import OldConfig as _OldConfig
+
 config = _OldConfig()

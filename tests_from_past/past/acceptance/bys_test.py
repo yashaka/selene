@@ -38,7 +38,9 @@ def teardown_module(m):
 
 def test_by_text_with_single_and_double_quotes():
     given_active("""Fred's last name is "Li".""")
-    assert find_element(by_text("""Fred's last name is "Li".""")).is_displayed()
+    assert find_element(
+        by_text("""Fred's last name is "Li".""")
+    ).is_displayed()
 
 
 def find_element(locator):

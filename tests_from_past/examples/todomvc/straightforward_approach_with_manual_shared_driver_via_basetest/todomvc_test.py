@@ -33,7 +33,6 @@ APP_URL = 'https://todomvc4tasj.herokuapp.com/'
 
 
 class TestTodoMVC(BaseTest):
-
     def test_filter_tasks(self):
         browser.open_url(APP_URL)
         clear_completed_js_loaded = "return $._data($('#clear-completed').get(0), 'events').hasOwnProperty('click')"
@@ -48,9 +47,9 @@ class TestTodoMVC(BaseTest):
         ss("#todo-list>li").element_by(exact_text('b')).find(".toggle").click()
 
         s(by_link_text("Active")).click()
-        ss("#todo-list>li").filtered_by(be.visible).should(have.texts('a', 'c'))
+        ss("#todo-list>li").filtered_by(be.visible).should(
+            have.texts('a', 'c')
+        )
 
         s(by_link_text("Completed")).click()
         ss("#todo-list>li").filtered_by(be.visible).should(have.texts('b'))
-
-

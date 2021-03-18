@@ -42,7 +42,8 @@ class js:
                             : text.substring(0, maxlength);
                     return null;
                 })(arguments[0], arguments[1]);""",
-                str(value))
+                str(value),
+            )
 
         return Command(f'set value by js: {value}', fn)
 
@@ -63,7 +64,8 @@ class js:
                             : text.substring(0, maxlength);
                     return null;
                 })(arguments[0], arguments[1]);""",
-                str(keys))
+                str(keys),
+            )
 
         return Command(f'set value by js: {keys}', fn)
 
@@ -72,11 +74,15 @@ class js:
         lambda element: element.execute_script(
             """return (function(element) {
                 element.scrollIntoView(true);
-            })(arguments[0]);"""))
+            })(arguments[0]);"""
+        ),
+    )
 
     click = Command(
         'scroll into view',
         lambda element: element.execute_script(
             """return (function(element) {
                 element.click();
-            })(arguments[0]);"""))
+            })(arguments[0]);"""
+        ),
+    )

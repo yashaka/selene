@@ -32,7 +32,8 @@ def test_does_not_wait_inner(session_browser):
         <ul>Hello to:
             <li class='will-appear'>Bob</li>
             <li class='will-appear' style='display:none'>Kate</li>
-        </ul>''')
+        </ul>'''
+    )
 
     assert len(elements) == 2
 
@@ -43,7 +44,8 @@ def test_does_not_wait_inner(session_browser):
             <li class='will-appear' style='display:none'>Kate</li>
             <li class='will-appear'>Joe</li>
         </ul>''',
-        500)
+        500,
+    )
 
     assert len(elements) == 2
 
@@ -56,7 +58,8 @@ def test_waits_for_parent_in_dom_then_visible(session_browser):
     page.load_body(
         '''
         <li class='item'>Bob</li>
-        <li class='item' style='display:none'>Kate</li>''')
+        <li class='item' style='display:none'>Kate</li>'''
+    )
 
     page.load_body_with_timeout(
         '''
@@ -64,9 +67,9 @@ def test_waits_for_parent_in_dom_then_visible(session_browser):
             <li class='item'>Bob</li>
             <li class='item' style='display:none'>Kate</li>
         </ul>''',
-        250) \
-        .execute_script_with_timeout(
-        'document.getElementsByTagName("ul")[0].style = "display:block";',
-        500)
+        250,
+    ).execute_script_with_timeout(
+        'document.getElementsByTagName("ul")[0].style = "display:block";', 500
+    )
 
     assert len(elements) == 2

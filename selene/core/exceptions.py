@@ -22,7 +22,6 @@
 
 
 class TimeoutException(AssertionError):
-
     def __init__(self, msg=None):
         self.msg = msg
 

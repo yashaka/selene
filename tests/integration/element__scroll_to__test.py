@@ -31,7 +31,8 @@ def test_can_scroll_to_element_manually(session_browser):
         </div>
         <a id="not-viewable-link" href="#header"/>
         <h1 id="header">Heading 1</h2>
-        ''')
+        '''
+    )
     element = session_browser.element("#not-viewable-link")
 
     element.perform(command.js.scroll_into_view)
@@ -49,7 +50,8 @@ def test_can_scroll_to_element_automatically(session_browser):
         </div>
         <a id="not-viewable-link" href="#header"/>
         <h1 id="header">Heading 1</h2>
-        ''')
+        '''
+    )
 
     session_browser.element("#not-viewable-link").click()
 

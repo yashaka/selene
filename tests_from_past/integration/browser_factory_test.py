@@ -34,18 +34,20 @@ from selene.api.past import driver, set_driver, open_url
 
 from tests_from_past.past.acceptance import get_test_driver
 
-start_page = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/start_page.html'
+start_page = (
+    'file://'
+    + os.path.abspath(os.path.dirname(__file__))
+    + '/../resources/start_page.html'
+)
 
 
-@pytest.mark.parametrize("browser_name", ["marionette",
-                                          "chrome"])
+@pytest.mark.parametrize("browser_name", ["marionette", "chrome"])
 def x_test_factory_can_start_browser_maximized(browser_name):
     webdriver = factory._start_driver(browser_name)
     assert webdriver.name == browser_name
 
 
-@pytest.mark.parametrize("browser_name", ["marionette",
-                                          "chrome"])
+@pytest.mark.parametrize("browser_name", ["marionette", "chrome"])
 def x_test_ensure_driver_started(browser_name):
     factory.ensure_driver_started(browser_name)
     assert driver().name == browser_name
@@ -76,13 +78,16 @@ def test_ensure_driver_has_started():
     driver = factory.ensure_driver_started("chrome")
     assert driver.name == "chrome"
 
+
 def x_test_ensure_driver_has_started_with_marionette():
     driver = factory.ensure_driver_started("marionette")
     assert driver.name == "firefox"
 
 
 def test_can_get_set_shared_driver():
-    selene.api.past.driver._shared_web_driver_source.driver = NoneObject("NoneObject")
+    selene.api.past.driver._shared_web_driver_source.driver = NoneObject(
+        "NoneObject"
+    )
     shared_driver = factory.get_shared_driver()
     assert isinstance(shared_driver, NoneObject)
     factory.set_shared_driver(get_test_driver())
@@ -106,4 +111,3 @@ def test_can_auto_close_browser():
     webdriver = driver()
     factory.kill_all_started_drivers()
     assert factory.is_driver_still_open(webdriver) is False
-

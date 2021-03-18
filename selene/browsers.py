@@ -23,7 +23,6 @@ import warnings
 
 
 class _ClassPropertyDescriptor(object):
-
     def __init__(self, fget, fset=None):
         self.fget = fget
         self.fset = fset
@@ -56,20 +55,32 @@ def _classproperty(func):
 class BrowserName(object):
     @_classproperty
     def CHROME(self):
-        warnings.warn("might be deprecated, consider using 'chrome' explicitly", PendingDeprecationWarning)
+        warnings.warn(
+            "might be deprecated, consider using 'chrome' explicitly",
+            PendingDeprecationWarning,
+        )
         return 'chrome'
 
     @_classproperty
     def FIREFOX(self):
-        warnings.warn("might be deprecated, consider using 'firefox' explicitly", PendingDeprecationWarning)
+        warnings.warn(
+            "might be deprecated, consider using 'firefox' explicitly",
+            PendingDeprecationWarning,
+        )
         return 'firefox'
 
     @_classproperty
     def MARIONETTE(self):
-        warnings.warn("might be deprecated, consider using 'firefox' explicitly", PendingDeprecationWarning)
+        warnings.warn(
+            "might be deprecated, consider using 'firefox' explicitly",
+            PendingDeprecationWarning,
+        )
         return 'firefox'
 
     @_classproperty
     def PHANTOMJS(self):
-        warnings.warn("might be deprecated, consider using 'phantomjs' explicitly", PendingDeprecationWarning)
+        warnings.warn(
+            "might be deprecated, consider using 'phantomjs' explicitly",
+            PendingDeprecationWarning,
+        )
         return 'chrome'

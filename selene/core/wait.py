@@ -48,7 +48,6 @@ Fn = Callable[[T], R]
 
 # todo: consider moving outside of "wait" module... because there is no direct cohesion with it
 class Query(Generic[T, R]):
-
     def __init__(self, description: str, fn: Callable[[T], R]):
         self._description = description
         self._fn = fn
@@ -68,7 +67,12 @@ class Command(Query[T, None]):
 class Wait(Generic[E]):
 
     # todo: provide the smallest possible timeout default, something like 1ms
-    def __init__(self, entity: E, at_most: int, or_fail_with: Optional[Callable[[TimeoutException], Exception]] = None):
+    def __init__(
+        self,
+        entity: E,
+        at_most: int,
+        or_fail_with: Optional[Callable[[TimeoutException], Exception]] = None,
+    ):
         self._entity = entity
         self._timeout = at_most
         self._hook_failure = or_fail_with or identity
@@ -76,16 +80,16 @@ class Wait(Generic[E]):
     def at_most(self, timeout: int) -> Wait[E]:
         return Wait(self._entity, timeout, self._hook_failure)
 
-    def or_fail_with(self,
-                     hook_failure: Optional[Callable[
-                         [TimeoutException],
-                         Exception]]
-                     ) -> Wait[E]:
+    def or_fail_with(
+        self, hook_failure: Optional[Callable[[TimeoutException], Exception]]
+    ) -> Wait[E]:
 
         return Wait(self._entity, self._timeout, hook_failure)
 
     @property
-    def hook_failure(self) -> Optional[Callable[[TimeoutException], Exception]]:
+    def hook_failure(
+        self,
+    ) -> Optional[Callable[[TimeoutException], Exception]]:
         # todo: hook_failure or failure_hook?
         return self._hook_failure
 
@@ -101,18 +105,22 @@ class Wait(Generic[E]):
 
                     reason_message = str(reason)
 
-                    reason_string = '{name}: {message}'.format(name=reason.__class__.__name__, message=reason_message)
+                    reason_string = '{name}: {message}'.format(
+                        name=reason.__class__.__name__, message=reason_message
+                    )
                     # todo: think on how can we improve logging failures in selene, e.g. reverse msg and stacktrace
                     # stacktrace = getattr(reason, 'stacktrace', None)
                     timeout = self._timeout
                     entity = self._entity
 
-                    failure = TimeoutException(f'''
+                    failure = TimeoutException(
+                        f'''
 
 Timed out after {timeout}s, while waiting for:
 {entity}.{fn}
 
-Reason: {reason_string}''')
+Reason: {reason_string}'''
+                    )
 
                     raise self._hook_failure(failure)
 
