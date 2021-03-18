@@ -22,15 +22,15 @@
 import warnings
 from typing import List, Any
 
-from selene.core import query
 from selene.common import predicate
+from selene.core import query
 from selene.core.condition import Condition
-from selene.core.entity import Collection, Element, Browser
 from selene.core.conditions import (
     ElementCondition,
     CollectionCondition,
     BrowserCondition,
 )
+from selene.core.entity import Collection, Element, Browser
 
 # todo: consider moving to selene.match.element.is_visible, etc...
 element_is_visible: Condition[Element] = ElementCondition.raise_if_not(
@@ -464,7 +464,8 @@ def browser_has_tabs_number_less_than_or_equal(
 
 
 def browser_has_js_returned(
-    expected: Any, script: str, *args) -> Condition[Browser]:
+    expected: Any, script: str, *args
+) -> Condition[Browser]:
     def script_result(browser: Browser):
         return browser.driver.execute_script(script, *args)
 
