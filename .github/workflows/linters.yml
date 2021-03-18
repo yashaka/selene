@@ -17,7 +17,7 @@ jobs:
       - name: Pycodestyle Code Conventions
         run: |
           pip install pycodestyle
-          pycodestyle $(pwd) --ignore=E501,W503,E402,E731 --exclude=.venv,tests_from_past
+          pycodestyle $(pwd) --ignore=W503,E402,E731 --exclude=.venv,tests_from_past
 
   Pycodestyle-full-report:
     name: Lint Pycodestyle Full Report
