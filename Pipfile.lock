@@ -90,7 +90,7 @@
                 "sha256:e4359ff4fb7ebeae3a561081897a747eddf6fe726652d95b609303b966ac4cf7"
             ],
             "index": "pypi",
-            "version": "==2.3.0"
+            "version": "==3.3.0"
         }
     },
     "develop": {
