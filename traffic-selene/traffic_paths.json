@@ -2,61 +2,61 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 524,
-    "uniques": 229
+    "count": 462,
+    "uniques": 210
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 63,
-    "uniques": 21
-  },
-  {
-    "path": "/yashaka/selene/issues/287",
-    "title": "from selenium to selene · Issue #287 · yashaka/selene · GitHub",
-    "count": 45,
-    "uniques": 17
+    "count": 55,
+    "uniques": 20
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 44,
+    "count": 42,
     "uniques": 10
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
     "count": 29,
-    "uniques": 18
+    "uniques": 19
   },
   {
     "path": "/yashaka/selene/issues/128",
     "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 25,
-    "uniques": 21
+    "count": 24,
+    "uniques": 20
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 25,
-    "uniques": 18
+    "count": 23,
+    "uniques": 17
+  },
+  {
+    "path": "/yashaka/selene/issues/287",
+    "title": "from selenium to selene · Issue #287 · yashaka/selene · GitHub",
+    "count": 23,
+    "uniques": 16
   },
   {
     "path": "/yashaka/selene/commits/master",
     "title": "Commits · yashaka/selene · GitHub",
-    "count": 22,
-    "uniques": 12
+    "count": 18,
+    "uniques": 9
   },
   {
     "path": "/yashaka/selene/releases",
     "title": "Releases · yashaka/selene · GitHub",
-    "count": 20,
+    "count": 18,
     "uniques": 3
   },
   {
-    "path": "/yashaka/selene/tree/master/selene/core",
-    "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 19,
-    "uniques": 10
+    "path": "/yashaka/selene/pull/296",
+    "title": "Black selene 3.7 revert Pipfile and Pipfile.lock by aleksandr-kotlyar · Pull ...",
+    "count": 18,
+    "uniques": 2
   }
 ]
