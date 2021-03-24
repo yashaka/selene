@@ -1421,6 +1421,7 @@ class Browser(WaitingEntity):
         if isinstance(index_or_name, int):
             index = index_or_name
             from selene.core import query
+
             self.driver.switch_to.window(query.tab(index)(self))
         else:
             self.driver.switch_to.window(index_or_name)
