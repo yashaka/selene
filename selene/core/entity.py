@@ -1419,9 +1419,9 @@ class Browser(WaitingEntity):
 
     def switch_to_tab(self, index_or_name: Union[int, str]) -> Browser:
         if isinstance(index_or_name, int):
+            index = index_or_name
             from selene.core import query
-
-            self.driver.switch_to(query.tab(index_or_name)(self))
+            self.driver.switch_to.window(query.tab(index)(self))
         else:
             self.driver.switch_to.window(index_or_name)
 
