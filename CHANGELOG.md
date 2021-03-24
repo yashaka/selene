@@ -77,7 +77,7 @@
 - repeat fix of #225 to other options in shared config, refactor it... 
   - should we make original config (not shared) mutable?
     
-## 2.0.0a35 (to be released on ??.01.2021)
+## 2.0.0a35 (to be released on 24.03.2021)
 - added command.js.click
 - if you set driver for shared.browser manually via `browser.config.driver = ...`
   now it will automatically close previous driver, if it is alive
@@ -87,6 +87,7 @@
 - deprecated shared.config.quit_driver; use shared.config.reset_driver instead
   - actually, you don't need this method,
     in most cases you just need shared.browser.quit() – use it if you don't know what you do;)
+- fixed `browser.switch_to_tab(index_or_name)` when arg is of `int` type    
     
 ## 2.0.0a34 (released on 22.12.2020)
 - fixed [#231](https://github.com/yashaka/selene/issues/225): Need additional option to turn off logging outerHTML
