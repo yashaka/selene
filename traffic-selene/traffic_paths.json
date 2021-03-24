@@ -2,26 +2,44 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 417,
-    "uniques": 192
+    "count": 463,
+    "uniques": 201
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 55,
-    "uniques": 10
+    "count": 64,
+    "uniques": 13
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 51,
-    "uniques": 17
+    "count": 55,
+    "uniques": 18
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 29,
-    "uniques": 18
+    "count": 35,
+    "uniques": 21
+  },
+  {
+    "path": "/yashaka/selene/tree/master/tests",
+    "title": "selene/tests at master · yashaka/selene · GitHub",
+    "count": 26,
+    "uniques": 16
+  },
+  {
+    "path": "/yashaka/selene/blob/master/README.md",
+    "title": "selene/README.md at master · yashaka/selene · GitHub",
+    "count": 21,
+    "uniques": 9
+  },
+  {
+    "path": "/yashaka/selene/pull/301",
+    "title": "update webdriver-manager to latest version #299 by EmadDeve20 · Pull Request ...",
+    "count": 21,
+    "uniques": 3
   },
   {
     "path": "/yashaka/selene/issues/128",
@@ -30,33 +48,15 @@
     "uniques": 18
   },
   {
-    "path": "/yashaka/selene/tree/master/tests",
-    "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 20,
-    "uniques": 14
-  },
-  {
     "path": "/yashaka/selene/commits/master",
     "title": "Commits · yashaka/selene · GitHub",
     "count": 19,
     "uniques": 9
   },
   {
-    "path": "/yashaka/selene/blob/master/README.md",
-    "title": "selene/README.md at master · yashaka/selene · GitHub",
+    "path": "/yashaka/selene/pull/300",
+    "title": "update webdriver-manager to latest version #299 by EmadDeve20 · Pull Request ...",
     "count": 18,
-    "uniques": 7
-  },
-  {
-    "path": "/yashaka/selene/pull/296",
-    "title": "Black selene 3.7 revert Pipfile and Pipfile.lock by aleksandr-kotlyar · Pull ...",
-    "count": 18,
-    "uniques": 2
-  },
-  {
-    "path": "/yashaka/selene/issues/299",
-    "title": "update webdriver-manager to latest version · Issue #299 · yashaka/selene",
-    "count": 17,
     "uniques": 3
   }
 ]
