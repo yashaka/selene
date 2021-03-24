@@ -2,61 +2,61 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 462,
-    "uniques": 210
-  },
-  {
-    "path": "/yashaka/selene/issues",
-    "title": "Issues · yashaka/selene · GitHub",
-    "count": 55,
-    "uniques": 20
+    "count": 417,
+    "uniques": 192
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 42,
+    "count": 55,
     "uniques": 10
+  },
+  {
+    "path": "/yashaka/selene/issues",
+    "title": "Issues · yashaka/selene · GitHub",
+    "count": 51,
+    "uniques": 17
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
     "count": 29,
-    "uniques": 19
+    "uniques": 18
   },
   {
     "path": "/yashaka/selene/issues/128",
     "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 24,
-    "uniques": 20
+    "count": 20,
+    "uniques": 18
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 23,
-    "uniques": 17
-  },
-  {
-    "path": "/yashaka/selene/issues/287",
-    "title": "from selenium to selene · Issue #287 · yashaka/selene · GitHub",
-    "count": 23,
-    "uniques": 16
+    "count": 20,
+    "uniques": 14
   },
   {
     "path": "/yashaka/selene/commits/master",
     "title": "Commits · yashaka/selene · GitHub",
-    "count": 18,
+    "count": 19,
     "uniques": 9
   },
   {
-    "path": "/yashaka/selene/releases",
-    "title": "Releases · yashaka/selene · GitHub",
+    "path": "/yashaka/selene/blob/master/README.md",
+    "title": "selene/README.md at master · yashaka/selene · GitHub",
     "count": 18,
-    "uniques": 3
+    "uniques": 7
   },
   {
     "path": "/yashaka/selene/pull/296",
     "title": "Black selene 3.7 revert Pipfile and Pipfile.lock by aleksandr-kotlyar · Pull ...",
     "count": 18,
     "uniques": 2
+  },
+  {
+    "path": "/yashaka/selene/issues/299",
+    "title": "update webdriver-manager to latest version · Issue #299 · yashaka/selene",
+    "count": 17,
+    "uniques": 3
   }
 ]
