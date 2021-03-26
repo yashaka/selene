@@ -31,12 +31,12 @@ classifiers = [
 ]
 packages = [
 	{include = "selene"},
-	{include = "selene.api"},
-	{include = "selene.common"},
-	{include = "selene.core"},
-	{include = "selene.support"},
-	{include = "selene.support.shared"},
-	{include = "selene.ssupport.conditions"},
+	{include = "selene/api"},
+	{include = "selene/common"},
+	{include = "selene/core"},
+	{include = "selene/support"},
+	{include = "selene/support/shared"},
+	{include = "selene/support/conditions"},
 ]
 
 [tool.poetry.dependencies]
