@@ -3,55 +3,55 @@
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
     "count": 414,
-    "uniques": 191
+    "uniques": 194
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 61,
-    "uniques": 12
+    "count": 60,
+    "uniques": 11
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 48,
-    "uniques": 17
+    "count": 46,
+    "uniques": 15
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 35,
+    "count": 32,
     "uniques": 21
-  },
-  {
-    "path": "/yashaka/selene/tree/master/tests",
-    "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 24,
-    "uniques": 15
   },
   {
     "path": "/yashaka/selene/pull/301",
     "title": "update webdriver-manager to latest version #299 by EmadDeve20 · Pull Request ...",
-    "count": 21,
-    "uniques": 3
+    "count": 26,
+    "uniques": 4
   },
   {
     "path": "/yashaka/selene/issues/128",
     "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 19,
-    "uniques": 17
+    "count": 22,
+    "uniques": 18
   },
   {
     "path": "/yashaka/selene/commits/master",
     "title": "Commits · yashaka/selene · GitHub",
-    "count": 19,
-    "uniques": 9
+    "count": 21,
+    "uniques": 10
   },
   {
-    "path": "/yashaka/selene/blob/master/README.md",
-    "title": "selene/README.md at master · yashaka/selene · GitHub",
+    "path": "/yashaka/selene/tree/master/tests",
+    "title": "selene/tests at master · yashaka/selene · GitHub",
+    "count": 20,
+    "uniques": 12
+  },
+  {
+    "path": "/yashaka/selene/issues/299",
+    "title": "update webdriver-manager to latest version · Issue #299 · yashaka/selene · Gi...",
     "count": 18,
-    "uniques": 7
+    "uniques": 4
   },
   {
     "path": "/yashaka/selene/pull/300",
