@@ -406,11 +406,11 @@ brotli = ["brotlipy (>=0.6.0)"]
 
 [[package]]
 name = "webdriver-manager"
-version = "3.3.0"
+version = "2.3.0"
 description = "Library provides the way to automatically manage drivers for different browsers"
 category = "main"
 optional = false
-python-versions = ">=3.6"
+python-versions = "*"
 
 [package.dependencies]
 configparser = "*"
@@ -440,7 +440,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=1.2.3)", "pytest-flake8", "pyt
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "a502f7ec2bdb6685c3d4e886bbe7bf5b4eaaddd286c5d049c30be89892f48211"
+content-hash = "b7b90aa343f887e7dcb00a4e499753d29364ad4e7e14b7b2d25e233d5655fcc2"
 
 [metadata.files]
 appdirs = [
@@ -729,8 +729,7 @@ urllib3 = [
     {file = "urllib3-1.26.4.tar.gz", hash = "sha256:e7b021f7241115872f92f43c6508082facffbd1c048e3c6e2bb9c2a157e28937"},
 ]
 webdriver-manager = [
-    {file = "webdriver_manager-3.3.0-py2.py3-none-any.whl", hash = "sha256:22ae0ace4da117472302c21ead8ec05eb5c1312eeeba97547395d79f83afb241"},
-    {file = "webdriver_manager-3.3.0.tar.gz", hash = "sha256:6b54b18f75379f97f9e49f504a8e79010d47af1da8e7b5d7d7a103ca535b1e46"},
+    {file = "webdriver_manager-2.3.0-py2.py3-none-any.whl", hash = "sha256:e4359ff4fb7ebeae3a561081897a747eddf6fe726652d95b609303b966ac4cf7"},
 ]
 wrapt = [
     {file = "wrapt-1.12.1.tar.gz", hash = "sha256:b62ffa81fb85f4332a4f609cab4ac40709470da05643a082ec1eb88e6d9b97d7"},
