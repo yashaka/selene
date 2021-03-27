@@ -23,9 +23,8 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pipenv
-          pipenv install --dev
-          pipenv graph
+          pip install poetry
+          poetry install
 
       # can be packaged as Docker-image
       - name: Install Chrome & xvfb
@@ -35,7 +34,7 @@ jobs:
 
       - name: Test selene with pytest
         run: |
-          pipenv run py.test -sv --cov-config .coveragerc --cov-report html:skip-covered --cov-report term:skip-covered --cov=selene  --cov-report xml:coverage.xml --tb=short tests/
+          poetry run pytest -sv --cov-config .coveragerc --cov-report html:skip-covered --cov-report term:skip-covered --cov=selene  --cov-report xml:coverage.xml --tb=short tests/
           mkdir -p Artifacts/skip-covered
           cp -r skip-covered Artifacts/skip-covered
 
