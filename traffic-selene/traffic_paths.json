@@ -2,61 +2,61 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 464,
-    "uniques": 208
+    "count": 496,
+    "uniques": 212
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 60,
-    "uniques": 10
+    "count": 74,
+    "uniques": 11
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 52,
-    "uniques": 15
+    "count": 66,
+    "uniques": 14
+  },
+  {
+    "path": "/yashaka/selene/pull/301",
+    "title": "update webdriver-manager to latest version #299 by EmadDeve20 · Pull Request ...",
+    "count": 43,
+    "uniques": 6
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 33,
+    "count": 34,
     "uniques": 21
   },
   {
     "path": "/yashaka/selene/issues/128",
     "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 31,
-    "uniques": 26
-  },
-  {
-    "path": "/yashaka/selene/pull/301",
-    "title": "update webdriver-manager to latest version #299 by EmadDeve20 · Pull Request ...",
-    "count": 27,
-    "uniques": 4
-  },
-  {
-    "path": "/yashaka/selene/commits/master",
-    "title": "Commits · yashaka/selene · GitHub",
-    "count": 23,
-    "uniques": 9
-  },
-  {
-    "path": "/yashaka/selene/tree/master/tests",
-    "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 19,
-    "uniques": 12
+    "count": 29,
+    "uniques": 24
   },
   {
     "path": "/yashaka/selene/search",
     "title": "Search · url_containing",
-    "count": 18,
-    "uniques": 7
+    "count": 29,
+    "uniques": 6
+  },
+  {
+    "path": "/yashaka/selene/commits/master",
+    "title": "Commits · yashaka/selene · GitHub",
+    "count": 24,
+    "uniques": 9
   },
   {
     "path": "/yashaka/selene/issues/299",
     "title": "update webdriver-manager to latest version · Issue #299 · yashaka/selene · Gi...",
-    "count": 18,
-    "uniques": 4
+    "count": 21,
+    "uniques": 5
+  },
+  {
+    "path": "/yashaka/selene/releases",
+    "title": "Releases · yashaka/selene",
+    "count": 21,
+    "uniques": 3
   }
 ]
