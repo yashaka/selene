@@ -435,9 +435,9 @@ TBD
 
 or
 
-`bash .run/bump_version_and_publish.sh x.x.x`
+`bash .run/bump_build_publish.sh x.x.x`
 
-or 
+or if you want to control all by yourself
 
 1. manually bump version in `pyproject.toml` and `selene/__init.py:__version__`
 2. poetry publish --build
