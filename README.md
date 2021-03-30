@@ -429,5 +429,15 @@ TBD
 
 ## Release process
 
-1. python setup.py bdist_wheel
-2. twine upload dist/*
+1. bump version via `bash .run/bump_version.sh x.x.x`
+2. build via `bash .run/build.sh`
+3. publish via `bash .run/publish.sh`
+
+or
+
+`bash .run/bump_build_publish.sh x.x.x`
+
+or if you want to control all by yourself
+
+1. manually bump version in `pyproject.toml` and `selene/__init.py:__version__`
+2. poetry publish --build
