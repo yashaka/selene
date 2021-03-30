@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "selene"
-version = "2.0.0a35"
+version = "2.0.0a36"
 description = "User-oriented browser tests in Python (Selenide port)"
 authors = ["Iakiv Kramarenko <yashaka@gmail.com>"]
 license = "MIT"
