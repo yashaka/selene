@@ -2,20 +2,20 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 580,
-    "uniques": 214
+    "count": 560,
+    "uniques": 206
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 97,
-    "uniques": 13
+    "count": 93,
+    "uniques": 11
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 82,
-    "uniques": 20
+    "count": 78,
+    "uniques": 21
   },
   {
     "path": "/yashaka/selene/issues/198",
@@ -24,22 +24,16 @@
     "uniques": 8
   },
   {
-    "path": "/yashaka/selene/tree/master/selene",
-    "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 43,
-    "uniques": 20
-  },
-  {
     "path": "/yashaka/selene/pull/301",
     "title": "update webdriver-manager to latest version #299 by EmadDeve20 · Pull Request ...",
     "count": 43,
     "uniques": 6
   },
   {
-    "path": "/yashaka/selene/releases",
-    "title": "Releases · yashaka/selene",
-    "count": 39,
-    "uniques": 2
+    "path": "/yashaka/selene/tree/master/selene",
+    "title": "selene/selene at master · yashaka/selene · GitHub",
+    "count": 38,
+    "uniques": 20
   },
   {
     "path": "/yashaka/selene/search",
@@ -48,9 +42,15 @@
     "uniques": 5
   },
   {
+    "path": "/yashaka/selene/releases",
+    "title": "Releases · yashaka/selene",
+    "count": 34,
+    "uniques": 2
+  },
+  {
     "path": "/yashaka/selene/issues/128",
     "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 28,
+    "count": 29,
     "uniques": 24
   },
   {
