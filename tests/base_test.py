@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2015-2020 Iakiv Kramarenko
+# Copyright (c) 2015-2021 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,6 @@ from selene.support.shared import browser
 
 
 class BaseTest:
-
     def setup_method(self):
         browser.set_driver(webdriver.Chrome(ChromeDriverManager().install()))
 

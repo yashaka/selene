@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2015-2020 Iakiv Kramarenko
+# Copyright (c) 2015-2021 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -30,7 +30,7 @@ hidden = match.element_is_hidden
 selected = match.element_is_selected
 
 present = match.element_is_present
-in_dom = match.element_is_present    # todo: do we need both present and in_dom?
+in_dom = match.element_is_present  # todo: do we need both present and in_dom?
 existing = match.element_is_present  # todo: consider deprecating
 
 absent = match.element_is_absent

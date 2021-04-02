@@ -2,7 +2,7 @@
 
 # MIT License
 #
-# Copyright (c) 2015-2020 Iakiv Kramarenko
+# Copyright (c) 2015-2021 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -32,7 +32,8 @@ def test_unicode_text(session_browser):
            <li>Саше</li>
            <li>Яше</li>
         </ul>
-        ''')
+        '''
+    )
 
     element = session_browser.element('li')
 

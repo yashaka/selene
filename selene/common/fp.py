@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2015-2020 Iakiv Kramarenko
+# Copyright (c) 2015-2021 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -36,7 +36,12 @@ def pipe(*functions):
     i.e. applies arg1, then arg2, then arg3, and so on
     if any arg is None, just skips it
     """
-    return functools.reduce(
-        lambda f, g: lambda x: f(g(x)) if g else f(x),
-        functions[::-1],
-        lambda x: x) if functions else None
+    return (
+        functools.reduce(
+            lambda f, g: lambda x: f(g(x)) if g else f(x),
+            functions[::-1],
+            lambda x: x,
+        )
+        if functions
+        else None
+    )

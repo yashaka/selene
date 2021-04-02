@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2015-2020 Iakiv Kramarenko
+# Copyright (c) 2015-2021 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -64,7 +64,9 @@ class Footer:
         self.clear_completed = self.container.find("#clear-completed")
 
     def should_have_items_left(self, number_of_active_tasks):
-        self.container.find("#todo-count>strong").should(have.exact_text(str(number_of_active_tasks)))
+        self.container.find("#todo-count>strong").should(
+            have.exact_text(str(number_of_active_tasks))
+        )
 
 
 class TodoMVC:

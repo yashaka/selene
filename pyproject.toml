@@ -1,0 +1,71 @@
+[tool.poetry]
+name = "selene"
+version = "2.0.0a36"
+description = "User-oriented browser tests in Python (Selenide port)"
+authors = ["Iakiv Kramarenko <yashaka@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+keywords = [
+	"testing",
+	"selenium",
+	"selenide",
+	"browser",
+	"pageobject",
+	"widget",
+	"wrapper"
+]
+homepage = "http://github.com/yashaka/selene/"
+classifiers = [
+	"Programming Language :: Python",
+	"Programming Language :: Python :: 3",
+	"Development Status :: 3 - Alpha",
+	"Natural Language :: English",
+	"Environment :: Web Environment",
+	"Intended Audience :: Developers",
+	"License :: OSI Approved :: Apache Software License",
+	"Operating System :: OS Independent",
+	"Topic :: Software Development :: Libraries :: Python Modules",
+	"Topic :: Software Development :: Libraries :: Application Frameworks",
+	"Topic :: Internet :: WWW/HTTP :: Browsers",
+	"Topic :: Software Development :: Testing",
+]
+packages = [
+	{include = "selene"},
+	{include = "selene/api"},
+	{include = "selene/common"},
+	{include = "selene/core"},
+	{include = "selene/support"},
+	{include = "selene/support/shared"},
+	{include = "selene/support/conditions"},
+]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+selenium = "==3.141.0"
+future = "*"
+webdriver-manager = "==2.3.0"
+
+[tool.poetry.dev-dependencies]
+black = "^20.8b1"
+pycodestyle = "*"
+pylint = "^2.7.2"
+pytest = "*"
+pytest-cov = "*"
+codecov = "*"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.semantic_release]
+version_variable = [
+    "selene/__init__.py:__version__",
+    "pyproject.toml:version",
+]
+branch = "master"
+build_command = "pip install -m poetry && poetry build"
+
+[tool.black]
+line-length = 79
+target-version = ['py37']
+skip-string-normalization = 1

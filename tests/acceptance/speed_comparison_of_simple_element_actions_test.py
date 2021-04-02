@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2015-2020 Iakiv Kramarenko
+# Copyright (c) 2015-2021 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -40,7 +40,10 @@ def setup_function():
     selenium_browser = get_test_driver()
     selenium_browser.get(TODOMVC_URL)
     WebDriverWait(selenium_browser, 4).until(
-        expected_conditions.visibility_of_element_located((By.CSS_SELECTOR, "#new-todo")))
+        expected_conditions.visibility_of_element_located(
+            (By.CSS_SELECTOR, "#new-todo")
+        )
+    )
 
     browser.set_driver(get_test_driver())
     browser.open(TODOMVC_URL)
@@ -79,6 +82,7 @@ def create_tasks_with_selene_with_cash():
 
 
 # todo: review these tests
+
 
 def test_selene_is_almost_as_fast_selenium_with_research_and_initial_wait_for_visibility():
     selene_time = time_spent(create_tasks_with_selene_and_send_keys)

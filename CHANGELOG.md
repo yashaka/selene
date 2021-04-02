@@ -76,8 +76,15 @@
 - deprecate be.present
 - repeat fix of #225 to other options in shared config, refactor it... 
   - should we make original config (not shared) mutable?
-    
-## 2.0.0a35 (to be released on ??.01.2021)
+
+## 2.0.0a36 (to be released on 30.03.2021)
+- Moved selene from Pipenv to [Poetry](https://python-poetry.org/) as a greater python dependency resolver of 2021 (see #302).
+- Moved to a new release process with Poetry: added bash aliases in `./.run/*.sh` (see #304).
+- Moved from setup.py and setup.cfg to pyproject.toml config-file.
+- Updated README.md "Release process".
+- Updated CONTRIBUTING.md with `black` and `pylint` job description.
+
+## 2.0.0a35 (released on 27.03.2021)
 - added command.js.click
 - if you set driver for shared.browser manually via `browser.config.driver = ...`
   now it will automatically close previous driver, if it is alive
@@ -87,6 +94,7 @@
 - deprecated shared.config.quit_driver; use shared.config.reset_driver instead
   - actually, you don't need this method,
     in most cases you just need shared.browser.quit() – use it if you don't know what you do;)
+- fixed `browser.switch_to_tab(index_or_name)` when arg is of `int` type    
     
 ## 2.0.0a34 (released on 22.12.2020)
 - fixed [#231](https://github.com/yashaka/selene/issues/225): Need additional option to turn off logging outerHTML

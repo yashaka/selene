@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2015-2020 Iakiv Kramarenko
+# Copyright (c) 2015-2021 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -51,12 +51,11 @@ def test_nested_elements_search(session_browser):
         <h1 id="first">Heading 1</h2>
         <h2 id="second">Heading 2</h2>
         <h2 id="third">Heading 3</h2>
-        ''')
+        '''
+    )
 
-    session_browser.element('#container') \
-        .element(by.text('Second')) \
-        .element('./following-sibling::*') \
-        .element(by.partial_text('Heading 3')) \
-        .click()
+    session_browser.element('#container').element(by.text('Second')).element(
+        './following-sibling::*'
+    ).element(by.partial_text('Heading 3')).click()
 
     assert "third" in session_browser.driver.current_url

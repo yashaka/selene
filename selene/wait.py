@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2015-2020 Iakiv Kramarenko
+# Copyright (c) 2015-2021 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -25,5 +25,8 @@ from selene.core.wait import Wait
 
 
 def wait_for(entity, condition, timeout=4, polling=0.1):
-    warnings.warn('deprecated, use Wait(entity, at_most=timeout).for_(condition)', DeprecationWarning)
+    warnings.warn(
+        'deprecated, use Wait(entity, at_most=timeout).for_(condition)',
+        DeprecationWarning,
+    )
     return Wait(entity, at_most=timeout).for_(condition)

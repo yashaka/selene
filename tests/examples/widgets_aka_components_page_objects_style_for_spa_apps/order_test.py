@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2015-2020 Iakiv Kramarenko
+# Copyright (c) 2015-2021 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -25,15 +25,17 @@ from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 
 from selene.support.shared import config, browser
-from tests.examples.widgets_aka_components_page_objects_style_for_spa_apps \
-    .model.widgets import Order
+from tests.examples.widgets_aka_components_page_objects_style_for_spa_apps.model.widgets import (
+    Order,
+)
 
 
 def setup_function():
     config.timeout = 4
     browser.set_driver(webdriver.Chrome(ChromeDriverManager().install()))
     config.base_url = 'file://{}/../../resources/orderapp/'.format(
-        os.path.abspath(os.path.dirname(__file__)))
+        os.path.abspath(os.path.dirname(__file__))
+    )
 
 
 def teardown_function():
@@ -47,19 +49,23 @@ def test_it_fills_order():
     order.details.fill_with(
         first_name='Johanna',
         last_name='Smith',
-        salutation='Mrs')
+        salutation='Mrs',
+    )
 
     item = order.add_item_with(
         name='New Test Item',
-        other_data='Some other specific data')
+        other_data='Some other specific data',
+    )
     item.show_advanced_options_selector.click()
     item.add_advanced_options(
         [{'option_type': 'type1'}, {'scope': 'optionscope2fortype1'}],
-        [{'option_type': 'type2'}, {'scope': 'optionscope3fortype2'}])
+        [{'option_type': 'type2'}, {'scope': 'optionscope3fortype2'}],
+    )
 
     item.show_advanced_options.click()
     item.advanced_options.should_be(
-        'optionscope2fortype1', 'optionscope3fortype2')
+        'optionscope2fortype1', 'optionscope3fortype2'
+    )
 
     item.clear_options.click()
     item.advanced_options.should_be_empty()

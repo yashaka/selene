@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2015-2020 Iakiv Kramarenko
+# Copyright (c) 2015-2021 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,8 @@ def test_counts_invisible_tasks(session_browser):
             <li class='will-appear'>Bob</li>
             <li class='will-appear' style='display:none'>Kate</li>
         </ul>
-        ''')
+        '''
+    )
 
     collection = session_browser.element('ul').all('.will-appear')
 

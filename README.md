@@ -1,10 +1,11 @@
 # Selene - User-oriented Web UI browser tests in Python (Selenide port)
 
-![selene tests](https://github.com/yashaka/selene/workflows/tests/badge.svg)
+[![tests](https://github.com/yashaka/selene/actions/workflows/tests.yml/badge.svg)](https://github.com/yashaka/selene/actions/workflows/tests.yml)
 [![codecov](https://codecov.io/gh/yashaka/selene/branch/master/graph/badge.svg)](https://codecov.io/gh/yashaka/selene)
 ![Free](https://img.shields.io/badge/free-open--source-green.svg)
 [![MIT License](http://img.shields.io/badge/license-MIT-green.svg)](https://github.com/yashaka/selene/blob/master/LICENSE)
 [![Project Template](http://img.shields.io/badge/project-template-9cf.svg)](https://github.com/yashaka/python-web-test)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 ![GitHub stats in](https://raw.githubusercontent.com/yashaka/selene/traffic/traffic-selene/in_2021.svg)
 ![GitHub views](https://raw.githubusercontent.com/yashaka/selene/traffic/traffic-selene/views.svg)
@@ -52,7 +53,7 @@ Tests with Selene can be built either in a simple straightforward "selenide' sty
 
 ## Versions
   
-* Latest recommended version to use is [2.0.0a33](https://pypi.org/project/selene/2.0.0a33/)
+* Latest recommended version to use is [2.0.0a34](https://pypi.org/project/selene/2.0.0a34/)
   * it's a completely new version of selene, with improved API and speed
   * supports python >= 3.7
   * it's incompatible with [1.x](https://github.com/yashaka/selene/tree/1.x)
@@ -386,7 +387,7 @@ if browser.all('.option').get(query.size) >= 2:
 Maybe one day, you really find a use case:) But for above cases, probably easier would be:
 
 ```python
-if browser.element('#i-might-say-yes-or-no').wait_until(have.text('yes'):
+if browser.element('#i-might-say-yes-or-no').wait_until(have.text('yes')):
     # do something
 
 # ...
@@ -398,7 +399,7 @@ if browser.all('.i-will-appear').wait_until(have.size_greater_than_or_equal(2)):
 Or, by using non-waiting versions, if "you are in a rush:)":
 
 ```python
-if browser.element('#i-might-say-yes-or-no').matching(have.text('yes'):
+if browser.element('#i-might-say-yes-or-no').matching(have.text('yes')):
     # do something
 
 # ...
@@ -428,5 +429,15 @@ TBD
 
 ## Release process
 
-1. python setup.py bdist_wheel
-2. twine upload dist/*
+1. bump version via `bash .run/bump_version.sh x.x.x`
+2. build via `bash .run/build.sh`
+3. publish via `bash .run/publish.sh`
+
+or
+
+`bash .run/bump_build_publish.sh x.x.x`
+
+or if you want to control all by yourself
+
+1. manually bump version in `pyproject.toml` and `selene/__init.py:__version__`
+2. poetry publish --build

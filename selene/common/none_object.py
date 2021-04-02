@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2015-2020 Iakiv Kramarenko
+# Copyright (c) 2015-2021 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,10 @@ class NoneObject(object):
         self.description = description
 
     def __getattr__(self, item):
-        raise AttributeError("'NoneObject' for '%s' has no attribute '%s'" % (self.description, item))
+        raise AttributeError(
+            "'NoneObject' for '%s' has no attribute '%s'"
+            % (self.description, item)
+        )
 
     def __bool__(self):
         return False

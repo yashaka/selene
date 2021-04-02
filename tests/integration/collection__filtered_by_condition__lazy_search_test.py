@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2015-2020 Iakiv Kramarenko
+# Copyright (c) 2015-2021 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -26,45 +26,61 @@ from tests.integration.helpers.givenpage import GivenPage
 def test_search_is_lazy_and_does_not_start_on_creation(session_browser):
     page = GivenPage(session_browser.driver)
     page.opened_empty()
-    non_existent_collection = session_browser.all('.not-existing').filtered_by(have.css_class('special'))
+    non_existent_collection = session_browser.all('.not-existing').filtered_by(
+        have.css_class('special')
+    )
     assert str(non_existent_collection)
 
 
-def test_search_is_postponed_until_actual_action_like_questioning_count(session_browser):
+def test_search_is_postponed_until_actual_action_like_questioning_count(
+    session_browser,
+):
     page = GivenPage(session_browser.driver)
     page.opened_empty()
-    elements = session_browser.all('li').filtered_by(have.css_class('will-appear'))
+    elements = session_browser.all('li').filtered_by(
+        have.css_class('will-appear')
+    )
 
-    page.load_body('''
+    page.load_body(
+        '''
                    <ul>Hello to:
                        <li>Anonymous</li>
                        <li class='will-appear'>Bob</li>
                        <li class='will-appear'>Kate</li>
-                   </ul>''')
+                   </ul>'''
+    )
 
     assert len(elements) == 2
 
 
-def test_search_is_updated_on_next_actual_action_like_questioning_count(session_browser):
+def test_search_is_updated_on_next_actual_action_like_questioning_count(
+    session_browser,
+):
     page = GivenPage(session_browser.driver)
     page.opened_empty()
-    elements = session_browser.all('li').filtered_by(have.css_class('will-appear'))
+    elements = session_browser.all('li').filtered_by(
+        have.css_class('will-appear')
+    )
 
-    page.load_body('''
+    page.load_body(
+        '''
                    <ul>Hello to:
                        <li>Anonymous</li>
                        <li class='will-appear'>Bob</li>
                        <li class='will-appear'>Kate</li>
-                   </ul>''')
+                   </ul>'''
+    )
 
     assert len(elements) == 2
 
-    page.load_body('''
+    page.load_body(
+        '''
                    <ul>Hello to:
                        <li>Anonymous</li>
                        <li class='will-appear'>Bob</li>
                        <li class='will-appear'>Kate</li>
                        <li class='will-appear'>Joe</li>
-                   </ul>''')
+                   </ul>'''
+    )
 
     assert len(elements) == 3

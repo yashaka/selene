@@ -2,7 +2,7 @@
 
 # MIT License
 #
-# Copyright (c) 2015-2020 Iakiv Kramarenko
+# Copyright (c) 2015-2021 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -38,23 +38,34 @@ def teardown_module():
 
 
 class TestTodoMVC:
-
     def test_filter_tasks(self):
         browser.open('https://todomvc4tasj.herokuapp.com/')
         clear_completed_js_loaded = "return $._data($('#clear-completed').get(0), 'events').hasOwnProperty('click')"
         browser.wait_to(have.js_returned(True, clear_completed_js_loaded))
         browser.wait_to(have.title(u'TroopJS • TodoMVC'))
 
-        browser.element('#new-todo').should(be.enabled).set_value('a').press_enter()
-        browser.element('#new-todo').should(be.enabled).set_value('b').press_enter()
-        browser.element('#new-todo').should(be.enabled).set_value('c').press_enter()
+        browser.element('#new-todo').should(be.enabled).set_value(
+            'a'
+        ).press_enter()
+        browser.element('#new-todo').should(be.enabled).set_value(
+            'b'
+        ).press_enter()
+        browser.element('#new-todo').should(be.enabled).set_value(
+            'c'
+        ).press_enter()
 
         browser.all("#todo-list>li").should(have.texts('a', 'b', 'c'))
 
-        browser.all("#todo-list>li").element_by(have.exact_text('b')).find(".toggle").click()
+        browser.all("#todo-list>li").element_by(have.exact_text('b')).find(
+            ".toggle"
+        ).click()
 
         browser.element(by.link_text("Active")).click()
-        browser.all("#todo-list>li").filtered_by(be.visible).should(have.texts('a', 'c'))
+        browser.all("#todo-list>li").filtered_by(be.visible).should(
+            have.texts('a', 'c')
+        )
 
         browser.element(by.link_text("Completed")).click()
-        browser.all("#todo-list>li").filtered_by(be.visible).should(have.texts('b'))
+        browser.all("#todo-list>li").filtered_by(be.visible).should(
+            have.texts('b')
+        )

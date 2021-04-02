@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2015-2020 Iakiv Kramarenko
+# Copyright (c) 2015-2021 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -28,15 +28,17 @@ from selene.support.shared import browser
 # TODOMVC_URL = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../../resources/todomvcapp/home.html'
 TODOMVC_URL = 'https://todomvc4tasj.herokuapp.com/'
 OTHER_PAGE_URL = 'file://{}/../resources/orderapp/order.html'.format(
-    os.path.abspath(os.path.dirname(__file__)))
-is_TodoMVC_loaded = 'return (Object.keys(require.s.contexts._.defined).length === 39)'
+    os.path.abspath(os.path.dirname(__file__))
+)
+is_TodoMVC_loaded = (
+    'return (Object.keys(require.s.contexts._.defined).length === 39)'
+)
 
 
 def open_todomvc():
     # todo: refactor to use repo copy of todomvc
     browser.open(TODOMVC_URL)
-    browser.wait_until(
-        have.js_returned(True, is_TodoMVC_loaded))
+    browser.wait_until(have.js_returned(True, is_TodoMVC_loaded))
 
 
 def given_at_other_page():
@@ -58,7 +60,8 @@ def given(*tasks):
         str(json.dumps(tasks))
         .replace('"', '\\"')
         .replace('\\\\"', '\\\\\\"')
-        .replace("False", "false"))
+        .replace("False", "false")
+    )
 
     execute_js(script)
 

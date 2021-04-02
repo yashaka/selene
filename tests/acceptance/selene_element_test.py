@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2015-2020 Iakiv Kramarenko
+# Copyright (c) 2015-2021 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +25,13 @@ from selene import be
 from selene.support.conditions.be import hidden, existing
 from selene.support.shared import browser
 from tests.acceptance.helpers.helper import get_test_driver
-from tests.acceptance.helpers.todomvc import given_active, given_at_other_page, given_empty_tasks, given, task
+from tests.acceptance.helpers.todomvc import (
+    given_active,
+    given_at_other_page,
+    given_empty_tasks,
+    given,
+    task,
+)
 
 
 def setup_module():

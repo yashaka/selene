@@ -25,7 +25,9 @@ def filter_completed():
 
 def add(*task_texts):
     for text in task_texts:
-        browser.element("#new-todo").should(be.enabled).set_value(text).press_enter()
+        browser.element("#new-todo").should(be.enabled).set_value(
+            text
+        ).press_enter()
 
 
 def toggle(task_text):

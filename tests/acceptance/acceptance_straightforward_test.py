@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2015-2020 Iakiv Kramarenko
+# Copyright (c) 2015-2021 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -30,11 +30,12 @@ app_url = 'https://todomvc4tasj.herokuapp.com/'
 #                      '$._data($("#toggle-all").get(0), "events").hasOwnProperty("change") && '
 #                      '$._data($("#todo-list").get(0), "events").hasOwnProperty("change") && '
 #                      '$._data($("#clear-completed").get(0), "events").hasOwnProperty("click")')
-is_TodoMVC_loaded = 'return (Object.keys(require.s.contexts._.defined).length === 39)'
+is_TodoMVC_loaded = (
+    'return (Object.keys(require.s.contexts._.defined).length === 39)'
+)
 
 
 class TestTodoMVC:
-
     def test_selene_demo(self):
         tasks = browser.all("#todo-list>li")
         active_tasks = tasks.filtered_by(have.css_class("active"))
@@ -44,7 +45,9 @@ class TestTodoMVC:
 
         for task_text in ["1", "2", "3"]:
             browser.element("#new-todo").set_value(task_text).press_enter()
-        tasks.should(have.texts("1", "2", "3")).should_each(have.css_class("active"))
+        tasks.should(have.texts("1", "2", "3")).should_each(
+            have.css_class("active")
+        )
         browser.element("#todo-count").should(have.text('3'))
 
         tasks[2].element(".toggle").click()
@@ -52,8 +55,12 @@ class TestTodoMVC:
         active_tasks.should(have.size(2))
 
         tasks.filtered_by(have.css_class("completed")).should(have.texts("3"))
-        tasks.element_by(not_(have.css_class("completed"))).should(have.text("1"))
-        tasks.filtered_by(not_(have.css_class("completed"))).should(have.texts("1", "2"))
+        tasks.element_by(not_(have.css_class("completed"))).should(
+            have.text("1")
+        )
+        tasks.filtered_by(not_(have.css_class("completed"))).should(
+            have.texts("1", "2")
+        )
 
         browser.element(by.link_text("Active")).click()
         tasks[:2].should(have.texts("1", "2"))

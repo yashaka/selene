@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2015-2020 Iakiv Kramarenko
+# Copyright (c) 2015-2021 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,8 @@ from selene.support.shared import browser
 from tests.integration.helpers.givenpage import GivenPage
 
 empty_page = 'file://{}/../resources/empty.html'.format(
-    os.path.abspath(os.path.dirname(__file__)))
+    os.path.abspath(os.path.dirname(__file__))
+)
 
 
 def setup_function():
@@ -42,7 +43,8 @@ def test_can_init_default_browser_on_visit():
     browser.open(empty_page)
     GivenPage(browser.driver).opened_with_body(
         '''
-        <h1 id="header">Selene</h1>''')
+        <h1 id="header">Selene</h1>'''
+    )
 
     browser.element("#header").should(have.exact_text("Selene"))
     assert browser.driver.name == 'chrome'
@@ -54,7 +56,9 @@ def test_can_init_custom_browser_on_visit():
     browser.open(empty_page)
     GivenPage(browser.driver).opened_with_body(
         '''
-        <a id="selene_link">Selene site</a>''')
+        <a id="selene_link">Selene site</a>
+        '''
+    )
 
     browser.element("#selene_link").should(have.exact_text("Selene site"))
     assert browser.driver.name == 'firefox'
@@ -64,7 +68,9 @@ def test_can_init_default_browser_after_custom():
     browser.open(empty_page)
     GivenPage(browser.driver).opened_with_body(
         '''
-        <h1 id="header">Selene</h1>''')
+        <h1 id="header">Selene</h1>
+        '''
+    )
 
     browser.element("#header").should(have.exact_text("Selene"))
     assert browser.driver.name == 'chrome'

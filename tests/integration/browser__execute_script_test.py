@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2015-2020 Iakiv Kramarenko
+# Copyright (c) 2015-2021 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -42,7 +42,8 @@ def test_can_scroll_to_via_js():
         </div>
         <a id="not-viewable-link" href="#header"/>
         <h1 id="header">Heading 1</h2>
-        ''')
+        '''
+    )
     link = browser.element("#not-viewable-link")
     # browser.driver().execute_script("arguments[0].scrollIntoView();", link)
     # - this code does not work because SeleneElement is not JSON serializable, and I don't know the way to fix it

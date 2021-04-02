@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2015-2020 Iakiv Kramarenko
+# Copyright (c) 2015-2021 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -37,7 +37,9 @@ def teardown_module():
 
 def test_by_text_with_single_and_double_quotes():
     given_active("""Fred's last name is "Li".""")
-    assert find_element(by.text("""Fred's last name is "Li".""")).is_displayed()
+    assert find_element(
+        by.text("""Fred's last name is "Li".""")
+    ).is_displayed()
 
 
 def find_element(locator):

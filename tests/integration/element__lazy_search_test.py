@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2015-2020 Iakiv Kramarenko
+# Copyright (c) 2015-2021 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -33,7 +33,8 @@ def test_search_does_not_start_on_creation(session_browser):
 
 
 def test_search_is_postponed_until_actual_action_like_questioning_displayed(
-        session_browser):
+    session_browser,
+):
     page = GivenPage(session_browser.driver)
     page.opened_empty()
 
@@ -44,7 +45,8 @@ def test_search_is_postponed_until_actual_action_like_questioning_displayed(
 
 
 def test_search_is_updated_on_next_actual_action_like_questioning_displayed(
-        session_browser):
+    session_browser,
+):
     page = GivenPage(session_browser.driver)
     page.opened_empty()
 
@@ -52,5 +54,7 @@ def test_search_is_updated_on_next_actual_action_like_questioning_displayed(
     page.load_body('<h1 id="will-be-existing-element-id">Hello kitty:*</h1>')
     assert element().is_displayed() is True
 
-    page.load_body('<h1 id="will-be-existing-element-id" style="display:none">Hello kitty:*</h1>')
+    page.load_body(
+        '<h1 id="will-be-existing-element-id" style="display:none">Hello kitty:*</h1>'
+    )
     assert element().is_displayed() is False

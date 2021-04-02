@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2015-2020 Iakiv Kramarenko
+# Copyright (c) 2015-2021 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -26,13 +26,17 @@ from tests.integration.helpers.givenpage import GivenPage
 def test_counts_invisible_tasks(session_browser):
     page = GivenPage(session_browser.driver)
     page.opened_empty()
-    elements = session_browser.all('li').filtered_by(have.css_class('will-appear'))
+    elements = session_browser.all('li').filtered_by(
+        have.css_class('will-appear')
+    )
 
-    page.load_body('''
+    page.load_body(
+        '''
                    <ul>Hello to:
                        <li>Anonymous</li>
                        <li class='will-appear'>Bob</li>
                        <li class='will-appear' style='display:none'>Kate</li>
-                   </ul>''')
+                   </ul>'''
+    )
 
     assert len(elements) == 2

@@ -4,8 +4,17 @@ on: [push, pull_request]
 
 jobs:
 
-  Pycodestyle-conventions:
-    name: Lint Pycodestyle Code Conventions
+  Black:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+      - uses: psf/black@stable
+        with:
+          args: ". --diff"
+
+  Pycodestyle:
+    name: Lint Pycodestyle
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout code
@@ -14,7 +23,7 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: '3.7'
-      - name: Pycodestyle Code Conventions
+      - name: Pycodestyle
         run: |
           pip install pycodestyle
           pycodestyle $(pwd) --ignore=E501,W503,E402,E731 --exclude=.venv,tests_from_past
@@ -32,11 +41,11 @@ jobs:
       - name: Pycodestyle Full Report
         run: |
           pip install pycodestyle
-          pycodestyle $(pwd) --ignore=W503 --exclude=.venv,tests_from_past
+          pycodestyle $(pwd) --ignore=E501,W503 --exclude=.venv,tests_from_past
         continue-on-error: true
 
-  Pylint-conventions:
-    name: Lint Pylint Code Conventions
+  Pylint:
+    name: Lint Pylint
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout code
@@ -45,7 +54,7 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: '3.7'
-      - name: Pylint Code Conventions
+      - name: Pylint
         run: |
           pip install pylint
           touch __init__.py
