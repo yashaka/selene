@@ -1,23 +1,23 @@
 [
   {
     "referrer": "Google",
-    "count": 237,
-    "uniques": 125
+    "count": 244,
+    "uniques": 132
   },
   {
     "referrer": "github.com",
-    "count": 227,
-    "uniques": 37
+    "count": 229,
+    "uniques": 39
   },
   {
     "referrer": "ecosia.org",
-    "count": 89,
+    "count": 91,
     "uniques": 45
   },
   {
     "referrer": "automated-testing.info",
-    "count": 16,
-    "uniques": 13
+    "count": 15,
+    "uniques": 12
   },
   {
     "referrer": "pypi.org",
@@ -30,23 +30,23 @@
     "uniques": 3
   },
   {
-    "referrer": "evaluateltd.atlassian.net",
+    "referrer": "t.co",
     "count": 4,
-    "uniques": 1
+    "uniques": 3
   },
   {
-    "referrer": "octhlt.atlassian.net",
-    "count": 3,
-    "uniques": 2
-  },
-  {
-    "referrer": "groups.google.com",
-    "count": 3,
-    "uniques": 2
+    "referrer": "yandex.ru",
+    "count": 4,
+    "uniques": 3
   },
   {
     "referrer": "DuckDuckGo",
-    "count": 3,
+    "count": 4,
+    "uniques": 2
+  },
+  {
+    "referrer": "evaluateltd.atlassian.net",
+    "count": 4,
     "uniques": 1
   }
 ]
