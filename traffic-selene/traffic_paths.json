@@ -2,8 +2,14 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 596,
-    "uniques": 220
+    "count": 614,
+    "uniques": 222
+  },
+  {
+    "path": "/yashaka/selene/issues",
+    "title": "Issues · yashaka/selene · GitHub",
+    "count": 88,
+    "uniques": 23
   },
   {
     "path": "/yashaka/selene/pulls",
@@ -12,16 +18,16 @@
     "uniques": 12
   },
   {
-    "path": "/yashaka/selene/issues",
-    "title": "Issues · yashaka/selene · GitHub",
-    "count": 83,
-    "uniques": 22
-  },
-  {
     "path": "/yashaka/selene/issues/198",
     "title": "Why does the browser open for so long? · Issue #198 · yashaka/selene",
     "count": 52,
     "uniques": 8
+  },
+  {
+    "path": "/yashaka/selene/tree/master/selene",
+    "title": "selene/selene at master · yashaka/selene · GitHub",
+    "count": 43,
+    "uniques": 21
   },
   {
     "path": "/yashaka/selene/pull/301",
@@ -30,28 +36,22 @@
     "uniques": 6
   },
   {
-    "path": "/yashaka/selene/tree/master/selene",
-    "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 39,
-    "uniques": 20
+    "path": "/yashaka/selene/issues/128",
+    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
+    "count": 37,
+    "uniques": 29
   },
   {
     "path": "/yashaka/selene/releases",
     "title": "Releases · yashaka/selene",
-    "count": 36,
-    "uniques": 3
+    "count": 37,
+    "uniques": 4
   },
   {
     "path": "/yashaka/selene/search",
     "title": "Search · url_containing",
     "count": 35,
     "uniques": 4
-  },
-  {
-    "path": "/yashaka/selene/issues/128",
-    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 33,
-    "uniques": 28
   },
   {
     "path": "/yashaka/selene/issues/299",
