@@ -22,8 +22,10 @@
 
 import os
 
-EMPTY_PAGE_URL = 'file://{}/../../../resources/empty.html'.format(
-    os.path.abspath(os.path.dirname(__file__))
+EMPTY_PAGE_URL = (
+    'file://'
+    + os.path.abspath(os.path.dirname(__file__))
+    + '/../../../resources/empty.html'
 )
 
 
@@ -57,11 +59,11 @@ class LoadedHtmlPage:
 
     def execute_script_with_timeout(self, script, timeout):
         self._driver.execute_script(
-            'setTimeout(function() { '
-            + script.replace('\n', ' ')
-            + ' }, '
+            "setTimeout(function() { "
+            + script.replace("\n", " ")
+            + " }, "
             + str(timeout)
-            + ');'
+            + ");"
         )
         return self
 
