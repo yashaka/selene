@@ -2,19 +2,19 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 614,
-    "uniques": 222
+    "count": 589,
+    "uniques": 213
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 88,
-    "uniques": 23
+    "count": 81,
+    "uniques": 22
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 87,
+    "count": 72,
     "uniques": 12
   },
   {
@@ -26,20 +26,8 @@
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 43,
-    "uniques": 21
-  },
-  {
-    "path": "/yashaka/selene/pull/301",
-    "title": "update webdriver-manager to latest version #299 by EmadDeve20 · Pull Request ...",
-    "count": 43,
-    "uniques": 6
-  },
-  {
-    "path": "/yashaka/selene/issues/128",
-    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 37,
-    "uniques": 29
+    "count": 39,
+    "uniques": 20
   },
   {
     "path": "/yashaka/selene/releases",
@@ -48,15 +36,27 @@
     "uniques": 4
   },
   {
+    "path": "/yashaka/selene/issues/128",
+    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
+    "count": 35,
+    "uniques": 28
+  },
+  {
+    "path": "/yashaka/selene/pull/301",
+    "title": "update webdriver-manager to latest version #299 by EmadDeve20 · Pull Request ...",
+    "count": 33,
+    "uniques": 6
+  },
+  {
     "path": "/yashaka/selene/search",
     "title": "Search · url_containing",
-    "count": 35,
+    "count": 32,
     "uniques": 4
   },
   {
-    "path": "/yashaka/selene/issues/299",
-    "title": "update webdriver-manager to latest version · Issue #299 · yashaka/selene · Gi...",
-    "count": 27,
-    "uniques": 7
+    "path": "/yashaka/selene/pull/306",
+    "title": "Release notes for 2.0.0a36 version by aleksandr-kotlyar · Pull Request #306 ·...",
+    "count": 22,
+    "uniques": 1
   }
 ]
