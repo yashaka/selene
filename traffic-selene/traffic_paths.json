@@ -2,20 +2,20 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 589,
-    "uniques": 213
+    "count": 586,
+    "uniques": 216
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 81,
-    "uniques": 22
+    "count": 79,
+    "uniques": 20
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 72,
-    "uniques": 12
+    "count": 74,
+    "uniques": 11
   },
   {
     "path": "/yashaka/selene/issues/198",
@@ -24,34 +24,34 @@
     "uniques": 8
   },
   {
-    "path": "/yashaka/selene/tree/master/selene",
-    "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 39,
-    "uniques": 20
-  },
-  {
     "path": "/yashaka/selene/releases",
-    "title": "Releases · yashaka/selene",
-    "count": 37,
-    "uniques": 4
+    "title": "Releases · yashaka/selene · GitHub",
+    "count": 38,
+    "uniques": 5
   },
   {
     "path": "/yashaka/selene/issues/128",
     "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 35,
-    "uniques": 28
+    "count": 36,
+    "uniques": 29
   },
   {
-    "path": "/yashaka/selene/pull/301",
-    "title": "update webdriver-manager to latest version #299 by EmadDeve20 · Pull Request ...",
-    "count": 33,
-    "uniques": 6
+    "path": "/yashaka/selene/tree/master/selene",
+    "title": "selene/selene at master · yashaka/selene · GitHub",
+    "count": 35,
+    "uniques": 19
   },
   {
     "path": "/yashaka/selene/search",
     "title": "Search · url_containing",
     "count": 32,
     "uniques": 4
+  },
+  {
+    "path": "/yashaka/selene/pull/301",
+    "title": "update webdriver-manager to latest version #299 by EmadDeve20 · Pull Request ...",
+    "count": 22,
+    "uniques": 5
   },
   {
     "path": "/yashaka/selene/pull/306",
