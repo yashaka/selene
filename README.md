@@ -53,7 +53,7 @@ Tests with Selene can be built either in a simple straightforward "selenide' sty
 
 ## Versions
   
-* Latest recommended version to use is [2.0.0a34](https://pypi.org/project/selene/2.0.0a34/)
+* Latest recommended version to use is [2.0.0a36](https://pypi.org/project/selene/2.0.0a36/)
   * it's a completely new version of selene, with improved API and speed
   * supports python >= 3.7
   * it's incompatible with [1.x](https://github.com/yashaka/selene/tree/1.x)
