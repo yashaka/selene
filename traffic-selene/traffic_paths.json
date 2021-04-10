@@ -2,56 +2,56 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 596,
-    "uniques": 224
+    "count": 538,
+    "uniques": 216
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 87,
-    "uniques": 25
+    "count": 75,
+    "uniques": 26
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 79,
-    "uniques": 16
+    "count": 68,
+    "uniques": 15
   },
   {
     "path": "/yashaka/selene/issues/198",
     "title": "Why does the browser open for so long? · Issue #198 · yashaka/selene",
-    "count": 52,
+    "count": 50,
     "uniques": 8
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene",
-    "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 36,
-    "uniques": 18
-  },
-  {
-    "path": "/yashaka/selene/releases",
-    "title": "Releases · yashaka/selene · GitHub",
-    "count": 34,
-    "uniques": 4
   },
   {
     "path": "/yashaka/selene/issues/128",
     "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 32,
-    "uniques": 27
+    "count": 34,
+    "uniques": 28
   },
   {
-    "path": "/yashaka/selene/search",
-    "title": "Search · query · GitHub",
-    "count": 27,
-    "uniques": 5
+    "path": "/yashaka/selene/tree/master/selene",
+    "title": "selene/selene at master · yashaka/selene · GitHub",
+    "count": 34,
+    "uniques": 17
+  },
+  {
+    "path": "/yashaka/selene/releases",
+    "title": "Releases · yashaka/selene · GitHub",
+    "count": 29,
+    "uniques": 4
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 24,
-    "uniques": 13
+    "count": 25,
+    "uniques": 14
+  },
+  {
+    "path": "/yashaka/selene/issues/308",
+    "title": "add test to check that element.click will wait for hiding element that covers...",
+    "count": 22,
+    "uniques": 5
   },
   {
     "path": "/yashaka/selene/pull/306",
