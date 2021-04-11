@@ -19,24 +19,23 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
 
-from selene.api.past import browser
-from selene.api.past import exact_text, hidden, exact_texts
-from selene.support.jquery_style_selectors import s, ss
-
-from tests_from_past.past.acceptance import get_test_driver
-from tests_from_past.past.acceptance import given_active
-
-
-def setup_module(m):
-    browser.set_driver(get_test_driver())
+from selene import have, be
+from selene.support.shared import browser
+from tests.acceptance.helpers.todomvc import given_active
 
 
-def teardown_module(m):
-    browser.driver().quit()
+def setup_module():
+    browser.set_driver(webdriver.Chrome(ChromeDriverManager().install()))
 
 
-class Task(object):
+def teardown_module():
+    browser.quit()
+
+
+class Task:
     def __init__(self, container):
         self.container = container
 
@@ -45,40 +44,40 @@ class Task(object):
         return self
 
 
-class Tasks(object):
+class Tasks:
     def _elements(self):
-        return ss("#todo-list>li")
+        return browser.all("#todo-list>li")
 
     def _task_element(self, text):
-        return self._elements().element_by(exact_text(text))
+        return self._elements().element_by(have.exact_text(text))
 
     def task(self, text):
         return Task(self._task_element(text))
 
     def should_be(self, *texts):
-        self._elements().should_have(exact_texts(*texts))
+        self._elements().should(have.exact_texts(*texts))
 
 
-class Footer(object):
+class Footer:
     def __init__(self):
-        self.container = s("#footer")
+        self.container = browser.element("#footer")
         self.clear_completed = self.container.find("#clear-completed")
 
     def should_have_items_left(self, number_of_active_tasks):
-        self.container.find("#todo-count>strong").should_have(
-            exact_text(str(number_of_active_tasks))
+        self.container.find("#todo-count>strong").should(
+            have.exact_text(str(number_of_active_tasks))
         )
 
 
-class TodoMVC(object):
+class TodoMVC:
     def __init__(self):
-        self.container = s("#todoapp")
+        self.container = browser.element("#todoapp")
         self.tasks = Tasks()
         self.footer = Footer()
 
     def clear_completed(self):
         self.footer.clear_completed.click()
-        self.footer.clear_completed.should_be(hidden)
+        self.footer.clear_completed.should(be.hidden)
         return self
 
 

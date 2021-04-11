@@ -19,42 +19,46 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
-from selene.api.past import browser, config
-from selene.api.past import BrowserName
-from selene.support import by
-from selene.support.conditions import be
-from selene.support.conditions import have
-from selene.support.jquery_style_selectors import s, ss
+from selene import have, by, be
+from selene.support.shared import config, browser
 
 
-def x_test_filter_tasks():
-    config.browser_name = BrowserName.MARIONETTE
+def setup_function():
+    browser.config.browser_name = 'firefox'
 
-    browser.open_url('https://todomvc4tasj.herokuapp.com')
+
+def teardown_function():
+    browser.quit()
+    browser.config.browser_name = 'chrome'
+
+
+def test_filter_tasks():
+    browser.open('https://todomvc4tasj.herokuapp.com')
     clear_completed_js_loaded = "return $._data($('#clear-completed').get(0), 'events').hasOwnProperty('click')"
     browser.wait_to(
-        have.js_returned_true(clear_completed_js_loaded),
+        have.js_returned(True, clear_completed_js_loaded),
         timeout=config.timeout * 3,
     )
 
-    s('#new-todo').set_value('a').press_enter()
-    s('#new-todo').set_value('b').press_enter()
-    s('#new-todo').set_value('c').press_enter()
-    ss('#todo-list li').should(have.exact_texts('a', 'b', 'c'))
+    browser.element('#new-todo').set_value('a').press_enter()
+    browser.element('#new-todo').set_value('b').press_enter()
+    browser.element('#new-todo').set_value('c').press_enter()
+    browser.all('#todo-list li').should(have.exact_texts('a', 'b', 'c'))
 
-    ss('#todo-list li').element_by(have.exact_text('b')).element(
+    browser.all('#todo-list li').element_by(have.exact_text('b')).element(
         '.toggle'
     ).click()
-    s(by.link_text('Active')).click()
-    ss('#todo-list li').filtered_by(be.visible).should(
+    browser.element(by.link_text('Active')).click()
+    browser.all('#todo-list li').filtered_by(be.visible).should(
         have.exact_texts('a', 'c')
     )
 
-    s(by.link_text('Completed')).click()
-    ss('#todo-list li').filtered_by(be.visible).should(have.exact_texts('b'))
+    browser.element(by.link_text('Completed')).click()
+    browser.all('#todo-list li').filtered_by(be.visible).should(
+        have.exact_texts('b')
+    )
 
-    s(by.link_text('All')).click()
-    ss('#todo-list li').filtered_by(be.visible).should(
+    browser.element(by.link_text('All')).click()
+    browser.all('#todo-list li').filtered_by(be.visible).should(
         have.exact_texts('a', 'b', 'c')
     )

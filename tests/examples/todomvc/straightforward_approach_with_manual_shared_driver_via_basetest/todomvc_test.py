@@ -19,37 +19,45 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
-from selene.api.past import browser
-from selene.support.conditions import be
-from selene.support.conditions import have
-from tests_from_past.base_test import *
-
-from selene.bys import by_link_text
-from selene.api.past import exact_text
-from selene.support.jquery_style_selectors import s, ss
+from selene import have, be, by
+from selene.support.shared import browser
+from tests.base_test import BaseTest
 
 APP_URL = 'https://todomvc4tasj.herokuapp.com/'
 
 
+def setup_module():
+    browser.config.timeout = 4
+
+
 class TestTodoMVC(BaseTest):
     def test_filter_tasks(self):
-        browser.open_url(APP_URL)
+        browser.open(APP_URL)
         clear_completed_js_loaded = "return $._data($('#clear-completed').get(0), 'events').hasOwnProperty('click')"
-        browser.wait_to(have.js_returned_true(clear_completed_js_loaded))
+        browser.wait_to(have.js_returned(True, clear_completed_js_loaded))
 
-        s('#new-todo').should(be.enabled).set_value('a').press_enter()
-        s('#new-todo').should(be.enabled).set_value('b').press_enter()
-        s('#new-todo').should(be.enabled).set_value('c').press_enter()
+        browser.element('#new-todo').should(be.enabled).set_value(
+            'a'
+        ).press_enter()
+        browser.element('#new-todo').should(be.enabled).set_value(
+            'b'
+        ).press_enter()
+        browser.element('#new-todo').should(be.enabled).set_value(
+            'c'
+        ).press_enter()
 
-        ss("#todo-list>li").should(have.texts('a', 'b', 'c'))
+        browser.all("#todo-list>li").should(have.texts('a', 'b', 'c'))
 
-        ss("#todo-list>li").element_by(exact_text('b')).find(".toggle").click()
+        browser.all("#todo-list>li").element_by(have.exact_text('b')).find(
+            ".toggle"
+        ).click()
 
-        s(by_link_text("Active")).click()
-        ss("#todo-list>li").filtered_by(be.visible).should(
+        browser.element(by.link_text("Active")).click()
+        browser.all("#todo-list>li").filtered_by(be.visible).should(
             have.texts('a', 'c')
         )
 
-        s(by_link_text("Completed")).click()
-        ss("#todo-list>li").filtered_by(be.visible).should(have.texts('b'))
+        browser.element(by.link_text("Completed")).click()
+        browser.all("#todo-list>li").filtered_by(be.visible).should(
+            have.texts('b')
+        )

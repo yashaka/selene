@@ -19,35 +19,15 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
 
-from selene.api.past import execute_script
-from tests_from_past.examples.todomvc.pagemodules_approach.pages import tasks
+from selene.support.shared import browser
 
 
-class TestTodoMVC(object):
-    def teardown(self):
-        execute_script('localStorage.clear()')
+class BaseTest:
+    def setup_method(self):
+        browser.set_driver(webdriver.Chrome(ChromeDriverManager().install()))
 
-    def test_filter_tasks(self):
-
-        tasks.visit()
-
-        tasks.add('a', 'b', 'c')
-        tasks.should_be('a', 'b', 'c')
-
-        tasks.toggle('b')
-
-        tasks.filter_active()
-        tasks.should_be('a', 'c')
-
-        tasks.filter_completed()
-        tasks.should_be('b')
-
-    def test_clear_completed(self):
-        tasks.visit()
-
-        tasks.add('a', 'b', 'c')
-        tasks.toggle('b')
-        tasks.clear_completed()
-
-        tasks.should_be('a', 'c')
+    def teardown_method(self):
+        browser.quit()

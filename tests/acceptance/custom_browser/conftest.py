@@ -5,7 +5,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selene import Config, Browser
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def session_driver():
     chrome_driver = webdriver.Chrome(ChromeDriverManager().install())
     yield chrome_driver

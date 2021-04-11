@@ -19,12 +19,11 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+from selene import have, by, be
+from selene.core.condition import not_
+from selene.support.shared import browser
 
-from selene.api import *
-
-# app_url = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../resources/todomvcapp/home.html'
-from selene.api.past import not_
-
+# app_url = f'file://{os.path.abspath(os.path.dirname(__file__))}/../resources/todomvcapp/home.html'
 app_url = 'https://todomvc4tasj.herokuapp.com/'
 # is_TodoMVC_loaded = ('return '
 #                      '$._data($("#new-todo").get(0), "events").hasOwnProperty("keyup") && '
@@ -36,22 +35,22 @@ is_TodoMVC_loaded = (
 )
 
 
-class TestTodoMVC(object):
+class TestTodoMVC:
     def test_selene_demo(self):
-        tasks = ss("#todo-list>li")
+        tasks = browser.all("#todo-list>li")
         active_tasks = tasks.filtered_by(have.css_class("active"))
 
-        browser.open_url(app_url)
-        browser.should(have.js_returned_true(is_TodoMVC_loaded))
+        browser.open(app_url)
+        browser.should(have.js_returned(True, is_TodoMVC_loaded))
 
         for task_text in ["1", "2", "3"]:
-            s("#new-todo").set_value(task_text).press_enter()
+            browser.element("#new-todo").set_value(task_text).press_enter()
         tasks.should(have.texts("1", "2", "3")).should_each(
             have.css_class("active")
         )
-        s("#todo-count").should(have.text('3'))
+        browser.element("#todo-count").should(have.text('3'))
 
-        tasks[2].s(".toggle").click()
+        tasks[2].element(".toggle").click()
         active_tasks.should(have.texts("1", "2"))
         active_tasks.should(have.size(2))
 
@@ -63,10 +62,10 @@ class TestTodoMVC(object):
             have.texts("1", "2")
         )
 
-        s(by.link_text("Active")).click()
+        browser.element(by.link_text("Active")).click()
         tasks[:2].should(have.texts("1", "2"))
         tasks[2].should(be.hidden)
 
-        s(by.id("toggle-all")).click()
-        s("//*[@id='clear-completed']").click()
+        browser.element(by.id("toggle-all")).click()
+        browser.element("//*[@id='clear-completed']").click()
         tasks.should(be.empty)

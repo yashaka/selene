@@ -19,28 +19,33 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
-from tests_from_past.past.acceptance import get_test_driver
-
-__author__ = 'yashaka'
-
-from selene.api.past import *
-from tests_from_past.past.acceptance import given_active
+from selene.support.shared import browser
+from tests.examples.todomvc.pagemodules_approach.pages import tasks
 
 
-def setup_module(m):
-    set_driver(get_test_driver())
+class TestTodoMVC:
+    def teardown(self):
+        browser.execute_script('localStorage.clear()')
 
+    def test_filter_tasks(self):
+        tasks.visit()
 
-def teardown_module(m):
-    driver().quit()
+        tasks.add('a', 'b', 'c')
+        tasks.should_be('a', 'b', 'c')
 
+        tasks.toggle('b')
 
-def test_search_inner_selement():
-    given_active("a", "b")
-    s("#todo-list").s("li").should(have.exact_text("a"))
+        tasks.filter_active()
+        tasks.should_be('a', 'c')
 
+        tasks.filter_completed()
+        tasks.should_be('b')
 
-def test_search_inner_selene_collection():
-    given_active("a", "b")
-    s("#todo-list").all("li").should(have.exact_texts("a", "b"))
+    def test_clear_completed(self):
+        tasks.visit()
+
+        tasks.add('a', 'b', 'c')
+        tasks.toggle('b')
+        tasks.clear_completed()
+
+        tasks.should_be('a', 'c')

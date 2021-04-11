@@ -22,67 +22,41 @@
 
 import os
 
-from selenium.webdriver.support.wait import WebDriverWait
-
-from selene.api.past import config
-from selene.api.past import visible
-from selene.api.past import driver
-from selene.support.jquery_style_selectors import s
-from selene.api.past import satisfied
-
-__author__ = 'yashaka'
-
-# todo: refactor to not use only raw selenium helpers
+from selene import be, have
+from selene.support.shared import browser
 
 # TODOMVC_URL = 'file://' + os.path.abspath(os.path.dirname(__file__)) + '/../../resources/todomvcapp/home.html'
 TODOMVC_URL = 'https://todomvc4tasj.herokuapp.com/'
-OTHER_PAGE_URL = (
-    'file://'
-    + os.path.abspath(os.path.dirname(__file__))
-    + '/../resources/orderapp/order.html'
+OTHER_PAGE_URL = 'file://{}/../resources/orderapp/order.html'.format(
+    os.path.abspath(os.path.dirname(__file__))
 )
 is_TodoMVC_loaded = (
     'return (Object.keys(require.s.contexts._.defined).length === 39)'
 )
 
 
-class js_returned_true(object):
-    def __init__(self, script):
-        self.script = script
-
-    def __call__(self, driver):
-        result = driver.execute_script(self.script)
-        if not result:
-            return False
-        else:
-            return driver
-
-
 def open_todomvc():
     # todo: refactor to use repo copy of todomvc
-    driver().get(TODOMVC_URL)
-    WebDriverWait(driver(), config.timeout).until(
-        js_returned_true(is_TodoMVC_loaded)
-    )
+    browser.open(TODOMVC_URL)
+    browser.wait_until(have.js_returned(True, is_TodoMVC_loaded))
 
 
 def given_at_other_page():
-    if not satisfied(s("#order_details"), visible):
-        driver().get(OTHER_PAGE_URL)
+    if not browser.element("#order_details").matching(be.visible):
+        browser.open(OTHER_PAGE_URL)
 
 
 def execute_js(js_string):
-    return driver().execute_script(js_string)
+    return browser.execute_script(js_string)
 
 
 def given(*tasks):
-
-    if not satisfied(s("#new-todo"), visible):
+    if not browser.element("#new-todo").matching(be.visible):
         open_todomvc()
 
     import json
 
-    script = 'localStorage.setItem("todos-troopjs", "%s")' % (
+    script = 'localStorage.setItem("todos-troopjs", "{}")'.format(
         str(json.dumps(tasks))
         .replace('"', '\\"')
         .replace('\\\\"', '\\\\\\"')
@@ -98,12 +72,12 @@ def given_empty_tasks():
     given()
 
 
-def task(taskText, is_completed=False):
-    return dict(title=taskText, completed=is_completed)
+def task(task_text, is_completed=False):
+    return dict(title=task_text, completed=is_completed)
 
 
-def given_active(*taskTexts):
-    return given(*[task(text) for text in taskTexts])
+def given_active(*task_texts):
+    return given(*[task(text) for text in task_texts])
 
 
 when_active = given_active
