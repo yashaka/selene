@@ -19,13 +19,12 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
 import os
 
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 
-from selene.support.shared import config
+from selene.support.shared import config, browser
 from tests.examples.widgets_aka_components_page_objects_style_for_spa_apps.model.widgets import (
     Order,
 )
@@ -33,16 +32,14 @@ from tests.examples.widgets_aka_components_page_objects_style_for_spa_apps.model
 
 def setup_function():
     config.timeout = 4
-    config.driver = webdriver.Chrome(ChromeDriverManager().install())
-    config.base_url = (
-        'file://'
-        + os.path.abspath(os.path.dirname(__file__))
-        + '/../../resources/orderapp/'
+    browser.set_driver(webdriver.Chrome(ChromeDriverManager().install()))
+    config.base_url = 'file://{}/../../resources/orderapp/'.format(
+        os.path.abspath(os.path.dirname(__file__))
     )
 
 
 def teardown_function():
-    config.driver.quit()
+    browser.quit()
 
 
 def test_it_fills_order():
@@ -50,11 +47,14 @@ def test_it_fills_order():
 
     order.open()
     order.details.fill_with(
-        first_name='Johanna', last_name='Smith', salutation='Mrs'
+        first_name='Johanna',
+        last_name='Smith',
+        salutation='Mrs',
     )
 
     item = order.add_item_with(
-        name='New Test Item', other_data='Some other specific data'
+        name='New Test Item',
+        other_data='Some other specific data',
     )
     item.show_advanced_options_selector.click()
     item.add_advanced_options(

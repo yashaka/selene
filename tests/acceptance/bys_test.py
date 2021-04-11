@@ -19,3 +19,28 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+__author__ = 'yashaka'
+
+from selene import by
+from selene.support.shared import browser
+from tests.acceptance.helpers.helper import get_test_driver
+from tests.acceptance.helpers.todomvc import given_active
+
+
+def setup_module():
+    browser.set_driver(get_test_driver())
+
+
+def teardown_module():
+    browser.quit()
+
+
+def test_by_text_with_single_and_double_quotes():
+    given_active("""Fred's last name is "Li".""")
+    assert find_element(
+        by.text("""Fred's last name is "Li".""")
+    ).is_displayed()
+
+
+def find_element(locator):
+    return browser.driver.find_element(*locator)
