@@ -91,3 +91,8 @@ class GivenPage(object):
 
     def load_body(self, body):
         return LoadedHtmlPage(self._driver).render_body(body)
+
+    def execute_script_with_timeout(self, script, timeout):
+        LoadedHtmlPage(self._driver).execute_script_with_timeout(
+            script, timeout
+        )
