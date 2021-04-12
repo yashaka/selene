@@ -65,8 +65,8 @@ class Source(Generic[T]):
 class _LazyDriver:
     def __init__(self, config: SharedConfig):
         self._config = config
-        self._closed: Optional[bool] = None
-        self._stored: Optional[WebDriver] = None
+        self._closed: bool | None = None
+        self._stored: WebDriver | None = None
 
     @property
     def _set_driver(self) -> Callable[[], WebDriver]:
@@ -144,16 +144,16 @@ class SharedConfig(Config):
     def __init__(
         self,
         # Config
-        driver: Optional[WebDriver] = None,
+        driver: WebDriver | None = None,
         timeout: int = 4,  # todo: consider removing defaults
         base_url: str = '',
         set_value_by_js: bool = False,
         type_by_js: bool = False,
-        window_width: Optional[int] = None,
-        window_height: Optional[int] = None,
-        hook_wait_failure: Optional[
+        window_width: int | None = None,
+        window_height: int | None = None,
+        hook_wait_failure: None | (
             Callable[[TimeoutException], Exception]
-        ] = None,
+        ) = None,
         log_outer_html_on_failure: bool = False,
         # SharedConfig
         set_driver: Callable[[], WebDriver] = None,
@@ -164,9 +164,9 @@ class SharedConfig(Config):
         save_page_source_on_failure: bool = True,
         poll_during_waits: int = 100,
         counter=None,  # default is set below
-        reports_folder: Optional[str] = None,  # default is set below
-        last_screenshot: Union[Optional[str], Source[str]] = None,
-        last_page_source: Union[Optional[str], Source[str]] = None,
+        reports_folder: str | None = None,  # default is set below
+        last_screenshot: str | None | Source[str] = None,
+        last_page_source: str | None | Source[str] = None,
     ):
 
         self._browser_name = browser_name
@@ -386,11 +386,11 @@ PageSource: file://{path}'''
         self._type_by_js = value
 
     @Config.window_width.setter
-    def window_width(self, value: Optional[int]):
+    def window_width(self, value: int | None):
         self._window_width = value
 
     @Config.window_height.setter
-    def window_height(self, value: Optional[int]):
+    def window_height(self, value: int | None):
         self._window_height = value
 
     @Config.log_outer_html_on_failure.setter

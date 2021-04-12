@@ -43,16 +43,16 @@ class Config:
     #       think on better name depending on hook type (generator vs standard fn)
     def __init__(
         self,
-        driver: Optional[WebDriver] = None,
+        driver: WebDriver | None = None,
         timeout: int = 4,
-        hook_wait_failure: Optional[
+        hook_wait_failure: None | (
             Callable[[TimeoutException], Exception]
-        ] = None,
+        ) = None,
         base_url: str = '',
         set_value_by_js: bool = False,
         type_by_js: bool = False,
-        window_width: Optional[int] = None,
-        window_height: Optional[int] = None,
+        window_width: int | None = None,
+        window_height: int | None = None,
         log_outer_html_on_failure: bool = False,
     ):
 
@@ -96,7 +96,7 @@ class Config:
         )
 
     @property
-    def driver(self) -> Optional[WebDriver]:
+    def driver(self) -> WebDriver | None:
         return self._driver
 
     @property
@@ -128,11 +128,11 @@ class Config:
         return self._type_by_js
 
     @property
-    def window_width(self) -> Optional[int]:
+    def window_width(self) -> int | None:
         return self._window_width
 
     @property
-    def window_height(self) -> Optional[int]:
+    def window_height(self) -> int | None:
         return self._window_height
 
     @property

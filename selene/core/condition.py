@@ -44,7 +44,7 @@ class Condition(Callable[[E], None]):
     @classmethod
     def by_or(cls, *conditions):
         def fn(entity):
-            errors: List[Exception] = []
+            errors: list[Exception] = []
             for condition in conditions:
                 try:
                     condition.call(entity)

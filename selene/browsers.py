@@ -22,7 +22,7 @@
 import warnings
 
 
-class _ClassPropertyDescriptor(object):
+class _ClassPropertyDescriptor:
     def __init__(self, fget, fset=None):
         self.fget = fget
         self.fset = fset
@@ -52,7 +52,7 @@ def _classproperty(func):
     return _ClassPropertyDescriptor(func)
 
 
-class BrowserName(object):
+class BrowserName:
     @_classproperty
     def CHROME(self):
         warnings.warn(

@@ -50,7 +50,7 @@ class Help:  # todo: should we make it private? like call it _Help (or think on 
         try:
             with open(file, 'w', encoding="utf-8") as f:
                 f.write(html)
-        except IOError:
+        except OSError:
             return None
         finally:
             del html

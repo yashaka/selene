@@ -71,7 +71,7 @@ class Wait(Generic[E]):
         self,
         entity: E,
         at_most: int,
-        or_fail_with: Optional[Callable[[TimeoutException], Exception]] = None,
+        or_fail_with: Callable[[TimeoutException], Exception] | None = None,
     ):
         self._entity = entity
         self._timeout = at_most
@@ -81,7 +81,7 @@ class Wait(Generic[E]):
         return Wait(self._entity, timeout, self._hook_failure)
 
     def or_fail_with(
-        self, hook_failure: Optional[Callable[[TimeoutException], Exception]]
+        self, hook_failure: Callable[[TimeoutException], Exception] | None
     ) -> Wait[E]:
 
         return Wait(self._entity, self._timeout, hook_failure)
@@ -89,7 +89,7 @@ class Wait(Generic[E]):
     @property
     def hook_failure(
         self,
-    ) -> Optional[Callable[[TimeoutException], Exception]]:
+    ) -> Callable[[TimeoutException], Exception] | None:
         # todo: hook_failure or failure_hook?
         return self._hook_failure
 

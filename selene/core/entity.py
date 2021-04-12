@@ -220,7 +220,7 @@ class Element(WaitingEntity):
 
     # --- Relative location --- #
 
-    def element(self, css_or_xpath_or_by: Union[str, tuple]) -> Element:
+    def element(self, css_or_xpath_or_by: str | tuple) -> Element:
         by = to_by(css_or_xpath_or_by)
 
         return Element(
@@ -228,7 +228,7 @@ class Element(WaitingEntity):
             self.config,
         )
 
-    def all(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection:
+    def all(self, css_or_xpath_or_by: str | tuple) -> Collection:
         by = to_by(css_or_xpath_or_by)
 
         return Collection(
@@ -244,7 +244,7 @@ class Element(WaitingEntity):
         # todo: should we wrap it in wait or not?
         return driver.execute_script(script_on_self, webelement, *extra_args)
 
-    def set_value(self, value: Union[str, int]) -> Element:
+    def set_value(self, value: str | int) -> Element:
         # todo: should we move all commands like following or queries like in conditions - to separate py modules?
         # todo: should we make them webelement based (Callable[[WebElement], None]) instead of element based?
         def fn(element: Element):
@@ -267,7 +267,7 @@ class Element(WaitingEntity):
         #       also it will make sense to make this behaviour configurable...
         return self
 
-    def type(self, text: Union[str, int]) -> Element:
+    def type(self, text: str | int) -> Element:
         # todo: do we need a separate send_keys method?
         def fn(element: Element):
             webelement = element()
@@ -395,33 +395,33 @@ class Element(WaitingEntity):
         )
         return self.cached
 
-    def s(self, css_or_xpath_or_by: Union[str, tuple]) -> Element:
+    def s(self, css_or_xpath_or_by: str | tuple) -> Element:
         # warnings.warn(
         #     "consider using more explicit `element` instead: browser.element('#foo').element('.bar')",
         #     SyntaxWarning)
         return self.element(css_or_xpath_or_by)
 
-    def find(self, css_or_xpath_or_by: Union[str, tuple]) -> Element:
+    def find(self, css_or_xpath_or_by: str | tuple) -> Element:
         warnings.warn(
             "deprecated; consider using `element` instead: browser.element('#foo').element('.bar')",
             DeprecationWarning,
         )
         return self.element(css_or_xpath_or_by)
 
-    def ss(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection:
+    def ss(self, css_or_xpath_or_by: str | tuple) -> Collection:
         # warnings.warn(
         #     "consider using `all` instead: browser.element('#foo').all('.bar')",
         #     SyntaxWarning)
         return self.all(css_or_xpath_or_by)
 
-    def find_all(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection:
+    def find_all(self, css_or_xpath_or_by: str | tuple) -> Collection:
         warnings.warn(
             "deprecated; consider using `all` instead: browser.element('#foo').all('.bar')",
             DeprecationWarning,
         )
         return self.all(css_or_xpath_or_by)
 
-    def elements(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection:
+    def elements(self, css_or_xpath_or_by: str | tuple) -> Collection:
         warnings.warn(
             "deprecated; consider using `all` instead: browser.element('#foo').all('.bar')",
             DeprecationWarning,
@@ -523,7 +523,7 @@ class Element(WaitingEntity):
         )
         return self.should(not_(condition), timeout)
 
-    def set(self, value: Union[str, int]) -> Element:
+    def set(self, value: str | int) -> Element:
         warnings.warn(
             "deprecated; use `set_value` method instead", DeprecationWarning
         )
@@ -670,7 +670,7 @@ class Element(WaitingEntity):
         return self.matching(be.visible)
 
     @property
-    def location(self) -> Dict[str, int]:
+    def location(self) -> dict[str, int]:
         warnings.warn(
             "deprecated; use `browser.element('#foo').get(query.location)` style instead",
             DeprecationWarning,
@@ -680,7 +680,7 @@ class Element(WaitingEntity):
         return self.get(query.location)
 
     @property
-    def location_once_scrolled_into_view(self) -> Dict[str, int]:
+    def location_once_scrolled_into_view(self) -> dict[str, int]:
         warnings.warn(
             "deprecated; use `browser.element('#foo').get(query.location_once_scrolled_into_view)` style instead",
             DeprecationWarning,
@@ -690,7 +690,7 @@ class Element(WaitingEntity):
         return self.get(query.location_once_scrolled_into_view)
 
     @property
-    def size(self) -> Dict[str, Any]:
+    def size(self) -> dict[str, Any]:
         warnings.warn(
             "deprecated; use `browser.element('#foo').get(query.size)` style instead",
             DeprecationWarning,
@@ -700,7 +700,7 @@ class Element(WaitingEntity):
         return self.get(query.size)
 
     @property
-    def rect(self) -> Dict[str, Any]:
+    def rect(self) -> dict[str, Any]:
         warnings.warn(
             "deprecated; use `browser.element('#foo').get(query.rect)` style instead",
             DeprecationWarning,
@@ -764,7 +764,7 @@ class SeleneElement(Element):  # todo: consider deprecating this name
 
 
 class Collection(WaitingEntity):
-    def __init__(self, locator: Locator[List[WebElement]], config: Config):
+    def __init__(self, locator: Locator[list[WebElement]], config: Config):
         self._locator = locator
         super().__init__(config)
 
@@ -776,7 +776,7 @@ class Collection(WaitingEntity):
     def __str__(self):
         return str(self._locator)
 
-    def __call__(self) -> List[WebElement]:
+    def __call__(self) -> list[WebElement]:
         return self._locator()
 
     @property
@@ -825,7 +825,7 @@ class Collection(WaitingEntity):
         return self.element(0)
 
     def sliced(self, start: int, stop: int, step: int = 1) -> Collection:
-        def find() -> List[WebElement]:
+        def find() -> list[WebElement]:
             webelements = self()
 
             # todo: assert length according to provided start, stop...
@@ -837,8 +837,8 @@ class Collection(WaitingEntity):
         )
 
     def __getitem__(
-        self, index_or_slice: Union[int, slice]
-    ) -> Union[Element, Collection]:
+        self, index_or_slice: int | slice
+    ) -> Element | Collection:
         if isinstance(index_or_slice, slice):
             return self.sliced(
                 index_or_slice.start, index_or_slice.stop, index_or_slice.step
@@ -853,7 +853,7 @@ class Collection(WaitingEntity):
         return self[:stop]
 
     def filtered_by(
-        self, condition: Union[Condition[Element], Callable[[E], None]]
+        self, condition: Condition[Element] | Callable[[E], None]
     ) -> Collection:
         condition = (
             condition
@@ -875,7 +875,7 @@ class Collection(WaitingEntity):
 
     def filtered_by_their(
         self,
-        selector_or_callable: Union[str, tuple, Callable[[Element], Element]],
+        selector_or_callable: str | tuple | Callable[[Element], Element],
         condition: Condition[Element],
     ) -> Collection:
         """
@@ -939,7 +939,7 @@ class Collection(WaitingEntity):
         return self.filtered_by(lambda it: condition(find_in(it)))
 
     def element_by(
-        self, condition: Union[Condition[Element], Callable[[E], None]]
+        self, condition: Condition[Element] | Callable[[E], None]
     ) -> Element:
         # todo: In the implementation below...
         #       We use condition in context of "matching", i.e. as a predicate...
@@ -1000,7 +1000,7 @@ class Collection(WaitingEntity):
 
     def element_by_its(
         self,
-        selector_or_callable: Union[str, tuple, Callable[[Element], Element]],
+        selector_or_callable: str | tuple | Callable[[Element], Element],
         condition: Condition[Element],
     ) -> Element:
         """
@@ -1071,7 +1071,7 @@ class Collection(WaitingEntity):
         return self.element_by(lambda it: condition(find_in(it)))
 
     # todo: consider adding ss alias
-    def all(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection:
+    def all(self, css_or_xpath_or_by: str | tuple) -> Collection:
         warnings.warn(
             'might be renamed or deprecated in future; '
             'all is actually a shortcut for collected(lambda element: element.all(selector)...'
@@ -1101,7 +1101,7 @@ class Collection(WaitingEntity):
         )
 
     # todo: consider adding s alias
-    def all_first(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection:
+    def all_first(self, css_or_xpath_or_by: str | tuple) -> Collection:
         warnings.warn(
             'might be renamed or deprecated in future; '
             'it is yet unclear what name would be best... '
@@ -1129,7 +1129,7 @@ class Collection(WaitingEntity):
         )
 
     def collected(
-        self, finder: Callable[[Element], Union[Element, Collection]]
+        self, finder: Callable[[Element], Element | Collection]
     ) -> Collection:
         # todo: consider adding predefined queries to be able to write
         #         collected(query.element(selector))
@@ -1156,7 +1156,7 @@ class Collection(WaitingEntity):
 
     def should(
         self,
-        condition: Union[Condition[Collection], Condition[Element]],
+        condition: Condition[Collection] | Condition[Element],
         timeout: int = None,
     ) -> Collection:
         if isinstance(condition, ElementCondition):
@@ -1185,7 +1185,7 @@ class Collection(WaitingEntity):
 
     # --- Deprecated --- #
 
-    def get_actual_webelements(self) -> List[WebElement]:
+    def get_actual_webelements(self) -> list[WebElement]:
         warnings.warn(
             "considering to be deprecated; use collection as callable instead, like: browser.all('.foo')()",
             PendingDeprecationWarning,
@@ -1238,7 +1238,7 @@ class Collection(WaitingEntity):
 
     def assure(
         self,
-        condition: Union[CollectionCondition, ElementCondition],
+        condition: CollectionCondition | ElementCondition,
         timeout=None,
     ) -> Collection:
         warnings.warn(
@@ -1249,7 +1249,7 @@ class Collection(WaitingEntity):
 
     def should_be(
         self,
-        condition: Union[CollectionCondition, ElementCondition],
+        condition: CollectionCondition | ElementCondition,
         timeout=None,
     ) -> Collection:
         warnings.warn(
@@ -1261,7 +1261,7 @@ class Collection(WaitingEntity):
 
     def should_have(
         self,
-        condition: Union[CollectionCondition, ElementCondition],
+        condition: CollectionCondition | ElementCondition,
         timeout=None,
     ) -> Collection:
         warnings.warn(
@@ -1273,7 +1273,7 @@ class Collection(WaitingEntity):
 
     def should_not(
         self,
-        condition: Union[CollectionCondition, ElementCondition],
+        condition: CollectionCondition | ElementCondition,
         timeout=None,
     ) -> Collection:
         warnings.warn(
@@ -1286,7 +1286,7 @@ class Collection(WaitingEntity):
 
     def assure_not(
         self,
-        condition: Union[CollectionCondition, ElementCondition],
+        condition: CollectionCondition | ElementCondition,
         timeout=None,
     ) -> Collection:
         warnings.warn(
@@ -1299,7 +1299,7 @@ class Collection(WaitingEntity):
 
     def should_not_be(
         self,
-        condition: Union[CollectionCondition, ElementCondition],
+        condition: CollectionCondition | ElementCondition,
         timeout=None,
     ) -> Collection:
         warnings.warn(
@@ -1312,7 +1312,7 @@ class Collection(WaitingEntity):
 
     def should_not_have(
         self,
-        condition: Union[CollectionCondition, ElementCondition],
+        condition: CollectionCondition | ElementCondition,
         timeout=None,
     ) -> Collection:
         warnings.warn(
@@ -1359,7 +1359,7 @@ class Browser(WaitingEntity):
 
     # --- Element builders --- #
 
-    def element(self, css_or_xpath_or_by: Union[str, tuple]) -> Element:
+    def element(self, css_or_xpath_or_by: str | tuple) -> Element:
         by = to_by(css_or_xpath_or_by)
 
         return Element(
@@ -1369,7 +1369,7 @@ class Browser(WaitingEntity):
             self.config,
         )
 
-    def all(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection:
+    def all(self, css_or_xpath_or_by: str | tuple) -> Collection:
         by = to_by(css_or_xpath_or_by)
 
         return Collection(
@@ -1417,7 +1417,7 @@ class Browser(WaitingEntity):
         self.driver.switch_to.window(query.previous_tab(self))
         return self
 
-    def switch_to_tab(self, index_or_name: Union[int, str]) -> Browser:
+    def switch_to_tab(self, index_or_name: int | str) -> Browser:
         if isinstance(index_or_name, int):
             index = index_or_name
             from selene.core import query
@@ -1486,7 +1486,7 @@ class Browser(WaitingEntity):
         )
         return Browser(Config(driver=webdriver))
 
-    def s(self, css_or_xpath_or_by: Union[str, tuple]) -> Element:
+    def s(self, css_or_xpath_or_by: str | tuple) -> Element:
         warnings.warn(
             "deprecated; use an `element` method instead: "
             "`browser.element('#foo')`",
@@ -1495,7 +1495,7 @@ class Browser(WaitingEntity):
 
         return self.element(css_or_xpath_or_by)
 
-    def find(self, css_or_xpath_or_by: Union[str, tuple]) -> Element:
+    def find(self, css_or_xpath_or_by: str | tuple) -> Element:
         warnings.warn(
             "deprecated; use an `element` method instead: "
             "`browser.element('#foo')`",
@@ -1504,7 +1504,7 @@ class Browser(WaitingEntity):
 
         return self.element(css_or_xpath_or_by)
 
-    def ss(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection:
+    def ss(self, css_or_xpath_or_by: str | tuple) -> Collection:
         warnings.warn(
             "deprecated; use an `all` method instead: "
             "`browser.all('.foo')`",
@@ -1513,7 +1513,7 @@ class Browser(WaitingEntity):
 
         return self.all(css_or_xpath_or_by)
 
-    def find_all(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection:
+    def find_all(self, css_or_xpath_or_by: str | tuple) -> Collection:
         warnings.warn(
             "deprecated; use an `all` method instead: "
             "`browser.all('.foo')`",
@@ -1522,7 +1522,7 @@ class Browser(WaitingEntity):
 
         return self.all(css_or_xpath_or_by)
 
-    def elements(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection:
+    def elements(self, css_or_xpath_or_by: str | tuple) -> Collection:
         warnings.warn(
             "deprecated; use an `all` method instead: "
             "`browser.all('.foo')`",

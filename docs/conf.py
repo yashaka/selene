@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # selene documentation build configuration file, created by
 # sphinx-quickstart on Sat Mar  4 11:34:49 2017.
@@ -53,9 +52,9 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'selene'
-copyright = u'2017, yashaka'
-author = u'yashaka'
+project = 'selene'
+copyright = '2017, yashaka'
+author = 'yashaka'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -151,7 +150,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'selene.tex', u'selene Documentation', u'yashaka', 'manual'),
+    (master_doc, 'selene.tex', 'selene Documentation', 'yashaka', 'manual'),
 ]
 
 
@@ -159,7 +158,7 @@ latex_documents = [
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [(master_doc, 'selene', u'selene Documentation', [author], 1)]
+man_pages = [(master_doc, 'selene', 'selene Documentation', [author], 1)]
 
 
 # -- Options for Texinfo output -------------------------------------------
@@ -171,7 +170,7 @@ texinfo_documents = [
     (
         master_doc,
         'selene',
-        u'selene Documentation',
+        'selene Documentation',
         author,
         'selene',
         'One line description of project.',

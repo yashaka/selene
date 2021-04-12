@@ -29,7 +29,7 @@ EMPTY_PAGE_URL = (
 )
 
 
-class LoadingHtmlPage(object):
+class LoadingHtmlPage:
     def __init__(self, timeout=0, body=''):
         self._body = body
         self._timeout = timeout
@@ -39,7 +39,7 @@ class LoadingHtmlPage(object):
         return LoadedHtmlPage(driver).render_body(self._body, self._timeout)
 
 
-class LoadedHtmlPage(object):
+class LoadedHtmlPage:
     def __init__(self, driver):
         self._driver = driver
 
@@ -71,7 +71,7 @@ class LoadedHtmlPage(object):
         return self.render_body(body, timeout)
 
 
-class GivenPage(object):
+class GivenPage:
     def __init__(self, driver):
         self._driver = driver
 
