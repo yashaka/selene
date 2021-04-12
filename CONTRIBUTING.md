@@ -13,6 +13,7 @@ Also consider first to help with issues marked with help_needed label ;)
 8. `poetry shell`
 9. Create your feature branch (`git checkout -b my-new-feature`)
 10. Commit your changes (`git commit -am "gh_$ISSUE_NUMBER: Add some feature"`, where ISSUE_NUMBER is the number of issue this commit relates to)  
+
     **NOTE :** `-am` is just an example here, if new files were added you should stage the changes (`git add ...`) and then commit your changes.
 11. Push to the branch (`git push origin my-new-feature`)
 12. Create a new Pull Request
