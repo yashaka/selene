@@ -1,31 +1,26 @@
 [
   {
     "referrer": "Google",
-    "count": 264,
-    "uniques": 146
+    "count": 233,
+    "uniques": 131
   },
   {
     "referrer": "github.com",
-    "count": 154,
-    "uniques": 48
+    "count": 129,
+    "uniques": 43
   },
   {
     "referrer": "ecosia.org",
-    "count": 68,
-    "uniques": 36
-  },
-  {
-    "referrer": "yandex.ru",
-    "count": 16,
-    "uniques": 9
-  },
-  {
-    "referrer": "automated-testing.info",
-    "count": 15,
-    "uniques": 15
+    "count": 62,
+    "uniques": 33
   },
   {
     "referrer": "DuckDuckGo",
+    "count": 15,
+    "uniques": 8
+  },
+  {
+    "referrer": "yandex.ru",
     "count": 15,
     "uniques": 8
   },
@@ -35,13 +30,18 @@
     "uniques": 6
   },
   {
+    "referrer": "automated-testing.info",
+    "count": 11,
+    "uniques": 11
+  },
+  {
     "referrer": "pypi.org",
-    "count": 13,
-    "uniques": 12
+    "count": 10,
+    "uniques": 9
   },
   {
     "referrer": "selene-docs-test.readthedocs.io",
-    "count": 6,
+    "count": 5,
     "uniques": 5
   },
   {
