@@ -2,26 +2,26 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 561,
-    "uniques": 234
+    "count": 456,
+    "uniques": 209
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 83,
-    "uniques": 22
+    "count": 74,
+    "uniques": 20
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 78,
-    "uniques": 17
+    "count": 44,
+    "uniques": 15
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 42,
-    "uniques": 18
+    "count": 36,
+    "uniques": 16
   },
   {
     "path": "/yashaka/selene/issues/128",
@@ -38,25 +38,25 @@
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 31,
-    "uniques": 19
-  },
-  {
-    "path": "/yashaka/selene/releases",
-    "title": "Releases · yashaka/selene · GitHub",
-    "count": 31,
-    "uniques": 5
+    "count": 28,
+    "uniques": 16
   },
   {
     "path": "/yashaka/selene/tree/master/selene/core",
     "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 28,
-    "uniques": 14
+    "count": 25,
+    "uniques": 13
   },
   {
     "path": "/yashaka/selene/pull/310",
     "title": "add element__click_test.test_click_waits_for_covering_preload_element_to_disa...",
     "count": 24,
     "uniques": 5
+  },
+  {
+    "path": "/yashaka/selene/pull/314",
+    "title": "Bump \"Latest recommended version\" to 2.0.0a36 by aleksandr-kotlyar · Pull Req...",
+    "count": 21,
+    "uniques": 2
   }
 ]
