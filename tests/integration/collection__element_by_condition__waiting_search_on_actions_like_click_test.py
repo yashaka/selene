@@ -33,7 +33,7 @@ def test_waits_for_visibility(session_browser):
         <a href="#second" style="display:none">go to Heading 2</a>
         <h2 id="second">Heading 2</h2>'''
     ).execute_script_with_timeout(
-        'document.getElementsByTagName("a")[0].style = "display:block";', 500
+        'document.getElementsByTagName("a")[0].style = "display:block";', 0.5
     )
 
     element = session_browser.all('a').element_by(
@@ -54,7 +54,7 @@ def test_waits_for_present_in_dom_and_visibility(session_browser):
         '''
         <a href="#second">go to Heading 2</a>
         <h2 id="second">Heading 2</h2>''',
-        500,
+        0.5,
     )
 
     element = session_browser.all('a').element_by(
@@ -75,9 +75,9 @@ def test_waits_first_for_present_in_dom_then_visibility(session_browser):
         '''
         <a href="#second" style="display:none">go to Heading 2</a>
         <h2 id="second">Heading 2</h2>''',
-        250,
+        0.25,
     ).execute_script_with_timeout(
-        'document.getElementsByTagName("a")[0].style = "display:block";', 500
+        'document.getElementsByTagName("a")[0].style = "display:block";', 0.5
     )
 
     element = session_browser.all('a').element_by(
@@ -96,7 +96,7 @@ def test_fails_on_timeout_during_waiting_for_visibility(session_browser):
         <a href='#second' style='display:none'>go to Heading 2</a>
         <h2 id='second'>Heading 2</h2>'''
     ).execute_script_with_timeout(
-        'document.getElementsByTagName("a")[0].style = "display:block";', 500
+        'document.getElementsByTagName("a")[0].style = "display:block";', 0.5
     )
 
     with pytest.raises(TimeoutException):
@@ -118,7 +118,7 @@ def test_fails_on_timeout_during_waits_for_present_in_dom_and_visibility(
         '''
         <a href="#second">go to Heading 2</a>
         <h2 id="second">Heading 2</h2>''',
-        500,
+        0.5,
     )
 
     with pytest.raises(TimeoutException):
@@ -140,9 +140,9 @@ def test_fails_on_timeout_during_waits_first_for_present_in_dom_then_visibility(
         '''
         <a href="#second" style="display:none">go to Heading 2</a>
         <h2 id="second">Heading 2</h2>''',
-        250,
+        0.25,
     ).execute_script_with_timeout(
-        'document.getElementsByTagName("a")[0].style = "display:block";', 500
+        'document.getElementsByTagName("a")[0].style = "display:block";', 0.5
     )
 
     with pytest.raises(TimeoutException):

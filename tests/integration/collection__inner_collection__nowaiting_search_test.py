@@ -44,7 +44,7 @@ def test_does_not_wait_inner(session_browser):
             <li class='will-appear' style='display:none'>Kate</li>
             <li class='will-appear'>Joe</li>
         </ul>''',
-        500,
+        0.5,
     )
 
     assert len(elements) == 2
@@ -67,9 +67,9 @@ def test_waits_for_parent_in_dom_then_visible(session_browser):
             <li class='item'>Bob</li>
             <li class='item' style='display:none'>Kate</li>
         </ul>''',
-        250,
+        0.25,
     ).execute_script_with_timeout(
-        'document.getElementsByTagName("ul")[0].style = "display:block";', 500
+        'document.getElementsByTagName("ul")[0].style = "display:block";', 0.5
     )
 
     assert len(elements) == 2

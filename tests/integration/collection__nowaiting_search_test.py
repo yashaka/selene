@@ -43,6 +43,6 @@ def test_waits_nothing(session_browser):
                                     <li class='will-appear' style='display:none'>Kate</li>
                                     <li class='will-appear'>Joe</li>
                                 </ul>''',
-        500,
+        0.5,
     )
     assert len(elements) == 2

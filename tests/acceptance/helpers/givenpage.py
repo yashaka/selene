@@ -43,12 +43,16 @@ class LoadedHtmlPage:
     def __init__(self, driver):
         self._driver = driver
 
+    @staticmethod
+    def _set_to_ms(timeout):
+        return timeout * 1000
+
     def render_body(self, body, timeout=0):
         self._driver.execute_script(
             'setTimeout(function() { document.getElementsByTagName("body")[0].innerHTML = "'
             + body.replace('\n', ' ').replace('"', '\\"')
             + '";}, '
-            + str(timeout)
+            + str(self._set_to_ms(timeout))
             + ');'
         )
         return self
@@ -62,7 +66,7 @@ class LoadedHtmlPage:
             "setTimeout(function() { "
             + script.replace("\n", " ")
             + " }, "
-            + str(timeout)
+            + str(self._set_to_ms(timeout))
             + ");"
         )
         return self
