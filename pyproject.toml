@@ -43,7 +43,7 @@ packages = [
 python = "^3.7"
 selenium = "==3.141.0"
 future = "*"
-webdriver-manager = "==2.3.0"
+webdriver-manager = "==3.3.0"
 
 [tool.poetry.dev-dependencies]
 black = "^20.8b1"
