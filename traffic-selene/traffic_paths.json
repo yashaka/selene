@@ -2,20 +2,20 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 456,
-    "uniques": 209
+    "count": 477,
+    "uniques": 228
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 74,
-    "uniques": 20
+    "count": 101,
+    "uniques": 27
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 44,
-    "uniques": 15
+    "count": 68,
+    "uniques": 19
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
@@ -24,22 +24,28 @@
     "uniques": 16
   },
   {
-    "path": "/yashaka/selene/issues/128",
-    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 35,
-    "uniques": 29
-  },
-  {
     "path": "/yashaka/selene/issues/308",
     "title": "add test to check that element.click will wait for hiding element that covers...",
+    "count": 36,
+    "uniques": 8
+  },
+  {
+    "path": "/yashaka/selene/issues/128",
+    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
     "count": 33,
-    "uniques": 7
+    "uniques": 28
+  },
+  {
+    "path": "/yashaka/selene/pull/310",
+    "title": "add element__click_test.test_click_waits_for_covering_preload_element_to_disa...",
+    "count": 32,
+    "uniques": 8
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 28,
-    "uniques": 16
+    "count": 31,
+    "uniques": 18
   },
   {
     "path": "/yashaka/selene/tree/master/selene/core",
@@ -48,15 +54,9 @@
     "uniques": 13
   },
   {
-    "path": "/yashaka/selene/pull/310",
-    "title": "add element__click_test.test_click_waits_for_covering_preload_element_to_disa...",
+    "path": "/yashaka/selene/blob/master/CONTRIBUTING.md",
+    "title": "selene/CONTRIBUTING.md at master · yashaka/selene · GitHub",
     "count": 24,
-    "uniques": 5
-  },
-  {
-    "path": "/yashaka/selene/pull/314",
-    "title": "Bump \"Latest recommended version\" to 2.0.0a36 by aleksandr-kotlyar · Pull Req...",
-    "count": 21,
-    "uniques": 2
+    "uniques": 14
   }
 ]
