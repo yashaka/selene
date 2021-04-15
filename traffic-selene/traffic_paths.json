@@ -2,61 +2,61 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 477,
-    "uniques": 228
+    "count": 485,
+    "uniques": 239
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 101,
-    "uniques": 27
+    "count": 107,
+    "uniques": 28
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 68,
+    "count": 74,
     "uniques": 19
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 36,
-    "uniques": 16
+    "count": 38,
+    "uniques": 18
   },
   {
     "path": "/yashaka/selene/issues/308",
     "title": "add test to check that element.click will wait for hiding element that covers...",
-    "count": 36,
+    "count": 38,
     "uniques": 8
   },
   {
     "path": "/yashaka/selene/issues/128",
     "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 33,
-    "uniques": 28
+    "count": 36,
+    "uniques": 30
   },
   {
     "path": "/yashaka/selene/pull/310",
     "title": "add element__click_test.test_click_waits_for_covering_preload_element_to_disa...",
-    "count": 32,
+    "count": 36,
     "uniques": 8
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 31,
-    "uniques": 18
+    "count": 34,
+    "uniques": 20
   },
   {
-    "path": "/yashaka/selene/tree/master/selene/core",
-    "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 25,
-    "uniques": 13
+    "path": "/yashaka/selene/issues/311",
+    "title": "Document mentioning issue number in commit messega for contributed PR · Issue...",
+    "count": 28,
+    "uniques": 12
   },
   {
-    "path": "/yashaka/selene/blob/master/CONTRIBUTING.md",
-    "title": "selene/CONTRIBUTING.md at master · yashaka/selene · GitHub",
-    "count": 24,
-    "uniques": 14
+    "path": "/yashaka/selene/issues/312",
+    "title": "refactor timeouts in givenpage.py to be seconds based, not ms based · Issue #...",
+    "count": 28,
+    "uniques": 12
   }
 ]
