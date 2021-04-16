@@ -2,38 +2,38 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 520,
-    "uniques": 248
+    "count": 484,
+    "uniques": 231
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 120,
+    "count": 117,
     "uniques": 29
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 100,
-    "uniques": 20
+    "count": 96,
+    "uniques": 18
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 41,
-    "uniques": 19
-  },
-  {
-    "path": "/yashaka/selene/issues/128",
-    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 40,
-    "uniques": 34
+    "count": 39,
+    "uniques": 18
   },
   {
     "path": "/yashaka/selene/issues/308",
     "title": "add test to check that element.click will wait for hiding element that covers...",
     "count": 38,
     "uniques": 8
+  },
+  {
+    "path": "/yashaka/selene/issues/128",
+    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
+    "count": 37,
+    "uniques": 31
   },
   {
     "path": "/yashaka/selene/pull/310",
@@ -44,8 +44,8 @@
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 34,
-    "uniques": 20
+    "count": 32,
+    "uniques": 19
   },
   {
     "path": "/yashaka/selene/issues/311",
