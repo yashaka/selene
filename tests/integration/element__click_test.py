@@ -1,3 +1,4 @@
+import time
 from tests.integration.helpers.givenpage import GivenPage
 
 
@@ -8,26 +9,29 @@ def test_click_waits_for_no_overlay(session_browser):
         '''
         <a href="#second">go to Heading 2</a>
         <h2 id="second">Heading 2</h2>
-        <div>
-          id=overlay,
-          style="display: block;
-                background-color: rgba(0, 0, 0, 0.336),
-                position: fixed,
-                height: 100%,
-                width: 100%,
-                top: 0,
-                left: 0,
-                z-index: 1000"
-        </div>
+        <div
+         id="overlay"
+         style="display: block;
+         background-color: rgba(0, 0, 0, 0.336);
+         position: fixed;
+         height: 100%;
+         width: 100%;
+         top: 0;
+         left: 0;
+         z-index: 1000;">
+         </div>
         '''
     )
+    before_call = time.time()
     page.execute_script_with_timeout(
         '''
-        document.getElementById('overlay').style.display=none
+        document.getElementById('overlay').style.display='none'
         ''',
         250,
     )
 
     browser.element('a').click()
 
+    time_diff = time.time() - before_call
+    assert (0.25 < time_diff < 0.5)
     assert "second" in browser.driver.current_url
