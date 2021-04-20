@@ -2,26 +2,26 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 475,
-    "uniques": 230
+    "count": 409,
+    "uniques": 197
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 132,
-    "uniques": 31
+    "count": 128,
+    "uniques": 30
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 108,
-    "uniques": 18
+    "count": 116,
+    "uniques": 17
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 51,
-    "uniques": 20
+    "count": 49,
+    "uniques": 18
   },
   {
     "path": "/yashaka/selene/issues/313",
@@ -42,21 +42,21 @@
     "uniques": 14
   },
   {
-    "path": "/yashaka/selene/issues/128",
-    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 34,
-    "uniques": 31
-  },
-  {
     "path": "/yashaka/selene/issues/311",
     "title": "Document mentioning issue number in commit messega for contributed PR · Issue...",
     "count": 34,
     "uniques": 13
   },
   {
-    "path": "/yashaka/selene/tree/master/tests",
-    "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 28,
-    "uniques": 16
+    "path": "/yashaka/selene/issues/128",
+    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
+    "count": 29,
+    "uniques": 27
+  },
+  {
+    "path": "/yashaka/selene/tree/master/selene/core",
+    "title": "selene/selene/core at master · yashaka/selene · GitHub",
+    "count": 24,
+    "uniques": 12
   }
 ]
