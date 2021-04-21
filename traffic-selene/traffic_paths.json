@@ -2,44 +2,44 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 409,
-    "uniques": 197
+    "count": 413,
+    "uniques": 196
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 128,
-    "uniques": 30
+    "count": 131,
+    "uniques": 27
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 116,
-    "uniques": 17
+    "count": 115,
+    "uniques": 15
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 49,
-    "uniques": 18
+    "count": 57,
+    "uniques": 19
   },
   {
     "path": "/yashaka/selene/issues/313",
     "title": "improve tests structure (visibility and clearness of arrange/act/assert block...",
-    "count": 38,
+    "count": 40,
     "uniques": 16
+  },
+  {
+    "path": "/yashaka/selene/issues/312",
+    "title": "refactor timeouts in givenpage.py to be seconds based, not ms based · Issue #...",
+    "count": 37,
+    "uniques": 14
   },
   {
     "path": "/yashaka/selene/pull/310",
     "title": "add element__click_test.test_click_waits_for_covering_preload_element_to_disa...",
     "count": 37,
     "uniques": 9
-  },
-  {
-    "path": "/yashaka/selene/issues/312",
-    "title": "refactor timeouts in givenpage.py to be seconds based, not ms based · Issue #...",
-    "count": 36,
-    "uniques": 14
   },
   {
     "path": "/yashaka/selene/issues/311",
@@ -50,13 +50,13 @@
   {
     "path": "/yashaka/selene/issues/128",
     "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 29,
-    "uniques": 27
+    "count": 26,
+    "uniques": 24
   },
   {
     "path": "/yashaka/selene/tree/master/selene/core",
     "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 24,
-    "uniques": 12
+    "count": 25,
+    "uniques": 13
   }
 ]
