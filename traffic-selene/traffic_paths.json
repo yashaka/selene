@@ -2,31 +2,31 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 442,
-    "uniques": 194
+    "count": 441,
+    "uniques": 193
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 136,
-    "uniques": 28
+    "count": 144,
+    "uniques": 30
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 115,
-    "uniques": 15
+    "count": 121,
+    "uniques": 17
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 61,
+    "count": 57,
     "uniques": 21
   },
   {
     "path": "/yashaka/selene/issues/313",
     "title": "improve tests structure (visibility and clearness of arrange/act/assert block...",
-    "count": 44,
+    "count": 46,
     "uniques": 16
   },
   {
@@ -36,27 +36,27 @@
     "uniques": 14
   },
   {
+    "path": "/yashaka/selene/issues/311",
+    "title": "Document mentioning issue number in commit messega for contributed PR · Issue...",
+    "count": 35,
+    "uniques": 14
+  },
+  {
     "path": "/yashaka/selene/pull/310",
     "title": "add element__click_test.test_click_waits_for_covering_preload_element_to_disa...",
-    "count": 37,
+    "count": 32,
     "uniques": 9
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene",
-    "count": 36,
-    "uniques": 16
-  },
-  {
-    "path": "/yashaka/selene/issues/311",
-    "title": "Document mentioning issue number in commit messega for contributed PR · Issue...",
-    "count": 34,
-    "uniques": 13
+    "count": 30,
+    "uniques": 14
   },
   {
     "path": "/yashaka/selene/issues/128",
     "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 26,
-    "uniques": 25
+    "count": 25,
+    "uniques": 24
   }
 ]
