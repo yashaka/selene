@@ -26,10 +26,6 @@ from tests.integration.helpers.givenpage import GivenPage
 def test_waits_nothing(session_browser):
     page = GivenPage(session_browser.driver)
     page.opened_empty()
-    elements = session_browser.all('li').filtered_by(
-        have.css_class('will-appear')
-    )
-
     page.load_body(
         '''
                    <ul>Hello to:
@@ -38,8 +34,15 @@ def test_waits_nothing(session_browser):
                        <li class='will-appear' style='display:none'>Kate</li>
                    </ul>'''
     )
-    assert len(elements) == 2
+    elements = session_browser.all('li').filtered_by(
+        have.css_class('will-appear')
+    )
 
+    elements_count = len(elements)
+
+    assert elements_count == 2
+
+    # Given timeout
     page.load_body_with_timeout(
         '''
                                 <ul>Hello to:
@@ -50,4 +53,7 @@ def test_waits_nothing(session_browser):
                                 </ul>''',
         500,
     )
-    assert len(elements) == 2
+
+    elements_count_with_timeout = len(elements)
+
+    assert elements_count_with_timeout == 2
