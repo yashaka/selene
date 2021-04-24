@@ -44,6 +44,9 @@ Code-style is controlled by few linter jobs in GitHub Actions.
 - lints default black rules except "string normalization".
 
 # Release process
+First make sure you described release notes in CHANGELOG.md.
+## Automatically
+
 1. Create new release on GitHub.
 2. Choose new tag or take not released yet.
 3. Describe release notes.
@@ -51,3 +54,19 @@ Code-style is controlled by few linter jobs in GitHub Actions.
 5. Publish the release on GitHub.
 
 Then GitHub action will automatically build and publish release to pypi with selected tag automatically. Also it will commit the tag semver into `__init__.py` and `pyproject.toml` before building if it has not been there yet.
+
+## Old fashion manually (only if GitHub Actions CI is not available)
+1. bump version via `bash .run/bump_version.sh x.x.x`
+2. build via `bash .run/build.sh`
+3. publish via `bash .run/publish.sh`
+
+or
+
+`bash .run/bump_build_publish.sh x.x.x`
+
+or if you want to control all by yourself
+
+1. manually bump version in `pyproject.toml` and `selene/__init.py:__version__`
+2. poetry publish --build
+
+Also don't forget to push a tag and describe release notes on GitHub! (If GitHub Actions works then publish job will fail because same version had already been published on pypi.org)
