@@ -32,5 +32,5 @@ def time_spent(function, *args, **kwargs):
     return end_time - start_time
 
 
-def _set_to_ms(timeout):
+def convert_sec_to_ms(timeout):
     return timeout * 1000
