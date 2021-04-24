@@ -77,7 +77,12 @@
 - repeat fix of #225 to other options in shared config, refactor it... 
   - should we make original config (not shared) mutable?
 
-## 2.0.0a36 (to be released on 30.03.2021)
+## 2.0.0a37 (released on 24.04.2021)
+- Update webdriver-manager to version 3.3.0 [#299](https://github.com/yashaka/selene/issues/299)
+- New release and publish process of selene [#246](https://github.com/yashaka/selene/issues/246#issuecomment-825897200)
+
+## 2.0.0a36 (released on 30.03.2021)
+Contributors release.
 - Moved selene from Pipenv to [Poetry](https://python-poetry.org/) as a greater python dependency resolver of 2021 (see #302).
 - Moved to a new release process with Poetry: added bash aliases in `./.run/*.sh` (see #304).
 - Moved from setup.py and setup.cfg to pyproject.toml config-file.

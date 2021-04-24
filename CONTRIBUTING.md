@@ -42,3 +42,12 @@ Code-style is controlled by few linter jobs in GitHub Actions.
 
 ### Black 
 - lints default black rules except "string normalization".
+
+# Release process
+1. Create new release on GitHub.
+2. Choose new tag or take not released yet.
+3. Describe release notes.
+4. Select pre-release checkbox if not stable.
+5. Publish the release on GitHub.
+
+Then GitHub action will automatically build and publish release to pypi with selected tag automatically. Also it will commit the tag semver into `__init__.py` and `pyproject.toml` before building if it has not been there yet.
