@@ -2,26 +2,26 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 441,
-    "uniques": 193
+    "count": 458,
+    "uniques": 197
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 144,
-    "uniques": 30
+    "count": 148,
+    "uniques": 31
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 121,
-    "uniques": 17
+    "count": 134,
+    "uniques": 16
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 57,
-    "uniques": 21
+    "count": 53,
+    "uniques": 18
   },
   {
     "path": "/yashaka/selene/issues/313",
@@ -32,7 +32,7 @@
   {
     "path": "/yashaka/selene/issues/312",
     "title": "refactor timeouts in givenpage.py to be seconds based, not ms based · Issue #...",
-    "count": 37,
+    "count": 40,
     "uniques": 14
   },
   {
@@ -42,21 +42,21 @@
     "uniques": 14
   },
   {
-    "path": "/yashaka/selene/pull/310",
-    "title": "add element__click_test.test_click_waits_for_covering_preload_element_to_disa...",
-    "count": 32,
-    "uniques": 9
-  },
-  {
-    "path": "/yashaka/selene/tree/master/tests",
-    "title": "selene/tests at master · yashaka/selene",
-    "count": 30,
-    "uniques": 14
+    "path": "/yashaka/selene/pull/317",
+    "title": "issue #312 refactor timeouts in givenpage.py by Vikilib · Pull Request #317 ·...",
+    "count": 34,
+    "uniques": 5
   },
   {
     "path": "/yashaka/selene/issues/128",
     "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 25,
-    "uniques": 24
+    "count": 29,
+    "uniques": 28
+  },
+  {
+    "path": "/yashaka/selene/tree/master/tests",
+    "title": "selene/tests at master · yashaka/selene",
+    "count": 29,
+    "uniques": 13
   }
 ]
