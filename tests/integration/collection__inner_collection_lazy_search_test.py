@@ -38,8 +38,6 @@ def test_search_is_postponed_until_actual_action_like_questioning_count(
 ):
     page = GivenPage(session_browser.driver)
     page.opened_empty()
-
-    elements = session_browser.element('ul').all('.will-appear')
     page.load_body(
         '''
         <ul>Hello to:
@@ -47,8 +45,11 @@ def test_search_is_postponed_until_actual_action_like_questioning_count(
             <li class='will-appear'>Kate</li>
         </ul>'''
     )
+    elements = session_browser.element('ul').all('.will-appear')
 
-    assert len(elements) == 2
+    length = len(elements)
+
+    assert length == 2
 
 
 def test_search_is_updated_on_next_actual_action_like_questioning_count(
@@ -56,8 +57,6 @@ def test_search_is_updated_on_next_actual_action_like_questioning_count(
 ):
     page = GivenPage(session_browser.driver)
     page.opened_empty()
-    elements = session_browser.element('ul').all('.will-appear')
-
     page.load_body(
         '''
         <ul>Hello to:
@@ -65,7 +64,11 @@ def test_search_is_updated_on_next_actual_action_like_questioning_count(
             <li class='will-appear'>Kate</li>
         </ul>'''
     )
-    assert len(elements) == 2
+    elements = session_browser.element('ul').all('.will-appear')
+
+    length = len(elements)
+
+    assert length == 2
 
     page.load_body(
         '''
@@ -76,14 +79,14 @@ def test_search_is_updated_on_next_actual_action_like_questioning_count(
         </ul>'''
     )
 
-    assert len(elements) == 3
+    new_length = len(elements)
+
+    assert new_length == 3
 
 
 def test_searches_exactly_inside_parent(session_browser):
     page = GivenPage(session_browser.driver)
     page.opened_empty()
-
-    elements = session_browser.element('ul').all('.will-appear')
     page.load_body(
         '''
         <ul>Hello to:
@@ -92,5 +95,8 @@ def test_searches_exactly_inside_parent(session_browser):
         </ul>
         <li class='forgotten'>Joe</li>'''
     )
+    elements = session_browser.element('ul').all('.will-appear')
 
-    assert len(elements) == 2
+    length = len(elements)
+
+    assert length == 2
