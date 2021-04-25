@@ -36,13 +36,12 @@ def browser():
     browser.quit()
 
 
-def test_working_with_progress_bars(browser):
-    """Test for page with progress bar that appears after timeout each second time
-    after click on a button.
+def test_progress_bar_disappears_in_time(browser):
+    """Test for page with progress bar that appears each time after click on a button.
 
-    Test should use wait_until in if clause to check if progress bar appeared
-        if yes
-            wait for it to disappear
+    Test should use wait_until for progress bar to disappear
+        if disappeared:
+            pass the test
         else
             fail the test
     """
@@ -57,3 +56,25 @@ def test_working_with_progress_bars(browser):
     disappeared = dialog.wait_until(be.not_.present)
 
     assert disappeared is True
+
+
+def test_progress_bar_does_not_disappear_in_time(browser):
+    """Test for page with progress bar that appears each time after click on a button.
+
+    Test should use wait_until for progress bar to not disappear in timeout
+        if not disappeared:
+            pass the test
+        else
+            fail the test
+    """
+    show_dialog_btn = browser.element('.btn-primary')
+    dialog = browser.element('.modal-backdrop.fade.in')
+    browser.open(
+        'https://www.seleniumeasy.com/test/bootstrap-progress-bar-dialog-demo.html'
+    )
+
+    show_dialog_btn.click()
+    dialog.should(be.visible)
+    disappeared = dialog.with_(Config(timeout=1)).wait_until(be.not_.present)
+
+    assert disappeared is False
