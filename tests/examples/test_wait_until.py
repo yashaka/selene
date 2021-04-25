@@ -19,16 +19,41 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+import pytest
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
+
+from selene import Browser, Config
+from selene.support.conditions import be
 
 
-def x_test_working_with_progress_bars():
-    """
-    implement test for page with progress bar that appears after timeout each second time
-    after click on a button
-    test should use wait_until in if clause to check if progress bar appeared
+@pytest.fixture(scope='function')
+def browser():
+    browser = Browser(
+        Config(driver=webdriver.Chrome(ChromeDriverManager().install()))
+    )
+    yield browser
+    browser.quit()
+
+
+def test_working_with_progress_bars(browser):
+    """Test for page with progress bar that appears after timeout each second time
+    after click on a button.
+
+    Test should use wait_until in if clause to check if progress bar appeared
         if yes
             wait for it to disappear
         else
-            do nothing
-    :return:
+            fail the test
     """
+    show_dialog_btn = browser.element('.btn-primary')
+    dialog = browser.element('.modal-backdrop.fade.in')
+    browser.open(
+        'https://www.seleniumeasy.com/test/bootstrap-progress-bar-dialog-demo.html'
+    )
+
+    show_dialog_btn.click()
+    dialog.should(be.visible)
+    disappeared = dialog.wait_until(be.not_.present)
+
+    assert disappeared is True
