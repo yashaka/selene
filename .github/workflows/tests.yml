@@ -27,9 +27,12 @@ jobs:
           poetry install
 
       # can be packaged as Docker-image
-      - name: Install Chrome & xvfb
+      - name: Install Firefox & Chrome & xvfb
         run: |
-          sudo apt-get install google-chrome-stable xvfb
+          sudo apt-get update
+          sudo apt-get install firefox
+          sudo apt-get install google-chrome-stable
+          sudo apt-get install xvfb
           sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
 
       - name: Test selene with pytest
