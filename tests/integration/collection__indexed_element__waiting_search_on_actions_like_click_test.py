@@ -30,7 +30,8 @@ def test_waits_for_visibility(session_browser):
     page.opened_with_body(
         '''
         <a href="#second" style="display:none">go to Heading 2</a>
-        <h2 id="second">Heading 2</h2>'''
+        <h2 id="second">Heading 2</h2>
+        '''
     ).execute_script_with_timeout(
         'document.getElementsByTagName("a")[0].style = "display:block";', 0.5
     )
@@ -44,16 +45,19 @@ def test_waits_for_present_in_dom_and_visibility(session_browser):
     page = GivenPage(session_browser.driver)
     page.opened_with_body(
         '''
-        <h2 id="second">Heading 2</h2>'''
+        <h2 id="second">Heading 2</h2>
+        '''
     )
     page.load_body_with_timeout(
         '''
         <a href="#second">go to Heading 2</a>
-        <h2 id="second">Heading 2</h2>''',
+        <h2 id="second">Heading 2</h2>
+        ''',
         0.5,
     )
 
     session_browser.all('a')[0].click()
+
     assert "second" in session_browser.driver.current_url
 
 
@@ -61,12 +65,14 @@ def test_waits_first_for_present_in_dom_then_visibility(session_browser):
     page = GivenPage(session_browser.driver)
     page.opened_with_body(
         '''
-        <h2 id="second">Heading 2</h2>'''
+        <h2 id="second">Heading 2</h2>
+        '''
     )
     page.load_body_with_timeout(
         '''
         <a href="#second" style="display:none">go to Heading 2</a>
-        <h2 id="second">Heading 2</h2>''',
+        <h2 id="second">Heading 2</h2>
+        ''',
         0.25,
     ).execute_script_with_timeout(
         'document.getElementsByTagName("a")[0].style = "display:block";', 0.5
@@ -83,7 +89,8 @@ def test_fails_on_timeout_during_waiting_for_visibility(session_browser):
     page.opened_with_body(
         '''
         <a href='#second' style='display:none'>go to Heading 2</a>
-        <h2 id='second'>Heading 2</h2>'''
+        <h2 id='second'>Heading 2</h2>
+        '''
     ).execute_script_with_timeout(
         'document.getElementsByTagName("a")[0].style = "display:block";', 0.5
     )
@@ -101,12 +108,14 @@ def test_fails_on_timeout_during_waits_for_present_in_dom_and_visibility(
     page = GivenPage(browser.driver)
     page.opened_with_body(
         '''
-        <h2 id="second">Heading 2</h2>'''
+        <h2 id="second">Heading 2</h2>
+        '''
     )
     page.load_body_with_timeout(
         '''
         <a href="#second">go to Heading 2</a>
-        <h2 id="second">Heading 2</h2>''',
+        <h2 id="second">Heading 2</h2>
+        ''',
         0.5,
     )
 
@@ -123,12 +132,14 @@ def test_fails_on_timeout_during_waits_first_for_present_in_dom_then_visibility(
     page = GivenPage(browser.driver)
     page.opened_with_body(
         '''
-        <h2 id="second">Heading 2</h2>'''
+        <h2 id="second">Heading 2</h2>
+        '''
     )
     page.load_body_with_timeout(
         '''
         <a href="#second" style="display:none">go to Heading 2</a>
-        <h2 id="second">Heading 2</h2>''',
+        <h2 id="second">Heading 2</h2>
+        ''',
         0.25,
     ).execute_script_with_timeout(
         'document.getElementsByTagName("a")[0].style = "display:block";', 0.5
