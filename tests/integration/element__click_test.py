@@ -33,5 +33,5 @@ def test_click_waits_for_no_overlay(session_browser):
     browser.element('a').click()
 
     time_diff = time.time() - before_call
-    assert (0.25 < time_diff < 0.5)
+    assert 0.25 < time_diff < 0.5
     assert "second" in browser.driver.current_url
