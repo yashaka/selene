@@ -25,7 +25,7 @@ def test_click_waits_for_no_overlay(session_browser):
         '''
         document.getElementById('overlay').style.display=none
         ''',
-        250,
+        0.25,
     )
 
     browser.element('a').click()

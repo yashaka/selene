@@ -38,7 +38,7 @@ def test_waits_for_inner_visibility(session_browser):
         )
         .execute_script_with_timeout(
             'document.getElementsByTagName("a")[0].style = "display:block";',
-            250,
+            0.25,
         )
     )
 
@@ -61,7 +61,7 @@ def test_waits_for_inner_presence_in_dom_and_visibility(session_browser):
             <a href="#second">go to Heading 2</a>
             <h2 id="second">Heading 2</h2>
         </p>''',
-        250,
+        0.25,
     )
 
     session_browser.element('p').element('a').click()
@@ -85,9 +85,9 @@ def test_waits_first_for_inner_presence_in_dom_then_visibility(
             <a href="#second" style="display:none">go to Heading 2</a>
             <h2 id="second">Heading 2</h2>
         </p>''',
-        250,
+        0.25,
     ).execute_script_with_timeout(
-        'document.getElementsByTagName("a")[0].style = "display:block";', 500
+        'document.getElementsByTagName("a")[0].style = "display:block";', 0.5
     )
 
     session_browser.element('p').element('a').click()
@@ -105,7 +105,7 @@ def test_waits_first_for_parent_in_dom_then_inner_in_dom_then_visibility(
         <p>
             <h2 id="second">Heading 2</h2>
         </p>''',
-        250,
+        0.25,
     )
     page.load_body_with_timeout(
         '''
@@ -113,9 +113,9 @@ def test_waits_first_for_parent_in_dom_then_inner_in_dom_then_visibility(
             <a href="#second" style="display:none">go to Heading 2</a>
             <h2 id="second">Heading 2</h2>
         </p>''',
-        500,
+        0.5,
     ).execute_script_with_timeout(
-        'document.getElementsByTagName("a")[0].style = "display:block";', 750
+        'document.getElementsByTagName("a")[0].style = "display:block";', 0.75
     )
 
     session_browser.element('p').element('a').click()
@@ -133,9 +133,9 @@ def test_waits_for__hidden_parent_then_visible_then_inner_hidden_then_visible(
         <p style="display:none">
             <h2 id="second">Heading 2</h2>
         </p>''',
-        250,
+        0.25,
     ).execute_script_with_timeout(
-        'document.getElementsByTagName("p")[0].style = "display:block";', 500
+        'document.getElementsByTagName("p")[0].style = "display:block";', 0.5
     )
     page.load_body_with_timeout(
         '''
@@ -143,9 +143,9 @@ def test_waits_for__hidden_parent_then_visible_then_inner_hidden_then_visible(
             <a href="#second" style="display:none">go to Heading 2</a>
             <h2 id="second">Heading 2</h2>
         </p>''',
-        750,
+        0.75,
     ).execute_script_with_timeout(
-        'document.getElementsByTagName("a")[0].style = "display:block";', 1000
+        'document.getElementsByTagName("a")[0].style = "display:block";', 1
     )
 
     session_browser.element('p').element('a').click()
@@ -163,7 +163,7 @@ def test_fails_on_timeout_during_waiting_for_inner_visibility(session_browser):
             <h2 id='second'>Heading 2</h2>
         </p>'''
     ).execute_script_with_timeout(
-        'document.getElementsByTagName("a")[0].style = "display:block";', 500
+        'document.getElementsByTagName("a")[0].style = "display:block";', 0.5
     )
 
     with pytest.raises(TimeoutException):
@@ -189,7 +189,7 @@ def test_fails_on_timeout_during_waiting_for_inner_in_dom_and_visibility(
             <a href="#second">go to Heading 2</a>
             <h2 id="second">Heading 2</h2>
         </p>''',
-        250,
+        0.25,
     )
 
     with pytest.raises(TimeoutException):
@@ -215,9 +215,9 @@ def test_fails_on_timeout_during_waiting_first_for_inner_in_dom_then_visibility(
             <a href="#second" style="display:none">go to Heading 2</a>
             <h2 id="second">Heading 2</h2>
         </p>''',
-        250,
+        0.25,
     ).execute_script_with_timeout(
-        'document.getElementsByTagName("a")[0].style = "display:block";', 500
+        'document.getElementsByTagName("a")[0].style = "display:block";', 0.5
     )
 
     with pytest.raises(TimeoutException):
@@ -237,7 +237,7 @@ def test_fails_on_timeout_when_waiting_parent_in_dom_then_inner_in_dom_then_visi
         <p>
             <h2 id="second">Heading 2</h2>
         </p>''',
-        250,
+        0.25,
     )
     page.load_body_with_timeout(
         '''
@@ -245,9 +245,9 @@ def test_fails_on_timeout_when_waiting_parent_in_dom_then_inner_in_dom_then_visi
             <a href="#second" style="display:none">go to Heading 2</a>
             <h2 id="second">Heading 2</h2>
         </p>''',
-        500,
+        0.5,
     ).execute_script_with_timeout(
-        'document.getElementsByTagName("a")[0].style = "display:block";', 750
+        'document.getElementsByTagName("a")[0].style = "display:block";', 0.75
     )
 
     with pytest.raises(TimeoutException):
@@ -267,9 +267,9 @@ def test_fails_on_timeout_when_waiting_parent_in_dom_then_visible_then_inner_in_
         <p style="display:none">
             <h2 id="second">Heading 2</h2>
         </p>''',
-        250,
+        0.25,
     ).execute_script_with_timeout(
-        'document.getElementsByTagName("p")[0].style = "display:block";', 500
+        'document.getElementsByTagName("p")[0].style = "display:block";', 0.5
     )
     page.load_body_with_timeout(
         '''
@@ -277,9 +277,9 @@ def test_fails_on_timeout_when_waiting_parent_in_dom_then_visible_then_inner_in_
             <a href="#second" style="display:none">go to Heading 2</a>
             <h2 id="second">Heading 2</h2>
         </p>''',
-        750,
+        0.75,
     ).execute_script_with_timeout(
-        'document.getElementsByTagName("a")[0].style = "display:block";', 1000
+        'document.getElementsByTagName("a")[0].style = "display:block";', 1
     )
 
     with pytest.raises(TimeoutException):

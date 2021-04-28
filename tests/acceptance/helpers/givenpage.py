@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 import os
+from tests.helpers import convert_sec_to_ms
 
 EMPTY_PAGE_URL = (
     'file://'
@@ -48,7 +49,7 @@ class LoadedHtmlPage:
             'setTimeout(function() { document.getElementsByTagName("body")[0].innerHTML = "'
             + body.replace('\n', ' ').replace('"', '\\"')
             + '";}, '
-            + str(timeout)
+            + str(convert_sec_to_ms(timeout))
             + ');'
         )
         return self
@@ -62,7 +63,7 @@ class LoadedHtmlPage:
             "setTimeout(function() { "
             + script.replace("\n", " ")
             + " }, "
-            + str(timeout)
+            + str(convert_sec_to_ms(timeout))
             + ");"
         )
         return self
