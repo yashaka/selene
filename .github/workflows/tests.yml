@@ -40,10 +40,9 @@ jobs:
 
       # can be improved by flags/options
       - name: Code Coverage
-        uses: codecov/codecov-action@v1.1.1
+        uses: codecov/codecov-action@v1.4.1
         with:
           file: ./coverage.xml # optional
-          flags: unittests # optional
           name: selene-codecov # optional
           fail_ci_if_error: true # optional (default = false)
           verbose: true
