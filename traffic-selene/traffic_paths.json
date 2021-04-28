@@ -2,8 +2,8 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 451,
-    "uniques": 196
+    "count": 450,
+    "uniques": 197
   },
   {
     "path": "/yashaka/selene/issues",
@@ -14,49 +14,49 @@
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 164,
+    "count": 147,
     "uniques": 14
-  },
-  {
-    "path": "/yashaka/selene/pull/317",
-    "title": "issue #312 refactor timeouts in givenpage.py by Vikilib · Pull Request #317 ·...",
-    "count": 57,
-    "uniques": 7
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 49,
+    "count": 47,
     "uniques": 17
+  },
+  {
+    "path": "/yashaka/selene/pull/317",
+    "title": "issue #312 refactor timeouts in givenpage.py by Vikilib · Pull Request #317 ·...",
+    "count": 47,
+    "uniques": 7
   },
   {
     "path": "/yashaka/selene/issues/313",
     "title": "improve tests structure (visibility and clearness of arrange/act/assert block...",
-    "count": 48,
+    "count": 45,
     "uniques": 9
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene",
-    "count": 37,
-    "uniques": 12
+    "count": 39,
+    "uniques": 13
   },
   {
     "path": "/yashaka/selene/tree/master/tests/integration",
     "title": "selene/tests/integration at master · yashaka/selene",
-    "count": 29,
+    "count": 30,
     "uniques": 9
   },
   {
     "path": "/yashaka/selene/issues/128",
     "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 23,
-    "uniques": 23
+    "count": 21,
+    "uniques": 21
   },
   {
-    "path": "/yashaka/selene/pull/318",
-    "title": "update webdriver-manager to latest version #299 by EmadDeve20 · Pull Request ...",
-    "count": 23,
-    "uniques": 5
+    "path": "/yashaka/selene/tree/master/selene/support",
+    "title": "selene/selene/support at master · yashaka/selene · GitHub",
+    "count": 21,
+    "uniques": 6
   }
 ]
