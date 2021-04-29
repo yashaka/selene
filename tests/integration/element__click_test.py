@@ -7,8 +7,8 @@ def test_click_waits_for_no_overlay(session_browser):
     page = GivenPage(browser.driver)
     page.opened_with_body(
         '''
-        <div 
-            id="overlay" 
+        <div
+            id="overlay"
             style=
             '
                 display:block;
