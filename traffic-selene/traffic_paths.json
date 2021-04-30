@@ -2,61 +2,61 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 426,
-    "uniques": 186
-  },
-  {
-    "path": "/yashaka/selene/issues",
-    "title": "Issues · yashaka/selene · GitHub",
-    "count": 174,
-    "uniques": 23
+    "count": 454,
+    "uniques": 201
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 146,
-    "uniques": 15
-  },
-  {
-    "path": "/yashaka/selene/pull/317",
-    "title": "issue #312 refactor timeouts in givenpage.py by Vikilib · Pull Request #317 ·...",
-    "count": 48,
-    "uniques": 7
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene",
-    "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 44,
+    "count": 209,
     "uniques": 16
+  },
+  {
+    "path": "/yashaka/selene/issues",
+    "title": "Issues · yashaka/selene · GitHub",
+    "count": 195,
+    "uniques": 24
   },
   {
     "path": "/yashaka/selene/issues/313",
     "title": "improve tests structure (visibility and clearness of arrange/act/assert block...",
-    "count": 44,
-    "uniques": 9
+    "count": 53,
+    "uniques": 10
+  },
+  {
+    "path": "/yashaka/selene/pull/317",
+    "title": "issue #312 refactor timeouts in givenpage.py by Vikilib · Pull Request #317 ·...",
+    "count": 47,
+    "uniques": 6
+  },
+  {
+    "path": "/yashaka/selene/tree/master/selene",
+    "title": "selene/selene at master · yashaka/selene · GitHub",
+    "count": 42,
+    "uniques": 14
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene",
-    "count": 39,
+    "count": 41,
     "uniques": 13
   },
   {
     "path": "/yashaka/selene/tree/master/tests/integration",
     "title": "selene/tests/integration at master · yashaka/selene",
-    "count": 30,
-    "uniques": 9
-  },
-  {
-    "path": "/yashaka/selene/pull/329",
-    "title": "realise x_test_working_with_progress_bars by aleksandr-kotlyar · Pull Request...",
-    "count": 25,
-    "uniques": 5
+    "count": 34,
+    "uniques": 10
   },
   {
     "path": "/yashaka/selene/issues/128",
     "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 24,
-    "uniques": 23
+    "count": 28,
+    "uniques": 25
+  },
+  {
+    "path": "/yashaka/selene/pull/329",
+    "title": "realise x_test_working_with_progress_bars by aleksandr-kotlyar · Pull Request...",
+    "count": 27,
+    "uniques": 7
   }
 ]
