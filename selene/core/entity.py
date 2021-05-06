@@ -28,8 +28,10 @@ import warnings
 from abc import abstractmethod, ABC
 from typing import TypeVar, Union, List, Dict, Any, Callable
 
-from selenium.common.exceptions import ElementNotInteractableException, \
-    ElementNotVisibleException
+from selenium.common.exceptions import(
+    ElementNotInteractableException,
+    ElementNotVisibleException,
+)
 from selenium.webdriver import ActionChains
 from selenium.webdriver.android.webdriver import WebDriver
 from selenium.webdriver.common.by import By
@@ -297,7 +299,7 @@ class Element(WaitingEntity):
                 return document.elementFromPoint(arguments[0], arguments[1]);
                 ''',
                 element_position_x,
-                element_position_y
+                element_position_y,
             )
 
             if element == element_from_point:

@@ -90,9 +90,10 @@ def test_type_failure_when_overlapped(session_browser):
         time_spent = time.time() - time_before
         assert time_spent > 0.5
         browser.element('#text-field').should(have.value('before'))
-        assert\
-            'Element <input id="text-field" value="before"> is overlapped by' \
+        assert(
+            'Element <input id="text-field" value="before"> is overlapped by'
             ' <div id="overlay"' in error.msg
+        )
 
 
 def test_type_waits_for_visibility(session_browser):
@@ -147,9 +148,10 @@ def test_type_failure_when_invisible(session_browser):
         time_spent = time.time() - time_before
         assert time_spent > 0.5
         browser.element('#text-field').should(have.value('before'))
-        assert \
-            'Element <input id="text-field" value="before" ' \
+        assert(
+            'Element <input id="text-field" value="before" '
             'style="display: none"> is not visible' in error.msg
+        )
 
 
 def test_type_when_initially_absent(session_browser):
