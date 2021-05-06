@@ -273,29 +273,31 @@ class Element(WaitingEntity):
     def actual_not_overlapped_element(self):
         element = self()
 
-        element_html = re.sub(
-                '\\s+',
-                ' ',
-                element.get_attribute('outerHTML')
-            )
+        element_html = re.sub('\\s+', ' ', element.get_attribute('outerHTML'))
 
         def maybe_cover():
             if not element.is_displayed():
                 raise ElementNotVisibleException(
-                    f'Element {element_html} is not visible')
+                    f'Element {element_html} is not visible'
+                )
 
             window_position = self.config.driver.get_window_position()
-            element_position_x = int(element.location['x']
-                                     + window_position['x']
-                                     + element.size['width'] / 2)
-            element_position_y = int(element.location['y']
-                                     + window_position['y']
-                                     + element.size['height'] / 2)
+            element_position_x = int(
+                element.location['x']
+                + window_position['x']
+                + element.size['width'] / 2
+            )
+            element_position_y = int(
+                element.location['y']
+                + window_position['y']
+                + element.size['height'] / 2
+            )
             element_from_point: WebElement = self.config.driver.execute_script(
                 '''
                 return document.elementFromPoint(arguments[0], arguments[1]);
                 ''',
-                element_position_x, element_position_y
+                element_position_x,
+                element_position_y
             )
 
             if element == element_from_point:
@@ -305,9 +307,7 @@ class Element(WaitingEntity):
 
         if maybe_cover() is not None:
             cover_html = re.sub(
-                '\\s+',
-                ' ',
-                maybe_cover().get_attribute('outerHTML')
+                '\\s+', ' ', maybe_cover().get_attribute('outerHTML')
             )
             raise ElementNotInteractableException(
                 f'Element {element_html} is overlapped by {cover_html}'
