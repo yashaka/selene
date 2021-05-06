@@ -22,11 +22,14 @@
 
 from __future__ import annotations
 
+import re
 import warnings
 
 from abc import abstractmethod, ABC
 from typing import TypeVar, Union, List, Dict, Any, Callable
 
+from selenium.common.exceptions import ElementNotInteractableException, \
+    ElementNotVisibleException
 from selenium.webdriver import ActionChains
 from selenium.webdriver.android.webdriver import WebDriver
 from selenium.webdriver.common.by import By
@@ -267,11 +270,58 @@ class Element(WaitingEntity):
         #       also it will make sense to make this behaviour configurable...
         return self
 
+    def actual_not_overlapped_element(self):
+        element = self()
+
+        element_html = re.sub(
+                '\\s+',
+                ' ',
+                element.get_attribute('outerHTML')
+            )
+
+        def maybe_cover():
+            if not element.is_displayed():
+                raise ElementNotVisibleException(
+                    f'Element {element_html} is not visible')
+
+            window_position = self.config.driver.get_window_position()
+            element_position_x = int(element.location['x']
+                                     + window_position['x']
+                                     + element.size['width'] / 2)
+            element_position_y = int(element.location['y']
+                                     + window_position['y']
+                                     + element.size['height'] / 2)
+            element_from_point: WebElement = self.config.driver.execute_script(
+                '''
+                return document.elementFromPoint(arguments[0], arguments[1]);
+                ''',
+                element_position_x, element_position_y
+            )
+
+            if element == element_from_point:
+                return None
+            else:
+                return element_from_point
+
+        if maybe_cover() is not None:
+            cover_html = re.sub(
+                '\\s+',
+                ' ',
+                maybe_cover().get_attribute('outerHTML')
+            )
+            raise ElementNotInteractableException(
+                f'Element {element_html} is overlapped by {cover_html}'
+            )
+
+        return element
+
     def type(self, text: Union[str, int]) -> Element:
-        # todo: do we need a separate send_keys method?
         def fn(element: Element):
-            webelement = element()
-            webelement.send_keys(str(text))
+            if self.config.wait_for_no_overlay_by_js:
+                element = element.actual_not_overlapped_element()
+            else:
+                element = element()
+            element.send_keys(str(text))
 
         from selene.core import command
 
