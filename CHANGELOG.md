@@ -94,19 +94,19 @@ Contributors release.
 
 ## 2.0.0a35 (released on 27.03.2021)
 - added command.js.click
-- if you set driver for shared.browser manually via `browser.config.driver = ...`
+- if you set driver for `shared.browser` manually via `browser.config.driver = ...`
   now it will automatically close previous driver, if it is alive
 - in selene 1.0 if you could do mixed driver management, 
   like: use automatic driver, then manual, then automatic...
   in selene 2.0 this behaviour was broken, and this version fixes this;)
-- deprecated shared.config.quit_driver; use shared.config.reset_driver instead
+- deprecated `shared.config.quit_driver`; use `shared.config.reset_driver` instead
   - actually, you don't need this method,
-    in most cases you just need shared.browser.quit() – use it if you don't know what you do;)
+    in most cases you just need `shared.browser.quit()` – use it if you don't know what you do;)
 - fixed `browser.switch_to_tab(index_or_name)` when arg is of `int` type    
     
 ## 2.0.0a34 (released on 22.12.2020)
 - fixed [#231](https://github.com/yashaka/selene/issues/225): Need additional option to turn off logging outerHTML
-  - added support.shared.config.log_outer_html_on_failure (`False` by default)
+  - added `support.shared.config.log_outer_html_on_failure` (`False` by default)
 
 ## 2.0.0a33 (released on 10.09.2020)
 - fixed [#225](https://github.com/yashaka/selene/issues/225): Failed to get last_screenshot from shared browser if element with custom config failed
@@ -119,10 +119,10 @@ Contributors release.
   - latest PyCharm 2020.2 revealed the hidden issue with typing
 
 ## 2.0.0a30 (released on 30.07.2020)
-- fixed selene.support.shared.browser.with_
+- fixed `selene.support.shared.browser.with_`
   - to return sharedbrowser instance instead of browser instance
-- made browser.config.hold_browser_open to influence browser quit logic 
-  - even if set after calling browser.open or resetting browser.config.driver
+- made `browser.config.hold_browser_open` to influence browser quit logic 
+  - even if set after calling `browser.open` or resetting `browser.config.driver`
 
 ## 2.0.0a29 (released on 30.07.2020)
 - fixed shared browser automatic quit on process exit
