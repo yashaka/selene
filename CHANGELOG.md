@@ -77,8 +77,11 @@
 - repeat fix of #225 to other options in shared config, refactor it... 
   - should we make original config (not shared) mutable?
 
+## 2.0.0a38 (released on 05.05.2021)
+- Upgrade [webdriver-manager](https://github.com/SergeyPirogov/webdriver_manager) 3.3.0 -> 3.4.1 ([see changes](https://github.com/SergeyPirogov/webdriver_manager/compare/v3.3.0...v.3.4.1))
+
 ## 2.0.0a37 (released on 24.04.2021)
-- Update webdriver-manager to version 3.3.0 [#299](https://github.com/yashaka/selene/issues/299)
+- Upgrade [webdriver-manager](https://github.com/SergeyPirogov/webdriver_manager) 2.3.0 -> 3.3.0 [#299](https://github.com/yashaka/selene/issues/299)
 - New release and publish process of selene [#246](https://github.com/yashaka/selene/issues/246#issuecomment-825897200)
 
 ## 2.0.0a36 (released on 30.03.2021)
