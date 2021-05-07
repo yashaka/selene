@@ -30,7 +30,7 @@ from typing import TypeVar, Union, List, Dict, Any, Callable
 
 from selenium.common.exceptions import (
     ElementNotVisibleException,
-    ElementNotInteractableException
+    ElementNotInteractableException,
 )
 from selenium.webdriver import ActionChains
 from selenium.webdriver.android.webdriver import WebDriver
@@ -275,14 +275,13 @@ class Element(WaitingEntity):
     def actual_not_overlapped_element(self):
         element = self()
 
-        element_html = re.sub(
-            '\\s+', ' ', element.get_attribute('outerHTML')
-        )
+        element_html = re.sub('\\s+', ' ', element.get_attribute('outerHTML'))
 
         def maybe_cover():
             if not element.is_displayed():
                 raise ElementNotVisibleException(
-                    f'Element {element_html} is not visible')
+                    f'Element {element_html} is not visible'
+                )
 
             window_position = self.config.driver.get_window_position()
             element_position_x = int(
