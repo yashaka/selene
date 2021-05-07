@@ -1,22 +1,22 @@
 [
   {
     "referrer": "github.com",
-    "count": 155,
-    "uniques": 45
+    "count": 183,
+    "uniques": 47
   },
   {
     "referrer": "Google",
-    "count": 143,
-    "uniques": 100
+    "count": 154,
+    "uniques": 109
   },
   {
     "referrer": "ecosia.org",
-    "count": 103,
-    "uniques": 57
+    "count": 109,
+    "uniques": 63
   },
   {
     "referrer": "pypi.org",
-    "count": 29,
+    "count": 30,
     "uniques": 10
   },
   {
@@ -25,13 +25,13 @@
     "uniques": 5
   },
   {
-    "referrer": "selene-docs-test.readthedocs.io",
+    "referrer": "qiita.com",
     "count": 7,
-    "uniques": 3
+    "uniques": 4
   },
   {
-    "referrer": "qiita.com",
-    "count": 5,
+    "referrer": "selene-docs-test.readthedocs.io",
+    "count": 7,
     "uniques": 3
   },
   {
@@ -45,8 +45,8 @@
     "uniques": 4
   },
   {
-    "referrer": "Bing",
+    "referrer": "com.google.android.gm",
     "count": 4,
-    "uniques": 2
+    "uniques": 3
   }
 ]
