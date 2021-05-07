@@ -43,7 +43,7 @@ jobs:
 
       # can be improved by flags/options
       - name: Code Coverage
-        uses: codecov/codecov-action@v1.5.0
+        uses: codecov/codecov-action@v1
         with:
           file: ./coverage.xml # optional
           name: selene-codecov # optional
