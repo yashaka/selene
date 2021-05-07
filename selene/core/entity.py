@@ -139,7 +139,7 @@ class WaitingEntity(Matchable, Configured):
 class Element(WaitingEntity):
     @staticmethod
     def _log_webelement_outer_html_for(
-            element: Element,
+        element: Element,
     ) -> Callable[[TimeoutException], Exception]:
         def log_webelement_outer_html(error: TimeoutException) -> Exception:
             from selene.core import query
@@ -417,7 +417,7 @@ class Element(WaitingEntity):
     # we need this method here in order to make autocompletion work...
     # unfortunately the "base class" version is not enough
     def should(
-            self, condition: Condition[Element], timeout: int = None
+        self, condition: Condition[Element], timeout: int = None
     ) -> Element:
         if timeout:
             warnings.warn(
@@ -526,7 +526,7 @@ class Element(WaitingEntity):
         return self.should(condition, timeout)
 
     def should_have(
-            self, condition: ElementCondition, timeout=None
+        self, condition: ElementCondition, timeout=None
     ) -> Element:
         warnings.warn(
             "deprecated; use `should` method with `have.*` style conditions instead: "
@@ -554,7 +554,7 @@ class Element(WaitingEntity):
         return self.should(not_(condition), timeout)
 
     def should_not_be(
-            self, condition: ElementCondition, timeout=None
+        self, condition: ElementCondition, timeout=None
     ) -> Element:
         warnings.warn(
             "deprecated; use `should` method with `be.not_.*` or `have.no.*` style conditions instead: "
@@ -565,7 +565,7 @@ class Element(WaitingEntity):
         return self.should(not_(condition), timeout)
 
     def should_not_have(
-            self, condition: ElementCondition, timeout=None
+        self, condition: ElementCondition, timeout=None
     ) -> Element:
         warnings.warn(
             "deprecated; use `should` method with `be.not_.*` or `have.no.*` style conditions instead: "
@@ -889,7 +889,7 @@ class Collection(WaitingEntity):
         )
 
     def __getitem__(
-            self, index_or_slice: Union[int, slice]
+        self, index_or_slice: Union[int, slice]
     ) -> Union[Element, Collection]:
         if isinstance(index_or_slice, slice):
             return self.sliced(
@@ -905,7 +905,7 @@ class Collection(WaitingEntity):
         return self[:stop]
 
     def filtered_by(
-            self, condition: Union[Condition[Element], Callable[[E], None]]
+        self, condition: Union[Condition[Element], Callable[[E], None]]
     ) -> Collection:
         condition = (
             condition
@@ -926,10 +926,9 @@ class Collection(WaitingEntity):
         )
 
     def filtered_by_their(
-            self,
-            selector_or_callable: Union[
-                str, tuple, Callable[[Element], Element]],
-            condition: Condition[Element],
+        self,
+        selector_or_callable: Union[str, tuple, Callable[[Element], Element]],
+        condition: Condition[Element],
     ) -> Collection:
         """
         :param selector_or_callable:
@@ -992,7 +991,7 @@ class Collection(WaitingEntity):
         return self.filtered_by(lambda it: condition(find_in(it)))
 
     def element_by(
-            self, condition: Union[Condition[Element], Callable[[E], None]]
+        self, condition: Union[Condition[Element], Callable[[E], None]]
     ) -> Element:
         # todo: In the implementation below...
         #       We use condition in context of "matching", i.e. as a predicate...
@@ -1052,10 +1051,9 @@ class Collection(WaitingEntity):
         )
 
     def element_by_its(
-            self,
-            selector_or_callable: Union[
-                str, tuple, Callable[[Element], Element]],
-            condition: Condition[Element],
+        self,
+        selector_or_callable: Union[str, tuple, Callable[[Element], Element]],
+        condition: Condition[Element],
     ) -> Element:
         """
         :param selector_or_callable:
@@ -1183,7 +1181,7 @@ class Collection(WaitingEntity):
         )
 
     def collected(
-            self, finder: Callable[[Element], Union[Element, Collection]]
+        self, finder: Callable[[Element], Union[Element, Collection]]
     ) -> Collection:
         # todo: consider adding predefined queries to be able to write
         #         collected(query.element(selector))
@@ -1210,9 +1208,9 @@ class Collection(WaitingEntity):
     # --- Assertable --- #
 
     def should(
-            self,
-            condition: Union[Condition[Collection], Condition[Element]],
-            timeout: int = None,
+        self,
+        condition: Union[Condition[Collection], Condition[Element]],
+        timeout: int = None,
     ) -> Collection:
         if isinstance(condition, ElementCondition):
             # todo: consider deprecating... makes everything too complicated...
@@ -1283,7 +1281,7 @@ class Collection(WaitingEntity):
         return len(self)
 
     def should_each(
-            self, condition: ElementCondition, timeout=None
+        self, condition: ElementCondition, timeout=None
     ) -> Collection:
         warnings.warn(
             "deprecated; use `should` method instead: browser.all('.foo').should(have.css_class('bar'))",
@@ -1292,9 +1290,9 @@ class Collection(WaitingEntity):
         return self.should(condition, timeout)
 
     def assure(
-            self,
-            condition: Union[CollectionCondition, ElementCondition],
-            timeout=None,
+        self,
+        condition: Union[CollectionCondition, ElementCondition],
+        timeout=None,
     ) -> Collection:
         warnings.warn(
             "deprecated; use `should` method instead: browser.all('.foo').should(have.size(0))",
@@ -1303,9 +1301,9 @@ class Collection(WaitingEntity):
         return self.should(condition, timeout)
 
     def should_be(
-            self,
-            condition: Union[CollectionCondition, ElementCondition],
-            timeout=None,
+        self,
+        condition: Union[CollectionCondition, ElementCondition],
+        timeout=None,
     ) -> Collection:
         warnings.warn(
             "deprecated; use `should` method with `be.*` style conditions instead: "
@@ -1315,9 +1313,9 @@ class Collection(WaitingEntity):
         return self.should(condition, timeout)
 
     def should_have(
-            self,
-            condition: Union[CollectionCondition, ElementCondition],
-            timeout=None,
+        self,
+        condition: Union[CollectionCondition, ElementCondition],
+        timeout=None,
     ) -> Collection:
         warnings.warn(
             "deprecated; use `should` method with `have.*` style conditions instead: "
@@ -1327,9 +1325,9 @@ class Collection(WaitingEntity):
         return self.should(condition, timeout)
 
     def should_not(
-            self,
-            condition: Union[CollectionCondition, ElementCondition],
-            timeout=None,
+        self,
+        condition: Union[CollectionCondition, ElementCondition],
+        timeout=None,
     ) -> Collection:
         warnings.warn(
             "deprecated; use `should` method with `be.not_.*` or `have.no.*` style conditions instead: "
@@ -1340,9 +1338,9 @@ class Collection(WaitingEntity):
         return self.should(not_(condition), timeout)
 
     def assure_not(
-            self,
-            condition: Union[CollectionCondition, ElementCondition],
-            timeout=None,
+        self,
+        condition: Union[CollectionCondition, ElementCondition],
+        timeout=None,
     ) -> Collection:
         warnings.warn(
             "deprecated; use `should` method with `be.not_.*` or `have.no.*` style conditions instead: "
@@ -1353,9 +1351,9 @@ class Collection(WaitingEntity):
         return self.should(not_(condition), timeout)
 
     def should_not_be(
-            self,
-            condition: Union[CollectionCondition, ElementCondition],
-            timeout=None,
+        self,
+        condition: Union[CollectionCondition, ElementCondition],
+        timeout=None,
     ) -> Collection:
         warnings.warn(
             "deprecated; use `should` method with `be.not_.*` or `have.no.*` style conditions instead: "
@@ -1366,9 +1364,9 @@ class Collection(WaitingEntity):
         return self.should(not_(condition), timeout)
 
     def should_not_have(
-            self,
-            condition: Union[CollectionCondition, ElementCondition],
-            timeout=None,
+        self,
+        condition: Union[CollectionCondition, ElementCondition],
+        timeout=None,
     ) -> Collection:
         warnings.warn(
             "deprecated; use `should` method with `be.not_.*` or `have.no.*` style conditions instead: "
@@ -1385,7 +1383,7 @@ class SeleneCollection(Collection):  # todo: consider deprecating this name
 
 class Browser(WaitingEntity):
     def __init__(
-            self, config: Config
+        self, config: Config
     ):  # todo: what about adding **config_as_kwargs?
         super().__init__(config)
 
