@@ -2,8 +2,8 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 440,
-    "uniques": 187
+    "count": 453,
+    "uniques": 192
   },
   {
     "path": "/yashaka/selene/pulls",
@@ -14,32 +14,20 @@
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 177,
-    "uniques": 18
+    "count": 150,
+    "uniques": 16
   },
   {
     "path": "/yashaka/selene/issues/313",
     "title": "improve tests structure (visibility and clearness of arrange/act/assert block...",
-    "count": 48,
-    "uniques": 8
-  },
-  {
-    "path": "/yashaka/selene/tree/master/tests/integration",
-    "title": "selene/tests/integration at master · yashaka/selene · GitHub",
-    "count": 35,
-    "uniques": 9
+    "count": 37,
+    "uniques": 7
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 33,
-    "uniques": 13
-  },
-  {
-    "path": "/yashaka/selene/pull/317",
-    "title": "issue #312 refactor timeouts in givenpage.py by Vikilib · Pull Request #317 ·...",
     "count": 32,
-    "uniques": 6
+    "uniques": 13
   },
   {
     "path": "/yashaka/selene/issues/128",
@@ -48,15 +36,27 @@
     "uniques": 25
   },
   {
+    "path": "/yashaka/selene/tree/master/tests/integration",
+    "title": "selene/tests/integration at master · yashaka/selene · GitHub",
+    "count": 28,
+    "uniques": 8
+  },
+  {
     "path": "/yashaka/selene/pull/329",
     "title": "realise x_test_working_with_progress_bars by aleksandr-kotlyar · Pull Request...",
-    "count": 27,
+    "count": 28,
     "uniques": 7
+  },
+  {
+    "path": "/yashaka/selene/actions",
+    "title": "Actions · yashaka/selene",
+    "count": 28,
+    "uniques": 2
   },
   {
     "path": "/yashaka/selene/blob/master/CONTRIBUTING.md",
     "title": "selene/CONTRIBUTING.md at master · yashaka/selene · GitHub",
-    "count": 27,
+    "count": 26,
     "uniques": 5
   }
 ]
