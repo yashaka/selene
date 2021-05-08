@@ -14,14 +14,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - uses: technote-space/get-diff-action@v4
+      - uses: technote-space/get-diff-action@v4.1.1
         with:
           PATTERNS: |
             +(selene|tests)/**/*.py
           FILES: |
             poetry.lock
-            pytest.ini
-            .github/workflows/tests.yml
+            tests.yml
 
       - name: Set up Python
         uses: actions/setup-python@v2
