@@ -192,23 +192,25 @@ def test_indexed_selement_search_fails_with_message_when_implicitly_waits_for_co
     ]
 
 
-# todo: uncomment when refactored conditions implementation
-# def test_selement_search_fails_with_message_when_explicitly_waits_for_not_condition():
-#     GIVEN_PAGE.opened_with_body('''
-#     <label id='element'>Hello world!</label>
-#     ''')
-#     config.timeout = 0.1
-#
-#     s('#element').should_not(have.exact_text('Hello world!'))
-#     with pytest.raises(TimeoutException) as ex:
-#         s('#element').should_not(have.exact_text('Hello world!'))
-#
-#     assert exception_message(ex) == \
-#            ['failed while waiting 0.1 seconds',
-#             'to assert not ExactText',
-#             "for first_by('css selector', '#element')",
-#             '',
-#             'reason: ConditionMismatchException: condition did not match',
-#             'expected: not(Hello world!)',
-#             'actual: Hello world!',
-#             'screenshot: //.selene/screenshots/*/screen_*.png']
+def test_element_search_fails_with_message_when_explicitly_waits_for_not_condition(
+    session_browser,
+):
+    browser = session_browser.with_(timeout=0.1)
+    page = GivenPage(browser.driver)
+    page.opened_with_body(
+        '''
+        <label id='element'>Hello world!</label>
+        '''
+    )
+
+    with pytest.raises(TimeoutException) as ex:
+        browser.element('#element').should(
+            have._not_.exact_text('Hello world!')
+        )
+
+    assert exception_message(ex) == [
+        'Timed out after 0.1s, while waiting for:',
+        "browser.element(('css selector', '#element')).has no exact text Hello world!",
+        '',
+        'Reason: ConditionNotMatchedError: condition not matched',
+    ]
