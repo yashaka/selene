@@ -2,8 +2,8 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 453,
-    "uniques": 180
+    "count": 441,
+    "uniques": 177
   },
   {
     "path": "/yashaka/selene/pulls",
@@ -14,7 +14,7 @@
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 96,
+    "count": 85,
     "uniques": 14
   },
   {
@@ -24,33 +24,27 @@
     "uniques": 4
   },
   {
-    "path": "/yashaka/selene/issues/128",
-    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 30,
-    "uniques": 26
-  },
-  {
     "path": "/yashaka/selene/actions",
     "title": "Actions · yashaka/selene",
-    "count": 28,
+    "count": 35,
     "uniques": 4
   },
   {
-    "path": "/yashaka/selene/blob/master/CONTRIBUTING.md",
-    "title": "selene/CONTRIBUTING.md at master · yashaka/selene · GitHub",
-    "count": 25,
-    "uniques": 5
-  },
-  {
-    "path": "/yashaka/selene/issues/313",
-    "title": "improve tests structure (visibility and clearness of arrange/act/assert block...",
-    "count": 24,
-    "uniques": 3
+    "path": "/yashaka/selene/issues/128",
+    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
+    "count": 33,
+    "uniques": 29
   },
   {
     "path": "/yashaka/selene/pull/343",
     "title": "upgrade codecov action 1.4.1 -> 1.5.0 by aleksandr-kotlyar · Pull Request #34...",
-    "count": 24,
+    "count": 26,
+    "uniques": 2
+  },
+  {
+    "path": "/yashaka/selene/issues/313",
+    "title": "improve tests structure (visibility and clearness of arrange/act/assert block...",
+    "count": 23,
     "uniques": 2
   },
   {
@@ -58,5 +52,11 @@
     "title": "selene/selene at master · yashaka/selene · GitHub",
     "count": 21,
     "uniques": 10
+  },
+  {
+    "path": "/yashaka/selene/blob/master/CONTRIBUTING.md",
+    "title": "selene/CONTRIBUTING.md at master · yashaka/selene · GitHub",
+    "count": 21,
+    "uniques": 5
   }
 ]
