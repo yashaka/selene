@@ -1,13 +1,13 @@
 [
   {
     "referrer": "github.com",
-    "count": 171,
-    "uniques": 39
+    "count": 164,
+    "uniques": 40
   },
   {
     "referrer": "Google",
-    "count": 142,
-    "uniques": 102
+    "count": 134,
+    "uniques": 96
   },
   {
     "referrer": "ecosia.org",
@@ -16,13 +16,13 @@
   },
   {
     "referrer": "pypi.org",
-    "count": 29,
-    "uniques": 10
+    "count": 20,
+    "uniques": 7
   },
   {
     "referrer": "DuckDuckGo",
     "count": 17,
-    "uniques": 6
+    "uniques": 5
   },
   {
     "referrer": "qiita.com",
@@ -35,11 +35,6 @@
     "uniques": 2
   },
   {
-    "referrer": "Bing",
-    "count": 4,
-    "uniques": 2
-  },
-  {
     "referrer": "softwarerecs.stackexchange.com",
     "count": 3,
     "uniques": 2
@@ -48,5 +43,10 @@
     "referrer": "selene-docs-test.readthedocs.io",
     "count": 3,
     "uniques": 1
+  },
+  {
+    "referrer": "yandex.ru",
+    "count": 2,
+    "uniques": 2
   }
 ]
