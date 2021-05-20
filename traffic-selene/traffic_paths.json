@@ -2,32 +2,32 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 386,
-    "uniques": 164
-  },
-  {
-    "path": "/yashaka/selene/pulls",
-    "title": "Pull requests · yashaka/selene",
-    "count": 82,
-    "uniques": 15
-  },
-  {
-    "path": "/yashaka/selene/releases",
-    "title": "Releases · yashaka/selene · GitHub",
-    "count": 67,
-    "uniques": 8
+    "count": 375,
+    "uniques": 162
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 62,
-    "uniques": 14
+    "count": 60,
+    "uniques": 16
+  },
+  {
+    "path": "/yashaka/selene/pulls",
+    "title": "Pull requests · yashaka/selene · GitHub",
+    "count": 60,
+    "uniques": 16
+  },
+  {
+    "path": "/yashaka/selene/releases",
+    "title": "Releases · yashaka/selene · GitHub",
+    "count": 60,
+    "uniques": 8
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 30,
-    "uniques": 17
+    "count": 36,
+    "uniques": 20
   },
   {
     "path": "/yashaka/selene/issues/128",
@@ -36,16 +36,10 @@
     "uniques": 25
   },
   {
-    "path": "/yashaka/selene/search",
-    "title": "Search · _start_driver",
-    "count": 28,
-    "uniques": 3
-  },
-  {
-    "path": "/yashaka/selene/actions",
-    "title": "Actions · yashaka/selene",
+    "path": "/yashaka/selene/commits/master",
+    "title": "Commits · yashaka/selene · GitHub",
     "count": 26,
-    "uniques": 4
+    "uniques": 14
   },
   {
     "path": "/yashaka/selene/pull/343",
@@ -54,9 +48,15 @@
     "uniques": 2
   },
   {
-    "path": "/yashaka/selene/tree/master/tests",
-    "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 16,
-    "uniques": 9
+    "path": "/yashaka/selene/actions",
+    "title": "Actions · yashaka/selene",
+    "count": 23,
+    "uniques": 4
+  },
+  {
+    "path": "/yashaka/selene/search",
+    "title": "Search · pytest_addoption",
+    "count": 22,
+    "uniques": 3
   }
 ]
