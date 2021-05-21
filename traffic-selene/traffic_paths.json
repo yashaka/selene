@@ -2,38 +2,38 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 375,
-    "uniques": 162
+    "count": 320,
+    "uniques": 160
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 60,
-    "uniques": 16
+    "count": 54,
+    "uniques": 17
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 60,
-    "uniques": 16
-  },
-  {
-    "path": "/yashaka/selene/releases",
-    "title": "Releases · yashaka/selene · GitHub",
-    "count": 60,
-    "uniques": 8
+    "count": 46,
+    "uniques": 14
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
     "count": 36,
-    "uniques": 20
+    "uniques": 19
+  },
+  {
+    "path": "/yashaka/selene/releases",
+    "title": "Releases · yashaka/selene · GitHub",
+    "count": 32,
+    "uniques": 7
   },
   {
     "path": "/yashaka/selene/issues/128",
     "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 29,
-    "uniques": 25
+    "count": 30,
+    "uniques": 26
   },
   {
     "path": "/yashaka/selene/commits/master",
@@ -42,21 +42,21 @@
     "uniques": 14
   },
   {
-    "path": "/yashaka/selene/pull/343",
-    "title": "upgrade codecov action 1.4.1 -> 1.5.0 by aleksandr-kotlyar · Pull Request #34...",
-    "count": 26,
-    "uniques": 2
+    "path": "/yashaka/selene/tree/master/tests",
+    "title": "selene/tests at master · yashaka/selene · GitHub",
+    "count": 15,
+    "uniques": 8
   },
   {
-    "path": "/yashaka/selene/actions",
-    "title": "Actions · yashaka/selene",
-    "count": 23,
+    "path": "/yashaka/selene/pull/346",
+    "title": "resurrect test_selement_search_fails_with_message_when_explicitly_waits_for_n...",
+    "count": 14,
     "uniques": 4
   },
   {
-    "path": "/yashaka/selene/search",
-    "title": "Search · pytest_addoption",
-    "count": 22,
-    "uniques": 3
+    "path": "/yashaka/selene/tree/master/selene/core",
+    "title": "selene/selene/core at master · yashaka/selene · GitHub",
+    "count": 12,
+    "uniques": 9
   }
 ]
