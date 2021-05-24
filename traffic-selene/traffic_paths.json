@@ -2,38 +2,20 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 320,
-    "uniques": 159
-  },
-  {
-    "path": "/yashaka/selene/pulls",
-    "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 38,
-    "uniques": 14
+    "count": 306,
+    "uniques": 155
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 37,
-    "uniques": 18
+    "count": 36,
+    "uniques": 17
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 35,
-    "uniques": 16
-  },
-  {
-    "path": "/yashaka/selene/issues/128",
-    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 27,
-    "uniques": 23
-  },
-  {
-    "path": "/yashaka/selene/releases",
-    "title": "Releases · yashaka/selene · GitHub",
-    "count": 27,
-    "uniques": 5
+    "count": 32,
+    "uniques": 14
   },
   {
     "path": "/yashaka/selene/commits/master",
@@ -42,10 +24,22 @@
     "uniques": 14
   },
   {
+    "path": "/yashaka/selene/issues/128",
+    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
+    "count": 22,
+    "uniques": 19
+  },
+  {
+    "path": "/yashaka/selene/pulls",
+    "title": "Pull requests · yashaka/selene · GitHub",
+    "count": 22,
+    "uniques": 13
+  },
+  {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 18,
-    "uniques": 9
+    "count": 16,
+    "uniques": 8
   },
   {
     "path": "/yashaka/selene/blob/master/selene/browser.py",
@@ -56,7 +50,13 @@
   {
     "path": "/yashaka/selene/tree/master/selene/core",
     "title": "selene/selene/core at master · yashaka/selene · GitHub",
+    "count": 14,
+    "uniques": 10
+  },
+  {
+    "path": "/yashaka/selene/releases",
+    "title": "Releases · yashaka/selene · GitHub",
     "count": 13,
-    "uniques": 9
+    "uniques": 5
   }
 ]
