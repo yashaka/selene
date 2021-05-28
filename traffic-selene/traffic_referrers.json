@@ -1,18 +1,18 @@
 [
   {
     "referrer": "Google",
-    "count": 177,
-    "uniques": 106
+    "count": 168,
+    "uniques": 101
   },
   {
     "referrer": "github.com",
-    "count": 46,
-    "uniques": 38
+    "count": 41,
+    "uniques": 33
   },
   {
     "referrer": "automated-testing.info",
-    "count": 15,
-    "uniques": 15
+    "count": 12,
+    "uniques": 12
   },
   {
     "referrer": "yandex.ru",
@@ -26,8 +26,8 @@
   },
   {
     "referrer": "DuckDuckGo",
-    "count": 7,
-    "uniques": 2
+    "count": 8,
+    "uniques": 3
   },
   {
     "referrer": "pypi.org",
@@ -35,17 +35,17 @@
     "uniques": 4
   },
   {
-    "referrer": "qwiki.nixsolutions.com",
+    "referrer": "qiita.com",
     "count": 4,
     "uniques": 3
   },
   {
-    "referrer": "Baidu",
-    "count": 2,
+    "referrer": "qwiki.nixsolutions.com",
+    "count": 3,
     "uniques": 2
   },
   {
-    "referrer": "qiita.com",
+    "referrer": "Baidu",
     "count": 2,
     "uniques": 2
   }
