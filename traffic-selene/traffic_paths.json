@@ -2,20 +2,14 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 279,
-    "uniques": 148
+    "count": 260,
+    "uniques": 136
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 30,
-    "uniques": 15
-  },
-  {
-    "path": "/yashaka/selene/commits/master",
-    "title": "Commits · yashaka/selene · GitHub",
-    "count": 26,
-    "uniques": 12
+    "count": 31,
+    "uniques": 13
   },
   {
     "path": "/yashaka/selene/search",
@@ -26,37 +20,43 @@
   {
     "path": "/yashaka/selene/issues/128",
     "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
+    "count": 21,
+    "uniques": 19
+  },
+  {
+    "path": "/yashaka/selene/tree/master/tests",
+    "title": "selene/tests at master · yashaka/selene · GitHub",
     "count": 20,
-    "uniques": 18
+    "uniques": 11
   },
   {
     "path": "/yashaka/selene/tree/master/selene/core",
     "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 16,
+    "count": 15,
+    "uniques": 9
+  },
+  {
+    "path": "/yashaka/selene/commits/master",
+    "title": "Commits · yashaka/selene · GitHub",
+    "count": 13,
     "uniques": 10
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 15,
-    "uniques": 8
-  },
-  {
-    "path": "/yashaka/selene/tree/master/tests",
-    "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 12,
-    "uniques": 9
+    "count": 13,
+    "uniques": 6
   },
   {
     "path": "/yashaka/selene/blob/master/selene/browser.py",
     "title": "selene/browser.py at master · yashaka/selene · GitHub",
     "count": 12,
-    "uniques": 8
+    "uniques": 7
   },
   {
-    "path": "/yashaka/selene/graphs/contributors",
-    "title": "Contributors to yashaka/selene · GitHub",
-    "count": 11,
-    "uniques": 5
+    "path": "/yashaka/selene/blob/cad204c57892b1342b941bebed086f9721582229/selene/core/entity.py",
+    "title": "selene/entity.py at cad204c57892b1342b941bebed086f9721582229 · yashaka/selene...",
+    "count": 10,
+    "uniques": 3
   }
 ]
