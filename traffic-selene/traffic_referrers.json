@@ -1,23 +1,23 @@
 [
   {
     "referrer": "Google",
-    "count": 134,
+    "count": 133,
     "uniques": 95
   },
   {
     "referrer": "yandex.ru",
-    "count": 48,
+    "count": 47,
     "uniques": 8
   },
   {
     "referrer": "github.com",
-    "count": 45,
-    "uniques": 28
+    "count": 43,
+    "uniques": 25
   },
   {
     "referrer": "automated-testing.info",
-    "count": 13,
-    "uniques": 12
+    "count": 12,
+    "uniques": 11
   },
   {
     "referrer": "qiita.com",

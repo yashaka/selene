@@ -2,31 +2,31 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 266,
+    "count": 274,
     "uniques": 138
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 54,
-    "uniques": 21
+    "count": 60,
+    "uniques": 24
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 31,
-    "uniques": 16
+    "count": 28,
+    "uniques": 13
   },
   {
     "path": "/yashaka/selene/issues/128",
     "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 25,
-    "uniques": 20
+    "count": 24,
+    "uniques": 19
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 16,
+    "count": 20,
     "uniques": 15
   },
   {
@@ -36,27 +36,27 @@
     "uniques": 10
   },
   {
-    "path": "/yashaka/selene/tree/master/selene/support",
-    "title": "selene/selene/support at master · yashaka/selene · GitHub",
-    "count": 15,
-    "uniques": 8
-  },
-  {
-    "path": "/yashaka/selene/commits/master",
-    "title": "Commits · yashaka/selene · GitHub",
-    "count": 14,
-    "uniques": 12
-  },
-  {
     "path": "/yashaka/selene/issues/202",
     "title": "Allure. How to attach selene screenshots to allure report? · Issue #202 · yas...",
     "count": 14,
     "uniques": 9
   },
   {
-    "path": "/yashaka/selene/search",
-    "title": "Search · should · GitHub",
+    "path": "/yashaka/selene/tree/master/selene/support",
+    "title": "selene/selene/support at master · yashaka/selene · GitHub",
     "count": 14,
-    "uniques": 4
+    "uniques": 7
+  },
+  {
+    "path": "/yashaka/selene/commits/master",
+    "title": "Commits · yashaka/selene · GitHub",
+    "count": 13,
+    "uniques": 11
+  },
+  {
+    "path": "/yashaka/selene/blob/master/selene/browser.py",
+    "title": "selene/browser.py at master · yashaka/selene · GitHub",
+    "count": 13,
+    "uniques": 7
   }
 ]
