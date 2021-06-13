@@ -1,18 +1,18 @@
 [
   {
     "referrer": "Google",
-    "count": 170,
-    "uniques": 113
-  },
-  {
-    "referrer": "yandex.ru",
-    "count": 56,
-    "uniques": 7
+    "count": 185,
+    "uniques": 127
   },
   {
     "referrer": "github.com",
-    "count": 54,
-    "uniques": 38
+    "count": 56,
+    "uniques": 39
+  },
+  {
+    "referrer": "yandex.ru",
+    "count": 47,
+    "uniques": 5
   },
   {
     "referrer": "automated-testing.info",
@@ -40,13 +40,13 @@
     "uniques": 1
   },
   {
-    "referrer": "youtube.com",
+    "referrer": "nextgenerationautomation.com",
     "count": 2,
     "uniques": 2
   },
   {
-    "referrer": "nextgenerationautomation.com",
+    "referrer": "gitee.com",
     "count": 2,
-    "uniques": 2
+    "uniques": 1
   }
 ]
