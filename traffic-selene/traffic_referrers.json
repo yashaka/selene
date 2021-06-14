@@ -1,17 +1,17 @@
 [
   {
     "referrer": "Google",
-    "count": 185,
-    "uniques": 127
+    "count": 177,
+    "uniques": 120
   },
   {
     "referrer": "github.com",
-    "count": 56,
+    "count": 55,
     "uniques": 39
   },
   {
     "referrer": "yandex.ru",
-    "count": 47,
+    "count": 42,
     "uniques": 5
   },
   {
@@ -40,13 +40,13 @@
     "uniques": 1
   },
   {
-    "referrer": "nextgenerationautomation.com",
+    "referrer": "DuckDuckGo",
     "count": 2,
     "uniques": 2
   },
   {
-    "referrer": "gitee.com",
+    "referrer": "nextgenerationautomation.com",
     "count": 2,
-    "uniques": 1
+    "uniques": 2
   }
 ]
