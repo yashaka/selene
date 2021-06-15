@@ -26,34 +26,31 @@ from tests.integration.helpers.givenpage import GivenPage
 def test_waits_nothing(session_browser):
     page = GivenPage(session_browser.driver)
     page.opened_empty()
-    page.load_body(
-        '''
-                   <ul>Hello to:
-                       <li>Anonymous</li>
-                       <li class='will-appear'>Bob</li>
-                       <li class='will-appear' style='display:none'>Kate</li>
-                   </ul>'''
-    )
     elements = session_browser.all('li').filtered_by(
         have.css_class('will-appear')
     )
-
-    elements_count = len(elements)
-
-    assert elements_count == 2
-
-    # Given timeout
+    page.load_body(
+        '''
+        <ul>Hello to:
+            <li>Anonymous</li>
+            <li class='will-appear'>Bob</li>
+            <li class='will-appear' style='display:none'>Kate</li>
+        </ul>
+        '''
+    )
+    original_count = len(elements)
     page.load_body_with_timeout(
         '''
-                                <ul>Hello to:
-                                    <li>Anonymous</li>
-                                    <li class='will-appear'>Bob</li>
-                                    <li class='will-appear' style='display:none'>Kate</li>
-                                    <li class='will-appear'>Joe</li>
-                                </ul>''',
+        <ul>Hello to:
+            <li>Anonymous</li>
+            <li class='will-appear'>Bob</li>
+            <li class='will-appear' style='display:none'>Kate</li>
+            <li class='will-appear'>Joe</li>
+        </ul>
+        ''',
         0.5,
     )
 
-    elements_count_with_timeout = len(elements)
+    updated_count = len(elements)
 
-    assert elements_count_with_timeout == 2
+    assert updated_count == original_count == 2
