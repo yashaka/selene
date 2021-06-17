@@ -2,61 +2,61 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 334,
-    "uniques": 167
+    "count": 359,
+    "uniques": 176
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 48,
-    "uniques": 25
+    "count": 64,
+    "uniques": 29
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 45,
-    "uniques": 21
+    "count": 51,
+    "uniques": 23
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 29,
-    "uniques": 9
+    "count": 47,
+    "uniques": 11
   },
   {
     "path": "/yashaka/selene/releases",
     "title": "Releases · yashaka/selene · GitHub",
-    "count": 19,
-    "uniques": 4
+    "count": 25,
+    "uniques": 5
   },
   {
     "path": "/yashaka/selene/issues/128",
     "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 18,
-    "uniques": 17
-  },
-  {
-    "path": "/yashaka/selene/blob/master/CHANGELOG.md",
-    "title": "selene/CHANGELOG.md at master · yashaka/selene · GitHub",
-    "count": 18,
-    "uniques": 11
-  },
-  {
-    "path": "/yashaka/selene/issues/188",
-    "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
-    "count": 16,
-    "uniques": 15
-  },
-  {
-    "path": "/yashaka/selene/search",
-    "title": "Search · selenium",
-    "count": 16,
-    "uniques": 6
+    "count": 20,
+    "uniques": 19
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 15,
-    "uniques": 10
+    "count": 19,
+    "uniques": 14
+  },
+  {
+    "path": "/yashaka/selene/issues/188",
+    "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
+    "count": 18,
+    "uniques": 17
+  },
+  {
+    "path": "/yashaka/selene/search",
+    "title": "Search · ui/ux",
+    "count": 18,
+    "uniques": 7
+  },
+  {
+    "path": "/yashaka/selene/issues/288",
+    "title": "upgrade to python 3.7 · Issue #288 · yashaka/selene · GitHub",
+    "count": 16,
+    "uniques": 9
   }
 ]

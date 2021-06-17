@@ -1,27 +1,27 @@
 [
   {
     "referrer": "Google",
-    "count": 163,
-    "uniques": 115
+    "count": 175,
+    "uniques": 121
   },
   {
     "referrer": "github.com",
-    "count": 50,
-    "uniques": 38
+    "count": 58,
+    "uniques": 42
   },
   {
     "referrer": "yandex.ru",
-    "count": 36,
-    "uniques": 4
+    "count": 24,
+    "uniques": 3
+  },
+  {
+    "referrer": "pypi.org",
+    "count": 9,
+    "uniques": 6
   },
   {
     "referrer": "selene-docs-test.readthedocs.io",
     "count": 8,
-    "uniques": 5
-  },
-  {
-    "referrer": "pypi.org",
-    "count": 7,
     "uniques": 5
   },
   {
@@ -40,12 +40,12 @@
     "uniques": 1
   },
   {
-    "referrer": "DuckDuckGo",
+    "referrer": "nextgenerationautomation.com",
     "count": 2,
     "uniques": 2
   },
   {
-    "referrer": "nextgenerationautomation.com",
+    "referrer": "ecosia.org",
     "count": 2,
     "uniques": 2
   }
