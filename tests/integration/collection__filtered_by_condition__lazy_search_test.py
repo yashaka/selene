@@ -39,6 +39,9 @@ def test_search_is_postponed_until_actual_action_like_questioning_count(
 ):
     page = GivenPage(session_browser.driver)
     page.opened_empty()
+    elements = session_browser.all('li').filtered_by(
+        have.css_class('will-appear')
+    )
     page.load_body(
         '''
         <ul>Hello to:
@@ -48,13 +51,10 @@ def test_search_is_postponed_until_actual_action_like_questioning_count(
         </ul>
         '''
     )
-    elements = session_browser.all('li').filtered_by(
-        have.css_class('will-appear')
-    )
 
-    length = len(elements)
+    count = len(elements)
 
-    assert length == 2
+    assert count == 2
 
 
 def test_search_is_updated_on_next_actual_action_like_questioning_count(
@@ -65,7 +65,6 @@ def test_search_is_updated_on_next_actual_action_like_questioning_count(
     elements = session_browser.all('li').filtered_by(
         have.css_class('will-appear')
     )
-
     page.load_body(
         '''
         <ul>Hello to:
@@ -75,8 +74,7 @@ def test_search_is_updated_on_next_actual_action_like_questioning_count(
         </ul>
         '''
     )
-    assert len(elements) == 2
-
+    original_count = len(elements)
     page.load_body(
         '''
         <ul>Hello to:
@@ -87,4 +85,8 @@ def test_search_is_updated_on_next_actual_action_like_questioning_count(
         </ul>
         '''
     )
-    assert len(elements) == 3
+
+    updated_count = len(elements)
+
+    assert updated_count == 3
+    assert updated_count != original_count
