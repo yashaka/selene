@@ -37,9 +37,9 @@ def test_search_does_not_start_on_creation_for_both_parent_and_inner(
 def test_search_is_postponed_until_actual_action_like_questioning_displayed(
     session_browser,
 ):
-    element = session_browser.element('#will-be-existing-element').element(
-        '.will-exist-inner'
-    )
+    element = session_browser.element(
+        '#will-be-existing-element'
+    ).element('.will-exist-inner')
     page = GivenPage(session_browser.driver)
     page.opened_empty()
 
@@ -47,7 +47,8 @@ def test_search_is_postponed_until_actual_action_like_questioning_displayed(
         '''
         <h1 id="will-be-existing-element">
             <span class="will-exist-inner">Hello</span> kitty:*
-        </h1>'''
+        </h1>
+        '''
     )
     answer = element().is_displayed()
 
@@ -57,10 +58,11 @@ def test_search_is_postponed_until_actual_action_like_questioning_displayed(
 def test_search_is_updated_on_next_actual_action_like_questioning_displayed(
     session_browser,
 ):
-    element = session_browser.element('#will-be-existing-element').element(
-        '.will-exist-inner'
-    )
+    element = session_browser.element(
+        '#will-be-existing-element'
+    ).element('.will-exist-inner')
     page = GivenPage(session_browser.driver)
+
     page.opened_with_body(
         '''
         <h1 id="will-be-existing-element">
@@ -68,6 +70,7 @@ def test_search_is_updated_on_next_actual_action_like_questioning_displayed(
         </h1>
         '''
     )
+
     assert element().is_displayed() is True
 
     page.load_body(
@@ -76,14 +79,17 @@ def test_search_is_updated_on_next_actual_action_like_questioning_displayed(
             <span class="will-exist-inner" style="display:none">
               Hello
             </span> kitty:*
-        </h1>'''
+        </h1>
+        '''
     )
     new_answer = element().is_displayed()
 
     assert new_answer is False
 
 
-def test_search_finds_exactly_inside_parent(session_browser):
+def test_search_finds_exactly_inside_parent(
+    session_browser,
+):
     page = GivenPage(session_browser.driver)
     page.opened_with_body(
         '''
@@ -92,7 +98,8 @@ def test_search_finds_exactly_inside_parent(session_browser):
             <a href="#second">go to Heading 2</a>
             <h1 id="first">Heading 1</h1>
             <h2 id="second">Heading 2</h2>
-        /p>'''
+        /p>
+        '''
     )
 
     session_browser.element('p').element('a').click()
