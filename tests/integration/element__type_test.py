@@ -23,7 +23,7 @@ def test_type_appends_text(session_browser):
 
 def test_type_waits_for_no_overlay(session_browser):
     browser = session_browser.with_(timeout=1).with_(
-        wait_for_no_overlay_by_js=True
+        wait_for_no_overlap_found_by_js=True
     )
     page = GivenPage(browser.driver)
     page.opened_with_body(
@@ -61,7 +61,7 @@ def test_type_waits_for_no_overlay(session_browser):
 
 def test_type_failure_when_overlapped(session_browser):
     browser = session_browser.with_(timeout=1).with_(
-        wait_for_no_overlay_by_js=True
+        wait_for_no_overlap_found_by_js=True
     )
     page = GivenPage(browser.driver)
     page.opened_with_body(
@@ -99,7 +99,7 @@ def test_type_failure_when_overlapped(session_browser):
 
 def test_type_waits_for_visibility(session_browser):
     browser = session_browser.with_(timeout=1).with_(
-        wait_for_no_overlay_by_js=True
+        wait_for_no_overlap_found_by_js=True
     )
     page = GivenPage(browser.driver)
     page.opened_with_body(
@@ -128,7 +128,7 @@ def test_type_waits_for_visibility(session_browser):
 
 def test_type_failure_when_invisible(session_browser):
     browser = session_browser.with_(timeout=1).with_(
-        wait_for_no_overlay_by_js=True
+        wait_for_no_overlap_found_by_js=True
     )
     page = GivenPage(browser.driver)
     page.opened_with_body(
@@ -157,7 +157,7 @@ def test_type_failure_when_invisible(session_browser):
 
 def test_type_when_initially_absent(session_browser):
     browser = session_browser.with_(timeout=1).with_(
-        wait_for_no_overlay_by_js=True
+        wait_for_no_overlap_found_by_js=True
     )
     page = GivenPage(browser.driver)
     page.opened_with_body_with_timeout(
@@ -180,7 +180,7 @@ def test_type_when_initially_absent(session_browser):
 
 def test_type_failure_when_absent(session_browser):
     browser = session_browser.with_(timeout=1).with_(
-        wait_for_no_overlay_by_js=True
+        wait_for_no_overlap_found_by_js=True
     )
     page = GivenPage(browser.driver)
     page.opened_empty()

@@ -51,7 +51,7 @@ class Config:
         base_url: str = '',
         set_value_by_js: bool = False,
         type_by_js: bool = False,
-        wait_for_no_overlay_by_js: bool = False,
+        wait_for_no_overlap_found_by_js: bool = False,
         window_width: Optional[int] = None,
         window_height: Optional[int] = None,
         log_outer_html_on_failure: bool = False,
@@ -70,7 +70,7 @@ class Config:
         todo: will it work on mobile? probably no! why then we have it here? o_O
         '''
         self._type_by_js = type_by_js
-        self._wait_for_no_overlay_by_js = wait_for_no_overlay_by_js
+        self._wait_for_no_overlap_found_by_js = wait_for_no_overlap_found_by_js
         self._window_width = window_width
         self._window_height = window_height
         self._log_outer_html_on_failure = log_outer_html_on_failure
@@ -130,8 +130,8 @@ class Config:
         return self._type_by_js
 
     @property
-    def wait_for_no_overlay_by_js(self) -> bool:
-        return self._wait_for_no_overlay_by_js
+    def wait_for_no_overlap_found_by_js(self) -> bool:
+        return self._wait_for_no_overlap_found_by_js
 
     @property
     def window_width(self) -> Optional[int]:

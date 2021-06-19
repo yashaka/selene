@@ -319,7 +319,7 @@ class Element(WaitingEntity):
 
     def type(self, text: Union[str, int]) -> Element:
         def fn(element: Element):
-            if self.config.wait_for_no_overlay_by_js:
+            if self.config.wait_for_no_overlap_found_by_js:
                 element = element.actual_not_overlapped_element()
             else:
                 element = element()
