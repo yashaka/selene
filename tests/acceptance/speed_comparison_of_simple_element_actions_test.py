@@ -88,7 +88,6 @@ def test_selene_is_almost_as_fast_selenium_with_research_and_initial_wait_for_vi
     selene_time = time_spent(create_tasks_with_selene_and_send_keys)
     selenium_time = time_spent(create_tasks_with_selenium_with_research)
     print("%s vs %s" % (selene_time, selenium_time))
-    assert selene_time < 1.75 * selenium_time
     assert selene_time < 1.12 * selenium_time
 
 
@@ -103,5 +102,4 @@ def test_cashed_selene_is_almost_as_fast_raw_selenium():
     selene_time = time_spent(create_tasks_with_selene_with_cash)
     selenium_time = time_spent(create_tasks_with_raw_selenium)
     print("%s vs %s" % (selene_time, selenium_time))
-    assert selene_time < 1.15 * selenium_time
-    assert selene_time < 1.12 * selenium_time
+    assert selene_time < 1.20 * selenium_time
