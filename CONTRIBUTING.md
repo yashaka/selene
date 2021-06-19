@@ -16,6 +16,8 @@ Also consider first to help with issues marked with help_needed label ;)
     
     and commit: `git commit -am "[#$ISSUE_NUMBER] $COMMIT_MESSAGE"`, 
     
+    (example: `git commit -am "[#321] TEST: improve tests structure"`)
+    
     where
     - ISSUE_NUMBER is the number of issue this commit relates to
     - COMMIT_MESSAGE is... 
