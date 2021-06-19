@@ -2,26 +2,32 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 428,
-    "uniques": 198
+    "count": 464,
+    "uniques": 218
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 161,
-    "uniques": 32
+    "count": 185,
+    "uniques": 33
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 97,
+    "count": 102,
     "uniques": 17
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 52,
-    "uniques": 26
+    "count": 55,
+    "uniques": 29
+  },
+  {
+    "path": "/yashaka/selene/issues/351",
+    "title": "update webdriver_manager to 3.4.2 (or latest) · Issue #351 · yashaka/selene",
+    "count": 33,
+    "uniques": 7
   },
   {
     "path": "/yashaka/selene/issues/313",
@@ -32,26 +38,20 @@
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 28,
-    "uniques": 17
+    "count": 29,
+    "uniques": 18
   },
   {
-    "path": "/yashaka/selene/issues/351",
-    "title": "update webdriver_manager to 3.4.2 (or latest) · Issue #351 · yashaka/selene",
-    "count": 28,
-    "uniques": 6
+    "path": "/yashaka/selene/issues/128",
+    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
+    "count": 27,
+    "uniques": 27
   },
   {
     "path": "/yashaka/selene/releases",
     "title": "Releases · yashaka/selene · GitHub",
     "count": 25,
     "uniques": 5
-  },
-  {
-    "path": "/yashaka/selene/issues/128",
-    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 23,
-    "uniques": 23
   },
   {
     "path": "/yashaka/selene/pull/323",
