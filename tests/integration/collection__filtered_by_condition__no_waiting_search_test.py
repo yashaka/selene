@@ -29,25 +29,28 @@ def test_waits_nothing(session_browser):
     elements = session_browser.all('li').filtered_by(
         have.css_class('will-appear')
     )
-
     page.load_body(
         '''
-                   <ul>Hello to:
-                       <li>Anonymous</li>
-                       <li class='will-appear'>Bob</li>
-                       <li class='will-appear' style='display:none'>Kate</li>
-                   </ul>'''
+        <ul>Hello to:
+            <li>Anonymous</li>
+            <li class='will-appear'>Bob</li>
+            <li class='will-appear' style='display:none'>Kate</li>
+        </ul>
+        '''
     )
-    assert len(elements) == 2
-
+    original_count = len(elements)
     page.load_body_with_timeout(
         '''
-                                <ul>Hello to:
-                                    <li>Anonymous</li>
-                                    <li class='will-appear'>Bob</li>
-                                    <li class='will-appear' style='display:none'>Kate</li>
-                                    <li class='will-appear'>Joe</li>
-                                </ul>''',
+        <ul>Hello to:
+            <li>Anonymous</li>
+            <li class='will-appear'>Bob</li>
+            <li class='will-appear' style='display:none'>Kate</li>
+            <li class='will-appear'>Joe</li>
+        </ul>
+        ''',
         0.5,
     )
-    assert len(elements) == 2
+
+    updated_count = len(elements)
+
+    assert updated_count == original_count == 2
