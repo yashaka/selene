@@ -272,6 +272,7 @@ class Element(WaitingEntity):
         #       also it will make sense to make this behaviour configurable...
         return self
 
+    @property
     def _actual_not_overlapped_webelement(self):
         element = self()
 
@@ -320,7 +321,7 @@ class Element(WaitingEntity):
     def type(self, text: Union[str, int]) -> Element:
         def fn(element: Element):
             if self.config.wait_for_no_overlap_found_by_js:
-                element = element._actual_not_overlapped_webelement()
+                element = element._actual_not_overlapped_webelement
             else:
                 element = element()
             element.send_keys(str(text))
