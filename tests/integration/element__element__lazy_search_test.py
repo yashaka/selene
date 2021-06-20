@@ -25,7 +25,8 @@ from tests.integration.helpers.givenpage import GivenPage
 def test_search_does_not_start_on_creation_for_both_parent_and_inner(
     session_browser,
 ):
-    GivenPage(session_browser.driver).opened_empty()
+    page = GivenPage(session_browser.driver)
+    page.opened_empty()
 
     non_existent_element = session_browser.element(
         '#not-existing-element'
@@ -37,32 +38,10 @@ def test_search_does_not_start_on_creation_for_both_parent_and_inner(
 def test_search_is_postponed_until_actual_action_like_questioning_displayed(
     session_browser,
 ):
-    element = session_browser.element(
-        '#will-be-existing-element'
-    ).element('.will-exist-inner')
-    page = GivenPage(session_browser.driver)
-    page.opened_empty()
-
-    page.load_body(
-        '''
-        <h1 id="will-be-existing-element">
-            <span class="will-exist-inner">Hello</span> kitty:*
-        </h1>
-        '''
+    element = session_browser.element('#will-be-existing-element').element(
+        '.will-exist-inner'
     )
-    answer = element().is_displayed()
-
-    assert answer is True
-
-
-def test_search_is_updated_on_next_actual_action_like_questioning_displayed(
-    session_browser,
-):
-    element = session_browser.element(
-        '#will-be-existing-element'
-    ).element('.will-exist-inner')
     page = GivenPage(session_browser.driver)
-
     page.opened_with_body(
         '''
         <h1 id="will-be-existing-element">
@@ -71,25 +50,39 @@ def test_search_is_updated_on_next_actual_action_like_questioning_displayed(
         '''
     )
 
-    assert element().is_displayed() is True
+    until_actual_action = element().is_displayed()
 
-    page.load_body(
+    assert until_actual_action is True
+
+
+def test_search_is_updated_on_next_actual_action_like_questioning_displayed(
+    session_browser,
+):
+    element = session_browser.element('#will-be-existing-element').element(
+        '.will-exist-inner'
+    )
+    page = GivenPage(session_browser.driver)
+    page.opened_with_body(
         '''
         <h1 id="will-be-existing-element">
-            <span class="will-exist-inner" style="display:none">
-              Hello
-            </span> kitty:*
+            <span class="will-exist-inner">Hello</span> kitty:*
         </h1>
         '''
     )
-    new_answer = element().is_displayed()
+    page.load_body(
+        '''
+        <h1 id="will-be-existing-element">
+            <span class="will-exist-inner" style="display:none">Hello</span> kitty:*
+        </h1>
+        '''
+    )
 
-    assert new_answer is False
+    updated_actual_action = element().is_displayed()
+
+    assert updated_actual_action is False
 
 
-def test_search_finds_exactly_inside_parent(
-    session_browser,
-):
+def test_search_finds_exactly_inside_parent(session_browser):
     page = GivenPage(session_browser.driver)
     page.opened_with_body(
         '''
@@ -98,7 +91,7 @@ def test_search_finds_exactly_inside_parent(
             <a href="#second">go to Heading 2</a>
             <h1 id="first">Heading 1</h1>
             <h2 id="second">Heading 2</h2>
-        /p>
+        </p>
         '''
     )
 
