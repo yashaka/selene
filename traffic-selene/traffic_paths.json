@@ -2,26 +2,32 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 443,
-    "uniques": 209
+    "count": 445,
+    "uniques": 208
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 179,
-    "uniques": 32
+    "count": 210,
+    "uniques": 35
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 99,
-    "uniques": 16
+    "count": 135,
+    "uniques": 18
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 47,
-    "uniques": 25
+    "count": 44,
+    "uniques": 23
+  },
+  {
+    "path": "/yashaka/selene/issues/313",
+    "title": "improve tests structure (visibility and clearness of arrange/act/assert block...",
+    "count": 35,
+    "uniques": 9
   },
   {
     "path": "/yashaka/selene/issues/351",
@@ -32,31 +38,25 @@
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 29,
+    "count": 32,
     "uniques": 18
   },
   {
-    "path": "/yashaka/selene/issues/313",
-    "title": "improve tests structure (visibility and clearness of arrange/act/assert block...",
-    "count": 29,
+    "path": "/yashaka/selene/pull/337",
+    "title": "#328: improving test structure by igorvlasovkram · Pull Request #337 · yashak...",
+    "count": 24,
     "uniques": 8
-  },
-  {
-    "path": "/yashaka/selene/issues/128",
-    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 26,
-    "uniques": 26
   },
   {
     "path": "/yashaka/selene/releases",
     "title": "Releases · yashaka/selene · GitHub",
-    "count": 25,
+    "count": 24,
     "uniques": 5
   },
   {
-    "path": "/yashaka/selene/pull/323",
-    "title": "gh_322: Improve test structure by rodinant · Pull Request #323 · yashaka/selene",
-    "count": 19,
-    "uniques": 5
+    "path": "/yashaka/selene/issues/128",
+    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
+    "count": 23,
+    "uniques": 23
   }
 ]
