@@ -2,14 +2,14 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 433,
-    "uniques": 199
+    "count": 425,
+    "uniques": 198
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 208,
-    "uniques": 32
+    "count": 212,
+    "uniques": 34
   },
   {
     "path": "/yashaka/selene/pulls",
@@ -20,8 +20,8 @@
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 45,
-    "uniques": 22
+    "count": 38,
+    "uniques": 20
   },
   {
     "path": "/yashaka/selene/issues/313",
@@ -33,7 +33,7 @@
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
     "count": 34,
-    "uniques": 17
+    "uniques": 16
   },
   {
     "path": "/yashaka/selene/issues/351",
@@ -42,20 +42,20 @@
     "uniques": 7
   },
   {
+    "path": "/yashaka/selene/pull/355",
+    "title": "Improved tests structure in files by Elena7788 · Pull Request #355 · yashaka/...",
+    "count": 23,
+    "uniques": 6
+  },
+  {
     "path": "/yashaka/selene/pull/354",
     "title": "[#351] CHORE: web-driver manager update from 3.4.1 to 3.4.2 by ArnerPan · Pul...",
     "count": 23,
     "uniques": 5
   },
   {
-    "path": "/yashaka/selene/releases",
-    "title": "Releases · yashaka/selene · GitHub",
-    "count": 23,
-    "uniques": 4
-  },
-  {
-    "path": "/yashaka/selene/pull/337",
-    "title": "#328: improving test structure by igorvlasovkram · Pull Request #337 · yashak...",
+    "path": "/yashaka/selene/issues/347",
+    "title": "consider refactoring from pytest.raises to try: ... except: ... · Issue #347 ...",
     "count": 22,
     "uniques": 7
   }
