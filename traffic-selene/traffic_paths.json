@@ -2,14 +2,14 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 435,
-    "uniques": 196
+    "count": 431,
+    "uniques": 194
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 207,
-    "uniques": 32
+    "count": 203,
+    "uniques": 29
   },
   {
     "path": "/yashaka/selene/pulls",
@@ -20,14 +20,20 @@
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 43,
-    "uniques": 18
+    "count": 46,
+    "uniques": 20
   },
   {
     "path": "/yashaka/selene/issues/313",
     "title": "improve tests structure (visibility and clearness of arrange/act/assert block...",
-    "count": 39,
-    "uniques": 10
+    "count": 38,
+    "uniques": 9
+  },
+  {
+    "path": "/yashaka/selene/tree/master/selene",
+    "title": "selene/selene at master · yashaka/selene · GitHub",
+    "count": 36,
+    "uniques": 22
   },
   {
     "path": "/yashaka/selene/issues/351",
@@ -36,10 +42,10 @@
     "uniques": 7
   },
   {
-    "path": "/yashaka/selene/tree/master/selene",
-    "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 32,
-    "uniques": 20
+    "path": "/yashaka/selene/issues/128",
+    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
+    "count": 24,
+    "uniques": 22
   },
   {
     "path": "/yashaka/selene/issues/347",
@@ -52,11 +58,5 @@
     "title": "Improved tests structure in files by Elena7788 · Pull Request #355 · yashaka/...",
     "count": 24,
     "uniques": 6
-  },
-  {
-    "path": "/yashaka/selene/pull/354",
-    "title": "[#351] CHORE: web-driver manager update from 3.4.1 to 3.4.2 by ArnerPan · Pul...",
-    "count": 23,
-    "uniques": 5
   }
 ]
