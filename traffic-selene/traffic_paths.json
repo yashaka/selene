@@ -2,38 +2,50 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 356,
+    "count": 362,
     "uniques": 169
-  },
-  {
-    "path": "/yashaka/selene/issues",
-    "title": "Issues · yashaka/selene · GitHub",
-    "count": 80,
-    "uniques": 19
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
     "count": 73,
-    "uniques": 12
+    "uniques": 14
   },
   {
-    "path": "/yashaka/selene/tree/master/selene",
-    "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 36,
-    "uniques": 16
+    "path": "/yashaka/selene/issues",
+    "title": "Issues · yashaka/selene · GitHub",
+    "count": 64,
+    "uniques": 20
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 31,
-    "uniques": 14
+    "count": 35,
+    "uniques": 16
+  },
+  {
+    "path": "/yashaka/selene/tree/master/selene",
+    "title": "selene/selene at master · yashaka/selene · GitHub",
+    "count": 35,
+    "uniques": 15
   },
   {
     "path": "/yashaka/selene/issues/347",
     "title": "consider refactoring from pytest.raises to try: ... except: ... · Issue #347 ...",
-    "count": 21,
+    "count": 22,
     "uniques": 4
+  },
+  {
+    "path": "/yashaka/selene/issues/128",
+    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
+    "count": 17,
+    "uniques": 14
+  },
+  {
+    "path": "/yashaka/selene/tree/master/tests/examples",
+    "title": "selene/tests/examples at master · yashaka/selene · GitHub",
+    "count": 17,
+    "uniques": 8
   },
   {
     "path": "/yashaka/selene/issues/313",
@@ -42,21 +54,9 @@
     "uniques": 6
   },
   {
-    "path": "/yashaka/selene/pull/354",
-    "title": "[#351] CHORE: web-driver manager update from 3.4.1 to 3.4.2 by ArnerPan · Pul...",
-    "count": 17,
-    "uniques": 4
-  },
-  {
-    "path": "/yashaka/selene/issues/128",
-    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 16,
-    "uniques": 14
-  },
-  {
     "path": "/yashaka/selene/pull/355",
     "title": "Improved tests structure in files by Elena7788 · Pull Request #355 · yashaka/...",
-    "count": 16,
-    "uniques": 5
+    "count": 15,
+    "uniques": 4
   }
 ]
