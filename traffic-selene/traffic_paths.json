@@ -2,60 +2,60 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 348,
-    "uniques": 161
+    "count": 363,
+    "uniques": 169
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
     "count": 39,
-    "uniques": 19
+    "uniques": 20
+  },
+  {
+    "path": "/yashaka/selene/tree/master/tests",
+    "title": "selene/tests at master · yashaka/selene · GitHub",
+    "count": 39,
+    "uniques": 17
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 37,
+    "count": 31,
     "uniques": 12
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 34,
-    "uniques": 16
-  },
-  {
-    "path": "/yashaka/selene/tree/master/tests",
-    "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 34,
+    "count": 29,
     "uniques": 15
   },
   {
     "path": "/yashaka/selene/tree/master/tests/examples",
     "title": "selene/tests/examples at master · yashaka/selene · GitHub",
-    "count": 21,
-    "uniques": 9
+    "count": 22,
+    "uniques": 10
   },
   {
     "path": "/yashaka/selene/issues/128",
     "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 18,
-    "uniques": 15
-  },
-  {
-    "path": "/yashaka/selene/issues/347",
-    "title": "consider refactoring from pytest.raises to try: ... except: ... · Issue #347 ...",
-    "count": 18,
-    "uniques": 3
-  },
-  {
-    "path": "/yashaka/selene/issues/313",
-    "title": "improve tests structure (visibility and clearness of arrange/act/assert block...",
-    "count": 11,
-    "uniques": 5
+    "count": 21,
+    "uniques": 18
   },
   {
     "path": "/yashaka/selene/issues/202",
     "title": "Allure. How to attach selene screenshots to allure report? · Issue #202 · yas...",
+    "count": 14,
+    "uniques": 9
+  },
+  {
+    "path": "/yashaka/selene/issues/347",
+    "title": "consider refactoring from pytest.raises to try: ... except: ... · Issue #347 ...",
+    "count": 11,
+    "uniques": 3
+  },
+  {
+    "path": "/yashaka/selene/tree/master/tests/examples/todomvc",
+    "title": "selene/tests/examples/todomvc at master · yashaka/selene · GitHub",
     "count": 10,
     "uniques": 7
   }
