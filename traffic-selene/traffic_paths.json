@@ -2,61 +2,61 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 343,
-    "uniques": 163
+    "count": 315,
+    "uniques": 150
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 34,
-    "uniques": 17
+    "count": 32,
+    "uniques": 15
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 33,
-    "uniques": 15
-  },
-  {
-    "path": "/yashaka/selene/issues",
-    "title": "Issues · yashaka/selene · GitHub",
-    "count": 28,
+    "count": 32,
     "uniques": 14
-  },
-  {
-    "path": "/yashaka/selene/pulls",
-    "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 27,
-    "uniques": 12
   },
   {
     "path": "/yashaka/selene/issues/128",
     "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 23,
+    "count": 27,
     "uniques": 20
+  },
+  {
+    "path": "/yashaka/selene/pulls",
+    "title": "Pull requests · yashaka/selene · GitHub",
+    "count": 24,
+    "uniques": 11
+  },
+  {
+    "path": "/yashaka/selene/issues",
+    "title": "Issues · yashaka/selene · GitHub",
+    "count": 22,
+    "uniques": 10
   },
   {
     "path": "/yashaka/selene/tree/master/tests/examples",
     "title": "selene/tests/examples at master · yashaka/selene · GitHub",
-    "count": 18,
-    "uniques": 8
+    "count": 17,
+    "uniques": 7
   },
   {
     "path": "/yashaka/selene/issues/202",
     "title": "Allure. How to attach selene screenshots to allure report? · Issue #202 · yas...",
-    "count": 14,
-    "uniques": 9
+    "count": 12,
+    "uniques": 8
+  },
+  {
+    "path": "/yashaka/selene/commits/master",
+    "title": "Commits · yashaka/selene · GitHub",
+    "count": 11,
+    "uniques": 8
   },
   {
     "path": "/yashaka/selene/blob/master/README.md",
     "title": "selene/README.md at master · yashaka/selene · GitHub",
     "count": 10,
     "uniques": 7
-  },
-  {
-    "path": "/yashaka/selene/issues/347",
-    "title": "consider refactoring from pytest.raises to try: ... except: ... · Issue #347 ...",
-    "count": 10,
-    "uniques": 3
   }
 ]
