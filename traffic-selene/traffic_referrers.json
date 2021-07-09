@@ -1,12 +1,12 @@
 [
   {
     "referrer": "Google",
-    "count": 190,
-    "uniques": 106
+    "count": 200,
+    "uniques": 110
   },
   {
     "referrer": "github.com",
-    "count": 60,
+    "count": 59,
     "uniques": 42
   },
   {
@@ -16,7 +16,7 @@
   },
   {
     "referrer": "qa-guide.ru",
-    "count": 13,
+    "count": 12,
     "uniques": 1
   },
   {
@@ -25,17 +25,17 @@
     "uniques": 7
   },
   {
+    "referrer": "pypi.org",
+    "count": 6,
+    "uniques": 5
+  },
+  {
     "referrer": "qiita.com",
-    "count": 7,
-    "uniques": 3
+    "count": 6,
+    "uniques": 2
   },
   {
     "referrer": "yandex.ru",
-    "count": 5,
-    "uniques": 4
-  },
-  {
-    "referrer": "pypi.org",
     "count": 5,
     "uniques": 4
   },
