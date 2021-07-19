@@ -2,50 +2,44 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 379,
-    "uniques": 198
+    "count": 373,
+    "uniques": 189
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 59,
+    "count": 56,
     "uniques": 17
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 38,
+    "count": 37,
     "uniques": 29
-  },
-  {
-    "path": "/yashaka/selene/issues/128",
-    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 26,
-    "uniques": 24
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 26,
-    "uniques": 20
+    "count": 25,
+    "uniques": 19
   },
   {
     "path": "/yashaka/selene/search",
     "title": "Search · wait_until · GitHub",
-    "count": 26,
-    "uniques": 10
+    "count": 25,
+    "uniques": 9
+  },
+  {
+    "path": "/yashaka/selene/issues/128",
+    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
+    "count": 21,
+    "uniques": 20
   },
   {
     "path": "/yashaka/selene/tree/master/selene/core",
     "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 17,
-    "uniques": 13
-  },
-  {
-    "path": "/yashaka/selene/blob/master/CHANGELOG.md",
-    "title": "selene/CHANGELOG.md at master · yashaka/selene · GitHub",
-    "count": 15,
-    "uniques": 6
+    "count": 16,
+    "uniques": 12
   },
   {
     "path": "/yashaka/selene/releases",
@@ -56,7 +50,13 @@
   {
     "path": "/yashaka/selene/blob/master/selene/browser.py",
     "title": "selene/browser.py at master · yashaka/selene · GitHub",
-    "count": 13,
-    "uniques": 12
+    "count": 12,
+    "uniques": 11
+  },
+  {
+    "path": "/yashaka/selene/tree/master/selene/api",
+    "title": "selene/selene/api at master · yashaka/selene · GitHub",
+    "count": 12,
+    "uniques": 11
   }
 ]
