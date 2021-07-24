@@ -2,32 +2,32 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 406,
-    "uniques": 222
+    "count": 422,
+    "uniques": 234
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 49,
-    "uniques": 18
+    "count": 51,
+    "uniques": 20
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 35,
-    "uniques": 25
+    "count": 36,
+    "uniques": 26
   },
   {
     "path": "/yashaka/selene/issues/128",
     "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 25,
-    "uniques": 21
+    "count": 27,
+    "uniques": 23
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 19,
-    "uniques": 16
+    "count": 24,
+    "uniques": 18
   },
   {
     "path": "/yashaka/selene/tree/master/selene/support",
@@ -42,6 +42,12 @@
     "uniques": 10
   },
   {
+    "path": "/yashaka/selene/pulls",
+    "title": "Pull requests · yashaka/selene · GitHub",
+    "count": 12,
+    "uniques": 9
+  },
+  {
     "path": "/yashaka/selene/blob/master/selene/support/conditions/be.py",
     "title": "selene/be.py at master · yashaka/selene · GitHub",
     "count": 12,
@@ -52,11 +58,5 @@
     "title": "selene/docs at master · yashaka/selene · GitHub",
     "count": 11,
     "uniques": 10
-  },
-  {
-    "path": "/yashaka/selene/pulls",
-    "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 11,
-    "uniques": 9
   }
 ]
