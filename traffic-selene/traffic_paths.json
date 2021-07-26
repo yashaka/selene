@@ -2,8 +2,8 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 429,
-    "uniques": 243
+    "count": 447,
+    "uniques": 251
   },
   {
     "path": "/yashaka/selene/issues",
@@ -26,8 +26,8 @@
   {
     "path": "/yashaka/selene/issues/128",
     "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 23,
-    "uniques": 19
+    "count": 24,
+    "uniques": 20
   },
   {
     "path": "/yashaka/selene/tree/master/selene/core",
