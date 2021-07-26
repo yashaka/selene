@@ -77,6 +77,9 @@
 - repeat fix of #225 to other options in shared config, refactor it... 
   - should we make original config (not shared) mutable?
 
+## 2.0.0a39 (released on 26.07.2021)
+- Upgrade [webdriver-manager](https://github.com/SergeyPirogov/webdriver_manager) 3.4.1 -> 3.4.2 ([see changes](https://github.com/SergeyPirogov/webdriver_manager/compare/v3.4.1...v.3.4.2))
+
 ## 2.0.0a38 (released on 05.05.2021)
 - Upgrade [webdriver-manager](https://github.com/SergeyPirogov/webdriver_manager) 3.3.0 -> 3.4.1 ([see changes](https://github.com/SergeyPirogov/webdriver_manager/compare/v3.3.0...v.3.4.1))
 
