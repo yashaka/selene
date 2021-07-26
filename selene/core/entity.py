@@ -321,10 +321,10 @@ class Element(WaitingEntity):
     def type(self, text: Union[str, int]) -> Element:
         def fn(element: Element):
             if self.config.wait_for_no_overlap_found_by_js:
-                element = element._actual_not_overlapped_webelement
+                webelement = element._actual_not_overlapped_webelement
             else:
-                element = element()
-            element.send_keys(str(text))
+                webelement = element()
+            webelement.send_keys(str(text))
 
         from selene.core import command
 
