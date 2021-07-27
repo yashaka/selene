@@ -255,9 +255,9 @@ class Element(WaitingEntity):
     #       instead of args?
     #       for better integration with js support in jetbrains products?
     def _execute_script(
-            self,
-            script_on_self_element_and_args: str,
-            *extra_args,
+        self,
+        script_on_self_element_and_args: str,
+        *extra_args,
     ):
         driver: WebDriver = self.config.driver
         webelement = self()
