@@ -19,6 +19,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+from typing import Union, Callable
 
 
 class TimeoutException(AssertionError):
@@ -30,6 +31,30 @@ class TimeoutException(AssertionError):
         return exception_msg
 
 
+# todo: should we extend it from SeleneError and make lazy in same way?
 class ConditionNotMatchedError(AssertionError):
     def __init__(self, message='condition not matched'):
         super().__init__(message)
+
+
+# todo: should we name it *Error or *Exception?
+#       (see
+#        https://www.python.org/dev/peps/pep-0008/#exception-names
+#        https://www.datacamp.com/community/tutorials/exception-handling-python
+#       )
+#       should we name it simply Error and allow to import as selene.Error ?
+#       should we name it SeleneError and still allow to import as selene.Error?
+class _SeleneError(AssertionError):
+    def __init__(self, message: Union[str, Callable[[], str]]):
+        self._render_message: Callable[[], str] = \
+            (lambda: message) if isinstance(message, str) else message
+
+    @property
+    def args(self):
+        return (self._render_message(),)
+
+    def __str__(self):
+        return self._render_message()
+
+    def __repr__(self):
+        return f"SeleneError: {self._render_message()}"

@@ -26,7 +26,7 @@ import re
 import warnings
 
 from abc import abstractmethod, ABC
-from typing import TypeVar, Union, List, Dict, Any, Callable
+from typing import TypeVar, Union, List, Dict, Any, Callable, Tuple
 
 from selenium.common.exceptions import (
     ElementNotVisibleException,
@@ -46,7 +46,7 @@ from selene.core.condition import Condition, not_
 from selene.core.locator import Locator
 
 from selene.common.helpers import to_by, flatten, is_absolute_url
-from selene.core.exceptions import TimeoutException
+from selene.core.exceptions import TimeoutException, _SeleneError
 
 E = TypeVar('E', bound='Assertable')
 R = TypeVar('R')
@@ -249,6 +249,29 @@ class Element(WaitingEntity):
         # todo: should we wrap it in wait or not?
         return driver.execute_script(script_on_self, webelement, *extra_args)
 
+    # todo: do we need this method?
+    #       do we really need to wrap script into function(element,args) here?
+    #       if yes... wouldn't it be better to use standard arguments name
+    #       instead of args?
+    #       for better integration with js support in jetbrains products?
+    def _execute_script(
+            self,
+            script_on_self_element_and_args: str,
+            *extra_args
+    ):
+        driver: WebDriver = self.config.driver
+        webelement = self()
+        # todo: should we wrap it in wait or not?
+        return driver.execute_script(
+            f'''
+                return (function(element, args) {{
+                    {script_on_self_element_and_args}
+                }})(arguments[0], arguments[1])
+            ''',
+            webelement,
+            extra_args
+        )
+
     def set_value(self, value: Union[str, int]) -> Element:
         # todo: should we move all commands like following or queries like in conditions - to separate py modules?
         # todo: should we make them webelement based (Callable[[WebElement], None]) instead of element based?
@@ -272,51 +295,72 @@ class Element(WaitingEntity):
         #       also it will make sense to make this behaviour configurable...
         return self
 
+    def _actual_visible_webelement_and_maybe_its_cover(
+            self,
+            center_x_offset=0,
+            center_y_offset=0
+    ) -> Tuple[WebElement, WebElement]:
+        # todo: will it be faster render outerHTML via lazy rendered SeleneError
+        #       instead of: throw `element ${element.outerHTML} is not visible`
+        #       in below js
+        results = self._execute_script(
+            '''
+                var centerXOffset = args[0];
+                var centerYOffset = args[1];
+
+                var isVisible = !!( 
+                    element.offsetWidth 
+                    || element.offsetHeight 
+                    || element.getClientRects().length 
+                ) && window.getComputedStyle(element).visibility !== 'hidden'
+
+                if (!isVisible) {
+                    throw `element ${element.outerHTML} is not visible`
+                }
+
+                var rect = element.getBoundingClientRect();
+                var x = rect.left + rect.width/2 + centerXOffset;
+                var y = rect.top + rect.height/2 + centerYOffset;
+
+                // TODO: now we return [element, null] 
+                //       in case of elementFromPoint returns null
+                //       (kind of – if we don't know what to do, 
+                //       let's at least not block the execution...)
+                //       rethink this... and handle the iframe case
+                //       read more in 
+// https://developer.mozilla.org/en-US/docs/Web/API/Document/elementFromPoint
+
+                var elementByXnY = document.elementFromPoint(x,y);
+                if (elementByXnY == null) {
+                    return [element, null];
+                }
+
+                var isNotOverlapped = element.isSameNode(elementByXnY);
+
+                return isNotOverlapped 
+                       ? [element, null]
+                       : [element, elementByXnY];
+            ''',
+            center_x_offset,
+            center_y_offset
+        )
+        webelement = results[0]
+        maybe_cover = results[1]
+
+        return webelement, maybe_cover
+
     @property
     def _actual_not_overlapped_webelement(self):
-        element = self()
-
-        element_html = re.sub('\\s+', ' ', element.get_attribute('outerHTML'))
-
-        def maybe_cover():
-            if not element.is_displayed():
-                raise ElementNotVisibleException(
-                    f'Element {element_html} is not visible'
-                )
-
-            window_position = self.config.driver.get_window_position()
-            element_position_x = int(
-                element.location['x']
-                + window_position['x']
-                + element.size['width'] / 2
-            )
-            element_position_y = int(
-                element.location['y']
-                + window_position['y']
-                + element.size['height'] / 2
-            )
-            element_from_point: WebElement = self.config.driver.execute_script(
-                '''
-                return document.elementFromPoint(arguments[0], arguments[1]);
-                ''',
-                element_position_x,
-                element_position_y,
+        webelement, maybe_cover = \
+            self._actual_visible_webelement_and_maybe_its_cover()
+        if maybe_cover is not None:
+            raise _SeleneError(
+                lambda: f'Element: {webelement.get_attribute("outerHTML")}\n'
+                        + '\tis overlapped by: '
+                        + maybe_cover.get_attribute("outerHTML")
             )
 
-            if element == element_from_point:
-                return None
-            else:
-                return element_from_point
-
-        if maybe_cover() is not None:
-            cover_html = re.sub(
-                '\\s+', ' ', maybe_cover().get_attribute('outerHTML')
-            )
-            raise ElementNotInteractableException(
-                f'Element {element_html} is overlapped by {cover_html}'
-            )
-
-        return element
+        return webelement
 
     def type(self, text: Union[str, int]) -> Element:
         def fn(element: Element):
@@ -436,7 +480,7 @@ class Element(WaitingEntity):
 
     def get_actual_webelement(self) -> WebElement:
         warnings.warn(
-            "considering to be deprecated; usel element as callabe instead, like: browser.element('#foo')()",
+            "considering to be deprecated; use element as callable instead, like: browser.element('#foo')()",
             PendingDeprecationWarning,
         )
         return self()
@@ -1600,6 +1644,7 @@ class Browser(WaitingEntity):
         return self.driver.find_element(by, value)
 
 
+# TODO: probably this was needed for migration from 1.0 to 2.0...
 from selene.core.conditions import (
     CollectionCondition,
     ElementCondition,

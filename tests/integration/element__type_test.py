@@ -92,8 +92,8 @@ def test_type_failure_when_overlapped(session_browser):
         assert time_spent >= 1
         browser.element('#text-field').should(have.value('before'))
         assert (
-            'Element <input id="text-field" value="before"> is overlapped by'
-            ' <div id="overlay"'
+            'Element: <input id="text-field" value="before">'
+            '\n\tis overlapped by: <div id="overlay"'
         ) in error.msg
 
 
@@ -150,8 +150,10 @@ def test_type_failure_when_invisible(session_browser):
         assert time_spent >= 1
         browser.element('#text-field').should(have.value('before'))
         assert (
-            'Element <input id="text-field" value="before" '
-            'style="display: none"> is not visible'
+            'Reason: JavascriptException: Message: javascript error: '
+            'element '
+            '<input id="text-field" value="before" style="display: none"> '
+            'is not visible\n'
         ) in error.msg
 
 
