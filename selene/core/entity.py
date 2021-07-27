@@ -255,7 +255,9 @@ class Element(WaitingEntity):
     #       instead of args?
     #       for better integration with js support in jetbrains products?
     def _execute_script(
-            self, script_on_self_element_and_args: str, *extra_args,
+            self,
+            script_on_self_element_and_args: str,
+            *extra_args,
     ):
         driver: WebDriver = self.config.driver
         webelement = self()
@@ -267,7 +269,7 @@ class Element(WaitingEntity):
                 }})(arguments[0], arguments[1])
             ''',
             webelement,
-            extra_args
+            extra_args,
         )
 
     def set_value(self, value: Union[str, int]) -> Element:
@@ -294,7 +296,7 @@ class Element(WaitingEntity):
         return self
 
     def _actual_visible_webelement_and_maybe_its_cover(
-            self, center_x_offset=0, center_y_offset=0
+        self, center_x_offset=0, center_y_offset=0
     ) -> Tuple[WebElement, WebElement]:
         # todo: will it be faster render outerHTML via lazy rendered SeleneError
         #       instead of: throw `element ${element.outerHTML} is not visible`
