@@ -255,9 +255,7 @@ class Element(WaitingEntity):
     #       instead of args?
     #       for better integration with js support in jetbrains products?
     def _execute_script(
-            self,
-            script_on_self_element_and_args: str,
-            *extra_args
+            self, script_on_self_element_and_args: str, *extra_args,
     ):
         driver: WebDriver = self.config.driver
         webelement = self()
@@ -296,9 +294,7 @@ class Element(WaitingEntity):
         return self
 
     def _actual_visible_webelement_and_maybe_its_cover(
-            self,
-            center_x_offset=0,
-            center_y_offset=0
+            self, center_x_offset=0, center_y_offset=0
     ) -> Tuple[WebElement, WebElement]:
         # todo: will it be faster render outerHTML via lazy rendered SeleneError
         #       instead of: throw `element ${element.outerHTML} is not visible`
@@ -308,10 +304,10 @@ class Element(WaitingEntity):
                 var centerXOffset = args[0];
                 var centerYOffset = args[1];
 
-                var isVisible = !!( 
-                    element.offsetWidth 
-                    || element.offsetHeight 
-                    || element.getClientRects().length 
+                var isVisible = !!(
+                    element.offsetWidth
+                    || element.offsetHeight
+                    || element.getClientRects().length
                 ) && window.getComputedStyle(element).visibility !== 'hidden'
 
                 if (!isVisible) {
@@ -322,12 +318,12 @@ class Element(WaitingEntity):
                 var x = rect.left + rect.width/2 + centerXOffset;
                 var y = rect.top + rect.height/2 + centerYOffset;
 
-                // TODO: now we return [element, null] 
+                // TODO: now we return [element, null]
                 //       in case of elementFromPoint returns null
-                //       (kind of – if we don't know what to do, 
+                //       (kind of – if we don't know what to do,
                 //       let's at least not block the execution...)
                 //       rethink this... and handle the iframe case
-                //       read more in 
+                //       read more in
 // https://developer.mozilla.org/en-US/docs/Web/API/Document/elementFromPoint
 
                 var elementByXnY = document.elementFromPoint(x,y);
@@ -337,12 +333,12 @@ class Element(WaitingEntity):
 
                 var isNotOverlapped = element.isSameNode(elementByXnY);
 
-                return isNotOverlapped 
+                return isNotOverlapped
                        ? [element, null]
                        : [element, elementByXnY];
             ''',
             center_x_offset,
-            center_y_offset
+            center_y_offset,
         )
         webelement = results[0]
         maybe_cover = results[1]
@@ -351,13 +347,15 @@ class Element(WaitingEntity):
 
     @property
     def _actual_not_overlapped_webelement(self):
-        webelement, maybe_cover = \
-            self._actual_visible_webelement_and_maybe_its_cover()
+        (
+            webelement,
+            maybe_cover,
+        ) = self._actual_visible_webelement_and_maybe_its_cover()
         if maybe_cover is not None:
             raise _SeleneError(
                 lambda: f'Element: {webelement.get_attribute("outerHTML")}\n'
-                        + '\tis overlapped by: '
-                        + maybe_cover.get_attribute("outerHTML")
+                + '\tis overlapped by: '
+                + maybe_cover.get_attribute("outerHTML")
             )
 
         return webelement

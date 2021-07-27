@@ -46,8 +46,9 @@ class ConditionNotMatchedError(AssertionError):
 #       should we name it SeleneError and still allow to import as selene.Error?
 class _SeleneError(AssertionError):
     def __init__(self, message: Union[str, Callable[[], str]]):
-        self._render_message: Callable[[], str] = \
+        self._render_message: Callable[[], str] = (
             (lambda: message) if isinstance(message, str) else message
+        )
 
     @property
     def args(self):
