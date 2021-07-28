@@ -149,6 +149,7 @@ class SharedConfig(Config):
         base_url: str = '',
         set_value_by_js: bool = False,
         type_by_js: bool = False,
+        wait_for_no_overlap_found_by_js: bool = False,
         window_width: Optional[int] = None,
         window_height: Optional[int] = None,
         hook_wait_failure: Optional[
@@ -218,6 +219,7 @@ class SharedConfig(Config):
             base_url=base_url,
             set_value_by_js=set_value_by_js,
             type_by_js=type_by_js,
+            wait_for_no_overlap_found_by_js=wait_for_no_overlap_found_by_js,
             window_width=window_width,
             window_height=window_height,
             hook_wait_failure=hook_wait_failure,
@@ -384,6 +386,10 @@ PageSource: file://{path}'''
     @Config.type_by_js.setter
     def type_by_js(self, value: bool):
         self._type_by_js = value
+
+    @Config.wait_for_no_overlap_found_by_js.setter
+    def wait_for_no_overlap_found_by_js(self, value: bool):
+        self._wait_for_no_overlap_found_by_js = value
 
     @Config.window_width.setter
     def window_width(self, value: Optional[int]):
