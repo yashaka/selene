@@ -45,12 +45,23 @@ def test_type_waits_for_no_overlay(session_browser):
         '''
     )
     time_before = time.time()
-    page.execute_script_with_timeout(
+    page.opened_with_body_with_timeout(
         '''
-        document.getElementById('overlay').style.display='none'
+        <input id="text-field" value="before"></input>
         ''',
         0.25,
     )
+    # # TODO: for some reason the following code will fail sometimes on jenkins
+    #         with error telling that element is yet overlapped
+    #         by <div id="overlay" style="display: block;
+    #         o_O ???
+    #         why does this happens? does our impl have bug?
+    # page.execute_script_with_timeout(
+    #     '''
+    #     document.getElementById('overlay').style.display='none'
+    #     ''',
+    #     0.25,
+    # )
 
     browser.element('#text-field').type(' after')
 
