@@ -276,12 +276,30 @@ class Element(WaitingEntity):
         # todo: should we move all commands like following or queries like in conditions - to separate py modules?
         # todo: should we make them webelement based (Callable[[WebElement], None]) instead of element based?
         def fn(element: Element):
-            webelement = element()
+            webelement = (
+                element._actual_not_overlapped_webelement
+                if self.config.wait_for_no_overlap_found_by_js
+                else element()
+            )
             webelement.clear()  # todo: change to impl based not on clear, because clear generates post-events...
             webelement.send_keys(str(value))
 
         from selene.core import command
 
+        # todo: should we log the webelement source in the command name below?
+        #       i.e. change from:
+        #
+        #   else Command(f'set value: {value}', fn)
+        #
+        #       to more low level:
+        #
+        #   else (
+        #       Command(f'actual_not_overlapped_webelement.clear().send_keys({value})', fn)
+        #       if self.config.wait_for_no_overlap_found_by_js
+        #       else
+        #       Command(f'actual_webelement.clear().send_keys({value})', fn)
+        #   )
+        #
         self.wait.for_(
             command.js.set_value(value)
             if self.config.set_value_by_js
@@ -381,9 +399,16 @@ class Element(WaitingEntity):
         return self
 
     def press(self, *keys) -> Element:
-        self.wait.command(
-            f'press keys: {keys}', lambda element: element().send_keys(*keys)
-        )
+        def fn(element: Element):
+            webelement = (
+                element._actual_not_overlapped_webelement
+                if self.config.wait_for_no_overlap_found_by_js
+                else element()
+            )
+            webelement.send_keys(*keys)
+
+        self.wait.command(f'press keys: {keys}', fn)
+
         return self
 
     def press_enter(self) -> Element:
@@ -396,11 +421,29 @@ class Element(WaitingEntity):
         return self.press(Keys.TAB)
 
     def clear(self) -> Element:
-        self.wait.command('clear', lambda element: element().clear())
+        def fn(element: Element):
+            webelement = (
+                element._actual_not_overlapped_webelement
+                if self.config.wait_for_no_overlap_found_by_js
+                else element()
+            )
+            webelement.clear()
+
+        self.wait.command('clear', fn)
+
         return self
 
     def submit(self) -> Element:
-        self.wait.command('submit', lambda element: element().submit())
+        def fn(element: Element):
+            webelement = (
+                element._actual_not_overlapped_webelement
+                if self.config.wait_for_no_overlap_found_by_js
+                else element()
+            )
+            webelement.submit()
+
+        self.wait.command('submit', fn)
+
         return self
 
     # todo: do we need config.click_by_js?
@@ -424,26 +467,47 @@ class Element(WaitingEntity):
 
     def double_click(self) -> Element:
         actions: ActionChains = ActionChains(self.config.driver)
-        self.wait.command(
-            'double click',
-            lambda element: actions.double_click(element()).perform(),
-        )
+
+        def fn(element: Element):
+            webelement = (
+                element._actual_not_overlapped_webelement
+                if self.config.wait_for_no_overlap_found_by_js
+                else element()
+            )
+            actions.double_click(webelement).perform()
+
+        self.wait.command('double click', fn)
+
         return self
 
     def context_click(self) -> Element:
         actions: ActionChains = ActionChains(self.config.driver)
-        self.wait.command(
-            'context click',
-            lambda element: actions.context_click(element()).perform(),
-        )
+
+        def fn(element: Element):
+            webelement = (
+                element._actual_not_overlapped_webelement
+                if self.config.wait_for_no_overlap_found_by_js
+                else element()
+            )
+            actions.context_click(webelement).perform()
+
+        self.wait.command('context click', fn)
+
         return self
 
     def hover(self) -> Element:
         actions: ActionChains = ActionChains(self.config.driver)
-        self.wait.command(
-            'hover',
-            lambda element: actions.move_to_element(element()).perform(),
-        )
+
+        def fn(element: Element):
+            webelement = (
+                element._actual_not_overlapped_webelement
+                if self.config.wait_for_no_overlap_found_by_js
+                else element()
+            )
+            actions.move_to_element(webelement).perform()
+
+        self.wait.command('hover', fn)
+
         return self
 
     # todo: should we reflect queries as self methods? or not...

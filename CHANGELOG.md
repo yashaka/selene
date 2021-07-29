@@ -78,9 +78,19 @@
   - should we make original config (not shared) mutable?
   
 ## 2.0.0a40
+!!!this release should be beta-tested!!!
+
 - added browser.config.wait_for_no_overlap_found_by_js (=False by default)
   - making following element methods to wait for no overlap:
-    - type
+    - type(text)
+    - set_value(value)
+    - press(*keys)
+    - clear()
+    - submit()
+    - double_click()
+      (normal .click() does not need it because have such waiting built in)
+    - context_click()
+    - hover()
 
 ## 2.0.0a39 (released on 26.07.2021)
 - Upgrade [webdriver-manager](https://github.com/SergeyPirogov/webdriver_manager) 3.4.1 -> 3.4.2 ([see changes](https://github.com/SergeyPirogov/webdriver_manager/compare/v3.4.1...v.3.4.2))
