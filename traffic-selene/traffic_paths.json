@@ -8,14 +8,14 @@
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 55,
+    "count": 54,
     "uniques": 28
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 30,
-    "uniques": 17
+    "count": 31,
+    "uniques": 18
   },
   {
     "path": "/yashaka/selene/releases",
@@ -26,14 +26,20 @@
   {
     "path": "/yashaka/selene/issues/128",
     "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 26,
-    "uniques": 19
+    "count": 29,
+    "uniques": 22
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 25,
-    "uniques": 17
+    "count": 24,
+    "uniques": 16
+  },
+  {
+    "path": "/yashaka/selene/actions",
+    "title": "Actions · yashaka/selene",
+    "count": 21,
+    "uniques": 2
   },
   {
     "path": "/yashaka/selene/tree/master/selene/core",
@@ -44,19 +50,13 @@
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 19,
-    "uniques": 10
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene/support",
-    "title": "selene/selene/support at master · yashaka/selene · GitHub",
-    "count": 19,
+    "count": 20,
     "uniques": 9
   },
   {
-    "path": "/yashaka/selene/actions",
-    "title": "Actions · yashaka/selene",
+    "path": "/yashaka/selene/blob/master/CHANGELOG.md",
+    "title": "selene/CHANGELOG.md at master · yashaka/selene · GitHub",
     "count": 19,
-    "uniques": 2
+    "uniques": 10
   }
 ]
