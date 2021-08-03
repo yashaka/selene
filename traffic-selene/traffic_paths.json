@@ -2,38 +2,44 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 480,
-    "uniques": 256
+    "count": 419,
+    "uniques": 211
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 47,
-    "uniques": 26
+    "count": 42,
+    "uniques": 24
   },
   {
     "path": "/yashaka/selene/releases",
     "title": "Releases · yashaka/selene · GitHub",
-    "count": 38,
-    "uniques": 10
+    "count": 39,
+    "uniques": 11
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 36,
-    "uniques": 21
+    "count": 38,
+    "uniques": 22
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
+    "count": 30,
+    "uniques": 17
+  },
+  {
+    "path": "/yashaka/selene/actions",
+    "title": "Actions · yashaka/selene",
     "count": 27,
-    "uniques": 15
+    "uniques": 3
   },
   {
     "path": "/yashaka/selene/issues/128",
     "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 25,
-    "uniques": 19
+    "count": 26,
+    "uniques": 20
   },
   {
     "path": "/yashaka/selene/search",
@@ -42,21 +48,15 @@
     "uniques": 9
   },
   {
-    "path": "/yashaka/selene/actions",
-    "title": "Actions · yashaka/selene",
-    "count": 22,
-    "uniques": 2
-  },
-  {
-    "path": "/yashaka/selene/blob/master/selene/browser.py",
-    "title": "selene/browser.py at master · yashaka/selene · GitHub",
-    "count": 20,
-    "uniques": 16
-  },
-  {
     "path": "/yashaka/selene/blob/master/CHANGELOG.md",
     "title": "selene/CHANGELOG.md at master · yashaka/selene · GitHub",
     "count": 19,
     "uniques": 9
+  },
+  {
+    "path": "/yashaka/selene/blob/master/selene/browser.py",
+    "title": "selene/browser.py at master · yashaka/selene · GitHub",
+    "count": 18,
+    "uniques": 14
   }
 ]
