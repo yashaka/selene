@@ -2,14 +2,20 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 319,
-    "uniques": 169
+    "count": 330,
+    "uniques": 178
   },
   {
     "path": "/yashaka/selene/search",
     "title": "Search · should(be.not_ · GitHub",
-    "count": 37,
-    "uniques": 6
+    "count": 33,
+    "uniques": 4
+  },
+  {
+    "path": "/yashaka/selene/issues/128",
+    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
+    "count": 23,
+    "uniques": 18
   },
   {
     "path": "/yashaka/selene/issues",
@@ -18,28 +24,22 @@
     "uniques": 15
   },
   {
-    "path": "/yashaka/selene/tree/master/tests",
-    "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 22,
-    "uniques": 16
-  },
-  {
-    "path": "/yashaka/selene/issues/128",
-    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 21,
-    "uniques": 16
-  },
-  {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 20,
-    "uniques": 15
+    "count": 19,
+    "uniques": 14
+  },
+  {
+    "path": "/yashaka/selene/tree/master/tests",
+    "title": "selene/tests at master · yashaka/selene · GitHub",
+    "count": 18,
+    "uniques": 12
   },
   {
     "path": "/yashaka/selene/issues/202",
     "title": "Allure. How to attach selene screenshots to allure report? · Issue #202 · yas...",
-    "count": 15,
-    "uniques": 7
+    "count": 16,
+    "uniques": 8
   },
   {
     "path": "/yashaka/selene/issues/188",
@@ -56,7 +56,7 @@
   {
     "path": "/yashaka/selene/blob/master/CHANGELOG.md",
     "title": "selene/CHANGELOG.md at master · yashaka/selene · GitHub",
-    "count": 11,
-    "uniques": 9
+    "count": 12,
+    "uniques": 10
   }
 ]
