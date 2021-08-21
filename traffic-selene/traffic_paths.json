@@ -2,8 +2,20 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 283,
-    "uniques": 169
+    "count": 330,
+    "uniques": 190
+  },
+  {
+    "path": "/yashaka/selene/tree/master/selene",
+    "title": "selene/selene at master · yashaka/selene · GitHub",
+    "count": 31,
+    "uniques": 16
+  },
+  {
+    "path": "/yashaka/selene/issues",
+    "title": "Issues · yashaka/selene · GitHub",
+    "count": 29,
+    "uniques": 18
   },
   {
     "path": "/yashaka/selene/search",
@@ -12,16 +24,10 @@
     "uniques": 3
   },
   {
-    "path": "/yashaka/selene/tree/master/selene",
-    "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 26,
-    "uniques": 14
-  },
-  {
     "path": "/yashaka/selene/blob/master/selene/browser.py",
     "title": "selene/browser.py at master · yashaka/selene · GitHub",
-    "count": 21,
-    "uniques": 9
+    "count": 24,
+    "uniques": 10
   },
   {
     "path": "/yashaka/selene/issues/128",
@@ -30,10 +36,10 @@
     "uniques": 16
   },
   {
-    "path": "/yashaka/selene/issues",
-    "title": "Issues · yashaka/selene · GitHub",
-    "count": 16,
-    "uniques": 12
+    "path": "/yashaka/selene/issues/313",
+    "title": "improve tests structure (visibility and clearness of arrange/act/assert block...",
+    "count": 14,
+    "uniques": 6
   },
   {
     "path": "/yashaka/selene/issues/202",
@@ -42,21 +48,15 @@
     "uniques": 8
   },
   {
-    "path": "/yashaka/selene/issues/188",
-    "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
-    "count": 10,
-    "uniques": 8
+    "path": "/yashaka/selene/issues/288",
+    "title": "upgrade to python 3.7 · Issue #288 · yashaka/selene",
+    "count": 13,
+    "uniques": 5
   },
   {
     "path": "/yashaka/selene/blob/master/CHANGELOG.md",
     "title": "selene/CHANGELOG.md at master · yashaka/selene · GitHub",
-    "count": 9,
-    "uniques": 5
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene/core",
-    "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 9,
-    "uniques": 5
+    "count": 12,
+    "uniques": 8
   }
 ]
