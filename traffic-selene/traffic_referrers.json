@@ -1,18 +1,18 @@
 [
   {
     "referrer": "Google",
-    "count": 150,
-    "uniques": 99
+    "count": 158,
+    "uniques": 105
   },
   {
     "referrer": "github.com",
-    "count": 46,
-    "uniques": 23
+    "count": 56,
+    "uniques": 29
   },
   {
     "referrer": "automated-testing.info",
-    "count": 16,
-    "uniques": 12
+    "count": 23,
+    "uniques": 14
   },
   {
     "referrer": "DuckDuckGo",
@@ -21,13 +21,13 @@
   },
   {
     "referrer": "qiita.com",
-    "count": 9,
-    "uniques": 6
+    "count": 11,
+    "uniques": 7
   },
   {
     "referrer": "yandex.ru",
-    "count": 8,
-    "uniques": 8
+    "count": 9,
+    "uniques": 9
   },
   {
     "referrer": "Bing",
@@ -41,7 +41,7 @@
   },
   {
     "referrer": "autotest.how",
-    "count": 4,
+    "count": 5,
     "uniques": 1
   },
   {
