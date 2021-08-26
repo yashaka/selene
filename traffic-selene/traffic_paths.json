@@ -3,7 +3,19 @@
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
     "count": 344,
-    "uniques": 189
+    "uniques": 185
+  },
+  {
+    "path": "/yashaka/selene/tree/master/selene",
+    "title": "selene/selene at master · yashaka/selene · GitHub",
+    "count": 37,
+    "uniques": 18
+  },
+  {
+    "path": "/yashaka/selene/issues",
+    "title": "Issues · yashaka/selene · GitHub",
+    "count": 35,
+    "uniques": 24
   },
   {
     "path": "/yashaka/selene/search",
@@ -12,28 +24,16 @@
     "uniques": 5
   },
   {
-    "path": "/yashaka/selene/issues",
-    "title": "Issues · yashaka/selene · GitHub",
-    "count": 33,
-    "uniques": 23
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene",
-    "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 33,
-    "uniques": 16
-  },
-  {
     "path": "/yashaka/selene/blob/master/selene/browser.py",
     "title": "selene/browser.py at master · yashaka/selene · GitHub",
-    "count": 26,
-    "uniques": 11
+    "count": 22,
+    "uniques": 10
   },
   {
     "path": "/yashaka/selene/issues/128",
     "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 18,
-    "uniques": 15
+    "count": 16,
+    "uniques": 13
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
@@ -48,15 +48,15 @@
     "uniques": 6
   },
   {
+    "path": "/yashaka/selene/tree/master/selene/core",
+    "title": "selene/selene/core at master · yashaka/selene · GitHub",
+    "count": 13,
+    "uniques": 8
+  },
+  {
     "path": "/yashaka/selene/issues/313",
     "title": "improve tests structure (visibility and clearness of arrange/act/assert block...",
     "count": 13,
     "uniques": 6
-  },
-  {
-    "path": "/yashaka/selene/issues/188",
-    "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
-    "count": 12,
-    "uniques": 10
   }
 ]
