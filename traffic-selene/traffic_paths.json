@@ -2,38 +2,38 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 344,
-    "uniques": 185
+    "count": 341,
+    "uniques": 182
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 37,
-    "uniques": 18
+    "count": 42,
+    "uniques": 21
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 35,
-    "uniques": 24
+    "count": 34,
+    "uniques": 23
   },
   {
     "path": "/yashaka/selene/search",
     "title": "Search · title · GitHub",
-    "count": 35,
+    "count": 31,
     "uniques": 5
   },
   {
     "path": "/yashaka/selene/blob/master/selene/browser.py",
     "title": "selene/browser.py at master · yashaka/selene · GitHub",
-    "count": 22,
+    "count": 17,
     "uniques": 10
   },
   {
-    "path": "/yashaka/selene/issues/128",
-    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 16,
-    "uniques": 13
+    "path": "/yashaka/selene/issues/288",
+    "title": "upgrade to python 3.7 · Issue #288 · yashaka/selene",
+    "count": 15,
+    "uniques": 6
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
@@ -42,16 +42,16 @@
     "uniques": 11
   },
   {
-    "path": "/yashaka/selene/issues/288",
-    "title": "upgrade to python 3.7 · Issue #288 · yashaka/selene",
-    "count": 14,
-    "uniques": 6
+    "path": "/yashaka/selene/issues/128",
+    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
+    "count": 13,
+    "uniques": 10
   },
   {
-    "path": "/yashaka/selene/tree/master/selene/core",
-    "title": "selene/selene/core at master · yashaka/selene · GitHub",
+    "path": "/yashaka/selene/issues/188",
+    "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
     "count": 13,
-    "uniques": 8
+    "uniques": 10
   },
   {
     "path": "/yashaka/selene/issues/313",
