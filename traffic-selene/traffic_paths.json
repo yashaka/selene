@@ -2,44 +2,44 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 350,
-    "uniques": 188
-  },
-  {
-    "path": "/yashaka/selene/issues",
-    "title": "Issues · yashaka/selene · GitHub",
-    "count": 48,
-    "uniques": 27
+    "count": 315,
+    "uniques": 168
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 44,
-    "uniques": 25
+    "count": 41,
+    "uniques": 22
   },
   {
-    "path": "/yashaka/selene/issues/313",
-    "title": "improve tests structure (visibility and clearness of arrange/act/assert block...",
+    "path": "/yashaka/selene/issues",
+    "title": "Issues · yashaka/selene · GitHub",
+    "count": 36,
+    "uniques": 21
+  },
+  {
+    "path": "/yashaka/selene/tree/master/selene/common",
+    "title": "selene/selene/common at master · yashaka/selene · GitHub",
     "count": 16,
-    "uniques": 9
-  },
-  {
-    "path": "/yashaka/selene/blob/master/selene/browser.py",
-    "title": "selene/browser.py at master · yashaka/selene · GitHub",
-    "count": 14,
-    "uniques": 11
-  },
-  {
-    "path": "/yashaka/selene/issues/368",
-    "title": "Improving test code structure for the file tests/integration/collection__len_...",
-    "count": 14,
-    "uniques": 11
+    "uniques": 8
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 14,
+    "count": 15,
     "uniques": 10
+  },
+  {
+    "path": "/yashaka/selene/issues/128",
+    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
+    "count": 14,
+    "uniques": 12
+  },
+  {
+    "path": "/yashaka/selene/issues/188",
+    "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
+    "count": 14,
+    "uniques": 12
   },
   {
     "path": "/yashaka/selene/tree/master/selene/support",
@@ -48,15 +48,15 @@
     "uniques": 8
   },
   {
-    "path": "/yashaka/selene/commits/master",
-    "title": "Commits · yashaka/selene · GitHub",
-    "count": 14,
-    "uniques": 7
+    "path": "/yashaka/selene/issues/368",
+    "title": "Improving test code structure for the file tests/integration/collection__len_...",
+    "count": 12,
+    "uniques": 11
   },
   {
-    "path": "/yashaka/selene/tree/master/selene/common",
-    "title": "selene/selene/common at master · yashaka/selene · GitHub",
-    "count": 14,
-    "uniques": 7
+    "path": "/yashaka/selene/tree/master/selene/core",
+    "title": "selene/selene/core at master · yashaka/selene · GitHub",
+    "count": 12,
+    "uniques": 11
   }
 ]
