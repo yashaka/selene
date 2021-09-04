@@ -1,13 +1,13 @@
 [
   {
     "referrer": "Google",
-    "count": 134,
-    "uniques": 91
+    "count": 150,
+    "uniques": 102
   },
   {
     "referrer": "github.com",
-    "count": 39,
-    "uniques": 25
+    "count": 44,
+    "uniques": 27
   },
   {
     "referrer": "automated-testing.info",
@@ -15,13 +15,13 @@
     "uniques": 7
   },
   {
-    "referrer": "qiita.com",
-    "count": 8,
-    "uniques": 5
+    "referrer": "selene-docs-test.readthedocs.io",
+    "count": 9,
+    "uniques": 7
   },
   {
-    "referrer": "selene-docs-test.readthedocs.io",
-    "count": 7,
+    "referrer": "qiita.com",
+    "count": 8,
     "uniques": 5
   },
   {
@@ -36,16 +36,16 @@
   },
   {
     "referrer": "autotest.how",
-    "count": 4,
+    "count": 3,
     "uniques": 2
   },
   {
-    "referrer": "km.woa.com",
+    "referrer": "wiki.ptsecurity.com",
     "count": 1,
     "uniques": 1
   },
   {
-    "referrer": "yandex.ru",
+    "referrer": "l.facebook.com",
     "count": 1,
     "uniques": 1
   }
