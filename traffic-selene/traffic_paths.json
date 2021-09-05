@@ -2,14 +2,14 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 305,
-    "uniques": 170
+    "count": 307,
+    "uniques": 172
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 41,
-    "uniques": 22
+    "count": 42,
+    "uniques": 23
   },
   {
     "path": "/yashaka/selene/issues",
@@ -18,16 +18,22 @@
     "uniques": 13
   },
   {
-    "path": "/yashaka/selene/issues/188",
-    "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
+    "path": "/yashaka/selene/tree/master/selene/common",
+    "title": "selene/selene/common at master · yashaka/selene · GitHub",
+    "count": 17,
+    "uniques": 9
+  },
+  {
+    "path": "/yashaka/selene/issues/128",
+    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
     "count": 16,
     "uniques": 14
   },
   {
-    "path": "/yashaka/selene/tree/master/selene/common",
-    "title": "selene/selene/common at master · yashaka/selene · GitHub",
-    "count": 16,
-    "uniques": 8
+    "path": "/yashaka/selene/issues/188",
+    "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
+    "count": 15,
+    "uniques": 13
   },
   {
     "path": "/yashaka/selene/tree/master/selene/support",
@@ -42,20 +48,14 @@
     "uniques": 9
   },
   {
-    "path": "/yashaka/selene/issues/128",
-    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 14,
-    "uniques": 12
+    "path": "/yashaka/selene/tree/master/selene/api",
+    "title": "selene/selene/api at master · yashaka/selene · GitHub",
+    "count": 12,
+    "uniques": 6
   },
   {
     "path": "/yashaka/selene/releases",
     "title": "Releases · yashaka/selene · GitHub",
-    "count": 12,
-    "uniques": 4
-  },
-  {
-    "path": "/yashaka/selene/search",
-    "title": "Search · should(have.size(0) · GitHub",
     "count": 12,
     "uniques": 4
   }
