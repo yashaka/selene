@@ -1,5 +1,3 @@
-# coding=utf-8
-
 # MIT License
 #
 # Copyright (c) 2015-2021 Iakiv Kramarenko
@@ -42,7 +40,7 @@ class TestTodoMVC:
         browser.open('https://todomvc4tasj.herokuapp.com/')
         clear_completed_js_loaded = "return $._data($('#clear-completed').get(0), 'events').hasOwnProperty('click')"
         browser.wait_to(have.js_returned(True, clear_completed_js_loaded))
-        browser.wait_to(have.title(u'TroopJS • TodoMVC'))
+        browser.wait_to(have.title('TroopJS • TodoMVC'))
 
         browser.element('#new-todo').should(be.enabled).set_value(
             'a'

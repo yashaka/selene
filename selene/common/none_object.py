@@ -20,10 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from builtins import object
 
-
-class NoneObject(object):
+class NoneObject:
     def __init__(self, description):
         # type: (str) -> None
         self.description = description

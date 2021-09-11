@@ -77,7 +77,7 @@ def task(task_text, is_completed=False):
 
 
 def given_active(*task_texts):
-    return given(*[task(text) for text in task_texts])
+    return given(*(task(text) for text in task_texts))
 
 
 when_active = given_active

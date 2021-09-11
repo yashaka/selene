@@ -74,7 +74,7 @@ def test_can_make_screenshot_with_default_name():
 
     expected = os.path.join(
         get_default_screenshot_folder(),
-        'screen_{id}.png'.format(id=get_screen_id()),
+        f'screen_{get_screen_id()}.png',
     )
     assert expected == actual
     assert os.path.exists(actual)
@@ -98,7 +98,7 @@ def test_can_save_screenshot_to_custom_folder_specified_through_config():
 
     expected = os.path.join(
         get_default_screenshot_folder(),
-        'screen_{id}.png'.format(id=get_screen_id()),
+        f'screen_{get_screen_id()}.png',
     )
     assert expected == actual
     assert os.path.isfile(actual)
@@ -112,9 +112,7 @@ def test_can_save_screenshot_to_custom_folder_specified_as_parameter():
     open_url(start_page)
     actual = take_screenshot(path=screenshot_folder)
 
-    expected = os.path.join(
-        screenshot_folder, 'screen_{id}.png'.format(id=get_screen_id())
-    )
+    expected = os.path.join(screenshot_folder, f'screen_{get_screen_id()}.png')
     assert expected == actual
     assert os.path.isfile(actual)
     assert os.path.exists(actual)
@@ -144,7 +142,7 @@ def test_can_make_screenshot_automatically():
         s("#selene_link").should_have(exact_text("Selen site"))
     expected = os.path.join(
         get_default_screenshot_folder(),
-        'screen_{id}.png'.format(id=get_screen_id()),
+        f'screen_{get_screen_id()}.png',
     )
     assert os.path.exists(expected)
 
