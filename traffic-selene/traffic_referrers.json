@@ -1,13 +1,13 @@
 [
   {
     "referrer": "Google",
-    "count": 151,
-    "uniques": 94
+    "count": 171,
+    "uniques": 105
   },
   {
     "referrer": "github.com",
-    "count": 47,
-    "uniques": 28
+    "count": 50,
+    "uniques": 29
   },
   {
     "referrer": "qiita.com",
@@ -45,7 +45,7 @@
     "uniques": 2
   },
   {
-    "referrer": "cnblogs.com",
+    "referrer": "km.woa.com",
     "count": 1,
     "uniques": 1
   }
