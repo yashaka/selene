@@ -87,19 +87,19 @@ def create_tasks_with_selene_with_cash():
 def test_selene_is_almost_as_fast_selenium_with_research_and_initial_wait_for_visibility():
     selene_time = time_spent(create_tasks_with_selene_and_send_keys)
     selenium_time = time_spent(create_tasks_with_selenium_with_research)
-    print("%s vs %s" % (selene_time, selenium_time))
+    print(f"{selene_time} vs {selenium_time}")
     assert selene_time < 1.25 * selenium_time
 
 
 def test_selene_is_from_32_to_75_percents_slower_than_raw_selenium():
     selene_time = time_spent(create_tasks_with_selene_and_send_keys)
     selenium_time = time_spent(create_tasks_with_raw_selenium)
-    print("%s vs %s" % (selene_time, selenium_time))
+    print(f"{selene_time} vs {selenium_time}")
     assert selene_time <= 1.75 * selenium_time
 
 
 def test_cashed_selene_is_almost_as_fast_raw_selenium():
     selene_time = time_spent(create_tasks_with_selene_with_cash)
     selenium_time = time_spent(create_tasks_with_raw_selenium)
-    print("%s vs %s" % (selene_time, selenium_time))
+    print(f"{selene_time} vs {selenium_time}")
     assert selene_time < 1.25 * selenium_time

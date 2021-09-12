@@ -62,7 +62,7 @@ def merge(*dict_args):
     return result
 
 
-class Fields(object):  # todo: rename to Fields?
+class Fields:  # todo: rename to Fields?
     def __init__(self, element):
         self._element = element
 
@@ -85,7 +85,7 @@ class Fields(object):  # todo: rename to Fields?
         return self
 
 
-class Order(object):
+class Order:
     def __init__(self):
         self.details = self.Details(browser.element('#order_details'))
         self.add_item = browser.element('#add_item')
@@ -98,7 +98,7 @@ class Order(object):
         self.add_item.click()
         return self.items[-1].fill_with(**name_and_other_data)
 
-    class Details(object):
+    class Details:
         def __init__(self, container):
             self._container = container
             self.first_name = container.s('[name="first_name"]')
@@ -110,14 +110,14 @@ class Order(object):
             Fields(self).fill_with(opts, *other_opts, **opts_as_kwargs)
             return self
 
-    class Items(object):
+    class Items:
         def __init__(self, elements):
             self._elements = elements
 
         def __getitem__(self, item):
             return self.Item(self._elements[item])
 
-        class Item(object):
+        class Item:
             def __init__(self, container):
                 self._container = container
                 self.name = container.s('.item_name')
@@ -150,7 +150,7 @@ class Order(object):
                 self.advanced_options_selector.apply_filtered_options.click()
                 return self
 
-            class AdvancedOptionsSelector(object):
+            class AdvancedOptionsSelector:
                 def __init__(self, container):
                     self._container = container
                     self.add_options_filter = container.s(
@@ -174,14 +174,14 @@ class Order(object):
                 def should_be_hidden(self):
                     self._container.should(be.hidden)
 
-                class OptionsFilter(object):
+                class OptionsFilter:
                     def __init__(self, container):
                         self.option_type = SelectList(
                             container.s('.options_scope_type')
                         )
                         self.scope = SelectList(container.s('.options_scope'))
 
-            class AdvancedOptions(object):
+            class AdvancedOptions:
                 def __init__(self, elements):
                     self._elements = elements
 
@@ -191,7 +191,7 @@ class Order(object):
                 def should_be_empty(self):
                     self._elements.should(have.size(0))
 
-            class AdvancedOption(object):
+            class AdvancedOption:
                 def __init__(self):
                     # todo: implement...
                     pass
