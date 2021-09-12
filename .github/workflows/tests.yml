@@ -61,7 +61,7 @@ jobs:
           name: selene-codecov # optional
           fail_ci_if_error: true # optional (default = false)
           verbose: true
-        if: hashFiles('./coverage.xml') != '' && ${{ always() }}
+        if: hashFiles('./coverage.xml') != ''
 
       # can be organized better
       - name: Upload pytest test results
@@ -71,4 +71,4 @@ jobs:
           path: |
             Artifacts
             coverage.xml
-        if: ${{ always() }}
+        if: hashFiles('./coverage.xml') != '' || hashFiles('./Artifacts') != ''
