@@ -2,14 +2,26 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 270,
-    "uniques": 168
+    "count": 310,
+    "uniques": 182
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
     "count": 37,
     "uniques": 16
+  },
+  {
+    "path": "/yashaka/selene/issues",
+    "title": "Issues · yashaka/selene · GitHub",
+    "count": 30,
+    "uniques": 11
+  },
+  {
+    "path": "/yashaka/selene/pulls",
+    "title": "Pull requests · yashaka/selene · GitHub",
+    "count": 28,
+    "uniques": 4
   },
   {
     "path": "/yashaka/selene/issues/128",
@@ -24,10 +36,16 @@
     "uniques": 8
   },
   {
-    "path": "/yashaka/selene/issues",
-    "title": "Issues · yashaka/selene · GitHub",
-    "count": 17,
-    "uniques": 10
+    "path": "/yashaka/selene/pull/369",
+    "title": "[#288] upgrade selene codebase to python3.7 with pyupgrade. by aleksandr-kotl...",
+    "count": 19,
+    "uniques": 2
+  },
+  {
+    "path": "/yashaka/selene/actions",
+    "title": "Actions · yashaka/selene",
+    "count": 18,
+    "uniques": 3
   },
   {
     "path": "/yashaka/selene/tree/master/selene/core",
@@ -36,27 +54,9 @@
     "uniques": 7
   },
   {
-    "path": "/yashaka/selene/issues/188",
-    "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
-    "count": 11,
-    "uniques": 11
-  },
-  {
-    "path": "/yashaka/selene/blob/master/selene/browser.py",
-    "title": "selene/browser.py at master · yashaka/selene · GitHub",
-    "count": 11,
-    "uniques": 10
-  },
-  {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 11,
-    "uniques": 8
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene/api",
-    "title": "selene/selene/api at master · yashaka/selene · GitHub",
-    "count": 10,
-    "uniques": 5
+    "count": 12,
+    "uniques": 9
   }
 ]
