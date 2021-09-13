@@ -45,4 +45,5 @@ too-many-lines,
 superfluous-parens,
 super-init-not-called,
 reimported,
-multiple-statements
+multiple-statements,
+E1120
