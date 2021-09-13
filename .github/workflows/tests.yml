@@ -14,13 +14,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - uses: technote-space/get-diff-action@v4.1.1
+      - uses: technote-space/get-diff-action@v5
         with:
           PATTERNS: |
             +(selene|tests)/**/*.py
           FILES: |
             poetry.lock
-            tests.yml
 
       - name: Set up Python
         uses: actions/setup-python@v2
@@ -55,13 +54,13 @@ jobs:
 
       # can be improved by flags/options
       - name: Code Coverage
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v2
         with:
           file: ./coverage.xml # optional
           name: selene-codecov # optional
           fail_ci_if_error: true # optional (default = false)
           verbose: true
-        if: hashFiles('./coverage.xml') != ''
+        if: env.GIT_DIFF
 
       # can be organized better
       - name: Upload pytest test results
@@ -71,4 +70,4 @@ jobs:
           path: |
             Artifacts
             coverage.xml
-        if: hashFiles('./coverage.xml') != '' || hashFiles('./Artifacts') != ''
+        if: env.GIT_DIFF
