@@ -20,6 +20,7 @@ jobs:
             +(selene|tests)/**/*.py
           FILES: |
             poetry.lock
+            tests.yml
 
       - name: Set up Python
         uses: actions/setup-python@v2
