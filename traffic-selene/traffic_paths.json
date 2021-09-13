@@ -2,20 +2,14 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 310,
-    "uniques": 182
+    "count": 284,
+    "uniques": 168
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 37,
-    "uniques": 16
-  },
-  {
-    "path": "/yashaka/selene/issues",
-    "title": "Issues · yashaka/selene · GitHub",
-    "count": 30,
-    "uniques": 11
+    "count": 33,
+    "uniques": 13
   },
   {
     "path": "/yashaka/selene/pulls",
@@ -24,16 +18,22 @@
     "uniques": 4
   },
   {
-    "path": "/yashaka/selene/issues/128",
-    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 20,
-    "uniques": 17
+    "path": "/yashaka/selene/issues",
+    "title": "Issues · yashaka/selene · GitHub",
+    "count": 27,
+    "uniques": 9
   },
   {
     "path": "/yashaka/selene/search",
     "title": "Search · visible · GitHub",
     "count": 20,
     "uniques": 8
+  },
+  {
+    "path": "/yashaka/selene/issues/128",
+    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
+    "count": 19,
+    "uniques": 16
   },
   {
     "path": "/yashaka/selene/pull/369",
@@ -50,13 +50,13 @@
   {
     "path": "/yashaka/selene/tree/master/selene/core",
     "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 15,
-    "uniques": 7
+    "count": 14,
+    "uniques": 6
   },
   {
-    "path": "/yashaka/selene/tree/master/tests",
-    "title": "selene/tests at master · yashaka/selene · GitHub",
+    "path": "/yashaka/selene/pull/369/checks",
+    "title": "[#288] upgrade selene codebase to python3.7 with pyupgrade. by aleksandr-kotl...",
     "count": 12,
-    "uniques": 9
+    "uniques": 1
   }
 ]
