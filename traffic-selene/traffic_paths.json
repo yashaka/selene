@@ -2,8 +2,8 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 284,
-    "uniques": 168
+    "count": 312,
+    "uniques": 179
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
@@ -14,14 +14,26 @@
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 28,
+    "count": 30,
     "uniques": 4
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 27,
-    "uniques": 9
+    "count": 29,
+    "uniques": 10
+  },
+  {
+    "path": "/yashaka/selene/actions",
+    "title": "Actions · yashaka/selene",
+    "count": 26,
+    "uniques": 3
+  },
+  {
+    "path": "/yashaka/selene/pull/369",
+    "title": "[#288] upgrade selene codebase to python3.7 with pyupgrade. by aleksandr-kotl...",
+    "count": 23,
+    "uniques": 2
   },
   {
     "path": "/yashaka/selene/search",
@@ -36,27 +48,15 @@
     "uniques": 16
   },
   {
-    "path": "/yashaka/selene/pull/369",
-    "title": "[#288] upgrade selene codebase to python3.7 with pyupgrade. by aleksandr-kotl...",
-    "count": 19,
-    "uniques": 2
-  },
-  {
-    "path": "/yashaka/selene/actions",
-    "title": "Actions · yashaka/selene",
-    "count": 18,
-    "uniques": 3
-  },
-  {
     "path": "/yashaka/selene/tree/master/selene/core",
     "title": "selene/selene/core at master · yashaka/selene · GitHub",
     "count": 14,
     "uniques": 6
   },
   {
-    "path": "/yashaka/selene/pull/369/checks",
-    "title": "[#288] upgrade selene codebase to python3.7 with pyupgrade. by aleksandr-kotl...",
+    "path": "/yashaka/selene/tree/master/tests",
+    "title": "selene/tests at master · yashaka/selene · GitHub",
     "count": 12,
-    "uniques": 1
+    "uniques": 8
   }
 ]
