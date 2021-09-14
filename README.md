@@ -101,7 +101,7 @@ Given [pyenv](https://github.com/pyenv/pyenv) installed, installing needed versi
 
 ## Installation
 
-### poetry + pyenv (recommended)
+### via poetry + pyenv (recommended)
 
 GIVEN [poetry](https://poetry.eustace.io/) and [pyenv](https://github.com/pyenv/pyenv) installed ...
 
@@ -123,7 +123,7 @@ THEN
 
     $ poetry install
 
-### pip
+### via pip
 
 Latest recommended pre-release alpha version:
 
