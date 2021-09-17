@@ -2,20 +2,26 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 336,
-    "uniques": 176
+    "count": 383,
+    "uniques": 190
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 40,
-    "uniques": 13
+    "count": 68,
+    "uniques": 21
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 40,
+    "count": 43,
     "uniques": 6
+  },
+  {
+    "path": "/yashaka/selene/tree/master/selene",
+    "title": "selene/selene at master · yashaka/selene · GitHub",
+    "count": 36,
+    "uniques": 15
   },
   {
     "path": "/yashaka/selene/actions",
@@ -24,16 +30,16 @@
     "uniques": 3
   },
   {
-    "path": "/yashaka/selene/tree/master/selene",
-    "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 32,
-    "uniques": 12
-  },
-  {
     "path": "/yashaka/selene/pull/369",
     "title": "[#288] upgrade selene codebase to python3.7 with pyupgrade. by aleksandr-kotl...",
     "count": 23,
     "uniques": 2
+  },
+  {
+    "path": "/yashaka/selene/issues/128",
+    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
+    "count": 18,
+    "uniques": 16
   },
   {
     "path": "/yashaka/selene/search",
@@ -42,21 +48,15 @@
     "uniques": 7
   },
   {
-    "path": "/yashaka/selene/issues/128",
-    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 17,
-    "uniques": 15
-  },
-  {
     "path": "/yashaka/selene/tree/master/selene/core",
     "title": "selene/selene/core at master · yashaka/selene · GitHub",
     "count": 15,
     "uniques": 6
   },
   {
-    "path": "/yashaka/selene/pull/369/checks",
-    "title": "[#288] upgrade selene codebase to python3.7 with pyupgrade. by aleksandr-kotl...",
-    "count": 12,
-    "uniques": 1
+    "path": "/yashaka/selene/releases",
+    "title": "Releases · yashaka/selene · GitHub",
+    "count": 15,
+    "uniques": 4
   }
 ]
