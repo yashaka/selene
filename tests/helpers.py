@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 import time
+from selenium import webdriver
 
 
 def time_spent(function, *args, **kwargs):
@@ -34,3 +35,17 @@ def time_spent(function, *args, **kwargs):
 
 def convert_sec_to_ms(timeout):
     return timeout * 1000
+
+
+def headless_chrome_options():
+    options = webdriver.ChromeOptions()
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-gpu")
+    options.add_argument("--disable-notifications")
+    options.add_argument("--disable-extensions")
+    options.add_argument("--disable-infobars")
+    options.add_argument("--enable-automation")
+    options.add_argument("--headless")
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument("--disable-setuid-sandbox")
+    return options
