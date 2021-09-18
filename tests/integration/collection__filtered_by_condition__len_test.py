@@ -29,14 +29,16 @@ def test_counts_invisible_tasks(session_browser):
     elements = session_browser.all('li').filtered_by(
         have.css_class('will-appear')
     )
-
     page.load_body(
         '''
-                   <ul>Hello to:
-                       <li>Anonymous</li>
-                       <li class='will-appear'>Bob</li>
-                       <li class='will-appear' style='display:none'>Kate</li>
-                   </ul>'''
+        <ul>Hello to:
+            <li>Anonymous</li>
+            <li class='will-appear'>Bob</li>
+            <li class='will-appear' style='display:none'>Kate</li>
+        </ul>
+        '''
     )
 
-    assert len(elements) == 2
+    count = len(elements)
+
+    assert count == 2
