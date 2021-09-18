@@ -48,7 +48,7 @@ jobs:
 
       - name: Test selene with pytest
         run: |
-          poetry run pytest -sv --cov-config .coveragerc --cov-report html:skip-covered --cov-report term:skip-covered --cov=selene  --cov-report xml:coverage.xml --tb=short tests/
+          poetry run pytest -sv --cov-config .coveragerc --cov-report html:skip-covered --cov-report term:skip-covered --cov=selene  --cov-report xml:coverage.xml --tb=short tests/ --headless=True
           mkdir -p Artifacts/skip-covered
           cp -r skip-covered Artifacts/skip-covered
         if: env.GIT_DIFF
