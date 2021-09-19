@@ -2,20 +2,26 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 426,
-    "uniques": 218
+    "count": 461,
+    "uniques": 231
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 74,
-    "uniques": 23
+    "count": 109,
+    "uniques": 24
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 45,
+    "count": 80,
     "uniques": 8
+  },
+  {
+    "path": "/yashaka/selene/actions",
+    "title": "Actions · yashaka/selene",
+    "count": 44,
+    "uniques": 2
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
@@ -24,22 +30,16 @@
     "uniques": 17
   },
   {
-    "path": "/yashaka/selene/actions",
-    "title": "Actions · yashaka/selene",
-    "count": 36,
-    "uniques": 2
+    "path": "/yashaka/selene/issues/128",
+    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
+    "count": 24,
+    "uniques": 22
   },
   {
     "path": "/yashaka/selene/pull/369",
     "title": "[#288] upgrade selene codebase to python3.7 with pyupgrade. by aleksandr-kotl...",
     "count": 23,
     "uniques": 2
-  },
-  {
-    "path": "/yashaka/selene/issues/128",
-    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 22,
-    "uniques": 20
   },
   {
     "path": "/yashaka/selene/releases",
