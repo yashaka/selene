@@ -2,38 +2,32 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 461,
-    "uniques": 231
+    "count": 279,
+    "uniques": 149
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 109,
-    "uniques": 24
+    "count": 38,
+    "uniques": 11
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 80,
-    "uniques": 8
+    "count": 38,
+    "uniques": 4
   },
   {
     "path": "/yashaka/selene/actions",
     "title": "Actions · yashaka/selene",
-    "count": 44,
+    "count": 34,
     "uniques": 2
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 38,
-    "uniques": 17
-  },
-  {
-    "path": "/yashaka/selene/issues/128",
-    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 24,
-    "uniques": 22
+    "count": 30,
+    "uniques": 11
   },
   {
     "path": "/yashaka/selene/pull/369",
@@ -42,21 +36,27 @@
     "uniques": 2
   },
   {
-    "path": "/yashaka/selene/releases",
-    "title": "Releases · yashaka/selene · GitHub",
-    "count": 22,
-    "uniques": 5
-  },
-  {
     "path": "/yashaka/selene/search",
     "title": "Search · visible · GitHub",
     "count": 18,
     "uniques": 7
   },
   {
-    "path": "/yashaka/selene/tree/master/tests",
-    "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 16,
-    "uniques": 11
+    "path": "/yashaka/selene/tree/master/selene/core",
+    "title": "selene/selene/core at master · yashaka/selene · GitHub",
+    "count": 13,
+    "uniques": 5
+  },
+  {
+    "path": "/yashaka/selene/issues/128",
+    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
+    "count": 12,
+    "uniques": 10
+  },
+  {
+    "path": "/yashaka/selene/pull/369/checks",
+    "title": "[#288] upgrade selene codebase to python3.7 with pyupgrade. by aleksandr-kotl...",
+    "count": 12,
+    "uniques": 1
   }
 ]
