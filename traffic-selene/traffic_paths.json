@@ -2,61 +2,61 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 478,
-    "uniques": 217
-  },
-  {
-    "path": "/yashaka/selene/issues",
-    "title": "Issues · yashaka/selene · GitHub",
-    "count": 122,
-    "uniques": 21
-  },
-  {
-    "path": "/yashaka/selene/pulls",
-    "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 94,
-    "uniques": 7
+    "count": 124,
+    "uniques": 64
   },
   {
     "path": "/yashaka/selene/actions",
     "title": "Actions · yashaka/selene",
-    "count": 48,
+    "count": 17,
+    "uniques": 1
+  },
+  {
+    "path": "/yashaka/selene/issues",
+    "title": "Issues · yashaka/selene · GitHub",
+    "count": 14,
+    "uniques": 5
+  },
+  {
+    "path": "/yashaka/selene/pulls",
+    "title": "Pull requests · yashaka/selene · GitHub",
+    "count": 12,
+    "uniques": 3
+  },
+  {
+    "path": "/yashaka/selene/pull/374",
+    "title": "Update actions by aleksandr-kotlyar · Pull Request #374 · yashaka/selene · Gi...",
+    "count": 10,
+    "uniques": 2
+  },
+  {
+    "path": "/yashaka/selene/pull/374/checks",
+    "title": "Update actions by aleksandr-kotlyar · Pull Request #374 · yashaka/selene",
+    "count": 8,
+    "uniques": 1
+  },
+  {
+    "path": "/yashaka/selene/tree/master/tests",
+    "title": "selene/tests at master · yashaka/selene · GitHub",
+    "count": 5,
+    "uniques": 4
+  },
+  {
+    "path": "/yashaka/selene/tree/master/.github/workflows",
+    "title": "selene/.github/workflows at master · yashaka/selene",
+    "count": 5,
+    "uniques": 1
+  },
+  {
+    "path": "/yashaka/selene/issues/372",
+    "title": "CI Tests: stabilize tests in ci · Issue #372 · yashaka/selene · GitHub",
+    "count": 4,
     "uniques": 2
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 32,
-    "uniques": 16
-  },
-  {
-    "path": "/yashaka/selene/pull/369",
-    "title": "[#288] upgrade selene codebase to python3.7 with pyupgrade. by aleksandr-kotl...",
-    "count": 23,
+    "count": 4,
     "uniques": 2
-  },
-  {
-    "path": "/yashaka/selene/issues/128",
-    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 20,
-    "uniques": 17
-  },
-  {
-    "path": "/yashaka/selene/tree/master/tests",
-    "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 19,
-    "uniques": 14
-  },
-  {
-    "path": "/yashaka/selene/releases",
-    "title": "Releases · yashaka/selene · GitHub",
-    "count": 18,
-    "uniques": 5
-  },
-  {
-    "path": "/yashaka/selene/issues/313",
-    "title": "improve tests structure (visibility and clearness of arrange/act/assert block...",
-    "count": 15,
-    "uniques": 10
   }
 ]
