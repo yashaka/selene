@@ -99,7 +99,9 @@ class SharedBrowser(Browser):
 
         if not file:
             file = self.config.generate_filename(suffix='.png')
-
+        folder = os.path.dirname(file)
+        if not os.path.exists(folder) and folder:
+            os.makedirs(folder)
         # todo: refactor to catch errors smartly in get_screenshot_as_file. or not needed?
         self.config.last_screenshot = Help(self.driver).save_screenshot(file)
 
@@ -232,4 +234,9 @@ class SharedBrowser(Browser):
             'deprecated; use browser.save_screenshot(filename) instead',
             DeprecationWarning,
         )
-        return self.save_screenshot(os.path.join(path, filename) if path or filename else None)
+        if path and not filename:
+            next_id = next(self.config.counter)
+            filename = f'{next_id}.png'
+        return self.save_screenshot(
+            os.path.join(path, filename) if path else filename or None
+        )

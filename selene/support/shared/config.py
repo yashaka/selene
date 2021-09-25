@@ -319,7 +319,7 @@ class SharedConfig(Config):
         file = os.path.join(path, f'{filename}')
 
         folder = os.path.dirname(file)
-        if not os.path.exists(folder):
+        if not os.path.exists(folder) and folder:
             os.makedirs(folder)
 
         return file
