@@ -99,6 +99,8 @@ class SharedBrowser(Browser):
 
         if not file:
             file = self.config.generate_filename(suffix='.png')
+        if file and not file.lower().endswith('.png'):
+            file = os.path.join(file, f'{next(self.config.counter)}.png')
         folder = os.path.dirname(file)
         if not os.path.exists(folder) and folder:
             os.makedirs(folder)

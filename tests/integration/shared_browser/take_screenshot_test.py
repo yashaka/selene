@@ -28,6 +28,8 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selene import have, be
 from selene.core.exceptions import TimeoutException
 from selene.support.shared import browser, config
+from tests.helpers import headless_chrome_options
+
 
 EMPTY_PAGE_URL = (
     'file://'
@@ -45,7 +47,11 @@ def setup_function():
 
 
 def setup_module():
-    browser.set_driver(webdriver.Chrome(ChromeDriverManager().install()))
+    browser.set_driver(
+        webdriver.Chrome(
+            ChromeDriverManager().install(), options=headless_chrome_options()
+        )
+    )
 
 
 def teardown_module():
@@ -88,7 +94,7 @@ def test_can_make_screenshot_with_custom_name_with_empty_path():
 def test_can_save_screenshot_to_custom_folder_with_custom_name():
     screenshot_folder = (
         os.path.dirname(os.path.abspath(__file__))
-        + '/../../build/screenshots_0'
+        + f'/../../build/screenshots_{next(browser.config.counter)}'
     )
     browser.open(EMPTY_PAGE_URL)
 
@@ -105,7 +111,7 @@ def test_can_save_screenshot_to_custom_folder_with_custom_name():
 def test_can_make_screenshot_with_custom_folder_specified_as_parameter_with_empty_filename():
     screenshot_folder = (
         os.path.dirname(os.path.abspath(__file__))
-        + '/../../build/screenshots_1'
+        + f'/../../build/screenshots_{next(browser.config.counter)}'
     )
     browser.open(EMPTY_PAGE_URL)
 
@@ -123,7 +129,7 @@ def test_can_make_screenshot_with_custom_folder_specified_as_parameter_with_empt
 def test_can_save_screenshot_to_custom_folder_specified_through_config():
     config.reports_folder = (
         os.path.dirname(os.path.abspath(__file__))
-        + '/../../build/screenshots_2'
+        + f'/../../build/screenshots_{next(browser.config.counter)}'
     )
     browser.open(EMPTY_PAGE_URL)
 
@@ -153,9 +159,10 @@ def test_can_make_screenshot_automatically():
     assert os.path.isfile(expected)
 
 
-def test_can_get_latest_screenshot_path():
+def test_can_get_last_screenshot_path():
     config.reports_folder = (
-        os.path.dirname(os.path.abspath(__file__)) + '/../../build/screenshots'
+        os.path.dirname(os.path.abspath(__file__))
+        + f'/../../build/screenshots_{next(browser.config.counter)}'
     )
     browser.open(EMPTY_PAGE_URL)
     config.timeout = 0.1
@@ -164,6 +171,24 @@ def test_can_get_latest_screenshot_path():
         browser.element("#s").should(be.visible)
 
     picture = browser.last_screenshot
+    expected = os.path.join(config.reports_folder, f'{get_screen_id()}.png')
+    assert picture == expected
+    assert os.path.exists(picture)
+    assert os.path.isfile(picture)
+
+
+def test_can_get_latest_screenshot_path():
+    config.reports_folder = (
+        os.path.dirname(os.path.abspath(__file__))
+        + f'/../../build/screenshots_{next(browser.config.counter)}'
+    )
+    browser.open(EMPTY_PAGE_URL)
+    config.timeout = 0.1
+
+    with pytest.raises(TimeoutException):
+        browser.element("#s").should(be.visible)
+
+    picture = browser.latest_screenshot()
     expected = os.path.join(config.reports_folder, f'{get_screen_id()}.png')
     assert picture == expected
     assert os.path.exists(picture)
