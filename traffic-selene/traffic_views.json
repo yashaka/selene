@@ -1318,21 +1318,6 @@
       "uniques": 16
     },
     {
-      "timestamp": "2021-09-13T00:00:00Z",
-      "count": 135,
-      "uniques": 37
-    },
-    {
-      "timestamp": "2021-09-14T00:00:00Z",
-      "count": 122,
-      "uniques": 32
-    },
-    {
-      "timestamp": "2021-09-15T00:00:00Z",
-      "count": 199,
-      "uniques": 39
-    },
-    {
       "timestamp": "2021-09-16T00:00:00Z",
       "count": 45,
       "uniques": 25
@@ -1376,6 +1361,21 @@
       "timestamp": "2021-09-24T00:00:00Z",
       "count": 49,
       "uniques": 21
+    },
+    {
+      "timestamp": "2021-09-13T00:00:00Z",
+      "count": 135,
+      "uniques": 37
+    },
+    {
+      "timestamp": "2021-09-14T00:00:00Z",
+      "count": 122,
+      "uniques": 32
+    },
+    {
+      "timestamp": "2021-09-15T00:00:00Z",
+      "count": 199,
+      "uniques": 39
     }
   ]
 }
