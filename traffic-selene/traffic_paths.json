@@ -2,8 +2,8 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 430,
-    "uniques": 192
+    "count": 456,
+    "uniques": 209
   },
   {
     "path": "/yashaka/selene/pulls",
@@ -14,19 +14,19 @@
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 76,
-    "uniques": 10
+    "count": 78,
+    "uniques": 11
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 33,
-    "uniques": 15
+    "count": 35,
+    "uniques": 16
   },
   {
     "path": "/yashaka/selene/pull/387",
     "title": "[#384] fix take_screenshot() and cover with tests #386 by aleksandr-kotlyar ·...",
-    "count": 30,
+    "count": 31,
     "uniques": 2
   },
   {
@@ -54,9 +54,9 @@
     "uniques": 8
   },
   {
-    "path": "/yashaka/selene/graphs/contributors",
-    "title": "Contributors to yashaka/selene · GitHub",
+    "path": "/yashaka/selene/tree/master/selene/support",
+    "title": "selene/selene/support at master · yashaka/selene · GitHub",
     "count": 12,
-    "uniques": 5
+    "uniques": 7
   }
 ]

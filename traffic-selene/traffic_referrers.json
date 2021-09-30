@@ -1,13 +1,13 @@
 [
   {
     "referrer": "Google",
-    "count": 155,
-    "uniques": 91
+    "count": 164,
+    "uniques": 99
   },
   {
     "referrer": "github.com",
-    "count": 97,
-    "uniques": 35
+    "count": 103,
+    "uniques": 38
   },
   {
     "referrer": "ecosia.org",
@@ -16,8 +16,8 @@
   },
   {
     "referrer": "pypi.org",
-    "count": 18,
-    "uniques": 7
+    "count": 19,
+    "uniques": 8
   },
   {
     "referrer": "yandex.ru",
@@ -36,8 +36,8 @@
   },
   {
     "referrer": "qiita.com",
-    "count": 4,
-    "uniques": 4
+    "count": 5,
+    "uniques": 5
   },
   {
     "referrer": "pythonrepo.com",
