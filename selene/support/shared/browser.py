@@ -236,9 +236,8 @@ class SharedBrowser(Browser):
             'deprecated; use browser.save_screenshot(filename) instead',
             DeprecationWarning,
         )
-        if path and not filename:
-            next_id = next(self.config.counter)
-            filename = f'{next_id}.png'
         return self.save_screenshot(
-            os.path.join(path, filename) if path else filename or None
+            os.path.join(path, filename)
+            if path and filename
+            else filename or path
         )
