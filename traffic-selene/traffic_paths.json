@@ -2,26 +2,26 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 456,
-    "uniques": 209
+    "count": 423,
+    "uniques": 191
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 90,
-    "uniques": 6
+    "count": 89,
+    "uniques": 5
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 78,
-    "uniques": 11
+    "count": 76,
+    "uniques": 10
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 35,
-    "uniques": 16
+    "count": 34,
+    "uniques": 15
   },
   {
     "path": "/yashaka/selene/pull/387",
@@ -32,14 +32,14 @@
   {
     "path": "/yashaka/selene/actions",
     "title": "Actions · yashaka/selene",
-    "count": 30,
+    "count": 28,
     "uniques": 1
   },
   {
     "path": "/yashaka/selene/issues/128",
     "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 23,
-    "uniques": 17
+    "count": 20,
+    "uniques": 14
   },
   {
     "path": "/yashaka/selene/search",
