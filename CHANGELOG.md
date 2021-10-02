@@ -53,34 +53,34 @@
 - todo consider adding element.caching as lazy version of element.cached
 - consider adding hold_browser_opened_on_failure
 - consider browser.open() over browser.open('') (use some smart defaults)
-- consider cofig.headless = False like in selenide 
+- consider config.headless = False like in selenide 
   - `this.browser = new Browser(config.browser(), config.headless());`
   
 ## 2.0.0a2x+1 (to be released on ?.??.2020)
-- todo: add something like element.click_with_offset
-- todo: add something like browser.perform(switch_to_tab('my tab title'))
+- todo: add something like `element.click_with_offset`
+- todo: add something like `browser.perform(switch_to_tab('my tab title'))`
   - maybe make browser.switch ... to work with retry logic
     or make separate command.switch...
 - ensure we can't element.type on invisible element; add test for that
-- use __all__ in selene api imports, etc
-  - The variable __all__ is a list of public objects of that module, as interpreted by import *. ... In other words, __all__ is a list of strings defining what symbols in a module will be exported when from <module> import * is used on the module
+- use `__all__` in selene api imports, etc
+  - The variable `__all__` is a list of public objects of that module, as interpreted by import *. ... In other words, __all__ is a list of strings defining what symbols in a module will be exported when from <module> import * is used on the module
 
   
 ## 2.0.0a2x (to be released on ?.08.2020)
-- todo: improve for other all.* methods (in addition to improved errors from browser.all.element_by)
-- todo: why in the past we had when outer_html this: '<button class="destroy" type="submit" displayed:false></button>'
-  - but now we have this: '<button class="destroy" type="submit"></button>'?
+- todo: improve for other `all.*` methods (in addition to improved errors from `browser.all.element_by`)
+- todo: why in the past we had when outer_html this: `'<button class="destroy" type="submit" displayed:false></button>'`
+  - but now we have this: `'<button class="destroy" type="submit"></button>'?`
     - can we improve it?
-- add browser.all('.item').last?
-- make browser.switch_to.frame to accept element
-- deprecate be.present
+- add `browser.all('.item').last`?
+- make `browser.switch_to.frame` to accept element
+- deprecate `be.present`
 - repeat fix of #225 to other options in shared config, refactor it... 
   - should we make original config (not shared) mutable?
   
 ## 2.0.0a40
 !!!this release should be beta-tested!!!
 
-- added browser.config.wait_for_no_overlap_found_by_js (=False by default)
+- added `browser.config.wait_for_no_overlap_found_by_js` (`False` by default)
   - making following element methods to wait for no overlap:
     - type(text)
     - set_value(value)
@@ -88,7 +88,7 @@
     - clear()
     - submit()
     - double_click()
-      (normal .click() does not need it because have such waiting built in)
+      - btw normal `.click()` does not need it because have such waiting built in
     - context_click()
     - hover()
 
