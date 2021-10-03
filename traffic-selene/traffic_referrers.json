@@ -1,22 +1,22 @@
 [
   {
     "referrer": "Google",
-    "count": 183,
-    "uniques": 106
+    "count": 176,
+    "uniques": 104
   },
   {
     "referrer": "github.com",
-    "count": 106,
-    "uniques": 43
-  },
-  {
-    "referrer": "ecosia.org",
-    "count": 40,
-    "uniques": 32
+    "count": 94,
+    "uniques": 41
   },
   {
     "referrer": "yandex.ru",
     "count": 22,
+    "uniques": 17
+  },
+  {
+    "referrer": "ecosia.org",
+    "count": 20,
     "uniques": 17
   },
   {
@@ -45,8 +45,8 @@
     "uniques": 2
   },
   {
-    "referrer": "gist.github.com",
-    "count": 2,
+    "referrer": "codecov.io",
+    "count": 1,
     "uniques": 1
   }
 ]

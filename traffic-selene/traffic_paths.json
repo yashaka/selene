@@ -2,8 +2,8 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 472,
-    "uniques": 220
+    "count": 422,
+    "uniques": 199
   },
   {
     "path": "/yashaka/selene/pull/387",
@@ -14,14 +14,8 @@
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 68,
+    "count": 51,
     "uniques": 6
-  },
-  {
-    "path": "/yashaka/selene/issues",
-    "title": "Issues · yashaka/selene · GitHub",
-    "count": 45,
-    "uniques": 11
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
@@ -30,10 +24,16 @@
     "uniques": 18
   },
   {
+    "path": "/yashaka/selene/issues",
+    "title": "Issues · yashaka/selene · GitHub",
+    "count": 38,
+    "uniques": 11
+  },
+  {
     "path": "/yashaka/selene/commits/master",
     "title": "History for selene - yashaka/selene · GitHub",
-    "count": 33,
-    "uniques": 8
+    "count": 32,
+    "uniques": 7
   },
   {
     "path": "/yashaka/selene/search",
@@ -44,14 +44,14 @@
   {
     "path": "/yashaka/selene/actions",
     "title": "Actions · yashaka/selene",
-    "count": 20,
+    "count": 16,
     "uniques": 1
   },
   {
     "path": "/yashaka/selene/issues/128",
     "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 18,
-    "uniques": 13
+    "count": 14,
+    "uniques": 11
   },
   {
     "path": "/yashaka/selene/tree/master/selene/core",
