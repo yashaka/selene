@@ -1,13 +1,13 @@
 [
   {
     "referrer": "Google",
-    "count": 176,
-    "uniques": 104
+    "count": 181,
+    "uniques": 106
   },
   {
     "referrer": "github.com",
-    "count": 94,
-    "uniques": 41
+    "count": 96,
+    "uniques": 42
   },
   {
     "referrer": "yandex.ru",
@@ -36,17 +36,17 @@
   },
   {
     "referrer": "qiita.com",
-    "count": 3,
-    "uniques": 3
+    "count": 5,
+    "uniques": 5
+  },
+  {
+    "referrer": "cn.bing.com",
+    "count": 2,
+    "uniques": 2
   },
   {
     "referrer": "Bing",
     "count": 2,
     "uniques": 2
-  },
-  {
-    "referrer": "codecov.io",
-    "count": 1,
-    "uniques": 1
   }
 ]
