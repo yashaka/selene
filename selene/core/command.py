@@ -79,7 +79,7 @@ class js:
     )
 
     click = Command(
-        'scroll into view',
+        'click',
         lambda element: element.execute_script(
             """return (function(element) {
                 element.click();
