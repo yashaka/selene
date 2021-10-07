@@ -2,8 +2,8 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 385,
-    "uniques": 182
+    "count": 404,
+    "uniques": 194
   },
   {
     "path": "/yashaka/selene/pull/387",
@@ -14,14 +14,14 @@
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 61,
-    "uniques": 8
+    "count": 56,
+    "uniques": 7
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 38,
-    "uniques": 13
+    "count": 49,
+    "uniques": 15
   },
   {
     "path": "/yashaka/selene/commits/master",
@@ -32,14 +32,14 @@
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 27,
-    "uniques": 13
+    "count": 29,
+    "uniques": 14
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 20,
-    "uniques": 8
+    "count": 22,
+    "uniques": 10
   },
   {
     "path": "/yashaka/selene/search",
@@ -50,13 +50,13 @@
   {
     "path": "/yashaka/selene/actions",
     "title": "Actions · yashaka/selene",
-    "count": 16,
+    "count": 15,
     "uniques": 1
   },
   {
-    "path": "/yashaka/selene/issues/128",
-    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 14,
-    "uniques": 10
+    "path": "/yashaka/selene/pull/387/files",
+    "title": "[#384] fix take_screenshot() and cover with tests #386 by aleksandr-kotlyar ·...",
+    "count": 12,
+    "uniques": 3
   }
 ]
