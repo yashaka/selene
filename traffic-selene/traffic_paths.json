@@ -2,8 +2,8 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 404,
-    "uniques": 194
+    "count": 441,
+    "uniques": 212
   },
   {
     "path": "/yashaka/selene/pull/387",
@@ -14,32 +14,32 @@
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 56,
+    "count": 60,
     "uniques": 7
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 49,
-    "uniques": 15
+    "count": 51,
+    "uniques": 16
   },
   {
     "path": "/yashaka/selene/commits/master",
     "title": "History for selene - yashaka/selene · GitHub",
-    "count": 32,
-    "uniques": 7
+    "count": 33,
+    "uniques": 8
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
     "count": 29,
-    "uniques": 14
+    "uniques": 16
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 22,
-    "uniques": 10
+    "count": 24,
+    "uniques": 12
   },
   {
     "path": "/yashaka/selene/search",
@@ -54,9 +54,9 @@
     "uniques": 1
   },
   {
-    "path": "/yashaka/selene/pull/387/files",
-    "title": "[#384] fix take_screenshot() and cover with tests #386 by aleksandr-kotlyar ·...",
+    "path": "/yashaka/selene/tree/master/tests/examples",
+    "title": "selene/tests/examples at master · yashaka/selene · GitHub",
     "count": 12,
-    "uniques": 3
+    "uniques": 9
   }
 ]
