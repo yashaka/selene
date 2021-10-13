@@ -2,19 +2,19 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 436,
-    "uniques": 211
+    "count": 446,
+    "uniques": 216
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 65,
-    "uniques": 15
+    "count": 64,
+    "uniques": 14
   },
   {
     "path": "/yashaka/selene/pull/387",
     "title": "[#384] fix take_screenshot() and cover with tests #386 by aleksandr-kotlyar ·...",
-    "count": 45,
+    "count": 44,
     "uniques": 7
   },
   {
@@ -26,20 +26,26 @@
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 38,
-    "uniques": 20
+    "count": 36,
+    "uniques": 19
   },
   {
     "path": "/yashaka/selene/commits/master",
     "title": "History for selene - yashaka/selene · GitHub",
-    "count": 32,
-    "uniques": 7
+    "count": 34,
+    "uniques": 8
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 31,
-    "uniques": 15
+    "count": 32,
+    "uniques": 14
+  },
+  {
+    "path": "/yashaka/selene/releases/tag/2.0.0a40",
+    "title": "Release 2.0.0a40 · yashaka/selene · GitHub",
+    "count": 22,
+    "uniques": 5
   },
   {
     "path": "/yashaka/selene/tree/master/selene/core",
@@ -51,12 +57,6 @@
     "path": "/yashaka/selene/tree/master/tests/examples",
     "title": "selene/tests/examples at master · yashaka/selene · GitHub",
     "count": 17,
-    "uniques": 11
-  },
-  {
-    "path": "/yashaka/selene/releases/tag/2.0.0a40",
-    "title": "Release 2.0.0a40 · yashaka/selene",
-    "count": 17,
-    "uniques": 1
+    "uniques": 10
   }
 ]
