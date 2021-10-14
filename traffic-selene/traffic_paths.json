@@ -2,61 +2,61 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 446,
-    "uniques": 216
+    "count": 423,
+    "uniques": 203
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 64,
-    "uniques": 14
-  },
-  {
-    "path": "/yashaka/selene/pull/387",
-    "title": "[#384] fix take_screenshot() and cover with tests #386 by aleksandr-kotlyar ·...",
-    "count": 44,
-    "uniques": 7
-  },
-  {
-    "path": "/yashaka/selene/pulls",
-    "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 40,
-    "uniques": 7
+    "count": 62,
+    "uniques": 13
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 36,
-    "uniques": 19
-  },
-  {
-    "path": "/yashaka/selene/commits/master",
-    "title": "History for selene - yashaka/selene · GitHub",
-    "count": 34,
-    "uniques": 8
+    "count": 42,
+    "uniques": 21
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 32,
-    "uniques": 14
+    "count": 33,
+    "uniques": 15
+  },
+  {
+    "path": "/yashaka/selene/pulls",
+    "title": "Pull requests · yashaka/selene · GitHub",
+    "count": 26,
+    "uniques": 6
   },
   {
     "path": "/yashaka/selene/releases/tag/2.0.0a40",
     "title": "Release 2.0.0a40 · yashaka/selene · GitHub",
-    "count": 22,
+    "count": 23,
     "uniques": 5
   },
   {
     "path": "/yashaka/selene/tree/master/selene/core",
     "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 17,
-    "uniques": 12
+    "count": 19,
+    "uniques": 14
+  },
+  {
+    "path": "/yashaka/selene/search",
+    "title": "Search · speed",
+    "count": 18,
+    "uniques": 4
   },
   {
     "path": "/yashaka/selene/tree/master/tests/examples",
     "title": "selene/tests/examples at master · yashaka/selene · GitHub",
     "count": 17,
     "uniques": 10
+  },
+  {
+    "path": "/yashaka/selene/blob/master/tests/base_test.py",
+    "title": "selene/base_test.py at master · yashaka/selene · GitHub",
+    "count": 12,
+    "uniques": 5
   }
 ]
