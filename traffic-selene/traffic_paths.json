@@ -2,32 +2,26 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 477,
-    "uniques": 228
+    "count": 522,
+    "uniques": 272
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 68,
+    "count": 60,
     "uniques": 14
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 56,
-    "uniques": 25
+    "count": 57,
+    "uniques": 26
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
     "count": 35,
     "uniques": 17
-  },
-  {
-    "path": "/yashaka/selene/pulls",
-    "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 26,
-    "uniques": 7
   },
   {
     "path": "/yashaka/selene/releases/tag/2.0.0a40",
@@ -38,14 +32,20 @@
   {
     "path": "/yashaka/selene/tree/master/selene/core",
     "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 20,
+    "count": 23,
     "uniques": 15
+  },
+  {
+    "path": "/yashaka/selene/pulls",
+    "title": "Pull requests · yashaka/selene · GitHub",
+    "count": 22,
+    "uniques": 8
   },
   {
     "path": "/yashaka/selene/search",
     "title": "Search · speed",
-    "count": 18,
-    "uniques": 4
+    "count": 19,
+    "uniques": 5
   },
   {
     "path": "/yashaka/selene/tree/master/tests/examples",
@@ -54,9 +54,9 @@
     "uniques": 9
   },
   {
-    "path": "/yashaka/selene/blob/master/tests/base_test.py",
-    "title": "selene/base_test.py at master · yashaka/selene · GitHub",
+    "path": "/yashaka/selene/tree/master/selene/api",
+    "title": "selene/selene/api at master · yashaka/selene · GitHub",
     "count": 14,
-    "uniques": 7
+    "uniques": 10
   }
 ]
