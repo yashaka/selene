@@ -1,23 +1,23 @@
 [
   {
     "referrer": "Google",
-    "count": 214,
-    "uniques": 133
+    "count": 202,
+    "uniques": 127
   },
   {
     "referrer": "github.com",
-    "count": 91,
+    "count": 90,
     "uniques": 44
   },
   {
     "referrer": "qna.habr.com",
-    "count": 43,
-    "uniques": 38
+    "count": 45,
+    "uniques": 40
   },
   {
     "referrer": "yandex.ru",
-    "count": 39,
-    "uniques": 17
+    "count": 38,
+    "uniques": 16
   },
   {
     "referrer": "ecosia.org",

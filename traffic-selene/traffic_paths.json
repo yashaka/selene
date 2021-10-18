@@ -2,26 +2,20 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 522,
-    "uniques": 272
+    "count": 501,
+    "uniques": 266
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 60,
-    "uniques": 14
+    "count": 54,
+    "uniques": 11
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 57,
-    "uniques": 26
-  },
-  {
-    "path": "/yashaka/selene/tree/master/tests",
-    "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 35,
-    "uniques": 17
+    "count": 50,
+    "uniques": 23
   },
   {
     "path": "/yashaka/selene/releases/tag/2.0.0a40",
@@ -32,31 +26,37 @@
   {
     "path": "/yashaka/selene/tree/master/selene/core",
     "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 23,
-    "uniques": 15
+    "count": 21,
+    "uniques": 13
+  },
+  {
+    "path": "/yashaka/selene/tree/master/tests",
+    "title": "selene/tests at master · yashaka/selene · GitHub",
+    "count": 18,
+    "uniques": 12
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 22,
-    "uniques": 8
+    "count": 18,
+    "uniques": 6
   },
   {
     "path": "/yashaka/selene/search",
-    "title": "Search · speed",
-    "count": 19,
-    "uniques": 5
+    "title": "Search · set_shared_driver",
+    "count": 17,
+    "uniques": 4
   },
   {
-    "path": "/yashaka/selene/tree/master/tests/examples",
-    "title": "selene/tests/examples at master · yashaka/selene · GitHub",
-    "count": 15,
-    "uniques": 9
+    "path": "/yashaka/selene/blob/master/README.md",
+    "title": "selene/README.md at master · yashaka/selene · GitHub",
+    "count": 16,
+    "uniques": 15
   },
   {
     "path": "/yashaka/selene/tree/master/selene/api",
     "title": "selene/selene/api at master · yashaka/selene · GitHub",
-    "count": 14,
-    "uniques": 10
+    "count": 13,
+    "uniques": 9
   }
 ]
