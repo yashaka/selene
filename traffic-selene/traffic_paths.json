@@ -2,20 +2,20 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 456,
-    "uniques": 234
-  },
-  {
-    "path": "/yashaka/selene/issues",
-    "title": "Issues · yashaka/selene · GitHub",
-    "count": 54,
-    "uniques": 10
+    "count": 435,
+    "uniques": 227
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 50,
-    "uniques": 22
+    "count": 48,
+    "uniques": 21
+  },
+  {
+    "path": "/yashaka/selene/issues",
+    "title": "Issues · yashaka/selene · GitHub",
+    "count": 47,
+    "uniques": 12
   },
   {
     "path": "/yashaka/selene/search",
@@ -24,34 +24,34 @@
     "uniques": 6
   },
   {
-    "path": "/yashaka/selene/releases/tag/2.0.0a40",
-    "title": "Release 2.0.0a40 · yashaka/selene · GitHub",
-    "count": 25,
-    "uniques": 7
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene/core",
-    "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 19,
-    "uniques": 11
-  },
-  {
-    "path": "/yashaka/selene/tree/master/tests",
-    "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 19,
-    "uniques": 10
-  },
-  {
     "path": "/yashaka/selene/blob/master/README.md",
     "title": "selene/README.md at master · yashaka/selene · GitHub",
     "count": 18,
     "uniques": 14
   },
   {
+    "path": "/yashaka/selene/tree/master/selene/core",
+    "title": "selene/selene/core at master · yashaka/selene · GitHub",
+    "count": 18,
+    "uniques": 10
+  },
+  {
+    "path": "/yashaka/selene/tree/master/tests",
+    "title": "selene/tests at master · yashaka/selene · GitHub",
+    "count": 15,
+    "uniques": 10
+  },
+  {
     "path": "/yashaka/selene/tree/master/selene/common",
     "title": "selene/selene/common at master · yashaka/selene · GitHub",
     "count": 12,
     "uniques": 8
+  },
+  {
+    "path": "/yashaka/selene/issues/128",
+    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
+    "count": 11,
+    "uniques": 11
   },
   {
     "path": "/yashaka/selene/tree/master/selene/support",
