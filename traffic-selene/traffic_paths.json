@@ -2,26 +2,20 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 375,
-    "uniques": 209
+    "count": 349,
+    "uniques": 199
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 46,
-    "uniques": 11
+    "count": 44,
+    "uniques": 10
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 44,
-    "uniques": 23
-  },
-  {
-    "path": "/yashaka/selene/search",
-    "title": "Search · set_shared_driver",
-    "count": 24,
-    "uniques": 5
+    "count": 34,
+    "uniques": 20
   },
   {
     "path": "/yashaka/selene/blob/master/README.md",
@@ -30,16 +24,16 @@
     "uniques": 13
   },
   {
-    "path": "/yashaka/selene/tree/master/selene/core",
-    "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 15,
-    "uniques": 9
-  },
-  {
     "path": "/yashaka/selene/issues/188",
     "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
     "count": 13,
     "uniques": 10
+  },
+  {
+    "path": "/yashaka/selene/search",
+    "title": "Search · language",
+    "count": 13,
+    "uniques": 3
   },
   {
     "path": "/yashaka/selene/blob/master/CHANGELOG.md",
@@ -48,15 +42,21 @@
     "uniques": 8
   },
   {
-    "path": "/yashaka/selene/tree/master/selene/common",
-    "title": "selene/selene/common at master · yashaka/selene · GitHub",
+    "path": "/yashaka/selene/tree/master/selene/core",
+    "title": "selene/selene/core at master · yashaka/selene · GitHub",
     "count": 11,
-    "uniques": 8
+    "uniques": 6
+  },
+  {
+    "path": "/yashaka/selene/issues/287",
+    "title": "from selenium to selene · Issue #287 · yashaka/selene · GitHub",
+    "count": 11,
+    "uniques": 4
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 11,
-    "uniques": 8
+    "count": 10,
+    "uniques": 7
   }
 ]
