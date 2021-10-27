@@ -2,61 +2,61 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 349,
-    "uniques": 199
+    "count": 443,
+    "uniques": 208
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 44,
+    "count": 48,
     "uniques": 10
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 34,
-    "uniques": 20
+    "count": 38,
+    "uniques": 23
+  },
+  {
+    "path": "/yashaka/selene/issues/128",
+    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
+    "count": 25,
+    "uniques": 10
+  },
+  {
+    "path": "/yashaka/selene/issues/392",
+    "title": "error when use selenium grid · Issue #392 · yashaka/selene · GitHub",
+    "count": 17,
+    "uniques": 7
   },
   {
     "path": "/yashaka/selene/blob/master/README.md",
     "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 17,
-    "uniques": 13
+    "count": 15,
+    "uniques": 11
   },
   {
-    "path": "/yashaka/selene/issues/188",
-    "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
-    "count": 13,
-    "uniques": 10
-  },
-  {
-    "path": "/yashaka/selene/search",
-    "title": "Search · language",
-    "count": 13,
-    "uniques": 3
+    "path": "/yashaka/selene/issues/287",
+    "title": "from selenium to selene · Issue #287 · yashaka/selene · GitHub",
+    "count": 15,
+    "uniques": 5
   },
   {
     "path": "/yashaka/selene/blob/master/CHANGELOG.md",
     "title": "selene/CHANGELOG.md at master · yashaka/selene · GitHub",
-    "count": 11,
+    "count": 14,
     "uniques": 8
   },
   {
     "path": "/yashaka/selene/tree/master/selene/core",
     "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 11,
-    "uniques": 6
-  },
-  {
-    "path": "/yashaka/selene/issues/287",
-    "title": "from selenium to selene · Issue #287 · yashaka/selene · GitHub",
-    "count": 11,
-    "uniques": 4
+    "count": 14,
+    "uniques": 8
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 10,
+    "count": 14,
     "uniques": 7
   }
 ]
