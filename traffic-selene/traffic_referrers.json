@@ -1,28 +1,28 @@
 [
   {
     "referrer": "Google",
-    "count": 287,
-    "uniques": 109
+    "count": 266,
+    "uniques": 97
   },
   {
     "referrer": "github.com",
-    "count": 61,
-    "uniques": 28
-  },
-  {
-    "referrer": "qna.habr.com",
-    "count": 48,
-    "uniques": 42
+    "count": 57,
+    "uniques": 26
   },
   {
     "referrer": "selene-docs-test.readthedocs.io",
-    "count": 47,
-    "uniques": 4
+    "count": 46,
+    "uniques": 3
+  },
+  {
+    "referrer": "qna.habr.com",
+    "count": 37,
+    "uniques": 35
   },
   {
     "referrer": "yandex.ru",
-    "count": 35,
-    "uniques": 12
+    "count": 30,
+    "uniques": 8
   },
   {
     "referrer": "yandex.by",
@@ -31,12 +31,12 @@
   },
   {
     "referrer": "pypi.org",
-    "count": 12,
-    "uniques": 6
+    "count": 11,
+    "uniques": 5
   },
   {
     "referrer": "youtube.com",
-    "count": 8,
+    "count": 9,
     "uniques": 4
   },
   {
