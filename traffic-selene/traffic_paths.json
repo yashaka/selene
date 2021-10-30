@@ -2,61 +2,61 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 395,
-    "uniques": 159
+    "count": 300,
+    "uniques": 122
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 51,
-    "uniques": 10
+    "count": 48,
+    "uniques": 9
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 36,
-    "uniques": 19
-  },
-  {
-    "path": "/yashaka/selene/search",
-    "title": "Search · language",
-    "count": 28,
-    "uniques": 3
-  },
-  {
-    "path": "/yashaka/selene/issues/128",
-    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 26,
-    "uniques": 10
-  },
-  {
-    "path": "/yashaka/selene/tree/e316f833651daefe7634fff29891b4813d24b198/selene/support/shared",
-    "title": "selene/selene/support/shared at e316f833651daefe7634fff29891b4813d24b198 · ya...",
-    "count": 20,
-    "uniques": 1
+    "count": 25,
+    "uniques": 16
   },
   {
     "path": "/yashaka/selene/issues/392",
     "title": "error when use selenium grid · Issue #392 · yashaka/selene · GitHub",
-    "count": 19,
-    "uniques": 8
-  },
-  {
-    "path": "/yashaka/selene/tree/master/tests",
-    "title": "selene/tests at master · yashaka/selene · GitHub",
     "count": 17,
     "uniques": 7
   },
   {
-    "path": "/yashaka/selene/blob/master/selene/elements.py",
-    "title": "selene/elements.py at master · yashaka/selene · GitHub",
-    "count": 16,
-    "uniques": 10
+    "path": "/yashaka/selene/tree/master/tests",
+    "title": "selene/tests at master · yashaka/selene · GitHub",
+    "count": 15,
+    "uniques": 6
   },
   {
-    "path": "/yashaka/selene/blob/e316f833651daefe7634fff29891b4813d24b198/selene/support/shared/browser.py",
-    "title": "selene/browser.py at e316f833651daefe7634fff29891b4813d24b198 · yashaka/selene",
-    "count": 16,
-    "uniques": 1
+    "path": "/yashaka/selene/releases",
+    "title": "Releases · yashaka/selene · GitHub",
+    "count": 14,
+    "uniques": 4
+  },
+  {
+    "path": "/yashaka/selene/blob/master/CHANGELOG.md",
+    "title": "selene/CHANGELOG.md at master · yashaka/selene · GitHub",
+    "count": 13,
+    "uniques": 7
+  },
+  {
+    "path": "/yashaka/selene/issues/188",
+    "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
+    "count": 12,
+    "uniques": 9
+  },
+  {
+    "path": "/yashaka/selene/search",
+    "title": "Search · language",
+    "count": 12,
+    "uniques": 2
+  },
+  {
+    "path": "/yashaka/selene/blob/master/selene/elements.py",
+    "title": "selene/elements.py at master · yashaka/selene · GitHub",
+    "count": 11,
+    "uniques": 7
   }
 ]
