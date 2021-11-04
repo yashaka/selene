@@ -2,26 +2,32 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 316,
-    "uniques": 123
-  },
-  {
-    "path": "/yashaka/selene/issues",
-    "title": "Issues · yashaka/selene · GitHub",
-    "count": 28,
-    "uniques": 9
+    "count": 320,
+    "uniques": 132
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
+    "count": 27,
+    "uniques": 14
+  },
+  {
+    "path": "/yashaka/selene/issues",
+    "title": "Issues · yashaka/selene · GitHub",
     "count": 26,
-    "uniques": 13
+    "uniques": 7
   },
   {
     "path": "/yashaka/selene/issues/128",
     "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 24,
-    "uniques": 8
+    "count": 25,
+    "uniques": 9
+  },
+  {
+    "path": "/yashaka/selene/search",
+    "title": "Search · def not_ · GitHub",
+    "count": 22,
+    "uniques": 3
   },
   {
     "path": "/yashaka/selene/tree/e316f833651daefe7634fff29891b4813d24b198/selene/support/shared",
@@ -30,20 +36,8 @@
     "uniques": 1
   },
   {
-    "path": "/yashaka/selene/blob/master/CHANGELOG.md",
-    "title": "selene/CHANGELOG.md at master · yashaka/selene · GitHub",
-    "count": 16,
-    "uniques": 8
-  },
-  {
     "path": "/yashaka/selene/blob/e316f833651daefe7634fff29891b4813d24b198/selene/support/shared/browser.py",
     "title": "selene/browser.py at e316f833651daefe7634fff29891b4813d24b198 · yashaka/selene",
-    "count": 16,
-    "uniques": 1
-  },
-  {
-    "path": "/yashaka/selene/search",
-    "title": "Search ·",
     "count": 16,
     "uniques": 1
   },
@@ -52,6 +46,12 @@
     "title": "selene/selene/support at e316f833651daefe7634fff29891b4813d24b198 · yashaka/s...",
     "count": 16,
     "uniques": 1
+  },
+  {
+    "path": "/yashaka/selene/tree/master/tests",
+    "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
+    "count": 15,
+    "uniques": 7
   },
   {
     "path": "/yashaka/selene/releases",
