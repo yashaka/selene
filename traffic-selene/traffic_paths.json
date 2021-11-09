@@ -2,61 +2,61 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 244,
-    "uniques": 123
+    "count": 192,
+    "uniques": 105
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 31,
+    "count": 28,
     "uniques": 14
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 27,
-    "uniques": 12
-  },
-  {
-    "path": "/yashaka/selene/search",
-    "title": "Search · wait_for · GitHub",
-    "count": 26,
-    "uniques": 5
-  },
-  {
-    "path": "/yashaka/selene/tree/e316f833651daefe7634fff29891b4813d24b198/selene/support/shared",
-    "title": "selene/selene/support/shared at e316f833651daefe7634fff29891b4813d24b198 · ya...",
-    "count": 20,
-    "uniques": 1
+    "count": 23,
+    "uniques": 11
   },
   {
     "path": "/yashaka/selene/tree/master/selene/support",
     "title": "selene/selene/support at master · yashaka/selene · GitHub",
-    "count": 17,
-    "uniques": 7
+    "count": 14,
+    "uniques": 6
   },
   {
-    "path": "/yashaka/selene/blob/e316f833651daefe7634fff29891b4813d24b198/selene/support/shared/browser.py",
-    "title": "selene/browser.py at e316f833651daefe7634fff29891b4813d24b198 · yashaka/selene",
-    "count": 16,
-    "uniques": 1
-  },
-  {
-    "path": "/yashaka/selene/tree/e316f833651daefe7634fff29891b4813d24b198/selene/support",
-    "title": "selene/selene/support at e316f833651daefe7634fff29891b4813d24b198 · yashaka/s...",
-    "count": 16,
-    "uniques": 1
-  },
-  {
-    "path": "/yashaka/selene/tree/master/tests",
-    "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 12,
-    "uniques": 8
+    "path": "/yashaka/selene/search",
+    "title": "Search · wait_for · GitHub",
+    "count": 11,
+    "uniques": 5
   },
   {
     "path": "/yashaka/selene/issues/375",
     "title": "how to support selenium 4 · Issue #375 · yashaka/selene · GitHub",
     "count": 11,
     "uniques": 4
+  },
+  {
+    "path": "/yashaka/selene/tree/master/selene/core",
+    "title": "selene/selene/core at master · yashaka/selene · GitHub",
+    "count": 9,
+    "uniques": 7
+  },
+  {
+    "path": "/yashaka/selene/tree/master/tests",
+    "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
+    "count": 8,
+    "uniques": 6
+  },
+  {
+    "path": "/yashaka/selene/blob/master/selene/elements.py",
+    "title": "selene/elements.py at master · yashaka/selene · GitHub",
+    "count": 7,
+    "uniques": 4
+  },
+  {
+    "path": "/yashaka/selene/issues/128",
+    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
+    "count": 6,
+    "uniques": 6
   }
 ]
