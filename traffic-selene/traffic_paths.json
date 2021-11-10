@@ -2,61 +2,61 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 192,
-    "uniques": 105
+    "count": 221,
+    "uniques": 123
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 28,
-    "uniques": 14
+    "count": 32,
+    "uniques": 15
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 23,
-    "uniques": 11
+    "count": 28,
+    "uniques": 15
   },
   {
     "path": "/yashaka/selene/tree/master/selene/support",
     "title": "selene/selene/support at master · yashaka/selene · GitHub",
-    "count": 14,
-    "uniques": 6
-  },
-  {
-    "path": "/yashaka/selene/search",
-    "title": "Search · wait_for · GitHub",
-    "count": 11,
-    "uniques": 5
-  },
-  {
-    "path": "/yashaka/selene/issues/375",
-    "title": "how to support selenium 4 · Issue #375 · yashaka/selene · GitHub",
-    "count": 11,
-    "uniques": 4
+    "count": 15,
+    "uniques": 7
   },
   {
     "path": "/yashaka/selene/tree/master/selene/core",
     "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 9,
-    "uniques": 7
+    "count": 12,
+    "uniques": 8
+  },
+  {
+    "path": "/yashaka/selene/search",
+    "title": "Search · wait_for · GitHub",
+    "count": 12,
+    "uniques": 6
+  },
+  {
+    "path": "/yashaka/selene/issues/375",
+    "title": "how to support selenium 4 · Issue #375 · yashaka/selene · GitHub",
+    "count": 12,
+    "uniques": 5
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 8,
-    "uniques": 6
+    "count": 9,
+    "uniques": 7
   },
   {
     "path": "/yashaka/selene/blob/master/selene/elements.py",
     "title": "selene/elements.py at master · yashaka/selene · GitHub",
-    "count": 7,
-    "uniques": 4
+    "count": 9,
+    "uniques": 5
   },
   {
-    "path": "/yashaka/selene/issues/128",
-    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 6,
+    "path": "/yashaka/selene/issues/393",
+    "title": "python 3.10 · Issue #393 · yashaka/selene · GitHub",
+    "count": 8,
     "uniques": 6
   }
 ]
