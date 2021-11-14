@@ -2,61 +2,61 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 332,
-    "uniques": 184
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene",
-    "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 46,
-    "uniques": 21
+    "count": 374,
+    "uniques": 198
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 35,
-    "uniques": 17
+    "count": 59,
+    "uniques": 19
   },
   {
-    "path": "/yashaka/selene/tree/master/selene/support",
-    "title": "selene/selene/support at master · yashaka/selene · GitHub",
-    "count": 18,
-    "uniques": 9
+    "path": "/yashaka/selene/tree/master/selene",
+    "title": "selene/selene at master · yashaka/selene · GitHub",
+    "count": 54,
+    "uniques": 23
   },
   {
-    "path": "/yashaka/selene/tree/master/selene/core",
-    "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 15,
-    "uniques": 10
+    "path": "/yashaka/selene/pulls",
+    "title": "Pull requests · yashaka/selene · GitHub",
+    "count": 44,
+    "uniques": 8
   },
   {
     "path": "/yashaka/selene/search",
     "title": "Search · wait_for · GitHub",
-    "count": 12,
+    "count": 27,
     "uniques": 6
   },
   {
-    "path": "/yashaka/selene/issues/375",
-    "title": "how to support selenium 4 · Issue #375 · yashaka/selene · GitHub",
-    "count": 12,
-    "uniques": 5
+    "path": "/yashaka/selene/tree/master/selene/support",
+    "title": "selene/selene/support at master · yashaka/selene · GitHub",
+    "count": 20,
+    "uniques": 10
   },
   {
-    "path": "/yashaka/selene/issues/128",
-    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 11,
-    "uniques": 10
+    "path": "/yashaka/selene/tree/master/selene/core",
+    "title": "selene/selene/core at master · yashaka/selene · GitHub",
+    "count": 17,
+    "uniques": 11
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 11,
-    "uniques": 9
+    "count": 15,
+    "uniques": 13
+  },
+  {
+    "path": "/yashaka/selene/issues/375",
+    "title": "how to support selenium 4 · Issue #375 · yashaka/selene · GitHub",
+    "count": 14,
+    "uniques": 6
   },
   {
     "path": "/yashaka/selene/blob/master/README.md",
     "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 10,
-    "uniques": 9
+    "count": 13,
+    "uniques": 12
   }
 ]
