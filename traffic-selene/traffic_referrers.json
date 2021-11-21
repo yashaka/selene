@@ -1,13 +1,13 @@
 [
   {
     "referrer": "Google",
-    "count": 459,
-    "uniques": 153
+    "count": 466,
+    "uniques": 152
   },
   {
     "referrer": "github.com",
     "count": 172,
-    "uniques": 42
+    "uniques": 44
   },
   {
     "referrer": "todomvc.com",
@@ -15,9 +15,14 @@
     "uniques": 1
   },
   {
+    "referrer": "yandex.ru",
+    "count": 16,
+    "uniques": 10
+  },
+  {
     "referrer": "automated-testing.info",
-    "count": 13,
-    "uniques": 9
+    "count": 14,
+    "uniques": 10
   },
   {
     "referrer": "Bing",
@@ -38,11 +43,6 @@
     "referrer": "DuckDuckGo",
     "count": 11,
     "uniques": 6
-  },
-  {
-    "referrer": "yandex.ru",
-    "count": 9,
-    "uniques": 8
   },
   {
     "referrer": "pypi.org",
