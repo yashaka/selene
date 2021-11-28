@@ -2,20 +2,20 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 458,
-    "uniques": 206
+    "count": 461,
+    "uniques": 202
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 51,
+    "count": 53,
     "uniques": 25
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 31,
-    "uniques": 16
+    "count": 35,
+    "uniques": 18
   },
   {
     "path": "/yashaka/selene/blob/master/selene/browser.py",
@@ -26,36 +26,36 @@
   {
     "path": "/yashaka/selene/blob/e316f833651daefe7634fff29891b4813d24b198/selene/core/entity.py",
     "title": "selene/entity.py at e316f833651daefe7634fff29891b4813d24b198 · yashaka/selene...",
-    "count": 14,
+    "count": 15,
     "uniques": 4
   },
   {
     "path": "/yashaka/selene/blob/master/README.md",
     "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 13,
+    "count": 14,
     "uniques": 10
-  },
-  {
-    "path": "/yashaka/selene/issues/128",
-    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 13,
-    "uniques": 10
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene/api",
-    "title": "selene/selene/api at master · yashaka/selene · GitHub",
-    "count": 13,
-    "uniques": 7
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene/support/shared",
-    "title": "selene/selene/support/shared at master · yashaka/selene · GitHub",
-    "count": 13,
-    "uniques": 7
   },
   {
     "path": "/yashaka/selene/tree/master/selene/support",
     "title": "selene/selene/support at master · yashaka/selene · GitHub",
+    "count": 14,
+    "uniques": 10
+  },
+  {
+    "path": "/yashaka/selene/tree/master/selene/support/shared",
+    "title": "selene/selene/support/shared at master · yashaka/selene · GitHub",
+    "count": 14,
+    "uniques": 8
+  },
+  {
+    "path": "/yashaka/selene/search",
+    "title": "Search · ss",
+    "count": 13,
+    "uniques": 5
+  },
+  {
+    "path": "/yashaka/selene/issues/128",
+    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
     "count": 12,
     "uniques": 9
   }
