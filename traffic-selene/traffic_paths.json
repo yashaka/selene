@@ -2,44 +2,20 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 436,
-    "uniques": 188
+    "count": 400,
+    "uniques": 173
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 52,
-    "uniques": 25
+    "count": 48,
+    "uniques": 24
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 33,
-    "uniques": 16
-  },
-  {
-    "path": "/yashaka/selene/blob/master/selene/browser.py",
-    "title": "selene/browser.py at master · yashaka/selene · GitHub",
-    "count": 28,
-    "uniques": 7
-  },
-  {
-    "path": "/yashaka/selene/blob/e316f833651daefe7634fff29891b4813d24b198/selene/core/entity.py",
-    "title": "selene/entity.py at e316f833651daefe7634fff29891b4813d24b198 · yashaka/selene...",
-    "count": 15,
-    "uniques": 4
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene/support",
-    "title": "selene/selene/support at master · yashaka/selene · GitHub",
-    "count": 13,
-    "uniques": 9
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene/support/shared",
-    "title": "selene/selene/support/shared at master · yashaka/selene · GitHub",
-    "count": 13,
-    "uniques": 7
+    "count": 31,
+    "uniques": 14
   },
   {
     "path": "/yashaka/selene/search",
@@ -48,15 +24,39 @@
     "uniques": 5
   },
   {
+    "path": "/yashaka/selene/tree/master/selene/support",
+    "title": "selene/selene/support at master · yashaka/selene · GitHub",
+    "count": 12,
+    "uniques": 9
+  },
+  {
+    "path": "/yashaka/selene/tree/master/selene/support/shared",
+    "title": "selene/selene/support/shared at master · yashaka/selene · GitHub",
+    "count": 12,
+    "uniques": 7
+  },
+  {
+    "path": "/yashaka/selene/blob/e316f833651daefe7634fff29891b4813d24b198/selene/core/entity.py",
+    "title": "selene/entity.py at e316f833651daefe7634fff29891b4813d24b198 · yashaka/selene...",
+    "count": 12,
+    "uniques": 3
+  },
+  {
+    "path": "/yashaka/selene/pulls",
+    "title": "Pull requests · yashaka/selene · GitHub",
+    "count": 11,
+    "uniques": 9
+  },
+  {
     "path": "/yashaka/selene/blob/master/README.md",
     "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 12,
-    "uniques": 8
+    "count": 11,
+    "uniques": 7
   },
   {
     "path": "/yashaka/selene/blob/master/selene/support/shared/browser.py",
     "title": "selene/browser.py at master · yashaka/selene · GitHub",
-    "count": 12,
+    "count": 11,
     "uniques": 6
   }
 ]
