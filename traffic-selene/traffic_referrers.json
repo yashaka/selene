@@ -1,13 +1,13 @@
 [
   {
     "referrer": "Google",
-    "count": 336,
-    "uniques": 100
+    "count": 339,
+    "uniques": 109
   },
   {
     "referrer": "github.com",
-    "count": 141,
-    "uniques": 30
+    "count": 214,
+    "uniques": 31
   },
   {
     "referrer": "yandex.ru",
@@ -16,7 +16,7 @@
   },
   {
     "referrer": "selene-docs-test.readthedocs.io",
-    "count": 22,
+    "count": 24,
     "uniques": 4
   },
   {
@@ -45,7 +45,7 @@
     "uniques": 3
   },
   {
-    "referrer": "automation-remarks.com",
+    "referrer": "ecosia.org",
     "count": 2,
     "uniques": 1
   }
