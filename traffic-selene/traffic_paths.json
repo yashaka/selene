@@ -2,8 +2,14 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 244,
-    "uniques": 140
+    "count": 250,
+    "uniques": 147
+  },
+  {
+    "path": "/yashaka/selene/tree/master/selene",
+    "title": "selene/selene at master · yashaka/selene · GitHub",
+    "count": 18,
+    "uniques": 10
   },
   {
     "path": "/yashaka/selene/issues",
@@ -12,16 +18,22 @@
     "uniques": 4
   },
   {
-    "path": "/yashaka/selene/tree/master/selene",
-    "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 15,
-    "uniques": 9
-  },
-  {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
     "count": 10,
     "uniques": 7
+  },
+  {
+    "path": "/yashaka/selene/tree/master/docs",
+    "title": "selene/docs at master · yashaka/selene · GitHub",
+    "count": 8,
+    "uniques": 8
+  },
+  {
+    "path": "/yashaka/selene/issues/128",
+    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
+    "count": 8,
+    "uniques": 5
   },
   {
     "path": "/yashaka/selene/tree/master/selene/support",
@@ -30,33 +42,21 @@
     "uniques": 5
   },
   {
-    "path": "/yashaka/selene/tree/master/docs",
-    "title": "selene/docs at master · yashaka/selene · GitHub",
-    "count": 7,
-    "uniques": 7
-  },
-  {
     "path": "/yashaka/selene/blob/master/selene/browser.py",
     "title": "selene/browser.py at master · yashaka/selene · GitHub",
     "count": 6,
     "uniques": 4
   },
   {
-    "path": "/yashaka/selene/issues/128",
-    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
+    "path": "/yashaka/selene/pulls",
+    "title": "Pull requests · yashaka/selene · GitHub",
     "count": 6,
     "uniques": 4
   },
   {
-    "path": "/yashaka/selene/tree/master/selene/support/conditions",
-    "title": "selene/selene/support/conditions at master · yashaka/selene · GitHub",
+    "path": "/yashaka/selene/blob/master/pyproject.toml",
+    "title": "selene/pyproject.toml at master · yashaka/selene · GitHub",
     "count": 6,
     "uniques": 3
-  },
-  {
-    "path": "/yashaka/selene/issues/188",
-    "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
-    "count": 5,
-    "uniques": 5
   }
 ]
