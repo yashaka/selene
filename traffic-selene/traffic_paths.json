@@ -2,20 +2,32 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 253,
-    "uniques": 152
+    "count": 248,
+    "uniques": 147
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 19,
-    "uniques": 10
+    "count": 23,
+    "uniques": 12
+  },
+  {
+    "path": "/yashaka/selene/search",
+    "title": "Search · shared",
+    "count": 22,
+    "uniques": 4
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 19,
-    "uniques": 6
+    "count": 18,
+    "uniques": 5
+  },
+  {
+    "path": "/yashaka/selene/tree/master/tests",
+    "title": "selene/tests at master · yashaka/selene · GitHub",
+    "count": 12,
+    "uniques": 8
   },
   {
     "path": "/yashaka/selene/issues/128",
@@ -24,10 +36,10 @@
     "uniques": 7
   },
   {
-    "path": "/yashaka/selene/tree/master/tests",
-    "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 10,
-    "uniques": 7
+    "path": "/yashaka/selene/blob/master/selene/browser.py",
+    "title": "selene/browser.py at master · yashaka/selene · GitHub",
+    "count": 9,
+    "uniques": 6
   },
   {
     "path": "/yashaka/selene/tree/master/docs",
@@ -36,27 +48,15 @@
     "uniques": 8
   },
   {
-    "path": "/yashaka/selene/pulls",
-    "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 8,
-    "uniques": 4
-  },
-  {
     "path": "/yashaka/selene/blob/master/CHANGELOG.md",
     "title": "selene/CHANGELOG.md at master · yashaka/selene · GitHub",
-    "count": 7,
-    "uniques": 5
-  },
-  {
-    "path": "/yashaka/selene/blob/master/selene/browser.py",
-    "title": "selene/browser.py at master · yashaka/selene · GitHub",
-    "count": 7,
-    "uniques": 5
+    "count": 8,
+    "uniques": 6
   },
   {
     "path": "/yashaka/selene/tree/master/selene/support",
     "title": "selene/selene/support at master · yashaka/selene · GitHub",
-    "count": 7,
-    "uniques": 5
+    "count": 8,
+    "uniques": 6
   }
 ]
