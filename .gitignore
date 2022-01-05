@@ -9,6 +9,10 @@ skip-covered/
 tests/comparison/
 tests/adhoc/test_anything.py
 
+# allure
+allure-results/
+allure-report/
+
 # JetBrains
 .idea/
 *.iml
@@ -132,9 +136,9 @@ celerybeat.pid
 
 # Environments
 .env
-.venv
+.venv*
 env/
-venv/
+venv*/
 ENV/
 env.bak/
 venv.bak/
