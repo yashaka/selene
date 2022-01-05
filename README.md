@@ -73,15 +73,15 @@ THIS README DESCRIBES THE USAGE OF THE PRE-RELEASE version of Selene. For older 
   
 ### Migration guide
 
-GIVEN on 1.0.1:
+From 1.0.1 to 2.0.0aLATEST:
 * upgrade to python 3.7
 * update selene to 2.0.0aLATEST
-  * find&replace the collection.first() method from `.first()` to `.first`
+  * find&replace the `collection.first()` method from `.first()` to `.first`
   * ensure all conditions like `text('foo')` are used via `be.*` or `have.*` syntax
     * example:
       * find&replace all
         * `(text('foo'))` to `(have.text('foo'))`
-        * `(be.visible)` to `(be.visible)`
+        * `(visible)` to `(be.visible)`
       * smarter find&replace (with some manual refactoring)
         * `.should(x, timeout=y)` to `.with_(timeout=y).should(x)`
       * and add corresponding imports: `from selene import be, have`
