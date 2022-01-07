@@ -1,13 +1,13 @@
 [
   {
     "referrer": "Google",
-    "count": 122,
-    "uniques": 63
+    "count": 141,
+    "uniques": 70
   },
   {
     "referrer": "github.com",
-    "count": 47,
-    "uniques": 20
+    "count": 50,
+    "uniques": 23
   },
   {
     "referrer": "yandex.ru",
@@ -26,13 +26,18 @@
   },
   {
     "referrer": "automated-testing.info",
-    "count": 6,
-    "uniques": 5
+    "count": 8,
+    "uniques": 6
   },
   {
     "referrer": "Bing",
-    "count": 3,
-    "uniques": 2
+    "count": 6,
+    "uniques": 3
+  },
+  {
+    "referrer": "linkedin.com",
+    "count": 4,
+    "uniques": 3
   },
   {
     "referrer": "youtube.com",
@@ -40,13 +45,8 @@
     "uniques": 2
   },
   {
-    "referrer": "linkedin.com",
-    "count": 2,
-    "uniques": 2
-  },
-  {
     "referrer": "ecosia.org",
-    "count": 1,
+    "count": 2,
     "uniques": 1
   }
 ]
