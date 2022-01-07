@@ -22,4 +22,4 @@
 
 from selene.api.base import *
 
-from selene.support.shared import browser, config, s, ss
+from selene.support.shared import browser, config, jquery_style

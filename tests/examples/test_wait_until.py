@@ -48,7 +48,7 @@ def test_progress_bar_disappears_in_time(browser):
     show_dialog_btn = browser.element('.btn-primary')
     dialog = browser.element('.modal-backdrop.fade.in')
     browser.open(
-        'https://www.seleniumeasy.com/test/bootstrap-progress-bar-dialog-demo.html'
+        'https://demo.seleniumeasy.com/bootstrap-progress-bar-dialog-demo.html'
     )
 
     show_dialog_btn.click()
@@ -70,7 +70,7 @@ def test_progress_bar_does_not_disappear_in_time(browser):
     show_dialog_btn = browser.element('.btn-primary')
     dialog = browser.element('.modal-backdrop.fade.in')
     browser.open(
-        'https://www.seleniumeasy.com/test/bootstrap-progress-bar-dialog-demo.html'
+        'https://demo.seleniumeasy.com/bootstrap-progress-bar-dialog-demo.html'
     )
 
     show_dialog_btn.click()
