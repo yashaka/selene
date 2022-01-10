@@ -2,31 +2,25 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 229,
+    "count": 238,
     "uniques": 139
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene",
-    "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 24,
-    "uniques": 12
   },
   {
     "path": "/yashaka/selene/search",
     "title": "Search · shared",
-    "count": 22,
-    "uniques": 4
+    "count": 34,
+    "uniques": 5
+  },
+  {
+    "path": "/yashaka/selene/tree/master/selene",
+    "title": "selene/selene at master · yashaka/selene · GitHub",
+    "count": 27,
+    "uniques": 12
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 19,
-    "uniques": 6
-  },
-  {
-    "path": "/yashaka/selene/tree/master/tests",
-    "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 17,
+    "count": 20,
     "uniques": 7
   },
   {
@@ -42,21 +36,27 @@
     "uniques": 3
   },
   {
-    "path": "/yashaka/selene/issues/188",
-    "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
-    "count": 12,
+    "path": "/yashaka/selene/tree/master/tests",
+    "title": "selene/tests at master · yashaka/selene · GitHub",
+    "count": 14,
     "uniques": 6
   },
   {
-    "path": "/yashaka/selene/issues/128",
-    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 11,
+    "path": "/yashaka/selene/issues/188",
+    "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
+    "count": 13,
     "uniques": 7
   },
   {
     "path": "/yashaka/selene/issues/202",
     "title": "Allure. How to attach selene screenshots to allure report? · Issue #202 · yas...",
+    "count": 13,
+    "uniques": 6
+  },
+  {
+    "path": "/yashaka/selene/issues/128",
+    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
     "count": 10,
-    "uniques": 4
+    "uniques": 7
   }
 ]
