@@ -1,23 +1,18 @@
 [
   {
     "referrer": "Google",
-    "count": 164,
-    "uniques": 73
+    "count": 154,
+    "uniques": 67
   },
   {
     "referrer": "github.com",
-    "count": 98,
+    "count": 103,
     "uniques": 30
   },
   {
     "referrer": "automated-testing.info",
-    "count": 16,
-    "uniques": 6
-  },
-  {
-    "referrer": "yandex.ru",
-    "count": 12,
-    "uniques": 6
+    "count": 20,
+    "uniques": 7
   },
   {
     "referrer": "ecosia.org",
@@ -31,8 +26,13 @@
   },
   {
     "referrer": "qiita.com",
-    "count": 6,
-    "uniques": 6
+    "count": 5,
+    "uniques": 5
+  },
+  {
+    "referrer": "yandex.ru",
+    "count": 5,
+    "uniques": 4
   },
   {
     "referrer": "linkedin.com",
@@ -41,11 +41,11 @@
   },
   {
     "referrer": "DuckDuckGo",
-    "count": 2,
-    "uniques": 2
+    "count": 1,
+    "uniques": 1
   },
   {
-    "referrer": "youtube.com",
+    "referrer": "mytruveris.atlassian.net",
     "count": 1,
     "uniques": 1
   }
