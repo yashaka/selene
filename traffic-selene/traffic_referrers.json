@@ -1,18 +1,23 @@
 [
   {
     "referrer": "Google",
-    "count": 154,
-    "uniques": 67
+    "count": 197,
+    "uniques": 79
   },
   {
     "referrer": "github.com",
-    "count": 103,
-    "uniques": 30
+    "count": 106,
+    "uniques": 32
+  },
+  {
+    "referrer": "yandex.ru",
+    "count": 32,
+    "uniques": 6
   },
   {
     "referrer": "automated-testing.info",
-    "count": 20,
-    "uniques": 7
+    "count": 24,
+    "uniques": 9
   },
   {
     "referrer": "ecosia.org",
@@ -30,23 +35,18 @@
     "uniques": 5
   },
   {
-    "referrer": "yandex.ru",
-    "count": 5,
-    "uniques": 4
-  },
-  {
     "referrer": "linkedin.com",
     "count": 4,
     "uniques": 3
   },
   {
-    "referrer": "DuckDuckGo",
-    "count": 1,
+    "referrer": "selene-docs-test.readthedocs.io",
+    "count": 3,
     "uniques": 1
   },
   {
-    "referrer": "mytruveris.atlassian.net",
-    "count": 1,
+    "referrer": "todomvc.com",
+    "count": 2,
     "uniques": 1
   }
 ]
