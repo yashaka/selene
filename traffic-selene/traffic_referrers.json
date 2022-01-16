@@ -1,28 +1,28 @@
 [
   {
     "referrer": "Google",
-    "count": 318,
-    "uniques": 100
+    "count": 357,
+    "uniques": 108
   },
   {
     "referrer": "github.com",
-    "count": 160,
-    "uniques": 43
+    "count": 179,
+    "uniques": 50
   },
   {
     "referrer": "yandex.ru",
-    "count": 44,
-    "uniques": 7
+    "count": 45,
+    "uniques": 8
   },
   {
     "referrer": "automated-testing.info",
-    "count": 25,
-    "uniques": 10
+    "count": 31,
+    "uniques": 11
   },
   {
     "referrer": "pypi.org",
-    "count": 22,
-    "uniques": 4
+    "count": 25,
+    "uniques": 5
   },
   {
     "referrer": "ecosia.org",
@@ -40,13 +40,13 @@
     "uniques": 3
   },
   {
+    "referrer": "testerhome.com",
+    "count": 6,
+    "uniques": 1
+  },
+  {
     "referrer": "linkedin.com",
     "count": 4,
     "uniques": 3
-  },
-  {
-    "referrer": "docs.bw.vimpelcom.ru",
-    "count": 3,
-    "uniques": 1
   }
 ]
