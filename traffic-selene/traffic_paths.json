@@ -2,56 +2,56 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 403,
-    "uniques": 204
+    "count": 430,
+    "uniques": 213
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 57,
+    "count": 67,
     "uniques": 26
   },
   {
     "path": "/yashaka/selene/search",
     "title": "Search · XPATH",
-    "count": 40,
-    "uniques": 7
+    "count": 45,
+    "uniques": 8
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
     "count": 32,
-    "uniques": 17
+    "uniques": 18
   },
   {
     "path": "/yashaka/selene/tree/master/selene/core",
     "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 24,
+    "count": 25,
     "uniques": 15
-  },
-  {
-    "path": "/yashaka/selene/issues",
-    "title": "Issues · yashaka/selene · GitHub",
-    "count": 18,
-    "uniques": 13
-  },
-  {
-    "path": "/yashaka/selene/blob/master/CHANGELOG.md",
-    "title": "selene/CHANGELOG.md at master · yashaka/selene · GitHub",
-    "count": 17,
-    "uniques": 13
-  },
-  {
-    "path": "/yashaka/selene/tree/master/tests/examples",
-    "title": "selene/tests/examples at master · yashaka/selene · GitHub",
-    "count": 17,
-    "uniques": 9
   },
   {
     "path": "/yashaka/selene/blob/master/selene/browser.py",
     "title": "selene/browser.py at master · yashaka/selene · GitHub",
+    "count": 18,
+    "uniques": 9
+  },
+  {
+    "path": "/yashaka/selene/issues",
+    "title": "Issues · yashaka/selene · GitHub",
     "count": 17,
-    "uniques": 8
+    "uniques": 12
+  },
+  {
+    "path": "/yashaka/selene/tree/1.x",
+    "title": "yashaka/selene at 1.x",
+    "count": 17,
+    "uniques": 4
+  },
+  {
+    "path": "/yashaka/selene/blob/master/CHANGELOG.md",
+    "title": "selene/CHANGELOG.md at master · yashaka/selene · GitHub",
+    "count": 16,
+    "uniques": 12
   },
   {
     "path": "/yashaka/selene/actions",
