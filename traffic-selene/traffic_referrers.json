@@ -1,13 +1,13 @@
 [
   {
     "referrer": "Google",
-    "count": 346,
-    "uniques": 118
+    "count": 315,
+    "uniques": 110
   },
   {
     "referrer": "github.com",
-    "count": 106,
-    "uniques": 28
+    "count": 96,
+    "uniques": 26
   },
   {
     "referrer": "yandex.ru",
@@ -26,7 +26,7 @@
   },
   {
     "referrer": "pypi.org",
-    "count": 7,
+    "count": 8,
     "uniques": 6
   },
   {
@@ -45,7 +45,7 @@
     "uniques": 3
   },
   {
-    "referrer": "qwiki.nixsolutions.com",
+    "referrer": "patreon.com",
     "count": 4,
     "uniques": 1
   }
