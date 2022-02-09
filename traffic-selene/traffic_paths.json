@@ -2,26 +2,26 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 316,
-    "uniques": 174
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene",
-    "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 35,
-    "uniques": 21
+    "count": 318,
+    "uniques": 179
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 19,
-    "uniques": 13
+    "count": 34,
+    "uniques": 15
+  },
+  {
+    "path": "/yashaka/selene/tree/master/selene",
+    "title": "selene/selene at master · yashaka/selene · GitHub",
+    "count": 32,
+    "uniques": 20
   },
   {
     "path": "/yashaka/selene/releases",
     "title": "Releases · yashaka/selene · GitHub",
-    "count": 17,
-    "uniques": 10
+    "count": 16,
+    "uniques": 9
   },
   {
     "path": "/yashaka/selene/releases/tag/2.0.0a40",
@@ -32,20 +32,20 @@
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 12,
+    "count": 10,
     "uniques": 7
   },
   {
-    "path": "/yashaka/selene/tree/master/selene/core",
-    "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 11,
-    "uniques": 4
+    "path": "/yashaka/selene/issues/128",
+    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
+    "count": 9,
+    "uniques": 8
   },
   {
-    "path": "/yashaka/selene/issues/287",
-    "title": "from selenium to selene · Issue #287 · yashaka/selene · GitHub",
-    "count": 10,
-    "uniques": 4
+    "path": "/yashaka/selene/issues/202",
+    "title": "Allure. How to attach selene screenshots to allure report? · Issue #202 · yas...",
+    "count": 9,
+    "uniques": 7
   },
   {
     "path": "/yashaka/selene/search",
@@ -54,9 +54,9 @@
     "uniques": 3
   },
   {
-    "path": "/yashaka/selene/issues/128",
-    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 8,
-    "uniques": 8
+    "path": "/yashaka/selene/tree/master/selene/core",
+    "title": "selene/selene/core at master · yashaka/selene · GitHub",
+    "count": 9,
+    "uniques": 3
   }
 ]
