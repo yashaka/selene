@@ -1,13 +1,13 @@
 [
   {
     "referrer": "Google",
-    "count": 553,
-    "uniques": 151
+    "count": 561,
+    "uniques": 153
   },
   {
     "referrer": "github.com",
-    "count": 86,
-    "uniques": 39
+    "count": 87,
+    "uniques": 40
   },
   {
     "referrer": "selene-docs-test.readthedocs.io",
@@ -16,7 +16,7 @@
   },
   {
     "referrer": "yandex.ru",
-    "count": 34,
+    "count": 35,
     "uniques": 11
   },
   {
@@ -41,8 +41,8 @@
   },
   {
     "referrer": "qiita.com",
-    "count": 8,
-    "uniques": 6
+    "count": 9,
+    "uniques": 7
   },
   {
     "referrer": "pythonrepo.com",
