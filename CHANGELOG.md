@@ -78,9 +78,21 @@
   - should we make original config (not shared) mutable?
 - TODO: support python 3.10 [#393](https://github.com/yashaka/selene/issues/393)
 
-## 2.0.0a41 (to be released on ?.02.2022)
+## 2.0.0a41 (to be released on 23.02.2022)
 - added support selenium 4.1 [#375](https://github.com/yashaka/selene/issues/375)
   - fixed [#398](https://github.com/yashaka/selene/issues/398)
+- Upgrade [webdriver-manager](https://github.com/SergeyPirogov/webdriver_manager) 3.5.0 -> 3.5.3 ([see changes](https://github.com/SergeyPirogov/webdriver_manager/compare/v3.5.0...v.3.5.3))
+- removed deprecation
+  - from:
+    - collection.should_each(element_condition)
+      - reason:
+        - making collection.should(condition) so smart that it can accept both collection_condition and element_condition might be not a good idea – it violates KISS
+        - maybe keeping things simpler with extra method like should_each is better...
+        - let's see...
+    - element.send_keys(keys)
+      - reason:
+        - yes, send_keys is low level, but sometimes somebody needs this low level style, because of the nature and context of send_keys usage, like sending keys to hidden fields
+        - yet not sure about this decision... let's see...
 
 ## 2.0.0a40
 !!!this release should be beta-tested!!!
