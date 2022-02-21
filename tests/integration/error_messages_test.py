@@ -30,12 +30,21 @@ from tests.integration.helpers.givenpage import GivenPage
 
 
 def exception_message(ex):
-    msg_simplified = re.sub(
+    with_simplified_session_info = re.sub(
         r'\(Session info: .*\)', '(Session info: *)', str(ex.value.msg)
     )
+    and_simplified_stacktrace = re.sub(
+        r'Stacktrace:.*\Z',
+        'Stacktrace: *',
+        with_simplified_session_info,
+        flags=re.DOTALL,
+    )
+    msg_simplified = and_simplified_stacktrace
+
     screenshot_pattern = (
         r'\s*screenshot: .*?/\.selene/screenshots/\d+?/screen_\d+\.png\s*'
     )
+
     return [
         line.strip()
         if not re.match(screenshot_pattern, line)
@@ -85,6 +94,7 @@ def test_element_search_fails_with_message_when_implicitly_waits_for_condition(
         '',
         'Reason: ElementNotInteractableException: Message: element not interactable',
         '(Session info: *)',
+        'Stacktrace: *',
     ]
 
 
@@ -111,6 +121,7 @@ def test_inner_element_search_fails_with_message_when_implicitly_waits_for_condi
         '',
         'Reason: ElementNotInteractableException: Message: element not interactable',
         '(Session info: *)',
+        'Stacktrace: *',
     ]
 
 
@@ -137,6 +148,7 @@ def test_inner_element_search_fails_with_message_when_implicitly_waits_for_condi
         '',
         'Reason: ElementNotInteractableException: Message: element not interactable',
         '(Session info: *)',
+        'Stacktrace: *',
     ]
 
 
@@ -164,6 +176,7 @@ def test_inner_element_search_fails_with_message_when_implicitly_waits_for_condi
         'Reason: NoSuchElementException: Message: no such element: Unable to locate '
         'element: {"method":"css selector","selector":"#not-existing"}',
         '(Session info: *)',
+        'Stacktrace: *',
     ]
 
 

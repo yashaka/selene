@@ -76,7 +76,12 @@
 - deprecate `be.present`
 - repeat fix of #225 to other options in shared config, refactor it... 
   - should we make original config (not shared) mutable?
-  
+- TODO: support python 3.10 [#393](https://github.com/yashaka/selene/issues/393)
+
+## 2.0.0a41 (to be released on ?.02.2022)
+- added support selenium 4.1 [#375](https://github.com/yashaka/selene/issues/375)
+  - fixed [#398](https://github.com/yashaka/selene/issues/398)
+
 ## 2.0.0a40
 !!!this release should be beta-tested!!!
 

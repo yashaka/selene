@@ -27,8 +27,8 @@ import warnings
 from abc import abstractmethod, ABC
 from typing import TypeVar, Union, List, Dict, Any, Callable, Tuple
 
+from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver import ActionChains
-from selenium.webdriver.android.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.switch_to import SwitchTo
