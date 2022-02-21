@@ -22,16 +22,11 @@
 
 from __future__ import annotations
 
-import re
 import warnings
 
 from abc import abstractmethod, ABC
 from typing import TypeVar, Union, List, Dict, Any, Callable, Tuple
 
-from selenium.common.exceptions import (
-    ElementNotVisibleException,
-    ElementNotInteractableException,
-)
 from selenium.webdriver import ActionChains
 from selenium.webdriver.android.webdriver import WebDriver
 from selenium.webdriver.common.by import By
