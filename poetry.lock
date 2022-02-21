@@ -576,7 +576,7 @@ socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 
 [[package]]
 name = "webdriver-manager"
-version = "3.5.0"
+version = "3.5.3"
 description = "Library provides the way to automatically manage drivers for different browsers"
 category = "main"
 optional = false
@@ -621,7 +621,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "f1f938a9a5600d89d6deb319cf66f4b71ebe4231f7c8675a02ce3e07ecc65c18"
+content-hash = "a7d93043db354dfdd52a088a35eec1663432f8c75a9e24fb6473140c5812af41"
 
 [metadata.files]
 appdirs = [
@@ -1014,8 +1014,8 @@ urllib3 = [
     {file = "urllib3-1.26.7.tar.gz", hash = "sha256:4987c65554f7a2dbf30c18fd48778ef124af6fab771a377103da0585e2336ece"},
 ]
 webdriver-manager = [
-    {file = "webdriver_manager-3.5.0-py2.py3-none-any.whl", hash = "sha256:d22c1eec6c58b8599dae6d132bb51684229db86e62a85915067a119b81dfbdb0"},
-    {file = "webdriver_manager-3.5.0.tar.gz", hash = "sha256:a8d112c762a48ab4ed495bbbafa3e87de0ab44235ac2874561d1804630579478"},
+    {file = "webdriver_manager-3.5.3-py2.py3-none-any.whl", hash = "sha256:ef4320064bec22df5b2d7ea0509d08a99d3cecd1ddabd190f26f871dfa52a362"},
+    {file = "webdriver_manager-3.5.3.tar.gz", hash = "sha256:33c86736c51839abdcdeed1bbfd1f0d55277411bae4f232fdc9ace0c518e04f4"},
 ]
 wrapt = [
     {file = "wrapt-1.12.1.tar.gz", hash = "sha256:b62ffa81fb85f4332a4f609cab4ac40709470da05643a082ec1eb88e6d9b97d7"},

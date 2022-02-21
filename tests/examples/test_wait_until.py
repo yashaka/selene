@@ -21,7 +21,9 @@
 # SOFTWARE.
 import pytest
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.utils import ChromeType
 
 from selene import Browser, Config
 from selene.support.conditions import be
@@ -30,7 +32,9 @@ from selene.support.conditions import be
 @pytest.fixture(scope='function')
 def browser():
     browser = Browser(
-        Config(driver=webdriver.Chrome(ChromeDriverManager().install()))
+        Config(driver=webdriver.Chrome(service=Service(
+        ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
+    )))
     )
     yield browser
     browser.quit()

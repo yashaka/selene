@@ -20,7 +20,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.utils import ChromeType
 
 from selene import have, be
 from selene.support.shared import browser
@@ -28,7 +30,9 @@ from tests.acceptance.helpers.todomvc import given_active
 
 
 def setup_module():
-    browser.set_driver(webdriver.Chrome(ChromeDriverManager().install()))
+    browser.config.driver = webdriver.Chrome(service=Service(
+        ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
+    ))
 
 
 def teardown_module():
@@ -40,7 +44,7 @@ class Task:
         self.container = container
 
     def toggle(self):
-        self.container.find(".toggle").click()
+        self.container.element(".toggle").click()
         return self
 
 
@@ -61,10 +65,10 @@ class Tasks:
 class Footer:
     def __init__(self):
         self.container = browser.element("#footer")
-        self.clear_completed = self.container.find("#clear-completed")
+        self.clear_completed = self.container.element("#clear-completed")
 
     def should_have_items_left(self, number_of_active_tasks):
-        self.container.find("#todo-count>strong").should(
+        self.container.element("#todo-count>strong").should(
             have.exact_text(str(number_of_active_tasks))
         )
 

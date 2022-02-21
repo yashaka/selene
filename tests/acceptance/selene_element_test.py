@@ -35,7 +35,7 @@ from tests.acceptance.helpers.todomvc import (
 
 
 def setup_module():
-    browser.set_driver(get_test_driver())
+    browser.config.driver = get_test_driver()
 
 
 def teardown_module():
@@ -44,25 +44,19 @@ def teardown_module():
 
 def test_assure_and_alias_methods():
     given_active("a")
-    browser.element("#clear-completed").assure(be.hidden)
-    browser.element("#clear-completed").should(be.hidden)  # alias
-    browser.element("#clear-completed").should_be(hidden)  # alias
-    browser.element("#clear-completed").should_have(hidden)  # alias
+    browser.element("#clear-completed").should(be.hidden)
 
 
 def test_assure_not_and_alias_methods():
     given_at_other_page()
     browser.element("#new-todo").should(be.not_.existing)
-    browser.element("#new-todo").should_not(existing)  # alias
-    browser.element("#new-todo").should_not_be(existing)  # alias
-    browser.element("#new-todo").should_not_have(existing)  # alias
 
 
 def test_is_displayed_returns_value_with_no_wait_for_visibility():
     given_empty_tasks()
-    assert not browser.element("#clear-completed").is_displayed()
+    assert not browser.element("#clear-completed").matching(be.visible)
 
 
 def test_is_displayed_returns_true():
     given(task("a"), task("b", is_completed=True))
-    assert browser.element("#clear-completed").is_displayed()
+    assert browser.element("#clear-completed").matching(be.visible)

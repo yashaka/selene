@@ -23,7 +23,9 @@ import os
 
 import pytest
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.utils import ChromeType
 
 from selene import have, be
 from selene.core.exceptions import TimeoutException
@@ -47,10 +49,13 @@ def setup_function():
 
 
 def setup_module():
-    browser.set_driver(
-        webdriver.Chrome(
-            ChromeDriverManager().install(), options=headless_chrome_options()
-        )
+    browser.config.driver = webdriver.Chrome(
+        service=Service(
+            ChromeDriverManager(
+                chrome_type=ChromeType.CHROMIUM
+            ).install()
+        ),
+        options=headless_chrome_options(),
     )
 
 
@@ -146,7 +151,7 @@ def test_can_make_screenshot_automatically():
     browser.open(EMPTY_PAGE_URL)
     config.timeout = 0.1
 
-    with pytest.raises(TimeoutException) as ex:
+    with pytest.raises(TimeoutException):
         browser.element("#selene_link").should(have.exact_text("Selen site"))
 
     expected = os.path.join(
@@ -186,7 +191,7 @@ def test_can_get_latest_screenshot_path():
     with pytest.raises(TimeoutException):
         browser.element("#s").should(be.visible)
 
-    picture = browser.latest_screenshot()
+    picture = browser.last_screenshot
     expected = os.path.join(config.reports_folder, f'{get_screen_id()}.png')
     assert picture == expected
     assert os.path.exists(picture)

@@ -25,7 +25,7 @@ from tests.examples.todomvc.pagemodules_approach.pages import tasks
 
 class TestTodoMVC:
     def teardown(self):
-        browser.execute_script('localStorage.clear()')
+        browser.driver.execute_script('localStorage.clear()')
 
     def test_filter_tasks(self):
         tasks.visit()

@@ -1,6 +1,8 @@
 import pytest
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.utils import ChromeType
 
 from selene import Config, Browser
 from tests.helpers import headless_chrome_options
@@ -14,7 +16,9 @@ def chrome_driver(request):
             options=headless_chrome_options(),
         )
     else:
-        chrome_driver = webdriver.Chrome(ChromeDriverManager().install())
+        chrome_driver = webdriver.Chrome(service=Service(
+        ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
+    ))
     yield chrome_driver
     chrome_driver.quit()
 
@@ -32,6 +36,8 @@ def function_browser(request):
             options=headless_chrome_options(),
         )
     else:
-        chrome_driver = webdriver.Chrome(ChromeDriverManager().install())
+        chrome_driver = webdriver.Chrome(service=Service(
+        ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
+    ))
     yield Browser(Config(driver=chrome_driver))
     chrome_driver.quit()

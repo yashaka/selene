@@ -21,8 +21,13 @@
 # SOFTWARE.
 
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.utils import ChromeType
 
 
 def get_test_driver():
-    return webdriver.Chrome(ChromeDriverManager().install())
+    return webdriver.Chrome(service=Service(
+        ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
+    ))
+

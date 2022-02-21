@@ -21,14 +21,14 @@
 # SOFTWARE.
 __author__ = 'yashaka'
 
-from selene import by
+from selene import by, be
 from selene.support.shared import browser
 from tests.acceptance.helpers.helper import get_test_driver
 from tests.acceptance.helpers.todomvc import given_active
 
 
 def setup_module():
-    browser.set_driver(get_test_driver())
+    browser.config.driver = get_test_driver()
 
 
 def teardown_module():

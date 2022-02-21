@@ -35,9 +35,8 @@ def teardown_function():
 def test_filter_tasks():
     browser.open('https://todomvc4tasj.herokuapp.com')
     clear_completed_js_loaded = "return $._data($('#clear-completed').get(0), 'events').hasOwnProperty('click')"
-    browser.wait_to(
+    browser.wait.for_(
         have.js_returned(True, clear_completed_js_loaded),
-        timeout=config.timeout * 3,
     )
 
     browser.element('#new-todo').set_value('a').press_enter()

@@ -20,14 +20,18 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.utils import ChromeType
 
 from selene.support.shared import browser
 
 
 class BaseTest:
     def setup_method(self):
-        browser.set_driver(webdriver.Chrome(ChromeDriverManager().install()))
+        browser.config.driver = webdriver.Chrome(service=Service(
+            ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
+        ))
 
     def teardown_method(self):
         browser.quit()

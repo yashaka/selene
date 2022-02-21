@@ -34,7 +34,7 @@ class TestTodoMVC(BaseTest):
     def test_filter_tasks(self):
         browser.open(APP_URL)
         clear_completed_js_loaded = "return $._data($('#clear-completed').get(0), 'events').hasOwnProperty('click')"
-        browser.wait_to(have.js_returned(True, clear_completed_js_loaded))
+        browser.wait.for_(have.js_returned(True, clear_completed_js_loaded))
 
         browser.element('#new-todo').should(be.enabled).set_value(
             'a'
@@ -48,7 +48,7 @@ class TestTodoMVC(BaseTest):
 
         browser.all("#todo-list>li").should(have.texts('a', 'b', 'c'))
 
-        browser.all("#todo-list>li").element_by(have.exact_text('b')).find(
+        browser.all("#todo-list>li").element_by(have.exact_text('b')).element(
             ".toggle"
         ).click()
 

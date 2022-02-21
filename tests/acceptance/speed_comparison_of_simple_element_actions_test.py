@@ -45,7 +45,7 @@ def setup_function():
         )
     )
 
-    browser.set_driver(get_test_driver())
+    browser.config.driver = get_test_driver()
     browser.open(TODOMVC_URL)
     browser.element("#new-todo").should(be.visible)
 
@@ -58,7 +58,7 @@ def teardown_function():
 
 def create_tasks_with_raw_selenium():
     global selenium_browser
-    new_todo = selenium_browser.find_element_by_css_selector("#new-todo")
+    new_todo = selenium_browser.find_element(By.CSS_SELECTOR, "#new-todo")
     for task_text in map(str, range(10)):
         new_todo.send_keys(task_text + Keys.ENTER)
 
@@ -66,7 +66,7 @@ def create_tasks_with_raw_selenium():
 def create_tasks_with_selenium_with_research():
     global selenium_browser
     for task_text in map(str, range(10)):
-        new_todo = selenium_browser.find_element_by_css_selector("#new-todo")
+        new_todo = selenium_browser.find_element(By.CSS_SELECTOR, "#new-todo")
         new_todo.send_keys(task_text + Keys.ENTER)
 
 
@@ -76,7 +76,7 @@ def create_tasks_with_selene_and_send_keys():
 
 
 def create_tasks_with_selene_with_cash():
-    new_todo = browser.element("#new-todo").caching()
+    new_todo = browser.element("#new-todo").cached
     for task_text in map(str, range(10)):
         new_todo.send_keys(task_text + Keys.ENTER)
 

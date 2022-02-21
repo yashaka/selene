@@ -28,17 +28,17 @@ import multiprocessing
 import os
 import time
 import warnings
-from functools import lru_cache
 from typing import Optional, TypeVar, Generic, Callable, Union
 
 from selenium.common.exceptions import WebDriverException
-from selenium.webdriver import ChromeOptions, Chrome, Firefox, Remote
+from selenium.webdriver import ChromeOptions, Chrome, Firefox
+from selenium.webdriver.firefox.service import Service as FirefoxService
+from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.remote.webdriver import WebDriver
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
-
+from webdriver_manager.utils import ChromeType
 from selene.common.fp import pipe
-from selene.common.helpers import on_error_return_false
 from selene.core.configuration import Config
 from selene.core.exceptions import TimeoutException
 from selene.core.wait import Wait
@@ -233,12 +233,14 @@ class SharedConfig(Config):
 
         def get_chrome():
             return Chrome(
-                executable_path=ChromeDriverManager().install(),
+                service=ChromeService(
+                    ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
+                ),
                 options=ChromeOptions(),
             )
 
         def get_firefox():
-            return Firefox(executable_path=GeckoDriverManager().install())
+            return Firefox(service=FirefoxService(GeckoDriverManager().install()))
 
         # set_remote = lambda: Remote()  # todo: do we really need it? :)
 

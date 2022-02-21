@@ -68,4 +68,4 @@ class TestTodoMVC:
 
         browser.element(by.id("toggle-all")).click()
         browser.element("//*[@id='clear-completed']").click()
-        tasks.should(be.empty)
+        tasks.should(have.size(0))

@@ -12,7 +12,9 @@ app_url = 'https://todomvc4tasj.herokuapp.com/'
 def visit():
     browser.open(app_url)
     clear_completed_js_loaded = "return $._data($('#clear-completed').get(0), 'events').hasOwnProperty('click')"
-    browser.wait_to(have.js_returned(True, clear_completed_js_loaded))
+    browser.with_(
+        timeout=browser.config.timeout*3
+    ).wait.for_(have.js_returned(True, clear_completed_js_loaded))
 
 
 def filter_active():
@@ -31,7 +33,7 @@ def add(*task_texts):
 
 
 def toggle(task_text):
-    _elements.element_by(have.exact_text(task_text)).find(".toggle").click()
+    _elements.element_by(have.exact_text(task_text)).element(".toggle").click()
 
 
 def should_be(*task_texts):

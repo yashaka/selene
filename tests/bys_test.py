@@ -46,18 +46,6 @@ def test_by_xpath():
     assert by.xpath("//a") == ('xpath', "//a")
 
 
-def test_by_following_sibling():
-    assert by.be_following_sibling() == ("xpath", './following-sibling::*')
-
-
-def test_by_parent():
-    assert by.be_parent() == ("xpath", "..")
-
-
-def test_first_child():
-    assert by.be_first_child() == ("xpath", "./*[1]")
-
-
 def test_by_text():
     assert by.text("test") == (
         "xpath",

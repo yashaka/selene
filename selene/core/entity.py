@@ -723,11 +723,18 @@ class Element(WaitingEntity):
         return self
 
     def send_keys(self, *value) -> Element:
-        warnings.warn(
-            "send_keys is deprecated because the name is not user-oriented in context of web ui e2e tests; "
-            "use `type` for 'typing text', press(*key) or press_* for 'pressing keys' methods instead",
-            DeprecationWarning,
-        )
+        # warnings.warn(
+        #     "send_keys is deprecated because the name is not user-oriented in context of web ui e2e tests; "
+        #     "use `type` for 'typing text', press(*key) or press_* for 'pressing keys' methods instead",
+        #     DeprecationWarning,
+        # )
+        # """
+        # was deprecated previously
+        # but deprecation was removed as an exception case
+        # because sometimes send_keys is used for low level stuff
+        # like sending values for files, etc...
+        # let's rethink this topic later...
+        # """
         self.wait.command(
             'send keys', lambda element: element().send_keys(*value)
         )
@@ -1387,10 +1394,15 @@ class Collection(WaitingEntity):
     def should_each(
         self, condition: ElementCondition, timeout=None
     ) -> Collection:
-        warnings.warn(
-            "deprecated; use `should` method instead: browser.all('.foo').should(have.css_class('bar'))",
-            DeprecationWarning,
-        )
+        # warnings.warn(
+        #     "deprecated; use `should` method instead: browser.all('.foo').should(have.css_class('bar'))",
+        #     DeprecationWarning,
+        # )
+        # """
+        # was deprecated
+        # but... probably making .should(condition) too smart was a bad idea...
+        # TODO: decide on the the .should_each fate...
+        # """
         return self.should(condition, timeout)
 
     def assure(

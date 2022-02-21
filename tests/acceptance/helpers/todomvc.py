@@ -38,7 +38,7 @@ is_TodoMVC_loaded = (
 def open_todomvc():
     # todo: refactor to use repo copy of todomvc
     browser.open(TODOMVC_URL)
-    browser.wait_until(have.js_returned(True, is_TodoMVC_loaded))
+    browser.wait.for_(have.js_returned(True, is_TodoMVC_loaded))
 
 
 def given_at_other_page():
@@ -47,7 +47,7 @@ def given_at_other_page():
 
 
 def execute_js(js_string):
-    return browser.execute_script(js_string)
+    return browser.driver.execute_script(js_string)
 
 
 def given(*tasks):

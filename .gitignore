@@ -8,6 +8,7 @@ build
 skip-covered/
 tests/comparison/
 tests/adhoc/test_anything.py
+custom.png
 
 # allure
 allure-results/
@@ -78,7 +79,7 @@ coverage.xml
 *.cover
 *.py,cover
 .hypothesis/
-.pytest_cache/
+**/.pytest_cache/
 cover/
 
 # Translations
