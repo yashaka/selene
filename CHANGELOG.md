@@ -78,8 +78,12 @@
   - should we make original config (not shared) mutable?
 - TODO: support python 3.10 [#393](https://github.com/yashaka/selene/issues/393)
 
-## 2.0.0a41 (to be released on 23.02.2022)
+## 2.0.0b1 (to be released on 23.02.2022)
 - added support selenium 4.1 [#375](https://github.com/yashaka/selene/issues/375)
+  - the =4.1 version is frozen/hardcoded as dependency
+    - without backwards compatibility to selenium 3
+      - the newly added service arg have been added to automatic driver management on the selene side 
+        - yet, if anyone needs backwards compatibility, we can consider implementing it in following patches, feel free to file an issue;)
   - fixed [#398](https://github.com/yashaka/selene/issues/398)
 - Upgrade [webdriver-manager](https://github.com/SergeyPirogov/webdriver_manager) 3.5.0 -> 3.5.3 ([see changes](https://github.com/SergeyPirogov/webdriver_manager/compare/v3.5.0...v.3.5.3))
 - removed deprecation
@@ -94,9 +98,7 @@
         - yes, send_keys is low level, but sometimes somebody needs this low level style, because of the nature and context of send_keys usage, like sending keys to hidden fields
         - yet not sure about this decision... let's see...
 
-## 2.0.0a40
-!!!this release should be beta-tested!!!
-
+## 2.0.0a40 (released on 09.10.2021)
 - added `browser.config.wait_for_no_overlap_found_by_js` (`False` by default)
   - making following element methods to wait for no overlap:
     - type(text)
