@@ -54,14 +54,14 @@ Tests with Selene can be built either in a simple straightforward "selenide' sty
 
 ## Versions
   
-* Latest recommended version to use is >= [2.0.0a39](https://pypi.org/project/selene/2.0.0a39/)
+* Latest recommended version to use is >= [2.0.0b1](https://pypi.org/project/selene/2.0.0b1/)
   * it's a completely new version of selene, with improved API and speed
-  * supports python >= 3.7
+  * supports 3.7 <= python <= 3.9,
+  * bundled with Selenium = 4.1
   * it's incompatible with [1.x](https://github.com/yashaka/selene/tree/1.x)
   * current master branch is pointed to 2.x
-  * yet in pre-alpha stage, refining API, improving "migratability", and testing
-  * it looks pretty stable, but not fully proven yet
-    * mainly tested on production code base of a few users who successfully migrated from 1.x to 2.x
+  * yet in alpha/beta stage, refining API, improving "migratability", and testing
+  * it looks pretty stable, most users already upgraded to 2.0 alpha/beta
 
 * Latest version marked as stable is: [1.0.2](https://pypi.org/project/selene/1.0.2/)
   * it is main version used by most selene users during last 2 years
