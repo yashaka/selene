@@ -29,9 +29,11 @@ from selene.support.shared import browser
 
 class BaseTest:
     def setup_method(self):
-        browser.config.driver = webdriver.Chrome(service=Service(
-            ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
-        ))
+        browser.config.driver = webdriver.Chrome(
+            service=Service(
+                ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
+            )
+        )
 
     def teardown_method(self):
         browser.quit()

@@ -12,9 +12,9 @@ app_url = 'https://todomvc4tasj.herokuapp.com/'
 def visit():
     browser.open(app_url)
     clear_completed_js_loaded = "return $._data($('#clear-completed').get(0), 'events').hasOwnProperty('click')"
-    browser.with_(
-        timeout=browser.config.timeout*3
-    ).wait.for_(have.js_returned(True, clear_completed_js_loaded))
+    browser.with_(timeout=browser.config.timeout * 3).wait.for_(
+        have.js_returned(True, clear_completed_js_loaded)
+    )
 
 
 def filter_active():

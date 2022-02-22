@@ -16,9 +16,11 @@ def chrome_driver(request):
             options=headless_chrome_options(),
         )
     else:
-        chrome_driver = webdriver.Chrome(service=Service(
-        ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
-    ))
+        chrome_driver = webdriver.Chrome(
+            service=Service(
+                ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
+            )
+        )
     yield chrome_driver
     chrome_driver.quit()
 
@@ -36,8 +38,10 @@ def function_browser(request):
             options=headless_chrome_options(),
         )
     else:
-        chrome_driver = webdriver.Chrome(service=Service(
-        ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
-    ))
+        chrome_driver = webdriver.Chrome(
+            service=Service(
+                ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
+            )
+        )
     yield Browser(Config(driver=chrome_driver))
     chrome_driver.quit()

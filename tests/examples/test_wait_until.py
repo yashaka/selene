@@ -32,9 +32,15 @@ from selene.support.conditions import be
 @pytest.fixture(scope='function')
 def browser():
     browser = Browser(
-        Config(driver=webdriver.Chrome(service=Service(
-        ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
-    )))
+        Config(
+            driver=webdriver.Chrome(
+                service=Service(
+                    ChromeDriverManager(
+                        chrome_type=ChromeType.CHROMIUM
+                    ).install()
+                )
+            )
+        )
     )
     yield browser
     browser.quit()

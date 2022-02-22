@@ -27,7 +27,8 @@ from webdriver_manager.utils import ChromeType
 
 
 def get_test_driver():
-    return webdriver.Chrome(service=Service(
-        ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
-    ))
-
+    return webdriver.Chrome(
+        service=Service(
+            ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
+        )
+    )

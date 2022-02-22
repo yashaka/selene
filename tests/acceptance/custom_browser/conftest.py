@@ -9,9 +9,11 @@ from selene import Config, Browser
 
 @pytest.fixture(scope='function')
 def session_driver():
-    chrome_driver = webdriver.Chrome(service=Service(
-        ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
-    ))
+    chrome_driver = webdriver.Chrome(
+        service=Service(
+            ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
+        )
+    )
     yield chrome_driver
     chrome_driver.quit()
 

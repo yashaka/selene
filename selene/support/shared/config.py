@@ -234,13 +234,17 @@ class SharedConfig(Config):
         def get_chrome():
             return Chrome(
                 service=ChromeService(
-                    ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
+                    ChromeDriverManager(
+                        chrome_type=ChromeType.CHROMIUM
+                    ).install()
                 ),
                 options=ChromeOptions(),
             )
 
         def get_firefox():
-            return Firefox(service=FirefoxService(GeckoDriverManager().install()))
+            return Firefox(
+                service=FirefoxService(GeckoDriverManager().install())
+            )
 
         # set_remote = lambda: Remote()  # todo: do we really need it? :)
 

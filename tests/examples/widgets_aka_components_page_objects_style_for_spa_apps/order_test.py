@@ -34,9 +34,11 @@ from tests.examples.widgets_aka_components_page_objects_style_for_spa_apps.model
 
 def setup_function():
     config.timeout = 4
-    browser.config.driver = webdriver.Chrome(service=Service(
-        ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
-    ))
+    browser.config.driver = webdriver.Chrome(
+        service=Service(
+            ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
+        )
+    )
     config.base_url = 'file://{}/../../resources/orderapp/'.format(
         os.path.abspath(os.path.dirname(__file__))
     )

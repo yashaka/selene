@@ -37,9 +37,11 @@ def test_automatic_quit_for_previous_driver():
     driver_from_test_d = browser.config.driver
     assert Help(driver_from_test_d).has_browser_still_alive() is True
 
-    browser.config.driver = webdriver.Chrome(service=Service(
-        ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
-    ))
+    browser.config.driver = webdriver.Chrome(
+        service=Service(
+            ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
+        )
+    )
 
     assert Help(driver_from_test_d).has_browser_still_alive() is False
     assert Help(browser.driver).has_browser_still_alive() is True

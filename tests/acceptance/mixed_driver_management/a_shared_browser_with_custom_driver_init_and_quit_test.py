@@ -31,9 +31,11 @@ from tests.acceptance.mixed_driver_management import todomvc
 
 
 def setup_module():
-    browser.config.driver = webdriver.Chrome(service=Service(
-        ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
-    ))
+    browser.config.driver = webdriver.Chrome(
+        service=Service(
+            ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
+        )
+    )
 
 
 def teardown_module():
