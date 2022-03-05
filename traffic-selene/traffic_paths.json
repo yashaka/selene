@@ -2,14 +2,14 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 368,
-    "uniques": 187
+    "count": 373,
+    "uniques": 185
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 53,
-    "uniques": 13
+    "count": 60,
+    "uniques": 14
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
@@ -18,16 +18,16 @@
     "uniques": 12
   },
   {
-    "path": "/yashaka/selene/releases/tag/2.0.0b1",
-    "title": "Release 2.0.0b1 · yashaka/selene · GitHub",
-    "count": 26,
-    "uniques": 17
-  },
-  {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 26,
-    "uniques": 12
+    "count": 32,
+    "uniques": 14
+  },
+  {
+    "path": "/yashaka/selene/releases/tag/2.0.0b1",
+    "title": "Release 2.0.0b1 · yashaka/selene · GitHub",
+    "count": 27,
+    "uniques": 18
   },
   {
     "path": "/yashaka/selene/tree/master/tests/examples",
@@ -36,27 +36,27 @@
     "uniques": 8
   },
   {
-    "path": "/yashaka/selene/releases",
-    "title": "Releases · yashaka/selene · GitHub",
-    "count": 22,
-    "uniques": 11
-  },
-  {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 18,
-    "uniques": 12
+    "count": 20,
+    "uniques": 13
+  },
+  {
+    "path": "/yashaka/selene/releases",
+    "title": "Releases · yashaka/selene · GitHub",
+    "count": 20,
+    "uniques": 10
+  },
+  {
+    "path": "/yashaka/selene/issues/188",
+    "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
+    "count": 14,
+    "uniques": 9
   },
   {
     "path": "/yashaka/selene/tags",
     "title": "Tags · yashaka/selene · GitHub",
     "count": 14,
     "uniques": 4
-  },
-  {
-    "path": "/yashaka/selene/issues/287",
-    "title": "from selenium to selene · Issue #287 · yashaka/selene · GitHub",
-    "count": 12,
-    "uniques": 8
   }
 ]

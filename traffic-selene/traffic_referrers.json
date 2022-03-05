@@ -1,18 +1,18 @@
 [
   {
     "referrer": "Google",
-    "count": 262,
-    "uniques": 97
+    "count": 289,
+    "uniques": 102
   },
   {
     "referrer": "github.com",
     "count": 188,
-    "uniques": 39
+    "uniques": 38
   },
   {
     "referrer": "yandex.ru",
     "count": 43,
-    "uniques": 10
+    "uniques": 11
   },
   {
     "referrer": "moodle.irlix.com",
@@ -20,14 +20,14 @@
     "uniques": 2
   },
   {
-    "referrer": "ecosia.org",
-    "count": 15,
+    "referrer": "automated-testing.info",
+    "count": 20,
     "uniques": 8
   },
   {
-    "referrer": "automated-testing.info",
+    "referrer": "ecosia.org",
     "count": 15,
-    "uniques": 7
+    "uniques": 8
   },
   {
     "referrer": "testerhome.com",
