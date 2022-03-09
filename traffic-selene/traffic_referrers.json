@@ -1,22 +1,22 @@
 [
   {
     "referrer": "Google",
-    "count": 225,
-    "uniques": 83
+    "count": 208,
+    "uniques": 79
   },
   {
     "referrer": "github.com",
-    "count": 75,
-    "uniques": 28
+    "count": 61,
+    "uniques": 26
   },
   {
     "referrer": "yandex.ru",
-    "count": 45,
-    "uniques": 8
+    "count": 43,
+    "uniques": 7
   },
   {
     "referrer": "moodle.irlix.com",
-    "count": 29,
+    "count": 28,
     "uniques": 2
   },
   {
@@ -35,14 +35,14 @@
     "uniques": 6
   },
   {
-    "referrer": "testerhome.com",
-    "count": 10,
-    "uniques": 7
+    "referrer": "DuckDuckGo",
+    "count": 9,
+    "uniques": 4
   },
   {
-    "referrer": "DuckDuckGo",
-    "count": 6,
-    "uniques": 3
+    "referrer": "testerhome.com",
+    "count": 7,
+    "uniques": 6
   },
   {
     "referrer": "qiita.com",
