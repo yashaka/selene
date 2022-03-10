@@ -1,23 +1,18 @@
 [
   {
     "referrer": "Google",
-    "count": 208,
-    "uniques": 79
+    "count": 203,
+    "uniques": 76
   },
   {
     "referrer": "github.com",
-    "count": 61,
+    "count": 56,
     "uniques": 26
   },
   {
     "referrer": "yandex.ru",
     "count": 43,
     "uniques": 7
-  },
-  {
-    "referrer": "moodle.irlix.com",
-    "count": 28,
-    "uniques": 2
   },
   {
     "referrer": "selene-docs-test.readthedocs.io",
@@ -36,13 +31,18 @@
   },
   {
     "referrer": "DuckDuckGo",
-    "count": 9,
-    "uniques": 4
+    "count": 10,
+    "uniques": 5
   },
   {
     "referrer": "testerhome.com",
     "count": 7,
     "uniques": 6
+  },
+  {
+    "referrer": "moodle.irlix.com",
+    "count": 7,
+    "uniques": 1
   },
   {
     "referrer": "qiita.com",

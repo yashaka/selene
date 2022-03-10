@@ -2,14 +2,14 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 243,
-    "uniques": 131
+    "count": 239,
+    "uniques": 132
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 31,
-    "uniques": 7
+    "count": 25,
+    "uniques": 6
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
@@ -20,13 +20,13 @@
   {
     "path": "/yashaka/selene/issues/188",
     "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
-    "count": 14,
-    "uniques": 9
+    "count": 13,
+    "uniques": 8
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 14,
+    "count": 13,
     "uniques": 7
   },
   {
@@ -42,21 +42,21 @@
     "uniques": 5
   },
   {
-    "path": "/yashaka/selene/releases/tag/2.0.0b1",
-    "title": "Release 2.0.0b1 · yashaka/selene · GitHub",
-    "count": 9,
-    "uniques": 7
-  },
-  {
-    "path": "/yashaka/selene/blob/master/tests/base_test.py",
-    "title": "selene/base_test.py at master · yashaka/selene · GitHub",
-    "count": 9,
-    "uniques": 3
-  },
-  {
     "path": "/yashaka/selene/tree/master/docs",
     "title": "selene/docs at master · yashaka/selene · GitHub",
     "count": 8,
+    "uniques": 6
+  },
+  {
+    "path": "/yashaka/selene/blob/master/selene/browser.py",
+    "title": "selene/browser.py at master · yashaka/selene · GitHub",
+    "count": 7,
+    "uniques": 4
+  },
+  {
+    "path": "/yashaka/selene/issues/202",
+    "title": "Allure. How to attach selene screenshots to allure report? · Issue #202 · yas...",
+    "count": 6,
     "uniques": 6
   }
 ]
