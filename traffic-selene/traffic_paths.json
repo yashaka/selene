@@ -2,26 +2,26 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 306,
-    "uniques": 139
+    "count": 309,
+    "uniques": 143
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
     "count": 32,
-    "uniques": 14
+    "uniques": 15
   },
   {
-    "path": "/yashaka/selene/tree/master/tests",
-    "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 18,
-    "uniques": 5
+    "path": "/yashaka/selene/issues",
+    "title": "Issues · yashaka/selene · GitHub",
+    "count": 25,
+    "uniques": 8
   },
   {
     "path": "/yashaka/selene/issues/188",
     "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
-    "count": 15,
-    "uniques": 11
+    "count": 22,
+    "uniques": 15
   },
   {
     "path": "/yashaka/selene/search",
@@ -30,33 +30,33 @@
     "uniques": 5
   },
   {
-    "path": "/yashaka/selene/issues",
-    "title": "Issues · yashaka/selene · GitHub",
-    "count": 13,
-    "uniques": 7
-  },
-  {
-    "path": "/yashaka/selene/tree/master/tests/examples",
-    "title": "selene/tests/examples/widgets_aka_components_page_objects_style_for_spa_apps ...",
-    "count": 12,
-    "uniques": 4
-  },
-  {
-    "path": "/yashaka/selene/tree/master/docs",
-    "title": "selene/docs at master · yashaka/selene · GitHub",
-    "count": 11,
-    "uniques": 8
-  },
-  {
     "path": "/yashaka/selene/tree/master/selene/support",
     "title": "selene/selene/support at master · yashaka/selene · GitHub",
-    "count": 11,
-    "uniques": 6
+    "count": 12,
+    "uniques": 7
   },
   {
     "path": "/yashaka/selene/tree/master/selene/support/shared",
     "title": "selene/selene/support/shared at master · yashaka/selene · GitHub",
+    "count": 12,
+    "uniques": 5
+  },
+  {
+    "path": "/yashaka/selene/blob/master/selene/browser.py",
+    "title": "selene/browser.py at master · yashaka/selene · GitHub",
     "count": 11,
-    "uniques": 4
+    "uniques": 7
+  },
+  {
+    "path": "/yashaka/selene/tree/master/tests",
+    "title": "selene/tests at master · yashaka/selene · GitHub",
+    "count": 11,
+    "uniques": 5
+  },
+  {
+    "path": "/yashaka/selene/blob/master/selene/elements.py",
+    "title": "selene/elements.py at master · yashaka/selene · GitHub",
+    "count": 10,
+    "uniques": 8
   }
 ]
