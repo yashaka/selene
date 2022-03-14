@@ -2,13 +2,19 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 309,
-    "uniques": 143
+    "count": 300,
+    "uniques": 140
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 32,
+    "count": 33,
+    "uniques": 15
+  },
+  {
+    "path": "/yashaka/selene/issues/188",
+    "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
+    "count": 27,
     "uniques": 15
   },
   {
@@ -18,16 +24,16 @@
     "uniques": 8
   },
   {
-    "path": "/yashaka/selene/issues/188",
-    "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
-    "count": 22,
-    "uniques": 15
-  },
-  {
     "path": "/yashaka/selene/search",
     "title": "Search · index · GitHub",
     "count": 15,
     "uniques": 5
+  },
+  {
+    "path": "/yashaka/selene/blob/master/selene/browser.py",
+    "title": "selene/browser.py at master · yashaka/selene · GitHub",
+    "count": 12,
+    "uniques": 7
   },
   {
     "path": "/yashaka/selene/tree/master/selene/support",
@@ -36,27 +42,21 @@
     "uniques": 7
   },
   {
+    "path": "/yashaka/selene/tree/master/tests",
+    "title": "selene/tests at master · yashaka/selene · GitHub",
+    "count": 12,
+    "uniques": 6
+  },
+  {
     "path": "/yashaka/selene/tree/master/selene/support/shared",
     "title": "selene/selene/support/shared at master · yashaka/selene · GitHub",
     "count": 12,
     "uniques": 5
   },
   {
-    "path": "/yashaka/selene/blob/master/selene/browser.py",
-    "title": "selene/browser.py at master · yashaka/selene · GitHub",
-    "count": 11,
-    "uniques": 7
-  },
-  {
-    "path": "/yashaka/selene/tree/master/tests",
-    "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 11,
-    "uniques": 5
-  },
-  {
-    "path": "/yashaka/selene/blob/master/selene/elements.py",
-    "title": "selene/elements.py at master · yashaka/selene · GitHub",
+    "path": "/yashaka/selene/issues/128",
+    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
     "count": 10,
-    "uniques": 8
+    "uniques": 9
   }
 ]
