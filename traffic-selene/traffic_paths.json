@@ -2,61 +2,61 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 383,
-    "uniques": 196
+    "count": 382,
+    "uniques": 207
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 56,
-    "uniques": 21
+    "count": 53,
+    "uniques": 20
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 38,
+    "count": 39,
     "uniques": 10
   },
   {
     "path": "/yashaka/selene/search",
     "title": "Search · tutotest",
-    "count": 27,
+    "count": 23,
     "uniques": 6
   },
   {
     "path": "/yashaka/selene/issues/188",
     "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
-    "count": 23,
+    "count": 21,
+    "uniques": 12
+  },
+  {
+    "path": "/yashaka/selene/blob/master/selene/browser.py",
+    "title": "selene/browser.py at master · yashaka/selene · GitHub",
+    "count": 20,
     "uniques": 13
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 19,
-    "uniques": 17
+    "count": 17,
+    "uniques": 15
   },
   {
     "path": "/yashaka/selene/tree/master/selene/core",
     "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 19,
-    "uniques": 9
+    "count": 16,
+    "uniques": 8
   },
   {
-    "path": "/yashaka/selene/blob/master/selene/browser.py",
-    "title": "selene/browser.py at master · yashaka/selene · GitHub",
-    "count": 14,
-    "uniques": 10
+    "path": "/yashaka/selene/blob/master/selene/driver.py",
+    "title": "selene/driver.py at master · yashaka/selene · GitHub",
+    "count": 12,
+    "uniques": 7
   },
   {
-    "path": "/yashaka/selene/blob/master/selene/elements.py",
-    "title": "selene/elements.py at master · yashaka/selene · GitHub",
-    "count": 11,
-    "uniques": 10
-  },
-  {
-    "path": "/yashaka/selene/issues/128",
-    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 11,
-    "uniques": 10
+    "path": "/yashaka/selene/blob/3440c4218c2b31e78185043463d53aa6beba5092/selene/core/entity.py",
+    "title": "selene/entity.py at 3440c4218c2b31e78185043463d53aa6beba5092 · yashaka/selene...",
+    "count": 12,
+    "uniques": 6
   }
 ]
