@@ -2,38 +2,38 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 382,
-    "uniques": 207
+    "count": 395,
+    "uniques": 216
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 53,
-    "uniques": 20
+    "count": 59,
+    "uniques": 22
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 39,
+    "count": 27,
     "uniques": 10
   },
   {
     "path": "/yashaka/selene/search",
     "title": "Search · tutotest",
-    "count": 23,
-    "uniques": 6
-  },
-  {
-    "path": "/yashaka/selene/issues/188",
-    "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
-    "count": 21,
-    "uniques": 12
+    "count": 25,
+    "uniques": 7
   },
   {
     "path": "/yashaka/selene/blob/master/selene/browser.py",
     "title": "selene/browser.py at master · yashaka/selene · GitHub",
-    "count": 20,
-    "uniques": 13
+    "count": 21,
+    "uniques": 15
+  },
+  {
+    "path": "/yashaka/selene/tree/master/selene/core",
+    "title": "selene/selene/core at master · yashaka/selene · GitHub",
+    "count": 19,
+    "uniques": 9
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
@@ -42,21 +42,21 @@
     "uniques": 15
   },
   {
-    "path": "/yashaka/selene/tree/master/selene/core",
-    "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 16,
-    "uniques": 8
+    "path": "/yashaka/selene/issues/188",
+    "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
+    "count": 15,
+    "uniques": 9
+  },
+  {
+    "path": "/yashaka/selene/tree/master/selene/api",
+    "title": "selene/selene/api at master · yashaka/selene · GitHub",
+    "count": 13,
+    "uniques": 10
   },
   {
     "path": "/yashaka/selene/blob/master/selene/driver.py",
     "title": "selene/driver.py at master · yashaka/selene · GitHub",
-    "count": 12,
+    "count": 13,
     "uniques": 7
-  },
-  {
-    "path": "/yashaka/selene/blob/3440c4218c2b31e78185043463d53aa6beba5092/selene/core/entity.py",
-    "title": "selene/entity.py at 3440c4218c2b31e78185043463d53aa6beba5092 · yashaka/selene...",
-    "count": 12,
-    "uniques": 6
   }
 ]
