@@ -1,23 +1,23 @@
 [
   {
     "referrer": "Google",
-    "count": 365,
-    "uniques": 121
+    "count": 353,
+    "uniques": 113
   },
   {
     "referrer": "github.com",
-    "count": 123,
-    "uniques": 47
-  },
-  {
-    "referrer": "DuckDuckGo",
-    "count": 45,
-    "uniques": 8
+    "count": 96,
+    "uniques": 42
   },
   {
     "referrer": "yandex.ru",
-    "count": 29,
-    "uniques": 11
+    "count": 28,
+    "uniques": 10
+  },
+  {
+    "referrer": "DuckDuckGo",
+    "count": 25,
+    "uniques": 5
   },
   {
     "referrer": "qwiki.nixsolutions.com",
@@ -25,24 +25,24 @@
     "uniques": 1
   },
   {
+    "referrer": "automated-testing.info",
+    "count": 9,
+    "uniques": 9
+  },
+  {
     "referrer": "testerhome.com",
     "count": 9,
     "uniques": 2
   },
   {
-    "referrer": "automated-testing.info",
-    "count": 8,
-    "uniques": 8
-  },
-  {
     "referrer": "qiita.com",
-    "count": 7,
-    "uniques": 7
+    "count": 6,
+    "uniques": 6
   },
   {
     "referrer": "itechart.by",
-    "count": 7,
-    "uniques": 6
+    "count": 6,
+    "uniques": 5
   },
   {
     "referrer": "cnblogs.com",
