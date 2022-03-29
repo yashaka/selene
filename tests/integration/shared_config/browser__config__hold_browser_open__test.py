@@ -2,7 +2,7 @@ import atexit
 
 from selene import have
 from selene.support.shared import browser, SharedConfig
-from selene.support.webdriver import Help
+from selene.support.webdriver import WebHelper
 
 
 def setup_function():
@@ -23,7 +23,7 @@ def test_no_hold_on_default_false():
 
     atexit._run_exitfuncs()
 
-    assert not Help(driver).has_browser_still_alive()
+    assert not WebHelper(driver).is_browser_still_alive()
 
 
 def test_hold_on_explicit_true():

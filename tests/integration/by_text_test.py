@@ -41,7 +41,7 @@ def test_nested_elements_search(session_browser):
                     <label>Second</label>
                     <div>
                         <a href="#second">go to Heading 2</a>
-                        <a href="#third">go to Heading 3</a>
+                        <a href="#third">go to "Heading 'Third'"</a>
                     </div>
                 </div>
                 <div>
@@ -56,6 +56,6 @@ def test_nested_elements_search(session_browser):
 
     session_browser.element('#container').element(by.text('Second')).element(
         './following-sibling::*'
-    ).element(by.partial_text('Heading 3')).click()
+    ).element(by.partial_text('''"Heading 'Third'"''')).click()
 
     assert "third" in session_browser.driver.current_url

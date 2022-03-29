@@ -22,8 +22,9 @@
 
 from __future__ import annotations
 
-from typing import Callable, Optional
+from typing import Callable, Optional, Union
 
+from selene.common.none_object import _NoneObject
 from selene.core.exceptions import TimeoutException
 from selenium.webdriver.remote.webdriver import WebDriver
 
@@ -43,7 +44,7 @@ class Config:
     #       think on better name depending on hook type (generator vs standard fn)
     def __init__(
         self,
-        driver: Optional[WebDriver] = None,
+        driver: Optional[Union[WebDriver, Callable[[], WebDriver]]] = None,
         timeout: int = 4,
         hook_wait_failure: Optional[
             Callable[[TimeoutException], Exception]
@@ -98,8 +99,18 @@ class Config:
         )
 
     @property
-    def driver(self) -> Optional[WebDriver]:
-        return self._driver
+    def driver(self) -> Union[WebDriver, _NoneObject]:
+        return (
+            self._driver
+            if isinstance(self._driver, WebDriver)
+            else (
+                self._driver()
+                if callable(self._driver)
+                else _NoneObject(
+                    'expected Callable[[], WebDriver] inside property config.driver'
+                )
+            )
+        )
 
     @property
     def timeout(self) -> int:

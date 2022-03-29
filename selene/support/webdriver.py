@@ -27,14 +27,14 @@ from selenium.webdriver.remote.webdriver import WebDriver
 from selene.common.helpers import on_error_return_false
 
 
-class Help:  # todo: should we make it private? like call it _Help (or think on better name)
+class WebHelper:  # todo: should we make it private? like call it _Help (or think on better name)
     # what about this style for example: ExtendedWebdriver(driver).is_alive() ?
     # over: Help(driver).has_browser_still_alive() ?
 
-    def __init__(self, driver: WebDriver):
+    def __init__(self, driver: Optional[WebDriver]):
         self._driver = driver
 
-    def has_browser_still_alive(self):
+    def is_browser_still_alive(self):
         return on_error_return_false(lambda: self._driver.title is not None)
 
     def save_page_source(self, file: str) -> Optional[str]:

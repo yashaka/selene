@@ -29,8 +29,9 @@ from selene import be
 
 from selene.support.shared import browser
 from tests.acceptance.helpers.helper import get_test_driver
-from tests.acceptance.helpers.todomvc import TODOMVC_URL
 from tests.helpers import time_spent
+
+TODOMVC_URL = 'https://todomvc.com/examples/emberjs/'
 
 selenium_browser: WebDriver
 

@@ -21,14 +21,14 @@
 # SOFTWARE.
 
 
-class NoneObject:
+class _NoneObject:
     def __init__(self, description):
         # type: (str) -> None
         self.description = description
 
     def __getattr__(self, item):
         raise AttributeError(
-            "'NoneObject' for '%s' has no attribute '%s'"
+            "'NoneObject' for «'%s'» has no attribute '%s'"
             % (self.description, item)
         )
 

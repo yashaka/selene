@@ -42,7 +42,7 @@ from selene.common.fp import pipe
 from selene.core.configuration import Config
 from selene.core.exceptions import TimeoutException
 from selene.core.wait import Wait
-from selene.support.webdriver import Help
+from selene.support.webdriver import WebHelper
 
 T = TypeVar('T')
 
@@ -59,6 +59,9 @@ class Source(Generic[T]):
 
     @property
     def value(self) -> T:
+        return self._value
+
+    def __call__(self, *args, **kwargs):
         return self._value
 
 
@@ -80,7 +83,7 @@ class _LazyDriver:
         return self._stored is not None
 
     def has_browser_alive(self):
-        return Help(self._stored).has_browser_still_alive()
+        return WebHelper(self._stored).is_browser_still_alive()
 
     @property
     def instance(self) -> WebDriver:
@@ -138,9 +141,10 @@ class _LazyDriver:
 # noinspection PyDataclass
 class SharedConfig(Config):
 
-    # todo: consider using SharedConfig object to be used as config only once... on init at first call to browser...
-    #       i.e. do not allow config.* = ... after first call to e.g. browser.open, etc...
-    #       since anyway this is a bad habit, better to use browser.with_(timeout=...), element.with_(...), etc.
+    # todo: consider using SharedConfig object to be used as config only once... on
+    #  init at first call to browser... i.e. do not allow config.* = ... after first
+    #  call to e.g. browser.open, etc... since anyway this is a bad habit, better to
+    #  use browser.with_(timeout=...), element.with_(...), etc.
     def __init__(
         self,
         # Config
@@ -334,7 +338,7 @@ class SharedConfig(Config):
         # todo: consider moving hooks to class methods accepting config as argument
         #       or refactor somehow to eliminate all times defining hook fns
         def save_and_log_screenshot(error: TimeoutException) -> Exception:
-            path = Help(self.driver).save_screenshot(
+            path = WebHelper(self.driver).save_screenshot(
                 self.generate_filename(suffix='.png')
             )
             self.last_screenshot = path
@@ -350,7 +354,7 @@ Screenshot: file://{path}'''
                 if self.last_screenshot
                 else self.generate_filename(suffix='.html')
             )
-            path = Help(self.driver).save_page_source(filename)
+            path = WebHelper(self.driver).save_page_source(filename)
             self.last_page_source = path
             return TimeoutException(
                 error.msg

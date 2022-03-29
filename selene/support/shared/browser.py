@@ -30,19 +30,19 @@ from selene.common.fp import pipe, identity
 from selene.common.helpers import is_absolute_url
 from selene.core.entity import Browser, Collection
 from selene.core.configuration import Config
-from selene.common.none_object import NoneObject
+from selene.common.none_object import _NoneObject
 from selene.core.exceptions import TimeoutException
 from selene.core.wait import Wait
 from selene.support.shared.config import SharedConfig
-from selene.support.webdriver import Help
+from selene.support.webdriver import WebHelper
 
 
 class SharedBrowser(Browser):
     def __init__(self, config: SharedConfig):
-        self._latest_screenshot = NoneObject(
+        self._latest_screenshot = _NoneObject(
             'selene.SharedBrowser._latest_screenshot'
         )
-        self._latest_page_source = NoneObject(
+        self._latest_page_source = _NoneObject(
             'selene.SharedBrowser._latest_page_source'
         )
         super().__init__(config)
@@ -105,7 +105,7 @@ class SharedBrowser(Browser):
         if not os.path.exists(folder) and folder:
             os.makedirs(folder)
         # todo: refactor to catch errors smartly in get_screenshot_as_file. or not needed?
-        self.config.last_screenshot = Help(self.driver).save_screenshot(file)
+        self.config.last_screenshot = WebHelper(self.driver).save_screenshot(file)
 
         return self.config.last_screenshot
 
@@ -146,7 +146,7 @@ class SharedBrowser(Browser):
         if not file:
             file = self.config.generate_filename(suffix='.html')
 
-        saved_file = Help(self.driver).save_page_source(file)
+        saved_file = WebHelper(self.driver).save_page_source(file)
 
         self.config.last_page_source = saved_file
 

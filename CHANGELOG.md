@@ -34,11 +34,11 @@
 - refine API  
   - remove deprecated things
 
-## 2.0.0b1 (to be released on??.??.2020)
+## 2.0.0rc1 (to be released on .??.2022)
 - remove all deprecated things and stay calm:)
 - or maybe remove all deprecated stuff only in 3.0?
 
-## 2.0.0aNEXT (to be released on ??.??.2020)
+## 2.0.0bNEXT (to be released on ??.??.2022)
 - config.browser_name -> config.name was bad idea
   - but config.executor accepting both 'chrome'/'firefox' or 'http://<remoteurl>'
     - might be a good idea... think on it... 
@@ -56,7 +56,7 @@
 - consider config.headless = False like in selenide 
   - `this.browser = new Browser(config.browser(), config.headless());`
   
-## 2.0.0a2x+1 (to be released on ?.??.2020)
+## 2.0.0b2x+1 (to be released on ?.??.2022)
 - todo: add something like `element.click_with_offset`
 - todo: add something like `browser.perform(switch_to_tab('my tab title'))`
   - maybe make browser.switch ... to work with retry logic
@@ -66,7 +66,7 @@
   - The variable `__all__` is a list of public objects of that module, as interpreted by import *. ... In other words, __all__ is a list of strings defining what symbols in a module will be exported when from <module> import * is used on the module
 
   
-## 2.0.0a2x (to be released on ?.08.2020)
+## 2.0.0b2x (to be released on ?.0?.2022)
 - todo: improve for other `all.*` methods (in addition to improved errors from `browser.all.element_by`)
 - todo: why in the past we had when outer_html this: `'<button class="destroy" type="submit" displayed:false></button>'`
   - but now we have this: `'<button class="destroy" type="submit"></button>'?`
@@ -77,6 +77,13 @@
 - repeat fix of #225 to other options in shared config, refactor it... 
   - should we make original config (not shared) mutable?
 - TODO: support python 3.10 [#393](https://github.com/yashaka/selene/issues/393)
+
+## 2.0.0b2 (to be released on 29.03.2022)
+- first steps on simplifying the current browser management, 
+  yet making it more powerful
+  - now you can pass a lambda to `browser.config.driver = HERE`
+    providing more smart logic of driver management
+    see a dummy example at this [test](https://github.com/yashaka/selene/tree/master/tests/acceptance/custom_driver_source/test_adding_todos.py)
 
 ## 2.0.0b1 (to be released on 23.02.2022)
 - added support selenium 4.1 [#375](https://github.com/yashaka/selene/issues/375)
