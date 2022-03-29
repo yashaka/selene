@@ -39,16 +39,20 @@ class Settings:
 
 @pytest.fixture(scope='module')
 def web():
-
     def managed_driver() -> WebDriver:
         from selenium import webdriver
 
         def create_chrome():
-            from selenium.webdriver.chrome.service import Service as ChromeService
+            from selenium.webdriver.chrome.service import (
+                Service as ChromeService,
+            )
+
             return webdriver.Chrome(
-                service=ChromeService(ChromeDriverManager(
-                    chrome_type=ChromeType.CHROMIUM
-                ).install()),
+                service=ChromeService(
+                    ChromeDriverManager(
+                        chrome_type=ChromeType.CHROMIUM
+                    ).install()
+                ),
                 options=webdriver.ChromeOptions(),
             )
 

@@ -36,5 +36,3 @@ class CollectionCondition(Condition[Collection]):
 
 # TODO: isn't below better than above?
 BrowserCondition = Condition[Browser]
-
-

@@ -105,7 +105,9 @@ class SharedBrowser(Browser):
         if not os.path.exists(folder) and folder:
             os.makedirs(folder)
         # todo: refactor to catch errors smartly in get_screenshot_as_file. or not needed?
-        self.config.last_screenshot = WebHelper(self.driver).save_screenshot(file)
+        self.config.last_screenshot = WebHelper(self.driver).save_screenshot(
+            file
+        )
 
         return self.config.last_screenshot
 
