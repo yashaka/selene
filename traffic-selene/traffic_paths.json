@@ -2,42 +2,54 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 351,
-    "uniques": 210
+    "count": 369,
+    "uniques": 219
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 40,
+    "count": 41,
     "uniques": 14
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 35,
-    "uniques": 16
+    "count": 33,
+    "uniques": 15
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
-    "title": "selene/tests at master · yashaka/selene",
-    "count": 16,
-    "uniques": 11
-  },
-  {
-    "path": "/yashaka/selene/issues/128",
-    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 15,
-    "uniques": 14
+    "title": "selene/tests at master · yashaka/selene · GitHub",
+    "count": 18,
+    "uniques": 12
   },
   {
     "path": "/yashaka/selene/search",
     "title": "Search · ssl",
-    "count": 15,
-    "uniques": 3
+    "count": 17,
+    "uniques": 4
   },
   {
-    "path": "/yashaka/selene/commits/master",
-    "title": "Commits · yashaka/selene · GitHub",
+    "path": "/yashaka/selene/issues/128",
+    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
+    "count": 16,
+    "uniques": 15
+  },
+  {
+    "path": "/yashaka/selene/releases/tag/2.0.0b2",
+    "title": "Release 2.0.0b2 · yashaka/selene · GitHub",
+    "count": 15,
+    "uniques": 13
+  },
+  {
+    "path": "/yashaka/selene/releases",
+    "title": "Releases · yashaka/selene · GitHub",
+    "count": 15,
+    "uniques": 9
+  },
+  {
+    "path": "/yashaka/selene/tree/master/docs",
+    "title": "selene/docs at master · yashaka/selene · GitHub",
     "count": 13,
     "uniques": 11
   },
@@ -46,17 +58,5 @@
     "title": "gh #408 up webdriver-manager to 3.5.4 by aleksandr-kotlyar · Pull Request #40...",
     "count": 13,
     "uniques": 8
-  },
-  {
-    "path": "/yashaka/selene/pulls",
-    "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 13,
-    "uniques": 8
-  },
-  {
-    "path": "/yashaka/selene/tree/master/docs",
-    "title": "selene/docs at master · yashaka/selene · GitHub",
-    "count": 12,
-    "uniques": 10
   }
 ]
