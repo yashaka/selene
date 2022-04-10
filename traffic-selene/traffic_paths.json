@@ -2,8 +2,8 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 369,
-    "uniques": 219
+    "count": 391,
+    "uniques": 228
   },
   {
     "path": "/yashaka/selene/issues",
@@ -18,6 +18,12 @@
     "uniques": 15
   },
   {
+    "path": "/yashaka/selene/issues/128",
+    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
+    "count": 18,
+    "uniques": 16
+  },
+  {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
     "count": 18,
@@ -28,12 +34,6 @@
     "title": "Search · ssl",
     "count": 17,
     "uniques": 4
-  },
-  {
-    "path": "/yashaka/selene/issues/128",
-    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 16,
-    "uniques": 15
   },
   {
     "path": "/yashaka/selene/releases/tag/2.0.0b2",
@@ -48,15 +48,15 @@
     "uniques": 9
   },
   {
-    "path": "/yashaka/selene/tree/master/docs",
-    "title": "selene/docs at master · yashaka/selene · GitHub",
-    "count": 13,
-    "uniques": 11
+    "path": "/yashaka/selene/pulls",
+    "title": "Pull requests · yashaka/selene · GitHub",
+    "count": 14,
+    "uniques": 9
   },
   {
-    "path": "/yashaka/selene/pull/409",
-    "title": "gh #408 up webdriver-manager to 3.5.4 by aleksandr-kotlyar · Pull Request #40...",
+    "path": "/yashaka/selene/commits/master",
+    "title": "Commits · yashaka/selene · GitHub",
     "count": 13,
-    "uniques": 8
+    "uniques": 11
   }
 ]
