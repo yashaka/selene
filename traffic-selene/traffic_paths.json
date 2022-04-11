@@ -2,8 +2,8 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 391,
-    "uniques": 228
+    "count": 371,
+    "uniques": 216
   },
   {
     "path": "/yashaka/selene/issues",
@@ -14,26 +14,8 @@
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 33,
+    "count": 31,
     "uniques": 15
-  },
-  {
-    "path": "/yashaka/selene/issues/128",
-    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 18,
-    "uniques": 16
-  },
-  {
-    "path": "/yashaka/selene/tree/master/tests",
-    "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 18,
-    "uniques": 12
-  },
-  {
-    "path": "/yashaka/selene/search",
-    "title": "Search · ssl",
-    "count": 17,
-    "uniques": 4
   },
   {
     "path": "/yashaka/selene/releases/tag/2.0.0b2",
@@ -54,9 +36,27 @@
     "uniques": 9
   },
   {
+    "path": "/yashaka/selene/issues/128",
+    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
+    "count": 13,
+    "uniques": 12
+  },
+  {
+    "path": "/yashaka/selene/pull/409",
+    "title": "gh #408 up webdriver-manager to 3.5.4 by aleksandr-kotlyar · Pull Request #40...",
+    "count": 13,
+    "uniques": 8
+  },
+  {
     "path": "/yashaka/selene/commits/master",
     "title": "Commits · yashaka/selene · GitHub",
-    "count": 13,
-    "uniques": 11
+    "count": 12,
+    "uniques": 10
+  },
+  {
+    "path": "/yashaka/selene/search",
+    "title": "Search · ssl",
+    "count": 12,
+    "uniques": 3
   }
 ]
