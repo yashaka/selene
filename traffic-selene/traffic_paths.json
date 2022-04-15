@@ -2,14 +2,14 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 348,
-    "uniques": 212
+    "count": 350,
+    "uniques": 211
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 39,
-    "uniques": 15
+    "count": 38,
+    "uniques": 14
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
@@ -18,22 +18,22 @@
     "uniques": 14
   },
   {
-    "path": "/yashaka/selene/tree/master/docs",
-    "title": "selene/docs at master · yashaka/selene · GitHub",
-    "count": 20,
-    "uniques": 11
-  },
-  {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 18,
-    "uniques": 10
+    "count": 17,
+    "uniques": 9
   },
   {
     "path": "/yashaka/selene/commits/master",
     "title": "Commits · yashaka/selene · GitHub",
-    "count": 16,
-    "uniques": 11
+    "count": 15,
+    "uniques": 10
+  },
+  {
+    "path": "/yashaka/selene/tree/master/docs",
+    "title": "selene/docs at master · yashaka/selene · GitHub",
+    "count": 15,
+    "uniques": 7
   },
   {
     "path": "/yashaka/selene/pulls",
@@ -42,21 +42,21 @@
     "uniques": 12
   },
   {
-    "path": "/yashaka/selene/issues/128",
-    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 12,
-    "uniques": 11
-  },
-  {
     "path": "/yashaka/selene/tree/master/selene/core",
     "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 11,
-    "uniques": 7
+    "count": 13,
+    "uniques": 9
   },
   {
-    "path": "/yashaka/selene/tree/master/.run",
-    "title": "selene/.run at master · yashaka/selene · GitHub",
-    "count": 11,
+    "path": "/yashaka/selene/search",
+    "title": "Search · with_(timeout · GitHub",
+    "count": 12,
     "uniques": 5
+  },
+  {
+    "path": "/yashaka/selene/issues/287",
+    "title": "from selenium to selene · Issue #287 · yashaka/selene · GitHub",
+    "count": 11,
+    "uniques": 9
   }
 ]
