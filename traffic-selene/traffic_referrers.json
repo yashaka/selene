@@ -1,13 +1,13 @@
 [
   {
     "referrer": "Google",
-    "count": 358,
-    "uniques": 111
+    "count": 351,
+    "uniques": 109
   },
   {
     "referrer": "github.com",
     "count": 48,
-    "uniques": 28
+    "uniques": 30
   },
   {
     "referrer": "yandex.ru",
@@ -31,8 +31,8 @@
   },
   {
     "referrer": "qiita.com",
-    "count": 6,
-    "uniques": 3
+    "count": 8,
+    "uniques": 4
   },
   {
     "referrer": "teams.microsoft.com",
