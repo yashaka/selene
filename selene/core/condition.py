@@ -90,6 +90,14 @@ class Condition(Callable[[E], None]):
         def fn(entity: E) -> None:
             if not predicate(entity):
                 raise ConditionNotMatchedError()
+        # TODO: consider the following style as one more option:
+        #
+        # @condition(description)  # or: @Condition.describe(description)
+        # def fn(entity: E) -> None:
+        #    if not predicate(entity):
+        #        raise ConditionNotMatchedError()
+        #
+        # return fn
 
         return cls(description, fn)
 
