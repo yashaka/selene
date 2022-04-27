@@ -1,18 +1,18 @@
 [
   {
     "referrer": "Google",
-    "count": 355,
-    "uniques": 126
+    "count": 298,
+    "uniques": 110
   },
   {
     "referrer": "github.com",
-    "count": 84,
-    "uniques": 45
+    "count": 80,
+    "uniques": 41
   },
   {
     "referrer": "yandex.ru",
-    "count": 22,
-    "uniques": 4
+    "count": 19,
+    "uniques": 3
   },
   {
     "referrer": "DuckDuckGo",
@@ -26,18 +26,18 @@
   },
   {
     "referrer": "automated-testing.info",
-    "count": 10,
+    "count": 9,
     "uniques": 8
   },
   {
-    "referrer": "pypi.org",
-    "count": 8,
-    "uniques": 5
+    "referrer": "itechart.by",
+    "count": 7,
+    "uniques": 4
   },
   {
-    "referrer": "itechart.by",
-    "count": 8,
-    "uniques": 5
+    "referrer": "pypi.org",
+    "count": 6,
+    "uniques": 3
   },
   {
     "referrer": "autotest.how",
