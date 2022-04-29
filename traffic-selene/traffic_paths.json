@@ -2,42 +2,48 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 316,
-    "uniques": 191
+    "count": 346,
+    "uniques": 204
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 38,
-    "uniques": 14
+    "count": 41,
+    "uniques": 15
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 27,
+    "count": 29,
     "uniques": 9
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 23,
-    "uniques": 14
+    "count": 27,
+    "uniques": 18
   },
   {
     "path": "/yashaka/selene/issues/410",
     "title": "Find elements by class name · Issue #410 · yashaka/selene",
-    "count": 17,
+    "count": 19,
     "uniques": 7
   },
   {
     "path": "/yashaka/selene/blob/master/examples/custom_conditions.py",
     "title": "selene/custom_conditions.py at master · yashaka/selene · GitHub",
-    "count": 15,
-    "uniques": 11
+    "count": 17,
+    "uniques": 13
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
+    "count": 16,
+    "uniques": 10
+  },
+  {
+    "path": "/yashaka/selene/pulls",
+    "title": "Pull requests · yashaka/selene · GitHub",
     "count": 14,
     "uniques": 8
   },
@@ -48,15 +54,9 @@
     "uniques": 6
   },
   {
-    "path": "/yashaka/selene/pulls",
-    "title": "Pull requests · yashaka/selene · GitHub",
+    "path": "/yashaka/selene/issues/128",
+    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
     "count": 12,
-    "uniques": 7
-  },
-  {
-    "path": "/yashaka/selene/pull/411",
-    "title": "New: Issue number 410 - Adding search by class name by amitaz3354 · Pull Requ...",
-    "count": 11,
-    "uniques": 6
+    "uniques": 11
   }
 ]
