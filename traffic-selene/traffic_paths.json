@@ -3,31 +3,31 @@
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
     "count": 348,
-    "uniques": 209
+    "uniques": 204
   },
   {
     "path": "/yashaka/selene/issues/412",
     "title": "Set an attribute value via Selene · Issue #412 · yashaka/selene · GitHub",
-    "count": 45,
-    "uniques": 34
+    "count": 46,
+    "uniques": 35
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 44,
-    "uniques": 20
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene",
-    "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 29,
-    "uniques": 20
+    "count": 43,
+    "uniques": 21
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 28,
-    "uniques": 9
+    "count": 37,
+    "uniques": 12
+  },
+  {
+    "path": "/yashaka/selene/tree/master/selene",
+    "title": "selene/selene at master · yashaka/selene · GitHub",
+    "count": 34,
+    "uniques": 23
   },
   {
     "path": "/yashaka/selene/issues/410",
@@ -42,21 +42,21 @@
     "uniques": 17
   },
   {
+    "path": "/yashaka/selene/blob/master/selene/browser.py",
+    "title": "selene/browser.py at master · yashaka/selene · GitHub",
+    "count": 19,
+    "uniques": 7
+  },
+  {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
     "count": 18,
     "uniques": 12
   },
   {
-    "path": "/yashaka/selene/blob/master/selene/browser.py",
-    "title": "selene/browser.py at master · yashaka/selene · GitHub",
-    "count": 17,
-    "uniques": 7
-  },
-  {
-    "path": "/yashaka/selene/issues/188",
-    "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
-    "count": 15,
-    "uniques": 11
+    "path": "/yashaka/selene/pulls",
+    "title": "Pull requests · yashaka/selene · GitHub",
+    "count": 18,
+    "uniques": 9
   }
 ]
