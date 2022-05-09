@@ -1,17 +1,17 @@
 [
   {
     "referrer": "Google",
-    "count": 448,
-    "uniques": 123
+    "count": 443,
+    "uniques": 118
   },
   {
     "referrer": "github.com",
-    "count": 188,
-    "uniques": 30
+    "count": 184,
+    "uniques": 29
   },
   {
     "referrer": "yandex.ru",
-    "count": 45,
+    "count": 28,
     "uniques": 9
   },
   {
@@ -21,18 +21,18 @@
   },
   {
     "referrer": "automated-testing.info",
-    "count": 10,
-    "uniques": 6
-  },
-  {
-    "referrer": "DuckDuckGo",
-    "count": 8,
+    "count": 11,
     "uniques": 6
   },
   {
     "referrer": "qiita.com",
     "count": 8,
-    "uniques": 5
+    "uniques": 4
+  },
+  {
+    "referrer": "DuckDuckGo",
+    "count": 7,
+    "uniques": 6
   },
   {
     "referrer": "ecosia.org",

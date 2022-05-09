@@ -2,8 +2,8 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 354,
-    "uniques": 209
+    "count": 345,
+    "uniques": 207
   },
   {
     "path": "/yashaka/selene/issues/412",
@@ -14,44 +14,44 @@
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 44,
-    "uniques": 21
+    "count": 45,
+    "uniques": 20
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 40,
+    "count": 33,
     "uniques": 13
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 29,
-    "uniques": 19
+    "count": 23,
+    "uniques": 17
   },
   {
-    "path": "/yashaka/selene/issues/410",
-    "title": "Find elements by class name · Issue #410 · yashaka/selene · GitHub",
-    "count": 24,
+    "path": "/yashaka/selene/tree/master/selene/core",
+    "title": "selene/selene/core at master · yashaka/selene · GitHub",
+    "count": 23,
+    "uniques": 14
+  },
+  {
+    "path": "/yashaka/selene/blob/master/selene/browser.py",
+    "title": "selene/browser.py at master · yashaka/selene · GitHub",
+    "count": 23,
     "uniques": 8
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 22,
-    "uniques": 10
+    "count": 17,
+    "uniques": 9
   },
   {
-    "path": "/yashaka/selene/blob/master/selene/browser.py",
-    "title": "selene/browser.py at master · yashaka/selene · GitHub",
-    "count": 22,
-    "uniques": 7
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene/core",
-    "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 20,
-    "uniques": 13
+    "path": "/yashaka/selene/issues/410",
+    "title": "Find elements by class name · Issue #410 · yashaka/selene · GitHub",
+    "count": 16,
+    "uniques": 5
   },
   {
     "path": "/yashaka/selene/pull/411",
