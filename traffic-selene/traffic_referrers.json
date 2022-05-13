@@ -1,13 +1,13 @@
 [
   {
     "referrer": "Google",
-    "count": 460,
-    "uniques": 88
+    "count": 438,
+    "uniques": 91
   },
   {
     "referrer": "github.com",
-    "count": 178,
-    "uniques": 29
+    "count": 173,
+    "uniques": 25
   },
   {
     "referrer": "itechart.by",
@@ -20,17 +20,17 @@
     "uniques": 7
   },
   {
-    "referrer": "yandex.ru",
-    "count": 12,
-    "uniques": 7
-  },
-  {
     "referrer": "automated-testing.info",
     "count": 12,
     "uniques": 6
   },
   {
     "referrer": "qiita.com",
+    "count": 12,
+    "uniques": 6
+  },
+  {
+    "referrer": "yandex.ru",
     "count": 11,
     "uniques": 6
   },
