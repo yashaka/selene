@@ -36,6 +36,10 @@ def id(attribute_value):
     return By.ID, attribute_value
 
 
+def class_name(value):
+    return By.CLASS_NAME, value
+
+
 def name(attribute_value):
     return By.NAME, attribute_value
 

@@ -62,3 +62,7 @@ def test_by_partial_text():
 
 def test_by_escape_text_quotes_for_xpath():
     assert by._escape_text_quotes_for_xpath('test') == 'concat("", "test")'
+
+
+def test_by_class_name():
+    assert by.class_name("test") == ("class name", "test")
