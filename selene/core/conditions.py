@@ -31,8 +31,5 @@ class CollectionCondition(Condition[Collection]):
     pass
 
 
-# class BrowserCondition(Condition[Browser]):
-#     pass
-
-# TODO: isn't below better than above?
-BrowserCondition = Condition[Browser]
+class BrowserCondition(Condition[Browser]):
+    pass

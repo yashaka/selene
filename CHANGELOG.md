@@ -78,7 +78,13 @@
   - should we make original config (not shared) mutable?
 - TODO: support python 3.10 [#393](https://github.com/yashaka/selene/issues/393)
 
-## 2.0.0b2 (to be released on 29.03.2022)
+## 2.0.0b4 (to be released on xx.06.2022)
+- TODO: trim text in have.exact_text
+
+## 2.0.0b3 (to be released on 29.05.2022)
+- added support of python 3.10.* [#393](https://github.com/yashaka/selene/issues/393)
+
+## 2.0.0b2 (released on 29.03.2022)
 - first steps on simplifying the current browser management, 
   yet making it more powerful
   - now you can pass a lambda to `browser.config.driver = HERE`

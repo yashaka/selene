@@ -49,6 +49,10 @@ R = TypeVar('R')
 
 class Assertable(ABC):
     @abstractmethod
+    # TODO: shouldn't we type self too?
+    #       see #generic-methods-and-generic-self
+    #       at https://mypy.readthedocs.io/en/stable/generics.html
+    # def should(self: E, condition: Condition[E]) -> E:
     def should(self, condition: Condition[E]) -> E:
         pass
 

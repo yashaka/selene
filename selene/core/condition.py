@@ -22,7 +22,12 @@
 
 from __future__ import annotations
 
-from typing import List, TypeVar, Callable
+import sys
+from typing import List, TypeVar, Generic
+if sys.version_info >= (3, 10):
+    from collections.abc import Callable
+else:
+    from typing import Callable
 
 from selene.core.exceptions import ConditionNotMatchedError
 from selene.core.wait import Predicate, Lambda
@@ -32,7 +37,7 @@ E = TypeVar('E')
 R = TypeVar('R')
 
 
-class Condition(Callable[[E], None]):
+class Condition(Generic[E], Callable[[E], None]):
     @classmethod
     def by_and(cls, *conditions):
         def fn(entity):
@@ -123,7 +128,7 @@ class Condition(Callable[[E], None]):
         self._fn = fn
 
     def call(self, entity: E) -> None:
-        self._fn(entity)
+        self.__call__(entity)
 
     @property
     def predicate(self) -> Lambda[E, bool]:
@@ -140,8 +145,8 @@ class Condition(Callable[[E], None]):
     def not_(self) -> Condition[E]:  # todo: better name?
         return self.__class__.as_not(self)
 
-    def __call__(self, *args, **kwargs):
-        return self._fn(*args, **kwargs)
+    def __call__(self, entity: E) -> None:
+        return self._fn(entity)
 
     def __str__(self):
         # todo: consider changing has to have on the fly for CollectionConditions
