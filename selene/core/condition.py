@@ -24,6 +24,7 @@ from __future__ import annotations
 
 import sys
 from typing import List, TypeVar, Generic
+
 if sys.version_info >= (3, 10):
     from collections.abc import Callable
 else:
@@ -95,6 +96,7 @@ class Condition(Generic[E], Callable[[E], None]):
         def fn(entity: E) -> None:
             if not predicate(entity):
                 raise ConditionNotMatchedError()
+
         # TODO: consider the following style as one more option:
         #
         # @condition(description)  # or: @Condition.describe(description)

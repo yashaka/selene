@@ -46,7 +46,7 @@ future = "*"
 webdriver-manager = "==3.5.4"
 
 [tool.poetry.dev-dependencies]
-black = "^20.8b1"
+black = "^22.3.0"
 pycodestyle = "*"
 pylint = "^2.7.2"
 pytest = "*"
