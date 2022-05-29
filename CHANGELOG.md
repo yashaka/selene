@@ -83,6 +83,7 @@
 
 ## 2.0.0b3 (to be released on 29.05.2022)
 - added support of python 3.10.* [#393](https://github.com/yashaka/selene/issues/393)
+- upgraded webdriver-manager to 3.5.4 [#408](https://github.com/yashaka/selene/issues/393)
 
 ## 2.0.0b2 (released on 29.03.2022)
 - first steps on simplifying the current browser management, 
