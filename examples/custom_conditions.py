@@ -201,8 +201,8 @@ def test_wait_for_notification_after_reload_v6():
     )
     '''
     notice how we called `().click()` instead of `.click()` on notification element
-    extra parenthesis allows to get actual webelement 
+    extra parenthesis allows to get actual webelement
     that has not implicit waiting for click to be passed
-    by this - we ensure that there will be no nested waiting 
+    by this - we ensure that there will be no nested waiting
     in addition to "outher" `browser.wait.for`
     '''
