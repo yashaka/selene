@@ -5,14 +5,17 @@ on: [push, pull_request]
 jobs:
 
   test:
-    name: Tests
     runs-on: ubuntu-20.04
     env:
       DISPLAY: ":99"
-    steps:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [ '3.7', '3.10' ]
 
-      - name: Checkout code
-        uses: actions/checkout@v2
+    steps:
+      - uses: actions/checkout@v2
 
       - uses: technote-space/get-diff-action@v5
         with:
@@ -22,10 +25,10 @@ jobs:
             poetry.lock
             tests.yml
 
-      - name: Set up Python
+      - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:
-          python-version: '3.7'
+          python-version: ${{ matrix.python-version }}
         if: env.GIT_DIFF
 
       # can be packaged as Docker-image
