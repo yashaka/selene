@@ -79,6 +79,7 @@
 - TODO: support python 3.10 [#393](https://github.com/yashaka/selene/issues/393)
 
 ## 2.0.0b4 (to be released on xx.06.2022)
+- upgraded webdriver-manager to 3.7.0 [#415](https://github.com/yashaka/selene/issues/415)
 - TODO: trim text in have.exact_text
 
 ## 2.0.0b3 (to be released on 29.05.2022)

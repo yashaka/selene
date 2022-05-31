@@ -24,7 +24,7 @@ from typing import Optional
 
 from selenium.webdriver.remote.webdriver import WebDriver
 from webdriver_manager.chrome import ChromeDriverManager
-from webdriver_manager.utils import ChromeType
+from webdriver_manager.core.utils import ChromeType
 
 from selene import by, have, Browser, Config
 import pytest
