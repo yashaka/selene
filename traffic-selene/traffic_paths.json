@@ -2,14 +2,8 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 453,
-    "uniques": 228
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene",
-    "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 54,
-    "uniques": 25
+    "count": 443,
+    "uniques": 218
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
@@ -21,13 +15,19 @@
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
     "count": 37,
-    "uniques": 18
+    "uniques": 17
   },
   {
-    "path": "/yashaka/selene/blob/master/selene/browser.py",
-    "title": "selene/browser.py at master · yashaka/selene · GitHub",
-    "count": 26,
-    "uniques": 12
+    "path": "/yashaka/selene/tree/master/selene",
+    "title": "selene/selene at master · yashaka/selene · GitHub",
+    "count": 35,
+    "uniques": 21
+  },
+  {
+    "path": "/yashaka/selene/releases/tag/2.0.0b3",
+    "title": "Release 2.0.0b3 · yashaka/selene · GitHub",
+    "count": 23,
+    "uniques": 13
   },
   {
     "path": "/yashaka/selene/actions",
@@ -36,27 +36,27 @@
     "uniques": 4
   },
   {
-    "path": "/yashaka/selene/releases/tag/2.0.0b3",
-    "title": "Release 2.0.0b3 · yashaka/selene · GitHub",
+    "path": "/yashaka/selene/releases",
+    "title": "Releases · yashaka/selene · GitHub",
     "count": 22,
-    "uniques": 13
+    "uniques": 12
   },
   {
     "path": "/yashaka/selene/pulls",
-    "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 21,
-    "uniques": 9
-  },
-  {
-    "path": "/yashaka/selene/releases",
-    "title": "Releases · yashaka/selene · GitHub",
-    "count": 18,
-    "uniques": 12
+    "title": "Pull requests · yashaka/selene · GitHub",
+    "count": 20,
+    "uniques": 8
   },
   {
     "path": "/yashaka/selene/issues/393",
     "title": "support python 3.10 · Issue #393 · yashaka/selene · GitHub",
     "count": 17,
     "uniques": 7
+  },
+  {
+    "path": "/yashaka/selene/commits/master",
+    "title": "Commits · yashaka/selene · GitHub",
+    "count": 16,
+    "uniques": 14
   }
 ]
