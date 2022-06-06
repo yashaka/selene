@@ -2,26 +2,26 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 459,
-    "uniques": 232
+    "count": 433,
+    "uniques": 220
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 43,
-    "uniques": 16
+    "count": 42,
+    "uniques": 15
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 41,
-    "uniques": 18
+    "count": 35,
+    "uniques": 16
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 34,
-    "uniques": 22
+    "count": 31,
+    "uniques": 20
   },
   {
     "path": "/yashaka/selene/releases/tag/2.0.0b3",
@@ -45,7 +45,7 @@
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
     "count": 21,
-    "uniques": 9
+    "uniques": 8
   },
   {
     "path": "/yashaka/selene/commits/master",
@@ -54,9 +54,9 @@
     "uniques": 18
   },
   {
-    "path": "/yashaka/selene/issues/393",
-    "title": "support python 3.10 · Issue #393 · yashaka/selene · GitHub",
-    "count": 18,
-    "uniques": 8
+    "path": "/yashaka/selene/pull/414",
+    "title": "[#393] test python 3.10 in ci github-actions by aleksandr-kotlyar · Pull Requ...",
+    "count": 16,
+    "uniques": 14
   }
 ]
