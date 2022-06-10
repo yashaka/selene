@@ -2,20 +2,26 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 425,
-    "uniques": 222
-  },
-  {
-    "path": "/yashaka/selene/tree/master/tests",
-    "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 41,
-    "uniques": 15
+    "count": 441,
+    "uniques": 230
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 38,
-    "uniques": 18
+    "count": 40,
+    "uniques": 19
+  },
+  {
+    "path": "/yashaka/selene/tree/master/tests",
+    "title": "selene/tests at master · yashaka/selene · GitHub",
+    "count": 35,
+    "uniques": 15
+  },
+  {
+    "path": "/yashaka/selene/tree/master/selene",
+    "title": "selene/selene at master · yashaka/selene · GitHub",
+    "count": 32,
+    "uniques": 20
   },
   {
     "path": "/yashaka/selene/releases",
@@ -30,16 +36,16 @@
     "uniques": 16
   },
   {
-    "path": "/yashaka/selene/tree/master/selene",
-    "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 25,
-    "uniques": 16
-  },
-  {
     "path": "/yashaka/selene/actions",
     "title": "Actions · yashaka/selene · GitHub",
     "count": 23,
     "uniques": 4
+  },
+  {
+    "path": "/yashaka/selene/commits/master",
+    "title": "Commits · yashaka/selene · GitHub",
+    "count": 22,
+    "uniques": 18
   },
   {
     "path": "/yashaka/selene/pulls",
@@ -48,15 +54,9 @@
     "uniques": 9
   },
   {
-    "path": "/yashaka/selene/commits/master",
-    "title": "Commits · yashaka/selene · GitHub",
-    "count": 20,
-    "uniques": 17
-  },
-  {
-    "path": "/yashaka/selene/pull/414",
-    "title": "[#393] test python 3.10 in ci github-actions by aleksandr-kotlyar · Pull Requ...",
-    "count": 16,
-    "uniques": 14
+    "path": "/yashaka/selene/issues/287",
+    "title": "from selenium to selene · Issue #287 · yashaka/selene · GitHub",
+    "count": 18,
+    "uniques": 12
   }
 ]
