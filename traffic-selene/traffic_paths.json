@@ -2,61 +2,61 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 478,
-    "uniques": 256
+    "count": 424,
+    "uniques": 232
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 44,
-    "uniques": 24
+    "count": 41,
+    "uniques": 23
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 39,
-    "uniques": 17
+    "count": 31,
+    "uniques": 14
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 32,
-    "uniques": 21
+    "count": 27,
+    "uniques": 17
   },
   {
     "path": "/yashaka/selene/commits/master",
     "title": "Commits · yashaka/selene · GitHub",
-    "count": 22,
-    "uniques": 20
+    "count": 19,
+    "uniques": 18
   },
   {
     "path": "/yashaka/selene/releases",
     "title": "Releases · yashaka/selene · GitHub",
-    "count": 21,
-    "uniques": 10
+    "count": 19,
+    "uniques": 8
   },
   {
     "path": "/yashaka/selene/issues/287",
     "title": "from selenium to selene · Issue #287 · yashaka/selene · GitHub",
-    "count": 19,
-    "uniques": 13
-  },
-  {
-    "path": "/yashaka/selene/pulls",
-    "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 19,
+    "count": 16,
     "uniques": 11
   },
   {
-    "path": "/yashaka/selene/blob/master/README.md",
-    "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 18,
-    "uniques": 13
+    "path": "/yashaka/selene/tree/master/selene/core",
+    "title": "selene/selene/core at master · yashaka/selene · GitHub",
+    "count": 16,
+    "uniques": 8
   },
   {
     "path": "/yashaka/selene/pull/414",
     "title": "[#393] test python 3.10 in ci github-actions by aleksandr-kotlyar · Pull Requ...",
-    "count": 17,
-    "uniques": 15
+    "count": 14,
+    "uniques": 14
+  },
+  {
+    "path": "/yashaka/selene/pulls",
+    "title": "Pull requests · yashaka/selene · GitHub",
+    "count": 13,
+    "uniques": 10
   }
 ]
