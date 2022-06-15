@@ -78,10 +78,16 @@
   - should we make original config (not shared) mutable?
 - TODO: support python 3.10 [#393](https://github.com/yashaka/selene/issues/393)
 
-## 2.0.0b4 (to be released on xx.06.2022)
+## 2.0.0b5 (to be released on xx.06.2022)
 - TODO: trim text in have.exact_text
 
-## 2.0.0b3 (to be released on 29.05.2022)
+
+## 2.0.0b4 (to be released on 15.06.2022)
+- NEW: upgrade selenium to 4.2.0 & webdriver-manager to 3.7.0
+- FIX: set_window_size in shared.browser.open
+- FIX: provide correct chrome type for wdm 
+
+## 2.0.0b3 (released on 29.05.2022)
 - added support of python 3.10.* [#393](https://github.com/yashaka/selene/issues/393)
 - upgraded webdriver-manager to 3.5.4 [#408](https://github.com/yashaka/selene/issues/393)
 
