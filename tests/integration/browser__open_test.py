@@ -24,11 +24,13 @@ from tests.integration.helpers import givenpage
 
 
 def test_changes_window_size_on_open_according_to_config(chrome_driver):
-    browser = Browser(Config(
-        driver=chrome_driver,
-        window_width=640,
-        window_height=480,
-    ))
+    browser = Browser(
+        Config(
+            driver=chrome_driver,
+            window_width=640,
+            window_height=480,
+        )
+    )
 
     browser.open(givenpage.EMPTY_PAGE_URL)
 
