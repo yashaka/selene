@@ -60,7 +60,9 @@ class SharedBrowser(Browser):
         height = self.config.window_height
 
         if width and height:
-            self.driver.set_window_size(int(width), int(height))
+            self.config.get_or_create_driver().set_window_size(
+                int(width), int(height)
+            )
 
         is_absolute = is_absolute_url(relative_or_absolute_url)
         base_url = self.config.base_url
