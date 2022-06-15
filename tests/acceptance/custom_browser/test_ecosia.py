@@ -28,6 +28,6 @@ def test_search(browser):
         'github yashaka selene python'
     ).press_enter()
 
-    browser.all('.result').first.element('.result-url').click()
+    browser.all('.web-result').first.element('.result__link').click()
 
     browser.should(have.title_containing('yashaka/selene'))
