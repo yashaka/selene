@@ -239,7 +239,7 @@ class SharedConfig(Config):
             return Chrome(
                 service=ChromeService(
                     ChromeDriverManager(
-                        chrome_type=ChromeType.CHROMIUM
+                        chrome_type=ChromeType.GOOGLE
                     ).install()
                 ),
                 options=ChromeOptions(),

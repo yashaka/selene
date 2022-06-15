@@ -39,7 +39,7 @@ def test_automatic_quit_for_previous_driver():
 
     browser.config.driver = webdriver.Chrome(
         service=Service(
-            ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
+            ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install()
         )
     )
 

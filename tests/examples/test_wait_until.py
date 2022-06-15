@@ -36,7 +36,7 @@ def browser():
             driver=webdriver.Chrome(
                 service=Service(
                     ChromeDriverManager(
-                        chrome_type=ChromeType.CHROMIUM
+                        chrome_type=ChromeType.GOOGLE
                     ).install()
                 )
             )

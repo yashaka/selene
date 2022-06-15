@@ -31,7 +31,7 @@ class BaseTest:
     def setup_method(self):
         browser.config.driver = webdriver.Chrome(
             service=Service(
-                ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
+                ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install()
             )
         )
 

@@ -31,7 +31,7 @@ from selene.support.shared import browser, config
 def setup_module():
     browser.config.driver = webdriver.Chrome(
         service=Service(
-            ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
+            ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install()
         )
     )
     config.timeout = 4

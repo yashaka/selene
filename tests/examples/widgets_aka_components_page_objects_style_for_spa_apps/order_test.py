@@ -36,7 +36,7 @@ def setup_function():
     config.timeout = 4
     browser.config.driver = webdriver.Chrome(
         service=Service(
-            ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
+            ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install()
         )
     )
     config.base_url = 'file://{}/../../resources/orderapp/'.format(

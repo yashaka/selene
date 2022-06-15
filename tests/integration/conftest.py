@@ -18,7 +18,7 @@ def chrome_driver(request):
     else:
         chrome_driver = webdriver.Chrome(
             service=Service(
-                ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
+                ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install()
             )
         )
     yield chrome_driver
@@ -40,7 +40,7 @@ def function_browser(request):
     else:
         chrome_driver = webdriver.Chrome(
             service=Service(
-                ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
+                ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install()
             )
         )
     yield Browser(Config(driver=chrome_driver))

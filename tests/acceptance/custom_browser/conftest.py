@@ -11,7 +11,7 @@ from selene import Config, Browser
 def session_driver():
     chrome_driver = webdriver.Chrome(
         service=Service(
-            ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
+            ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install()
         )
     )
     yield chrome_driver

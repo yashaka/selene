@@ -51,7 +51,7 @@ def setup_function():
 def setup_module():
     browser.config.driver = webdriver.Chrome(
         service=Service(
-            ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
+            ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install()
         ),
         options=headless_chrome_options(),
     )
