@@ -41,9 +41,9 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "^3.7"
-selenium = "==4.1.0"
+selenium = "==4.2.0"
 future = "*"
-webdriver-manager = "==3.5.4"
+webdriver-manager = "==3.7.0"
 
 [tool.poetry.dev-dependencies]
 black = "^22.3.0"
