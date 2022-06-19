@@ -2,20 +2,32 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 556,
-    "uniques": 274
+    "count": 579,
+    "uniques": 282
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 53,
-    "uniques": 28
+    "count": 63,
+    "uniques": 31
   },
   {
-    "path": "/yashaka/selene/issues",
-    "title": "Issues · yashaka/selene · GitHub",
-    "count": 29,
-    "uniques": 22
+    "path": "/yashaka/selene/tree/master/selene/core",
+    "title": "selene/selene/core at master · yashaka/selene · GitHub",
+    "count": 33,
+    "uniques": 16
+  },
+  {
+    "path": "/yashaka/selene/commits/master",
+    "title": "Commits · yashaka/selene · GitHub",
+    "count": 30,
+    "uniques": 26
+  },
+  {
+    "path": "/yashaka/selene/blob/master/README.md",
+    "title": "selene/README.md at master · yashaka/selene · GitHub",
+    "count": 30,
+    "uniques": 17
   },
   {
     "path": "/yashaka/selene/actions",
@@ -24,22 +36,16 @@
     "uniques": 3
   },
   {
-    "path": "/yashaka/selene/commits/master",
-    "title": "Commits · yashaka/selene · GitHub",
-    "count": 27,
-    "uniques": 23
+    "path": "/yashaka/selene/issues",
+    "title": "Issues · yashaka/selene · GitHub",
+    "count": 28,
+    "uniques": 21
   },
   {
-    "path": "/yashaka/selene/tree/master/selene/core",
-    "title": "selene/selene/core at master · yashaka/selene · GitHub",
+    "path": "/yashaka/selene/blob/master/.gitignore",
+    "title": "selene/.gitignore at master · yashaka/selene · GitHub",
     "count": 27,
-    "uniques": 13
-  },
-  {
-    "path": "/yashaka/selene/blob/master/README.md",
-    "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 26,
-    "uniques": 16
+    "uniques": 22
   },
   {
     "path": "/yashaka/selene/issues/287",
@@ -52,11 +58,5 @@
     "title": "selene/tests at master · yashaka/selene · GitHub",
     "count": 26,
     "uniques": 13
-  },
-  {
-    "path": "/yashaka/selene/blob/master/.gitignore",
-    "title": "selene/.gitignore at master · yashaka/selene",
-    "count": 25,
-    "uniques": 20
   }
 ]
