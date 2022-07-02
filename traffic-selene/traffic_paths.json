@@ -2,14 +2,14 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 526,
-    "uniques": 238
+    "count": 535,
+    "uniques": 240
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 52,
-    "uniques": 25
+    "count": 65,
+    "uniques": 26
   },
   {
     "path": "/yashaka/selene/releases/tag/2.0.0b5",
@@ -20,38 +20,38 @@
   {
     "path": "/yashaka/selene/tree/master/selene/core",
     "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 27,
-    "uniques": 12
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene/support",
-    "title": "selene/selene/support at master · yashaka/selene · GitHub",
-    "count": 19,
-    "uniques": 10
+    "count": 31,
+    "uniques": 13
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 19,
-    "uniques": 8
+    "count": 24,
+    "uniques": 9
   },
   {
-    "path": "/yashaka/selene/issues/287",
-    "title": "from selenium to selene · Issue #287 · yashaka/selene · GitHub",
-    "count": 18,
-    "uniques": 17
-  },
-  {
-    "path": "/yashaka/selene/commits/master",
-    "title": "Commits · yashaka/selene · GitHub",
-    "count": 17,
-    "uniques": 10
+    "path": "/yashaka/selene/tree/master/selene/support",
+    "title": "selene/selene/support at master · yashaka/selene · GitHub",
+    "count": 23,
+    "uniques": 11
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 16,
+    "count": 18,
     "uniques": 9
+  },
+  {
+    "path": "/yashaka/selene/issues/287",
+    "title": "from selenium to selene · Issue #287 · yashaka/selene · GitHub",
+    "count": 17,
+    "uniques": 16
+  },
+  {
+    "path": "/yashaka/selene/tree/master/examples",
+    "title": "selene/examples at master · yashaka/selene · GitHub",
+    "count": 17,
+    "uniques": 11
   },
   {
     "path": "/yashaka/selene/tree/master/selene/support/shared",
