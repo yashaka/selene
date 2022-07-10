@@ -2,26 +2,20 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 409,
-    "uniques": 202
+    "count": 415,
+    "uniques": 204
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 58,
-    "uniques": 18
+    "count": 61,
+    "uniques": 19
   },
   {
     "path": "/yashaka/selene/blob/master/README.md",
     "title": "selene/README.md at master · yashaka/selene · GitHub",
     "count": 33,
-    "uniques": 12
-  },
-  {
-    "path": "/yashaka/selene/releases/tag/2.0.0b5",
-    "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 30,
-    "uniques": 24
+    "uniques": 10
   },
   {
     "path": "/yashaka/selene/tree/master/selene/core",
@@ -30,10 +24,16 @@
     "uniques": 10
   },
   {
-    "path": "/yashaka/selene/tree/master/tests",
+    "path": "/yashaka/selene/releases/tag/2.0.0b5",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 24,
-    "uniques": 11
+    "count": 26,
+    "uniques": 20
+  },
+  {
+    "path": "/yashaka/selene/releases",
+    "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
+    "count": 22,
+    "uniques": 18
   },
   {
     "path": "/yashaka/selene/issues",
@@ -42,21 +42,21 @@
     "uniques": 9
   },
   {
+    "path": "/yashaka/selene/issues/213",
+    "title": "Selene and Appium – how to make them work? · Issue #213 · yashaka/selene · Gi...",
+    "count": 22,
+    "uniques": 3
+  },
+  {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
     "count": 21,
     "uniques": 10
   },
   {
-    "path": "/yashaka/selene/issues/213",
-    "title": "Selene and Appium – how to make them work? · Issue #213 · yashaka/selene · Gi...",
-    "count": 20,
-    "uniques": 3
-  },
-  {
-    "path": "/yashaka/selene/releases",
+    "path": "/yashaka/selene/tree/master/tests",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 19,
-    "uniques": 16
+    "count": 21,
+    "uniques": 10
   }
 ]

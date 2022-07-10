@@ -1,18 +1,18 @@
 [
   {
     "referrer": "Google",
-    "count": 489,
-    "uniques": 145
+    "count": 504,
+    "uniques": 150
   },
   {
     "referrer": "github.com",
-    "count": 110,
-    "uniques": 37
+    "count": 94,
+    "uniques": 34
   },
   {
     "referrer": "yandex.ru",
-    "count": 32,
-    "uniques": 10
+    "count": 36,
+    "uniques": 12
   },
   {
     "referrer": "automated-testing.info",
@@ -31,7 +31,7 @@
   },
   {
     "referrer": "pypi.org",
-    "count": 15,
+    "count": 14,
     "uniques": 6
   },
   {
