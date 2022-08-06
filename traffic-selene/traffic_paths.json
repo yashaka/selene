@@ -2,32 +2,50 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 320,
-    "uniques": 155
+    "count": 348,
+    "uniques": 166
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
     "count": 79,
-    "uniques": 23
+    "uniques": 27
   },
   {
     "path": "/yashaka/selene/tree/master/selene/core",
     "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 45,
-    "uniques": 12
+    "count": 42,
+    "uniques": 15
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 37,
-    "uniques": 18
+    "count": 34,
+    "uniques": 17
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 25,
+    "count": 28,
+    "uniques": 13
+  },
+  {
+    "path": "/yashaka/selene/tree/master/selene/support",
+    "title": "selene/selene/support at master · yashaka/selene · GitHub",
+    "count": 24,
     "uniques": 11
+  },
+  {
+    "path": "/yashaka/selene/tree/master/examples",
+    "title": "selene/examples at master · yashaka/selene · GitHub",
+    "count": 23,
+    "uniques": 13
+  },
+  {
+    "path": "/yashaka/selene/blob/master/examples/custom_conditions.py",
+    "title": "selene/custom_conditions.py at master · yashaka/selene · GitHub",
+    "count": 22,
+    "uniques": 15
   },
   {
     "path": "/yashaka/selene/blob/master/README.md",
@@ -38,25 +56,7 @@
   {
     "path": "/yashaka/selene/tree/master/selene/common",
     "title": "selene/selene/common at master · yashaka/selene · GitHub",
-    "count": 22,
-    "uniques": 11
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene/support",
-    "title": "selene/selene/support at master · yashaka/selene · GitHub",
-    "count": 22,
-    "uniques": 9
-  },
-  {
-    "path": "/yashaka/selene/tree/master/examples",
-    "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 21,
-    "uniques": 11
-  },
-  {
-    "path": "/yashaka/selene/blob/master/examples/custom_conditions.py",
-    "title": "selene/custom_conditions.py at master · yashaka/selene · GitHub",
     "count": 20,
-    "uniques": 13
+    "uniques": 11
   }
 ]
