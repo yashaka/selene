@@ -1,13 +1,13 @@
 [
   {
     "referrer": "Google",
-    "count": 547,
-    "uniques": 137
+    "count": 538,
+    "uniques": 145
   },
   {
     "referrer": "github.com",
-    "count": 50,
-    "uniques": 21
+    "count": 51,
+    "uniques": 23
   },
   {
     "referrer": "yandex.ru",
@@ -16,21 +16,21 @@
   },
   {
     "referrer": "selene-docs-test.readthedocs.io",
-    "count": 18,
-    "uniques": 8
-  },
-  {
-    "referrer": "automated-testing.info",
-    "count": 11,
+    "count": 17,
     "uniques": 7
   },
   {
-    "referrer": "yandex.by",
+    "referrer": "automated-testing.info",
+    "count": 12,
+    "uniques": 8
+  },
+  {
+    "referrer": "ecosia.org",
     "count": 9,
     "uniques": 2
   },
   {
-    "referrer": "ecosia.org",
+    "referrer": "yandex.by",
     "count": 9,
     "uniques": 2
   },
@@ -45,7 +45,7 @@
     "uniques": 2
   },
   {
-    "referrer": "qiita.com",
+    "referrer": "lms.ithillel.ua",
     "count": 4,
     "uniques": 2
   }
