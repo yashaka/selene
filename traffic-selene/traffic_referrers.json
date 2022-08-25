@@ -1,13 +1,13 @@
 [
   {
     "referrer": "Google",
-    "count": 559,
-    "uniques": 143
+    "count": 569,
+    "uniques": 145
   },
   {
     "referrer": "github.com",
-    "count": 76,
-    "uniques": 27
+    "count": 82,
+    "uniques": 26
   },
   {
     "referrer": "yandex.ru",
@@ -16,8 +16,13 @@
   },
   {
     "referrer": "automated-testing.info",
-    "count": 28,
-    "uniques": 10
+    "count": 29,
+    "uniques": 11
+  },
+  {
+    "referrer": "qiita.com",
+    "count": 11,
+    "uniques": 4
   },
   {
     "referrer": "autotest.how",
@@ -31,22 +36,17 @@
   },
   {
     "referrer": "yandex.by",
-    "count": 9,
+    "count": 8,
     "uniques": 2
   },
   {
     "referrer": "pypi.org",
-    "count": 8,
-    "uniques": 7
+    "count": 7,
+    "uniques": 6
   },
   {
-    "referrer": "qiita.com",
-    "count": 6,
-    "uniques": 3
-  },
-  {
-    "referrer": "selene-docs-test.readthedocs.io",
-    "count": 5,
-    "uniques": 5
+    "referrer": "Bing",
+    "count": 7,
+    "uniques": 2
   }
 ]
