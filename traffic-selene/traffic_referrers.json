@@ -1,32 +1,32 @@
 [
   {
     "referrer": "Google",
-    "count": 569,
-    "uniques": 145
+    "count": 557,
+    "uniques": 149
   },
   {
     "referrer": "github.com",
-    "count": 82,
+    "count": 80,
     "uniques": 26
   },
   {
     "referrer": "yandex.ru",
-    "count": 30,
-    "uniques": 14
+    "count": 36,
+    "uniques": 17
   },
   {
     "referrer": "automated-testing.info",
-    "count": 29,
-    "uniques": 11
+    "count": 27,
+    "uniques": 12
   },
   {
     "referrer": "qiita.com",
-    "count": 11,
-    "uniques": 4
+    "count": 12,
+    "uniques": 5
   },
   {
     "referrer": "autotest.how",
-    "count": 11,
+    "count": 12,
     "uniques": 3
   },
   {
@@ -35,18 +35,18 @@
     "uniques": 3
   },
   {
-    "referrer": "yandex.by",
-    "count": 8,
-    "uniques": 2
-  },
-  {
     "referrer": "pypi.org",
     "count": 7,
     "uniques": 6
   },
   {
-    "referrer": "Bing",
+    "referrer": "yandex.by",
     "count": 7,
     "uniques": 2
+  },
+  {
+    "referrer": "alpaca00.website",
+    "count": 7,
+    "uniques": 1
   }
 ]
