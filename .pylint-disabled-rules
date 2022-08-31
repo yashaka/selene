@@ -49,4 +49,6 @@ multiple-statements,
 E1120,
 global-variable-not-assigned,
 consider-using-f-string,
-unsubscriptable-object
+unsubscriptable-object,
+unnecessary-lambda-assignment,
+unnecessary-dunder-call
