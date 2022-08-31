@@ -72,10 +72,12 @@ class Wait(Generic[E]):
         entity: E,
         at_most: int,
         or_fail_with: Optional[Callable[[TimeoutException], Exception]] = None,
+        _decorator=identity,
     ):
         self._entity = entity
         self._timeout = at_most
         self._hook_failure = or_fail_with or identity
+        self._decorator = _decorator
 
     def at_most(self, timeout: int) -> Wait[E]:
         return Wait(self._entity, timeout, self._hook_failure)
@@ -95,34 +97,38 @@ class Wait(Generic[E]):
 
     # todo: consider renaming to `def to(...)`, though will sound awkward when wait.to(condition)
     def for_(self, fn: Callable[[E], R]) -> R:
-        finish_time = time.time() + self._timeout
+        @self._decorator
+        def _(fn: Callable[[E], R]) -> R:
+            finish_time = time.time() + self._timeout
 
-        while True:
-            try:
-                return fn(self._entity)
-            except Exception as reason:
-                if time.time() > finish_time:
+            while True:
+                try:
+                    return fn(self._entity)
+                except Exception as reason:
+                    if time.time() > finish_time:
 
-                    reason_message = str(reason)
+                        reason_message = str(reason)
 
-                    reason_string = '{name}: {message}'.format(
-                        name=reason.__class__.__name__, message=reason_message
-                    )
-                    # todo: think on how can we improve logging failures in selene, e.g. reverse msg and stacktrace
-                    # stacktrace = getattr(reason, 'stacktrace', None)
-                    timeout = self._timeout
-                    entity = self._entity
+                        reason_string = '{name}: {message}'.format(
+                            name=reason.__class__.__name__,
+                            message=reason_message,
+                        )
+                        # todo: think on how can we improve logging failures in selene, e.g. reverse msg and stacktrace
+                        # stacktrace = getattr(reason, 'stacktrace', None)
+                        timeout = self._timeout
+                        entity = self._entity
 
-                    failure = TimeoutException(
-                        f'''
+                        failure = TimeoutException(
+                            f'\n'
+                            f'\nTimed out after {timeout}s, while waiting for:'
+                            f'\n{entity}.{fn}'
+                            f'\n'
+                            f'\nReason: {reason_string}'
+                        )
 
-Timed out after {timeout}s, while waiting for:
-{entity}.{fn}
+                        raise self._hook_failure(failure)
 
-Reason: {reason_string}'''
-                    )
-
-                    raise self._hook_failure(failure)
+        return _(fn)
 
     def until(self, fn: Callable[[E], R]) -> bool:
         try:

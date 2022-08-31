@@ -271,6 +271,13 @@ class Element(WaitingEntity):
             extra_args,
         )
 
+    # def __execute_script__(
+    #     self,
+    #     script_on_self_element_and_args: str,
+    #     *extra_args,
+    # ):
+    #     return self._execute_script(script_on_self_element_and_args, *extra_args)
+
     def set_value(self, value: Union[str, int]) -> Element:
         # todo: should we move all commands like following or queries like in conditions - to separate py modules?
         # todo: should we make them webelement based (Callable[[WebElement], None]) instead of element based?

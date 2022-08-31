@@ -22,8 +22,11 @@
 
 from __future__ import annotations
 
-from typing import Callable, Optional, Union
+from typing import Callable, Optional, Union, Dict, Tuple, Any, List
+from functools import reduce
+import re
 
+from selene.common import fp
 from selene.common.none_object import _NoneObject
 from selene.core.exceptions import TimeoutException
 from selenium.webdriver.remote.webdriver import WebDriver
@@ -31,8 +34,13 @@ from selenium.webdriver.remote.webdriver import WebDriver
 from selene.core.wait import Wait
 
 
-def _strip_first_underscore(name: str) -> str:
-    return name[1:] if name.startswith('_') else name
+def _strip_underscored_prefix(name: str, prefix='') -> str:
+    underscored = f'_{prefix}'
+    return name[len(underscored) :] if name.startswith(underscored) else name
+
+
+def _strip_first_underscore(name: str):
+    return _strip_underscored_prefix(name, prefix='')
 
 
 class Config:
@@ -56,6 +64,7 @@ class Config:
         window_width: Optional[int] = None,
         window_height: Optional[int] = None,
         log_outer_html_on_failure: bool = False,
+        _wait_decorator: Callable[[fp.T], fp.T] = fp.identity,
     ):
 
         self._driver = driver
@@ -81,13 +90,54 @@ class Config:
               while we want the core of Selene to be versatile as much as psbl.
               probably we should move it to support.shared.config only
         '''
+        self.__wait_decorator = _wait_decorator
 
     def as_dict(self, skip_empty=True):
-        return {
-            _strip_first_underscore(k): v
-            for k, v in self.__dict__.items()
-            if not (skip_empty and v is None) and not k.startswith('__')
+        everything = self.__dict__
+
+        without_empty_and_magic = {
+            key: value
+            for key, value in everything.items()
+            if not (skip_empty and value is None) and not key.endswith('__')
         }
+
+        def accumulate_with_stripped_self_class(
+            accumulator: Tuple[Dict, List[str]], item: Tuple[str, Any]
+        ):
+            accumulated_dict, accumulated_raw_names = accumulator
+            key, value = item
+
+            mangling = f'_{self.__class__.__name__}'
+            is_mangled = key.startswith(mangling)
+
+            new_key = key[len(mangling) :] if is_mangled else key
+            raw_name_addition = [new_key] if is_mangled else []
+
+            return (
+                {**accumulated_dict, new_key: value},
+                [*accumulated_raw_names, *raw_name_addition],
+            )
+
+        with_stripped_mangling_by_self, mangled_raw_names = reduce(
+            accumulate_with_stripped_self_class,
+            without_empty_and_magic.items(),
+            ({}, []),
+        )
+
+        without_mangled_by_others = {
+            key: value
+            for key, value in with_stripped_mangling_by_self.items()
+            if key in mangled_raw_names
+            or not re.sub(r'^_[a-zA-Z]+(__)', repl=r'\1', string=key, count=1)
+            in mangled_raw_names
+        }
+
+        with_stripped_first_underscore = {
+            _strip_first_underscore(key): value
+            for key, value in without_mangled_by_others.items()
+        }
+
+        return with_stripped_first_underscore
 
     def with_(self, config: Config = None, **config_as_kwargs) -> Config:
         return self.__class__(
@@ -125,7 +175,10 @@ class Config:
 
     def wait(self, entity):
         return Wait(
-            entity, at_most=self.timeout, or_fail_with=self.hook_wait_failure
+            entity,
+            at_most=self.timeout,
+            or_fail_with=self.hook_wait_failure,
+            _decorator=self.__wait_decorator,
         )
 
     @property
@@ -155,3 +208,7 @@ class Config:
     @property
     def log_outer_html_on_failure(self) -> bool:
         return self._log_outer_html_on_failure
+
+    @property
+    def _wait_decorator(self) -> Callable[[fp.T], fp.T]:
+        return self.__wait_decorator

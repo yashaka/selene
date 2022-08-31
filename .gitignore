@@ -7,7 +7,7 @@
 build
 skip-covered/
 tests/comparison/
-tests/adhoc/test_anything.py
+examples/test_anything.py
 custom.png
 
 # allure
