@@ -81,7 +81,17 @@
 ## 2.0.0b7 (to be released on xx.09.2022)
 - TODO: trim text in have.exact_text
 
-## 2.0.0b6 (to be released on xx.08.2022)
+## 2.0.0b6 (to be released on 31.08.2022)
+- NEW: added "opera" and "edge" support for shared browser
+  - example:
+
+    ```python
+    from selene.support.shared import browser
+
+    # browser.config.browser_name = 'opera'
+    browser.config.browser_name = 'edge'
+    ```
+
 - NEW: added config._wait_decorator
   - decorating Wait#for_ method 
     - that is used when performing any element command 
@@ -91,8 +101,10 @@
   - prefixed with underscore, indicating that method is experimental,
     and can be e.g. renamed, etc.
   - see example at [examples/log_all_selene_commands_with_wait.py](https://github.com/yashaka/selene/tree/master/examples/log_all_selene_commands_with_wait.py)
+
 - NEW: added config.click_by_js [#420](https://github.com/yashaka/selene/issues/420)
   - for usage like in:
+
     ```python
     from selene.support.shared import browser
     
