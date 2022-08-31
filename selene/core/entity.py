@@ -452,23 +452,18 @@ class Element(WaitingEntity):
 
         return self
 
-    # todo: do we need config.click_by_js?
     # todo: add offset args with defaults, or add additional method, think on what is better
     def click(self) -> Element:
-        """Just a normal click:)
+        """Just a normal click:)"""
 
-        You might ask, why don't we have config.click_by_js?
-        Because making all clicks js based is not a "normal case".
-        You might need to speed up all "set value" in your tests, but command.js.click will not speed up anything.
-        Yet, sometimes, it might be useful as workaround.
-        In such cases - use
+        from selene.core import command
 
-            element.perform(command.js.click)
+        self.wait.for_(
+            command.js.click
+            if self.config.click_by_js
+            else Command('click', lambda element: element().click())
+        )
 
-        to achieve the goal in less concise way,
-        thus, identifying by this "awkwardness" that it is really a workaround;)
-        """
-        self.wait.command('click', lambda element: element().click())
         return self
 
     def double_click(self) -> Element:

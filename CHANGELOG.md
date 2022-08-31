@@ -81,7 +81,7 @@
 ## 2.0.0b7 (to be released on xx.09.2022)
 - TODO: trim text in have.exact_text
 
-## 2.0.0b7 (to be released on xx.08.2022)
+## 2.0.0b6 (to be released on xx.08.2022)
 - NEW: added config._wait_decorator
   - decorating Wait#for_ method 
     - that is used when performing any element command 
@@ -91,6 +91,28 @@
   - prefixed with underscore, indicating that method is experimental,
     and can be e.g. renamed, etc.
   - see example at [examples/log_all_selene_commands_with_wait.py](https://github.com/yashaka/selene/tree/master/examples/log_all_selene_commands_with_wait.py)
+- NEW: added config.click_by_js [#420](https://github.com/yashaka/selene/issues/420)
+  - for usage like in:
+    ```python
+    from selene.support.shared import browser
+    
+    # browser.config.click_by_js = True
+    # '''
+    # if we would want to make all selene clicks to work via JS
+    # as part of some CRAZY workaround, or maybe to make tester faster o_O :p
+    # (it was a joke, nothing will be much faster :D with click via js)
+    # '''
+    
+    button = browser.element('#btn').with_(click_by_js=True)
+    '''
+    to make all clicks for element('#btn') to work via js
+    as part of some workaround ;)
+    '''
+    
+    button.click()
+    ...
+    button.click()
+    ```
 
 ## 2.0.0b5 (to be released on 24.06.2022)
 - NEW: added command.js.*:

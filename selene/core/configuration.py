@@ -60,6 +60,7 @@ class Config:
         base_url: str = '',
         set_value_by_js: bool = False,
         type_by_js: bool = False,
+        click_by_js: bool = False,
         wait_for_no_overlap_found_by_js: bool = False,
         window_width: Optional[int] = None,
         window_height: Optional[int] = None,
@@ -80,6 +81,7 @@ class Config:
         todo: will it work on mobile? probably no! why then we have it here? o_O
         '''
         self._type_by_js = type_by_js
+        self._click_by_js = click_by_js
         self._wait_for_no_overlap_found_by_js = wait_for_no_overlap_found_by_js
         self._window_width = window_width
         self._window_height = window_height
@@ -192,6 +194,10 @@ class Config:
     @property
     def type_by_js(self) -> bool:
         return self._type_by_js
+
+    @property
+    def click_by_js(self) -> bool:
+        return self._click_by_js
 
     @property
     def wait_for_no_overlap_found_by_js(self) -> bool:
