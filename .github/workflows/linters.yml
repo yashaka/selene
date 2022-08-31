@@ -26,7 +26,7 @@ jobs:
       - name: Pycodestyle
         run: |
           pip install pycodestyle
-          pycodestyle $(pwd) --ignore=E501,W503,E402,E731 --exclude=.venv
+          pycodestyle $(pwd) --ignore=E501,W503,E402,E731,E203 --exclude=.venv
 
   Pylint:
     name: Lint Pylint

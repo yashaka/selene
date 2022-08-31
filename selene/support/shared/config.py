@@ -38,6 +38,8 @@ from selenium.webdriver.firefox.service import Service as FirefoxService
 from selenium.webdriver.remote.webdriver import WebDriver
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.core.utils import ChromeType
+
+from selene.common import fp
 from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
 from webdriver_manager.opera import OperaDriverManager
@@ -176,12 +178,14 @@ class SharedConfig(Config):
         reports_folder: Optional[str] = None,  # default is set below
         last_screenshot: Union[Optional[str], Source[str]] = None,
         last_page_source: Union[Optional[str], Source[str]] = None,
+        _wait_decorator: Callable[[fp.T], fp.T] = fp.identity,
     ):
 
         self._browser_name = browser_name
         self._hold_browser_open = hold_browser_open
         self._source = source or _LazyDriver(self)
         self._log_outer_html_on_failure = log_outer_html_on_failure
+        self.__wait_decorator = _wait_decorator
 
         if driver and not set_driver:
             """
@@ -232,6 +236,7 @@ class SharedConfig(Config):
             window_height=window_height,
             hook_wait_failure=hook_wait_failure,
             log_outer_html_on_failure=log_outer_html_on_failure,
+            _wait_decorator=_wait_decorator,
         )
 
     def _set_drivers_from_webdriver_manager(self):
@@ -394,7 +399,12 @@ PageSource: file://{path}'''
         hook = self._inject_screenshot_and_page_source_pre_hooks(
             self.hook_wait_failure
         )
-        return Wait(entity, at_most=self.timeout, or_fail_with=hook)
+        return Wait(
+            entity,
+            at_most=self.timeout,
+            or_fail_with=hook,
+            _decorator=self.__wait_decorator,
+        )
 
     # --- Config.* added setters --- #
 
@@ -444,6 +454,10 @@ PageSource: file://{path}'''
     ):
         default = lambda e: e
         self._hook_wait_failure = value or default
+
+    @Config._wait_decorator.setter
+    def _wait_decorator(self, value: Callable[[fp.T], fp.T]):
+        self.__wait_decorator = value
 
     # --- SharedConfig.* new props --- #
 
