@@ -31,13 +31,17 @@ import warnings
 from typing import Optional, TypeVar, Generic, Callable, Union
 
 from selenium.common.exceptions import WebDriverException
-from selenium.webdriver import ChromeOptions, Chrome, Firefox
-from selenium.webdriver.firefox.service import Service as FirefoxService
+from selenium.webdriver import ChromeOptions, Chrome, Firefox, Edge, Opera
 from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.edge.service import Service as EdgeService
+from selenium.webdriver.firefox.service import Service as FirefoxService
 from selenium.webdriver.remote.webdriver import WebDriver
 from webdriver_manager.chrome import ChromeDriverManager
-from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.core.utils import ChromeType
+from webdriver_manager.firefox import GeckoDriverManager
+from webdriver_manager.microsoft import EdgeChromiumDriverManager
+from webdriver_manager.opera import OperaDriverManager
+
 from selene.common.fp import pipe
 from selene.core.configuration import Config
 from selene.core.exceptions import TimeoutException
@@ -189,7 +193,7 @@ class SharedConfig(Config):
             self._source.create()
         else:
             auto_set_driver = (
-                lambda: self._set_chrome_or_firefox_from_webdriver_manager()
+                lambda: self._set_drivers_from_webdriver_manager()
             )
             self._set_driver = set_driver or auto_set_driver
 
@@ -230,7 +234,7 @@ class SharedConfig(Config):
             log_outer_html_on_failure=log_outer_html_on_failure,
         )
 
-    def _set_chrome_or_firefox_from_webdriver_manager(self):
+    def _set_drivers_from_webdriver_manager(self):
         # todo: consider simplifying implementation to simple if-else
 
         # todo: do we need here pass self.desired_capabilities too?
@@ -250,15 +254,30 @@ class SharedConfig(Config):
                 service=FirefoxService(GeckoDriverManager().install())
             )
 
+        def get_edge():
+            return Edge(
+                service=EdgeService(EdgeChromiumDriverManager().install())
+            )
+
+        def get_opera():
+            options = ChromeOptions()
+            options.add_experimental_option('w3c', True)
+            return Opera(
+                executable_path=OperaDriverManager().install(), options=options
+            )
+
         # set_remote = lambda: Remote()  # todo: do we really need it? :)
 
         # todo: think on something like:
         #             'remote': lambda: Remote(**self.browser_name)
         #         }.get(self.browser_name if isinstance(self.browser_name, str) else 'remote')()
 
-        return {'chrome': get_chrome, 'firefox': get_firefox}.get(
-            self.browser_name
-        )()
+        return {
+            'chrome': get_chrome,
+            'firefox': get_firefox,
+            'edge': get_edge,
+            'opera': get_opera,
+        }.get(self.browser_name)()
 
     # --- Config.driver new "shared logic" --- #
 
@@ -289,9 +308,7 @@ class SharedConfig(Config):
         self.reset_driver()
 
     def reset_driver(self):
-        self.set_driver = (
-            lambda: self._set_chrome_or_firefox_from_webdriver_manager()
-        )
+        self.set_driver = lambda: self._set_drivers_from_webdriver_manager()
 
     @driver.setter
     def driver(self, value: WebDriver):
