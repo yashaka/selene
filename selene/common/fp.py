@@ -48,9 +48,13 @@ _Decorator.__doc__ = """
     But is it even proper way in python to define types for type hints? (i.e. "subclassing" other types?)
     """
 
+'''
+# TODO: should we have something like?
 _DecoratorFactory = Callable[..., Callable[[F], F]]
 # pylint: disable=W2301
 _DecoratorWithOptionalParameters = Callable[[Optional[F], ...], F]
+# the last one even will not work for py3.7 :(
+'''
 
 
 def identity(it: T) -> T:
