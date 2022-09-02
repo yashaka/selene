@@ -44,11 +44,12 @@ from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
 from webdriver_manager.opera import OperaDriverManager
 
-from selene.common.fp import pipe
+from selene.common.fp import pipe, F
 from selene.core.configuration import Config
 from selene.core.exceptions import TimeoutException
-from selene.core.wait import Wait
+from selene.core.wait import Wait, E
 from selene.support.webdriver import WebHelper
+
 
 T = TypeVar('T')
 
@@ -179,7 +180,9 @@ class SharedConfig(Config):
         reports_folder: Optional[str] = None,  # default is set below
         last_screenshot: Union[Optional[str], Source[str]] = None,
         last_page_source: Union[Optional[str], Source[str]] = None,
-        _wait_decorator: Callable[[fp.T], fp.T] = fp.identity,
+        _wait_decorator: Callable[
+            [Wait[E]], Callable[[F], F]
+        ] = lambda _: fp.identity,
     ):
 
         self._browser_name = browser_name
@@ -462,7 +465,7 @@ PageSource: file://{path}'''
         self._hook_wait_failure = value or default
 
     @Config._wait_decorator.setter
-    def _wait_decorator(self, value: Callable[[fp.T], fp.T]):
+    def _wait_decorator(self, value: Callable[[Wait[E]], Callable[[F], F]]):
         self.__wait_decorator = value
 
     # --- SharedConfig.* new props --- #

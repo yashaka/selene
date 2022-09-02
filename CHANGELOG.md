@@ -78,8 +78,26 @@
   - should we make original config (not shared) mutable?
 - TODO: support python 3.10 [#393](https://github.com/yashaka/selene/issues/393)
 
-## 2.0.0b7 (to be released on xx.09.2022)
+## 2.0.0b8 (to be released on xx.09.2022)
 - TODO: trim text in have.exact_text
+
+## 2.0.0b7 (to be released on 02.09.2022)
+- BREAKING_CHANGE: change type of config._wait_decorator to access entities, not just commands on them
+  - from `Callable[[F], F]`
+  - to `Callable[[Wait[E]], Callable[[F], F]]`
+  - i.e. now it should be not a simple decorator 
+    that maps function F to a new F with for example added logging,
+    but it should be «decorator with parameter»
+    or in other words – a «decorator factory» function 
+    that based on passed parameter of Wait type will return an actual decorator
+    to be applied to the main logic of waiting inside Wait#for_ method.
+  - This change will allow inside the decorator
+    to access entities (browser, element, element-collection),
+    for example, to log them too;)
+  - see examples at:
+    - simpler one: [examples/log_all_selene_commands_with_wait.py](https://github.com/yashaka/selene/tree/master/examples/log_all_selene_commands_with_wait.py)
+    - more «frameworkish» one: [examples/log_all_selene_commands_with_wait__framework](https://github.com/yashaka/selene/tree/master/examples/log_all_selene_commands_with_wait__framework)
+
 
 ## 2.0.0b6 (to be released on 31.08.2022)
 - NEW: added "opera" and "edge" support for shared browser

@@ -23,9 +23,11 @@
 from __future__ import annotations
 
 import time
+import warnings
 from abc import abstractmethod, ABC
 from typing import Generic, Callable, TypeVar, Optional
 
+from selene.common import fp
 from selene.core.exceptions import TimeoutException
 
 from selene.common.fp import identity
@@ -33,6 +35,9 @@ from selene.common.fp import identity
 T = TypeVar('T')
 R = TypeVar('R')
 E = TypeVar('E')
+'''
+A generic TypeVar to identify an Entity Type, i.e. something to wait on
+'''
 
 # todo: not sure, if we need all these Lambda, Proc, Query, Command in python
 # todo: they was added just to quickly port selenidejs waiting mechanism
@@ -72,21 +77,32 @@ class Wait(Generic[E]):
         entity: E,
         at_most: int,
         or_fail_with: Optional[Callable[[TimeoutException], Exception]] = None,
-        _decorator=identity,
+        _decorator: Callable[
+            [Wait[E]], Callable[[fp.T], fp.T]
+        ] = lambda _: identity,
     ):
-        self._entity = entity
+        self.entity = entity
         self._timeout = at_most
         self._hook_failure = or_fail_with or identity
         self._decorator = _decorator
 
+    @property
+    def _entity(self):
+        warnings.warn(
+            'wait.entity will be removed in next version, '
+            + 'please use wait.entity instead',
+            DeprecationWarning,
+        )
+        return self.entity
+
     def at_most(self, timeout: int) -> Wait[E]:
-        return Wait(self._entity, timeout, self._hook_failure)
+        return Wait(self.entity, timeout, self._hook_failure)
 
     def or_fail_with(
         self, hook_failure: Optional[Callable[[TimeoutException], Exception]]
     ) -> Wait[E]:
 
-        return Wait(self._entity, self._timeout, hook_failure)
+        return Wait(self.entity, self._timeout, hook_failure)
 
     @property
     def hook_failure(
@@ -97,13 +113,13 @@ class Wait(Generic[E]):
 
     # todo: consider renaming to `def to(...)`, though will sound awkward when wait.to(condition)
     def for_(self, fn: Callable[[E], R]) -> R:
-        @self._decorator
+        @self._decorator(self)
         def _(fn: Callable[[E], R]) -> R:
             finish_time = time.time() + self._timeout
 
             while True:
                 try:
-                    return fn(self._entity)
+                    return fn(self.entity)
                 except Exception as reason:
                     if time.time() > finish_time:
 
@@ -116,7 +132,7 @@ class Wait(Generic[E]):
                         # todo: think on how can we improve logging failures in selene, e.g. reverse msg and stacktrace
                         # stacktrace = getattr(reason, 'stacktrace', None)
                         timeout = self._timeout
-                        entity = self._entity
+                        entity = self.entity
 
                         failure = TimeoutException(
                             f'\n'

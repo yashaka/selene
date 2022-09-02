@@ -1,4 +1,5 @@
 from selene import have
+from selene.core.wait import Wait
 from selene.support.shared import browser as selene_browser
 import logging
 
@@ -28,20 +29,30 @@ log.addHandler(handler)
 
 
 def log_on_wait(prefix):
-    def decorator(for_):
-        def decorated(fn):
-            log.info('%sstep: %s: STARTED', prefix, fn)
-            try:
-                res = for_(fn)
-                log.info('%sstep: %s: ENDED', prefix, fn)
-                return res
-            except Exception as error:
-                log.info('%sstep: %s: FAILED: %s', prefix, fn, error)
-                raise error
+    def decorator_factory(wait: Wait):
+        def decorator(for_):
+            def decorated(fn):
+                entity = wait.entity
+                log.info('%sstep: %s > %s: STARTED', prefix, entity, fn)
+                try:
+                    res = for_(fn)
+                    log.info('%sstep: %s > %s: ENDED', prefix, entity, fn)
+                    return res
+                except Exception as error:
+                    log.info(
+                        '%sstep: %s > %s: FAILED: %s',
+                        prefix,
+                        entity,
+                        fn,
+                        error,
+                    )
+                    raise error
 
-        return decorated
+            return decorated
 
-    return decorator
+        return decorator
+
+    return decorator_factory
 
 
 def test_logging_via__wait_decorator():
@@ -65,20 +76,20 @@ def test_logging_via__wait_decorator():
     except AssertionError:
         assert (
             r'''
-[SE] - [1] - step: type: a: STARTED
-[SE] - [1] - step: type: a: ENDED
-[SE] - [1] - step: press keys: ('\ue007',): STARTED
-[SE] - [1] - step: press keys: ('\ue007',): ENDED
-[SE] - [2] - step: type: b: STARTED
-[SE] - [2] - step: type: b: ENDED
-[SE] - [2] - step: press keys: ('\ue007',): STARTED
-[SE] - [2] - step: press keys: ('\ue007',): ENDED
-[SE] - [3] - step: type: c: STARTED
-[SE] - [3] - step: type: c: ENDED
-[SE] - [3] - step: press keys: ('\ue007',): STARTED
-[SE] - [3] - step: press keys: ('\ue007',): ENDED
-[SE] - [4] - step: has texts ('ab', 'b', 'c', 'd'): STARTED
-[SE] - [4] - step: has texts ('ab', 'b', 'c', 'd'): FAILED: Message:
+[SE] - [1] - step: browser.element(('css selector', '#new-todo')) > type: a: STARTED
+[SE] - [1] - step: browser.element(('css selector', '#new-todo')) > type: a: ENDED
+[SE] - [1] - step: browser.element(('css selector', '#new-todo')) > press keys: ('\ue007',): STARTED
+[SE] - [1] - step: browser.element(('css selector', '#new-todo')) > press keys: ('\ue007',): ENDED
+[SE] - [2] - step: browser.element(('css selector', '#new-todo')) > type: b: STARTED
+[SE] - [2] - step: browser.element(('css selector', '#new-todo')) > type: b: ENDED
+[SE] - [2] - step: browser.element(('css selector', '#new-todo')) > press keys: ('\ue007',): STARTED
+[SE] - [2] - step: browser.element(('css selector', '#new-todo')) > press keys: ('\ue007',): ENDED
+[SE] - [3] - step: browser.element(('css selector', '#new-todo')) > type: c: STARTED
+[SE] - [3] - step: browser.element(('css selector', '#new-todo')) > type: c: ENDED
+[SE] - [3] - step: browser.element(('css selector', '#new-todo')) > press keys: ('\ue007',): STARTED
+[SE] - [3] - step: browser.element(('css selector', '#new-todo')) > press keys: ('\ue007',): ENDED
+[SE] - [4] - step: browser.all(('css selector', '#todo-list>li')) > has texts ('ab', 'b', 'c', 'd'): STARTED
+[SE] - [4] - step: browser.all(('css selector', '#todo-list>li')) > has texts ('ab', 'b', 'c', 'd'): FAILED: Message:
             '''.strip()
             in handler.stream
         )

@@ -27,11 +27,12 @@ from functools import reduce
 import re
 
 from selene.common import fp
+from selene.common.fp import F
 from selene.common.none_object import _NoneObject
 from selene.core.exceptions import TimeoutException
 from selenium.webdriver.remote.webdriver import WebDriver
 
-from selene.core.wait import Wait
+from selene.core.wait import Wait, E
 
 
 def _strip_underscored_prefix(name: str, prefix='') -> str:
@@ -65,7 +66,18 @@ class Config:
         window_width: Optional[int] = None,
         window_height: Optional[int] = None,
         log_outer_html_on_failure: bool = False,
-        _wait_decorator: Callable[[fp.T], fp.T] = fp.identity,
+        # TODO: better name? now technically it's not a decorator but decorator_builder...
+        # or decorator_factory...
+        # yet in python they call it just «decorator with args» or «decorator with params»
+        # so technically I am correct naming it simply _wait_decorator
+        # by type hint end users yet will see the real signature
+        # and hence guess its «builder-like» nature
+        # yet... should we for verbosity distinguish options
+        # that a decorator factories from options that are simple decorators?
+        # maybe better time to decide on this will be once we have more such options :p
+        _wait_decorator: Callable[
+            [Wait[E]], Callable[[F], F]
+        ] = lambda _: fp.identity,
     ):
 
         self._driver = driver
@@ -216,5 +228,5 @@ class Config:
         return self._log_outer_html_on_failure
 
     @property
-    def _wait_decorator(self) -> Callable[[fp.T], fp.T]:
+    def _wait_decorator(self) -> Callable[[Wait[E]], Callable[[F], F]]:
         return self.__wait_decorator

@@ -20,10 +20,37 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 import functools
-from typing import TypeVar
+from typing import TypeVar, Callable, Optional
 
+T = TypeVar('T')
+'''
+A generic TypeVar to identify a Function Type, i.e. a function
+but to be imported and used as fp.T so you can guess from full name,
+that it is "function type", i.e. a function ;)
+'''
+F = TypeVar('F')
+'''
+A generic TypeVar to identify a Function Type, i.e. a function
+can be imported and used as F directly, no need of `fp.F` version...,
+you still can guess a shortcut F = Function)
+'''
 
-T = TypeVar("T")
+_Decorator = Callable[[F], F]
+_Decorator.__doc__ = """
+    A type to represent a simple python decorator,
+    defined here to type hint arguments and vars in a more readable way,
+    so users can guess meaning from IDE autocompletion/other-hints...
+    But it happened that e.g. PyCharm will yet render _Decorator simply to (F) -> F.
+    Though, something like:
+    # class Decorator(Callable[[F], F]):
+    #     ...
+    would be rendered like _Decorator...
+    But is it even proper way in python to define types for type hints? (i.e. "subclassing" other types?)
+    """
+
+_DecoratorFactory = Callable[..., Callable[[F], F]]
+# pylint: disable=W2301
+_DecoratorWithOptionalParameters = Callable[[Optional[F], ...], F]
 
 
 def identity(it: T) -> T:
