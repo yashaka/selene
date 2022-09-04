@@ -1,8 +1,8 @@
 [
   {
     "referrer": "Google",
-    "count": 709,
-    "uniques": 186
+    "count": 740,
+    "uniques": 190
   },
   {
     "referrer": "yandex.ru",
@@ -11,8 +11,8 @@
   },
   {
     "referrer": "github.com",
-    "count": 113,
-    "uniques": 33
+    "count": 131,
+    "uniques": 34
   },
   {
     "referrer": "selene-docs-test.readthedocs.io",
@@ -41,7 +41,7 @@
   },
   {
     "referrer": "qiita.com",
-    "count": 8,
+    "count": 9,
     "uniques": 4
   },
   {
