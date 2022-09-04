@@ -1,20 +1,35 @@
 import logging
 from typing import Tuple, List
 
-from examples.log_all_selene_commands_with_wait__framework.framework.assist.python.logging import (
+from examples.log_all_selene_commands_with_wait__framework.framework.extensions.python.logging import (
     TranslatingFormatter,
 )
 
 
 def log_with(
-    *,
     logger,
+    *,
     added_handler_translations: List[Tuple[str, str]] = (),
 ):
     """
     returns decorator factory with logging to specified logger
     with added list of translations
-    to decorate Selene's waiting via config._wait_decorator
+    to decorate Selene's waiting via config._wait_decorator.
+    Example:
+        from selene.support.shared import browser
+        from framework.extensions.selene import log_with
+        import logging
+
+        logger = logging.getLogger('SE')
+        browser.config._wait_decorator = log_with(
+            logger,
+            added_handler_translations = [
+                ('browser.element', 'element'),
+                ('browser.all', 'all'),
+            ]
+        )
+
+        ...
     """
 
     TranslatingFormatter.translations = added_handler_translations
@@ -24,10 +39,10 @@ def log_with(
     handler.setFormatter(formatter)
     logger.addHandler(handler)
 
-    def log_on_wait(wait):
-        def log_on_wait_decorator(for_):
+    def decorator_factory(wait):
+        def decorator(for_):
             def decorated(fn):
-                entity = wait._entity
+                entity = wait.entity
                 logger.info('step: %s > %s: STARTED', entity, fn)
                 try:
                     res = for_(fn)
@@ -39,6 +54,6 @@ def log_with(
 
             return decorated
 
-        return log_on_wait_decorator
+        return decorator
 
-    return log_on_wait
+    return decorator_factory

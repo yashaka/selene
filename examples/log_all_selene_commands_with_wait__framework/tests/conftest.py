@@ -2,10 +2,7 @@ import pytest
 import logging
 
 from examples.log_all_selene_commands_with_wait__framework.framework import (
-    assist,
-)
-from examples.log_all_selene_commands_with_wait__framework.framework.assist.selene.extensions import (
-    log_with,
+    extensions,
 )
 from selene.support.shared import browser
 
@@ -13,7 +10,7 @@ from selene.support.shared import browser
 log = logging.getLogger('SE')
 log.setLevel(20)
 
-on_wait_report_to_log = assist.selene.extensions.log_with(
+on_wait_report_to_log = extensions.selene.log_with(
     logger=log,
     added_handler_translations=[
         ('browser.element', 'element'),

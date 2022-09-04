@@ -3,7 +3,7 @@ from typing import Tuple
 
 import pytest
 
-from examples.log_all_selene_commands_with_wait__framework.framework.assist.python.logging import (
+from examples.log_all_selene_commands_with_wait__framework.framework.extensions.python.logging import (
     TranslatingFormatter,
 )
 from selene import have
