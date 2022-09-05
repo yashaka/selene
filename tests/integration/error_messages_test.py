@@ -223,7 +223,7 @@ def test_element_search_fails_with_message_when_explicitly_waits_for_not_conditi
 
     assert exception_message(ex) == [
         'Timed out after 0.1s, while waiting for:',
-        "browser.element(('css selector', '#element')).has no exact text Hello world!",
+        "browser.element(('css selector', '#element')).has no (exact text Hello world!)",
         '',
         'Reason: ConditionNotMatchedError: condition not matched',
     ]

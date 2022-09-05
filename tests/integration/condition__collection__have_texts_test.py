@@ -94,7 +94,7 @@ def test_should_have_no_texts_exception(session_browser):
     with pytest.raises(TimeoutException) as error:
         browser.all('li').should(have.no.texts('Alex', 'Yakov'))
     # todo: why do we have `has` below, should not it be `have`?
-    assert "has no texts ('Alex', 'Yakov')" in error.value.msg
+    assert "has no (texts ('Alex', 'Yakov'))" in error.value.msg
     assert "ConditionNotMatchedError: condition not matched" in error.value.msg
     # todo: should not we see here actual texts in log too?
 
@@ -170,5 +170,5 @@ def test_should_have_no_text_exception(session_browser):
 
     with pytest.raises(TimeoutException) as error:
         browser.all('li').should(have.no.text('Alex'))
-    assert "has no text Alex" in error.value.msg
+    assert "has no (text Alex)" in error.value.msg
     assert "ConditionNotMatchedError: condition not matched" in error.value.msg

@@ -78,10 +78,51 @@
   - should we make original config (not shared) mutable?
 - TODO: support python 3.10 [#393](https://github.com/yashaka/selene/issues/393)
 
-## 2.0.0b8 (to be released on xx.09.2022)
+## 2.0.0b9 (to be released on xx.09.2022)
 - TODO: trim text in have.exact_text
 
-## 2.0.0b7 (to be released on 02.09.2022)
+
+## 2.0.0b8 (to be released on 05.09.2022)
+
+### NEW: `selene.support._logging.wait_with(context, translations)`
+
+Added selene.support._logging experimental module with «predefined recipe» of wait_decorator for easier logging of Selene waiting commands (yet riskier, cause everything marked as experimental is a subject to change).
+
+Now, given added allure dependency to your project, you can configure logging Selene commands to Allure report as simply as:
+
+```python
+from selene.support.shared import browser
+from selene import support
+import allure_commons
+
+browser.config._wait_decorator = support._logging.wait_with(
+  context=allure_commons._allure.StepContext
+)
+```
+
+... or implement your own version of StepContext – feel free to use [Alure's context manager](https://github.com/allure-framework/allure-python/blob/481ea54759b0d8f6aa083a9f70f66cca33cae67c/allure-python-commons/src/_allure.py#L151) as example or the one from Selene's [browser__config__wait_decorator_with_decorator_from_support_logging_test.py](https://github.com/yashaka/selene/tree/master/tests/integration/shared_browser/browser__config__wait_decorator_with_decorator_from_support_logging_test.py) test.
+
+You also can pass a list of translations to be applied to final message to log, something like:
+
+```python
+from selene.support.shared import browser
+from selene import support
+import allure_commons
+
+browser.config._wait_decorator = support._logging.wait_with(
+  context=allure_commons._allure.StepContext,
+  translations=(
+        ('browser.element', '$'),
+        ('browser.all', '$$'),
+  )
+)
+```
+
+But check the default value for this parameter, maybe you'll be fine with it;)
+
+And remember, the majority of selene extensions from the support.* package, including its `_logging` module – are things you'd better implement on your side to be less dependent to 3rd party helpers;) Feel free to Copy&Paste it into your code and adjust to your needs.
+
+## 2.0.0b7 (released on 02.09.2022)
 - BREAKING_CHANGE: change type of config._wait_decorator to access entities, not just commands on them
   - from `Callable[[F], F]`
   - to `Callable[[Wait[E]], Callable[[F], F]]`
@@ -99,7 +140,7 @@
     - more «frameworkish» one: [examples/log_all_selene_commands_with_wait__framework](https://github.com/yashaka/selene/tree/master/examples/log_all_selene_commands_with_wait__framework)
 
 
-## 2.0.0b6 (to be released on 31.08.2022)
+## 2.0.0b6 (released on 31.08.2022)
 - NEW: added "opera" and "edge" support for shared browser
   - example:
 
@@ -144,7 +185,7 @@
     button.click()
     ```
 
-## 2.0.0b5 (to be released on 24.06.2022)
+## 2.0.0b5 (released on 24.06.2022)
 - NEW: added command.js.*:
   - remove
   - set_style_display_to_none

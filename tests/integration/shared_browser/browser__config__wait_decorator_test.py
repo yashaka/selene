@@ -1,6 +1,6 @@
 from selene import have
 from selene.core.wait import Wait
-from selene.support.shared import browser as selene_browser
+from selene.support import shared
 import logging
 
 
@@ -55,8 +55,10 @@ def log_on_wait(prefix):
     return decorator_factory
 
 
-def test_logging_via__wait_decorator():
-    browser = selene_browser.with_(_wait_decorator=log_on_wait('[1] - '))
+def test_logging_via__wait_decorator(quit_shared_browser_afterwards):
+    browser = shared.browser.with_(
+        _wait_decorator=log_on_wait('[1] - '), timeout=0.3
+    )
 
     browser.open('http://todomvc.com/examples/emberjs/')
 
@@ -70,9 +72,7 @@ def test_logging_via__wait_decorator():
     ).type('c').press_enter()
 
     try:
-        browser.all('#todo-list>li').with_(timeout=0.3).should(
-            have.texts('ab', 'b', 'c', 'd')
-        )
+        browser.all('#todo-list>li').should(have.texts('ab', 'b', 'c', 'd'))
     except AssertionError:
         assert (
             r'''
