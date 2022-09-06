@@ -1,2 +1,2 @@
 #!/bin/bash
-black . --check
+black . --check --diff
