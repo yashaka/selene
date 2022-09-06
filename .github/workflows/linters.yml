@@ -7,52 +7,42 @@ jobs:
   Black:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
-      - uses: psf/black@20.8b1
-        with:
-          args: ". --check"
+      - run: |
+          pip install black
+          .run/lint_black.sh
 
   Pycodestyle:
     name: Lint Pycodestyle
     runs-on: ubuntu-20.04
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Set up Python
-        uses: actions/setup-python@v2
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
         with:
           python-version: '3.7'
       - name: Pycodestyle
         run: |
           pip install pycodestyle
-          pycodestyle $(pwd) --ignore=E501,W503,E402,E731,E203 --exclude=.venv
+          .run/lint_pycodestyle.sh
 
   Pylint:
     name: Lint Pylint
     runs-on: ubuntu-20.04
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Set up Python
-        uses: actions/setup-python@v2
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
         with:
           python-version: '3.7'
       - name: Pylint
         run: |
           pip install pylint
-          touch __init__.py
-          pylint $(pwd) --rcfile=.pylintrc --disable="$(cat .pylint-disabled-rules)" --ignore-patterns=.venv
-          rm __init__.py
+          .run/lint_pylint.sh
 
   Pylint-full-report:
     name: Lint Pylint Full Report
     runs-on: ubuntu-20.04
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Set up Python
-        uses: actions/setup-python@v2
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
         with:
           python-version: '3.7'
       - name: Pylint Full Report
