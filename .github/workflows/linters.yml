@@ -51,5 +51,5 @@ jobs:
         run: |
           pip install pylint
           touch __init__.py
-          pylint $(pwd) --rcfile=.pylintrc --disable="" --ignore-patterns=.venv --exit-zero
+          pylint $(pwd) --disable="" --ignore-patterns=.venv --exit-zero
           rm __init__.py
