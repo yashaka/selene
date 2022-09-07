@@ -2,26 +2,26 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 667,
-    "uniques": 289
+    "count": 716,
+    "uniques": 318
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 73,
-    "uniques": 33
+    "count": 78,
+    "uniques": 35
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 62,
+    "count": 68,
     "uniques": 14
   },
   {
     "path": "/yashaka/selene/blob/master/README.md",
     "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 56,
-    "uniques": 22
+    "count": 62,
+    "uniques": 24
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
@@ -32,14 +32,14 @@
   {
     "path": "/yashaka/selene/tree/master/selene/core",
     "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 28,
-    "uniques": 14
+    "count": 33,
+    "uniques": 16
   },
   {
     "path": "/yashaka/selene/blob/master/selene/browser.py",
     "title": "selene/browser.py at master · yashaka/selene · GitHub",
-    "count": 27,
-    "uniques": 17
+    "count": 30,
+    "uniques": 19
   },
   {
     "path": "/yashaka/selene/releases/tag/2.0.0b6",
@@ -48,15 +48,15 @@
     "uniques": 13
   },
   {
-    "path": "/yashaka/selene/search",
-    "title": "Search · webdriver.Chrome · GitHub",
-    "count": 23,
-    "uniques": 6
+    "path": "/yashaka/selene/actions",
+    "title": "Actions · yashaka/selene · GitHub",
+    "count": 25,
+    "uniques": 4
   },
   {
     "path": "/yashaka/selene/tree/master/selene/support",
     "title": "selene/selene/support at master · yashaka/selene · GitHub",
-    "count": 21,
-    "uniques": 11
+    "count": 23,
+    "uniques": 12
   }
 ]
