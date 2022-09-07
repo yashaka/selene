@@ -58,14 +58,6 @@ codecov = "*"
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
-[tool.semantic_release]
-version_variable = [
-    "selene/__init__.py:__version__",
-    "pyproject.toml:version",
-]
-branch = "master"
-build_command = "pip install -m poetry && poetry build"
-
 [tool.black]
 line-length = 79
 target-version = ['py37']
