@@ -59,14 +59,6 @@ mypy = "*"
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
-[tool.semantic_release]
-version_variable = [
-    "selene/__init__.py:__version__",
-    "pyproject.toml:version",
-]
-branch = "master"
-build_command = "pip install -m poetry && poetry build"
-
 [tool.mypy]
 color_output=1
 
