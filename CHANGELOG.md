@@ -78,11 +78,134 @@
   - should we make original config (not shared) mutable?
 - TODO: support python 3.10 [#393](https://github.com/yashaka/selene/issues/393)
 
-## 2.0.0b9 (to be released on xx.09.2022)
+- "merge" element.execute_script with element._execute_script
+
+## 2.0.0b10 (to be released on xx.09.2022)
 - TODO: trim text in have.exact_text
 
+## 2.0.0b9 (to be released on 14.09.2022)
 
-## 2.0.0b8 (to be released on 05.09.2022)
+### NEW: `browser.all(selector).by(condition)` to filter collection
+
+```python
+from selene.support.shared import browser
+from selene import have
+
+browser.open('https://todomvc.com/examples/emberjs/')
+browser.element('#new-todo').type('a').press_enter()
+browser.element('#new-todo').type('b').press_enter()
+browser.element('#new-todo').type('c').press_enter()
+
+browser.all('#todo-list>li').by(have.text('b')).first.element('.toggle').click()
+
+browser.all('#todo-list>li').by(have.css_class('active')).should(have.texts('a', 'c'))
+browser.all('#todo-list>li').by(have.no.css_class('active')).should(have.texts('b'))
+```
+
+Hence, considering to deprecate:
+- `collection.filtered_by(condition)` in favor of `collection.by(condition)`
+- `collection.element_by(condition)` in favor of `collection.by(condition).first`
+
+### NEW: `collection.even` and `collection.odd` shortcuts
+
+```python
+from selene.support.shared import browser
+from selene import have
+
+browser.open('https://todomvc.com/examples/emberjs/')
+
+browser.element('#new-todo').type('1').press_enter()
+browser.element('#new-todo').type('2').press_enter()
+browser.element('#new-todo').type('3').press_enter()
+
+browser.all('#todo-list>li').even.should(have.texts('2'))
+browser.all('#todo-list>li').odd.should(have.texts('1', '3'))
+```
+
+### NEW: defaults for all params of `collection.sliced(start, stop, step)`
+
+Now you can achieve more readable `collection.sliced(step=2)` instead of awkward `collection.sliced(None, None, 2)`
+
+Remember that you still can use less readable but more concise `collection[::2]` ;)
+
+### DEPRECATED:
+
+- selene.core.entity.SeleneElement
+  - you can use selene.core.entity.Element
+- selene.core.entity.SeleneCollection
+  - you can use selene.core.entity.Collection
+- selene.core.entity.SeleneDriver
+  - you can use selene.core.entity.Browser
+
+### NEW: BREAKING CHANGE: removed deprecated
+
+- selene.browser module
+- selene.browsers module
+- selene.bys module
+- selene.driver module
+- selene.wait module
+- selene.elements module
+- selene.core.entity.Browser:
+  - .quit_driver(self) in favor of .quit(self)
+  - .wrap(self, webdriver) in favor of Browser(Config(driver=webdriver))
+  - .find(self, css_or_xpath_or_by: Union[str, tuple]) -> Element:
+    - in favor of .element(self, selector) -> Element
+  - .find_all(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection:
+    - in favor of .all(self, selector) -> Collection
+  - .find_elements in favor of browser.driver.find_elements
+  - .find_element in favor of browser.driver.find_element
+- selene.core.entity.Collection:
+  - .should(self, condition, timeout)
+    - in favor of selene.core.entity.Collection.should(self, condition)
+      with ability to customize timeout via collection.with_(timeout=...).should(condition)
+  - .should_each(self, condition, timeout)
+    - in favor of selene.core.entity.Collection.should_each(self, condition)
+      with ability to customize timeout via collection.with_(timeout=...).should_each(condition)
+  - .assure*(self, condition) -> Collection
+  - .should_*(self, condition) -> Collection
+- selene.core.entity.Element:
+  - .should(self, condition, timeout)
+    - in favor of selene.core.entity.Element.should(self, condition)
+      with ability to customize timeout via element.with_(timeout=...).should(condition)
+  - .assure*(self, condition) -> Element
+  - .should_*(self, condition) -> Element
+  - .caching(self)
+  - .find(self, css_or_xpath_or_by: Union[str, tuple]) -> Element
+  - .find_all(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection
+  - .parent_element(self) -> Element
+    - use .element('..') instead
+  - .following_sibling(self) -> Element
+    - use .element('./following-sibling::*') instead
+  - .first_child(self) -> Element
+    - use .element('./*[1]')) instead
+  - .scroll_to(self) -> Element
+    - use .perform(command.js.scroll_into_view) instead
+  - .press_down(self) -> Element
+    - use .press(Keys.ARROW_DOWN) instead
+  - .find_element(self, by, value)
+  - .find_elements(self, by, value)
+  - .tag_name(self)
+  - .text(self)
+  - .attribute(self, name)
+  - .js_property(self, name)
+  - .value_of_css_property(self, name)
+  - .get_attribute(self, name)
+  - .get_property(self, name)
+  - .is_selected(self)
+  - .is_enabled(self)
+  - .is_displayed(self)
+  - .location(self)
+  - .location_once_scrolled_into_view(self)
+  - .size(self)
+  - .rect(self)
+  - .screenshot_as_base64(self)
+  - .screenshot_as_png(self)
+  - .screenshot(self, filename)
+  - .parent(self)
+  - .id(self)
+
+
+## 2.0.0b8 (released on 05.09.2022)
 
 ### NEW: `selene.support._logging.wait_with(context, translations)`
 
