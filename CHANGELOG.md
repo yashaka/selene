@@ -80,10 +80,20 @@
 
 - "merge" element.execute_script with element._execute_script
 
-## 2.0.0b10 (to be released on xx.09.2022)
+## 2.0.0b11 (to be released on 14.09.2022)
 - TODO: trim text in have.exact_text
 
-## 2.0.0b9 (to be released on 14.09.2022)
+## 2.0.0b10 (to be released on 14.09.2022)
+
+### NEW: BREAKING CHANGE: removed deprecated selene.core.entity.Collection.:
+
+- `caching(self)` in favor of `cashed(self)`
+- `all_by(self, condition) -> Collection` in favor of `by(conditioin)`
+- `filter_by(self, condition) -> Collection` in favor of `by(condition)`
+- `find_by(self, condition) -> Element`
+- `size(self) -> int` in favor of `__len__(self)`
+
+## 2.0.0b9 (released on 14.09.2022)
 
 ### NEW: `browser.all(selector).by(condition)` to filter collection
 

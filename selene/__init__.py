@@ -220,4 +220,4 @@ Or, by using non-waiting versions, if "you are in a rush:)"::
 # """
 # todo: add here some type imports like Element, Collection, etc.
 
-__version__ = '2.0.0b9'
+__version__ = '2.0.0b10'

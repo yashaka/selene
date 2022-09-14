@@ -1020,41 +1020,6 @@ class Collection(WaitingEntity):
         )
         return self()
 
-    def caching(self) -> Collection:
-        warnings.warn(
-            "deprecated; use `cached` property instead: browser.all('#foo').cached",
-            DeprecationWarning,
-        )
-        return self.cached
-
-    def all_by(self, condition: Condition[Element]) -> Collection:
-        warnings.warn(
-            "deprecated; use `filtered_by` instead: browser.all('.foo').filtered_by(be.enabled)",
-            DeprecationWarning,
-        )
-        return self.filtered_by(condition)
-
-    def filter_by(self, condition: Condition[Element]) -> Collection:
-        warnings.warn(
-            "deprecated; use `filtered_by` instead: browser.all('.foo').filtered_by(be.enabled)",
-            DeprecationWarning,
-        )
-        return self.filtered_by(condition)
-
-    def find_by(self, condition: Condition[Element]) -> Element:
-        warnings.warn(
-            "deprecated; use `element_by` instead: browser.all('.foo').element_by(be.enabled)",
-            DeprecationWarning,
-        )
-        return self.element_by(condition)
-
-    def size(self):
-        warnings.warn(
-            "deprecated; use `len` standard function instead: len(browser.all('.foo'))",
-            DeprecationWarning,
-        )
-        return len(self)
-
     def should_each(self, condition: ElementCondition) -> Collection:
         # warnings.warn(
         #     "deprecated; use `should` method instead: browser.all('.foo').should(have.css_class('bar'))",
