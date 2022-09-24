@@ -83,6 +83,27 @@
 
 
 ## 2.0.0b12 (to be released on xx.09.2022)
+### NEW: BREAKING CHANGE: removed SeleneElement, SeleneCollection, SeleneDriver
+
+use instead:
+
+```python
+import selene
+
+element: selene.Element = ...
+collection: selene.Collection = ...
+browser: selene.Browser = ...
+```
+
+or:
+
+```python
+from selene import Element, Collection, Browser
+
+element: Element = ...
+collection: Collection = ...
+browser: Browser = ...
+```
 
 ### NEW: deprecated collection.should(element_condition)
 

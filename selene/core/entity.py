@@ -575,13 +575,6 @@ class Element(WaitingEntity):
         return self
 
 
-class SeleneElement(Element):
-    warnings.warn(
-        'SeleneElement is deprecated, import Element class instead for  your needs'
-    )
-    pass
-
-
 class Collection(WaitingEntity):
     def __init__(self, locator: Locator[List[WebElement]], config: Config):
         self._locator = locator
@@ -1041,13 +1034,6 @@ class Collection(WaitingEntity):
         return self
 
 
-class SeleneCollection(Collection):
-    warnings.warn(
-        'SeleneCollection is deprecated, import Element class instead for  your needs'
-    )
-    pass
-
-
 class Browser(WaitingEntity):
     def __init__(
         self, config: Config
@@ -1225,13 +1211,3 @@ from selene.core.conditions import (
     ElementCondition,
     BrowserCondition,
 )
-
-
-# --- Deprecated --- #  todo: remove in future versions
-
-
-class SeleneDriver(Browser):
-    warnings.warn(
-        'SeleneDriver is deprecated, import Browser class instead for  your needs'
-    )
-    pass
