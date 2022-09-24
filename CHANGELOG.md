@@ -81,7 +81,14 @@
 - "merge" element.execute_script with element._execute_script
 - TODO: trim text in have.exact_text
 
-## 2.0.0b11 (to be released on 24.09.2022)
+
+## 2.0.0b12 (to be released on xx.09.2022)
+
+### NEW: deprecated collection.should(element_condition)
+
+Only collection.should(collection_condition) is recommended now
+
+## 2.0.0b11 (released on 24.09.2022)
 
 ### NEW: upgraded selenium to 4.4.3 & webdriver-manager to 3.8.3
 

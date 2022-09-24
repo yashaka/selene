@@ -109,8 +109,8 @@ def test_should_have_text(session_browser):
         '''
     )
 
-    session_browser.all('li').should(have.text('ako'))
-    session_browser.all('li').should(have.text(''))
+    session_browser.all('li').should_each(have.text('ako'))
+    session_browser.all('li').should_each(have.text(''))
     # todo: this test is a bit weird here...
     # the file is called condition__collection__have_texts_test.py
     # specifying that here we tests collection conditions...
@@ -139,7 +139,7 @@ def test_should_have_text_exception(session_browser):
     )
 
     with pytest.raises(TimeoutException) as error:
-        browser.all('li').should(have.text('Yakov'))
+        browser.all('li').should_each(have.text('Yakov'))
     assert "has text Yakov" in error.value.msg
     assert "AssertionError: actual text: Alex" in error.value.msg
 
@@ -154,7 +154,7 @@ def test_should_have_no_text(session_browser):
         '''
     )
 
-    session_browser.all('li').should(have.no.text('L'))
+    session_browser.all('li').should_each(have.no.text('L'))
 
 
 def test_should_have_no_text_exception(session_browser):
@@ -169,6 +169,6 @@ def test_should_have_no_text_exception(session_browser):
     )
 
     with pytest.raises(TimeoutException) as error:
-        browser.all('li').should(have.no.text('Alex'))
+        browser.all('li').should_each(have.no.text('Alex'))
     assert "has no (text Alex)" in error.value.msg
     assert "ConditionNotMatchedError: condition not matched" in error.value.msg

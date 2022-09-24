@@ -47,7 +47,9 @@ def test_selene_demo():
         ).press_enter().should(
             have.attribute('value').value('')
         )  # todo: ensure autocomplete works here too...
-    tasks.should(have.texts('1', '2', '3')).should(have.css_class('active'))
+    tasks.should(have.texts('1', '2', '3')).should_each(
+        have.css_class('active')
+    )
     browser.element('#todo-count').should(have.text('3'))
 
     tasks[2].s('.toggle').click()

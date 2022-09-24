@@ -1004,7 +1004,13 @@ class Collection(WaitingEntity):
         condition: Union[Condition[Collection], Condition[Element]],
     ) -> Collection:
         if isinstance(condition, ElementCondition):
-            # todo: consider deprecating... makes everything too complicated...
+            warnings.warn(
+                "don't pass element-conditions like have.text to collection of elements, "
+                "cause it will lead to confusions in meaning... "
+                "While browser.all('.item').should(have.text('same for all items')) is pretty obvious, "
+                "Something like ss('.item').should(have.text('same for all items')) is not...",
+                DeprecationWarning,
+            )
             for element in self:
                 element.should(condition)
         else:
@@ -1020,17 +1026,19 @@ class Collection(WaitingEntity):
         )
         return self()
 
-    def should_each(self, condition: ElementCondition) -> Collection:
+    def should_each(self, condition: Condition[Element]) -> Collection:
         # warnings.warn(
         #     "deprecated; use `should` method instead: browser.all('.foo').should(have.css_class('bar'))",
         #     DeprecationWarning,
         # )
         # """
         # was deprecated
-        # but... probably making .should(condition) too smart was a bad idea...
-        # TODO: decide on the the .should_each fate...
         # """
-        return self.should(condition)
+
+        for element in self:
+            element.should(condition)
+
+        return self
 
 
 class SeleneCollection(Collection):
