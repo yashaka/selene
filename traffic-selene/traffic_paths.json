@@ -2,14 +2,20 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 419,
-    "uniques": 222
+    "count": 427,
+    "uniques": 220
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 69,
+    "count": 67,
     "uniques": 34
+  },
+  {
+    "path": "/yashaka/selene/issues",
+    "title": "Issues · yashaka/selene · GitHub",
+    "count": 35,
+    "uniques": 16
   },
   {
     "path": "/yashaka/selene/tree/master/selene/core",
@@ -20,8 +26,8 @@
   {
     "path": "/yashaka/selene/tree/master/selene/support",
     "title": "selene/selene/support at master · yashaka/selene · GitHub",
-    "count": 31,
-    "uniques": 19
+    "count": 27,
+    "uniques": 18
   },
   {
     "path": "/yashaka/selene/search",
@@ -30,33 +36,27 @@
     "uniques": 10
   },
   {
+    "path": "/yashaka/selene/blob/master/README.md",
+    "title": "selene/README.md at master · yashaka/selene",
+    "count": 27,
+    "uniques": 7
+  },
+  {
     "path": "/yashaka/selene/tree/master/selene/common",
     "title": "selene/selene/common at master · yashaka/selene · GitHub",
     "count": 26,
     "uniques": 16
   },
   {
-    "path": "/yashaka/selene/issues",
-    "title": "Issues · yashaka/selene · GitHub",
-    "count": 26,
-    "uniques": 15
-  },
-  {
-    "path": "/yashaka/selene/blob/master/README.md",
-    "title": "selene/README.md at master · yashaka/selene",
-    "count": 24,
-    "uniques": 6
-  },
-  {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 22,
-    "uniques": 18
+    "count": 23,
+    "uniques": 19
   },
   {
-    "path": "/yashaka/selene/tree/master/selene/api",
-    "title": "selene/selene/api at master · yashaka/selene · GitHub",
-    "count": 17,
-    "uniques": 12
+    "path": "/yashaka/selene/tree/master/examples",
+    "title": "selene/examples at master · yashaka/selene · GitHub",
+    "count": 18,
+    "uniques": 10
   }
 ]
