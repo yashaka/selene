@@ -79,11 +79,19 @@
 - TODO: support python 3.10 [#393](https://github.com/yashaka/selene/issues/393)
 
 - "merge" element.execute_script with element._execute_script
-
-## 2.0.0b11 (to be released on 14.09.2022)
 - TODO: trim text in have.exact_text
 
-## 2.0.0b10 (to be released on 14.09.2022)
+## 2.0.0b11 (to be released on 24.09.2022)
+
+### NEW: upgraded selenium to 4.4.3 & webdriver-manager to 3.8.3
+
+### BREAKING CHANGE: removed 'opera' support for shared.browser.config.browser_name
+
+see reasons at:
+- [Selenium Changelog for 4.3.0](https://github.com/SeleniumHQ/selenium/blob/31190f8edd801a2ead8ba3d49982cbdbc838885d/py/CHANGES#L22)
+- [[🐛 Bug]: Opera Browser in Selenium 4 Usage](https://github.com/SeleniumHQ/selenium/issues/10835)
+
+## 2.0.0b10 (released on 14.09.2022)
 
 ### NEW: BREAKING CHANGE: removed deprecated selene.core.entity.Collection.:
 

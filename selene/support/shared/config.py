@@ -31,7 +31,7 @@ import warnings
 from typing import Optional, TypeVar, Generic, Callable, Union
 
 from selenium.common.exceptions import WebDriverException
-from selenium.webdriver import ChromeOptions, Chrome, Firefox, Edge, Opera
+from selenium.webdriver import ChromeOptions, Chrome, Firefox, Edge
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.edge.service import Service as EdgeService
 from selenium.webdriver.firefox.service import Service as FirefoxService
@@ -42,7 +42,6 @@ from webdriver_manager.core.utils import ChromeType
 from selene.common import fp
 from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
-from webdriver_manager.opera import OperaDriverManager
 
 from selene.common.fp import pipe, F
 from selene.core.configuration import Config
@@ -269,13 +268,6 @@ class SharedConfig(Config):
                 service=EdgeService(EdgeChromiumDriverManager().install())
             )
 
-        def get_opera():
-            options = ChromeOptions()
-            options.add_experimental_option('w3c', True)
-            return Opera(
-                executable_path=OperaDriverManager().install(), options=options
-            )
-
         # set_remote = lambda: Remote()  # todo: do we really need it? :)
 
         # todo: think on something like:
@@ -286,7 +278,6 @@ class SharedConfig(Config):
             'chrome': get_chrome,
             'firefox': get_firefox,
             'edge': get_edge,
-            'opera': get_opera,
         }.get(self.browser_name)()
 
     # --- Config.driver new "shared logic" --- #
