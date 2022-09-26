@@ -318,6 +318,16 @@ class Element(WaitingEntity):
         #       also it will make sense to make this behaviour configurable...
         return self
 
+    def set(self, value: Union[str, int]) -> Element:
+        """
+        Sounds similar to Element.set_value(self, value), but considered to be used in broader context.
+        For example, a use can say «Set gender radio to Male» but will hardly say «Set gender radio to value Male».
+        Now imagine, on your project you have custom html implementation of radio buttons,
+        and want to teach selene to set such radio-button controls – you can do this via Element.set(self, value) method,
+        after monkey-patching it according to your behavior;)
+        """
+        return self.set_value(value)
+
     def _actual_visible_webelement_and_maybe_its_cover(
         self, center_x_offset=0, center_y_offset=0
     ) -> Tuple[WebElement, WebElement]:
@@ -401,6 +411,16 @@ class Element(WaitingEntity):
             else Command(f'type: {text}', fn)
         )
 
+        return self
+
+    def send_keys(self, *value) -> Element:
+        """
+        To be used for more low level operations like «uploading files», etc.
+        To simulate normal input of keys by user when typing – use Element.type(self, text).
+        """
+        self.wait.command(
+            'send keys', lambda element: element().send_keys(*value)
+        )
         return self
 
     def press(self, *keys) -> Element:
@@ -549,30 +569,6 @@ class Element(WaitingEntity):
             PendingDeprecationWarning,
         )
         return self()
-
-    def set(self, value: Union[str, int]) -> Element:
-        warnings.warn(
-            "deprecated; use `set_value` method instead", DeprecationWarning
-        )
-        return self.set_value(value)
-
-    def send_keys(self, *value) -> Element:
-        # warnings.warn(
-        #     "send_keys is deprecated because the name is not user-oriented in context of web ui e2e tests; "
-        #     "use `type` for 'typing text', press(*key) or press_* for 'pressing keys' methods instead",
-        #     DeprecationWarning,
-        # )
-        # """
-        # was deprecated previously
-        # but deprecation was removed as an exception case
-        # because sometimes send_keys is used for low level stuff
-        # like sending values for files, etc...
-        # let's rethink this topic later...
-        # """
-        self.wait.command(
-            'send keys', lambda element: element().send_keys(*value)
-        )
-        return self
 
 
 class Collection(WaitingEntity, Iterable[Element]):
