@@ -2,38 +2,32 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 434,
-    "uniques": 223
+    "count": 420,
+    "uniques": 213
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 70,
-    "uniques": 35
+    "count": 65,
+    "uniques": 32
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 34,
-    "uniques": 16
+    "count": 35,
+    "uniques": 15
   },
   {
     "path": "/yashaka/selene/tree/master/selene/core",
     "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 33,
-    "uniques": 19
+    "count": 34,
+    "uniques": 20
   },
   {
-    "path": "/yashaka/selene/tree/master/selene/support",
-    "title": "selene/selene/support at master · yashaka/selene · GitHub",
-    "count": 28,
-    "uniques": 19
-  },
-  {
-    "path": "/yashaka/selene/blob/master/README.md",
-    "title": "selene/README.md at master · yashaka/selene",
-    "count": 28,
-    "uniques": 7
+    "path": "/yashaka/selene/search",
+    "title": "Search · title · GitHub",
+    "count": 32,
+    "uniques": 11
   },
   {
     "path": "/yashaka/selene/tree/master/selene/common",
@@ -42,16 +36,22 @@
     "uniques": 17
   },
   {
-    "path": "/yashaka/selene/search",
-    "title": "Search · title · GitHub",
-    "count": 27,
-    "uniques": 10
+    "path": "/yashaka/selene/tree/master/selene/support",
+    "title": "selene/selene/support at master · yashaka/selene · GitHub",
+    "count": 25,
+    "uniques": 17
+  },
+  {
+    "path": "/yashaka/selene/blob/master/README.md",
+    "title": "selene/README.md at master · yashaka/selene",
+    "count": 25,
+    "uniques": 6
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 23,
-    "uniques": 19
+    "count": 18,
+    "uniques": 15
   },
   {
     "path": "/yashaka/selene/tree/master/selene/api",
