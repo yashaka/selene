@@ -992,22 +992,8 @@ class Collection(WaitingEntity, Iterable[Element]):
 
     # --- Assertable --- #
 
-    def should(
-        self,
-        condition: Union[Condition[Iterable[Element]], Condition[Element]],
-    ) -> Collection:
-        if isinstance(condition, ElementCondition):
-            warnings.warn(
-                "don't pass element-conditions like have.text to collection of elements, "
-                "cause it will lead to confusions in meaning... "
-                "While browser.all('.item').should(have.text('same for all items')) is pretty obvious, "
-                "Something like ss('.item').should(have.text('same for all items')) is not...",
-                DeprecationWarning,
-            )
-            # super().should(condition.each)  # TODO: fix types
-            self.wait.for_(condition.each)
-        else:
-            super().should(condition)
+    def should(self, condition: Condition[Iterable[Element]]) -> Collection:
+        self.wait.for_(condition)
         return self
 
     # --- Deprecated --- #
@@ -1018,18 +1004,6 @@ class Collection(WaitingEntity, Iterable[Element]):
             PendingDeprecationWarning,
         )
         return self()
-
-    def should_each(self, condition: Condition[Element]) -> Collection:
-        warnings.warn(
-            "deprecated; use should(condition.each) method instead, like in: "
-            "browser.all('.foo').should(have.css_class('bar').each)",
-            DeprecationWarning,
-        )
-
-        # self.should(condition.each)  # TODO: fix types
-        self.wait.for_(condition.each)
-
-        return self
 
 
 class Browser(WaitingEntity):

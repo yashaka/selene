@@ -81,7 +81,16 @@
 - "merge" element.execute_script with element._execute_script
 - TODO: trim text in have.exact_text
 
-## 2.0.0b12 (to be released on 26.09.2022)
+
+## 2.0.0b13 (to be released on ??.09.2022)
+
+### NEW: BREAKING CHANGE: removed collection.should_each ... [#277](https://github.com/yashaka/selene/issues/277)
+
+- ... and ability to pass element_condition to `collection.should(HERE)`
+- Use instead: `collection.should(element_condition.each)`
+  - like in `browser.all('.selene-user').should(hava.css_class('cool').each)`
+
+## 2.0.0b12 (released on 26.09.2022)
 
 ### NEW: collection.should(condition.each) [#277](https://github.com/yashaka/selene/issues/277)
 
