@@ -81,8 +81,17 @@
 - "merge" element.execute_script with element._execute_script
 - TODO: trim text in have.exact_text
 
+## 2.0.0b12 (to be released on 26.09.2022)
 
-## 2.0.0b12 (to be released on xx.09.2022)
+### NEW: collection.should(condition.each) [#277](https://github.com/yashaka/selene/issues/277)
+
+The older style is totally **deprecated** now:
+- Instead of:
+  - `collection.should(element_condition)` and `collection.should_each(element_condition)`
+- Use:
+  - `collection.should(element_condition.each)`
+  - see more examples at [tests/integration/condition_each_test.py](https://github.com/yashaka/selene/tree/master/tests/integration/condition_each_test.py)
+
 ### NEW: BREAKING CHANGE: removed SeleneElement, SeleneCollection, SeleneDriver
 
 use instead:
@@ -104,10 +113,6 @@ element: Element = ...
 collection: Collection = ...
 browser: Browser = ...
 ```
-
-### NEW: deprecated collection.should(element_condition)
-
-Only collection.should(collection_condition) is recommended now
 
 ## 2.0.0b11 (released on 24.09.2022)
 

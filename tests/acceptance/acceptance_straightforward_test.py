@@ -45,8 +45,8 @@ class TestTodoMVC:
 
         for task_text in ['1', '2', '3']:
             browser.element('#new-todo').set_value(task_text).press_enter()
-        tasks.should(have.texts('1', '2', '3')).should_each(
-            have.css_class('active')
+        tasks.should(have.texts('1', '2', '3')).should(
+            have.css_class('active').each
         )
         browser.element('#todo-count').should(have.text('3'))
 

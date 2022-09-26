@@ -25,7 +25,7 @@ from __future__ import annotations
 import warnings
 
 from abc import abstractmethod, ABC
-from typing import TypeVar, Union, List, Callable, Tuple
+from typing import TypeVar, Union, List, Callable, Tuple, Iterable
 
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver import ActionChains
@@ -575,7 +575,7 @@ class Element(WaitingEntity):
         return self
 
 
-class Collection(WaitingEntity):
+class Collection(WaitingEntity, Iterable[Element]):
     def __init__(self, locator: Locator[List[WebElement]], config: Config):
         self._locator = locator
         super().__init__(config)
@@ -994,7 +994,7 @@ class Collection(WaitingEntity):
 
     def should(
         self,
-        condition: Union[Condition[Collection], Condition[Element]],
+        condition: Union[Condition[Iterable[Element]], Condition[Element]],
     ) -> Collection:
         if isinstance(condition, ElementCondition):
             warnings.warn(
@@ -1004,8 +1004,8 @@ class Collection(WaitingEntity):
                 "Something like ss('.item').should(have.text('same for all items')) is not...",
                 DeprecationWarning,
             )
-            for element in self:
-                element.should(condition)
+            # super().should(condition.each)  # TODO: fix types
+            self.wait.for_(condition.each)
         else:
             super().should(condition)
         return self
@@ -1020,16 +1020,14 @@ class Collection(WaitingEntity):
         return self()
 
     def should_each(self, condition: Condition[Element]) -> Collection:
-        # warnings.warn(
-        #     "deprecated; use `should` method instead: browser.all('.foo').should(have.css_class('bar'))",
-        #     DeprecationWarning,
-        # )
-        # """
-        # was deprecated
-        # """
+        warnings.warn(
+            "deprecated; use should(condition.each) method instead, like in: "
+            "browser.all('.foo').should(have.css_class('bar').each)",
+            DeprecationWarning,
+        )
 
-        for element in self:
-            element.should(condition)
+        # self.should(condition.each)  # TODO: fix types
+        self.wait.for_(condition.each)
 
         return self
 
