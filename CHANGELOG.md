@@ -87,15 +87,39 @@
 
 ## 2.0.0b13 (to be released on ??.09.2022)
 
-### NEW: collection.second shortcut to collection[1]
+### NEW
 
-### NEW: DEPRECATED: collection.filtered_by(condition) in favor of collection.by(condition)
+#### access to self.locate() as `element` or `self` from the script passed to element.execute_script(script_on_self, *arguments)
 
-### NEW: element.locate() -> WebElement, collection.locate() -> List[WebElement] [#284](https://github.com/yashaka/selene/issues/284)
+Examples: 
+
+```python
+from selene.support.shared import browser
+
+browser.element('[id^=google_ads]').execute_script('element.remove()')
+# OR
+browser.element('[id^=google_ads]').execute_script('self.remove()')
+'''
+# are shortcuts to
+browser.execute_script('arguments[0].remove()', browser.element('[id^=google_ads]')())
+'''
+
+browser.element('input').execute_script('element.value=arguments[0]', 'new value')
+# OR
+browser.element('input').execute_script('self.value=arguments[0]', 'new value')
+'''
+# are shortcuts to
+browser.execute_script('arguments[0].value=arguments[1]', browser.element('input').locate(), 'new value')
+'''
+```
+
+#### `collection.second` shortcut to `collection[1]`
+
+#### `element.locate() -> WebElement`, `collection.locate() -> List[WebElement]` [#284](https://github.com/yashaka/selene/issues/284)
 
 ... as more human-readable aliases to element() and collection() correspondingly
 
-### NEW: entity.__raw__
+#### `entity.__raw__`
 
 It's a «dangled» property and so consider it an experimental/private feature. 
 For element and collection – it's same as `.locate()`.
@@ -105,11 +129,41 @@ Read more on it at this [comment to #284](https://github.com/yashaka/selene/issu
 
 ... as aliases to element(), collection() correspondingly
 
+### NEW: DEPRECATED: 
+
+#### element._execute_script(script_on_self, *args)
+
+... in favor of .execute_script(script_on_self, *arguments) that uses access to arguments (NOT args!) in the script.
+
+#### collection.filtered_by(condition) in favor of collection.by(condition)
+
+#### browser.close_current_tab()
+
+Deprecated because the «tab» term is not relevant for mobile context. 
+Use a `browser.close()` or `browser.driver.close()` instead.
+
+The deprecation mark was removed from the `browser.close()` correspondingly.
+
 ### NEW: BREAKING CHANGES
 
-#### removed earlier deprecated browser.elements(selector) in favor of browser.all(selector)
-#### removed earlier deprecated element.get_actual_webelement() in favor of element.locate()
-#### removed earlier collection.get_actual_webelements() in favor of collection.locate()
+#### arguments inside script passed to element.execute_script(script_on_self, *arguments) starts from 0
+
+```python
+from selene.support.shared import browser
+
+# before this version ...
+browser.element('input').execute_script('arguments[0].value=arguments[1]', 'new value')
+# NOW:
+browser.element('input').execute_script('element.value=arguments[0]', 'new value')
+```
+
+#### removed earlier deprecated 
+
+- `browser.elements(selector)` in favor of `browser.all(selector)`
+- `browser.ss(selector)` in favor of `browser.all(selector)`
+- `browser.s(selector)` in favor of `browser.element(selector)`
+- `element.get_actual_webelement()` in favor of `element.locate()`
+- `collection.get_actual_webelements()` in favor of `collection.locate()`
 
 #### renamed collection.filtered_by_their(selector, condition) to collection.by_their(selector, condition) 
 

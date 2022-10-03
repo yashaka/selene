@@ -248,11 +248,47 @@ class Element(WaitingEntity):
 
     # --- Commands --- #
 
-    def execute_script(self, script_on_self: str, *extra_args):
+    def execute_script(self, script_on_self: str, *arguments):
+        """
+        Executes JS script on self as webelement. Will not work for Mobile!
+
+        The script can use predefined parameters:
+        - ``element`` and ``self`` are aliases to this element handle, i.e. ``self.locate()`` or ``self()``.
+        - ``arguments`` are accessible from the script with same order and indexing as they are provided to the method
+
+        Examples::
+
+            browser.element('[id^=google_ads]').execute_script('element.remove()')
+            # OR
+            browser.element('[id^=google_ads]').execute_script('self.remove()')
+            '''
+            # are shortcuts to
+            browser.execute_script('arguments[0].remove()', browser.element('[id^=google_ads]')())
+            '''
+
+            browser.element('input').execute_script('element.value=arguments[0]', 'new value')
+            # OR
+            browser.element('input').execute_script('self.value=arguments[0]', 'new value')
+            '''
+            # are shortcuts to
+            browser.execute_script('arguments[0].value=arguments[1]', browser.element('input').locate(), 'new value')
+            '''
+        """
         driver: WebDriver = self.config.driver
         webelement = self()
         # todo: should we wrap it in wait or not?
-        return driver.execute_script(script_on_self, webelement, *extra_args)
+        # TODO: should we add additional it and/or its aliases for element?
+        return driver.execute_script(
+            f'''
+                let element = arguments[0]
+                let self = arguments[0]
+                return (function(...args) {{
+                    {script_on_self}
+                }})(...arguments[1])
+            ''',
+            webelement,
+            arguments,
+        )
 
     # todo: do we need this method?
     #       do we really need to wrap script into function(element,args) here?
@@ -264,6 +300,12 @@ class Element(WaitingEntity):
         script_on_self_element_and_args: str,
         *extra_args,
     ):
+        warnings.warn(
+            '._execute_script is now deprecated '
+            'in favor of .execute_script(script_on_self, *arguments) '
+            'that uses access to arguments (NOT args!) in the script',
+            DeprecationWarning,
+        )
         driver: WebDriver = self.config.driver
         webelement = self()
         # todo: should we wrap it in wait or not?
@@ -276,13 +318,6 @@ class Element(WaitingEntity):
             webelement,
             extra_args,
         )
-
-    # def __execute_script__(
-    #     self,
-    #     script_on_self_element_and_args: str,
-    #     *extra_args,
-    # ):
-    #     return self._execute_script(script_on_self_element_and_args, *extra_args)
 
     def set_value(self, value: Union[str, int]) -> Element:
         # todo: should we move all commands like following or queries like in conditions - to separate py modules?
@@ -341,10 +376,10 @@ class Element(WaitingEntity):
         # todo: will it be faster render outerHTML via lazy rendered SeleneError
         #       instead of: throw `element ${element.outerHTML} is not visible`
         #       in below js
-        results = self._execute_script(
+        results = self.execute_script(
             '''
-                var centerXOffset = args[0];
-                var centerYOffset = args[1];
+                var centerXOffset = arguments[0];
+                var centerYOffset = arguments[1];
 
                 var isVisible = !!(
                     element.offsetWidth
@@ -1169,12 +1204,12 @@ class Browser(WaitingEntity):
     #       if we don't need to switch_to.'back' after switch to alert - then for sure we should...
     #       question is - should we implement our own alert as waiting entity?
 
-    def close_current_tab(self) -> Browser:
-        self.driver.close()
-        return self
-
     def quit(self) -> None:
         self.driver.quit()
+
+    def close(self) -> Browser:
+        self.driver.close()
+        return self
 
     def clear_local_storage(self) -> Browser:
         self.driver.execute_script(
@@ -1196,31 +1231,14 @@ class Browser(WaitingEntity):
 
     # --- Deprecated --- #
 
-    def close(self) -> Browser:
+    def close_current_tab(self) -> Browser:
         warnings.warn(
-            "deprecated; use a `close_current_tab` method instead",
+            'deprecated because the «tab» term is not relevant for mobile; '
+            'use a `browser.close()` or `browser.driver.close()` instead',
             DeprecationWarning,
         )
-
-        return self.close_current_tab()
-
-    def s(self, css_or_xpath_or_by: Union[str, tuple]) -> Element:
-        warnings.warn(
-            "deprecated; use an `element` method instead: "
-            "`browser.element('#foo')`",
-            DeprecationWarning,
-        )
-
-        return self.element(css_or_xpath_or_by)
-
-    def ss(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection:
-        warnings.warn(
-            "deprecated; use an `all` method instead: "
-            "`browser.all('.foo')`",
-            DeprecationWarning,
-        )
-
-        return self.all(css_or_xpath_or_by)
+        self.driver.close()
+        return self
 
 
 # TODO: probably this was needed for migration from 1.0 to 2.0...

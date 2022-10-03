@@ -99,10 +99,10 @@ class js:
     remove = Command(
         'remove',
         lambda entity: (
-            entity._execute_script('element.remove()')
+            entity.execute_script('element.remove()')
             if not hasattr(entity, '__iter__')
             else [
-                element._execute_script('element.remove()')
+                element.execute_script('element.remove()')
                 for element in entity
             ]
         ),
@@ -111,10 +111,10 @@ class js:
     set_style_display_to_none = Command(
         'set element.style.display="none"',
         lambda entity: (
-            entity._execute_script('element.style.display="none"')
+            entity.execute_script('element.style.display="none"')
             if not hasattr(entity, '__iter__')
             else [
-                element._execute_script('element.style.display="none"')
+                element.execute_script('element.style.display="none"')
                 for element in entity
             ]
         ),
@@ -123,10 +123,10 @@ class js:
     set_style_display_to_block = Command(
         'set element.style.display="block"',
         lambda entity: (
-            entity._execute_script('element.style.display="block"')
+            entity.execute_script('element.style.display="block"')
             if not hasattr(entity, '__iter__')
             else [
-                element._execute_script('element.style.display="block"')
+                element.execute_script('element.style.display="block"')
                 for element in entity
             ]
         ),
@@ -135,10 +135,10 @@ class js:
     set_style_visibility_to_hidden = Command(
         'set element.style.visibility="hidden"',
         lambda entity: (
-            entity._execute_script('element.style.visibility="hidden"')
+            entity.execute_script('element.style.visibility="hidden"')
             if not hasattr(entity, '__iter__')
             else [
-                element._execute_script('element.style.visibility="hidden"')
+                element.execute_script('element.style.visibility="hidden"')
                 for element in entity
             ]
         ),
@@ -147,10 +147,10 @@ class js:
     set_style_visibility_to_visible = Command(
         'set element.style.visibility="visible"',
         lambda entity: (
-            entity._execute_script('element.style.visibility="visible"')
+            entity.execute_script('element.style.visibility="visible"')
             if not hasattr(entity, '__iter__')
             else [
-                element._execute_script('element.style.visibility="visible"')
+                element.execute_script('element.style.visibility="visible"')
                 for element in entity
             ]
         ),
