@@ -1222,15 +1222,6 @@ class Browser(WaitingEntity):
 
         return self.all(css_or_xpath_or_by)
 
-    def elements(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection:
-        warnings.warn(
-            "deprecated; use an `all` method instead: "
-            "`browser.all('.foo')`",
-            DeprecationWarning,
-        )
-
-        return self.all(css_or_xpath_or_by)
-
 
 # TODO: probably this was needed for migration from 1.0 to 2.0...
 from selene.core.conditions import (

@@ -107,6 +107,7 @@ Read more on it at this [comment to #284](https://github.com/yashaka/selene/issu
 
 ### NEW: BREAKING CHANGES
 
+#### removed earlier deprecated browser.elements(selector) in favor of browser.all(selector)
 #### removed earlier deprecated element.get_actual_webelement() in favor of element.locate()
 #### removed earlier collection.get_actual_webelements() in favor of collection.locate()
 
