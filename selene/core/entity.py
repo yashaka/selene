@@ -563,11 +563,36 @@ class Element(WaitingEntity):
         #     SyntaxWarning)
         return self.all(css_or_xpath_or_by)
 
+    # TODO: consider renaming it to something more concise and handy in use...
+    #       some candidates:
+    #       * browser.element(...).get()
+    #         -- kind of tells that we get Element, not raw WebElement
+    #         + one of the concisest
+    #       * browser.element(...).find()
+    #         + tells that we actually finding something
+    #         - but a bit high-level for such low level thing like getting actual low-level webelement
+    #       * browser.element(...).locate()
+    #         ++ consistent with Element.locator
+    #         - not the concisest
+    #       * browser.element(...).raw
+    #         + !!! in fact it's "raw" in its nature, and the most concise
+    #         - maybe a bit "too technical", but for tech-guys probably pretty obvious
+    #           yeah, Selene is for users not for coders,
+    #           + but actual raw webelement is also not for users;)
+    #       * browser.element(...).__raw__
+    #         + same as .raw
+    #         + but emphasizing more its "technical" low level nature
+    #       - browser.element(...).invoke()
+    #         -- too technical
+    #       - browser.element(...).call()
+    #         -- we already have .__call__()
+    #         * and kind of similar to .invoke but more concise
     def get_actual_webelement(self) -> WebElement:
         warnings.warn(
             "considering to be deprecated; use element as callable instead, like: browser.element('#foo')()",
             PendingDeprecationWarning,
         )
+
         return self()
 
 
@@ -628,7 +653,14 @@ class Collection(WaitingEntity, Iterable[Element]):
         """
         A human-readable alias to .element(0) or [0]
         """
-        return self.element(0)
+        return self[0]
+
+    @property
+    def second(self):
+        """
+        A human-readable alias to .element(1) or [1]
+        """
+        return self[1]
 
     @property
     def even(self):
@@ -704,19 +736,25 @@ class Collection(WaitingEntity, Iterable[Element]):
     def filtered_by(
         self, condition: Union[Condition[Element], Callable[[E], None]]
     ) -> Collection:
+        warnings.warn(
+            'collection.filtered_by(condition) is deprecated in favor of collection.by(condition)',
+            DeprecationWarning,
+        )
         return self.by(condition)
 
-    def filtered_by_their(
+    def by_their(
         self,
-        selector_or_callable: Union[str, tuple, Callable[[Element], Element]],
+        selector: Union[str, tuple, Callable[[Element], Element]],
         condition: Condition[Element],
     ) -> Collection:
         """
-        :param selector_or_callable:
-            - selector may be a str with css/xpath selector or tuple with by.* locator
-            - callable should be a function on element that returns element
-        :param condition: a condition to
-        :return: collection subset with inner/relative element matching condition
+        Returns elements from collection that have inner/relative element,
+        found by ``selector`` and matching ``condition``.
+
+        Is a shortcut for ``collection.by(lambda element: condition(element.element(selector))``.
+
+        Example (straightforward)
+        -------------------------
 
         GIVEN html elements somewhere in DOM::
             .result
@@ -727,28 +765,25 @@ class Collection(WaitingEntity, Iterable[Element]):
         THEN::
 
             browser.all('.result')\
-                .filtered_by_their('.result-title', have.text('Selene'))\
+                .by_their('.result-title', have.text('Selene'))\
                 .should(have.size(3))
 
-        ... is a shortcut for::
+        is similar to::
 
             browser.all('.result')\
-                .filtered_by_their(lambda it: have.text(text)(it.element('.result-title')))\
+                .by_their(lambda it: have.text(text)(it.element('.result-title')))\
                 .should(have.size(3))
 
-        OR with PageObject:
+        Example (PageObject)
+        --------------------
 
-        THEN::
+        GIVEN html elements somewhere in DOM::
+            .result
+                .result-title
+                .result-url
+                .result-snippet
 
-            results.element_by_its(lambda it: Result(it).title, have.text(text))\
-                .should(have.size(3))
-
-        Shortcut for::
-
-            results.element_by(lambda it: have.text(text)(Result(it).title))\
-                .should(have.size(3))
-
-        WHERE::
+        AND::
 
             results = browser.all('.result')
             class Result:
@@ -757,23 +792,40 @@ class Collection(WaitingEntity, Iterable[Element]):
                     self.title = self.element.element('.result-title')
                     self.url = self.element.element('.result-url')
             # ...
+
+        THEN::
+
+            results.by_their(lambda it: Result(it).title, have.text(text))\
+                .should(have.size(3))
+
+        is similar to::
+
+            results.by_their(lambda it: have.text(text)(Result(it).title))\
+                .should(have.size(3))
         """
-        warnings.warn(
-            'filtered_by_their is experimental; might be renamed or removed in future',
-            FutureWarning,
-        )
 
         def find_in(parent: Element):
-            if callable(selector_or_callable):
-                return selector_or_callable(parent)
+            if callable(selector):
+                return selector(parent)
             else:
-                return parent.element(selector_or_callable)
+                return parent.element(selector)
 
-        return self.filtered_by(lambda it: condition(find_in(it)))
+        return self.by(lambda it: condition(find_in(it)))
 
     def element_by(
         self, condition: Union[Condition[Element], Callable[[E], None]]
     ) -> Element:
+        # todo: a first_by(condition) alias would be shorter,
+        #  and more consistent with by(condition).first
+        #  but the phrase items.element_by(have.text('foo')) leads to a more
+        #  natural meaning that such element should be only one...
+        #  while items.first_by(have.text('foo')) gives a clue that
+        #  it's just one of many...
+        #  should we then make element_by fail
+        #  if the condition matches more than one element? (maybe we can control it via corresponding config option?)
+        #  yet we don't fail if browser.element(selector) or element.element(selector)
+        #  finds more than one element... o_O
+
         # todo: In the implementation below...
         #       We use condition in context of "matching", i.e. as a predicate...
         #       why then not accept Callable[[E], bool] also?
@@ -833,17 +885,18 @@ class Collection(WaitingEntity, Iterable[Element]):
 
     def element_by_its(
         self,
-        selector_or_callable: Union[str, tuple, Callable[[Element], Element]],
+        selector: Union[str, tuple, Callable[[Element], Element]],
         condition: Condition[Element],
     ) -> Element:
         """
-        :param selector_or_callable:
-            - selector may be a str with css/xpath selector or tuple with by.* locator
-            - callable should be a function on element that returns element
-        :param condition: a condition to
-        :return: element from collection that has inner/relative element matching condition
+        Returns element from collection that has inner/relative element found by ``selector`` and matching ``condition``.
+        Is a shortcut for ``collection.element_by(lambda its: condition(its.element(selector))``.
+
+        Example (straightforward)
+        -------------------------
 
         GIVEN html elements somewhere in DOM::
+
             .result
                 .result-title
                 .result-url
@@ -858,22 +911,20 @@ class Collection(WaitingEntity, Iterable[Element]):
         ... is a shortcut for::
 
             browser.all('.result')\
-                .element_by(lambda it: have.text(text)(it.element('.result-title')))\
+                .element_by(lambda its: have.text(text)(its.element('.result-title')))\
                 .element('.result-url').click()
 
-        OR with PageObject:
+        Example (PageObject)
+        --------------------
 
-        THEN::
+        GIVEN html elements somewhere in DOM::
 
-            Result(results.element_by_its(lambda it: Result(it).title, have.text(text)))\
-                .url.click()
+            .result
+                .result-title
+                .result-url
+                .result-snippet
 
-        Shortcut for::
-
-            Result(results.element_by(lambda it: have.text(text)(Result(it).title)))\
-                .url.click()
-
-        WHERE::
+        AND::
 
             results = browser.all('.result')
             class Result:
@@ -881,85 +932,28 @@ class Collection(WaitingEntity, Iterable[Element]):
                     self.element = element
                     self.title = self.element.element('.result-title')
                     self.url = self.element.element('.result-url')
+
+        THEN::
+
+            Result(results.element_by_its(lambda it: Result(it).title, have.text(text)))\
+                .url.click()
+
+        is a shortcut for::
+
+            Result(results.element_by(lambda it: have.text(text)(Result(it).title)))\
+                .url.click()
             # ...
         """
-        # todo: main questions to answer before removing warning:
-        #       - isn't it enough to allow Callable[[Element], bool] as condition?
-        #           browser.all('.result').element_by(
-        #               lambda it: it.element('.result-title').matching(have.text('browser tests in Python')))
-        #               .element('.result-url').click()
-        #       - how to improve error messages in case we pass lambda (not a fun with good name/str repr)?
-        #       - what about accepting collection condition? should we allow it?
-        warnings.warn(
-            'element_by_its is experimental; might be renamed or removed in future',
-            FutureWarning,
-        )
+
+        # todo: tune implementation to ensure error messages are ok
 
         def find_in(parent: Element):
-            if callable(selector_or_callable):
-                return selector_or_callable(parent)
+            if callable(selector):
+                return selector(parent)
             else:
-                return parent.element(selector_or_callable)
+                return parent.element(selector)
 
         return self.element_by(lambda it: condition(find_in(it)))
-
-    # todo: consider adding ss alias
-    def all(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection:
-        warnings.warn(
-            'might be renamed or deprecated in future; '
-            'all is actually a shortcut for collected(lambda element: element.all(selector)...'
-            'but we also have all_first and...'
-            'it is yet unclear what name would be best for all_first as addition to all... '
-            'all_first might confuse with all(...).first... I mean: '
-            'all_first(selector) is actually '
-            'collected(lambda e: e.element(selector)) '
-            'but it is not the same as '
-            'all(selector).first '
-            'that is collected(lambda e: e.all(selector)).first ... o_O ',
-            FutureWarning,
-        )
-        by = to_by(css_or_xpath_or_by)
-
-        # todo: consider implement it through calling self.collected
-        #       because actually the impl is self.collected(lambda element: element.all(selector))
-
-        return Collection(
-            Locator(
-                f'{self}.all({by})',
-                lambda: flatten(
-                    [webelement.find_elements(*by) for webelement in self()]
-                ),
-            ),
-            self.config,
-        )
-
-    # todo: consider adding s alias
-    def all_first(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection:
-        warnings.warn(
-            'might be renamed or deprecated in future; '
-            'it is yet unclear what name would be best... '
-            'all_first might confuse with all(...).first... I mean: '
-            'all_first(selector) is actually '
-            'collected(lambda e: e.element(selector)) '
-            'but it is not the same as '
-            'all(selector).first '
-            'that is collected(lambda e: e.all(selector)).first ... o_O ',
-            FutureWarning,
-        )
-        by = to_by(css_or_xpath_or_by)
-
-        # todo: consider implement it through calling self.collected
-        #       because actually the impl is self.collected(lambda element: element.element(selector))
-
-        return Collection(
-            Locator(
-                f'{self}.all_first({by})',
-                lambda: [
-                    webelement.find_element(*by) for webelement in self()
-                ],
-            ),
-            self.config,
-        )
 
     def collected(
         self, finder: Callable[[Element], Union[Element, Collection]]
@@ -982,6 +976,85 @@ class Collection(WaitingEntity, Iterable[Element]):
                 lambda: flatten(
                     [finder(element)() for element in self.cached]
                 ),
+            ),
+            self.config,
+        )
+
+    def all(self, selector: Union[str, tuple]) -> Collection:
+        """
+        Returns a collection of all elements found be selector inside each element of self
+
+        An alias to ``collection.collected(lambda its: its.all(selector))``.
+
+        Example
+        -------
+
+        Given html::
+
+            <table>
+              <tr class="row">
+                <td class="cell">A1</td><td class="cell">A2</td>
+              </tr>
+              <tr class="row">
+                <td class="cell">B1</td><td class="cell">B2</td>
+              </tr>
+            </table>
+
+        Then::
+
+            browser.all('.row').all('.cell')).should(have.texts('A1', 'A2', 'B1', 'B2'))
+        """
+        by = to_by(selector)
+
+        # todo: consider implement it through calling self.collected
+        #       because actually the impl is self.collected(lambda element: element.all(selector))
+
+        return Collection(
+            Locator(
+                f'{self}.all({by})',
+                lambda: flatten(
+                    [webelement.find_elements(*by) for webelement in self()]
+                ),
+            ),
+            self.config,
+        )
+
+    def all_first(self, selector: Union[str, tuple]) -> Collection:
+        """
+        Returns a collection of each first element found be selector inside each element of self
+
+        An alias to ``collection.collected(lambda its: its.element(selector))``.
+        Not same as ``collection.all(selector).first`` that is same as ``collection.first.element(selector)``
+
+        Example
+        -------
+
+        Given html::
+
+            <table>
+              <tr class="row">
+                <td class="cell">A1</td><td class="cell">A2</td>
+              </tr>
+              <tr class="row">
+                <td class="cell">B1</td><td class="cell">B2</td>
+              </tr>
+            </table>
+
+        Then::
+
+            browser.all('.row').all_first('.cell')).should(have.texts('A1', 'B1'))
+        """
+        by = to_by(selector)
+
+        # todo: consider implement it through calling self.collected
+        #       because actually the impl is self.collected(lambda element: element.element(selector))
+
+        return Collection(
+            Locator(
+                f'{self}.all_first({by})',
+                lambda: [
+                    webelement.find_element(*by) for webelement in self()
+                ],
             ),
             self.config,
         )

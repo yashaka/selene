@@ -80,9 +80,18 @@
 
 - "merge" element.execute_script with element._execute_script
 - TODO: trim text in have.exact_text
+- TODO: accept iterable (not just varargs) in have.texts & similar
+- TODO: consider flatten any iterable passed to have.texts & similar
+- TODO: config.location_strategy
 
 
 ## 2.0.0b13 (to be released on ??.09.2022)
+
+### NEW: collection.second shortcut to collection[1]
+
+### NEW: DEPRECATED: collection.filtered_by(condition) in favor of collection.by(condition)
+
+### NEW: BREAKING CHANGE: renamed collection.filtered_by_their(selector, condition) to collection.by_their(selector, condition) 
 
 ### NEW: BREAKING CHANGE: removed collection.should_each ... [#277](https://github.com/yashaka/selene/issues/277)
 
