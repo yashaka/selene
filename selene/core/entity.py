@@ -173,8 +173,15 @@ class Element(WaitingEntity):
     def __str__(self):
         return str(self._locator)
 
-    def __call__(self) -> WebElement:
+    def locate(self) -> WebElement:
         return self._locator()
+
+    @property
+    def __raw__(self):
+        return self.locate()
+
+    def __call__(self) -> WebElement:
+        return self.locate()
 
     # --- WaitingEntity --- #
 
@@ -563,38 +570,6 @@ class Element(WaitingEntity):
         #     SyntaxWarning)
         return self.all(css_or_xpath_or_by)
 
-    # TODO: consider renaming it to something more concise and handy in use...
-    #       some candidates:
-    #       * browser.element(...).get()
-    #         -- kind of tells that we get Element, not raw WebElement
-    #         + one of the concisest
-    #       * browser.element(...).find()
-    #         + tells that we actually finding something
-    #         - but a bit high-level for such low level thing like getting actual low-level webelement
-    #       * browser.element(...).locate()
-    #         ++ consistent with Element.locator
-    #         - not the concisest
-    #       * browser.element(...).raw
-    #         + !!! in fact it's "raw" in its nature, and the most concise
-    #         - maybe a bit "too technical", but for tech-guys probably pretty obvious
-    #           yeah, Selene is for users not for coders,
-    #           + but actual raw webelement is also not for users;)
-    #       * browser.element(...).__raw__
-    #         + same as .raw
-    #         + but emphasizing more its "technical" low level nature
-    #       - browser.element(...).invoke()
-    #         -- too technical
-    #       - browser.element(...).call()
-    #         -- we already have .__call__()
-    #         * and kind of similar to .invoke but more concise
-    def get_actual_webelement(self) -> WebElement:
-        warnings.warn(
-            "considering to be deprecated; use element as callable instead, like: browser.element('#foo')()",
-            PendingDeprecationWarning,
-        )
-
-        return self()
-
 
 class Collection(WaitingEntity, Iterable[Element]):
     def __init__(self, locator: Locator[List[WebElement]], config: Config):
@@ -609,8 +584,15 @@ class Collection(WaitingEntity, Iterable[Element]):
     def __str__(self):
         return str(self._locator)
 
-    def __call__(self) -> List[WebElement]:
+    def locate(self) -> List[WebElement]:
         return self._locator()
+
+    @property
+    def __raw__(self):
+        return self.locate()
+
+    def __call__(self) -> List[WebElement]:
+        return self.locate()
 
     @property
     def cached(self) -> Collection:
@@ -1092,6 +1074,10 @@ class Browser(WaitingEntity):
 
     @property
     def driver(self) -> WebDriver:
+        return self.config.driver
+
+    @property
+    def __raw__(self):
         return self.config.driver
 
     # @property

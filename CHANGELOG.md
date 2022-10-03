@@ -91,9 +91,28 @@
 
 ### NEW: DEPRECATED: collection.filtered_by(condition) in favor of collection.by(condition)
 
-### NEW: BREAKING CHANGE: renamed collection.filtered_by_their(selector, condition) to collection.by_their(selector, condition) 
+### NEW: element.locate() -> WebElement, collection.locate() -> List[WebElement] [#284](https://github.com/yashaka/selene/issues/284)
 
-### NEW: BREAKING CHANGE: removed collection.should_each ... [#277](https://github.com/yashaka/selene/issues/277)
+... as more human-readable aliases to element() and collection() correspondingly
+
+### NEW: entity.__raw__
+
+It's a «dangled» property and so consider it an experimental/private feature. 
+For element and collection – it's same as `.locate()`.
+For `browser` it's same as `.driver` ;)
+
+Read more on it at this [comment to #284](https://github.com/yashaka/selene/issues/284#issuecomment-1265619606)
+
+... as aliases to element(), collection() correspondingly
+
+### NEW: BREAKING CHANGES
+
+#### removed earlier deprecated element.get_actual_webelement() in favor of element.locate()
+#### removed earlier collection.get_actual_webelements() in favor of collection.locate()
+
+#### renamed collection.filtered_by_their(selector, condition) to collection.by_their(selector, condition) 
+
+#### removed collection.should_each ... [#277](https://github.com/yashaka/selene/issues/277)
 
 - ... and ability to pass element_condition to `collection.should(HERE)`
 - Use instead: `collection.should(element_condition.each)`
