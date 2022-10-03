@@ -144,6 +144,11 @@ Use a `browser.close()` or `browser.driver.close()` instead.
 
 The deprecation mark was removed from the `browser.close()` correspondingly.
 
+#### `browser.clear_session_storage()` and `browser.clear_local_storage()`
+
+Deprecated because of js nature and not-relevance for mobile context;
+Use `browser.perform(command.js.clear_session_storage)` and `browser.perform(command.js.clear_local_storage)` instead
+
 ### NEW: BREAKING CHANGES
 
 #### arguments inside script passed to element.execute_script(script_on_self, *arguments) starts from 0

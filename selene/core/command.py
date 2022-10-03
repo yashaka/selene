@@ -31,17 +31,18 @@ class js:
     def set_value(value: Union[str, int]) -> Command[Element]:
         def fn(element: Element):
             element.execute_script(
-                """return (function(element, text) {
-                    var maxlength = element.getAttribute('maxlength') === null
-                        ? -1
-                        : parseInt(element.getAttribute('maxlength'));
-                    element.value = maxlength === -1
+                """
+                var text = arguments[0];
+                var maxlength = element.getAttribute('maxlength') === null
+                    ? -1
+                    : parseInt(element.getAttribute('maxlength'));
+                element.value = maxlength === -1
+                    ? text
+                    : text.length <= maxlength
                         ? text
-                        : text.length <= maxlength
-                            ? text
-                            : text.substring(0, maxlength);
-                    return null;
-                })(arguments[0], arguments[1]);""",
+                        : text.substring(0, maxlength);
+                return null;
+                """,
                 str(value),
             )
 
@@ -51,19 +52,20 @@ class js:
     def type(keys: Union[str, int]) -> Command[Element]:
         def fn(element: Element):
             element.execute_script(
-                """return (function(element, textToAppend) {
-                    var value = element.value || '';
-                    var text = value + textToAppend;
-                    var maxlength = element.getAttribute('maxlength') === null
-                        ? -1
-                        : parseInt(element.getAttribute('maxlength'));
-                    element.value = maxlength === -1
+                """
+                textToAppend = arguments[0];
+                var value = element.value || '';
+                var text = value + textToAppend;
+                var maxlength = element.getAttribute('maxlength') === null
+                    ? -1
+                    : parseInt(element.getAttribute('maxlength'));
+                element.value = maxlength === -1
+                    ? text
+                    : text.length <= maxlength
                         ? text
-                        : text.length <= maxlength
-                            ? text
-                            : text.substring(0, maxlength);
-                    return null;
-                })(arguments[0], arguments[1]);""",
+                        : text.substring(0, maxlength);
+                return null;
+                """,
                 str(keys),
             )
 
@@ -71,30 +73,27 @@ class js:
 
     scroll_into_view = Command(
         'scroll into view',
-        lambda element: element.execute_script(
-            """return (function(element) {
-                element.scrollIntoView(true);
-            })(arguments[0]);"""
-        ),
+        lambda element: element.execute_script('element.scrollIntoView(true)'),
     )
 
     click = Command(
         'click',
-        lambda element: element.execute_script(
-            """return (function(element) {
-                element.click();
-            })(arguments[0]);"""
+        lambda element: element.execute_script('element.click()'),
+    )
+
+    clear_local_storage = Command(
+        'clear local storage',
+        lambda browser: browser.driver.execute_script(
+            'window.localStorage.clear()'
         ),
     )
 
-    # remove = Command(
-    #     'remove',
-    #     lambda element: element.execute_script(
-    #         """return (function(element) {
-    #             element.remove();
-    #         })(arguments[0]);"""
-    #     ),
-    # )
+    clear_session_storage = Command(
+        'clear local storage',
+        lambda browser: browser.driver.execute_script(
+            'window.sessionStorage.clear()'
+        ),
+    )
 
     remove = Command(
         'remove',

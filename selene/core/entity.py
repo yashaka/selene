@@ -34,6 +34,7 @@ from selenium.webdriver.remote.switch_to import SwitchTo
 from selenium.webdriver.remote.webelement import WebElement
 
 from selene.common.fp import pipe
+
 from selene.core.configuration import Config
 from selene.core.wait import Wait, Command, Query
 from selene.core.condition import Condition
@@ -365,7 +366,8 @@ class Element(WaitingEntity):
         Sounds similar to Element.set_value(self, value), but considered to be used in broader context.
         For example, a use can say «Set gender radio to Male» but will hardly say «Set gender radio to value Male».
         Now imagine, on your project you have custom html implementation of radio buttons,
-        and want to teach selene to set such radio-button controls – you can do this via Element.set(self, value) method,
+        and want to teach selene to set such radio-button controls
+        – you can do this via Element.set(self, value) method,
         after monkey-patching it according to your behavior;)
         """
         return self.set_value(value)
@@ -906,7 +908,8 @@ class Collection(WaitingEntity, Iterable[Element]):
         condition: Condition[Element],
     ) -> Element:
         """
-        Returns element from collection that has inner/relative element found by ``selector`` and matching ``condition``.
+        Returns element from collection that has inner/relative element
+        found by ``selector`` and matching ``condition``.
         Is a shortcut for ``collection.element_by(lambda its: condition(its.element(selector))``.
 
         Example (straightforward)
@@ -1211,16 +1214,6 @@ class Browser(WaitingEntity):
         self.driver.close()
         return self
 
-    def clear_local_storage(self) -> Browser:
-        self.driver.execute_script(
-            'window.localStorage.clear();'
-        )  # todo: should we catch and ignore errors?
-        return self
-
-    def clear_session_storage(self) -> Browser:
-        self.driver.execute_script('window.sessionStorage.clear();')
-        return self
-
     # --- Assertable --- #
 
     # we need this method here in order to make autocompletion work...
@@ -1238,6 +1231,28 @@ class Browser(WaitingEntity):
             DeprecationWarning,
         )
         self.driver.close()
+        return self
+
+    def clear_local_storage(self) -> Browser:
+        warnings.warn(
+            'deprecated because of js nature and not-relevance for mobile; '
+            'use `browser.perform(command.js.clear_local_storage)` instead',
+            DeprecationWarning,
+        )
+        from selene.core import command
+
+        self.perform(command.js.clear_local_storage)
+        return self
+
+    def clear_session_storage(self) -> Browser:
+        warnings.warn(
+            'deprecated because of js nature and not-relevance for mobile; '
+            'use `browser.perform(command.js.clear_session_storage)` instead',
+            DeprecationWarning,
+        )
+        from selene.core import command
+
+        self.perform(command.js.clear_session_storage)
         return self
 
 
