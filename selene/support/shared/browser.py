@@ -59,7 +59,12 @@ class SharedBrowser(Browser):
         width = self.config.window_width
         height = self.config.window_height
 
-        if width and height:
+        if width or height:
+            if not (width and height):
+                size = self.config.get_or_create_driver().get_window_size()
+                width = width or size['width']
+                height = height or size['height']
+
             self.config.get_or_create_driver().set_window_size(
                 int(width), int(height)
             )

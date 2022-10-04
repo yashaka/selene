@@ -89,6 +89,10 @@
 
 ### NEW
 
+#### config.window_width and config.window_height can be set separately
+
+Now, you can set only one axis dimension for the browser, and it will change it on `browser.open`. Before it would change browser window size only if both width and height were set;)
+
 #### access to self.locate() as `element` or `self` from the script passed to element.execute_script(script_on_self, *arguments)
 
 Examples: 

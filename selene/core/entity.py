@@ -1156,7 +1156,12 @@ class Browser(WaitingEntity):
         width = self.config.window_width
         height = self.config.window_height
 
-        if width and height:
+        if width or height:
+            if not (width and height):
+                size = self.driver.get_window_size()
+                width = width or size['width']
+                height = height or size['height']
+
             self.driver.set_window_size(int(width), int(height))
 
         is_absolute = is_absolute_url(relative_or_absolute_url)
