@@ -22,7 +22,7 @@
 import warnings
 from typing import List, Any
 
-from selene.common import predicate
+from selene.common import predicate, fp
 from selene.core import query
 from selene.core.condition import Condition
 from selene.core.conditions import (
@@ -31,6 +31,7 @@ from selene.core.conditions import (
     BrowserCondition,
 )
 from selene.core.entity import Collection, Element, Browser
+from selene.core.wait import Query
 
 # todo: consider moving to selene.match.element.is_visible, etc...
 element_is_visible: Condition[Element] = ElementCondition.raise_if_not(
@@ -76,7 +77,13 @@ def element_has_text(
 ) -> Condition[Element]:
     return ElementCondition.raise_if_not_actual(
         describing_matched_to + ' ' + expected,
-        query.text,
+        Query(
+            str(query.text),
+            fp.pipe(
+                query.text,
+                lambda it: it.strip(),
+            ),
+        ),
         compared_by_predicate_to(expected),
     )
 
@@ -347,7 +354,7 @@ def collection_has_size_less_than_or_equal(
 def collection_has_texts(*expected: str) -> Condition[Collection]:
     def visible_texts(collection: Collection) -> List[str]:
         return [
-            webelement.text
+            webelement.text.strip()
             for webelement in collection()
             if webelement.is_displayed()
         ]
@@ -362,7 +369,7 @@ def collection_has_texts(*expected: str) -> Condition[Collection]:
 def collection_has_exact_texts(*expected: str) -> Condition[Collection]:
     def visible_texts(collection: Collection) -> List[str]:
         return [
-            webelement.text
+            webelement.text.strip()
             for webelement in collection()
             if webelement.is_displayed()
         ]

@@ -19,20 +19,44 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+
+import pytest
 from selene import have
+from selene.core.exceptions import TimeoutException
 from tests.integration.helpers.givenpage import GivenPage
 
 
-def test_unicode_text_with_trailing_and_leading_spaces(session_browser):
+def test_should_have_texts(session_browser):
     GivenPage(session_browser.driver).opened_with_body(
         '''
-        <ul>Привет:
-           <li>  Саше \n </li>
-           <li>Яше</li>
+        <ul>Hello:
+           <li>Alex!</li>
+           <li>  Yakov! \n </li>
         </ul>
         '''
     )
 
-    element = session_browser.element('li')
+    session_browser.all('li').should(
+        have.texts('', '')
+    )  # funny:) but as it is
+    session_browser.all('li').should(have.exact_texts('Alex!', 'Yakov!'))
 
-    element.should(have.exact_text('Саше')).should(have.text('Са'))
+
+def test_should_have_texts_exception(session_browser):
+    browser = session_browser.with_(timeout=0.1)
+    GivenPage(browser.driver).opened_with_body(
+        '''
+        <ul>Hello:
+           <li>Alex</li>
+           <li> Yakov \n</li>
+        </ul>
+        '''
+    )
+
+    with pytest.raises(TimeoutException) as error:
+        browser.all('li').should(have.exact_texts('Alex'))
+    assert "has exact texts ('Alex',)" in error.value.msg
+    assert (
+        "AssertionError: actual visible_texts: ['Alex', 'Yakov']"
+        in error.value.msg
+    )

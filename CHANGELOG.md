@@ -89,6 +89,8 @@
 
 ### NEW
 
+### have.text, have.exact_text, have.texts and have.exact_texts not strip/trim text when matching
+
 #### config.window_width and config.window_height can be set separately
 
 Now, you can set only one axis dimension for the browser, and it will change it on `browser.open`. Before it would change browser window size only if both width and height were set;)

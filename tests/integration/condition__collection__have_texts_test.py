@@ -49,7 +49,7 @@ def test_should_have_texts_exception(session_browser):
         '''
         <ul>Hello:
            <li>Alex</li>
-           <li>Yakov</li>
+           <li> Yakov \n</li>
         </ul>
         '''
     )
