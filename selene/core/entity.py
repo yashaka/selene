@@ -1085,15 +1085,6 @@ class Collection(WaitingEntity, Iterable[Element]):
         self.wait.for_(condition)
         return self
 
-    # --- Deprecated --- #
-
-    def get_actual_webelements(self) -> List[WebElement]:
-        warnings.warn(
-            "considering to be deprecated; use collection as callable instead, like: browser.all('.foo')()",
-            PendingDeprecationWarning,
-        )
-        return self()
-
 
 class Browser(WaitingEntity):
     def __init__(
