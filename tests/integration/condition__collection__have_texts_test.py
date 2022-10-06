@@ -40,6 +40,7 @@ def test_should_have_texts(session_browser):
         have.texts('', '')
     )  # funny:) but as it is
     session_browser.all('li').should(have.texts('Alex', 'Yakov'))
+    session_browser.all('li').should(have.texts('Alex', 'Yakov'))
     session_browser.all('li').should(have.texts('Alex!', 'Yakov!'))
 
 

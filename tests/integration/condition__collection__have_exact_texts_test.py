@@ -26,7 +26,7 @@ from selene.core.exceptions import TimeoutException
 from tests.integration.helpers.givenpage import GivenPage
 
 
-def test_should_have_texts(session_browser):
+def test_should_have_exact_texts(session_browser):
     GivenPage(session_browser.driver).opened_with_body(
         '''
         <ul>Hello:
@@ -36,13 +36,59 @@ def test_should_have_texts(session_browser):
         '''
     )
 
-    session_browser.all('li').should(
-        have.texts('', '')
-    )  # funny:) but as it is
     session_browser.all('li').should(have.exact_texts('Alex!', 'Yakov!'))
 
 
-def test_should_have_texts_exception(session_browser):
+def test_should_have_exact_texts_does_normalize_inner_spaces(
+    session_browser,
+):
+    GivenPage(session_browser.driver).opened_with_body(
+        '''
+        <ul>Hello:
+           <li>Alex!</li>
+           <li>  Yakov    ! \n </li>
+        </ul>
+        '''
+    )
+
+    session_browser.all('li').should(have.exact_texts('Alex!', 'Yakov !'))
+
+
+def test_should_have_exact_texts_passed_as_collections(session_browser):
+    GivenPage(session_browser.driver).opened_with_body(
+        '''
+        <table>
+          <tr class="row">
+            <td class="cell">A1</td><td class="cell">A2</td>
+          </tr>
+          <tr class="row">
+            <td class="cell">B1</td><td class="cell">B2</td>
+          </tr>
+        </table>
+        '''
+    )
+
+    session_browser.all('.cell').should(
+        have.exact_texts('A1', 'A2', 'B1', 'B2')
+    )
+
+    session_browser.all('.cell').should(
+        have.exact_texts(['A1', 'A2', 'B1', 'B2'])
+    )
+
+    session_browser.all('.cell').should(
+        have.exact_texts(('A1', 'A2', 'B1', 'B2'))
+    )
+
+    session_browser.all('.cell').should(
+        have.exact_texts(
+            ('A1', 'A2'),
+            ('B1', 'B2'),
+        )
+    )
+
+
+def test_should_have_exact_texts_exception(session_browser):
     browser = session_browser.with_(timeout=0.1)
     GivenPage(browser.driver).opened_with_body(
         '''

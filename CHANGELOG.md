@@ -78,18 +78,61 @@
   - should we make original config (not shared) mutable?
 - TODO: support python 3.10 [#393](https://github.com/yashaka/selene/issues/393)
 
-- "merge" element.execute_script with element._execute_script
-- TODO: trim text in have.exact_text
 - TODO: accept iterable (not just varargs) in have.texts & similar
 - TODO: consider flatten any iterable passed to have.texts & similar
 - TODO: config.location_strategy
 
-
-## 2.0.0b13 (to be released on ??.09.2022)
+## 2.0.0b14 (to be released on ??.10.2022)
 
 ### NEW
 
-### have.text, have.exact_text, have.texts and have.exact_texts not strip/trim text when matching
+#### added conditions: `have.values` and `have.values_containing`
+
+#### all conditions like `have.texts` & `have.exact_texts` – flatten passed lists of texts
+
+This allows to pass args as lists (even nested) not just as varagrs. 
+
+```python
+from selene.support.shared import browser
+from selene import have
+
+"""
+# GIVEN html page with:
+<table>
+  <tr class="row">
+    <td class="cell">A1</td><td class="cell">A2</td>
+  </tr>
+  <tr class="row">
+    <td class="cell">B1</td><td class="cell">B2</td>
+  </tr>
+</table>
+"""
+
+browser.all('.cell').should(
+    have.exact_texts('A1', 'A2', 'B1', 'B2')
+)
+
+browser.all('.cell').should(
+    have.exact_texts(['A1', 'A2', 'B1', 'B2'])
+)
+
+browser.all('.cell').should(
+    have.exact_texts(('A1', 'A2', 'B1', 'B2'))
+)
+
+browser.all('.cell').should(
+    have.exact_texts(
+        ('A1', 'A2'),
+        ('B1', 'B2'),
+    )
+)
+```
+
+## 2.0.0b13 (released on 04.10.2022)
+
+### NEW
+
+### have.text, have.exact_text, have.texts and have.exact_texts strip/trim text when matching
 
 #### config.window_width and config.window_height can be set separately
 

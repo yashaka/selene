@@ -19,15 +19,42 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from selene import by, have
+
+import pytest
+from selene import have
+from selene.core.exceptions import TimeoutException
+from tests.integration.helpers.givenpage import GivenPage
 
 
-def test_search(browser):
-    browser.open('https://www.ecosia.org/')
-    browser.element(by.name('q')).type(
-        'github yashaka/selene python'
-    ).press_enter()
+def test_should_have_exact_values(session_browser):
+    GivenPage(session_browser.driver).opened_with_body(
+        '''
+        <table>
+          <tr class="row">
+            <td class="cell"><input value="A1"/></td><td class="cell"><input value="A2"/></td>
+          </tr>
+          <tr class="row">
+            <td class="cell"><input value="B1"/></td><td class="cell"><input value="B2"/></td>
+          </tr>
+        </table>
+        '''
+    )
 
-    browser.all('.web-result').first.element('.result__link').click()
+    session_browser.all('.cell input').should(
+        have.values('A1', 'A2', 'B1', 'B2')
+    )
 
-    browser.should(have.title_containing('yashaka/selene'))
+    session_browser.all('.cell input').should(
+        have.values(['A1', 'A2', 'B1', 'B2'])
+    )
+
+    session_browser.all('.cell input').should(
+        have.values(('A1', 'A2', 'B1', 'B2'))
+    )
+
+    session_browser.all('.cell input').should(
+        have.values(
+            ('A1', 'A2'),
+            ('B1', 'B2'),
+        )
+    )

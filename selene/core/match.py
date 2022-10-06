@@ -20,9 +20,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 import warnings
-from typing import List, Any
+from typing import List, Any, Union, Iterable
 
-from selene.common import predicate, fp
+from selene.common import predicate, fp, helpers
 from selene.core import query
 from selene.core.condition import Condition
 from selene.core.conditions import (
@@ -119,14 +119,22 @@ def element_has_js_property(name: str):
                 predicate.includes(expected),
             )
 
-        def values(self, *expected: str) -> Condition[Collection]:
+        def values(
+            self, *expected: Union[str, Iterable[str]]
+        ) -> Condition[Collection]:
+            expected = helpers.flatten(expected)
+
             return CollectionCondition.raise_if_not_actual(
                 f"has js property '{name}' with values '{expected}'",
                 property_values,
                 predicate.equals_to_list(expected),
             )
 
-        def values_containing(self, *expected: str) -> Condition[Collection]:
+        def values_containing(
+            self, *expected: Union[str, Iterable[str]]
+        ) -> Condition[Collection]:
+            expected = helpers.flatten(expected)
+
             return CollectionCondition.raise_if_not_actual(
                 f"has js property '{name}' with values containing '{expected}'",
                 property_values,
@@ -166,14 +174,22 @@ def element_has_css_property(name: str):
                 predicate.includes(expected),
             )
 
-        def values(self, *expected: str) -> Condition[Collection]:
+        def values(
+            self, *expected: Union[str, Iterable[str]]
+        ) -> Condition[Collection]:
+            expected = helpers.flatten(expected)
+
             return CollectionCondition.raise_if_not_actual(
                 f"has css property '{name}' with values '{expected}'",
                 property_values,
                 predicate.equals_to_list(expected),
             )
 
-        def values_containing(self, *expected: str) -> Condition[Collection]:
+        def values_containing(
+            self, *expected: Union[str, Iterable[str]]
+        ) -> Condition[Collection]:
+            expected = helpers.flatten(expected)
+
             return CollectionCondition.raise_if_not_actual(
                 f"has css property '{name}' with values containing '{expected}'",
                 property_values,
@@ -196,6 +212,7 @@ def element_has_attribute(name: str):
         'has attribute ' + name, attribute_value, predicate.is_truthy
     )
 
+    # TODO: is it OK to have some collection conditions inside a thing named element_has_attribute ? o_O
     class ConditionWithValues(ElementCondition):
         def value(
             self, expected: str, ignore_case=False
@@ -225,14 +242,22 @@ def element_has_attribute(name: str):
                 predicate.includes(expected, ignore_case),
             )
 
-        def values(self, *expected: str) -> Condition[Collection]:
+        def values(
+            self, *expected: Union[str, Iterable[str]]
+        ) -> Condition[Collection]:
+            expected = helpers.flatten(expected)
+
             return CollectionCondition.raise_if_not_actual(
                 f"has attribute '{name}' with values '{expected}'",
                 attribute_values,
                 predicate.equals_to_list(expected),
             )
 
-        def values_containing(self, *expected: str) -> Condition[Collection]:
+        def values_containing(
+            self, *expected: Union[str, Iterable[str]]
+        ) -> Condition[Collection]:
+            expected = helpers.flatten(expected)
+
             return CollectionCondition.raise_if_not_actual(
                 f"has attribute '{name}' with values containing '{expected}'",
                 attribute_values,
@@ -255,6 +280,18 @@ def element_has_value(expected: str) -> Condition[Element]:
 
 def element_has_value_containing(expected: str) -> Condition[Element]:
     return element_has_attribute('value').value_containing(expected)
+
+
+def collection_has_values(
+    *expected: Union[str, Iterable[str]]
+) -> Condition[Collection]:
+    return element_has_attribute('value').values(*expected)
+
+
+def collection_has_values_containing(
+    *expected: Union[str, Iterable[str]]
+) -> Condition[Collection]:
+    return element_has_attribute('value').values_containing(*expected)
 
 
 def element_has_css_class(expected: str) -> Condition[Element]:
@@ -289,6 +326,9 @@ def element_has_tag_containing(expected: str) -> Condition[Element]:
     return element_has_tag(expected, 'has tag containing', predicate.includes)
 
 
+# TODO: should not we make empty to work on both elements and collections?
+#   to assert have.size(0) on collections
+#   to assert have.value('').and(have.exact_text('')) on element
 def _is_collection_empty(collection: Collection) -> bool:
     warnings.warn(
         'match.collection_is_empty or be.empty is deprecated; '
@@ -351,7 +391,11 @@ def collection_has_size_less_than_or_equal(
 
 
 # todo: make it configurable whether assert only visible texts or ot
-def collection_has_texts(*expected: str) -> Condition[Collection]:
+def collection_has_texts(
+    *expected: Union[str, Iterable[str]]
+) -> Condition[Collection]:
+    expected = helpers.flatten(expected)
+
     def visible_texts(collection: Collection) -> List[str]:
         return [
             webelement.text.strip()
@@ -366,7 +410,11 @@ def collection_has_texts(*expected: str) -> Condition[Collection]:
     )
 
 
-def collection_has_exact_texts(*expected: str) -> Condition[Collection]:
+def collection_has_exact_texts(
+    *expected: Union[str, Iterable[str]]
+) -> Condition[Collection]:
+    expected = helpers.flatten(expected)
+
     def visible_texts(collection: Collection) -> List[str]:
         return [
             webelement.text.strip()

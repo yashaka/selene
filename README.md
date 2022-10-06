@@ -54,10 +54,10 @@ Tests with Selene can be built either in a simple straightforward "selenide' sty
 
 ## Versions
   
-* Latest recommended version to use is >= [2.0.0b12](https://pypi.org/project/selene/2.0.0b12/)
+* Latest recommended version to use is >= [2.0.0b13](https://pypi.org/project/selene/2.0.0b13/)
   * it's a completely new version of selene, with improved API and speed
   * supports 3.7 <= python <= 3.10,
-  * bundled with Selenium = 4.1
+  * bundled with Selenium >= 4.1
   * it's incompatible with [1.x](https://github.com/yashaka/selene/tree/1.x)
   * current master branch is pointed to 2.x
   * yet in alpha/beta stage, refining API, improving "migratability", and testing
@@ -84,6 +84,9 @@ From 1.0.1 to 2.0.0aLATEST:
         * `(visible)` to `(be.visible)`
       * smarter find&replace (with some manual refactoring)
         * `.should(x, timeout=y)` to `.with_(timeout=y).should(x)`
+        * `.should_not(be.*)` to `.should(be.not_.*)` or `.should(be.*.not_)`
+        * `.should_not(have.*)` to `.should(have.no.*)` or `.should(have.*.not_)`
+        * `.should_each(condition)` to `.should(condition.each)`
       * and add corresponding imports: `from selene import be, have`
   * fix another broken imports if available
   * run tests, read deprecation warnings, and refactor to new style recommended in warning messages

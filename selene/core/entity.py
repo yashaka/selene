@@ -22,6 +22,7 @@
 
 from __future__ import annotations
 
+import typing
 import warnings
 
 from abc import abstractmethod, ABC
@@ -609,7 +610,9 @@ class Element(WaitingEntity):
 
 
 class Collection(WaitingEntity, Iterable[Element]):
-    def __init__(self, locator: Locator[List[WebElement]], config: Config):
+    def __init__(
+        self, locator: Locator[typing.Collection[WebElement]], config: Config
+    ):
         self._locator = locator
         super().__init__(config)
 
@@ -621,14 +624,14 @@ class Collection(WaitingEntity, Iterable[Element]):
     def __str__(self):
         return str(self._locator)
 
-    def locate(self) -> List[WebElement]:
+    def locate(self) -> typing.Collection[WebElement]:
         return self._locator()
 
     @property
     def __raw__(self):
         return self.locate()
 
-    def __call__(self) -> List[WebElement]:
+    def __call__(self) -> typing.Collection[WebElement]:
         return self.locate()
 
     @property
@@ -698,7 +701,7 @@ class Collection(WaitingEntity, Iterable[Element]):
     def sliced(
         self, start: int = None, stop: int = None, step: int = 1
     ) -> Collection:
-        def find() -> List[WebElement]:
+        def find() -> typing.Collection[WebElement]:
             webelements = self()
 
             # todo: assert length according to provided start, stop...
