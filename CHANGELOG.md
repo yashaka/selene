@@ -79,9 +79,25 @@
 
 - TODO: config.location_strategy
 
-## 2.0.0b14 (to be released on ??.10.2022)
+## 2.0.0b14 (to be released on 06.10.2022)
 
 ### NEW
+
+#### command.js.set_style_property(name, value)
+
+```python
+from selene.support.shared import browser
+from selene import command
+
+# calling on element
+overlay = browser.element('#overlay')
+overlay.perform(command.js.set_style_property('display', 'none'))
+
+# can be also called on collection of elements:
+ads = browser.all('[id^=google_ads][id$=container__]')
+ads.perform(command.js.set_style_property('display', 'none'))
+```
+
 
 #### added conditions: `have.values` and `have.values_containing`
 

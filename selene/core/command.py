@@ -107,6 +107,22 @@ class js:
         ),
     )
 
+    @staticmethod
+    def set_style_property(
+        name: str, value: Union[str, int]
+    ) -> Command[Element]:
+        return Command(
+            f'set element.style.{name}="{value}"',
+            lambda entity: (
+                entity.execute_script(f'element.style.{name}="{value}"')
+                if not hasattr(entity, '__iter__')
+                else [
+                    element.execute_script(f'element.style.{name}="{value}"')
+                    for element in entity
+                ]
+            ),
+        )
+
     set_style_display_to_none = Command(
         'set element.style.display="none"',
         lambda entity: (
