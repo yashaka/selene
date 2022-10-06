@@ -19,7 +19,7 @@ def chrome_driver(request):
         )
     else:
         chrome_driver = webdriver.Chrome(
-            service=Service(
+            service=ChromeService(
                 ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install()
             )
         )
@@ -37,13 +37,8 @@ def firefox_driver(request):
 
 
 @pytest.fixture(scope='function')
-def session_browser(firefox_driver):
-    yield Browser(Config(driver=firefox_driver))
-
-
-# @pytest.fixture(scope='function')
-# def session_browser(chrome_driver):
-#     yield Browser(Config(driver=chrome_driver))
+def session_browser(chrome_driver):
+    yield Browser(Config(driver=chrome_driver))
 
 
 @pytest.fixture(scope='function')

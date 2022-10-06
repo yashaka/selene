@@ -76,10 +76,7 @@
 - deprecate `be.present`
 - repeat fix of #225 to other options in shared config, refactor it... 
   - should we make original config (not shared) mutable?
-- TODO: support python 3.10 [#393](https://github.com/yashaka/selene/issues/393)
 
-- TODO: accept iterable (not just varargs) in have.texts & similar
-- TODO: consider flatten any iterable passed to have.texts & similar
 - TODO: config.location_strategy
 
 ## 2.0.0b14 (to be released on ??.10.2022)
@@ -127,6 +124,12 @@ browser.all('.cell').should(
     )
 )
 ```
+
+#### removed trimming text on conditions like have.exact_text, have.texts, etc.
+
+because all string normalization is already done by Selenium Webdriver.
+
+##### but added query.text_content to give access to raw element text without space normalization
 
 ## 2.0.0b13 (released on 04.10.2022)
 
