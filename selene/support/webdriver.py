@@ -34,6 +34,7 @@ class WebHelper:  # todo: should we make it private? like call it _Help (or thin
     def __init__(self, driver: Optional[WebDriver]):
         self._driver = driver
 
+    # TODO: refactor to browser.get(query.is_alive) or browser.get(query.is_driver_alive) ?
     def is_browser_still_alive(self):
         return on_error_return_false(lambda: self._driver.title is not None)
 

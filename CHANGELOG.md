@@ -79,7 +79,39 @@
 
 - TODO: config.location_strategy
 
-## 2.0.0b14 (to be released on 06.10.2022)
+## 2.0.0rc1 (to be released on ?.10.2022)
+
+- added `from selene import browser`
+  - kind of «moved» `selene.support.shared.browser` to `selene.browser`
+- deprecated 
+  - shared.browser.config.get_or_create_driver
+  - shared.browser.config.reset_driver
+    - use `selene.browser.config.driver = ...`
+- removed deprecated 
+  - shared.browser.config.desired_capabilities
+  - shared.browser.config.start_maximized
+  - shared.browser.config.start_maximized
+  - shared.browser.config.cash_elements
+  - shared.browser.config.quit_driver
+  - shared.browser.latest_page_source
+  - shared.browser.quit_driver
+  - shared.browser.set_driver
+  - shared.browser.open_url
+  - shared.browser.elements
+  - shared.browser.wait_to
+  - shared.browser.title
+  - shared.browser.take_screenshot
+- removed not deprecated
+  - shared.browser.config.Source
+    - renamed to shared.browser.config._Source. 
+      Currently, is used nowhere in Selene
+  - shared.browser.config.set_driver (getter and setter)
+  - shared.browser.config.counter
+    - use shared.browser.config._counter instead, and better – not use it;)
+  - shared.browser.config.generate_filename
+    - use shared.browser.config._generate_filename instead, and better – not use it;)
+
+## 2.0.0b14 (released on 06.10.2022)
 
 ### NEW
 

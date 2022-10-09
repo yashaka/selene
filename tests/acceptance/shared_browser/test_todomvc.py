@@ -20,9 +20,9 @@ def test_complete_task():
     browser.all('#todo-list>li').element_by(have.exact_text('b')).element(
         '.toggle'
     ).click()
-    browser.all('#todo-list>li').filtered_by(
-        have.css_class('completed')
-    ).should(have.exact_texts('b'))
-    browser.all('#todo-list>li').filtered_by(
-        have.no.css_class('completed')
-    ).should(have.exact_texts('a', 'c'))
+    browser.all('#todo-list>li').by(have.css_class('completed')).should(
+        have.exact_texts('b')
+    )
+    browser.all('#todo-list>li').by(have.no.css_class('completed')).should(
+        have.exact_texts('a', 'c')
+    )

@@ -37,7 +37,7 @@ def toggle(task_text):
 
 
 def should_be(*task_texts):
-    _elements.filtered_by(be.visible).should(have.exact_texts(*task_texts))
+    _elements.by(be.visible).should(have.exact_texts(*task_texts))
 
 
 def clear_completed():

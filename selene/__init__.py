@@ -20,14 +20,19 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-
-from selene.core.entity import (
-    Browser as _CustomBrowser,
+from selene.core.configuration import (
     Config as _CustomConfigForCustomBrowser,
+    _Config,
 )
 
 Config = _CustomConfigForCustomBrowser
+
+from selene.core.entity import (
+    Browser as _CustomBrowser,
+)
+
 Browser = _CustomBrowser
+
 """
 Given::
 
@@ -55,6 +60,8 @@ AND::
 
 """
 
+_config = _Config()
+browser = Browser(_config)
 
 from selene.support import by as _by_style_selectors  # noqa
 
@@ -80,7 +87,6 @@ AND::
 
 """
 
-
 from selene.support.conditions import be as _be_style_conditions  # noqa
 
 be = _be_style_conditions
@@ -91,7 +97,6 @@ AND (in case we need to filter collection of items by some condition like visibi
 
     results = browser.all('.srg .g').filtered_by(be.visible)
 """
-
 
 from selene.support.conditions import have as _have_style_conditions  # noqa
 
@@ -113,7 +118,7 @@ FINALLY (if not registered "atexit" before)::
 """
 
 ####################
-# Advanced Helpers #  # todo: think on not adding them here...
+# Advanced Helpers #
 ####################
 
 from selene.core import command as _advanced_commands  # noqa

@@ -66,7 +66,7 @@ def get_default_screenshot_folder():
 
 
 def get_screen_id():
-    return next(config.counter) - 1
+    return next(config._counter) - 1
 
 
 def test_can_make_screenshot_with_default_name():
@@ -97,7 +97,7 @@ def test_can_make_screenshot_with_custom_name_with_empty_path():
 def test_can_save_screenshot_to_custom_folder_with_custom_name():
     file = (
         os.path.dirname(os.path.abspath(__file__))
-        + f'/../../build/screenshots_{next(browser.config.counter)}/custom.png'
+        + f'/../../build/screenshots_{next(browser.config._counter)}/custom.png'
     )
     browser.open(EMPTY_PAGE_URL)
 
@@ -112,7 +112,7 @@ def test_can_save_screenshot_to_custom_folder_with_custom_name():
 def test_can_make_screenshot_with_custom_folder_specified_as_parameter_with_empty_filename():
     screenshot_folder = (
         os.path.dirname(os.path.abspath(__file__))
-        + f'/../../build/screenshots_{next(browser.config.counter)}'
+        + f'/../../build/screenshots_{next(browser.config._counter)}'
     )
     browser.open(EMPTY_PAGE_URL)
 
@@ -130,7 +130,7 @@ def test_can_make_screenshot_with_custom_folder_specified_as_parameter_with_empt
 def test_can_save_screenshot_to_custom_folder_specified_through_config():
     config.reports_folder = (
         os.path.dirname(os.path.abspath(__file__))
-        + f'/../../build/screenshots_{next(browser.config.counter)}'
+        + f'/../../build/screenshots_{next(browser.config._counter)}'
     )
     browser.open(EMPTY_PAGE_URL)
 
@@ -163,7 +163,7 @@ def test_can_make_screenshot_automatically():
 def test_can_get_last_screenshot_path():
     config.reports_folder = (
         os.path.dirname(os.path.abspath(__file__))
-        + f'/../../build/screenshots_{next(browser.config.counter)}'
+        + f'/../../build/screenshots_{next(browser.config._counter)}'
     )
     browser.open(EMPTY_PAGE_URL)
     config.timeout = 0.1
@@ -181,7 +181,7 @@ def test_can_get_last_screenshot_path():
 def test_can_get_latest_screenshot_path():
     config.reports_folder = (
         os.path.dirname(os.path.abspath(__file__))
-        + f'/../../build/screenshots_{next(browser.config.counter)}'
+        + f'/../../build/screenshots_{next(browser.config._counter)}'
     )
     browser.open(EMPTY_PAGE_URL)
     config.timeout = 0.1

@@ -38,7 +38,7 @@ is_TodoMVC_loaded = (
 class TestTodoMVC:
     def test_selene_demo(self):
         tasks = browser.all('#todo-list>li')
-        active_tasks = tasks.filtered_by(have.css_class('active'))
+        active_tasks = tasks.by(have.css_class('active'))
 
         browser.open(app_url)
         browser.should(have.js_returned(True, is_TodoMVC_loaded))
@@ -54,11 +54,11 @@ class TestTodoMVC:
         active_tasks.should(have.texts('1', '2'))
         active_tasks.should(have.size(2))
 
-        tasks.filtered_by(have.css_class('completed')).should(have.texts('3'))
+        tasks.by(have.css_class('completed')).should(have.texts('3'))
         tasks.element_by(not_(have.css_class('completed'))).should(
             have.text('1')
         )
-        tasks.filtered_by(not_(have.css_class('completed'))).should(
+        tasks.by(not_(have.css_class('completed'))).should(
             have.texts('1', '2')
         )
 

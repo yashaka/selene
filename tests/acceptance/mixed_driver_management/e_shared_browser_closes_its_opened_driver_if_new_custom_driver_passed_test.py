@@ -31,10 +31,12 @@ from selene.support.webdriver import WebHelper
 
 def teardown_module():
     browser.quit()
+    browser.config.driver = ...
 
 
 def test_automatic_quit_for_previous_driver():
-    driver_from_test_d = browser.config.driver
+    # driver_from_test_d = browser.config.driver
+    driver_from_test_d = browser.driver
     assert WebHelper(driver_from_test_d).is_browser_still_alive() is True
 
     browser.config.driver = webdriver.Chrome(

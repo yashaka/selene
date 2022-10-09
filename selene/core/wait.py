@@ -75,7 +75,7 @@ class Wait(Generic[E]):
     def __init__(
         self,
         entity: E,
-        at_most: int,
+        at_most: float,
         or_fail_with: Optional[Callable[[TimeoutException], Exception]] = None,
         _decorator: Callable[
             [Wait[E]], Callable[[fp.T], fp.T]
@@ -95,7 +95,7 @@ class Wait(Generic[E]):
         )
         return self.entity
 
-    def at_most(self, timeout: int) -> Wait[E]:
+    def at_most(self, timeout: float) -> Wait[E]:
         return Wait(self.entity, timeout, self._hook_failure)
 
     def or_fail_with(

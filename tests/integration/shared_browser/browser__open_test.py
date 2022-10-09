@@ -19,13 +19,12 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+from selene import Browser, Config
 from tests.integration.helpers import givenpage
-from selene.support.shared.browser import SharedBrowser
-from selene.support.shared.config import SharedConfig
 
 
 def test_changes_window_size_on_open_according_to_config(chrome_driver):
-    browser = SharedBrowser(SharedConfig())
+    browser = Browser(Config())
     browser.config.window_width = 640
     browser.config.window_height = 480
 

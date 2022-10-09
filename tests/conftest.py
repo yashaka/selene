@@ -14,6 +14,8 @@ def pytest_addoption(parser):
 
 @pytest.fixture(scope='function')
 def quit_shared_browser_afterwards():
+    shared.browser.config.driver = ...
+
     yield
 
     shared.browser.quit()

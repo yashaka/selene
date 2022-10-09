@@ -263,7 +263,7 @@ AND (in case we need to filter collection of items by some condition like visibi
 ```python
 from selene import be
 
-results = browser.all('.srg .g').filtered_by(be.visible)
+results = browser.all('.srg .g').by(be.visible)
 ```
 
 THEN:

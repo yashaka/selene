@@ -22,11 +22,12 @@
 
 from __future__ import annotations
 
+import os
 import typing
 import warnings
 
 from abc import abstractmethod, ABC
-from typing import TypeVar, Union, List, Callable, Tuple, Iterable
+from typing import TypeVar, Union, Callable, Tuple, Iterable, Optional
 
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver import ActionChains
@@ -43,6 +44,7 @@ from selene.core.locator import Locator
 
 from selene.common.helpers import to_by, flatten, is_absolute_url
 from selene.core.exceptions import TimeoutException, _SeleneError
+from selene.support.webdriver import WebHelper
 
 E = TypeVar('E', bound='Assertable')
 R = TypeVar('R')
@@ -167,7 +169,8 @@ class Element(WaitingEntity):
 
     def with_(self, config: Config = None, **config_as_kwargs) -> Element:
         return Element(
-            self._locator, self.config.with_(config, **config_as_kwargs)
+            self._locator,
+            config if config else self.config.with_(**config_as_kwargs),
         )
 
     # --- Located --- #
@@ -618,7 +621,8 @@ class Collection(WaitingEntity, Iterable[Element]):
 
     def with_(self, config: Config = None, **config_as_kwargs) -> Collection:
         return Collection(
-            self._locator, self.config.with_(config, **config_as_kwargs)
+            self._locator,
+            config if config else self.config.with_(**config_as_kwargs),
         )
 
     def __str__(self):
@@ -1090,23 +1094,24 @@ class Collection(WaitingEntity, Iterable[Element]):
 
 
 class Browser(WaitingEntity):
-    def __init__(
-        self, config: Config
-    ):  # todo: what about adding **config_as_kwargs?
+    def __init__(self, config: Config):
         super().__init__(config)
 
-    # todo: consider implement it as context manager too...
     def with_(self, config: Config = None, **config_as_kwargs) -> Browser:
-        return Browser(self.config.with_(config, **config_as_kwargs))
+        return (
+            Browser(config)
+            if config
+            else Browser(self.config.with_(**config_as_kwargs))
+        )
 
     def __str__(self):
         return 'browser'
 
-    # todo: consider making it callable ...
-
     @property
     def driver(self) -> WebDriver:
         return self.config.driver
+
+    # todo: consider making it callable (self.__call__() to be shortcut to self.__raw__ ...)
 
     @property
     def __raw__(self):
@@ -1207,7 +1212,12 @@ class Browser(WaitingEntity):
     #       question is - should we implement our own alert as waiting entity?
 
     def quit(self) -> None:
-        self.driver.quit()
+        if getattr(self.config, 'is_browser_alive', False):
+            self.driver.quit()  # TODO: quit silently... (i.e. catch error if it's already quit)
+        else:
+            warnings.warn(
+                'Tried to quit driver that is not alive (already closed or was not opened)'
+            )
 
     def close(self) -> Browser:
         self.driver.close()
@@ -1222,6 +1232,63 @@ class Browser(WaitingEntity):
         return self
 
     # --- Deprecated --- #
+
+    # TODO: should we keep it?
+    def execute_script(self, script, *args):
+        warnings.warn(
+            'consider using browser.driver.execute_script instead of browser.execute_script',
+            PendingDeprecationWarning,
+        )
+        return self.driver.execute_script(script, *args)
+
+    def save_screenshot(self, file: str = ...):
+        warnings.warn(
+            'browser.save_screenshot might be deprecated', FutureWarning
+        )
+
+        if file is ...:
+            file = self.config._generate_filename(suffix='.png')
+        if file and not file.lower().endswith('.png'):
+            file = os.path.join(file, f'{next(self.config._counter)}.png')
+        folder = os.path.dirname(file)
+        if not os.path.exists(folder) and folder:
+            os.makedirs(folder)
+        # todo: refactor to catch errors smartly in get_screenshot_as_file. or not needed?
+        self.config.last_screenshot = WebHelper(self.driver).save_screenshot(
+            file
+        )
+
+        return self.config.last_screenshot
+
+    @property
+    def last_screenshot(self) -> str:
+        warnings.warn(
+            'browser.last_screenshot might be deprecated', FutureWarning
+        )
+        return self.config.last_screenshot
+
+    # todo: consider moving this to browser command.save_page_source(filename)
+    def save_page_source(self, file: str = ...) -> Optional[str]:
+        warnings.warn(
+            'browser.save_page_source(file) might be deprecated in future',
+            FutureWarning,
+        )
+
+        if file is ...:
+            file = self.config._generate_filename(suffix='.html')
+
+        saved_file = WebHelper(self.driver).save_page_source(file)
+
+        self.config.last_page_source = saved_file
+
+        return saved_file
+
+    @property
+    def last_page_source(self) -> str:
+        warnings.warn(
+            'browser.last_page_source might be deprecated', FutureWarning
+        )
+        return self.config.last_page_source
 
     def close_current_tab(self) -> Browser:
         warnings.warn(

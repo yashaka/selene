@@ -27,7 +27,7 @@ def test_selene_demo():
     # config.browser_name = 'firefox'  # chrome was default
 
     tasks = ss('#todo-list>li').with_(timeout=config.timeout / 2)
-    active_tasks = tasks.filtered_by(have.css_class('active'))
+    active_tasks = tasks.by(have.css_class('active'))
 
     customized = browser.with_(timeout=config.timeout * 2)
     customized.open('https://todomvc4tasj.herokuapp.com/')
@@ -57,13 +57,11 @@ def test_selene_demo():
     active_tasks.should(have.no.texts('1', '2', '3'))
     active_tasks.should(have.size(2))
 
-    tasks.filtered_by(have.css_class('completed')).should(have.texts('3'))
+    tasks.by(have.css_class('completed')).should(have.texts('3'))
     tasks.element_by(not_(have.css_class('completed'))).should(have.text('1'))
     # or
     tasks.element_by(have.no.css_class('completed')).should(have.text('1'))
-    tasks.filtered_by(have.no.css_class('completed')).should(
-        have.texts('1', '2')
-    )
+    tasks.by(have.no.css_class('completed')).should(have.texts('1', '2'))
 
     s(by.link_text('Active')).click()
     tasks[:2].should(have.texts('1', '2'))

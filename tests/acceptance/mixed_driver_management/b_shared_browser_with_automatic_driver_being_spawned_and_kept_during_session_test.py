@@ -19,6 +19,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+from urllib3.exceptions import MaxRetryError
 
 from selene.support.conditions import have
 from selene.support.shared import browser
@@ -27,6 +28,17 @@ from tests.acceptance.mixed_driver_management import todomvc
 
 def test_todomvc_starts_with_cleaned_storage_at_new_browser():
     # When
+    try:
+        browser.open(todomvc.url)
+    except MaxRetryError as error:
+        # Then «can't open url in dead driver,
+        #       cause driver was customized manually and closed in A test»
+        assert 'Failed to establish a new connection' in str(error)
+
+    # When «reset driver»
+    browser.config.driver = ...
+
+    # AND
     browser.open(todomvc.url)
 
     # Then

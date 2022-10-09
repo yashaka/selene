@@ -65,11 +65,9 @@ class TestTodoMVC:
         ).click()
 
         browser.element(by.link_text("Active")).click()
-        browser.all("#todo-list>li").filtered_by(be.visible).should(
+        browser.all("#todo-list>li").by(be.visible).should(
             have.texts('a', 'c')
         )
 
         browser.element(by.link_text("Completed")).click()
-        browser.all("#todo-list>li").filtered_by(be.visible).should(
-            have.texts('b')
-        )
+        browser.all("#todo-list>li").by(be.visible).should(have.texts('b'))

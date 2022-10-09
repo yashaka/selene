@@ -27,7 +27,7 @@ def test_search_is_lazy_and_does_not_start_on_creation(session_browser):
     page = GivenPage(session_browser.driver)
     page.opened_empty()
 
-    non_existent_collection = session_browser.all('.not-existing').filtered_by(
+    non_existent_collection = session_browser.all('.not-existing').by(
         have.css_class('special')
     )
 
@@ -39,9 +39,7 @@ def test_search_is_postponed_until_actual_action_like_questioning_count(
 ):
     page = GivenPage(session_browser.driver)
     page.opened_empty()
-    elements = session_browser.all('li').filtered_by(
-        have.css_class('will-appear')
-    )
+    elements = session_browser.all('li').by(have.css_class('will-appear'))
     page.load_body(
         '''
         <ul>Hello to:
@@ -62,9 +60,7 @@ def test_search_is_updated_on_next_actual_action_like_questioning_count(
 ):
     page = GivenPage(session_browser.driver)
     page.opened_empty()
-    elements = session_browser.all('li').filtered_by(
-        have.css_class('will-appear')
-    )
+    elements = session_browser.all('li').by(have.css_class('will-appear'))
     page.load_body(
         '''
         <ul>Hello to:

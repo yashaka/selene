@@ -1,18 +1,19 @@
 import atexit
 
-from selene import have
+from selene import have, Config
 from selene.support.shared import browser, SharedConfig
 from selene.support.webdriver import WebHelper
 
 
 def setup_function():
     browser.quit()
-    browser.config.hold_browser_open = SharedConfig().hold_browser_open
+    browser.config.driver = ...
+    browser.config.hold_browser_open = Config().hold_browser_open
     """setting to default"""
 
 
 def teardown_module():
-    browser.config.hold_browser_open = SharedConfig().hold_browser_open
+    browser.config.hold_browser_open = Config().hold_browser_open
     browser.quit()
 
 
@@ -21,7 +22,7 @@ def test_no_hold_on_default_false():
     driver = browser.driver
     browser.element('#new-todo').type('a').press_enter()
 
-    atexit._run_exitfuncs()
+    atexit._run_exitfuncs()  # noqa
 
     assert not WebHelper(driver).is_browser_still_alive()
 
@@ -31,7 +32,7 @@ def test_hold_on_explicit_true():
     browser.open('http://todomvc.com/examples/emberjs/')
     browser.element('#new-todo').type('a').press_enter()
 
-    atexit._run_exitfuncs()
+    atexit._run_exitfuncs()  # noqa
     browser.element('#new-todo').type('b').press_enter()
 
     browser.all('#todo-list>li').should(have.texts('a', 'b'))
@@ -45,7 +46,7 @@ def x_test_hold_on_explicit_true__when__set_after_open():
     browser.element('#new-todo').type('a').press_enter()
 
     browser.config.hold_browser_open = True
-    atexit._run_exitfuncs()
+    atexit._run_exitfuncs()  # noqa
     browser.element('#new-todo').type('b').press_enter()
 
     browser.all('#todo-list>li').should(have.texts('a', 'b'))

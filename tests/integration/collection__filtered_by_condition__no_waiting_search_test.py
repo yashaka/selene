@@ -26,9 +26,7 @@ from tests.integration.helpers.givenpage import GivenPage
 def test_waits_nothing(session_browser):
     page = GivenPage(session_browser.driver)
     page.opened_empty()
-    elements = session_browser.all('li').filtered_by(
-        have.css_class('will-appear')
-    )
+    elements = session_browser.all('li').by(have.css_class('will-appear'))
     page.load_body(
         '''
         <ul>Hello to:
