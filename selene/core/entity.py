@@ -1109,7 +1109,13 @@ class Browser(WaitingEntity):
 
     @property
     def driver(self) -> WebDriver:
-        return self.config.driver
+        # TODO: keep eye on it.. currently base Config.driver - might be driver of callable
+        #       that's why we need to check before returning it
+        return (
+            self.config.driver()
+            if callable(self.config.driver)
+            else self.config.driver
+        )
 
     # todo: consider making it callable (self.__call__() to be shortcut to self.__raw__ ...)
 

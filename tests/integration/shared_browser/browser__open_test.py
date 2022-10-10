@@ -19,12 +19,38 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from selene import Browser, Config
+import pytest
+
+from selene import Browser, _Config
 from tests.integration.helpers import givenpage
 
 
 def test_changes_window_size_on_open_according_to_config(chrome_driver):
-    browser = Browser(Config())
+    browser = Browser(_Config())
+    browser.config.window_width = 640
+    browser.config.window_height = 480
+
+    browser.open(givenpage.EMPTY_PAGE_URL)
+
+    assert browser.driver.get_window_size()['width'] == 640
+    assert browser.driver.get_window_size()['height'] == 480
+
+
+@pytest.fixture(scope='function')
+def reset_window_size_afterwards():
+    yield
+
+    from selene import browser, Config
+
+    browser.config.window_width = Config().window_width
+    browser.config.window_height = Config().window_height
+
+
+def test_changes_window_size_on_shared_browser_open_according_to_config(
+    chrome_driver, reset_window_size_afterwards
+):
+    from selene import browser
+
     browser.config.window_width = 640
     browser.config.window_height = 480
 

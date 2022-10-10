@@ -28,4 +28,3 @@ class SharedBrowser(Browser):
     warnings.warn(
         'SharedBrowser is deprecated, use Browser instead', DeprecationWarning
     )
-    ...

@@ -84,7 +84,9 @@ def _install_and_build_driver(browser_name):
 
 
 @dataclass
-class _Config:
+class Config:
+    driver: Union[WebDriver, Callable[[], WebDriver]] = ...
+
     timeout: float = 4
     base_url: str = ''
 
@@ -113,8 +115,8 @@ class _Config:
     hook_wait_failure: Optional[Callable[[TimeoutException], Exception]] = None
     '''
     A handler for all exceptions, thrown on failed waiting for timeout.
-    Should process the original exception and rethrow it or the modified one. 
-    
+    Should process the original exception and rethrow it or the modified one.
+
     TODO: why we name it as hook_* why not handle_* ?
           what would be proper style?
     '''
@@ -144,43 +146,113 @@ class _Config:
     """
     a fake option, not currently used in Selene waiting:)
     """
+    reports_folder: str = field(
+        default_factory=lambda: os.path.join(
+            os.path.expanduser('~'),
+            '.selene',
+            'screenshots',
+            str(round(time.time() * 1000)),
+        ),
+    )
     save_screenshot_on_failure: bool = True
     save_page_source_on_failure: bool = True
-    # counter: itertools.count = dataclasses.field(
-    #     default_factory=lambda: itertools.count(
-    #         start=int(round(time.time() * 1000))
-    #     )
-    # )
-    # """
-    # screenshots counter
-    # """
-    reports_folder: str = ...
+    _counter: itertools.count = field(
+        default_factory=lambda: itertools.count(
+            start=int(round(time.time() * 1000))
+        )
+    )
+    """
+    A counter, currently used for incrementing screenshot names
+    """
 
-    driver: Union[WebDriver, Callable[[], WebDriver]] = ...
+    def with_(self, **config_as_kwargs) -> Config:
+        return dataclasses.replace(self, **config_as_kwargs)
+
+    def _generate_filename(self, prefix='', suffix=''):
+        path = self.reports_folder
+        next_id = next(self._counter)
+        filename = f'{prefix}{next_id}{suffix}'
+        file = os.path.join(path, f'{filename}')
+
+        folder = os.path.dirname(file)
+        if not os.path.exists(folder) and folder:
+            os.makedirs(folder)
+
+        return file
+
+    # TODO: consider moving this injection to the WaitingEntity.wait method to build Wait object instead of config.wait
+    def _inject_screenshot_and_page_source_pre_hooks(self, hook):
+        # todo: consider moving hooks to class methods accepting config as argument
+        #       or refactor somehow to eliminate all times defining hook fns
+        def save_and_log_screenshot(error: TimeoutException) -> Exception:
+            from selene.support.webdriver import WebHelper
+
+            path = WebHelper(self.driver).save_screenshot(
+                self._generate_filename(suffix='.png')
+            )
+            self.last_screenshot = path
+            return TimeoutException(
+                error.msg
+                + f'''
+Screenshot: file://{path}'''
+            )
+
+        def save_and_log_page_source(error: TimeoutException) -> Exception:
+            filename = (
+                # TODO: this dependency to last_screenshot might lead to code,
+                #       when wrong screenshot name is taken
+                self.last_screenshot.replace('.png', '.html')
+                if getattr(self, 'last_screenshot', None)
+                else self._generate_filename(suffix='.html')
+            )
+            from selene.support.webdriver import WebHelper
+
+            path = WebHelper(self.driver).save_page_source(filename)
+            self.last_page_source = path
+            return TimeoutException(error.msg + f'\nPageSource: file://{path}')
+
+        return fp.pipe(
+            save_and_log_screenshot
+            if self.save_screenshot_on_failure
+            else None,
+            save_and_log_page_source
+            if self.save_page_source_on_failure
+            else None,
+            hook,
+        )
+
+    # TODO: we definitely not need it inside something called Config, especially "base interface like config
+    def wait(self, entity):
+        hook = self._inject_screenshot_and_page_source_pre_hooks(
+            self.hook_wait_failure
+        )
+        return Wait(
+            entity,
+            at_most=self.timeout,
+            or_fail_with=hook,
+            _decorator=self._wait_decorator,
+        )
+
+    # def as_dict(self):
+    #     return dict(
+    #         (field.name, getattr(self, field.name))
+    #         for field in dataclasses.fields(self)  # noqa
+    #     )
+
+
+class _Config(Config):
     _driver: WebDriver = field(default=..., init=False, repr=False)
     _driver_source: Callable[[], WebDriver] = field(
         default=..., init=False, repr=False
     )
 
-    def _get_driver(self) -> WebDriver:  # noqa
-        """
-        a driver property getter; set after class definition explicitly, below...
-        """
+    @property
+    def driver(self) -> WebDriver:
         self._driver = self._driver_source()
         return self._driver
 
-    def get_or_create_driver(self) -> WebDriver:
-        warnings.warn(
-            'config.get_or_create_driver is deprecated, use config.driver instead',
-            DeprecationWarning,
-        )
-        return self.driver
-
-    def _set_driver(self, value: Union[WebDriver, Callable[[], WebDriver]]):
-        """
-        a driver property setter; set after class definition explicitly, below...
-        """
-
+    @driver.setter
+    def driver(self, value: Union[WebDriver, Callable[[], WebDriver]]):
         def ensure_installed_and_built_when_not_alive():
             return (
                 self._driver
@@ -221,6 +293,13 @@ class _Config:
                 else None
             )
         )
+
+    def get_or_create_driver(self) -> WebDriver:
+        warnings.warn(
+            'config.get_or_create_driver is deprecated, use config.driver instead',
+            DeprecationWarning,
+        )
+        return self.driver
 
     def _reset_driver_source(self):
         """
@@ -264,103 +343,6 @@ class _Config:
             return False
 
     def __post_init__(self):
-        self._counter = itertools.count(start=int(round(time.time() * 1000)))
-        if self.reports_folder is ...:
-            self.reports_folder = os.path.join(
-                os.path.expanduser('~'),
-                '.selene',
-                'screenshots',
-                str(next(self._counter)),
-            )
         # TODO: consider making private
         self.last_screenshot: Optional[str] = None
         self.last_page_source: Optional[str] = None
-
-    def as_dict(self):
-        return dict(
-            (field.name, getattr(self, field.name))
-            for field in dataclasses.fields(self)  # noqa
-        )
-
-    def with_(self, **config_as_kwargs) -> _Config:
-        return dataclasses.replace(self, **config_as_kwargs)
-
-    def _inject_screenshot_and_page_source_pre_hooks(self, hook):
-        # todo: consider moving hooks to class methods accepting config as argument
-        #       or refactor somehow to eliminate all times defining hook fns
-        def save_and_log_screenshot(error: TimeoutException) -> Exception:
-            from selene.support.webdriver import WebHelper
-
-            path = WebHelper(self.driver).save_screenshot(
-                self._generate_filename(suffix='.png')
-            )
-            self.last_screenshot = path
-            return TimeoutException(
-                error.msg
-                + f'''
-Screenshot: file://{path}'''
-            )
-
-        def save_and_log_page_source(error: TimeoutException) -> Exception:
-            filename = (
-                self.last_screenshot.replace('.png', '.html')
-                if self.last_screenshot
-                else self._generate_filename(suffix='.html')
-            )
-            from selene.support.webdriver import WebHelper
-
-            path = WebHelper(self.driver).save_page_source(filename)
-            self.last_page_source = path
-            return TimeoutException(
-                error.msg
-                + f'''
-PageSource: file://{path}'''
-            )
-
-        return fp.pipe(
-            save_and_log_screenshot
-            if self.save_screenshot_on_failure
-            else None,
-            save_and_log_page_source
-            if self.save_page_source_on_failure
-            else None,
-            hook,
-        )
-
-    # TODO: do we really need it here?
-    def wait(self, entity):
-        hook = self._inject_screenshot_and_page_source_pre_hooks(
-            self.hook_wait_failure
-        )
-        return Wait(
-            entity,
-            at_most=self.timeout,
-            or_fail_with=hook,
-            _decorator=self._wait_decorator,
-        )
-
-    def _generate_filename(self, prefix='', suffix=''):
-        warnings.warn('', DeprecationWarning)
-        path = self.reports_folder
-        next_id = next(self._counter)
-        filename = f'{prefix}{next_id}{suffix}'
-        file = os.path.join(path, f'{filename}')
-
-        folder = os.path.dirname(file)
-        if not os.path.exists(folder) and folder:
-            os.makedirs(folder)
-
-        return file
-
-
-_Config.driver = property(_Config._get_driver, _Config._set_driver)  # noqa
-'''
-a hack to make _Config.driver to work as property with custom getter and setter
-TODO: consider using field_property from https://github.com/wyfo/field-properties
-      or consider using property_wizard metaclass
-      from https://dataclass-wizard.readthedocs.io/en/latest/using_field_properties.html
-'''
-
-
-class Config(_Config):
-    ...

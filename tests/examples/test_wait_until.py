@@ -85,6 +85,6 @@ def test_progress_bar_does_not_disappear_in_time(browser):
 
     show_dialog_btn.click()
     dialog.should(be.visible)
-    disappeared = dialog.with_(Config(timeout=1)).wait_until(be.not_.present)
+    disappeared = dialog.with_(timeout=1).wait_until(be.not_.present)
 
     assert disappeared is False
