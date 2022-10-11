@@ -1218,12 +1218,17 @@ class Browser(WaitingEntity):
     #       question is - should we implement our own alert as waiting entity?
 
     def quit(self) -> None:
-        if getattr(self.config, 'is_browser_alive', False):
-            self.driver.quit()  # TODO: quit silently... (i.e. catch error if it's already quit)
-        else:
+        if not getattr(
+            self.config,
+            '_is_browser_alive',  # TODO: o_O ... what is this?
+            True,
+        ):
             warnings.warn(
                 'Tried to quit driver that is not alive (already closed or was not opened)'
             )
+            return
+
+        self.driver.quit()  # TODO: quit silently... (i.e. catch error if it's already quit)
 
     def close(self) -> Browser:
         self.driver.close()

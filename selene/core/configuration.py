@@ -85,7 +85,76 @@ def _install_and_build_driver(browser_name):
 
 @dataclass
 class Config:
+    """
+    A one cross-cutting-concern-like object to group all options
+    that might influence Selene behavior depending on context.
+    As option the driver instance is also considered.
+    More over, this config is not just config,
+    but partially manages the driver lifecycle.
+
+    All this makes it far from being a simple options data class...
+    – yet kept as one «class for everything» to keep things easier to use,
+    especially taking into account some historical reasons of Selene's design.
+    """
+
     driver: Union[WebDriver, Callable[[], WebDriver]] = ...
+    """
+    A driver instance or a function that returns a driver instance.
+    This driver will be quit on exit by default.
+    To keep its finalization on your side, set ``self.hold_browser_open=True``.
+    """
+
+    @property
+    def _driver_instance(self) -> WebDriver:
+        """
+        Depending on whether ``self.driver`` is instance or instance factory (function),
+        returns driver instance correspondingly.
+        """
+        return self.driver() if callable(self.driver) else self.driver
+
+    hold_browser_open: bool = False
+    """Controls whether driver will be automatically quit on process exit or not."""
+
+    def __post_init__(self):
+        self._register_browser_finalizer()
+
+    def _register_browser_finalizer(self):
+        atexit.register(
+            lambda: (
+                self._driver_instance.quit()
+                if not self.hold_browser_open and self._is_browser_alive
+                else None
+            )
+        )
+
+    @property
+    def _is_browser_alive(self) -> bool:
+        if self.driver is ...:
+            return False
+
+        try:
+            return self._driver_instance.title is not None
+        except Exception:  # noqa
+            return False
+
+    # TODO: consider accepting also hub url as "browser"
+    #       because in case of "remote" mode, we will not need the common "name" like
+    #       chrome or ff
+    #       but we would pass the same name somewhere in caps... to choose correct "platform"
+    #       so... then browser_name is kind of incorrect name becomes...
+    #       why then not rename browser_name here to just browser...
+    #       then... technically it might be possible to write something like:
+    #           browser.config.browser = ... :)
+    #              how can we make it impossible?
+    #              or what else better name can we choose?
+    #       ...
+    #       if we are going to accept config.options
+    #       where best it would be to put remote_url?
+    #       config.service? config.driver? config.remote_url? config.executor?
+    browser_name: str = 'chrome'
+    """
+    Desired name of the browser
+    """
 
     timeout: float = 4
     base_url: str = ''
@@ -121,27 +190,6 @@ class Config:
           what would be proper style?
     '''
 
-    # -- from SharedConfig --
-
-    # TODO: consider accepting also hub url as "browser"
-    #       because in case of "remote" mode, we will not need the common "name" like
-    #       chrome or ff
-    #       but we would pass the same name somewhere in caps... to choose correct "platform"
-    #       so... then browser_name is kind of incorrect name becomes...
-    #       why then not rename browser_name here to just browser...
-    #       then... technically it might be possible to write something like:
-    #           browser.config.browser = ... :)
-    #              how can we make it impossible?
-    #              or what else better name can we choose?
-    #       ...
-    #       if we are going to accept config.options
-    #       where best it would be to put remote_url?
-    #       config.service? config.driver? config.remote_url? config.executor?
-    browser_name: str = 'chrome'
-    """
-    desired name of the browser
-    """
-    hold_browser_open: bool = False
     poll_during_waits: int = 100
     """
     a fake option, not currently used in Selene waiting:)
@@ -256,7 +304,7 @@ class _Config(Config):
         def ensure_installed_and_built_when_not_alive():
             return (
                 self._driver
-                if (self._driver is not ... and self.is_browser_alive)
+                if (self._driver is not ... and self._is_browser_alive)
                 else _install_and_build_driver(self.browser_name)
             )
 
@@ -270,7 +318,7 @@ class _Config(Config):
             )
             # and ...
             and self._driver is not ...
-            and self.is_browser_alive
+            and self._is_browser_alive
         ):
             self._driver.quit()
 
@@ -289,7 +337,7 @@ class _Config(Config):
                 self.driver.quit()
                 if not self.hold_browser_open
                 and self._driver is not ...
-                and self.is_browser_alive
+                and self._is_browser_alive
                 else None
             )
         )
@@ -325,7 +373,7 @@ class _Config(Config):
         self.driver = ...
 
     @property
-    def is_browser_alive(self) -> bool:
+    def _is_browser_alive(self) -> bool:
         if self._driver is ...:
             # raise _SeleneError('the driver has not been sourced yet at config')
             warnings.warn(

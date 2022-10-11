@@ -21,7 +21,9 @@
 # SOFTWARE.
 import os
 
-from selene import have
+import pytest
+
+from selene import have, Config
 from selene.support.shared import browser
 from tests.integration.helpers.givenpage import GivenPage
 
@@ -30,16 +32,33 @@ empty_page = 'file://{}/../resources/empty.html'.format(
 )
 
 
-def setup_function():
+@pytest.fixture(scope='module')
+def with_shared_browser_defaults_after_test_module():
+    ...
+
+    yield
+
     browser.quit()
+    browser.config.driver = ...
+
+    browser.config.browser_name = Config().browser_name
 
 
-def teardown_function():
-    browser.config.browser_name = 'chrome'
+@pytest.fixture(scope='function')
+def given_reset_shared_browser_driver(
+    with_shared_browser_defaults_after_test_module,
+):
     browser.quit()
+    browser.config.driver = ...
+
+    yield
+
+    ...
 
 
-def test_can_init_default_browser_on_visit():
+def test_can_init_default_chrome_browser_on_visit(
+    given_reset_shared_browser_driver,
+):
     browser.open(empty_page)
     GivenPage(browser.driver).opened_with_body(
         '''
@@ -50,7 +69,9 @@ def test_can_init_default_browser_on_visit():
     assert browser.driver.name == 'chrome'
 
 
-def test_can_init_custom_browser_on_visit():
+def test_can_init_custom_firefox_browser_on_visit(
+    given_reset_shared_browser_driver,
+):
     browser.config.browser_name = 'firefox'
 
     browser.open(empty_page)
@@ -64,13 +85,34 @@ def test_can_init_custom_browser_on_visit():
     assert browser.driver.name == 'firefox'
 
 
-def test_can_init_default_browser_after_custom():
+def test_can_init_another_browser_after_custom_only_after_custom_browser_quit(
+    given_reset_shared_browser_driver,
+):
+    # AND
+    browser.config.browser_name = 'firefox'
     browser.open(empty_page)
-    GivenPage(browser.driver).opened_with_body(
-        '''
-        <h1 id="header">Selene</h1>
-        '''
-    )
+    assert browser.driver.name == 'firefox'
+    firefox_session_id = browser.driver.session_id
 
-    browser.element("#header").should(have.exact_text("Selene"))
+    # WHEN
+    browser.config.browser_name = 'chrome'
+
+    # THEN
+    assert browser.driver.name == 'firefox'
+    assert browser.driver.session_id == firefox_session_id
+
+    # WHEN
+    browser.open(empty_page)
+
+    # THEN
+    assert browser.driver.name == 'firefox'
+    assert browser.driver.session_id == firefox_session_id
+
+    # WHEN
+    browser.quit()
+    # AND
+    browser.open(empty_page)
+
+    # THEN
     assert browser.driver.name == 'chrome'
+    assert browser.driver.session_id != firefox_session_id
