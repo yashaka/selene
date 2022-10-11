@@ -2,50 +2,38 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 443,
-    "uniques": 216
+    "count": 384,
+    "uniques": 193
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 53,
-    "uniques": 18
-  },
-  {
-    "path": "/yashaka/selene/releases",
-    "title": "Releases · yashaka/selene",
-    "count": 47,
-    "uniques": 16
+    "count": 37,
+    "uniques": 13
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 27,
-    "uniques": 18
-  },
-  {
-    "path": "/yashaka/selene/tree/master/examples",
-    "title": "selene/examples at master · yashaka/selene · GitHub",
     "count": 24,
     "uniques": 15
   },
   {
-    "path": "/yashaka/selene/issues/287",
-    "title": "from selenium to selene · Issue #287 · yashaka/selene · GitHub",
-    "count": 20,
-    "uniques": 14
-  },
-  {
-    "path": "/yashaka/selene/tree/master/tests",
-    "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 18,
+    "path": "/yashaka/selene/releases",
+    "title": "Releases · yashaka/selene",
+    "count": 24,
     "uniques": 10
   },
   {
-    "path": "/yashaka/selene/actions",
-    "title": "Actions · yashaka/selene",
-    "count": 16,
-    "uniques": 2
+    "path": "/yashaka/selene/tree/master/examples",
+    "title": "selene/examples at master · yashaka/selene · GitHub",
+    "count": 19,
+    "uniques": 13
+  },
+  {
+    "path": "/yashaka/selene/issues/287",
+    "title": "from selenium to selene · Issue #287 · yashaka/selene · GitHub",
+    "count": 17,
+    "uniques": 12
   },
   {
     "path": "/yashaka/selene/tree/master/selene/core",
@@ -54,9 +42,21 @@
     "uniques": 10
   },
   {
-    "path": "/yashaka/selene/issues/447",
-    "title": "Add example of how to «hard-wait» (sleep) before any waiting command in Selen...",
+    "path": "/yashaka/selene/actions",
+    "title": "Actions · yashaka/selene",
+    "count": 15,
+    "uniques": 1
+  },
+  {
+    "path": "/yashaka/selene/releases/tag/2.0.0b13",
+    "title": "Release 2.0.0b13 · yashaka/selene",
     "count": 14,
+    "uniques": 10
+  },
+  {
+    "path": "/yashaka/selene/issues/188",
+    "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
+    "count": 13,
     "uniques": 12
   }
 ]
