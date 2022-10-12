@@ -1,13 +1,13 @@
 [
   {
     "referrer": "Google",
-    "count": 278,
-    "uniques": 112
+    "count": 259,
+    "uniques": 106
   },
   {
     "referrer": "github.com",
-    "count": 159,
-    "uniques": 35
+    "count": 153,
+    "uniques": 32
   },
   {
     "referrer": "yandex.ru",
@@ -21,8 +21,8 @@
   },
   {
     "referrer": "automated-testing.info",
-    "count": 21,
-    "uniques": 9
+    "count": 20,
+    "uniques": 8
   },
   {
     "referrer": "qiita.com",
@@ -41,8 +41,8 @@
   },
   {
     "referrer": "DuckDuckGo",
-    "count": 4,
-    "uniques": 3
+    "count": 3,
+    "uniques": 2
   },
   {
     "referrer": "Bing",
