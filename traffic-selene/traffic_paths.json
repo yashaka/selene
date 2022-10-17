@@ -2,44 +2,38 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 435,
-    "uniques": 231
+    "count": 408,
+    "uniques": 214
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 36,
-    "uniques": 13
+    "count": 35,
+    "uniques": 12
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 23,
-    "uniques": 19
+    "count": 22,
+    "uniques": 18
   },
   {
     "path": "/yashaka/selene/issues/287",
     "title": "from selenium to selene · Issue #287 · yashaka/selene · GitHub",
-    "count": 20,
-    "uniques": 14
+    "count": 18,
+    "uniques": 13
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 19,
-    "uniques": 13
+    "count": 18,
+    "uniques": 12
   },
   {
-    "path": "/yashaka/selene/releases",
-    "title": "Releases · yashaka/selene",
-    "count": 15,
-    "uniques": 7
-  },
-  {
-    "path": "/yashaka/selene/actions",
-    "title": "Actions · yashaka/selene",
-    "count": 15,
-    "uniques": 1
+    "path": "/yashaka/selene/search",
+    "title": "Search · xpath",
+    "count": 16,
+    "uniques": 9
   },
   {
     "path": "/yashaka/selene/releases/tag/2.0.0b13",
@@ -48,15 +42,21 @@
     "uniques": 10
   },
   {
-    "path": "/yashaka/selene/tree/master/selene/core",
-    "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 13,
-    "uniques": 11
+    "path": "/yashaka/selene/releases",
+    "title": "Releases · yashaka/selene",
+    "count": 12,
+    "uniques": 7
   },
   {
-    "path": "/yashaka/selene/search",
-    "title": "Search · set_driver",
-    "count": 13,
-    "uniques": 7
+    "path": "/yashaka/selene/actions",
+    "title": "Actions · yashaka/selene",
+    "count": 12,
+    "uniques": 1
+  },
+  {
+    "path": "/yashaka/selene/blob/master/README.md",
+    "title": "selene/README.md at master · yashaka/selene · GitHub",
+    "count": 11,
+    "uniques": 10
   }
 ]
