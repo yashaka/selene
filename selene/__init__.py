@@ -20,10 +20,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from . import support
+
 from selene.core.configuration import (
     Config as _CustomConfigForCustomBrowser,
 )
-from selene.support.shared import _Config
 
 Config = _CustomConfigForCustomBrowser
 
@@ -60,10 +61,9 @@ AND::
 
 """
 
-from selene.support import shared as _shared  # TODO: rename «shared»
 from selene import managed
 
-browser = _shared.browser
+browser = managed.browser
 
 from selene.support import by as _by_style_selectors  # noqa
 
