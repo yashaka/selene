@@ -21,7 +21,7 @@
 # SOFTWARE.
 import warnings
 
-from selene import Browser
+from selene.core.entity import Browser
 
 
 class SharedBrowser(Browser):

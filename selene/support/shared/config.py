@@ -20,36 +20,4 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import warnings
-from typing import Generic, TypeVar
-
-# noinspection PyProtectedMember
-from selene.core.configuration import _Config
-
-
-T = TypeVar('T')
-
-
-class _Source(Generic[T]):
-    def __init__(self, value: T = None):
-        self._value = value
-
-    def put(self, value: T):
-        self._value = value
-
-    def clear(self):
-        self._value = None
-
-    @property
-    def value(self) -> T:
-        return self._value
-
-    def __call__(self, *args, **kwargs):
-        return self._value
-
-
-# noinspection PyDataclass
-class SharedConfig(_Config):
-    warnings.warn(
-        'SharedConfig is deprecated. Use _Config instead', DeprecationWarning
-    )
+from selene.support.shared import SharedConfig  # noqa

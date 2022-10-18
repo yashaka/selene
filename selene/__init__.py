@@ -22,8 +22,8 @@
 
 from selene.core.configuration import (
     Config as _CustomConfigForCustomBrowser,
-    _Config,
 )
+from selene.support.shared import _Config
 
 Config = _CustomConfigForCustomBrowser
 
@@ -60,8 +60,10 @@ AND::
 
 """
 
-_config = _Config()
-browser = Browser(_config)
+from selene.support import shared as _shared  # TODO: rename «shared»
+from selene import managed
+
+browser = _shared.browser
 
 from selene.support import by as _by_style_selectors  # noqa
 
