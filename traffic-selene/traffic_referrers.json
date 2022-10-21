@@ -1,17 +1,17 @@
 [
   {
     "referrer": "Google",
-    "count": 343,
-    "uniques": 123
+    "count": 403,
+    "uniques": 131
   },
   {
     "referrer": "github.com",
-    "count": 84,
-    "uniques": 27
+    "count": 67,
+    "uniques": 28
   },
   {
     "referrer": "yandex.ru",
-    "count": 43,
+    "count": 46,
     "uniques": 6
   },
   {
@@ -26,13 +26,13 @@
   },
   {
     "referrer": "qiita.com",
-    "count": 7,
+    "count": 8,
     "uniques": 7
   },
   {
     "referrer": "automated-testing.info",
-    "count": 7,
-    "uniques": 2
+    "count": 8,
+    "uniques": 3
   },
   {
     "referrer": "com.google.android.gm",
@@ -40,13 +40,13 @@
     "uniques": 1
   },
   {
-    "referrer": "linkedin.com",
+    "referrer": "DuckDuckGo",
     "count": 3,
-    "uniques": 2
+    "uniques": 3
   },
   {
-    "referrer": "com.linkedin.android",
-    "count": 2,
-    "uniques": 2
+    "referrer": "Bing",
+    "count": 3,
+    "uniques": 3
   }
 ]
