@@ -2,13 +2,13 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 371,
-    "uniques": 206
+    "count": 363,
+    "uniques": 204
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 38,
+    "count": 36,
     "uniques": 15
   },
   {
@@ -20,32 +20,32 @@
   {
     "path": "/yashaka/selene/search",
     "title": "Search · xpath",
-    "count": 19,
-    "uniques": 11
+    "count": 18,
+    "uniques": 10
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 15,
+    "count": 12,
+    "uniques": 10
+  },
+  {
+    "path": "/yashaka/selene/issues/128",
+    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
+    "count": 11,
     "uniques": 11
   },
   {
     "path": "/yashaka/selene/releases",
     "title": "Releases · yashaka/selene",
-    "count": 13,
-    "uniques": 5
-  },
-  {
-    "path": "/yashaka/selene/issues/452",
-    "title": "shared.config.browser_name naming? · Issue #452 · yashaka/selene · GitHub",
-    "count": 12,
-    "uniques": 5
+    "count": 11,
+    "uniques": 4
   },
   {
     "path": "/yashaka/selene/issues/287",
     "title": "from selenium to selene · Issue #287 · yashaka/selene · GitHub",
-    "count": 11,
-    "uniques": 9
+    "count": 10,
+    "uniques": 8
   },
   {
     "path": "/yashaka/selene/tree/master/selene/support",
