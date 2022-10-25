@@ -1,23 +1,23 @@
 [
   {
     "referrer": "Google",
-    "count": 431,
-    "uniques": 140
+    "count": 347,
+    "uniques": 118
   },
   {
     "referrer": "github.com",
-    "count": 63,
-    "uniques": 23
+    "count": 54,
+    "uniques": 20
   },
   {
     "referrer": "yandex.ru",
-    "count": 27,
-    "uniques": 7
+    "count": 39,
+    "uniques": 9
   },
   {
-    "referrer": "ecosia.org",
-    "count": 15,
-    "uniques": 7
+    "referrer": "qa.guru",
+    "count": 13,
+    "uniques": 2
   },
   {
     "referrer": "pypi.org",
@@ -30,23 +30,23 @@
     "uniques": 7
   },
   {
-    "referrer": "qa.guru",
-    "count": 9,
-    "uniques": 1
-  },
-  {
     "referrer": "automated-testing.info",
     "count": 8,
     "uniques": 3
   },
   {
-    "referrer": "com.google.android.gm",
-    "count": 4,
-    "uniques": 1
+    "referrer": "ecosia.org",
+    "count": 7,
+    "uniques": 5
   },
   {
     "referrer": "linkedin.com",
     "count": 3,
+    "uniques": 2
+  },
+  {
+    "referrer": "com.linkedin.android",
+    "count": 2,
     "uniques": 2
   }
 ]
