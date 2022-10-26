@@ -35,8 +35,6 @@ Selene was inspired by [Selenide](https://selenide.org/) from Java world.
 
 Tests with Selene can be built either in a simple straightforward "selenide' style or with PageObjects composed from Widgets i.e. reusable element components.
 
-## Table of content
-
 * [Versions](#versions)
     * [Migration Guide](#migration-guide)
 * [Prerequisites](#prerequisites)
@@ -425,12 +423,12 @@ TBD
 
 ## Contributing
 
-[see CONTRIBUTING.md](https://github.com/yashaka/selene/blob/master/CONTRIBUTING.md)
+[see CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## Release Process
 
-[see CONTRIBUTING.md#release-process](https://github.com/yashaka/selene/blob/master/CONTRIBUTING.md#release-process)
+[see CONTRIBUTING.md#release-process](CONTRIBUTING.md#release-process)
 
 ## Changelog
 
-[see CHANGELOG.md](https://github.com/yashaka/selene/blob/master/CHANGELOG.md)
+[see CHANGELOG.md](CHANGELOG.md)

@@ -1,0 +1,45 @@
+site_name: Selene
+site_url: https://yashaka.github.io/selene/
+
+nav:
+- Selene: "index.md"
+- Contributing: "CONTRIBUTING.md"
+- Release Process: "CONTRIBUTING/#release-process"
+- Changelog: "CHANGELOG.md"
+- License: "LICENSE.md"
+
+theme:
+  name: material
+  favicon: assets/images/favicon.ico
+  logo: assets/images/apple-touch-icon.png
+  palette:
+  - media: '(prefers-color-scheme: light)'
+    scheme: default
+    primary: indigo
+    accent: amber
+    toggle:
+      icon: material/lightbulb
+      name: Switch to light mode
+  - media: '(prefers-color-scheme: dark)'
+    scheme: slate
+    primary: blue grey
+    accent: amber
+    toggle:
+      icon: material/lightbulb-outline
+      name: Switch to dark mode
+  features:
+  - search.suggest
+  - search.highlight
+  - content.tabs.link
+
+plugins:
+- search
+- autorefs
+- mkdocstrings
+
+markdown_extensions:
+  - toc:
+      permalink: "#"
+  - pymdownx.snippets:
+      # base_path: ["."]  # for root of repo
+      base_path: ["docs"]
