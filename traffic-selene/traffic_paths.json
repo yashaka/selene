@@ -2,38 +2,38 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 312,
-    "uniques": 177
+    "count": 314,
+    "uniques": 179
   },
   {
     "path": "/yashaka/selene/issues",
-    "title": "Issues · yashaka/selene",
-    "count": 36,
+    "title": "Issues · yashaka/selene · GitHub",
+    "count": 40,
     "uniques": 16
   },
   {
     "path": "/yashaka/selene/issues/456",
     "title": "Docs for Selene? :D · Issue #456 · yashaka/selene",
-    "count": 33,
-    "uniques": 18
+    "count": 35,
+    "uniques": 19
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 22,
-    "uniques": 14
+    "count": 24,
+    "uniques": 15
   },
   {
     "path": "/yashaka/selene/releases",
-    "title": "Releases · yashaka/selene",
-    "count": 19,
-    "uniques": 5
+    "title": "Releases · yashaka/selene · GitHub",
+    "count": 20,
+    "uniques": 6
   },
   {
-    "path": "/yashaka/selene/search",
-    "title": "Search · xpath",
-    "count": 12,
-    "uniques": 6
+    "path": "/yashaka/selene/tree/master/examples",
+    "title": "selene/examples at master · yashaka/selene · GitHub",
+    "count": 10,
+    "uniques": 9
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
@@ -42,21 +42,21 @@
     "uniques": 6
   },
   {
-    "path": "/yashaka/selene/issues/128",
-    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
-    "count": 9,
-    "uniques": 9
-  },
-  {
-    "path": "/yashaka/selene/tree/master/examples",
-    "title": "selene/examples at master · yashaka/selene · GitHub",
+    "path": "/yashaka/selene/issues/406",
+    "title": "browser management 2.0 · Issue #406 · yashaka/selene · GitHub",
     "count": 9,
     "uniques": 8
   },
   {
-    "path": "/yashaka/selene/commits/master",
-    "title": "Commits · yashaka/selene · GitHub",
+    "path": "/yashaka/selene/blob/master/pyproject.toml",
+    "title": "selene/pyproject.toml at master · yashaka/selene · GitHub",
     "count": 9,
-    "uniques": 7
+    "uniques": 6
+  },
+  {
+    "path": "/yashaka/selene/issues/59",
+    "title": "consider adding docstrings · Issue #59 · yashaka/selene",
+    "count": 9,
+    "uniques": 5
   }
 ]
