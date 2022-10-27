@@ -1,45 +1,60 @@
+# Project information
 site_name: Selene
 site_url: https://yashaka.github.io/selene/
+site_author: Iakiv Kramarenko
+site_description: >-
+  User-oriented Web UI browser tests in Python.
 
+# Repository
+repo_name: yashaka/selene
+repo_url: https://github.com/yashaka/selene
+
+# Page tree
 nav:
-- Selene: "index.md"
-- Contributing: "CONTRIBUTING.md"
-- Release Process: "CONTRIBUTING/#release-process"
-- Changelog: "CHANGELOG.md"
-- License: "LICENSE.md"
+  - Selene: index.md
+  - Contributing: CONTRIBUTING.md
+  - Release Process: CONTRIBUTING#release-process
+  - Changelog: CHANGELOG.md
+  - License: LICENSE.md
 
+# Configuration
 theme:
   name: material
-  favicon: assets/images/favicon.ico
+  favicon: assets/images/favicon.png
   logo: assets/images/apple-touch-icon.png
   palette:
-  - media: '(prefers-color-scheme: light)'
-    scheme: default
-    primary: indigo
-    accent: amber
-    toggle:
-      icon: material/lightbulb
-      name: Switch to light mode
-  - media: '(prefers-color-scheme: dark)'
-    scheme: slate
-    primary: blue grey
-    accent: amber
-    toggle:
-      icon: material/lightbulb-outline
-      name: Switch to dark mode
+    - media: '(prefers-color-scheme: light)'
+      scheme: default
+      primary: indigo
+      accent: amber
+      toggle:
+        icon: material/lightbulb
+        name: Switch to light mode
+    - media: '(prefers-color-scheme: dark)'
+      scheme: slate
+      primary: blue grey
+      accent: amber
+      toggle:
+        icon: material/lightbulb-outline
+        name: Switch to dark mode
   features:
-  - search.suggest
-  - search.highlight
-  - content.tabs.link
+    - search.suggest
+    - search.highlight
+    - content.tabs.link
 
+# Plugins
 plugins:
-- search
-- autorefs
-- mkdocstrings
+  - search
+  - autorefs
+  - mkdocstrings
 
+# Extensions
 markdown_extensions:
   - toc:
       permalink: "#"
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
   - pymdownx.snippets:
-      # base_path: ["."]  # for root of repo
       base_path: ["docs"]
+  - pymdownx.superfences
