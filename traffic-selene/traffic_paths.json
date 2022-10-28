@@ -2,25 +2,25 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 314,
-    "uniques": 179
+    "count": 323,
+    "uniques": 182
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 40,
-    "uniques": 16
+    "count": 42,
+    "uniques": 18
   },
   {
     "path": "/yashaka/selene/issues/456",
-    "title": "Docs for Selene? :D · Issue #456 · yashaka/selene",
-    "count": 35,
-    "uniques": 19
+    "title": "Docs for Selene? :D · Issue #456 · yashaka/selene · GitHub",
+    "count": 37,
+    "uniques": 20
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 24,
+    "count": 23,
     "uniques": 15
   },
   {
@@ -32,31 +32,31 @@
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 10,
-    "uniques": 9
+    "count": 13,
+    "uniques": 10
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 10,
-    "uniques": 6
+    "count": 11,
+    "uniques": 7
   },
   {
     "path": "/yashaka/selene/issues/406",
     "title": "browser management 2.0 · Issue #406 · yashaka/selene · GitHub",
-    "count": 9,
-    "uniques": 8
-  },
-  {
-    "path": "/yashaka/selene/blob/master/pyproject.toml",
-    "title": "selene/pyproject.toml at master · yashaka/selene · GitHub",
-    "count": 9,
-    "uniques": 6
+    "count": 10,
+    "uniques": 9
   },
   {
     "path": "/yashaka/selene/issues/59",
     "title": "consider adding docstrings · Issue #59 · yashaka/selene",
     "count": 9,
     "uniques": 5
+  },
+  {
+    "path": "/yashaka/selene/pulls",
+    "title": "Pull requests · yashaka/selene",
+    "count": 9,
+    "uniques": 3
   }
 ]
