@@ -810,7 +810,7 @@ watchmedo = ["PyYAML (>=3.10)"]
 
 [[package]]
 name = "webdriver-manager"
-version = "3.8.3"
+version = "3.8.4"
 description = "Library provides the way to automatically manage drivers for different browsers"
 category = "main"
 optional = false
