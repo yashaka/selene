@@ -2,56 +2,56 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 348,
-    "uniques": 190
+    "count": 344,
+    "uniques": 189
   },
   {
     "path": "/yashaka/selene/issues/456",
     "title": "Docs for Selene? :D · Issue #456 · yashaka/selene · GitHub",
-    "count": 38,
+    "count": 39,
     "uniques": 20
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene",
-    "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 37,
-    "uniques": 17
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 36,
+    "count": 34,
+    "uniques": 16
+  },
+  {
+    "path": "/yashaka/selene/tree/master/selene",
+    "title": "selene/selene at master · yashaka/selene · GitHub",
+    "count": 34,
     "uniques": 15
   },
   {
     "path": "/yashaka/selene/search",
-    "title": "Search · SElement · GitHub",
-    "count": 24,
-    "uniques": 6
+    "title": "Search · window",
+    "count": 34,
+    "uniques": 5
   },
   {
-    "path": "/yashaka/selene/tree/master/examples",
-    "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 23,
-    "uniques": 16
+    "path": "/yashaka/selene/releases",
+    "title": "Releases · yashaka/selene · GitHub",
+    "count": 27,
+    "uniques": 6
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 22,
-    "uniques": 11
+    "count": 26,
+    "uniques": 13
+  },
+  {
+    "path": "/yashaka/selene/tree/master/examples",
+    "title": "selene/examples at master · yashaka/selene · GitHub",
+    "count": 24,
+    "uniques": 17
   },
   {
     "path": "/yashaka/selene/tree/master/selene/core",
     "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 22,
-    "uniques": 6
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene/support",
-    "title": "selene/selene/support at master · yashaka/selene · GitHub",
-    "count": 21,
-    "uniques": 7
+    "count": 20,
+    "uniques": 5
   },
   {
     "path": "/yashaka/selene/pulls",
