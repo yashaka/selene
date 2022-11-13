@@ -8,44 +8,38 @@
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 50,
-    "uniques": 15
+    "count": 54,
+    "uniques": 17
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 29,
-    "uniques": 18
+    "count": 30,
+    "uniques": 19
   },
   {
     "path": "/yashaka/selene/releases",
     "title": "Releases · yashaka/selene · GitHub",
-    "count": 26,
+    "count": 25,
     "uniques": 8
   },
   {
     "path": "/yashaka/selene/search",
     "title": "Search · window",
-    "count": 22,
+    "count": 25,
     "uniques": 7
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 20,
-    "uniques": 14
+    "count": 18,
+    "uniques": 12
   },
   {
     "path": "/yashaka/selene/tree/master/selene/api",
     "title": "selene/selene/api at master · yashaka/selene · GitHub",
     "count": 17,
     "uniques": 11
-  },
-  {
-    "path": "/yashaka/selene/issues/188",
-    "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
-    "count": 15,
-    "uniques": 14
   },
   {
     "path": "/yashaka/selene/tree/master/selene/core",
@@ -56,7 +50,13 @@
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 14,
+    "count": 15,
     "uniques": 9
+  },
+  {
+    "path": "/yashaka/selene/issues/188",
+    "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
+    "count": 14,
+    "uniques": 13
   }
 ]
