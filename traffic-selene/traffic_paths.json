@@ -2,14 +2,20 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 625,
-    "uniques": 320
+    "count": 618,
+    "uniques": 308
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 43,
-    "uniques": 18
+    "count": 42,
+    "uniques": 17
+  },
+  {
+    "path": "/yashaka/selene/tree/master/selene",
+    "title": "selene/selene at master · yashaka/selene · GitHub",
+    "count": 37,
+    "uniques": 23
   },
   {
     "path": "/yashaka/selene/blob/master/README.md",
@@ -18,16 +24,10 @@
     "uniques": 21
   },
   {
-    "path": "/yashaka/selene/tree/master/selene",
-    "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 36,
-    "uniques": 23
-  },
-  {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 26,
-    "uniques": 22
+    "count": 28,
+    "uniques": 23
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
@@ -36,27 +36,27 @@
     "uniques": 19
   },
   {
-    "path": "/yashaka/selene/issues/287",
-    "title": "from selenium to selene · Issue #287 · yashaka/selene · GitHub",
-    "count": 19,
-    "uniques": 18
+    "path": "/yashaka/selene/releases",
+    "title": "Releases · yashaka/selene · GitHub",
+    "count": 24,
+    "uniques": 13
   },
   {
     "path": "/yashaka/selene/releases/tag/2.0.0b16",
     "title": "Release 2.0.0b16 · yashaka/selene · GitHub",
-    "count": 18,
-    "uniques": 14
-  },
-  {
-    "path": "/yashaka/selene/releases",
-    "title": "Releases · yashaka/selene · GitHub",
-    "count": 17,
-    "uniques": 11
+    "count": 21,
+    "uniques": 15
   },
   {
     "path": "/yashaka/selene/tree/master/selene/common",
     "title": "selene/selene/common at master · yashaka/selene · GitHub",
-    "count": 17,
-    "uniques": 10
+    "count": 20,
+    "uniques": 12
+  },
+  {
+    "path": "/yashaka/selene/issues/287",
+    "title": "from selenium to selene · Issue #287 · yashaka/selene · GitHub",
+    "count": 19,
+    "uniques": 18
   }
 ]
