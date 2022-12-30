@@ -1,18 +1,18 @@
 [
   {
     "referrer": "Google",
-    "count": 348,
-    "uniques": 91
+    "count": 341,
+    "uniques": 88
   },
   {
     "referrer": "github.com",
-    "count": 89,
-    "uniques": 38
+    "count": 88,
+    "uniques": 36
   },
   {
     "referrer": "yandex.ru",
     "count": 36,
-    "uniques": 13
+    "uniques": 14
   },
   {
     "referrer": "ecosia.org",
@@ -31,8 +31,8 @@
   },
   {
     "referrer": "automated-testing.info",
-    "count": 4,
-    "uniques": 4
+    "count": 5,
+    "uniques": 5
   },
   {
     "referrer": "gitter.im",
@@ -46,7 +46,7 @@
   },
   {
     "referrer": "qa.guru",
-    "count": 3,
-    "uniques": 3
+    "count": 2,
+    "uniques": 2
   }
 ]
