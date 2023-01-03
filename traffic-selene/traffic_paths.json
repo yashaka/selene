@@ -2,20 +2,8 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 264,
+    "count": 254,
     "uniques": 148
-  },
-  {
-    "path": "/yashaka/selene/blob/master/README.md",
-    "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 15,
-    "uniques": 8
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene",
-    "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 14,
-    "uniques": 12
   },
   {
     "path": "/yashaka/selene/issues",
@@ -24,16 +12,22 @@
     "uniques": 9
   },
   {
-    "path": "/yashaka/selene/tree/master/tests",
-    "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 12,
-    "uniques": 11
-  },
-  {
     "path": "/yashaka/selene/releases",
     "title": "Releases · yashaka/selene · GitHub",
-    "count": 12,
+    "count": 14,
+    "uniques": 9
+  },
+  {
+    "path": "/yashaka/selene/blob/master/README.md",
+    "title": "selene/README.md at master · yashaka/selene · GitHub",
+    "count": 14,
     "uniques": 8
+  },
+  {
+    "path": "/yashaka/selene/tree/master/selene",
+    "title": "selene/selene at master · yashaka/selene · GitHub",
+    "count": 13,
+    "uniques": 12
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
@@ -42,21 +36,27 @@
     "uniques": 10
   },
   {
+    "path": "/yashaka/selene/tree/master/tests",
+    "title": "selene/tests at master · yashaka/selene · GitHub",
+    "count": 11,
+    "uniques": 10
+  },
+  {
     "path": "/yashaka/selene/search",
     "title": "Search · wait · GitHub",
-    "count": 10,
-    "uniques": 4
-  },
-  {
-    "path": "/yashaka/selene/issues/188",
-    "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
     "count": 9,
-    "uniques": 8
+    "uniques": 3
   },
   {
-    "path": "/yashaka/selene/tree/master/selene/api",
-    "title": "selene/selene/api at master · yashaka/selene · GitHub",
+    "path": "/yashaka/selene/tags",
+    "title": "Tags · yashaka/selene",
+    "count": 9,
+    "uniques": 3
+  },
+  {
+    "path": "/yashaka/selene/releases/tag/2.0.0b16",
+    "title": "Release 2.0.0b16 · yashaka/selene · GitHub",
     "count": 8,
-    "uniques": 5
+    "uniques": 6
   }
 ]
