@@ -2,32 +2,32 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 224,
-    "uniques": 143
+    "count": 232,
+    "uniques": 149
+  },
+  {
+    "path": "/yashaka/selene/blob/master/README.md",
+    "title": "selene/README.md at master · yashaka/selene · GitHub",
+    "count": 16,
+    "uniques": 10
+  },
+  {
+    "path": "/yashaka/selene/tree/master/examples",
+    "title": "selene/examples at master · yashaka/selene · GitHub",
+    "count": 14,
+    "uniques": 13
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
     "count": 14,
-    "uniques": 11
-  },
-  {
-    "path": "/yashaka/selene/blob/master/README.md",
-    "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 14,
-    "uniques": 8
+    "uniques": 12
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 13,
+    "count": 14,
     "uniques": 9
-  },
-  {
-    "path": "/yashaka/selene/tree/master/examples",
-    "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 10,
-    "uniques": 10
   },
   {
     "path": "/yashaka/selene/releases",
@@ -36,27 +36,27 @@
     "uniques": 3
   },
   {
+    "path": "/yashaka/selene/tree/master/tests",
+    "title": "selene/tests at master · yashaka/selene · GitHub",
+    "count": 7,
+    "uniques": 7
+  },
+  {
     "path": "/yashaka/selene/tree/master/selene/core",
     "title": "selene/selene/core at master · yashaka/selene · GitHub",
     "count": 7,
     "uniques": 5
   },
   {
+    "path": "/yashaka/selene/blob/master/docs/index.md",
+    "title": "selene/index.md at master · yashaka/selene",
+    "count": 7,
+    "uniques": 2
+  },
+  {
     "path": "/yashaka/selene/issues/188",
     "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
     "count": 6,
     "uniques": 5
-  },
-  {
-    "path": "/yashaka/selene/issues/465",
-    "title": "Collection.matching(be.present) returns True if empty · Issue #465 · yashaka/...",
-    "count": 6,
-    "uniques": 2
-  },
-  {
-    "path": "/yashaka/selene/blob/master/docs/index.md",
-    "title": "selene/index.md at master · yashaka/selene",
-    "count": 6,
-    "uniques": 1
   }
 ]
