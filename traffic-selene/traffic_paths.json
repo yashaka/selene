@@ -2,20 +2,14 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 231,
-    "uniques": 150
+    "count": 221,
+    "uniques": 146
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 14,
-    "uniques": 13
-  },
-  {
-    "path": "/yashaka/selene/issues",
-    "title": "Issues · yashaka/selene · GitHub",
-    "count": 14,
-    "uniques": 9
+    "count": 15,
+    "uniques": 14
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
@@ -24,10 +18,22 @@
     "uniques": 11
   },
   {
+    "path": "/yashaka/selene/issues",
+    "title": "Issues · yashaka/selene · GitHub",
+    "count": 13,
+    "uniques": 8
+  },
+  {
     "path": "/yashaka/selene/blob/master/README.md",
     "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 10,
-    "uniques": 9
+    "count": 9,
+    "uniques": 8
+  },
+  {
+    "path": "/yashaka/selene/issues/287",
+    "title": "от селена к селене · Issue #287 · yashaka/selene · GitHub",
+    "count": 9,
+    "uniques": 7
   },
   {
     "path": "/yashaka/selene/releases",
@@ -44,12 +50,6 @@
   {
     "path": "/yashaka/selene/issues/188",
     "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
-    "count": 7,
-    "uniques": 6
-  },
-  {
-    "path": "/yashaka/selene/issues/287",
-    "title": "from selenium to selene · Issue #287 · yashaka/selene · GitHub",
     "count": 7,
     "uniques": 6
   },
