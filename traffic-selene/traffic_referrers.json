@@ -1,23 +1,18 @@
 [
   {
     "referrer": "Google",
-    "count": 195,
-    "uniques": 73
+    "count": 174,
+    "uniques": 71
   },
   {
     "referrer": "github.com",
-    "count": 72,
-    "uniques": 41
+    "count": 69,
+    "uniques": 39
   },
   {
     "referrer": "yandex.ru",
-    "count": 10,
-    "uniques": 7
-  },
-  {
-    "referrer": "ecosia.org",
-    "count": 9,
-    "uniques": 8
+    "count": 8,
+    "uniques": 5
   },
   {
     "referrer": "testerhome.com",
@@ -30,11 +25,6 @@
     "uniques": 2
   },
   {
-    "referrer": "qiita.com",
-    "count": 4,
-    "uniques": 4
-  },
-  {
     "referrer": "youtube.com",
     "count": 4,
     "uniques": 1
@@ -45,8 +35,18 @@
     "uniques": 3
   },
   {
-    "referrer": "selene-docs-test.readthedocs.io",
+    "referrer": "pypi.org",
     "count": 2,
     "uniques": 2
+  },
+  {
+    "referrer": "qiita.com",
+    "count": 2,
+    "uniques": 2
+  },
+  {
+    "referrer": "radio-qa.com",
+    "count": 1,
+    "uniques": 1
   }
 ]
