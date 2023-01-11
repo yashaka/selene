@@ -1,18 +1,28 @@
 [
   {
     "referrer": "Google",
-    "count": 174,
-    "uniques": 71
+    "count": 183,
+    "uniques": 75
   },
   {
     "referrer": "github.com",
-    "count": 69,
-    "uniques": 39
+    "count": 66,
+    "uniques": 38
   },
   {
     "referrer": "yandex.ru",
+    "count": 12,
+    "uniques": 6
+  },
+  {
+    "referrer": "statics.teams.cdn.office.net",
     "count": 8,
-    "uniques": 5
+    "uniques": 3
+  },
+  {
+    "referrer": "t.me",
+    "count": 8,
+    "uniques": 1
   },
   {
     "referrer": "testerhome.com",
@@ -20,19 +30,14 @@
     "uniques": 2
   },
   {
-    "referrer": "statics.teams.cdn.office.net",
-    "count": 5,
-    "uniques": 2
+    "referrer": "Bing",
+    "count": 4,
+    "uniques": 4
   },
   {
     "referrer": "youtube.com",
     "count": 4,
     "uniques": 1
-  },
-  {
-    "referrer": "Bing",
-    "count": 3,
-    "uniques": 3
   },
   {
     "referrer": "pypi.org",
@@ -43,10 +48,5 @@
     "referrer": "qiita.com",
     "count": 2,
     "uniques": 2
-  },
-  {
-    "referrer": "radio-qa.com",
-    "count": 1,
-    "uniques": 1
   }
 ]
