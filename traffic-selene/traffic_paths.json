@@ -2,8 +2,8 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 220,
-    "uniques": 140
+    "count": 255,
+    "uniques": 156
   },
   {
     "path": "/yashaka/selene/search",
@@ -12,28 +12,34 @@
     "uniques": 2
   },
   {
-    "path": "/yashaka/selene/issues",
-    "title": "Issues · yashaka/selene · GitHub",
-    "count": 16,
-    "uniques": 9
-  },
-  {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 15,
+    "count": 21,
+    "uniques": 12
+  },
+  {
+    "path": "/yashaka/selene/issues",
+    "title": "Issues · yashaka/selene · GitHub",
+    "count": 20,
     "uniques": 11
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
     "count": 14,
-    "uniques": 12
+    "uniques": 11
   },
   {
     "path": "/yashaka/selene/blob/master/README.md",
     "title": "selene/README.md at master · yashaka/selene · GitHub",
     "count": 12,
     "uniques": 10
+  },
+  {
+    "path": "/yashaka/selene/tree/master/selene/core",
+    "title": "selene/selene/core at master · yashaka/selene · GitHub",
+    "count": 10,
+    "uniques": 6
   },
   {
     "path": "/yashaka/selene/issues/287",
@@ -48,15 +54,9 @@
     "uniques": 6
   },
   {
-    "path": "/yashaka/selene/issues/188",
-    "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
-    "count": 8,
-    "uniques": 6
-  },
-  {
-    "path": "/yashaka/selene/issues/465",
-    "title": "Collection.matching(be.present) returns True if empty · Issue #465 · yashaka/...",
+    "path": "/yashaka/selene/issues/128",
+    "title": "alert = driver().switch_to.alert alert.accept() throws NoAlertPresentExceptio...",
     "count": 7,
-    "uniques": 3
+    "uniques": 6
   }
 ]
