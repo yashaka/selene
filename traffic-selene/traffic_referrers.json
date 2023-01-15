@@ -1,18 +1,18 @@
 [
   {
     "referrer": "Google",
-    "count": 288,
-    "uniques": 108
+    "count": 304,
+    "uniques": 118
   },
   {
     "referrer": "github.com",
     "count": 94,
-    "uniques": 40
+    "uniques": 41
   },
   {
     "referrer": "yandex.ru",
     "count": 22,
-    "uniques": 9
+    "uniques": 10
   },
   {
     "referrer": "t.me",
@@ -25,6 +25,11 @@
     "uniques": 3
   },
   {
+    "referrer": "yandex.by",
+    "count": 7,
+    "uniques": 1
+  },
+  {
     "referrer": "testerhome.com",
     "count": 6,
     "uniques": 2
@@ -35,18 +40,13 @@
     "uniques": 4
   },
   {
+    "referrer": "pypi.org",
+    "count": 4,
+    "uniques": 4
+  },
+  {
     "referrer": "youtube.com",
     "count": 4,
     "uniques": 1
-  },
-  {
-    "referrer": "pypi.org",
-    "count": 3,
-    "uniques": 3
-  },
-  {
-    "referrer": "qiita.com",
-    "count": 3,
-    "uniques": 2
   }
 ]
