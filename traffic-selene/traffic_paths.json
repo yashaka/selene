@@ -2,8 +2,8 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 316,
-    "uniques": 187
+    "count": 306,
+    "uniques": 181
   },
   {
     "path": "/yashaka/selene/search",
@@ -14,14 +14,14 @@
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 27,
-    "uniques": 14
+    "count": 25,
+    "uniques": 13
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 20,
-    "uniques": 11
+    "count": 18,
+    "uniques": 10
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
@@ -38,8 +38,8 @@
   {
     "path": "/yashaka/selene/tree/master/selene/core",
     "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 12,
-    "uniques": 8
+    "count": 11,
+    "uniques": 7
   },
   {
     "path": "/yashaka/selene/issues/128",
@@ -48,15 +48,15 @@
     "uniques": 8
   },
   {
-    "path": "/yashaka/selene/issues/287",
-    "title": "от селена к селене · Issue #287 · yashaka/selene · GitHub",
-    "count": 9,
-    "uniques": 8
-  },
-  {
     "path": "/yashaka/selene/commits/master",
     "title": "Commits · yashaka/selene · GitHub",
     "count": 9,
     "uniques": 7
+  },
+  {
+    "path": "/yashaka/selene/issues/393",
+    "title": "support python 3.10 · Issue #393 · yashaka/selene · GitHub",
+    "count": 9,
+    "uniques": 6
   }
 ]
