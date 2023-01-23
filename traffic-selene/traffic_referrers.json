@@ -1,23 +1,18 @@
 [
   {
     "referrer": "Google",
-    "count": 395,
-    "uniques": 138
+    "count": 369,
+    "uniques": 135
   },
   {
     "referrer": "github.com",
-    "count": 69,
-    "uniques": 29
+    "count": 67,
+    "uniques": 28
   },
   {
     "referrer": "yandex.ru",
-    "count": 29,
-    "uniques": 13
-  },
-  {
-    "referrer": "t.me",
-    "count": 14,
-    "uniques": 1
+    "count": 24,
+    "uniques": 12
   },
   {
     "referrer": "selene-docs-test.readthedocs.io",
@@ -35,13 +30,18 @@
     "uniques": 6
   },
   {
-    "referrer": "DuckDuckGo",
-    "count": 7,
-    "uniques": 3
-  },
-  {
     "referrer": "yandex.by",
     "count": 7,
+    "uniques": 1
+  },
+  {
+    "referrer": "DuckDuckGo",
+    "count": 6,
+    "uniques": 2
+  },
+  {
+    "referrer": "t.me",
+    "count": 6,
     "uniques": 1
   },
   {
