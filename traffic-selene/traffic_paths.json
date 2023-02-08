@@ -2,14 +2,14 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 369,
-    "uniques": 190
+    "count": 368,
+    "uniques": 189
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 51,
-    "uniques": 22
+    "count": 63,
+    "uniques": 23
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
@@ -18,16 +18,22 @@
     "uniques": 17
   },
   {
-    "path": "/yashaka/selene/blob/master/README.md",
-    "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 22,
-    "uniques": 12
-  },
-  {
     "path": "/yashaka/selene/tree/master/selene/core",
     "title": "selene/selene/core at master · yashaka/selene · GitHub",
+    "count": 29,
+    "uniques": 13
+  },
+  {
+    "path": "/yashaka/selene/blob/master/README.md",
+    "title": "selene/README.md at master · yashaka/selene · GitHub",
     "count": 21,
     "uniques": 11
+  },
+  {
+    "path": "/yashaka/selene/issues/188",
+    "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
+    "count": 19,
+    "uniques": 15
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
@@ -36,27 +42,21 @@
     "uniques": 10
   },
   {
-    "path": "/yashaka/selene/issues/188",
-    "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
-    "count": 17,
-    "uniques": 13
+    "path": "/yashaka/selene/tree/master/selene/common",
+    "title": "selene/selene/common at master · yashaka/selene · GitHub",
+    "count": 16,
+    "uniques": 9
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 14,
+    "count": 15,
     "uniques": 10
   },
   {
-    "path": "/yashaka/selene/pulls",
-    "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 12,
-    "uniques": 9
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene/common",
-    "title": "selene/selene/common at master · yashaka/selene · GitHub",
-    "count": 12,
-    "uniques": 9
+    "path": "/yashaka/selene/projects",
+    "title": "Projects · yashaka/selene · GitHub",
+    "count": 14,
+    "uniques": 7
   }
 ]
