@@ -41,9 +41,9 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "^3.7"
-selenium = "==4.4.3"
+selenium = ">=4.4.3"
 future = "*"
-webdriver-manager = "==3.8.5"
+webdriver-manager = ">=3.8.5"
 typing-extensions = "==4.3.0"
 
 [tool.poetry.dev-dependencies]
