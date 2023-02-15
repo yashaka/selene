@@ -25,9 +25,8 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 
-from selene import be
+from selene import be, browser
 
-from selene.support.shared import browser
 from tests.acceptance.helpers.helper import get_test_driver
 from tests.helpers import time_spent
 

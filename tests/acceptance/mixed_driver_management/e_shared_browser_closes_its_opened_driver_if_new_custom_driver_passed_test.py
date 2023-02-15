@@ -25,7 +25,7 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.core.utils import ChromeType
 
-from selene.support.shared import browser
+from selene import browser
 from selene.support.webdriver import WebHelper
 
 

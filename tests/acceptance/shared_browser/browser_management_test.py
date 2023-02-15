@@ -1,7 +1,6 @@
 import pytest
 
-from selene import be
-from selene.support.shared import browser
+from selene import be, browser
 
 
 def test_shared_browser_not_reopen_on_action_after_been_closed():

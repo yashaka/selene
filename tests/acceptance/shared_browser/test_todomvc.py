@@ -1,5 +1,4 @@
-from selene import have, Config
-from selene.support.shared import browser
+from selene import have, browser
 
 
 def test_complete_task():

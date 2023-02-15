@@ -21,8 +21,7 @@
 # SOFTWARE.
 import os
 
-from selene import have
-from selene.support.shared import browser
+from selene import have, browser
 from tests.integration.helpers.givenpage import GivenPage
 
 empty_page = 'file://{}/../resources/empty.html'.format(

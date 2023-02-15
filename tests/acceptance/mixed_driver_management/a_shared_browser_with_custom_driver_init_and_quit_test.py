@@ -26,7 +26,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.core.utils import ChromeType
 
 from selene.support.conditions import have
-from selene.support.shared import browser
+from selene import browser
 from tests.acceptance.mixed_driver_management import todomvc
 
 

@@ -21,7 +21,7 @@
 # SOFTWARE.
 
 from selene.support.conditions import have
-from selene.support.shared import browser
+from selene import browser
 from tests.acceptance.mixed_driver_management import todomvc
 
 
