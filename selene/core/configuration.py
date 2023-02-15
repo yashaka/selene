@@ -28,7 +28,7 @@ import itertools
 import os
 import time
 from dataclasses import dataclass, field
-from typing import Callable, Optional, Union
+from typing import Callable, Optional, Union, Tuple
 
 from selene.common import fp
 from selene.common.fp import F
@@ -40,6 +40,78 @@ from selene.core.wait import Wait, E
 
 
 @dataclass
+class Persistent:
+    """
+    () = unset, i.e. undefined
+    (None,) = set to None
+    (Any,) = set to Any
+    """
+
+    timeout: Optional[float] = None
+    _timeout: Union[Tuple[()], Tuple[float]] = field(default=(), repr=False)
+
+    hold_browser_open: Optional[bool] = None
+    _hold_browser_open: Union[Tuple[()], Tuple[bool]] = field(
+        default=(), repr=False
+    )
+
+    def __getattribute__(self, item):
+        if item.startswith('__') and item.endswith('__'):
+            return object.__getattribute__(self, item)
+
+        def hasattr_(obj, name):
+            try:
+                object.__getattribute__(obj, name)
+                return True
+            except AttributeError:
+                return False
+
+        return (
+            object.__getattribute__(self, 'getattribute')(item)
+            if hasattr_(self, 'getattribute')
+            else object.__getattribute__(self, item)
+        )
+
+    def __post_init__(self):
+        self._timeout = (
+            (self.timeout is not None and self.timeout)
+            or (self._timeout != () and self._timeout[0])
+            or 4.0,
+        )
+        self._timeout = (
+            (self.timeout,)
+            if self.timeout is not None
+            else self._timeout or (4.0,)
+        )
+        self.timeout = None
+        self._hold_browser_open = (
+            (self.hold_browser_open,)
+            if self.hold_browser_open is not None
+            else self._hold_browser_open or (False,)
+        )
+        self.hold_browser_open = None
+
+        def getattribute(item):
+            stored = (
+                object.__getattribute__(self, item)
+                if item.startswith('_')
+                else object.__getattribute__(self, f'_{item}')
+            )
+            print('stored', stored)
+            return stored[0] if stored else None
+
+        self.getattribute = getattribute
+
+
+@dataclass
+class D:
+    a: str = ...
+    b: str = None
+    c: Tuple = ()
+    d: str = 'some'
+
+
+@dataclass
 class Config:
     """
     A one cross-cutting-concern-like object to group all options
@@ -47,6 +119,7 @@ class Config:
     As option the driver instance is also considered.
     More over, this config is not just config,
     but partially manages the driver lifecycle.
+    By this we definitely break SRP principle... in the name of Good:D
 
     All this makes it far from being a simple options data class...
     – yet kept as one «class for everything» to keep things easier to use,
@@ -59,6 +132,8 @@ class Config:
     This driver will be quit on exit by default.
     To keep its finalization on your side, set ``self.hold_browser_open=True``.
     """
+
+    build_driver: Callable[[Config], WebDriver] = ...
 
     @property
     def _driver_instance(self) -> WebDriver:
