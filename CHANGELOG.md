@@ -78,8 +78,34 @@
   - should we make original config (not shared) mutable?
 
 - TODO: config.location_strategy
+- TODO: this test should work:
+- 
+```python
+from selene import browser, have
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service as ChromeService
+from webdriver_manager.chrome import ChromeDriverManager
+
+def test_todos_storage_is_not_shared_between_browsers():
+    browser1 = browser.with_(driver=webdriver.Chrome(service=ChromeService(ChromeDriverManager().install())))
+    browser1.open('https://todomvc.com/examples/emberjs/')
+    browser.element('#new-todo').type('a').press_enter()
+    browser.element('#new-todo').type('b').press_enter()
+    browser.element('#new-todo').type('c').press_enter()
+    browser.all('#todo-list>li').should(have.exact_texts('a', 'b', 'c'))
+
+    browser2 = browser.with_(driver=webdriver.Chrome(service=ChromeService(ChromeDriverManager().install())))
+    browser2.open('https://todomvc.com/examples/emberjs/')
+    browser.element('#new-todo').type('d').press_enter()
+
+    browser.all('#todo-list>li').should(have.exact_texts('d'))
+
+```
 
 ## 2.0.0rc1 (to be released on ?.10.2022)
+
+- update selenium (with weakened dependency to >=4.4.3)
+- update webdriver_manager (with weakened dependency to >=3.8.5)
 
 - added `from selene import browser`
   - kind of «moved» `selene.support.shared.browser` to `selene.browser`
