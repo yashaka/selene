@@ -157,8 +157,7 @@ or using pip:
 Simply...
 
 ```python
-from selene.support.shared import browser
-from selene import by, be, have
+from selene import by, be, have, browser
 
 browser.open('https://google.com/ncr')
 browser.element(by.name('q')).should(be.blank)\
@@ -170,8 +169,7 @@ browser.all('.srg .g').should(have.size(10))\
 OR with custom setup
 
 ```python
-from selene.support.shared import browser
-from selene import by, be, have
+from selene import by, be, have, browser
 
 browser.config.browser_name = 'firefox'
 browser.config.base_url = 'https://google.com'
@@ -188,8 +186,8 @@ browser.all('.srg .g').should(have.size(10))\
 OR more Selenide from java style:
 
 ```python
-from selene.support.shared import config, browser
-from selene import by, be, have
+from selene import by, be, have, browser
+from selene.support.shared import config
 from selene.support.shared.jquery_style import s, ss
 
 
@@ -300,7 +298,8 @@ browser = Browser(Config(
 You can simply use the browser and config instance predefined for you in `selene.support.shared` module:
 
 ```python
-from selene.support.shared import browser, config
+from selene import browser
+from selene.support.shared import config
 
 # ... do the same with browser.*
 ```

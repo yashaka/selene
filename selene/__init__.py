@@ -225,4 +225,4 @@ browser = _shared.browser
 from selene.core.entity import Element, Collection  # noqa
 
 
-__version__ = '2.0.0b16'
+__version__ = '2.0.0b17'

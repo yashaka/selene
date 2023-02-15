@@ -79,7 +79,22 @@
 
 - TODO: config.location_strategy
 
-## 2.0.0b14 (to be released on 06.10.2022)
+## 2.0.0b17 (to be released on 16.11.2022)
+
+### NEW
+
+* `from selene import browser` ;)
+  * where browser == selene.support.shared.browser
+* selenium ==4.4.3 -> >=4.4.3
+* wdm ==3.8.5 -> >=3.8.5
+
+## 2.0.0b16 (to be released on 16.11.2022)
+
+### NEW
+
+* wdm 3.8.3 -> 3.8.5 with fix for chromedriver for m1 macs
+
+## 2.0.0b14 (released on 06.10.2022)
 
 ### NEW
 
