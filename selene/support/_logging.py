@@ -59,7 +59,6 @@ def wait_with(
     def decorator_factory(wait):
         def decorator(for_):
             def decorated(fn):
-
                 title = f'{wait.entity}: {fn}'
 
                 def translate(initial: str, item: Tuple[str, str]):
