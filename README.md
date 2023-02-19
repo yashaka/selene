@@ -1,5 +1,5 @@
 # Selene - User-oriented Web UI browser tests in Python (Selenide port)
-
+![Pre-release Version](https://img.shields.io/github/v/release/yashaka/selene?label=latest)
 [![tests](https://github.com/yashaka/selene/actions/workflows/tests.yml/badge.svg)](https://github.com/yashaka/selene/actions/workflows/tests.yml)
 [![codecov](https://codecov.io/gh/yashaka/selene/branch/master/graph/badge.svg)](https://codecov.io/gh/yashaka/selene)
 ![Free](https://img.shields.io/badge/free-open--source-green.svg)
@@ -7,12 +7,6 @@
 [![Project Template](https://img.shields.io/badge/project-template-9cf.svg)](https://github.com/yashaka/python-web-test)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Downloads](https://pepy.tech/badge/selene)](https://pepy.tech/project/selene)
-
-![GitHub stats in](https://raw.githubusercontent.com/yashaka/selene/traffic/traffic-selene/in_2021.svg)
-![GitHub views](https://raw.githubusercontent.com/yashaka/selene/traffic/traffic-selene/views.svg)
-![GitHub views per week](https://raw.githubusercontent.com/yashaka/selene/traffic/traffic-selene/views_per_week.svg)
-![GitHub clones](https://raw.githubusercontent.com/yashaka/selene/traffic/traffic-selene/clones.svg)
-![GitHub clones per week](https://raw.githubusercontent.com/yashaka/selene/traffic/traffic-selene/clones_per_week.svg)
 
 [![Join telegram chat https://t.me/selene_py](https://img.shields.io/badge/chat-telegram-blue)](https://t.me/selene_py)
 [![Присоединяйся к чату https://t.me/selene_py_ru](https://img.shields.io/badge/%D1%87%D0%B0%D1%82-telegram-red)](https://t.me/selene_py_ru)
@@ -54,10 +48,10 @@ Tests with Selene can be built either in a simple straightforward "selenide' sty
 
 ## Versions
   
-* Latest recommended version to use is >= [2.0.0b14](https://pypi.org/project/selene/2.0.0b14/)
+* Latest recommended version to use is [2.0.0b14+](https://pypi.org/project/selene/2.0.0b14/)
   * it's a completely new version of selene, with improved API and speed
-  * supports 3.7 <= python <= 3.10,
-  * bundled with Selenium >= 4.1
+  * supports python `3.7+`,
+  * bundled with Selenium `4.1+`
   * it's incompatible with [1.x](https://github.com/yashaka/selene/tree/1.x)
   * current master branch is pointed to 2.x
   * yet in alpha/beta stage, refining API, improving "migratability", and testing
@@ -67,15 +61,15 @@ Tests with Selene can be built either in a simple straightforward "selenide' sty
   * it is main version used by most selene users during last 2 years
   * it was proven to be stable for production use
   * its sources and corresponding README version can be found at [1.x](https://github.com/yashaka/selene/tree/1.x) branch.
-  * supports python 2.7, 3.5, 3.6, 3.7
+  * supports python `2.7, 3.5, 3.6, 3.7`
   
 THIS README DESCRIBES THE USAGE OF THE PRE-RELEASE version of Selene. For older docs look at [1.x](https://github.com/yashaka/selene/tree/1.x) branch.
   
 ### Migration guide
 
-From 1.0.1 to 2.0.0aLATEST:
-* upgrade to python 3.7
-* update selene to 2.0.0aLATEST
+From `1.0.2` to `2.0.0b<LATEST>`:
+* upgrade to python 3.7+
+* update selene to `2.0.0b<LATEST>`
   * find&replace the `collection.first()` method from `.first()` to `.first`
   * ensure all conditions like `text('foo')` are used via `be.*` or `have.*` syntax
     * example:
@@ -93,7 +87,7 @@ From 1.0.1 to 2.0.0aLATEST:
 
 ## Prerequisites
 
-[Python >= 3.7](https://www.python.org/downloads/release/python-370/)
+[Python 3.7+](https://www.python.org/downloads/release/python-370/)
 
 Given [pyenv](https://github.com/pyenv/pyenv) installed, installing needed version of Python is pretty simple:
 
