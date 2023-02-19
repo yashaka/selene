@@ -1,6 +1,42 @@
 name: tests
 
-on: [push, pull_request]
+on:
+
+  push:
+    paths-ignore:
+      - .run/
+      - examples/
+      - .coveragerc
+      - .gitignore
+      - .pylint-disabled-rules
+      - CHANGELOG.md
+      - CONTRIBUTING.md
+      - LICENSE
+      - mkdocs.yml
+      - README.md
+      - .github/workflows/deploy-mkdocs-poetry.yml
+      - .github/workflows/linters.yml
+      - .github/workflows/publish.yml
+      - .github/workflows/traffic2badge.yml
+      - .github/FUNDING.yml
+
+  pull_request:
+    paths-ignore:
+      - .run/
+      - examples/
+      - .coveragerc
+      - .gitignore
+      - .pylint-disabled-rules
+      - CHANGELOG.md
+      - CONTRIBUTING.md
+      - LICENSE
+      - mkdocs.yml
+      - README.md
+      - .github/workflows/deploy-mkdocs-poetry.yml
+      - .github/workflows/linters.yml
+      - .github/workflows/publish.yml
+      - .github/workflows/traffic2badge.yml
+      - .github/FUNDING.yml
 
 jobs:
 
