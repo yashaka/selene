@@ -4,7 +4,6 @@ from selene.support import shared
 
 
 def pytest_addoption(parser):
-
     parser.addoption(
         '--headless',
         help='headless mode',

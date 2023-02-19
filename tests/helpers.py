@@ -25,7 +25,6 @@ from selenium import webdriver
 
 
 def time_spent(function, *args, **kwargs):
-
     start_time = time.time()
     function(*args, **kwargs)
     end_time = time.time()
