@@ -41,7 +41,7 @@ on:
 jobs:
 
   test:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     env:
       DISPLAY: ":99"
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -51,7 +51,7 @@ jobs:
         python-version: [ '3.7', '3.10' ]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - uses: technote-space/get-diff-action@v5
         with:
@@ -62,7 +62,7 @@ jobs:
             tests.yml
 
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
         if: env.GIT_DIFF
@@ -92,7 +92,7 @@ jobs:
 
       # can be improved by flags/options
       - name: Code Coverage
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@v3
         with:
           file: ./coverage.xml # optional
           name: selene-codecov # optional
@@ -102,7 +102,7 @@ jobs:
 
       # can be organized better
       - name: Upload pytest test results
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: Code coverage
           path: |
