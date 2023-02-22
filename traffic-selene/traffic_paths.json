@@ -2,61 +2,61 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 558,
-    "uniques": 305
+    "count": 564,
+    "uniques": 303
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 89,
-    "uniques": 26
+    "count": 88,
+    "uniques": 25
   },
   {
     "path": "/yashaka/selene/tree/master/selene/core",
-    "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 39,
-    "uniques": 17
+    "title": "selene/selene/core at master · yashaka/selene",
+    "count": 38,
+    "uniques": 16
   },
   {
     "path": "/yashaka/selene/tree/master/selene/support",
     "title": "selene/selene/support at master · yashaka/selene · GitHub",
-    "count": 32,
+    "count": 35,
     "uniques": 7
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 27,
+    "count": 28,
     "uniques": 15
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 27,
-    "uniques": 8
-  },
-  {
-    "path": "/yashaka/selene/releases",
-    "title": "Releases · yashaka/selene · GitHub",
-    "count": 23,
-    "uniques": 14
-  },
-  {
-    "path": "/yashaka/selene/issues/287",
-    "title": "from selenium to selene · Issue #287 · yashaka/selene · GitHub",
-    "count": 22,
-    "uniques": 13
+    "count": 26,
+    "uniques": 7
   },
   {
     "path": "/yashaka/selene/tree/master/selene/support/shared",
     "title": "selene/selene/support/shared at master · yashaka/selene · GitHub",
-    "count": 20,
+    "count": 24,
     "uniques": 5
   },
   {
-    "path": "/yashaka/selene/tree/master/examples",
-    "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 19,
+    "path": "/yashaka/selene/issues/287",
+    "title": "from selenium to selene · Issue #287 · yashaka/selene · GitHub",
+    "count": 23,
     "uniques": 14
+  },
+  {
+    "path": "/yashaka/selene/network/dependents",
+    "title": "Network Dependents · yashaka/selene",
+    "count": 21,
+    "uniques": 2
+  },
+  {
+    "path": "/yashaka/selene/releases",
+    "title": "Releases · yashaka/selene · GitHub",
+    "count": 19,
+    "uniques": 11
   }
 ]
