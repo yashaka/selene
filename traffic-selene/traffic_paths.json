@@ -2,13 +2,13 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 579,
-    "uniques": 304
+    "count": 590,
+    "uniques": 301
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 82,
+    "count": 80,
     "uniques": 27
   },
   {
@@ -18,28 +18,34 @@
     "uniques": 16
   },
   {
+    "path": "/yashaka/selene/issues",
+    "title": "Issues · yashaka/selene · GitHub",
+    "count": 33,
+    "uniques": 17
+  },
+  {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 32,
+    "count": 33,
     "uniques": 8
   },
   {
     "path": "/yashaka/selene/tree/master/selene/support",
     "title": "selene/selene/support at master · yashaka/selene",
-    "count": 32,
+    "count": 31,
     "uniques": 7
   },
   {
-    "path": "/yashaka/selene/issues",
-    "title": "Issues · yashaka/selene · GitHub",
-    "count": 30,
-    "uniques": 15
+    "path": "/yashaka/selene/issues/439",
+    "title": "consider a way to customize \"locator description\" · Issue #439 · yashaka/selene",
+    "count": 28,
+    "uniques": 16
   },
   {
     "path": "/yashaka/selene/issues/287",
     "title": "from selenium to selene · Issue #287 · yashaka/selene · GitHub",
-    "count": 25,
-    "uniques": 17
+    "count": 26,
+    "uniques": 18
   },
   {
     "path": "/yashaka/selene/tree/master/selene/support/shared",
@@ -48,15 +54,9 @@
     "uniques": 5
   },
   {
-    "path": "/yashaka/selene/network/dependents",
-    "title": "Network Dependents · yashaka/selene",
-    "count": 21,
-    "uniques": 2
-  },
-  {
     "path": "/yashaka/selene/releases/tag/2.0.0b17",
     "title": "Release 2.0.0b17 · yashaka/selene · GitHub",
-    "count": 20,
+    "count": 21,
     "uniques": 12
   }
 ]
