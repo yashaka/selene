@@ -1,13 +1,13 @@
 [
   {
     "referrer": "Google",
-    "count": 440,
-    "uniques": 156
+    "count": 453,
+    "uniques": 159
   },
   {
     "referrer": "github.com",
-    "count": 397,
-    "uniques": 43
+    "count": 404,
+    "uniques": 46
   },
   {
     "referrer": "ecosia.org",
@@ -16,13 +16,13 @@
   },
   {
     "referrer": "pypi.org",
-    "count": 67,
-    "uniques": 10
+    "count": 69,
+    "uniques": 12
   },
   {
     "referrer": "yandex.ru",
-    "count": 43,
-    "uniques": 14
+    "count": 47,
+    "uniques": 16
   },
   {
     "referrer": "automated-testing.info",
