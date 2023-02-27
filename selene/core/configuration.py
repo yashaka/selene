@@ -27,8 +27,8 @@ import dataclasses
 import itertools
 import os
 import time
-from dataclasses import dataclass, field
-from typing import Callable, Optional, Union, Tuple
+from dataclasses import dataclass, field, asdict, InitVar
+from typing import Callable, Optional, Union, Tuple, List
 
 from selene.common import fp
 from selene.common.fp import F
@@ -37,78 +37,6 @@ from selene.core.exceptions import TimeoutException
 from selenium.webdriver.remote.webdriver import WebDriver
 
 from selene.core.wait import Wait, E
-
-
-@dataclass
-class Persistent:
-    """
-    () = unset, i.e. undefined
-    (None,) = set to None
-    (Any,) = set to Any
-    """
-
-    timeout: Optional[float] = None
-    _timeout: Union[Tuple[()], Tuple[float]] = field(default=(), repr=False)
-
-    hold_browser_open: Optional[bool] = None
-    _hold_browser_open: Union[Tuple[()], Tuple[bool]] = field(
-        default=(), repr=False
-    )
-
-    def __getattribute__(self, item):
-        if item.startswith('__') and item.endswith('__'):
-            return object.__getattribute__(self, item)
-
-        def hasattr_(obj, name):
-            try:
-                object.__getattribute__(obj, name)
-                return True
-            except AttributeError:
-                return False
-
-        return (
-            object.__getattribute__(self, 'getattribute')(item)
-            if hasattr_(self, 'getattribute')
-            else object.__getattribute__(self, item)
-        )
-
-    def __post_init__(self):
-        self._timeout = (
-            (self.timeout is not None and self.timeout)
-            or (self._timeout != () and self._timeout[0])
-            or 4.0,
-        )
-        self._timeout = (
-            (self.timeout,)
-            if self.timeout is not None
-            else self._timeout or (4.0,)
-        )
-        self.timeout = None
-        self._hold_browser_open = (
-            (self.hold_browser_open,)
-            if self.hold_browser_open is not None
-            else self._hold_browser_open or (False,)
-        )
-        self.hold_browser_open = None
-
-        def getattribute(item):
-            stored = (
-                object.__getattribute__(self, item)
-                if item.startswith('_')
-                else object.__getattribute__(self, f'_{item}')
-            )
-            print('stored', stored)
-            return stored[0] if stored else None
-
-        self.getattribute = getattribute
-
-
-@dataclass
-class D:
-    a: str = ...
-    b: str = None
-    c: Tuple = ()
-    d: str = 'some'
 
 
 @dataclass
@@ -126,6 +54,8 @@ class Config:
     especially taking into account some historical reasons of Selene's design.
     """
 
+    # todo: consider removing Callable[[], WebDriver] from driver type
+    #       and adding another optional field like driver_factory
     driver: Union[WebDriver, Callable[[], WebDriver]] = ...
     """
     A driver instance or a function that returns a driver instance.
@@ -133,6 +63,7 @@ class Config:
     To keep its finalization on your side, set ``self.hold_browser_open=True``.
     """
 
+    # todo: should we name it as driver_factory (a more classic name)?
     build_driver: Callable[[Config], WebDriver] = ...
 
     @property
