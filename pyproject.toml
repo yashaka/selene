@@ -14,7 +14,8 @@ keywords = [
 	"widget",
 	"wrapper"
 ]
-homepage = "https://github.com/yashaka/selene/"
+homepage = "https://yashaka.github.io/selene/"
+repository = "http://github.com/yashaka/selene/"
 documentation = "https://yashaka.github.io/selene/"
 classifiers = [
 	"Programming Language :: Python",
@@ -40,6 +41,9 @@ packages = [
 	{include = "selene/support/conditions"},
 ]
 
+[tool.poetry.urls]
+Changelog = "https://github.com/yashaka/selene/releases"
+
 [tool.poetry.dependencies]
 python = "^3.7"
 selenium = ">=4.4.3"
@@ -62,6 +66,7 @@ optional = true
 mkdocs = "*"
 mkdocs-material = "*"
 mkdocstrings = {extras = ["python"], version = "^0.19.0"}
+mkdocs-redirects = "^1.2.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
