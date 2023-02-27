@@ -16,20 +16,20 @@ alongside the `mkdocs.yml` configuration file.
 - Try to pick concise and descriptive filename
 (coping the whole header is not always a good idea).
 - Tag (label) document type at the end of filename,
-separated by `.` (dot) and before `.md` extension,
+separated by `-` (hyphen) as well and before `.md` extension,
 sticking to the following recommendations:
-    - `*.guide.md` - like "long-read" with detailed explanation,
-    or article about fundamental things (e.g. `quick-start.guide.md`);
-    - `*.howto.md` - document type is more focused on
+    - `*-guide.md` - like "long-read" with detailed explanation,
+    or article about fundamental things (e.g. `quick-start-guide.md`);
+    - `*-howto.md` - document type is more focused on
     solving certain task / issue / problem.
     A good choice for pages in FAQ section.
     Please, avoid duplication of "how-to" in the filename
-    (e.g. `custom-chrome-profile.howto.md`)
-    - `*.tutorial.md` - step by step instruction
-    (e.g. `deploy-selenium-grid.tutorial.md`);
-    - `*.example.md` - demonstrates usage of Selene.
+    (e.g. `custom-chrome-profile-howto.md`)
+    - `*-tutorial.md` - step by step instruction
+    (e.g. `deploy-selenium-grid-tutorial.md`);
+    - `*-example.md` - demonstrates usage of Selene.
     Use Cases section is the right place for these documents
-    (e.g. `allure-step-annotations.example.md`)
+    (e.g. `allure-step-annotations-example.md`)
 
 <!-- markdownlint-disable MD046 -->
 !!! warning "Don't use names which begin with a dot"
@@ -50,16 +50,16 @@ Given this layout, pages would be generated for the following URLs:
     ```plain
     📁 docs/
     ├── 📁 contribution/
-        ├── 📄 to-source-code.guide.md
-        └── 📄 code-conventions.guide.md
+        ├── 📄 to-source-code-guide.md
+        └── 📄 code-conventions-guide.md
     ├── 📄 index.md
     └── 📄 license.md
     ```
 
 === "URLs"
 
-    /contribution/to-source-code.guide/  
-    /contribution/code-conventions.guide/  
+    /contribution/to-source-code-guide/  
+    /contribution/code-conventions-guide/  
     /  
     /license/
 <!-- markdownlint-enable MD046 -->
@@ -114,33 +114,33 @@ Selene has following file layout:
         ├── 🎨 logo-icon.png
         └── 🎨 favicon.png
 ├── 📁 contribution/
-    ├── 📄 code-conventions.guide.md
-    ├── 📄 how-to-organize-docs.guide.md
-    ├── 📄 how-to-write-docs.guide.md
+    ├── 📄 code-conventions-guide.md
+    ├── 📄 how-to-organize-docs-guide.md
+    ├── 📄 how-to-write-docs-guide.md
     ├── 📄 index.md
-    ├── 📄 release-workflow.guide.md
-    ├── 📄 to-documentation.guide.md
-    └── 📄 to-source-code.guide.md
+    ├── 📄 release-workflow-guide.md
+    ├── 📄 to-documentation-guide.md
+    └── 📄 to-source-code-guide.md
 ├── 📁 faq/
     ├── 📁 assets/
         └── 🎨 chrome-driver-window.png
     ├── 📄 index.md
     ├── 📄 q-tbd-1.howto.md
-    └── 📄 custom-chrome-profile.howto.md
+    └── 📄 custom-chrome-profile-howto.md
 ├── 📁 learn-advanced/
     ├── 📁 assets/
     ├── 📄 index.md
-    ├── 📄 learn-deeper-1.tutorial.md
-    └── 📄 learn-deeper-2.guide.md
+    ├── 📄 learn-deeper-1-tutorial.md
+    └── 📄 learn-deeper-2-guide.md
 ├── 📁 learn-basics/
     ├── 📄 index.md
-    ├── 📄 quick-start.tutorial.md
-    └── 📄 learn-something.tutorial.md
+    ├── 📄 quick-start-tutorial.md
+    └── 📄 learn-something-tutorial.md
 ├── 📁 use-cases/
     ├── 📁 assets/
         └── 🎨 my-pic.png
-    ├── 📄 ex-tbd-1.example.md
-    ├── 📄 ex-tbd-2.example.md
+    ├── 📄 ex-tbd-1-example.md
+    ├── 📄 ex-tbd-2-example.md
     └── 📄 index.md
 ├── 📄 changelog.md
 ├── 📄 index.md
@@ -155,7 +155,7 @@ Separate links are required because README is rendered on three place:
 GitHub, PyPI and Selene documentation website.
 - `docs/license.md` and `docs/changelog.md` are full snippets of
 LICENSE.md and CHANGELOG.md from the project root.
-- `contribution/to-source-code.guide.md` is snippet
+- `contribution/to-source-code-guide.md` is snippet
 of CONTRIBUTING.md from the root
 (except two links at the end of the page).
 - Images for each section (page type) are located in `assets` subfolder.
@@ -188,5 +188,5 @@ License
 
 <!-- References -->
 [mkdocs-user-guide]: https://www.mkdocs.org/user-guide/writing-your-docs/
-[syntax-guide]: how-to-write-docs.guide.md
+[syntax-guide]: how-to-write-docs-guide.md
 [snippets-doc]: https://facelessuser.github.io/pymdown-extensions/extensions/snippets/

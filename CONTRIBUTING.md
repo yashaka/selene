@@ -88,5 +88,5 @@ pages.
 <!-- --8<-- [end:githubSection] -->
 
 <!-- GitHub only references -->
-[code-conventions]: https://yashaka.github.io/selene/contribution/code-conventions.guide/
-[release-workflow]: https://yashaka.github.io/selene/contribution/release-workflow.guide/
+[code-conventions]: https://yashaka.github.io/selene/contribution/code-conventions-guide/
+[release-workflow]: https://yashaka.github.io/selene/contribution/release-workflow-guide/

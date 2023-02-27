@@ -13,20 +13,20 @@ repo_url: https://github.com/yashaka/selene
 nav:
   - Overview: index.md
   # - Learn Basics:
-  #   - Stub Title 1: learn-basics/automate-testing.guide.md
+  #   - Stub Title 1: learn-basics/automate-testing-guide.md
   # - Learn Advanced:
-  #   - Stub Title 1: learn-advanced/automate-testing.guide.md
+  #   - Stub Title 1: learn-advanced/automate-testing-guide.md
   # - FAQ:
-  #   - Stub Title 1: faq/custom-chrome-profile.howto.md
+  #   - Stub Title 1: faq/custom-chrome-profile-howto.md
   # - Use Cases:
-  #   - Stub Title 1: use-cases/path-to-some.example.md
+  #   - Stub Title 1: use-cases/path-to-some-example.md
   - Contribution:
-    - How to contribute: contribution/to-source-code.guide.md
-    - Code conventions: contribution/code-conventions.guide.md
-    - Release workflow: contribution/release-workflow.guide.md
-    - How to contribute to docs: contribution/to-documentation.guide.md
-    - How to organize docs: contribution/how-to-organize-docs.guide.md
-    - How to write docs: contribution/how-to-write-docs.guide.md
+    - How to contribute: contribution/to-source-code-guide.md
+    - Code conventions: contribution/code-conventions-guide.md
+    - Release workflow: contribution/release-workflow-guide.md
+    - How to contribute to docs: contribution/to-documentation-guide.md
+    - How to organize docs: contribution/how-to-organize-docs-guide.md
+    - How to write docs: contribution/how-to-write-docs-guide.md
   - Changelog: changelog.md
   - License: license.md
 
@@ -86,7 +86,7 @@ plugins:
   - mkdocstrings
   - redirects:
       redirect_maps:
-          CONTRIBUTING.md: contribution/to-source-code.guide.md
+          CONTRIBUTING.md: contribution/to-source-code-guide.md
 
 # Extensions
 markdown_extensions:

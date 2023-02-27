@@ -152,7 +152,7 @@ please refer to its [GitHub page][markdownlint-cli2-github].
 <!-- markdownlint-enable MD046 -->
 
 <!-- References -->
-[contributing]: to-source-code.guide.md
+[contributing]: to-source-code-guide.md
 [markdownlint-extension]: https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint
 [vale-cli-plugin]: https://plugins.jetbrains.com/plugin/19613-vale-cli
 [vale-github-flavored-markdown]: https://vale.sh/docs/topics/scoping/#markdown
@@ -160,5 +160,5 @@ please refer to its [GitHub page][markdownlint-cli2-github].
 [markdownlint-cli2-github]: https://github.com/DavidAnson/markdownlint-cli2
 [pymarkdown-linter]: https://github.com/jackdewinter/pymarkdown
 [markdownlint-cli1-github]: https://github.com/igorshubovych/markdownlint-cli
-[organizing-docs]: how-to-organize-docs.guide.md
-[writing-docs]: how-to-write-docs.guide.md
+[organizing-docs]: how-to-organize-docs-guide.md
+[writing-docs]: how-to-write-docs-guide.md

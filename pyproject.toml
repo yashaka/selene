@@ -63,8 +63,8 @@ codecov = "*"
 optional = true
 
 [tool.poetry.group.docs.dependencies]
-mkdocs = "*"
-mkdocs-material = "*"
+mkdocs = "^1.4.2"
+mkdocs-material = "^9.0.15"
 mkdocstrings = {extras = ["python"], version = "^0.19.0"}
 mkdocs-redirects = "^1.2.0"
 
