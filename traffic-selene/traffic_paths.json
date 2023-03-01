@@ -2,56 +2,56 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 533,
-    "uniques": 280
+    "count": 519,
+    "uniques": 262
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 67,
-    "uniques": 19
+    "count": 57,
+    "uniques": 18
   },
   {
     "path": "/yashaka/selene/issues/439",
     "title": "consider a way to customize \"locator description\" · Issue #439 · yashaka/selene",
-    "count": 32,
-    "uniques": 18
+    "count": 42,
+    "uniques": 19
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 31,
+    "count": 36,
     "uniques": 14
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene/support",
-    "title": "selene/selene/support at master · yashaka/selene",
-    "count": 31,
-    "uniques": 7
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 31,
+    "count": 33,
+    "uniques": 7
+  },
+  {
+    "path": "/yashaka/selene/tree/master/selene/support",
+    "title": "selene/selene/support at master · yashaka/selene",
+    "count": 30,
+    "uniques": 7
+  },
+  {
+    "path": "/yashaka/selene/tree/master/selene/support/shared",
+    "title": "selene/selene/support/shared at master · yashaka/selene · GitHub",
+    "count": 25,
     "uniques": 6
   },
   {
     "path": "/yashaka/selene/tree/master/selene/core",
     "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 29,
-    "uniques": 12
+    "count": 24,
+    "uniques": 11
   },
   {
     "path": "/yashaka/selene/issues/287",
     "title": "from selenium to selene · Issue #287 · yashaka/selene · GitHub",
-    "count": 27,
-    "uniques": 18
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene/support/shared",
-    "title": "selene/selene/support/shared at master · yashaka/selene",
-    "count": 24,
-    "uniques": 5
+    "count": 22,
+    "uniques": 15
   },
   {
     "path": "/yashaka/selene/releases/tag/2.0.0b17",
