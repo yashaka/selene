@@ -16,8 +16,8 @@ nav:
   #   - Stub Title 1: learn-basics/automate-testing-guide.md
   # - Learn Advanced:
   #   - Stub Title 1: learn-advanced/automate-testing-guide.md
-  # - FAQ:
-  #   - Stub Title 1: faq/custom-chrome-profile-howto.md
+  - FAQ:
+    - How to use custom profile: faq/custom-user-profile-howto.md
   # - Use Cases:
   #   - Stub Title 1: use-cases/path-to-some-example.md
   - Contribution:
@@ -56,27 +56,25 @@ theme:
   features:
     - search.suggest
     - search.highlight
+    - content.code.copy
 
 extra:
   social:
+    - icon: material/web
+      link: https://autotest.how/sdet-start-ru
+      name: Запишись на курс
     - icon: fontawesome/brands/telegram
       link: https://t.me/selene_py_ru
       name: Selene.py на русском
     - icon: material/web
-      link: https://autotest.how/selene-ru
-      name: Набор на курс
-    - icon: simple/leanpub
-      link: https://t.me/selene_py_ru
-      name: Книга на Leanpub
-    - icon: material/web
-      link: https://autotest.how/selene
+      link: https://autotest.how/sdet-start
       name: Sign up to Selene course
     - icon: fontawesome/brands/telegram
       link: https://t.me/selene_py
       name: Selene.py (in English)
     - icon: material/web
-      link: https://autotest.how/selene-uk
-      name: Набiр на курс
+      link: https://autotest.how/sdet-start-uk
+      name: Реєструйся на курс
 
 
 # Plugins
@@ -86,7 +84,10 @@ plugins:
   - mkdocstrings
   - redirects:
       redirect_maps:
-          CONTRIBUTING.md: contribution/to-source-code-guide.md
+        CONTRIBUTING.md: contribution/to-source-code-guide.md
+        CHANGELOG.md: changelog.md
+        LICENSE.md: license.md
+
 
 # Extensions
 markdown_extensions:

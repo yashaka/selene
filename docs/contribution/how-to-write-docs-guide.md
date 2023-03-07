@@ -158,12 +158,12 @@ and use relative URL to it (see example below).
     Here's our logo (hover to see the title text):
 
     Inline-style: 
-    ![selene logo](https://yashaka.github.io/selene/assets/images/apple-touch-icon.png "Selene logo")
+    ![selene logo](../assets/images/logo-icon.png "Selene logo")
 
     Reference-style: 
     ![alt text][logo]
 
-    [logo]: https://yashaka.github.io/selene/assets/images/apple-touch-icon.png "Logo Title Text 2"
+    [logo]: ../assets/images/logo-icon.png "Logo Title Text 2"
 <!-- markdownlint-enable MD046 -->
 
 ### Code and Syntax Highlighting

@@ -104,7 +104,7 @@ Selene has following file layout:
 
     - Can be out-dated here, please look into `docs` folder
     or ask project owner where to put new document.
-    - Some filenames are not real, for demonstration purpose only).
+    - Some filenames are not real (for demonstration purpose only).
 <!-- markdownlint-enable MD046 -->
 
 ```plain
@@ -125,7 +125,7 @@ Selene has following file layout:
     ├── 📁 assets/
         └── 🎨 chrome-driver-window.png
     ├── 📄 index.md
-    ├── 📄 q-tbd-1.howto.md
+    ├── 📄 q-tbd-1-howto.md
     └── 📄 custom-chrome-profile-howto.md
 ├── 📁 learn-advanced/
     ├── 📁 assets/
