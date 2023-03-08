@@ -2,38 +2,38 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 430,
-    "uniques": 236
+    "count": 424,
+    "uniques": 228
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 47,
-    "uniques": 24
+    "count": 44,
+    "uniques": 21
   },
   {
     "path": "/yashaka/selene/issues/439",
     "title": "consider a way to customize \"locator description\" · Issue #439 · yashaka/selene",
-    "count": 38,
-    "uniques": 20
+    "count": 40,
+    "uniques": 21
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 27,
-    "uniques": 17
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene/core",
-    "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 27,
-    "uniques": 15
+    "count": 25,
+    "uniques": 16
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 26,
+    "count": 25,
     "uniques": 14
+  },
+  {
+    "path": "/yashaka/selene/tree/master/selene/core",
+    "title": "selene/selene/core at master · yashaka/selene · GitHub",
+    "count": 23,
+    "uniques": 12
   },
   {
     "path": "/yashaka/selene/issues/287",
@@ -45,18 +45,18 @@
     "path": "/yashaka/selene/blob/master/README.md",
     "title": "selene/README.md at master · yashaka/selene · GitHub",
     "count": 17,
-    "uniques": 13
-  },
-  {
-    "path": "/yashaka/selene/blob/master/examples/select_from_table.py",
-    "title": "selene/select_from_table.py at master · yashaka/selene · GitHub",
-    "count": 16,
-    "uniques": 11
+    "uniques": 12
   },
   {
     "path": "/yashaka/selene/tree/master/docs",
     "title": "selene/docs at master · yashaka/selene · GitHub",
     "count": 15,
     "uniques": 7
+  },
+  {
+    "path": "/yashaka/selene/blob/master/examples/custom_conditions.py",
+    "title": "selene/custom_conditions.py at master · yashaka/selene · GitHub",
+    "count": 14,
+    "uniques": 9
   }
 ]
