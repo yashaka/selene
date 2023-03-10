@@ -376,6 +376,8 @@ and imported respective classes: **Firefox** and **FirefoxOptions**.
     This workaround has a strange side effect: coping profile and cache data
     into `~/.mozilla/firefox/` and `~/.cache/mozilla/firefox` directories.
     In any cae, it's better than a failure during browser start.
+
+    [snap-firefox-comment]: https://github.com/SeleniumHQ/selenium/issues/11414#issuecomment-136673035
 <!-- markdownlint-enable MD046 -->
 
 <!-- markdownlint-disable MD046 -->
@@ -508,6 +510,3 @@ grant permissions for `geckodriver` executable and `firefox` itself*.
 [pathlib-path]: https://docs.python.org/3/library/pathlib.html#pathlib.Path
 [python-pathlib]: https://docs.python.org/3/library/pathlib.html
 [firefox-profile-manager]: https://support.mozilla.org/en-US/kb/profile-manager-create-remove-switch-firefox-profiles
-<!-- markdownlint-disable MD053 -->
-[snap-firefox-comment]: https://github.com/SeleniumHQ/selenium/issues/11414#issuecomment-136673035
-<!-- markdownlint-enable MD053 -->
