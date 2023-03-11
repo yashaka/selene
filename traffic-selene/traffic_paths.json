@@ -2,26 +2,32 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 423,
-    "uniques": 223
+    "count": 446,
+    "uniques": 231
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 42,
-    "uniques": 19
+    "count": 45,
+    "uniques": 18
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 27,
-    "uniques": 15
+    "count": 29,
+    "uniques": 14
   },
   {
     "path": "/yashaka/selene/tree/master/selene/core",
     "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 24,
+    "count": 28,
     "uniques": 11
+  },
+  {
+    "path": "/yashaka/selene/tree/master/examples",
+    "title": "selene/examples at master · yashaka/selene · GitHub",
+    "count": 20,
+    "uniques": 14
   },
   {
     "path": "/yashaka/selene/commits/master",
@@ -30,33 +36,27 @@
     "uniques": 12
   },
   {
+    "path": "/yashaka/selene/tree/master/tests",
+    "title": "selene/tests at master · yashaka/selene · GitHub",
+    "count": 19,
+    "uniques": 14
+  },
+  {
     "path": "/yashaka/selene/issues/287",
     "title": "from selenium to selene · Issue #287 · yashaka/selene · GitHub",
-    "count": 20,
-    "uniques": 12
+    "count": 19,
+    "uniques": 13
   },
   {
     "path": "/yashaka/selene/issues/439",
     "title": "consider a way to customize \"locator description\" · Issue #439 · yashaka/selene",
-    "count": 19,
-    "uniques": 10
-  },
-  {
-    "path": "/yashaka/selene/tree/master/examples",
-    "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 18,
-    "uniques": 12
+    "count": 17,
+    "uniques": 9
   },
   {
     "path": "/yashaka/selene/releases",
     "title": "Releases · yashaka/selene",
     "count": 17,
     "uniques": 8
-  },
-  {
-    "path": "/yashaka/selene/blob/master/README.md",
-    "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 16,
-    "uniques": 12
   }
 ]
