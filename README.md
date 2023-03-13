@@ -318,7 +318,7 @@ from selene.support.shared import browser, config
 # ... do the same with browser.*
 ```
 
-So you don't need to create you driver instance manually. It will be created for you automatically.
+So you don't need to create your driver instance manually. It will be created for you automatically.
 
 Yet, if you need some special case, like working with remote driver, etc., you can still use shared browser object, while providing driver to it through:
 

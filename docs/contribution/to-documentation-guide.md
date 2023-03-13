@@ -7,11 +7,16 @@ One key difference: name your git branch
 starting with prefix `docs-`  
 For instance, `docs-faq-custom-command` or `docs-ci-improve`
 
+[contributing]: to-source-code-guide.md
+
 Before you start,
 we recommend reading our two short pages:
 
 - [How to organize docs][organizing-docs]
 - [How to write docs][writing-docs]
+
+[organizing-docs]: how-to-organize-docs-guide.md
+[writing-docs]: how-to-write-docs-guide.md
 
 Before you ask, look through existing documentation pages and their raw view
 as source of accepted style, formatting, used UI blocks and so on.
@@ -36,6 +41,25 @@ For local docs deploy:
     `mkdocs serve`
 
 5. Open printed URL in browser, e.g. `http://127.0.0.1:8000/selene/`
+
+<!-- markdownlint-disable MD046 -->
+??? warning "DO NOT open Changelog and License pages on Windows local server"
+
+    Because of redirects from upper case URLs to lower case
+    there is "infinite refresh" when you navigate to pages
+    `changelog/` and `license/` on Windows (only).
+
+    Please, comment this lines (as shown below) in `mkdocs.yml` file
+    if you really need to preview them locally:
+
+    ```yaml
+    - redirects:
+        redirect_maps:
+          CONTRIBUTING.md: contribution/to-source-code-guide.md
+          # CHANGELOG.md: changelog.md
+          # LICENSE.md: license.md
+    ```
+<!-- markdownlint-enable MD046 -->
 
 While server is running, any saved changes in `docs` directory
 will reload the browser tab.
@@ -73,6 +97,8 @@ To stop server press ++ctrl+c++ in your terminal
 ### Using VS Code extension
 
 Install [markdownlint][markdownlint-extension] for VS Code.
+
+[markdownlint-extension]: https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint
 
 Open **Problems** tab in VS Code ++ctrl+shift+m++. All markdownlint warnings rows start with `MD###`.
 
@@ -130,6 +156,13 @@ The most popular tools among them are:
 - [pymarkdown][pymarkdown-linter] (Python is required)
 - [markdownlint-cli][markdownlint-cli1-github] (Node.js is required)
 
+[vale-cli-plugin]: https://plugins.jetbrains.com/plugin/19613-vale-cli
+[vale-github-flavored-markdown]: https://vale.sh/docs/topics/scoping/#markdown
+[awesome-console-plugin]: https://plugins.jetbrains.com/plugin/7677-awesome-console
+[markdownlint-cli2-github]: https://github.com/DavidAnson/markdownlint-cli2
+[pymarkdown-linter]: https://github.com/jackdewinter/pymarkdown
+[markdownlint-cli1-github]: https://github.com/igorshubovych/markdownlint-cli
+
 ### Using npm package
 
 If you have Node.js installed on your machine, you can use `markdownlint-cli2`
@@ -146,19 +179,6 @@ please refer to its [GitHub page][markdownlint-cli2-github].
 !!! note ""
 
     We plan to add CI job (or step) with `pre-commit` execution,
-    which will lint all MarkDown documents for you.
+    which will lint all Markdown documents for you.
     Just bear with us while we implement this task.
-
 <!-- markdownlint-enable MD046 -->
-
-<!-- References -->
-[contributing]: to-source-code-guide.md
-[markdownlint-extension]: https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint
-[vale-cli-plugin]: https://plugins.jetbrains.com/plugin/19613-vale-cli
-[vale-github-flavored-markdown]: https://vale.sh/docs/topics/scoping/#markdown
-[awesome-console-plugin]: https://plugins.jetbrains.com/plugin/7677-awesome-console
-[markdownlint-cli2-github]: https://github.com/DavidAnson/markdownlint-cli2
-[pymarkdown-linter]: https://github.com/jackdewinter/pymarkdown
-[markdownlint-cli1-github]: https://github.com/igorshubovych/markdownlint-cli
-[organizing-docs]: how-to-organize-docs-guide.md
-[writing-docs]: how-to-write-docs-guide.md
