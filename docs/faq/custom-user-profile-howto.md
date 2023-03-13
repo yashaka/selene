@@ -17,12 +17,12 @@ def test_chrome_fresh_profile_simple():
     from selenium.webdriver import Chrome, ChromeOptions
 
     browser_options = ChromeOptions()
-    browser_options.add_argument("user-data-dir=D:\_cache\Chrome\Fresh User Data")
-    browser_options.add_argument("profile-directory=Default")
+    browser_options.add_argument('user-data-dir=D:\_cache\Chrome\Fresh User Data')
+    browser_options.add_argument('profile-directory=Default')
 
     browser.config.driver = Chrome(options=browser_options)
 
-    browser.open("chrome://version/")
+    browser.open('chrome://version/')
     browser.quit()
 ```
 
@@ -34,12 +34,12 @@ def test_firefox_existing_profile():
     from selenium.webdriver import Firefox, FirefoxOptions
 
     browser_options = FirefoxOptions()
-    browser_options.add_argument("-profile")
-    browser_options.add_argument("/home/user/snap/firefox/common/.mozilla/firefox/t2y46pn0.default")
+    browser_options.add_argument('-profile')
+    browser_options.add_argument('/home/user/snap/firefox/common/.mozilla/firefox/t2y46pn0.default')
 
     browser.config.driver = Firefox(options=browser_options)
 
-    browser.open("about:profiles")
+    browser.open('about:profiles')
     browser.quit()
 ```
 
@@ -67,7 +67,7 @@ to tell Chrome which profile to use:
 > from selenium.webdriver import ChromeOptions
 >
 > options = ChromeOptions()
-> options.add_argument("user-data-dir=/path/to/your/custom/profile")
+> options.add_argument('user-data-dir=/path/to/your/custom/profile')
 > ```
 >
 > You can create your own custom profile by just running Chrome
@@ -78,6 +78,8 @@ in the specified location. You can then modify the profile settings
 as desired, and ChromeDriver can use the profile in the future.
 Open chrome://version in the browser to see what profile Chrome is using.
 
+[doc-chromedriver-capabilities]: https://chromedriver.chromium.org/capabilities
+
 Thus, to run webdriver with a brand new profile
 you should specify another User Data directory on your computer:
 
@@ -87,16 +89,16 @@ def test_chrome_fresh_profile_with_path():
     from selene import browser
     from selenium.webdriver import Chrome, ChromeOptions
 
-    user_data = Path().home() / "my home profile"
-    profile_dir = "Default"
+    user_data = Path().home() / 'my home profile'
+    profile_dir = 'Default'
 
     browser_options = ChromeOptions()
-    browser_options.add_argument(f"user-data-dir={user_data}")
-    browser_options.add_argument(f"profile-directory={profile_dir}")
+    browser_options.add_argument(f'user-data-dir={user_data}')
+    browser_options.add_argument(f'profile-directory={profile_dir}')
 
     browser.config.driver = Chrome(options=browser_options)
 
-    browser.open("chrome://version/")
+    browser.open('chrome://version/')
     browser.quit()
 ```
 
@@ -111,6 +113,9 @@ It lets you forget about slashes on different platforms,
 write more concise code, and do basic filesystem operations
 (writing / reading files, creating folders,
 resolve symlinks, work with relative paths, glob files and folders, etc.).
+
+[pathlib-path]: https://docs.python.org/3/library/pathlib.html#pathlib.Path
+[python-pathlib]: https://docs.python.org/3/library/pathlib.html
 
 <!-- markdownlint-disable MD046 -->
 ??? note "Path class drawbacks"
@@ -149,9 +154,12 @@ The first *(default)* profile in Chrome is a subdirectory
 If you have **only one** default profile,
 you can omit `profile-directory` argument (switch).
 
+[profiles-chrome-support]: https://support.google.com/chrome/answer/2364824?hl
+[user-data-dir-chromium]: https://github.com/chromium/chromium/blob/main/docs/user_data_dir.md
+
 ```python
 # You can omit this line for a single profile
-browser_options.add_argument("profile-directory=Default")
+browser_options.add_argument('profile-directory=Default')
 ```
 
 When you create a new profile the subfolder "Profile N"
@@ -186,16 +194,16 @@ def test_chrome_second_profile():
     from selene import browser
     from selenium.webdriver import Chrome, ChromeOptions
 
-    user_data = Path(__file__).parent.parent / "test-data" / "profiles"
-    profile_dir = "Profile 2"
+    user_data = Path(__file__).parent.parent / 'test-data' / 'profiles'
+    profile_dir = 'Profile 2'
 
     browser_options = ChromeOptions()
-    browser_options.add_argument(f"user-data-dir={user_data}")
-    browser_options.add_argument(f"profile-directory={profile_dir}")
+    browser_options.add_argument(f'user-data-dir={user_data}')
+    browser_options.add_argument(f'profile-directory={profile_dir}')
 
     browser.config.driver = Chrome(options=browser_options)
 
-    browser.open("chrome://version/")
+    browser.open('chrome://version/')
     browser.quit()
 ```
 
@@ -227,8 +235,8 @@ Here are some tips for using arguments in tests:
 
     These two method calls are valid and equivalent:
 
-    `.add_argument("user-data-dir=D:\_cache\Chrome\Fresh User Data")`  
-    `.add_argument("--user-data-dir=D:\_cache\Chrome\Fresh User Data")`
+    `.add_argument('user-data-dir=D:\_cache\Chrome\Fresh User Data')`  
+    `.add_argument('--user-data-dir=D:\_cache\Chrome\Fresh User Data')`
 
     The same for `profile-directory` argument and others.
 
@@ -238,12 +246,16 @@ Here are some tips for using arguments in tests:
 
     These three method calls are valid and equivalent on Windows:
 
-    `.add_argument("user-data-dir=D:/_cache/Chrome/Fresh User Data")`  
-    `.add_argument("user-data-dir=D:\_cache\Chrome\Fresh User Data")`
-    `.add_argument("user-data-dir=D:\\_cache\\Chrome\\Fresh User Data")`
+    `.add_argument('user-data-dir=D:/_cache/Chrome/Fresh User Data')`  
+    `.add_argument('user-data-dir=D:\_cache\Chrome\Fresh User Data')`
+    `.add_argument('user-data-dir=D:\\_cache\\Chrome\\Fresh User Data')`
 
     DO NOT USE backslash `\` on Linux hosts,
     because it's valid character for filepath there.
+
+    Instead of remembering this rule, use the power of **Path** class
+    *(mentioned above)*
+    in order to write cross-platform code.
 
 - Do NOT quote white spaces
 
@@ -251,8 +263,8 @@ Here are some tips for using arguments in tests:
     !!! success "GOOD"
 
         ```python
-        .add_argument("user-data-dir=D:\_cache\Chrome\Fresh User Data")
-        .add_argument("profile-directory=Profile 2")
+        .add_argument('user-data-dir=D:\_cache\Chrome\Fresh User Data')
+        .add_argument('profile-directory=Profile 2')
         ```
 
     !!! failure "BAD"
@@ -269,14 +281,14 @@ Here are some tips for using arguments in tests:
     !!! success "GOOD"
 
         ```python
-        .add_argument("user-data-dir=D:\_cache\Chrome\Fresh User Data")
-        .add_argument("profile-directory=Default")
+        .add_argument('user-data-dir=D:\_cache\Chrome\Fresh User Data')
+        .add_argument('profile-directory=Default')
         ```
 
     !!! failure "BAD"
 
         ```python
-        .add_argument("user-data-dir=D:\_cache\Chrome\Fresh User Data\Default")
+        .add_argument('user-data-dir=D:\_cache\Chrome\Fresh User Data\Default')
         ```
     <!-- markdownlint-enable MD046 -->
 
@@ -285,6 +297,8 @@ Here are some tips for using arguments in tests:
 Managing profiles in Firefox is more tricky than in Chrome.
 Read more about that on ["Profile Manager"][firefox-profile-manager] page.
 Nevertheless, custom profiles are also available for us.
+
+[firefox-profile-manager]: https://support.mozilla.org/en-US/kb/profile-manager-create-remove-switch-firefox-profiles
 
 ### Use existing profile by path
 
@@ -310,15 +324,15 @@ def test_firefox_existing_profile():
     from selene import browser
     from selenium.webdriver import Firefox, FirefoxOptions
 
-    profile_dir = Path().home() / "snap/firefox/common/.mozilla/firefox/t2y46pn0.default"
+    profile_dir = Path().home() / 'snap/firefox/common/.mozilla/firefox/t2y46pn0.default'
 
     browser_options = FirefoxOptions()
-    browser_options.add_argument("-profile")
-    browser_options.add_argument(f"{profile_dir}")
+    browser_options.add_argument('-profile')
+    browser_options.add_argument(f'{profile_dir}')
 
     browser.config.driver = Firefox(options=browser_options)
 
-    browser.open("about:profiles")
+    browser.open('about:profiles')
     browser.quit()
 ```
 
@@ -350,24 +364,24 @@ and imported respective classes: **Firefox** and **FirefoxOptions**.
         from selenium.webdriver import Firefox, FirefoxOptions
         from selenium.webdriver.firefox.service import Service
 
-        install_dir = Path("/snap/firefox/current/usr/lib/firefox")
-        driver_loc = install_dir / "geckodriver"
-        binary_loc = install_dir / "firefox"
+        install_dir = Path('/snap/firefox/current/usr/lib/firefox')
+        driver_path = install_dir / 'geckodriver'
+        binary_path = install_dir / 'firefox'
 
-        profile_dir = Path().home() / "snap/firefox/common/.mozilla/firefox/t2y46pn0.default"
+        profile_dir = Path().home() / 'snap/firefox/common/.mozilla/firefox/t2y46pn0.default'
 
         browser_options = FirefoxOptions()
-        browser_options.add_argument("-profile")
-        browser_options.add_argument(f"{profile_dir}")
+        browser_options.add_argument('-profile')
+        browser_options.add_argument(f'{profile_dir}')
 
-        fire_service = Service(driver_loc)
-        browser_options.binary_location = f"{binary_loc}"
+        firefox_service = Service(driver_path)
+        browser_options.binary_location = f'{binary_path}'
         browser.config.driver = Firefox(
-            service=fire_service,
+            service=firefox_service,
             options=browser_options,
         )
 
-        browser.open("about:profiles")
+        browser.open('about:profiles')
         browser.quit()
     ```
 
@@ -394,9 +408,9 @@ you can specify empty folder that has write permissions.
 This folder must be created **before** you run the test. For example, this might be:
 
 ```python
-new_dir = Path().home() / "Desktop/New Dir"
+new_dir = Path().home() / 'Desktop/New Dir'
 new_dir.mkdir(parents=True, exist_ok=True)
-browser_options.add_argument(f"{new_dir}")
+browser_options.add_argument(f'{new_dir}')
 ```
 
 As mentioned above, this profile won't be listed with other existing profiles,
@@ -502,11 +516,3 @@ grant permissions for `geckodriver` executable and `firefox` itself*.
     VS Code 1.76
     ```
 <!-- markdownlint-enable MD046 -->
-
-<!-- References -->
-[doc-chromedriver-capabilities]: https://chromedriver.chromium.org/capabilities
-[profiles-chrome-support]: https://support.google.com/chrome/answer/2364824?hl
-[user-data-dir-chromium]: https://github.com/chromium/chromium/blob/main/docs/user_data_dir.md
-[pathlib-path]: https://docs.python.org/3/library/pathlib.html#pathlib.Path
-[python-pathlib]: https://docs.python.org/3/library/pathlib.html
-[firefox-profile-manager]: https://support.mozilla.org/en-US/kb/profile-manager-create-remove-switch-firefox-profiles

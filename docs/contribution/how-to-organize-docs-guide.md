@@ -3,6 +3,8 @@
 > We will provide some key points from [MkDocs User Guide][mkdocs-user-guide]
 as well as specific notes for Selene documentation.
 
+[mkdocs-user-guide]: https://www.mkdocs.org/user-guide/writing-your-docs/
+
 ## File layout
 
 Your documentation source should be written as regular Markdown files
@@ -30,6 +32,8 @@ sticking to the following recommendations:
     - `*-example.md` - demonstrates usage of Selene.
     Use Cases section is the right place for these documents
     (e.g. `allure-step-annotations-example.md`)
+
+[syntax-guide]: how-to-write-docs-guide.md
 
 <!-- markdownlint-disable MD046 -->
 !!! warning "Don't use names which begin with a dot"
@@ -165,6 +169,8 @@ of CONTRIBUTING.md from the root
 How to use snippets, please refer to Markdown
 [extension documentation][snippets-doc] page.
 
+[snippets-doc]: https://facelessuser.github.io/pymdown-extensions/extensions/snippets/
+
 ## Selene navigation structure
 
 Initial (might be changed in the future) `nav` structure (left panel)
@@ -185,8 +191,3 @@ Contribution
 Changelog
 License
 ```
-
-<!-- References -->
-[mkdocs-user-guide]: https://www.mkdocs.org/user-guide/writing-your-docs/
-[syntax-guide]: how-to-write-docs-guide.md
-[snippets-doc]: https://facelessuser.github.io/pymdown-extensions/extensions/snippets/

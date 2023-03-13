@@ -4,6 +4,8 @@ All documentation files should be written in Markdown documents (`.md`).
 
 If you are not familiar with the Markdown syntax, check out Adam Pritchard's [Markdown Cheatsheet][markdown-cheatsheet] which includes the standard Markdown syntax as well as the extended GFM (GitHub Flavored Markdown) that we will be utilizing in this guide.
 
+[markdown-cheatsheet]: https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet
+
 For consistency reason, we recommend you to use syntax given in this guide
 (*not using available alternatives*)
 
@@ -85,26 +87,26 @@ disable it or configure to 4 spaces in config file)
 
 ### Links
 
-- Use the reference links wherever possible.
+- Use the reference links wherever possible, instead of inline-style links.
 - Reference text can be arbitrary and case-insensitive,
 but use words in lower case separated by hyphen(s).
 - For relative links to other pages in `docs` folder,
 don't forget extension `.md`
 - In rare and reasonable cases, you can use an inline-style link.
-- Add HTML comment before reference list,
-to distinct list from the rest of content.
-- Place list of reference at the end of document.
-Preferably, in order of their appearance in text.
+- Place link definition(s) throughout the content of a document,
+immediately after paragraph (or semantic block) where it was mentioned.
+Preferably, in order of their appearance in the text.
+There might be exceptions for individual documents, where the list of link
+definitions at the end of a document is a reasonable idea.
 
 <!-- markdownlint-disable MD046 -->
 === "Markdown"
 
-    ```plain
+    ```markdown
     [Selene][selene-github] is cool,  
     especially with good [docs][home-docs].  
     [I'm an inline-style link](https://t.me/selene_py_ru)
 
-    <!-- References -->
     [selene-github]: https://github.com/yashaka/selene/
     [home-docs]: ../index.md
     ```
@@ -137,10 +139,14 @@ For example `./docs/faq/assets/chrome-driver-window.png`
 and use relative URL to it (see example below).
 - Use popular formats for your images, like JPEG, PNG, WebP and SVG.
 
+[squoosh-app]: https://squoosh.app/
+[tiny-png-app]: https://tinypng.com/
+[svgomg-app]: https://jakearchibald.github.io/svgomg/
+
 <!-- markdownlint-disable MD046 -->
 === "Markdown"
 
-    ```plain
+    ```markdown
     Here's our logo (hover to see the title text):
 
     Inline-style: 
@@ -148,9 +154,8 @@ and use relative URL to it (see example below).
 
     Reference-style: 
     ![alt text][logo]
-    ![Relative path for current document][assets/my-pic.png]
 
-    [logo]: ../assets/images/logo-icon.png "Logo Title Text 2"
+    [logo]: ../assets/images/logo-icon.png "Title in link definition"
     ```
 
 === "Result"
@@ -163,7 +168,7 @@ and use relative URL to it (see example below).
     Reference-style: 
     ![alt text][logo]
 
-    [logo]: ../assets/images/logo-icon.png "Logo Title Text 2"
+    [logo]: ../assets/images/logo-icon.png "Title in link definition"
 <!-- markdownlint-enable MD046 -->
 
 ### Code and Syntax Highlighting
@@ -171,6 +176,8 @@ and use relative URL to it (see example below).
 - Use only fenced code blocks (fenced by lines with three back-ticks ```).
 - Write language identifier right after back-ticks (**without space**).
 - For plain text (console output) use `plain` language identifier.
+- In Python code use only single quotes, i.e. `'This is string'`
+- Do NOT use disinformative names for variables and uncommon abbreviations (might be exception for a variable used in a one-line lambda expression).
 
 <!-- markdownlint-disable MD046 -->
 === "Markdown"
@@ -239,6 +246,8 @@ wrapping lines by 72-80 characters
 (unfortunately, GitHub renders each newline character).
 - Paragraphs are separated by a blank line.
 
+[semantic-linefeeds]: https://rhodesmill.org/brandon/2012/one-sentence-per-line/
+
 <!-- markdownlint-disable MD046 -->
 === "Markdown"
 
@@ -273,7 +282,49 @@ wrapping lines by 72-80 characters
     Please, refer to it.
 <!-- markdownlint-enable MD046 -->
 
-### Other
+### Material theme blocks
+
+#### Admonitions
+
+Admonitions, also known as *call-outs*,
+are an excellent choice for including side content
+without significantly interrupting the document flow.
+How to use them, please, refer to the
+[Admonitions][admonitions-reference] reference page.
+
+[admonitions-reference]: https://squidfunk.github.io/mkdocs-material/reference/admonitions/
+
+Our recommendations:
+
+- Try to avoid several admonitions in a row
+(even with different types).
+- Place link definition after the content of the block
+followed by one blank line (indented by four spaces, as the content).
+
+<!-- markdownlint-disable MD046 -->
+=== "Markdown"
+
+    ```markdown
+    <!-- markdownlint-disable MD046 -->
+    !!! info "Example of inserting a link into admonition"
+
+        There are several [types][admontion-types] of admonitions
+
+        [admontion-types]: https://squidfunk.github.io/mkdocs-material/reference/admonitions/#supported-types
+    <!-- markdownlint-enable MD046 -->
+    ```
+    <!-- markdownlint-disable MD046 -->
+
+=== "Result"
+
+    !!! info "Example of inserting a link into admonition"
+
+        There are several [types][admontion-types] of admonitions
+
+        [admontion-types]: https://squidfunk.github.io/mkdocs-material/reference/admonitions/#supported-types
+<!-- markdownlint-enable MD046 -->
+
+#### Other
 
 There are many other special formatting blocks,
 supported by Material theme for MkDocs.
@@ -284,10 +335,4 @@ check that they are enabled (configured) in `mkdocs.yml` configuration file
 and discuss with project owner or other contributors
 should you insert (use) them or not.
 
-<!-- References -->
-[markdown-cheatsheet]: https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet
-[squoosh-app]: https://squoosh.app/
-[tiny-png-app]: https://tinypng.com/
-[svgomg-app]: https://jakearchibald.github.io/svgomg/
-[semantic-linefeeds]: https://rhodesmill.org/brandon/2012/one-sentence-per-line/
 [material-reference-page]: https://squidfunk.github.io/mkdocs-material/reference/
