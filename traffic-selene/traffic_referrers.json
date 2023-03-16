@@ -1,23 +1,28 @@
 [
   {
     "referrer": "Google",
-    "count": 333,
-    "uniques": 138
+    "count": 346,
+    "uniques": 139
   },
   {
     "referrer": "github.com",
-    "count": 130,
-    "uniques": 37
+    "count": 147,
+    "uniques": 38
   },
   {
     "referrer": "yandex.ru",
-    "count": 66,
+    "count": 65,
     "uniques": 18
   },
   {
     "referrer": "ecosia.org",
-    "count": 23,
-    "uniques": 16
+    "count": 64,
+    "uniques": 18
+  },
+  {
+    "referrer": "yashaka.github.io",
+    "count": 11,
+    "uniques": 2
   },
   {
     "referrer": "automated-testing.info",
@@ -31,13 +36,8 @@
   },
   {
     "referrer": "pypi.org",
-    "count": 9,
-    "uniques": 6
-  },
-  {
-    "referrer": "jira.skillbox.pro",
     "count": 8,
-    "uniques": 2
+    "uniques": 6
   },
   {
     "referrer": "DuckDuckGo",
@@ -45,7 +45,7 @@
     "uniques": 2
   },
   {
-    "referrer": "yandex.by",
+    "referrer": "testerhome.com",
     "count": 4,
     "uniques": 1
   }
