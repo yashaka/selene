@@ -1,33 +1,38 @@
 [
   {
     "referrer": "Google",
-    "count": 431,
-    "uniques": 148
+    "count": 420,
+    "uniques": 146
   },
   {
     "referrer": "ecosia.org",
-    "count": 139,
+    "count": 175,
     "uniques": 22
   },
   {
     "referrer": "github.com",
-    "count": 123,
-    "uniques": 38
+    "count": 132,
+    "uniques": 44
   },
   {
     "referrer": "yandex.ru",
-    "count": 62,
-    "uniques": 16
+    "count": 63,
+    "uniques": 14
   },
   {
     "referrer": "pypi.org",
-    "count": 38,
+    "count": 37,
     "uniques": 8
   },
   {
     "referrer": "yashaka.github.io",
-    "count": 12,
-    "uniques": 3
+    "count": 13,
+    "uniques": 4
+  },
+  {
+    "referrer": "DuckDuckGo",
+    "count": 10,
+    "uniques": 6
   },
   {
     "referrer": "dragosinc.atlassian.net",
@@ -40,12 +45,7 @@
     "uniques": 8
   },
   {
-    "referrer": "DuckDuckGo",
-    "count": 7,
-    "uniques": 3
-  },
-  {
-    "referrer": "testerhome.com",
+    "referrer": "t.me",
     "count": 4,
     "uniques": 1
   }
