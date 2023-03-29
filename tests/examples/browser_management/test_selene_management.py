@@ -254,38 +254,36 @@ def test_browser_resurrects_itself_and_clone_after_clone_programmed_to_death_for
     assert driver is persistent.Field.value_from(clone.config, 'driver')
 
 
-def test_can_reset_driver_on_assigning_ellipsis(
-    given_reset_managed_browser_driver,
-):
+def test_can_build_second_driver_if_previous_was_forgotten():
     # GIVEN
-    browser.open(empty_page)
-    assert browser.driver.name == 'chrome'
-    assert browser.driver.title == 'Selene Test Page'
-    original_driver = browser.driver
-    original_session_id = browser.driver.session_id
+    browser = selene.Browser(selene.Config())
+    first_driver = browser.driver
 
     # WHEN
     browser.config.driver = ...
 
     # THEN
-    try:
-        original_title = original_driver.title
-        pytest.fail(
-            f'should not be able to get title {original_title} from closed driver'
-        )
-    except Exception as error:
-        '''
-        original browser is dead;)
-        '''
-        assert 'Failed to establish a new connection' in str(error)
+    assert first_driver.title == ''  # ALIVE;)
 
     # WHEN
-    browser.open(empty_page)
+    second_driver = browser.driver
 
     # THEN
-    assert browser.driver.name == 'chrome'
-    assert browser.driver.title == 'Selene Test Page'
-    assert original_session_id != browser.driver.session_id
+    assert second_driver.title == ''  # NEW ONE!
+    assert first_driver.title == ''  # OLD IS ALIVE;)
+    assert first_driver.session_id != second_driver.session_id
+
+
+def test_can_close_at_exit_all_built_drivers_for_same_browser():
+    browser = selene.Browser(selene.Config())
+    first_driver = browser.driver
+    browser.config.driver = ...
+    second_driver = browser.driver
+
+    atexit._run_exitfuncs()
+
+    pytest.raises(MaxRetryError, lambda: first_driver.title)  # KILLED
+    pytest.raises(MaxRetryError, lambda: second_driver.title)  # KILLED
 
 
 """

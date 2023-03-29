@@ -152,6 +152,7 @@ class ManagedDriverDescriptor:
     def __init__(self, *, default: Optional[WebDriver] = ...):
         self.default = default
 
+    # TODO: should we move it to config.quit_driver_at_exit_strategy?
     def schedule_driver_quit(
         self, config: Config, driver_source: Callable[[], WebDriver]
     ):
@@ -202,15 +203,6 @@ class ManagedDriverDescriptor:
                 driver_box = persistent.Box(value)
 
                 self.schedule_driver_quit(config, lambda: value)
-                # atexit.register(
-                #     lambda: (
-                #         value.quit()
-                #         if not config.hold_driver_at_exit
-                #         and config.is_driver_set_strategy(value)
-                #         and config.is_driver_alive_strategy(value)
-                #         else None
-                #     )
-                # )
 
             setattr(instance, self.name, driver_box)
         else:
@@ -222,52 +214,6 @@ class ManagedDriverDescriptor:
             #       wasn't the same as was in driver_box.value before?
             #       if yes, we might not want to add one more atexit handler
             self.schedule_driver_quit(config, lambda: value)
-            # atexit.register(
-            #     lambda: (
-            #         value.quit()
-            #         if not config.hold_driver_at_exit
-            #         and config.is_driver_set_strategy(value)
-            #         and config.is_driver_alive_strategy(value)
-            #         else None
-            #     )
-            # )
-
-            # def driver_installed_and_rebuilt_after_death():
-            #     return (
-            #         driver_box.value
-            #         if _is_driver_set_and_alive(driver_box.value)
-            #         # TODO: should we be more explicit like:
-            #         # if (
-            #         #     driver_box.value is not ...
-            #         #     and _is_alive_driver(driver_box.value)
-            #         # )
-            #         else config._build_driver()
-            #     )
-            #
-            # if (
-            #     # was driver previously set via built-in driver-management logic...
-            #     re.sub(' at 0x.+>$', '>', str(driver_box.value))
-            #     == re.sub(
-            #         ' at 0x.+>$',
-            #         '>',
-            #         str(driver_installed_and_rebuilt_after_death),
-            #     )
-            #     # and ...
-            #     and _is_driver_set_and_alive(driver_box.value)
-            # ):
-            #     driver_box.value.quit()
-            #
-            # # is requested to reset driver by setting it to ... or None
-            # if value is ... or value is None:
-            #     driver_box.value = ...
-            #     # self._driver_source = driver_installed_and_rebuilt_after_death
-            # else:
-            #     driver_box.value = value
-
-    # def __delete__(self, instance):
-    #     if self.driver is not ...:
-    #         self.driver.quit()
-    #         self.driver = ...
 
 
 @persistent.dataclass
@@ -392,6 +338,10 @@ class Config:
         returns driver instance correspondingly.
         """
         return self.driver() if callable(self.driver) else self.driver
+
+    # TODO: do we need it?
+    # quit_last_driver_on_reset: bool = False
+    # """Controls whether driver will be automatically quit at reset of config.driver"""
 
     hold_driver_at_exit: bool = False
     """Controls whether driver will be automatically quit at process exit or not."""
