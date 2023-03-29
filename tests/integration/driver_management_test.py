@@ -1,13 +1,9 @@
-from dataclasses import fields
-
 import pytest
 import atexit
 
-from selenium.webdriver.remote.webdriver import WebDriver
 from urllib3.exceptions import MaxRetryError
 
 import selene
-from selene import browser, have
 from selene.common.data_structures import persistent
 from tests import resources
 
