@@ -28,7 +28,7 @@ class Config(BaseConfig):
         def ensure_installed_and_built_when_not_alive():
             return (
                 self._driver
-                if (self._driver is not ... and self._is_browser_alive)
+                if (self._driver is not ... and self._is_driver_alive)
                 else _install_and_build_driver(self.browser_name)
             )
 
@@ -42,7 +42,7 @@ class Config(BaseConfig):
             )
             # and ...
             and self._driver is not ...
-            and self._is_browser_alive
+            and self._is_driver_alive
         ):
             self._driver.quit()
 
@@ -61,7 +61,7 @@ class Config(BaseConfig):
                 self.driver.quit()
                 if not self.hold_browser_open
                 and self._driver is not ...
-                and self._is_browser_alive
+                and self._is_driver_alive
                 else None
             )
         )
@@ -97,7 +97,7 @@ class Config(BaseConfig):
         self.driver = ...
 
     @property
-    def _is_browser_alive(self) -> bool:
+    def _is_driver_alive(self) -> bool:
         if self._driver is ...:
             # raise _SeleneError('the driver has not been sourced yet at config')
             warnings.warn(
@@ -153,5 +153,6 @@ def _install_and_build_driver(browser_name):
     }.get(browser_name)()
 
 
-config = Config()
+# config = Config()
+config = BaseConfig()
 browser = Browser(config)

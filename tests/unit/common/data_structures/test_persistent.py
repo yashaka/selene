@@ -2,8 +2,9 @@ from selene.common.data_structures import persistent
 import typing
 
 
+# TODO: find gaps in coverage and break down tests to be more atomic
 class Test__dataclass:
-    def test_init_fucntion_was_created_and_has_the_right_types(self):
+    def test_init_function_was_created_and_has_the_right_types(self):
         @persistent.dataclass
         class Pet:
             name: str
@@ -63,7 +64,7 @@ class Test__dataclass:
         assert fido.in_house is False
         assert fido.sound == 'foow'
 
-    def test_original_dataclasses_asdict_works(self):
+    def test_original_dataclasses_asdict_returns_unboxed_values(self):
         @persistent.dataclass
         class Pet:
             name: str
@@ -91,7 +92,7 @@ class Test__dataclass:
             sound: str = 'woof'
 
             def __post_init__(self):
-                fields: typing.Dict[str, persistent._Field] = getattr(
+                fields: typing.Dict[str, persistent.Field] = getattr(
                     self.__class__, persistent._FIELDS, {}
                 )
                 for field in fields.values():
@@ -106,6 +107,345 @@ class Test__dataclass:
         assert pet.age == 3
         assert pet.in_house is False
         assert pet.sound == 'WOOF'
+
+    def test_boxed_descriptor_subclass_as_default_jumps_in(self):
+        class AllStringsToUpperDescriptor(persistent.Boxed):
+            def __get__(self, instance, owner):
+                value = super().__get__(instance, owner)
+                return value.upper() if isinstance(value, str) else value
+
+        @persistent.dataclass
+        class Pet:
+            age: int
+            name: str = AllStringsToUpperDescriptor()
+            in_house: bool = True
+            sound: str = 'woof'
+
+        # WHEN
+        pet = Pet(name='fido', age=3, in_house=False)
+
+        assert pet.name == 'FIDO'
+        assert pet.age == 3
+        assert pet.in_house is False
+        assert pet.sound == 'woof'
+
+    def test_boxed_descriptor_subclass_as_default_in_explicit_field_jumps_in(
+        self,
+    ):
+        class AllStringsToUpperDescriptor(persistent.Boxed):
+            def __get__(self, instance, owner):
+                value = super().__get__(instance, owner)
+                return value.upper() if isinstance(value, str) else value
+
+        @persistent.dataclass
+        class Pet:
+            age: int
+            name: str = persistent.field(default=AllStringsToUpperDescriptor())
+            in_house: bool = True
+            sound: str = 'woof'
+
+        # WHEN
+        pet = Pet(name='fido', age=3, in_house=False)
+
+        assert pet.name == 'FIDO'
+        assert pet.age == 3
+        assert pet.in_house is False
+        assert pet.sound == 'woof'
+
+    def test_boxed_descriptor_subclass_raises_on_missed_args(
+        self,
+    ):
+        class AllStringsToUpperDescriptor(persistent.Boxed):
+            def __get__(self, instance, owner):
+                value = super().__get__(instance, owner)
+                return value.upper() if isinstance(value, str) else value
+
+        @persistent.dataclass
+        class Pet:
+            age: int
+            name: str = persistent.field(default=AllStringsToUpperDescriptor())
+
+        # WHEN
+        try:
+            Pet(age=3)
+
+        except TypeError as e:
+            assert '__init__() missing required argument to be stored' in str(
+                e
+            )
+
+    def test_boxed_descriptor_subclass_with_default_allow_to_miss_args(
+        self,
+    ):
+        class AllStringsToUpperDescriptor(persistent.Boxed):
+            def __init__(self, *, default: str):
+                super().__init__()
+                self.default = default
+
+            def __get__(self, instance, owner):
+                value = super().__get__(instance, owner)
+                return value.upper() if isinstance(value, str) else value
+
+        @persistent.dataclass
+        class Pet:
+            age: int
+            name: str = AllStringsToUpperDescriptor(default='anonymous')
+
+        # WHEN
+        pet = Pet(age=3)
+
+        assert pet.name == 'ANONYMOUS'
+
+    def test_boxed_descriptor_subclass_with_default_passed_in_field_allow_to_miss_args(
+        self,
+    ):
+        class AllStringsToUpperDescriptor(persistent.Boxed):
+            def __init__(self, *, default: str):
+                super().__init__()
+                self.default = default
+
+            def __get__(self, instance, owner):
+                value = super().__get__(instance, owner)
+                return value.upper() if isinstance(value, str) else value
+
+        @persistent.dataclass
+        class Pet:
+            age: int
+            name: str = persistent.field(
+                default=AllStringsToUpperDescriptor(default='anonymous')
+            )
+
+        # WHEN
+        pet = Pet(age=3)
+
+        assert pet.name == 'ANONYMOUS'
+
+    def test_custom_without_set_name_descriptor_as_default_works_and_persists(
+        self,
+    ):  # TODO: break this test into atomic ones
+        class AllStringsToUpperDescriptor:
+            def __get__(self, instance, owner):
+                if instance is None:
+                    return self
+                value = getattr(instance, self.name).value
+                return value.upper() if isinstance(value, str) else value
+
+            def __set__(self, instance, value):
+                if not hasattr(instance, self.name):
+                    if isinstance(value, persistent.Box):
+                        setattr(instance, self.name, value)
+                    else:
+                        setattr(instance, self.name, persistent.Box(value))
+                else:
+                    getattr(instance, self.name).value = value
+
+        @persistent.dataclass
+        class Pet:
+            age: int
+            name: str = AllStringsToUpperDescriptor()
+            # name: str = AllStringsToUpperDescriptor('name')
+            in_house: bool = True
+            sound: str = 'woof'
+
+        # WHEN
+        pet = Pet(name='fido', age=3, in_house=False)
+
+        assert pet.name == 'FIDO'
+        assert pet.age == 3
+        assert pet.in_house is False
+        assert pet.sound == 'woof'
+
+    def test_custom_with_set_name_and_default_descriptor_as_default_works_and_persists(
+        self,
+    ):  # TODO: break this test into atomic ones
+        class AllStringsToUpperDescriptor:
+            def __init__(self, *, default=None):
+                self.default = default
+                self.name = None  # will be set by persistent.dataclass logic
+
+            def __get__(self, instance, owner):
+                if instance is None:
+                    return self
+                value = getattr(instance, self.name).value
+                return value.upper() if isinstance(value, str) else value
+
+            def __set__(self, instance, value):
+                if not hasattr(instance, self.name):
+                    if isinstance(value, persistent.Box):
+                        setattr(instance, self.name, value)
+                    elif persistent._is_of_descriptor_type(value):
+                        # try to find default inside descriptor
+                        default = getattr(value, 'default', None)
+                        if default is not None:
+                            setattr(
+                                instance, self.name, persistent.Box(default)
+                            )
+                            return
+                        else:
+                            raise ValueError(
+                                f'Cannot find default value for {value.name}, '
+                                f'please provide it explicitly'
+                            )
+
+                    else:
+                        setattr(instance, self.name, persistent.Box(value))
+                else:
+                    getattr(instance, self.name).value = value
+
+        @persistent.dataclass
+        class Pet:
+            age: int
+            name: str = AllStringsToUpperDescriptor()
+            # name: str = AllStringsToUpperDescriptor('name')
+            in_house: bool = True
+            sound: str = AllStringsToUpperDescriptor(default='woof')
+
+        # WHEN
+        pet = Pet(name='fido', age=3, in_house=False)
+
+        assert pet.name == 'FIDO'
+        assert pet.age == 3
+        assert pet.in_house is False
+        assert pet.sound == 'WOOF'
+
+        # WHEN
+        clone = persistent.replace(pet, sound='foow')
+        clone.name = 'odif'
+        clone.age = 6
+        clone.sound = 'foow!!!'
+
+        # THEN
+        assert clone.name == 'ODIF'
+        assert clone.age == 6
+        assert clone.in_house is False
+        assert clone.sound == 'FOOW!!!'
+
+        assert pet.name == 'ODIF'
+        assert pet.age == 6
+        assert pet.in_house is False
+        assert pet.sound == 'WOOF'
+
+    def test_missing_required_argument_raises_type_error_about_missed_arg(
+        self,
+    ):
+        @persistent.dataclass
+        class Pet:
+            age: int
+            name: str
+
+        try:
+            Pet(age=3)
+
+        except TypeError as e:
+            assert str(e) == (
+                "__init__() missing 1 required positional argument: 'name'"
+            )
+
+    def test_custom_descriptor_as_default_in_explicit_field_works_and_persists(
+        self,
+    ):  # TODO: break this test into atomic ones
+        class AllStringsToUpperDescriptor:
+            def __set_name__(self, owner, name):
+                if getattr(self, name, None) is None:
+                    self.name = name
+
+            def __get__(self, instance, owner):
+                if instance is None:
+                    return self
+                value = getattr(instance, self.name).value
+                return value.upper() if isinstance(value, str) else value
+
+            def __set__(self, instance, value):
+                if not hasattr(instance, self.name):
+                    if isinstance(value, persistent.Box):
+                        setattr(instance, self.name, value)
+                    else:
+                        setattr(instance, self.name, persistent.Box(value))
+                else:
+                    getattr(instance, self.name).value = value
+
+        @persistent.dataclass
+        class Pet:
+            age: int
+            name: str = persistent.field(default=AllStringsToUpperDescriptor())
+            # name: str = AllStringsToUpperDescriptor('name')
+            in_house: bool = True
+            sound: str = 'woof'
+
+        # WHEN
+        pet = Pet(name='fido', age=3, in_house=False)
+
+        assert pet.name == 'FIDO'
+        assert pet.age == 3
+        assert pet.in_house is False
+        assert pet.sound == 'woof'
+
+        # WHEN
+        clone = persistent.replace(pet, sound='foow')
+        clone.name = 'odif'
+        clone.age = 6
+        clone.sound = 'foow!!!'
+
+        # THEN
+        assert clone.name == 'ODIF'
+        assert clone.age == 6
+        assert clone.in_house is False
+        assert clone.sound == 'foow!!!'
+
+        assert pet.name == 'ODIF'
+        assert pet.age == 6
+        assert pet.in_house is False
+        assert pet.sound == 'woof'
+
+    def test_custom_descriptor_without_missed_args_handler_will_hide_problems(
+        self,
+    ):  # TODO: break this test into atomic ones
+        class AllStringsToUpperDescriptor:
+            def __set_name__(self, owner, name):
+                if getattr(self, name, None) is None:
+                    self.name = name
+
+            def __get__(self, instance, owner):
+                if instance is None:
+                    return self
+                value = getattr(instance, self.name).value
+                return value.upper() if isinstance(value, str) else value
+
+            def __set__(self, instance, value):
+                if not hasattr(instance, self.name):
+                    if isinstance(value, persistent.Box):
+                        setattr(instance, self.name, value)
+                    else:
+                        setattr(instance, self.name, persistent.Box(value))
+
+                # GIVEN NO HANDLER FOR MISSED ARGS on __init__(...)
+
+                # elif persistent._is_of_descriptor_type(value):
+                #     # try to find default inside descriptor
+                #     default = getattr(value, 'default', None)
+                #     if default is not None:
+                #         setattr(
+                #             instance, self.name, persistent.Box(default)
+                #         )
+                #         return
+                #     else:
+                #         raise ValueError(
+                #             f'Cannot find default value for {value.name}, '
+                #             f'please provide it explicitly'
+                #         )
+
+                else:
+                    getattr(instance, self.name).value = value
+
+        @persistent.dataclass
+        class Pet:
+            age: int
+            name: str = persistent.field(default=AllStringsToUpperDescriptor())
+
+        # WHEN
+        pet = Pet(age=3)  # no Error here :(
+
+        assert isinstance(pet.name, AllStringsToUpperDescriptor)
 
     # todo: break down into atomic unit tests
     def test_persistent_replace(self):

@@ -3,8 +3,12 @@ from dataclasses import fields
 import pytest
 import atexit
 
+from selenium.webdriver.remote.webdriver import WebDriver
+from urllib3.exceptions import MaxRetryError
+
 import selene
 from selene import browser
+from selene.common.data_structures import persistent
 from tests import resources
 
 empty_page = resources.url('empty.html')
@@ -19,6 +23,7 @@ def with_managed_browser_defaults_after_test_module():
     browser.quit()
     browser.config.driver = ...
 
+    # reset all config fields to their default values
     for field in fields(selene.managed.Config):
         if not field.name.startswith('_') and field.name not in ['driver']:
             setattr(
@@ -40,8 +45,35 @@ def given_reset_managed_browser_driver(
     ...
 
 
+def test_can_init_default_chrome_browser_on_quit_o_o(
+    # given_reset_managed_browser_driver,
+):
+    # GIVEN
+    """
+    Nothing ;)
+    – this is a first test without any fixture in this module,
+    so browser is not initialized yet.
+    (TODO: improve this setup to be dead proof «not initialized yet»)
+    """
+
+    # WHEN we are going to do a stupid thing – quit non initialized browser yet
+    browser.quit()
+
+    # THEN we successfully quit it,
+    #      as it was forced to initialize on request to driver under the hood
+    webdriver: WebDriver = persistent.Field.value_from(
+        browser.config, 'driver'
+    )
+    # AND exactly chrome was initialized
+    assert webdriver.name == 'chrome'
+    # AND now it is dead:
+    pytest.raises(MaxRetryError, lambda: webdriver.title)
+    # AND getting driver via public access also returns dead driver
+    pytest.raises(MaxRetryError, lambda: browser.driver.title)
+
+
 def test_can_init_default_chrome_browser_on_open(
-    given_reset_managed_browser_driver,
+    # given_reset_managed_browser_driver,
 ):
     # WHEN
     browser.open(empty_page)
@@ -54,14 +86,14 @@ def test_can_init_default_chrome_browser_on_open(
 
 
 def test_browser_is_opened__on_access_to__browser_driver(
-    given_reset_managed_browser_driver,
+    # given_reset_managed_browser_driver,
 ):
-    assert getattr(browser.config, '_driver') is ...
+    assert getattr(browser.config, '__boxed_driver').value is ...
 
     webdriver = browser.driver
 
     # TODO: consider checking actual process running (via psutil lib)
-    assert getattr(browser.config, '_driver') is webdriver
+    assert getattr(browser.config, '__boxed_driver').value is webdriver
     assert webdriver.title == ''
     assert webdriver.name == 'chrome'
 

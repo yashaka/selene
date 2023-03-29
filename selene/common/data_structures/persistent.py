@@ -1,6 +1,7 @@
 import inspect
 import typing
 import dataclasses
+from types import GenericAlias
 
 MISSING = object()
 _FIELDS = getattr(dataclasses, '_FIELDS', '__dataclass_fields__')
@@ -21,6 +22,21 @@ def _set_new_attribute(cls, name, value):
     return False
 
 
+def _with_setattr(obj, attribute, value):
+    setattr(obj, attribute, value)
+    return obj
+
+
+def _is_of_descriptor_type(instance):
+    return any(
+        [
+            getattr(type(instance), '__get__', None),
+            getattr(type(instance), '__set__', None),
+            getattr(type(instance), '__delete__', None),
+        ]
+    )
+
+
 T = typing.TypeVar('T')
 
 
@@ -30,8 +46,14 @@ class Box(typing.Generic[T]):
 
 
 class Boxed:
-    def __init__(self, name):
+    def __init__(
+        self, name=None
+    ):  # currently we allways pass name in this persistent.py
         self.name = name
+
+    def __set_name__(self, owner, name):
+        if not self.name:
+            self.name = name
 
     def __get__(self, instance, owner):
         if instance is None:
@@ -42,13 +64,34 @@ class Boxed:
         if not hasattr(instance, self.name):
             if isinstance(value, Box):
                 setattr(instance, self.name, value)
+            elif _is_of_descriptor_type(value):
+                # try to find default inside descriptor
+                default = getattr(value, 'default', None)
+                if default is not None:
+                    setattr(instance, self.name, Box(default))
+                    return
+                # try to get default from __get__
+                if hasattr(value, '__get__'):
+                    try:
+                        default = value.__get__(instance, owner=type(instance))
+                        if default:
+                            setattr(instance, self.name, Box(default))
+                            return
+                    except:
+                        pass
+                raise TypeError(
+                    f"__init__() missing required argument to be stored as: '{value.name}'"
+                    f"or cannot find default value for descriptor: {value} "
+                    f"(default should be provided "
+                    f"either by 'default' attribute or by __get__ method)"
+                )
             else:
                 setattr(instance, self.name, Box(value))
         else:
             getattr(instance, self.name).value = value
 
 
-class _Field:
+class Field:
     def __init__(self, name: str, type_: type, default):
         if isinstance(default, (list, dict, set)):
             raise ValueError(
@@ -59,14 +102,29 @@ class _Field:
         self.type_ = type_
         self.default = default
 
-        # for some compatibility with original dataclasses
+        # for some compatibility with original dataclasses (not used in this impl)
         self.init = True
         self.default_factory = MISSING
         self._field_type = dataclasses._FIELD
 
+    def __set_name__(self, owner, name):
+        if not self.name:
+            self.name = name
+
+        # Forward __set_name__ to the field default if it is a descriptor.
+        set_name = getattr(type(self.default), '__set_name__', None)
+        if set_name:
+            # There is a __set_name__ method on the descriptor, call
+            # it.
+            set_name(self.default, owner, self.box_mask(name))
+
     @property
     def has_default(self) -> bool:
         return self.default is not MISSING
+
+    @property
+    def has_default_as_descriptor(self) -> bool:
+        return self.has_default and _is_of_descriptor_type(self.default)
 
     @property
     def as_init_arg(self) -> str:
@@ -86,22 +144,114 @@ class _Field:
         return f'_type_of_{self.name}'
 
     @staticmethod
+    def from_(cls, name: str, type_: type):
+        default = getattr(cls, name, MISSING)
+        if isinstance(default, Field):
+            # supporting attributes with default as field() instance
+            a_field = default
+            a_field.name = name
+            a_field.type_ = type_
+        else:
+            # – default was passed directly as a value to class attribute...
+            # Thus, if default is a descriptor with __set_name__,
+            # its name is incorrect and may lead to recursion on usage.
+            # To fix this we should mutate default.name.
+            # We could do this later,
+            # once field instance provides its descriptor on request,
+            # when calling field.descriptor...
+            # More over, we could not mutate original descriptor,
+            # but create a copy or even a new descriptor decorating original one
+            # and providing fixed name, while providing delegate access to all other attributes.
+            # ...
+            # But since we have separate forwarding logic in __set_name__
+            # for the case when descriptor is passed explicitly as a field default,
+            # lets for less confusion and KISS, for now, just mutate it below:
+            a_field = Field(name, type_, default)
+            if a_field.has_default_as_descriptor:
+                setattr(a_field.default, 'name', a_field.box_name)
+
+        return a_field
+
+    @staticmethod
     def s_from(cls):
         return [
-            _Field(name, type_, getattr(cls, name, MISSING))
+            Field.from_(cls, name, type_)
             for name, type_ in getattr(cls, '__annotations__', {}).items()
         ]
 
+    @staticmethod
+    def box_mask(name):
+        return f'__boxed_{name}'
+
+    @staticmethod
+    def value_from(obj, attribute):
+        return getattr(obj, Field.box_mask(attribute)).value
+
     @property
     def box_name(self):
-        return f'__boxed_{self.name}'
+        return self.box_mask(self.name)
 
-    def new_boxed_descriptor(self):
-        return Boxed(self.box_name)
+    @property
+    def descriptor(self):
+        return (
+            Boxed(self.box_name)
+            if not self.has_default_as_descriptor
+            else _with_setattr(self.default, 'name', self.box_name)
+        )
+
+    __class_getitem__ = classmethod(GenericAlias)
+
+
+# This function is used instead of exposing Field creation directly,
+# so that a type checker can be told (via overloads) that this is a
+# function whose type depends on its parameters.
+def field(
+    *,
+    default=MISSING,
+    # default_factory=MISSING,
+    # init=True,
+    # repr=True,
+    # hash=None,
+    # compare=True,
+    # metadata=None,
+):
+
+    # if default is not MISSING and default_factory is not MISSING:
+    #     raise ValueError('cannot specify both default and default_factory')
+
+    return Field(
+        name=...,
+        type_=...,
+        default=default,  # , default_factory, init, repr, hash, compare, metadata
+    )
 
 
 def dataclass(cls):
-    fields = _Field.s_from(cls)
+    """
+    Generates __init__ method for the `cls`
+    based on type annotations and class attributes with default values.
+    Provides a `Boxed` descriptor for each field,
+    which persists the reference to the field value
+    after object was «cloned» via `replace` method.
+
+    The custom descriptor can be provided:
+    * as default value
+      * e.g. `nickname: str = ToUpperDescriptor()`
+    * or explicit field with default value
+      * e.g. `nickname: str = field(default=ToUpperDescriptor())` .
+    Then this descriptor will be used instead of `Boxed` descriptor
+    to provide get and set access to the field value.
+    Take into account, that this custom descriptor
+    should handle situation when user forgot to set the required argument
+    on object creation (trough implicit call the generated __init__ method).
+    Consider sub-classing `Boxed` descriptor for this purpose
+    and reuse its __set__ implementation, that raises `TypeError`
+    if required argument was missed
+    and custom descriptor subclass does not provide the default value
+    either by `default` attribute or by `__get__` implementation.
+
+    """
+    fields = Field.s_from(cls)
     setattr(cls, _FIELDS, dict((f.name, f) for f in fields))
 
     locals_ = {}
@@ -129,9 +279,7 @@ def dataclass(cls):
                 [
                     *[f'  {field.as_assignment}' for field in fields],
                     *(
-                        [
-                            f'  self.{dataclasses._POST_INIT_NAME}({post_init_params_str})'
-                        ]
+                        [f'  self.{_POST_INIT_NAME}({post_init_params_str})']
                         if has_post_init
                         else []
                     ),
@@ -151,7 +299,7 @@ def dataclass(cls):
 
     print('fields: ', fields)
     for field in fields:
-        setattr(cls, field.name, field.new_boxed_descriptor())
+        setattr(cls, field.name, field.descriptor)
 
     if not getattr(cls, '__doc__'):
         cls.__doc__ = cls.__name__ + str(inspect.signature(cls)).replace(
