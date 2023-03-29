@@ -14,38 +14,16 @@ from tests import resources
 empty_page = resources.url('empty.html')
 
 
-@pytest.fixture(scope='module')
-def with_managed_browser_defaults_after_test_module():
-    ...
-
-    yield
-
-    browser.quit()
-    browser.config.driver = ...
-
-    # reset all config fields to their default values
-    for field in fields(selene.managed.Config):
-        if not field.name.startswith('_') and field.name not in ['driver']:
-            setattr(
-                browser.config,
-                field.name,
-                getattr(selene.managed.Config(), field.name),
-            )
-
-
 @pytest.fixture(scope='function')
-def given_reset_managed_browser_driver(
-    with_managed_browser_defaults_after_test_module,
-):
-    browser.quit()
-    browser.config.driver = ...
+def with_process_exit_teardown():
+    ...
 
     yield
 
-    ...
+    atexit._run_exitfuncs()
 
 
-def test_new_config_does_not_build_driver_on_init():
+def test_new_config_does_not_build_driver_on_init(with_process_exit_teardown):
 
     # WHEN
     config = selene.Config()
@@ -54,7 +32,9 @@ def test_new_config_does_not_build_driver_on_init():
     assert driver is ...
 
 
-def test_first_access_to_driver_on_config_ensures_driver_for_chrome_is_built():
+def test_first_access_to_driver_on_config_ensures_driver_for_chrome_is_built(
+    with_process_exit_teardown,
+):
 
     # WHEN
     config = selene.Config()
@@ -64,7 +44,9 @@ def test_first_access_to_driver_on_config_ensures_driver_for_chrome_is_built():
     assert driver.title == ''
 
 
-def test_automatically_built_driver_is_stored_as_persistent_value_in_config():
+def test_automatically_built_driver_is_stored_as_persistent_value_in_config(
+    with_process_exit_teardown,
+):
     config = selene.Config()
 
     driver = config.driver
@@ -72,13 +54,13 @@ def test_automatically_built_driver_is_stored_as_persistent_value_in_config():
     assert driver is persistent.Field.value_from(config, 'driver')
 
 
-def test_persistent_means___():
+def test_persistent_means___(with_process_exit_teardown):
     """
     TBD
     """
 
 
-def test_new_browser_does_not_build_driver_on_init():
+def test_new_browser_does_not_build_driver_on_init(with_process_exit_teardown):
 
     # WHEN
     browser = selene.Browser(selene.Config())
@@ -87,7 +69,9 @@ def test_new_browser_does_not_build_driver_on_init():
     assert driver is ...
 
 
-def test_first_access_to_driver_on_browser_ensures_driver_for_chrome_is_built():
+def test_first_access_to_driver_on_browser_ensures_driver_for_chrome_is_built(
+    with_process_exit_teardown,
+):
     browser = selene.Browser(selene.Config())
 
     driver = browser.driver
@@ -97,7 +81,9 @@ def test_first_access_to_driver_on_browser_ensures_driver_for_chrome_is_built():
     driver = persistent.Field.value_from(browser.config, 'driver')
 
 
-def test_first_access_to_driver_on_browser_config_ensures_driver_for_chrome_is_built():
+def test_first_access_to_driver_on_browser_config_ensures_driver_for_chrome_is_built(
+    with_process_exit_teardown,
+):
     browser = selene.Browser(selene.Config())
 
     driver = browser.config.driver
@@ -107,7 +93,9 @@ def test_first_access_to_driver_on_browser_config_ensures_driver_for_chrome_is_b
     driver = persistent.Field.value_from(browser.config, 'driver')
 
 
-def test_first_access_to_driver_via_browser_open__builds_driver():
+def test_first_access_to_driver_via_browser_open__builds_driver(
+    with_process_exit_teardown,
+):
     browser = selene.Browser(selene.Config())
 
     browser.open(empty_page)
@@ -117,7 +105,9 @@ def test_first_access_to_driver_via_browser_open__builds_driver():
     assert driver.title == 'Selene Test Page'
 
 
-def test_built_driver_will_be_killed_on_process_exit():
+def test_built_driver_will_be_killed_on_process_exit(
+    with_process_exit_teardown,
+):
     browser = selene.Browser(selene.Config())
     browser.open(empty_page)
 
@@ -127,7 +117,9 @@ def test_built_driver_will_be_killed_on_process_exit():
     pytest.raises(MaxRetryError, lambda: driver.title)  # KILLED
 
 
-def test_built_driver_will_not_be_killed_if_configured_with_hold_driver():
+def test_built_driver_will_not_be_killed_if_configured_with_hold_driver(
+    with_process_exit_teardown,
+):
     browser = selene.Browser(
         selene.Config(
             hold_driver_at_exit=True,  # <- GIVEN
@@ -141,7 +133,9 @@ def test_built_driver_will_not_be_killed_if_configured_with_hold_driver():
     assert driver.title == 'Selene Test Page'  # ALIVE
 
 
-def test_built_driver_will_not_be_killed_if_post_configured_for_hold_driver():
+def test_built_driver_will_not_be_killed_if_post_configured_for_hold_driver(
+    with_process_exit_teardown,
+):
     browser = selene.Browser(selene.Config())
     browser.open(empty_page)
     browser.config.hold_driver_at_exit = True  # <- GIVEN
@@ -152,7 +146,9 @@ def test_built_driver_will_not_be_killed_if_post_configured_for_hold_driver():
     assert driver.title == 'Selene Test Page'  # ALIVE
 
 
-def test_built_on_clone_driver_will_not_be_killed_if_cloned_with_hold_driver():
+def test_built_on_clone_driver_will_not_be_killed_if_cloned_with_hold_driver(
+    with_process_exit_teardown,
+):
     browser = selene.Browser(selene.Config())
     clone = browser.with_(hold_driver_at_exit=True)  # <- GIVEN
     clone.open(empty_page)  # <- AND
@@ -163,7 +159,9 @@ def test_built_on_clone_driver_will_not_be_killed_if_cloned_with_hold_driver():
     assert driver.title == 'Selene Test Page'  # ALIVE
 
 
-def test_built_on_browser_driver_will_be_killed_even_if_cloned_with_hold_driver():
+def test_built_on_browser_driver_will_be_killed_even_if_cloned_with_hold_driver(
+    with_process_exit_teardown,
+):
     browser = selene.Browser(selene.Config())
     clone = browser.with_(hold_driver_at_exit=True)  # <- GIVEN
     browser.open(empty_page)  # <- AND
@@ -174,7 +172,9 @@ def test_built_on_browser_driver_will_be_killed_even_if_cloned_with_hold_driver(
     pytest.raises(MaxRetryError, lambda: driver.title)  # KILLED
 
 
-def test_first_access_to_driver_via_browser_quit__builds_and_kills_driver():
+def test_first_access_to_driver_via_browser_quit__builds_and_kills_driver(
+    with_process_exit_teardown,
+):
     browser = selene.Browser(selene.Config())
 
     # WHEN we are going to do a stupid thing – quit non initialized browser yet
@@ -194,7 +194,9 @@ def test_first_access_to_driver_via_browser_quit__builds_and_kills_driver():
     )
 
 
-def test_can_rebuild_browser_on_first_access_after_its_death():
+def test_can_rebuild_browser_on_first_access_after_its_death(
+    with_process_exit_teardown,
+):
     browser = selene.Browser(selene.Config())
     browser.quit()
 
@@ -205,7 +207,9 @@ def test_can_rebuild_browser_on_first_access_after_its_death():
     assert driver is persistent.Field.value_from(browser.config, 'driver')
 
 
-def test_browser_remains_dead_if_configured_with_not_rebuild_dead_driver_on_init():
+def test_browser_remains_dead_if_configured_with_not_rebuild_dead_driver_on_init(
+    with_process_exit_teardown,
+):
 
     browser = selene.Browser(
         selene.Config(
@@ -219,7 +223,9 @@ def test_browser_remains_dead_if_configured_with_not_rebuild_dead_driver_on_init
     pytest.raises(MaxRetryError, lambda: driver.title)  # THEN yet dead
 
 
-def test_browser_remains_dead_if_post_configured_for_not_rebuild_dead_driver():
+def test_browser_remains_dead_if_post_configured_for_not_rebuild_dead_driver(
+    with_process_exit_teardown,
+):
     browser = selene.Browser(selene.Config())
     browser.quit()
 
@@ -230,7 +236,9 @@ def test_browser_remains_dead_if_post_configured_for_not_rebuild_dead_driver():
     pytest.raises(MaxRetryError, lambda: driver.title)  # THEN yet dead
 
 
-def test_browser_clone_remains_dead_if_cloned_with_not_rebuild_dead_driver():
+def test_browser_clone_remains_dead_if_cloned_with_not_rebuild_dead_driver(
+    with_process_exit_teardown,
+):
     browser = selene.Browser(selene.Config())
     browser.quit()
 
@@ -240,7 +248,9 @@ def test_browser_clone_remains_dead_if_cloned_with_not_rebuild_dead_driver():
     pytest.raises(MaxRetryError, lambda: clone.driver.title)  # THEN yet dead
 
 
-def test_browser_resurrects_itself_and_clone_after_clone_programmed_to_death_forever():
+def test_browser_resurrects_itself_and_clone_after_clone_programmed_to_death_forever(
+    with_process_exit_teardown,
+):
     browser = selene.Browser(selene.Config())
     browser.quit()
     clone = browser.with_(rebuild_dead_driver=False)  # <- GIVEN
@@ -254,7 +264,9 @@ def test_browser_resurrects_itself_and_clone_after_clone_programmed_to_death_for
     assert driver is persistent.Field.value_from(clone.config, 'driver')
 
 
-def test_can_build_second_driver_if_previous_was_forgotten():
+def test_can_build_second_driver_if_previous_was_forgotten(
+    with_process_exit_teardown,
+):
     # GIVEN
     browser = selene.Browser(selene.Config())
     first_driver = browser.driver
@@ -274,7 +286,9 @@ def test_can_build_second_driver_if_previous_was_forgotten():
     assert first_driver.session_id != second_driver.session_id
 
 
-def test_can_close_at_exit_all_built_drivers_for_same_browser():
+def test_can_close_at_exit_all_built_drivers_for_same_browser(
+    with_process_exit_teardown,
+):
     browser = selene.Browser(selene.Config())
     first_driver = browser.driver
     browser.config.driver = ...
@@ -286,7 +300,9 @@ def test_can_close_at_exit_all_built_drivers_for_same_browser():
     pytest.raises(MaxRetryError, lambda: second_driver.title)  # KILLED
 
 
-def test_builds_firefox_driver_for_browser_configured_with_firefox_as_name():
+def test_builds_firefox_driver_for_browser_configured_with_firefox_as_name(
+    with_process_exit_teardown,
+):
     browser = selene.Browser(selene.Config(name='firefox'))
 
     driver = browser.driver
@@ -295,7 +311,9 @@ def test_builds_firefox_driver_for_browser_configured_with_firefox_as_name():
     assert driver.title == ''
 
 
-def test_builds_firefox_driver_for_browser_post_tuned_for_firefox_as_name():
+def test_builds_firefox_driver_for_browser_post_tuned_for_firefox_as_name(
+    with_process_exit_teardown,
+):
     browser = selene.Browser(selene.Config())
     browser.config.name = 'firefox'
 
@@ -305,7 +323,9 @@ def test_builds_firefox_driver_for_browser_post_tuned_for_firefox_as_name():
     assert driver.title == ''
 
 
-def test_proceed_with_built_before_driver_if_post_tuned_after_driver_access():
+def test_proceed_with_built_before_driver_if_post_tuned_after_driver_access(
+    with_process_exit_teardown,
+):
     browser = selene.Browser(selene.Config())
     driver = browser.driver
 
@@ -316,7 +336,9 @@ def test_proceed_with_built_before_driver_if_post_tuned_after_driver_access():
     assert driver is browser.driver
 
 
-def test_build_post_tuned_driver_by_name_on_second_access_after_first_quit():
+def test_build_post_tuned_driver_by_name_on_second_access_after_first_quit(
+    with_process_exit_teardown,
+):
     browser = selene.Browser(selene.Config())
     driver = browser.driver
     browser.config.name = 'firefox'
@@ -328,7 +350,9 @@ def test_build_post_tuned_driver_by_name_on_second_access_after_first_quit():
     assert driver.title == ''
 
 
-def test_build_post_tuned_driver_by_name_on_second_access_after_first_reset():
+def test_build_post_tuned_driver_by_name_on_second_access_after_first_reset(
+    with_process_exit_teardown,
+):
     browser = selene.Browser(selene.Config())
     driver = browser.driver
     browser.config.name = 'firefox'
@@ -340,7 +364,9 @@ def test_build_post_tuned_driver_by_name_on_second_access_after_first_reset():
     assert driver.title == ''
 
 
-def test_builds_firefox_driver_when_accessed_via_inline_clone():
+def test_builds_firefox_driver_when_accessed_via_inline_clone(
+    with_process_exit_teardown,
+):
     browser = selene.Browser(selene.Config())
 
     driver = browser.with_(name='firefox').driver
@@ -349,7 +375,9 @@ def test_builds_firefox_driver_when_accessed_via_inline_clone():
     assert driver.title == ''
 
 
-def test_firefox_built_via_clone_is_kept_for_original_browser():
+def test_firefox_built_via_clone_is_kept_for_original_browser(
+    with_process_exit_teardown,
+):
     browser = selene.Browser(selene.Config())
     clone = browser.with_(name='firefox')
     clone_driver = clone.driver
@@ -360,7 +388,9 @@ def test_firefox_built_via_clone_is_kept_for_original_browser():
     assert browser.driver.name == 'firefox'
 
 
-def test_driver_is_shared_between_original_and_clone_when_only_name_differs():
+def test_driver_is_shared_between_original_and_clone_when_only_name_differs(
+    with_process_exit_teardown,
+):
     origin = selene.Browser(selene.Config())
     '''
     # same as:
@@ -374,7 +404,9 @@ def test_driver_is_shared_between_original_and_clone_when_only_name_differs():
     assert cloned_driver is origin_driver
 
 
-def test_driver_is_shared_between_original_and_clone_when_nothing_differs():
+def test_driver_is_shared_between_original_and_clone_when_nothing_differs(
+    with_process_exit_teardown,
+):
     origin = selene.Browser(selene.Config())
     cloned = origin.with_()  # nothing
 
@@ -384,7 +416,9 @@ def test_driver_is_shared_between_original_and_clone_when_nothing_differs():
     assert cloned_driver is origin_driver
 
 
-def test_forcing_new_driver_storage_for_clone_by_explicit_driver_set_on_cloning():
+def test_forcing_new_driver_storage_for_clone_by_explicit_driver_set_on_cloning(
+    with_process_exit_teardown,
+):
     origin = selene.Browser(selene.Config())
     cloned = origin.with_(driver=...)
 
@@ -394,7 +428,9 @@ def test_forcing_new_driver_storage_for_clone_by_explicit_driver_set_on_cloning(
     assert cloned_driver is not origin_driver
 
 
-def test_forcing_new_driver_storage_for_clone_by_driver_set_on_cloning_with_name():
+def test_forcing_new_driver_storage_for_clone_by_driver_set_on_cloning_with_name(
+    with_process_exit_teardown,
+):
     origin = selene.Browser(selene.Config())
     cloned = origin.with_(name='firefox', driver=...)
 
