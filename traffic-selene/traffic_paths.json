@@ -3,43 +3,49 @@
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
     "count": 522,
-    "uniques": 210
+    "uniques": 222
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 39,
-    "uniques": 15
+    "count": 42,
+    "uniques": 17
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 27,
-    "uniques": 15
+    "count": 24,
+    "uniques": 13
   },
   {
     "path": "/yashaka/selene/releases",
     "title": "Releases · yashaka/selene · GitHub",
-    "count": 21,
-    "uniques": 13
+    "count": 18,
+    "uniques": 12
   },
   {
     "path": "/yashaka/selene/blob/master/README.md",
     "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 20,
-    "uniques": 13
+    "count": 18,
+    "uniques": 11
   },
   {
-    "path": "/yashaka/selene/tree/master/selene/core",
-    "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 15,
-    "uniques": 6
+    "path": "/yashaka/selene/issues/188",
+    "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
+    "count": 14,
+    "uniques": 12
   },
   {
     "path": "/yashaka/selene/issues/287",
     "title": "from selenium to selene · Issue #287 · yashaka/selene · GitHub",
     "count": 14,
-    "uniques": 9
+    "uniques": 10
+  },
+  {
+    "path": "/yashaka/selene/tree/master/selene/core",
+    "title": "selene/selene/core at master · yashaka/selene · GitHub",
+    "count": 14,
+    "uniques": 5
   },
   {
     "path": "/yashaka/selene/search",
@@ -52,11 +58,5 @@
     "title": "selene/selene/support at master · yashaka/selene · GitHub",
     "count": 11,
     "uniques": 3
-  },
-  {
-    "path": "/yashaka/selene/tree/master/examples",
-    "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 10,
-    "uniques": 7
   }
 ]
