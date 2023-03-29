@@ -286,49 +286,80 @@ def test_can_close_at_exit_all_built_drivers_for_same_browser():
     pytest.raises(MaxRetryError, lambda: second_driver.title)  # KILLED
 
 
+def test_builds_firefox_driver_for_browser_configured_with_firefox_as_name():
+    browser = selene.Browser(selene.Config(name='firefox'))
+
+    driver = browser.driver
+
+    assert driver.name == 'firefox'
+    assert driver.title == ''
+
+
+def test_builds_firefox_driver_when_accessed_via_inline_clone():
+    browser = selene.Browser(selene.Config())
+
+    driver = browser.with_(name='firefox').driver
+
+    assert driver.name == 'firefox'
+    assert driver.title == ''
+
+
+def test_firefox_built_via_clone_is_kept_for_original_browser():
+    browser = selene.Browser(selene.Config())
+    clone = browser.with_(name='firefox')
+    clone_driver = clone.driver
+
+    browser.open(empty_page)
+
+    assert clone_driver is browser.driver
+    assert browser.driver.name == 'firefox'
+
+
+def test_driver_is_shared_between_original_and_clone_when_only_name_differs():
+    origin = selene.Browser(selene.Config())
+    '''
+    # same as:
+    origin = selene.Browser(selene.Config(name='chrome'))
+    '''
+    cloned = origin.with_(name='firefox')
+
+    cloned_driver = cloned.driver
+    origin_driver = origin.driver
+
+    assert cloned_driver is origin_driver
+
+
+def test_driver_is_shared_between_original_and_clone_when_nothing_differs():
+    origin = selene.Browser(selene.Config())
+    cloned = origin.with_()  # nothing
+
+    cloned_driver = cloned.driver
+    origin_driver = origin.driver
+
+    assert cloned_driver is origin_driver
+
+
+def test_forcing_new_driver_storage_for_clone_by_explicit_driver_set_on_cloning():
+    origin = selene.Browser(selene.Config())
+    cloned = origin.with_(driver=...)
+
+    cloned_driver = cloned.driver
+    origin_driver = origin.driver
+
+    assert cloned_driver is not origin_driver
+
+
+def test_forcing_new_driver_storage_for_clone_by_driver_set_on_cloning_with_name():
+    origin = selene.Browser(selene.Config())
+    cloned = origin.with_(name='firefox', driver=...)
+
+    cloned_driver = cloned.driver
+    origin_driver = origin.driver
+
+    assert cloned_driver is not origin_driver
+
+
 """
-def test_can_init_custom_firefox_browser_on_open(
-    given_reset_managed_browser_driver,
-):
-    browser.config.browser_name = 'firefox'
-
-    browser.open(empty_page)
-
-    assert browser.driver.name == 'firefox'
-    assert browser.driver.title == 'Selene Test Page'
-
-
-def test_can_reset_custom_firefox_driver_on_assigning_ellipsis(
-    given_reset_managed_browser_driver,
-):
-    # GIVEN
-    browser.config.browser_name = 'firefox'
-    browser.open(empty_page)
-    original_driver = browser.driver
-    original_session_id = browser.driver.session_id
-
-    # WHEN
-    browser.config.driver = ...
-
-    # THEN
-    try:
-        original_title = original_driver.title
-        pytest.fail(
-            f'should not be able to get title {original_title} from closed driver'
-        )
-    except Exception as error:
-        '''
-        original browser is dead;)
-        '''
-        assert 'Failed to establish a new connection' in str(error)
-
-    # WHEN
-    browser.open(empty_page)
-
-    # THEN
-    assert browser.driver.name == 'firefox'
-    assert original_session_id != browser.driver.session_id
-
 
 def test_can_init_another_browser_after_custom_only_after_custom_browser_quit(
     given_reset_managed_browser_driver,
