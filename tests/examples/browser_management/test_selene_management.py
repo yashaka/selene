@@ -295,6 +295,51 @@ def test_builds_firefox_driver_for_browser_configured_with_firefox_as_name():
     assert driver.title == ''
 
 
+def test_builds_firefox_driver_for_browser_post_tuned_for_firefox_as_name():
+    browser = selene.Browser(selene.Config())
+    browser.config.name = 'firefox'
+
+    driver = browser.driver
+
+    assert driver.name == 'firefox'
+    assert driver.title == ''
+
+
+def test_proceed_with_built_before_driver_if_post_tuned_after_driver_access():
+    browser = selene.Browser(selene.Config())
+    driver = browser.driver
+
+    browser.config.name = 'firefox'
+
+    assert browser.driver.name == 'chrome'
+    assert browser.driver.title == ''
+    assert driver is browser.driver
+
+
+def test_build_post_tuned_driver_by_name_on_second_access_after_first_quit():
+    browser = selene.Browser(selene.Config())
+    driver = browser.driver
+    browser.config.name = 'firefox'
+
+    browser.quit()
+    driver = browser.driver
+
+    assert driver.name == 'firefox'
+    assert driver.title == ''
+
+
+def test_build_post_tuned_driver_by_name_on_second_access_after_first_reset():
+    browser = selene.Browser(selene.Config())
+    driver = browser.driver
+    browser.config.name = 'firefox'
+
+    browser.config.driver = ...
+    driver = browser.driver
+
+    assert driver.name == 'firefox'
+    assert driver.title == ''
+
+
 def test_builds_firefox_driver_when_accessed_via_inline_clone():
     browser = selene.Browser(selene.Config())
 
@@ -357,84 +402,3 @@ def test_forcing_new_driver_storage_for_clone_by_driver_set_on_cloning_with_name
     origin_driver = origin.driver
 
     assert cloned_driver is not origin_driver
-
-
-"""
-
-def test_can_init_another_browser_after_custom_only_after_custom_browser_quit(
-    given_reset_managed_browser_driver,
-):
-    # AND
-    browser.config.browser_name = 'firefox'
-    browser.open(empty_page)
-    assert browser.driver.name == 'firefox'
-    firefox_session_id = browser.driver.session_id
-
-    # WHEN
-    browser.config.browser_name = 'chrome'
-
-    # THEN still the same firefox session
-    # TODO: should we change this behavior? see https://github.com/yashaka/selene/issues/453
-    assert browser.driver.name == 'firefox'
-    assert browser.driver.session_id == firefox_session_id
-
-    # WHEN
-    browser.open(empty_page)
-
-    # THEN still the same firefox session
-    assert browser.driver.name == 'firefox'
-    assert browser.driver.session_id == firefox_session_id
-
-    # WHEN
-    browser.quit()
-    # AND
-    browser.open(empty_page)
-
-    # THEN finally new chrome session
-    assert browser.driver.name == 'chrome'
-    assert browser.driver.session_id != firefox_session_id
-
-
-def test_browser_is_closed_on_exit_by_default_false_in_hold_browser_open(
-    given_reset_managed_browser_driver,
-):
-    original_driver = browser.driver
-
-    atexit._run_exitfuncs()  # noqa
-
-    try:
-        original_title = original_driver.title
-        pytest.fail(
-            f'should not be able to get title {original_title} from closed driver'
-        )
-    except Exception as error:
-        '''
-        original browser is dead;)
-        '''
-        assert 'Failed to establish a new connection' in str(error)
-
-
-def test_hold_browser_open_on_explicit_true__set_before_browser_is_opened(
-    given_reset_managed_browser_driver,
-):
-    browser.config.hold_browser_open = True
-    original_driver = browser.driver
-
-    atexit._run_exitfuncs()  # noqa
-
-    # THEN driver is still alive
-    assert original_driver.title == ''
-
-
-def test_hold_browser_open_on_explicit_true__set_after_browser_is_opened(
-    given_reset_managed_browser_driver,
-):
-    original_driver = browser.driver
-
-    browser.config.hold_browser_open = True
-    atexit._run_exitfuncs()  # noqa
-
-    # THEN driver is still alive
-    assert original_driver.title == ''
-    
-"""
