@@ -27,16 +27,6 @@ def _with_setattr(obj, attribute, value):
     return obj
 
 
-def _is_of_descriptor_type(instance):
-    return any(
-        [
-            getattr(type(instance), '__get__', None),
-            getattr(type(instance), '__set__', None),
-            getattr(type(instance), '__delete__', None),
-        ]
-    )
-
-
 T = typing.TypeVar('T')
 
 
@@ -64,7 +54,7 @@ class Boxed:
         if not hasattr(instance, self.name):
             if isinstance(value, Box):
                 setattr(instance, self.name, value)
-            elif _is_of_descriptor_type(value):
+            elif inspect.isdatadescriptor(value):
                 # try to find default inside descriptor
                 default = getattr(value, 'default', None)
                 if default is not None:
@@ -124,7 +114,7 @@ class Field:
 
     @property
     def has_default_as_descriptor(self) -> bool:
-        return self.has_default and _is_of_descriptor_type(self.default)
+        return self.has_default and inspect.isdatadescriptor(self.default)
 
     @property
     def as_init_arg(self) -> str:
@@ -297,7 +287,6 @@ def dataclass(cls):
 
     _set_new_attribute(cls, '__init__', init_fn)
 
-    print('fields: ', fields)
     for field in fields:
         setattr(cls, field.name, field.descriptor)
 

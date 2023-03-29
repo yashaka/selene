@@ -24,6 +24,7 @@ from __future__ import annotations
 
 import atexit
 import dataclasses
+import inspect
 import itertools
 import os
 import re
@@ -141,25 +142,28 @@ def _build_local_driver_by_name_or_remote_by_url(
 
 
 def _is_alive_driver(instance: WebDriver) -> bool:
-    if instance is ... or not instance:
-        return False
-
     try:
         return instance.title is not None  # TODO: refactor
     except Exception:  # noqa
         return False
 
 
-def _is_driver_set_and_alive(instance: Optional[WebDriver]) -> bool:
-    if instance is ... or not instance:
-        return False
-
-    return _is_alive_driver(instance)
-
-
 class ManagedDriverDescriptor:
     def __init__(self, *, default: Optional[WebDriver] = ...):
         self.default = default
+
+    def schedule_driver_quit(
+        self, config: Config, driver_source: Callable[[], WebDriver]
+    ):
+        atexit.register(
+            lambda: (
+                driver_source().quit()
+                if not config.hold_driver_at_exit
+                and config.is_driver_set_strategy(driver_source())
+                and config.is_driver_alive_strategy(driver_source())
+                else None
+            )
+        )
 
     def __set_name__(self, owner, name):
         self.name = name
@@ -169,10 +173,19 @@ class ManagedDriverDescriptor:
             return self
 
         config = typing.cast(Config, instance)
+        # Below...
+        # we can't access driver via config.driver explicitly
+        # or implicitly by calling other config.* methods,
+        # because it will lead to recursion!!!
 
         driver_box = typing.cast(persistent.Box, getattr(config, self.name))
-        if driver_box.value is ...:
-            driver_box.value = config._build_driver()
+        if driver_box.value is ... or (
+            config.rebuild_dead_driver
+            and not config.is_driver_alive_strategy(driver_box.value)
+        ):
+            driver = config.driver_factory(config)
+            driver_box.value = driver
+            self.schedule_driver_quit(config, lambda: driver)
 
         return driver_box.value
 
@@ -182,24 +195,42 @@ class ManagedDriverDescriptor:
         if not hasattr(instance, self.name):
             if isinstance(value, persistent.Box):
                 driver_box = value
-            elif persistent._is_of_descriptor_type(value):
+            elif inspect.isdatadescriptor(value):
                 driver_box = persistent.Box(self.default)
             else:
+                # setting WebDriver instance directly on init
                 driver_box = persistent.Box(value)
 
-            setattr(instance, self.name, driver_box)
+                self.schedule_driver_quit(config, lambda: value)
+                # atexit.register(
+                #     lambda: (
+                #         value.quit()
+                #         if not config.hold_driver_at_exit
+                #         and config.is_driver_set_strategy(value)
+                #         and config.is_driver_alive_strategy(value)
+                #         else None
+                #     )
+                # )
 
-            atexit.register(
-                lambda: (
-                    driver_box.value.quit()
-                    if not config.hold_browser_open
-                    and _is_driver_set_and_alive(driver_box.value)
-                    else None
-                )
-            )
+            setattr(instance, self.name, driver_box)
         else:
+            # setting WebDriver instance after init
             driver_box = getattr(instance, self.name)
             driver_box.value = value
+
+            # TODO: should not we check value set above,
+            #       wasn't the same as was in driver_box.value before?
+            #       if yes, we might not want to add one more atexit handler
+            self.schedule_driver_quit(config, lambda: value)
+            # atexit.register(
+            #     lambda: (
+            #         value.quit()
+            #         if not config.hold_driver_at_exit
+            #         and config.is_driver_set_strategy(value)
+            #         and config.is_driver_alive_strategy(value)
+            #         else None
+            #     )
+            # )
 
             # def driver_installed_and_rebuilt_after_death():
             #     return (
@@ -263,31 +294,56 @@ class Config:
     driver: WebDriver = ManagedDriverDescriptor(default=...)
     """
     A driver instance. 
-     
+
     GIVEN unset, i.e. equals to default `...`, 
     WHEN ... o_O ?
     THEN it will be set to the instance built by `config.driver_factory`.
     AND ... o_O ?
-    
+
     GIVEN set manually to an existing driver instance,
           like: `browser.config.driver = Chrome()`
     THEN 
-    
+
     GIVEN set manually or not
-    AND `config.hold_browser_open` is set to `False` (that is default)
+    AND `config.hold_driver_at_exit` is set to `False` (that is default)
     WHEN the process exits
     THEN driver will be quit on exit by default.
-    
-    To keep its finalization on your side, set `config.hold_browser_open=True`.
+
+    To keep its finalization on your side, set `config.hold_driver_at_exit=True`.
     """
 
+    # TODO: should we rename driver_factory to build_driver_strategy
+    #       for compliance with other *_strategy options?
+    #       from other point of view...
+    #       this option is something bigger than *_strategy
+    #       because it's based on the whole config instance,
+    #       not just pure «unboxed» WebDriver instance
     driver_factory: Callable[
         [Config], WebDriver
     ] = _build_local_driver_by_name_or_remote_by_url
+    """
+    A factory to build a driver instance based on this config instance.
+    The driver built with this factory will be available via `config.driver`.
+    Hence, you can't use `config.driver` directly inside this factory,
+    because it may lead to recursion.
+    
+    The default factory builds:
+    * either a local driver by value specified in `config.browser_name`
+    * or remote driver by value specified in `config.remote_url`.
+    """
+
+    is_driver_set_strategy: Callable[[WebDriver], bool] = (
+        lambda driver: driver is not ... and driver is not None
+    )
+
+    is_driver_alive_strategy: Callable[[WebDriver], bool] = (
+        lambda driver: driver.service.process is not None
+        and driver.service.process.poll() is None
+    )
 
     # TODO: should we make it public?
     #       in fact keeping methods that do something as public in config...
-    #       may confuse when comparing them to options like `hold_browser_open`
+    #       may confuse when comparing them to options like `hold_driver_at_exit`
     #       and `rebuild_dead_driver` that are just boolean options...
     def _build_driver(self):
         return self.driver_factory(self)
@@ -303,12 +359,14 @@ class Config:
     #           browser.config.name = 'chrome'
     #           browser.config.driver_name = 'chrome'
     #           browser.config.automation_name = 'chrome'
+    #       Maybe driver_name is the best one?
+    #       * TODO: Check what it actually is set under driver.name for appium and remote cases
     # TODO: consider setting to None or ... by default, and pick up by factory any installed browser in a system
     name: str = 'chrome'
     """
     Desired name of the driver to be processed by Selene's default config.driver_factory.
     It is ignored by default config.driver_factory if config.remote_url is set.
-    
+
     GIVEN set to any of: 'chrome', 'firefox', 'edge', 
     AND config.driver is left unset (default value is ...),
     THEN default config.driver_factory will automatically install drivers
@@ -335,30 +393,29 @@ class Config:
         """
         return self.driver() if callable(self.driver) else self.driver
 
-    # TODO: consider deprecating in favor of `hold_driver: bool = False` property
-    hold_browser_open: bool = False
-    """Controls whether driver will be automatically quit on process exit or not."""
+    hold_driver_at_exit: bool = False
+    """Controls whether driver will be automatically quit at process exit or not."""
 
-    rebuild_dead_driver: bool = False
-    """Controls whether driver will be automatically quit on process exit or not."""
+    # TODO: deprecate
+    @property
+    def hold_browser_open(self) -> bool:
+        return self.hold_driver_at_exit
+
+    # TODO: deprecate
+    @hold_browser_open.setter
+    def hold_browser_open(self, value: bool):
+        self.hold_driver_at_exit = value
+
+    rebuild_dead_driver: bool = True
+    """Controls whether driver should be automatically rebuilt if it was quit or crashed."""
 
     def __post_init__(self):
-        self._register_browser_finalizer()
-
         # TODO: consider making private
         # TODO: do we even need them at __post_init__?
         self.last_screenshot: Optional[str] = None
         self.last_page_source: Optional[str] = None
 
-    def _register_browser_finalizer(self):
-        atexit.register(
-            lambda: (
-                self._driver_instance.quit()
-                if not self.hold_browser_open and self._is_driver_alive
-                else None
-            )
-        )
-
+    # TODO: consider refactoring to regular config option
     @property
     def _is_driver_alive(self) -> bool:
         if self.driver is ... or not self.driver:
@@ -480,6 +537,7 @@ Screenshot: file://{path}'''
         )
 
     # TODO: we definitely not need it inside something called Config, especially "base interface like config
+    #       consider refactor to wait_factory as configurable config property
     def wait(self, entity):
         hook = self._inject_screenshot_and_page_source_pre_hooks(
             self.hook_wait_failure

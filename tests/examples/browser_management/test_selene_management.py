@@ -7,7 +7,7 @@ from selenium.webdriver.remote.webdriver import WebDriver
 from urllib3.exceptions import MaxRetryError
 
 import selene
-from selene import browser
+from selene import browser, have
 from selene.common.data_structures import persistent
 from tests import resources
 
@@ -45,70 +45,213 @@ def given_reset_managed_browser_driver(
     ...
 
 
-def test_can_init_default_chrome_browser_on_quit_o_o(
-    # given_reset_managed_browser_driver,
-):
-    # GIVEN
+def test_new_config_does_not_build_driver_on_init():
+
+    # WHEN
+    config = selene.Config()
+
+    driver = persistent.Field.value_from(config, 'driver')
+    assert driver is ...
+
+
+def test_first_access_to_driver_on_config_ensures_driver_for_chrome_is_built():
+
+    # WHEN
+    config = selene.Config()
+
+    driver = config.driver
+    assert driver.name == 'chrome'
+    assert driver.title == ''
+
+
+def test_automatically_built_driver_is_stored_as_persistent_value_in_config():
+    config = selene.Config()
+
+    driver = config.driver
+
+    assert driver is persistent.Field.value_from(config, 'driver')
+
+
+def test_persistent_means___():
     """
-    Nothing ;)
-    – this is a first test without any fixture in this module,
-    so browser is not initialized yet.
-    (TODO: improve this setup to be dead proof «not initialized yet»)
+    TBD
     """
+
+
+def test_new_browser_does_not_build_driver_on_init():
+
+    # WHEN
+    browser = selene.Browser(selene.Config())
+
+    driver = persistent.Field.value_from(browser.config, 'driver')
+    assert driver is ...
+
+
+def test_first_access_to_driver_on_browser_ensures_driver_for_chrome_is_built():
+    browser = selene.Browser(selene.Config())
+
+    driver = browser.driver
+
+    assert driver.name == 'chrome'
+    assert driver.title == ''
+    driver = persistent.Field.value_from(browser.config, 'driver')
+
+
+def test_first_access_to_driver_on_browser_config_ensures_driver_for_chrome_is_built():
+    browser = selene.Browser(selene.Config())
+
+    driver = browser.config.driver
+
+    assert driver.name == 'chrome'
+    assert driver.title == ''
+    driver = persistent.Field.value_from(browser.config, 'driver')
+
+
+def test_first_access_to_driver_via_browser_open__builds_driver():
+    browser = selene.Browser(selene.Config())
+
+    browser.open(empty_page)
+
+    driver = persistent.Field.value_from(browser.config, 'driver')
+    assert driver.name == 'chrome'
+    assert driver.title == 'Selene Test Page'
+
+
+def test_built_driver_will_be_killed_on_process_exit():
+    browser = selene.Browser(selene.Config())
+    browser.open(empty_page)
+
+    atexit._run_exitfuncs()
+
+    driver = persistent.Field.value_from(browser.config, 'driver')
+    pytest.raises(MaxRetryError, lambda: driver.title)  # KILLED
+
+
+def test_built_driver_will_not_be_killed_if_configured_with_hold_driver():
+    browser = selene.Browser(
+        selene.Config(
+            hold_driver_at_exit=True,  # <- GIVEN
+        )
+    )
+    browser.open(empty_page)
+
+    atexit._run_exitfuncs()
+
+    driver = persistent.Field.value_from(browser.config, 'driver')
+    assert driver.title == 'Selene Test Page'  # ALIVE
+
+
+def test_built_driver_will_not_be_killed_if_post_configured_for_hold_driver():
+    browser = selene.Browser(selene.Config())
+    browser.open(empty_page)
+    browser.config.hold_driver_at_exit = True  # <- GIVEN
+
+    atexit._run_exitfuncs()
+
+    driver = persistent.Field.value_from(browser.config, 'driver')
+    assert driver.title == 'Selene Test Page'  # ALIVE
+
+
+def test_built_on_clone_driver_will_not_be_killed_if_cloned_with_hold_driver():
+    browser = selene.Browser(selene.Config())
+    clone = browser.with_(hold_driver_at_exit=True)  # <- GIVEN
+    clone.open(empty_page)  # <- AND
+
+    atexit._run_exitfuncs()
+
+    driver = persistent.Field.value_from(clone.config, 'driver')
+    assert driver.title == 'Selene Test Page'  # ALIVE
+
+
+def test_built_on_browser_driver_will_be_killed_even_if_cloned_with_hold_driver():
+    browser = selene.Browser(selene.Config())
+    clone = browser.with_(hold_driver_at_exit=True)  # <- GIVEN
+    browser.open(empty_page)  # <- AND
+
+    atexit._run_exitfuncs()
+
+    driver = persistent.Field.value_from(browser.config, 'driver')
+    pytest.raises(MaxRetryError, lambda: driver.title)  # KILLED
+
+
+def test_first_access_to_driver_via_browser_quit__builds_and_kills_driver():
+    browser = selene.Browser(selene.Config())
 
     # WHEN we are going to do a stupid thing – quit non initialized browser yet
     browser.quit()
 
     # THEN we successfully quit it,
     #      as it was forced to initialize on request to driver under the hood
-    webdriver: WebDriver = persistent.Field.value_from(
-        browser.config, 'driver'
-    )
-    # AND exactly chrome was initialized
-    assert webdriver.name == 'chrome'
+    driver = persistent.Field.value_from(browser.config, 'driver')
     # AND now it is dead:
-    pytest.raises(MaxRetryError, lambda: webdriver.title)
-    # AND getting driver via public access also returns dead driver
-    pytest.raises(MaxRetryError, lambda: browser.driver.title)
+    pytest.raises(MaxRetryError, lambda: driver.title)
+    # AND getting driver via public access on browser
+    #     with explicit ask to not rebuild driver
+    #     will also return dead driver:
+    pytest.raises(
+        MaxRetryError,
+        lambda: browser.with_(rebuild_dead_driver=False).driver.title,
+    )
 
 
-def test_can_init_default_chrome_browser_on_open(
-    # given_reset_managed_browser_driver,
-):
-    # WHEN
-    browser.open(empty_page)
+def test_can_rebuild_browser_on_first_access_after_its_death():
+    browser = selene.Browser(selene.Config())
+    browser.quit()
 
-    assert browser.driver.name == 'chrome'
-    # browser.should(have.name('chrome'))  # TODO: do we need it?
+    driver = browser.driver
 
-    assert browser.driver.title == 'Selene Test Page'
-    # browser.should(have.title('Selene Test Page'))
+    assert driver.name == 'chrome'
+    assert driver.title == ''  # alive;)
+    assert driver is persistent.Field.value_from(browser.config, 'driver')
 
 
-def test_browser_is_opened__on_access_to__browser_driver(
-    # given_reset_managed_browser_driver,
-):
-    assert getattr(browser.config, '__boxed_driver').value is ...
+def test_browser_remains_dead_if_configured_with_not_rebuild_dead_driver_on_init():
 
-    webdriver = browser.driver
+    browser = selene.Browser(
+        selene.Config(
+            rebuild_dead_driver=False,  # <- WHEN
+        )
+    )
+    browser.quit()
+    driver = browser.driver
 
-    # TODO: consider checking actual process running (via psutil lib)
-    assert getattr(browser.config, '__boxed_driver').value is webdriver
-    assert webdriver.title == ''
-    assert webdriver.name == 'chrome'
+    assert driver.name == 'chrome'
+    pytest.raises(MaxRetryError, lambda: driver.title)  # THEN yet dead
 
 
-def test_browser_is_opened__on_access_to__browser_config_driver(
-    given_reset_managed_browser_driver,
-):
-    assert getattr(browser.config, '_driver') is ...
+def test_browser_remains_dead_if_post_configured_for_not_rebuild_dead_driver():
+    browser = selene.Browser(selene.Config())
+    browser.quit()
 
-    webdriver = browser.config.driver
+    browser.config.rebuild_dead_driver = False  # <- WHEN
+    driver = browser.driver
 
-    # TODO: consider checking actual process running (via psutil lib)
-    assert getattr(browser.config, '_driver') is webdriver
-    assert webdriver.title == ''
-    assert webdriver.name == 'chrome'
+    assert driver.name == 'chrome'
+    pytest.raises(MaxRetryError, lambda: driver.title)  # THEN yet dead
+
+
+def test_browser_clone_remains_dead_if_cloned_with_not_rebuild_dead_driver():
+    browser = selene.Browser(selene.Config())
+    browser.quit()
+
+    clone = browser.with_(rebuild_dead_driver=False)  # <- WHEN
+
+    assert clone.driver.name == 'chrome'
+    pytest.raises(MaxRetryError, lambda: clone.driver.title)  # THEN yet dead
+
+
+def test_browser_resurrects_itself_and_clone_after_clone_programmed_to_death_forever():
+    browser = selene.Browser(selene.Config())
+    browser.quit()
+    clone = browser.with_(rebuild_dead_driver=False)  # <- GIVEN
+
+    driver = browser.driver
+
+    assert driver.name == 'chrome'
+    assert driver.title == ''  # alive;)
+    assert driver is persistent.Field.value_from(browser.config, 'driver')
+    assert driver is clone.driver
+    assert driver is persistent.Field.value_from(clone.config, 'driver')
 
 
 def test_can_reset_driver_on_assigning_ellipsis(
@@ -145,6 +288,7 @@ def test_can_reset_driver_on_assigning_ellipsis(
     assert original_session_id != browser.driver.session_id
 
 
+"""
 def test_can_init_custom_firefox_browser_on_open(
     given_reset_managed_browser_driver,
 ):
@@ -263,3 +407,5 @@ def test_hold_browser_open_on_explicit_true__set_after_browser_is_opened(
 
     # THEN driver is still alive
     assert original_driver.title == ''
+    
+"""

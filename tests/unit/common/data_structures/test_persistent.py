@@ -1,3 +1,5 @@
+import inspect
+
 from selene.common.data_structures import persistent
 import typing
 
@@ -273,7 +275,7 @@ class Test__dataclass:
                 if not hasattr(instance, self.name):
                     if isinstance(value, persistent.Box):
                         setattr(instance, self.name, value)
-                    elif persistent._is_of_descriptor_type(value):
+                    elif inspect.isdatadescriptor(value):
                         # try to find default inside descriptor
                         default = getattr(value, 'default', None)
                         if default is not None:
