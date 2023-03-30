@@ -311,13 +311,73 @@ class Config:
     name: str = 'chrome'
     """
     Desired name of the driver to be processed by Selene's default config.driver_factory.
-    It is ignored by default config.driver_factory if config.remote_url is set.
+    It is ignored by default `config.driver_factory` if `config.remote_url` is set.
 
     GIVEN set to any of: 'chrome', 'firefox', 'edge', 
     AND config.driver is left unset (default value is ...),
     THEN default config.driver_factory will automatically install drivers
     AND build webdriver instance for you
     AND this config will store the instance in config.driver
+    """
+
+    # TODO: finalize the name of this option and consider making public
+    _deep_copy_implicitly_driver_with_name: bool = True
+    """
+    Controls whether driver will be deep copied with config.name 
+    when customizing config via `config.with_(**options)`.
+    
+    Examples:
+        Building 2 drivers with implicit deep copy of driver storage:
+    
+        >>> chrome_config = Config(
+        >>>     name='chrome', 
+        >>>     timeout=10.0, 
+        >>>     base_url='https://autotest.how',
+        >>> )
+        >>> chrome = chrome_config.driver
+        >>> firefox_config = chrome_config.with_(name='firefox')
+        >>> firefox = firefox_config.driver
+        >>> assert firefox is not chrome
+    
+        Building 2 drivers with explicit deep copy of driver storage [1]:
+    
+        >>> chrome_config = Config(
+        >>>     name='chrome', 
+        >>>     timeout=10.0, 
+        >>>     base_url='https://autotest.how',
+        >>>     _deep_copy_implicitly_driver_with_name=False,
+        >>> )
+        >>> chrome = chrome_config.driver
+        >>> firefox_config = chrome_config.with_(name='firefox', driver=...)
+        >>> firefox = firefox_config.driver
+        >>> assert firefox is not chrome
+    
+        Building 2 drivers with explicit deep copy of driver storage [2]:
+    
+        >>> chrome_config = Config(
+        >>>     name='chrome', 
+        >>>     timeout=10.0, 
+        >>>     base_url='https://autotest.how',
+        >>> )
+        >>> chrome_config._deep_copy_implicitly_driver_with_name = False
+        >>> chrome = chrome_config.driver
+        >>> firefox_config = chrome_config.with_(name='firefox', driver=...)
+        >>> firefox = firefox_config.driver
+        >>> assert firefox is not chrome
+    
+        Building 1 driver because driver storage was not copied:
+    
+        >>> chrome_config = Config(
+        >>>     name='chrome', 
+        >>>     timeout=10.0, 
+        >>>     base_url='https://autotest.how',
+        >>> )
+        >>> chrome_config._deep_copy_implicitly_driver_with_name = False
+        >>> chrome = chrome_config.driver
+        >>> firefox_config = chrome_config.with_(name='firefox')
+        >>> firefox = firefox_config.driver
+        >>> assert firefox is chrome  # o_O ;)
+        
     """
 
     # TODO: consider to deprecate because might confuse in case of Appium usage
@@ -431,7 +491,47 @@ class Config:
     """
 
     def with_(self, /, **config_as_kwargs) -> Config:
-        return persistent.replace(self, **config_as_kwargs)
+        """
+
+        Parameters:
+            **config_as_kwargs:
+                options to override in the new config.
+
+                If `name` is among them, and `driver` is not among them,
+                and `self._deep_copy_implicitly_driver_with_name` is True,
+                then `driver` will be implicitly added to the options to override,
+                i.e. `with_(name='firefox')` will be equivalent
+                to `with_(name='firefox', driver=...)`.
+                The latter gives a readable and concise shortcut
+                to spawn more than one browser:
+
+                >>> config = Config(timeout=10.0, base_url='https://autotest.how')
+                >>> chrome = config.driver  # chrome is default browser
+                >>> firefox_config = config.with_(name='firefox')
+                >>> firefox = firefox_config.driver
+                >>> edge_config = config.with_(name='edge')
+                >>> edge = edge_config.driver
+
+
+        Returns:
+            a new config with overridden options that were specified as arguments.
+
+            All other config options will be shallow-copied
+            from the current config.
+            Those other options that are of immutable types,
+            like `int` – will be also copied by reference,
+            i.e. in a truly shallow way.
+        """
+        options = (
+            {'driver': ..., **config_as_kwargs}
+            if (
+                self._deep_copy_implicitly_driver_with_name
+                and 'name' in config_as_kwargs
+                and 'driver' not in config_as_kwargs
+            )
+            else config_as_kwargs
+        )
+        return persistent.replace(self, **options)
 
     def _generate_filename(self, prefix='', suffix=''):
         path = self.reports_folder
