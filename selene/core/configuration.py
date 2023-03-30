@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2015-2022 Iakiv Kramarenko
+# Copyright (c) 2015-2023 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -23,18 +23,15 @@
 from __future__ import annotations
 
 import atexit
-import dataclasses
 import inspect
 import itertools
 import os
-import re
 import time
 import typing
-from dataclasses import dataclass, field, asdict, InitVar
-from typing import Callable, Optional, Union, Tuple, List
+import warnings
+from typing import Callable, Optional
 
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.options import ArgOptions, BaseOptions
+from selenium.webdriver.common.options import BaseOptions
 
 from selene.common import fp
 from selene.common.data_structures import persistent
@@ -182,13 +179,24 @@ class ManagedDriverDescriptor:
         driver_box = typing.cast(persistent.Box, getattr(config, self.name))
         if driver_box.value is ... or (
             config.rebuild_dead_driver
+            and not callable(driver_box.value)  # TODO: consider deprecating
             and not config.is_driver_alive_strategy(driver_box.value)
         ):
             driver = config.driver_factory(config)
             driver_box.value = driver
             self.schedule_driver_quit(config, lambda: driver)
 
-        return driver_box.value
+        value = driver_box.value
+        if callable(value):
+            warnings.warn(
+                'Providing driver as callable might be deprecated in future. '
+                'Consider customizing driver management '
+                'via other config.* options',
+                FutureWarning,
+            )
+            return value()
+
+        return value
 
     def __set__(self, instance, value):
         config = typing.cast(Config, instance)
@@ -237,25 +245,43 @@ class Config:
     #           class MyConfig(Config):
     #              driver: WebDriver = HERE_DriverDescriptor(...)
     #       and then `MyConfig(driver=...)` will work as expected
+    # TODO: should we accept a callable here to bypass driver_factory logic?
+    #       currently we do... we don't show it explicitly...
+    #       but the valid type is Union[WebDriver, Callable[[], WebDriver]]
+    #       so... should we do it?
+    #       why not just use driver_factory for same?
+    #       there is the difference though...
+    #       the driver factory is only used as a driver builder,
+    #       it does not cover other stages of driver lifecycle,
+    #       like teardown...
+    #       but if we provide a callable instance to driver,
+    #       then it will just substitute the whole lifecycle
     driver: WebDriver = ManagedDriverDescriptor(default=...)
     """
-    A driver instance. 
+    A driver instance with lifecycle managed by this config special options
+    (TODO: specify these options...), 
+    depending on their values and customization of this attribute.
 
     GIVEN unset, i.e. equals to default `...`, 
-    WHEN ... o_O ?
+    WHEN accessed first time (e.g. via config.driver)
     THEN it will be set to the instance built by `config.driver_factory`.
-    AND ... o_O ?
 
     GIVEN set manually to an existing driver instance,
-          like: `browser.config.driver = Chrome()`
-    THEN 
-
-    GIVEN set manually or not
+          like: `config.driver = Chrome()`
+    THEN it will be reused at it is on any next access
+    WHEN reset to `...`
+    THEN will be rebuilt by `config.driver_factory`
+    
+    GIVEN set manually to a callable that returns WebDriver instance
+    WHEN accessed fist time
+    AND any next time
+    THEN will call the callable and return the result
+    
+    GIVEN unset or set manually to not callable
     AND `config.hold_driver_at_exit` is set to `False` (that is default)
     WHEN the process exits
-    THEN driver will be quit on exit by default.
+    THEN driver will be quit.
 
-    To keep its finalization on your side, set `config.hold_driver_at_exit=True`.
     """
 
     # TODO: should we rename driver_factory to build_driver_strategy
@@ -390,15 +416,6 @@ class Config:
     def browser_name(self, value: str):
         self.name = value
 
-    # TODO: consider deprecating
-    @property
-    def _driver_instance(self) -> WebDriver:
-        """
-        Depending on whether `self.driver` is instance or instance factory (function),
-        returns driver instance correspondingly.
-        """
-        return self.driver() if callable(self.driver) else self.driver
-
     # TODO: do we need it?
     # quit_last_driver_on_reset: bool = False
     # """Controls whether driver will be automatically quit at reset of config.driver"""
@@ -425,28 +442,16 @@ class Config:
         self.last_screenshot: Optional[str] = None
         self.last_page_source: Optional[str] = None
 
-    # TODO: consider refactoring to regular config option
-    @property
-    def _is_driver_alive(self) -> bool:
-        if self.driver is ... or not self.driver:
-            return False
-
-        try:
-            return self._driver_instance.title is not None  # TODO: refactor
-        except Exception:  # noqa
-            return False
+    base_url: str = ''
+    window_width: Optional[int] = None
+    window_height: Optional[int] = None
 
     timeout: float = 4
-    base_url: str = ''
-
+    log_outer_html_on_failure: bool = False
     set_value_by_js: bool = False
     type_by_js: bool = False
     click_by_js: bool = False
     wait_for_no_overlap_found_by_js: bool = False
-    log_outer_html_on_failure: bool = False
-
-    window_width: Optional[int] = None
-    window_height: Optional[int] = None
 
     # TODO: better name? now technically it's not a decorator but decorator_builder...
     # or decorator_factory...

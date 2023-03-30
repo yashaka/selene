@@ -39,7 +39,7 @@ class Settings:
 
 @pytest.fixture(scope='module')
 def web():
-    def managed_driver() -> WebDriver:
+    def customly_managed_driver() -> WebDriver:
         from selenium import webdriver
 
         def create_chrome():
@@ -77,7 +77,7 @@ def web():
 
         return Settings.driver
 
-    browser = Browser(Config(driver=managed_driver))
+    browser = Browser(Config(driver=customly_managed_driver))
 
     yield browser
 

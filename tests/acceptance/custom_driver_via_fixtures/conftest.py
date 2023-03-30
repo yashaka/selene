@@ -5,10 +5,11 @@ from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.core.utils import ChromeType
 
 from selene import Config, Browser
+from selene.support.by import name
 
 
 @pytest.fixture(scope='function')
-def session_driver():
+def driver_per_test():
     chrome_driver = webdriver.Chrome(
         service=Service(
             ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install()
@@ -19,5 +20,9 @@ def session_driver():
 
 
 @pytest.fixture(scope='function')
-def browser(session_driver):
-    yield Browser(Config(driver=session_driver))
+def browser(driver_per_test):
+    yield Browser(
+        Config(
+            driver=driver_per_test,
+        )
+    )

@@ -301,16 +301,16 @@ def dataclass(cls):
 def replace(obj, /, **changes):
     """Return a new object replacing specified fields with new values.
 
-    Example usage:
+    Example:
 
-      @dataclass
-      class C:
-          x: int
-          y: int
-
-      c = C(1, 2)
-      c1 = replace(c, x=3)
-      assert c1.x == 3 and c1.y == 2
+        >>> @dataclass
+        >>> class C:
+        >>>     x: int
+        >>>     y: int
+        >>>
+        >>> c = C(1, 2)
+        >>> c1 = replace(c, x=3)
+        >>> assert c1.x == 3 and c1.y == 2
     """
 
     if not dataclasses._is_dataclass_instance(obj):
