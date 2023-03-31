@@ -202,10 +202,60 @@ class ManagedDriverDescriptor:
         config = typing.cast(Config, instance)
 
         if not hasattr(instance, self.name):
+            # setting this attribute for the first time,
+            # probably (TODO: probably or for sure?) in the __init__ method
+
             if isinstance(value, persistent.Box):
+                # it's a boxed value,
+                # probably passed implicitly via `persistent.replace`
                 driver_box = value
             elif inspect.isdatadescriptor(value):
-                driver_box = persistent.Box(self.default)
+                # the value happened to be a descriptor
+                # it's either object of this descriptor type (`type(self)`)
+                # or custom provided descriptor during init new object
+                if type(value) is type(self):
+                    # we are processing this `self` descriptor as value
+                    # so, instead of value, we should store `self.default`
+                    driver_box = persistent.Box(self.default)
+                else:
+                    # somebody decided to provide his own descriptor object
+                    '''TODO: remove this string in next commits...
+                    # hence,
+                    # 1) we ensure that this custom descriptor
+                    # knows same as we do – the `self.name`.
+                    # We do this by either
+                    # 1.1) trying to forward __set_name__:
+                    set_name = getattr(type(value), '__set_name__', None)
+                    if set_name:
+                        set_name(value, type(self), self.name)
+                    # 1.2) or set 'name' attribute explicitly
+                    elif hasattr(value, 'name'):
+                        setattr(value, 'name', self.name)
+
+                    # 2) we delegate __set__
+                    set = getattr(type(value), '__set__', None)
+                    if set and '__set__' in type(value).__dict__:
+                        # new responsible is found,
+                        # and it is not inherited
+                        # from this class (`type(self)`) as base.
+                        # Hence, delegate everything completely via `return`:
+                        return set(value, instance, value)
+
+                    # no set was found, the show must go on...
+                    '''
+                    # Heh:) It was a good try, but no ;P
+                    raise TypeError(
+                        'Providing custom descriptor objects on init '
+                        'to customize driver management is not supported, '
+                        'because it would be too limited... '
+                        'You would be able to provide it only on init,'
+                        'and use it only via attribute access,'
+                        'without possibility to override value with `persistent.replace` '
+                        'or `config.with_(**overrides)`. '
+                        'If you want to use custom descriptor, '
+                        'you have to subclass Config and provide your descriptor object'
+                        'on class attributes definition level.'
+                    )  # TODO: cover with tests
             else:
                 # setting WebDriver instance directly on init
                 driver_box = persistent.Box(value)
@@ -273,6 +323,7 @@ class Config:
     THEN will be rebuilt by `config.driver_factory`
     
     GIVEN set manually to a callable that returns WebDriver instance
+          (currently marked with FutureWarning, so might be deprecated)
     WHEN accessed fist time
     AND any next time
     THEN will call the callable and return the result
@@ -281,7 +332,6 @@ class Config:
     AND `config.hold_driver_at_exit` is set to `False` (that is default)
     WHEN the process exits
     THEN driver will be quit.
-
     """
 
     # TODO: should we rename driver_factory to build_driver_strategy
