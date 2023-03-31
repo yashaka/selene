@@ -217,9 +217,10 @@ class ManagedDriverDescriptor:
                 # setting WebDriver instance directly on init
                 driver_box = persistent.Box(value)
 
-                config._schedule_driver_teardown_strategy(
-                    config, lambda: value
-                )
+                if not callable(value):
+                    config._schedule_driver_teardown_strategy(
+                        config, lambda: value
+                    )
 
             setattr(instance, self.name, driver_box)
         else:
@@ -230,7 +231,10 @@ class ManagedDriverDescriptor:
             # TODO: should not we check value set above,
             #       wasn't the same as was in driver_box.value before?
             #       if yes, we might not want to add one more atexit handler
-            config._schedule_driver_teardown_strategy(config, lambda: value)
+            if not callable(value):
+                config._schedule_driver_teardown_strategy(
+                    config, lambda: value
+                )
 
 
 @persistent.dataclass
