@@ -1,7 +1,8 @@
 import inspect
 import typing
 import dataclasses
-from types import GenericAlias
+
+# from types import GenericAlias
 
 MISSING = object()
 _FIELDS = getattr(dataclasses, '_FIELDS', '__dataclass_fields__')
@@ -189,7 +190,7 @@ class Field:
             else _with_setattr(self.default, 'name', self.box_name)
         )
 
-    __class_getitem__ = classmethod(GenericAlias)
+    # __class_getitem__ = classmethod(GenericAlias)
 
 
 # This function is used instead of exposing Field creation directly,
