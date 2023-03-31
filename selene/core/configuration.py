@@ -523,7 +523,7 @@ class Config:
     A counter, currently used for incrementing screenshot names
     """
 
-    def with_(self, /, **config_as_kwargs) -> Config:
+    def with_(self, **config_as_kwargs) -> Config:
         """
 
         Parameters:
