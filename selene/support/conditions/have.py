@@ -181,11 +181,20 @@ def tabs_number_greater_than_or_equal(value: int) -> Condition[Browser]:
 
 def js_returned_true(script_to_return_bool: str) -> Condition[Browser]:
     warnings.warn(
-        'might be deprecated; use have.js_returned(True, ...) instead',
-        PendingDeprecationWarning,
+        'deprecated; use have.script_returned(True, ...) instead',
+        DeprecationWarning,
     )
-    return match.browser_has_js_returned(True, script_to_return_bool)
+    return match.browser_has_script_returned(True, script_to_return_bool)
 
 
 def js_returned(expected: Any, script: str, *args) -> Condition[Browser]:
-    return match.browser_has_js_returned(expected, script, *args)
+    warnings.warn(
+        'deprecated because js does not work for mobile; '
+        'use have.script_returned(True, ...) instead',
+        DeprecationWarning,
+    )
+    return match.browser_has_script_returned(expected, script, *args)
+
+
+def script_returned(expected: Any, script: str, *args) -> Condition[Browser]:
+    return match.browser_has_script_returned(expected, script, *args)

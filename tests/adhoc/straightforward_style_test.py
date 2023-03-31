@@ -38,7 +38,7 @@ def test_selene_demo():
         'return (Object.keys(require.s.contexts._.defined).length === 39)'
     )
     browser.with_(timeout=config.timeout * 4).should(
-        have.js_returned(True, is_todo_mvc_loaded)
+        have.script_returned(True, is_todo_mvc_loaded)
     )  # todo: make it work
 
     for text in ['1', '2', '3']:

@@ -151,6 +151,9 @@ edge.config.timeout = 10
 
 ### Other
 - deprecated 
+  - match.browser_has_js_returned in favor of match.browser_has_script_returned
+  - have.js_returned in favor of have.script_returned
+  - have.js_returned_true(...) in favor of have.script_returned(True, ...)
   - shared.browser.config.get_or_create_driver
   - shared.browser.config.reset_driver
     - use `selene.browser.config.driver = ...`

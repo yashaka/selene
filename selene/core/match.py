@@ -514,6 +514,18 @@ def browser_has_tabs_number_less_than_or_equal(
 def browser_has_js_returned(
     expected: Any, script: str, *args
 ) -> Condition[Browser]:
+    warnings.warn(
+        'deprecated because js does not work for mobile; '
+        'use have.script_returned(True, ...) instead',
+        DeprecationWarning,
+    )
+
+    return browser_has_script_returned(expected, script, *args)
+
+
+def browser_has_script_returned(
+    expected: Any, script: str, *args
+) -> Condition[Browser]:
     def script_result(browser: Browser):
         return browser.driver.execute_script(script, *args)
 

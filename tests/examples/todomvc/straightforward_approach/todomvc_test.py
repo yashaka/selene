@@ -44,7 +44,9 @@ class TestTodoMVC:
     def test_filter_tasks(self):
         browser.open('https://todomvc4tasj.herokuapp.com/')
         clear_completed_js_loaded = "return $._data($('#clear-completed').get(0), 'events').hasOwnProperty('click')"
-        browser.wait.for_(have.js_returned(True, clear_completed_js_loaded))
+        browser.wait.for_(
+            have.script_returned(True, clear_completed_js_loaded)
+        )
         browser.wait.for_(have.title('TroopJS • TodoMVC'))
 
         browser.element('#new-todo').should(be.enabled).set_value(

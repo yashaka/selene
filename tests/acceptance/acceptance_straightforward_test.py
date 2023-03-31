@@ -39,7 +39,7 @@ class TestTodoMVC:
         active_tasks = tasks.by(have.css_class('active'))
 
         browser.open(app_url)
-        browser.should(have.js_returned(True, is_TodoMVC_loaded))
+        browser.should(have.script_returned(True, is_TodoMVC_loaded))
 
         for task_text in ['1', '2', '3']:
             browser.element('#new-todo').set_value(task_text).press_enter()
