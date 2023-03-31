@@ -138,30 +138,9 @@ def _build_local_driver_by_name_or_remote_by_url(
     }.get(config.name if not config.remote_url else 'remote', 'chrome')()
 
 
-def _is_alive_driver(instance: WebDriver) -> bool:
-    try:
-        return instance.title is not None  # TODO: refactor
-    except Exception:  # noqa
-        return False
-
-
 class ManagedDriverDescriptor:
     def __init__(self, *, default: Optional[WebDriver] = ...):
         self.default = default
-
-    # TODO: should we move it to config.quit_driver_at_exit_strategy?
-    def schedule_driver_quit(
-        self, config: Config, driver_source: Callable[[], WebDriver]
-    ):
-        atexit.register(
-            lambda: (
-                driver_source().quit()
-                if not config.hold_driver_at_exit
-                and config.is_driver_set_strategy(driver_source())
-                and config.is_driver_alive_strategy(driver_source())
-                else None
-            )
-        )
 
     def __set_name__(self, owner, name):
         self.name = name
@@ -176,7 +155,9 @@ class ManagedDriverDescriptor:
         # or implicitly by calling other config.* methods,
         # because it will lead to recursion!!!
 
-        driver_box = typing.cast(persistent.Box, getattr(config, self.name))
+        driver_box = typing.cast(
+            persistent.Box[WebDriver], getattr(config, self.name)
+        )
         if driver_box.value is ... or (
             config.rebuild_dead_driver
             and not callable(driver_box.value)  # TODO: consider deprecating
@@ -184,7 +165,7 @@ class ManagedDriverDescriptor:
         ):
             driver = config.driver_factory(config)
             driver_box.value = driver
-            self.schedule_driver_quit(config, lambda: driver)
+            config._schedule_driver_teardown_strategy(config, lambda: driver)
 
         value = driver_box.value
         if callable(value):
@@ -219,30 +200,6 @@ class ManagedDriverDescriptor:
                     driver_box = persistent.Box(self.default)
                 else:
                     # somebody decided to provide his own descriptor object
-                    '''TODO: remove this string in next commits...
-                    # hence,
-                    # 1) we ensure that this custom descriptor
-                    # knows same as we do – the `self.name`.
-                    # We do this by either
-                    # 1.1) trying to forward __set_name__:
-                    set_name = getattr(type(value), '__set_name__', None)
-                    if set_name:
-                        set_name(value, type(self), self.name)
-                    # 1.2) or set 'name' attribute explicitly
-                    elif hasattr(value, 'name'):
-                        setattr(value, 'name', self.name)
-
-                    # 2) we delegate __set__
-                    set = getattr(type(value), '__set__', None)
-                    if set and '__set__' in type(value).__dict__:
-                        # new responsible is found,
-                        # and it is not inherited
-                        # from this class (`type(self)`) as base.
-                        # Hence, delegate everything completely via `return`:
-                        return set(value, instance, value)
-
-                    # no set was found, the show must go on...
-                    '''
                     # Heh:) It was a good try, but no ;P
                     raise TypeError(
                         'Providing custom descriptor objects on init '
@@ -260,7 +217,9 @@ class ManagedDriverDescriptor:
                 # setting WebDriver instance directly on init
                 driver_box = persistent.Box(value)
 
-                self.schedule_driver_quit(config, lambda: value)
+                config._schedule_driver_teardown_strategy(
+                    config, lambda: value
+                )
 
             setattr(instance, self.name, driver_box)
         else:
@@ -271,7 +230,7 @@ class ManagedDriverDescriptor:
             # TODO: should not we check value set above,
             #       wasn't the same as was in driver_box.value before?
             #       if yes, we might not want to add one more atexit handler
-            self.schedule_driver_quit(config, lambda: value)
+            config._schedule_driver_teardown_strategy(config, lambda: value)
 
 
 @persistent.dataclass
@@ -289,53 +248,9 @@ class Config:
     especially taking into account some historical reasons of Selene's design.
     """
 
-    # TODO: consider allowing to provide a Descriptor as a value
-    #       either explicitly like `Config(driver=HERE_DriverDescriptor(...))`
-    #       or by inheritance like:
-    #           class MyConfig(Config):
-    #              driver: WebDriver = HERE_DriverDescriptor(...)
-    #       and then `MyConfig(driver=...)` will work as expected
-    # TODO: should we accept a callable here to bypass driver_factory logic?
-    #       currently we do... we don't show it explicitly...
-    #       but the valid type is Union[WebDriver, Callable[[], WebDriver]]
-    #       so... should we do it?
-    #       why not just use driver_factory for same?
-    #       there is the difference though...
-    #       the driver factory is only used as a driver builder,
-    #       it does not cover other stages of driver lifecycle,
-    #       like teardown...
-    #       but if we provide a callable instance to driver,
-    #       then it will just substitute the whole lifecycle
-    driver: WebDriver = ManagedDriverDescriptor(default=...)
-    """
-    A driver instance with lifecycle managed by this config special options
-    (TODO: specify these options...), 
-    depending on their values and customization of this attribute.
-
-    GIVEN unset, i.e. equals to default `...`, 
-    WHEN accessed first time (e.g. via config.driver)
-    THEN it will be set to the instance built by `config.driver_factory`.
-
-    GIVEN set manually to an existing driver instance,
-          like: `config.driver = Chrome()`
-    THEN it will be reused at it is on any next access
-    WHEN reset to `...`
-    THEN will be rebuilt by `config.driver_factory`
-    
-    GIVEN set manually to a callable that returns WebDriver instance
-          (currently marked with FutureWarning, so might be deprecated)
-    WHEN accessed fist time
-    AND any next time
-    THEN will call the callable and return the result
-    
-    GIVEN unset or set manually to not callable
-    AND `config.hold_driver_at_exit` is set to `False` (that is default)
-    WHEN the process exits
-    THEN driver will be quit.
-    """
-
     # TODO: should we rename driver_factory to build_driver_strategy
     #       for compliance with other *_strategy options?
+    #       especially with teardown_driver_strategy...
     #       from other point of view...
     #       this option is something bigger than *_strategy
     #       because it's based on the whole config instance,
@@ -354,21 +269,40 @@ class Config:
     * or remote driver by value specified in `config.remote_url`.
     """
 
-    is_driver_set_strategy: Callable[[WebDriver], bool] = (
-        lambda driver: driver is not ... and driver is not None
+    # TODO: isn't this option too much?
+    #       having it, we have to keep driver descriptor definition
+    #       after this option definition,
+    #       that is pretty tightly coupled...
+    #       heh, but maybe we definitely have to keep it defined
+    #       after all "strategy" options...
+    # Currently we don't use the power of get_driver being callable...
+    # It would work even if we pass simply driver instance...
+    # Should we simplify things? Or keep it as is with get_driver?
+    _schedule_driver_teardown_strategy: Callable[
+        [Config, Callable[[], WebDriver]],
+        None,
+    ] = lambda config, get_driver: atexit.register(  # TODO: get_driver or simply driver?
+        lambda: config._teardown_driver_strategy(config, get_driver())
     )
 
-    is_driver_alive_strategy: Callable[[WebDriver], bool] = (
-        lambda driver: driver.service.process is not None
+    _teardown_driver_strategy: Callable[
+        [Config, WebDriver], None
+    ] = lambda config, driver: (
+        driver.quit()
+        if not config.hold_driver_at_exit
+        and config.is_driver_set_strategy(driver)
+        and config.is_driver_alive_strategy(driver)
+        else None
+    )
+
+    is_driver_set_strategy: Callable[[WebDriver], bool] = lambda driver: (
+        driver is not ... and driver is not None
+    )
+
+    is_driver_alive_strategy: Callable[[WebDriver], bool] = lambda driver: (
+        driver.service.process is not None
         and driver.service.process.poll() is None
     )
-
-    # TODO: should we make it public?
-    #       in fact keeping methods that do something as public in config...
-    #       may confuse when comparing them to options like `hold_driver_at_exit`
-    #       and `rebuild_dead_driver` that are just boolean options...
-    def _build_driver(self):
-        return self.driver_factory(self)
 
     driver_options: Optional[BaseOptions] = None
 
@@ -485,6 +419,50 @@ class Config:
 
     rebuild_dead_driver: bool = True
     """Controls whether driver should be automatically rebuilt if it was quit or crashed."""
+
+    # TODO: consider allowing to provide a Descriptor as a value
+    #       by inheritance like:
+    #           class MyConfig(Config):
+    #              driver: WebDriver = HERE_DriverDescriptor(...)
+    #       and then `MyConfig(driver=...)` will work as expected
+    # TODO: should we accept a callable here to bypass driver_factory logic?
+    #       currently we do... we don't show it explicitly...
+    #       but the valid type is Union[WebDriver, Callable[[], WebDriver]]
+    #       so... should we do it?
+    #       why not just use driver_factory for same?
+    #       there is the difference though...
+    #       the driver factory is only used as a driver builder,
+    #       it does not cover other stages of driver lifecycle,
+    #       like teardown...
+    #       but if we provide a callable instance to driver,
+    #       then it will just substitute the whole lifecycle
+    driver: WebDriver = ManagedDriverDescriptor(default=...)
+    """
+    A driver instance with lifecycle managed by this config special options
+    (TODO: specify these options...), 
+    depending on their values and customization of this attribute.
+
+    GIVEN unset, i.e. equals to default `...`, 
+    WHEN accessed first time (e.g. via config.driver)
+    THEN it will be set to the instance built by `config.driver_factory`.
+
+    GIVEN set manually to an existing driver instance,
+          like: `config.driver = Chrome()`
+    THEN it will be reused at it is on any next access
+    WHEN reset to `...`
+    THEN will be rebuilt by `config.driver_factory`
+    
+    GIVEN set manually to a callable that returns WebDriver instance
+          (currently marked with FutureWarning, so might be deprecated)
+    WHEN accessed fist time
+    AND any next time
+    THEN will call the callable and return the result
+    
+    GIVEN unset or set manually to not callable
+    AND `config.hold_driver_at_exit` is set to `False` (that is default)
+    WHEN the process exits
+    THEN driver will be quit.
+    """
 
     def __post_init__(self):
         # TODO: consider making private

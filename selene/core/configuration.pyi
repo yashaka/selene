@@ -41,10 +41,15 @@ class Config:
     hold_driver_at_exit: bool = False
     rebuild_dead_driver: bool = True
     # Options to customize driver management
-    driver: WebDriver = (...,)  # todo: accept custom Descriptors
     driver_factory: Callable[[Config], WebDriver] = ...
+    _schedule_driver_teardown_strategy: Callable[
+        [Config, Callable[[], WebDriver]], None
+    ] = ...
+    _teardown_driver_strategy: Callable[[Config, WebDriver], None] = ...
     is_driver_set_strategy: Callable[[WebDriver], bool] = ...
     is_driver_alive_strategy: Callable[[WebDriver], bool] = ...
+    # Managed Driver
+    driver: WebDriver = ...
     # Options to customize this config creation
     _deep_copy_implicitly_driver_with_name: bool = True
     # Options to customize browser behavior
@@ -71,6 +76,7 @@ class Config:
 
     def __init__(
         self,
+        *,
         # Options to customize default driver lifecycle
         name: str = 'chrome',
         driver_options: Optional[BaseOptions] = None,
@@ -78,10 +84,15 @@ class Config:
         hold_driver_at_exit: bool = False,
         rebuild_dead_driver: bool = True,
         # Options to customize driver management
-        driver: WebDriver = ...,  # todo: accept custom Descriptors
         driver_factory: Callable[[Config], WebDriver] = ...,
+        _schedule_driver_teardown_strategy: Callable[
+            [Config, Callable[[], WebDriver]], None
+        ] = ...,
+        _teardown_driver_strategy: Callable[[Config, WebDriver], None] = ...,
         is_driver_set_strategy: Callable[[WebDriver], bool] = ...,
         is_driver_alive_strategy: Callable[[WebDriver], bool] = ...,
+        # Managed Driver
+        driver: WebDriver = ...,
         # Options to customize this config creation
         _deep_copy_implicitly_driver_with_name: bool = True,
         # Options to customize browser behavior
@@ -108,6 +119,7 @@ class Config:
     ): ...
     def with_(
         self,
+        *,
         # Options to customize default driver lifecycle
         name: str = 'chrome',
         driver_options: Optional[BaseOptions] = None,
@@ -115,10 +127,15 @@ class Config:
         hold_driver_at_exit: bool = False,
         rebuild_dead_driver: bool = True,
         # Options to customize driver management
-        driver: WebDriver = ...,  # todo: accept custom Descriptors
         driver_factory: Callable[[Config], WebDriver] = ...,
+        _schedule_driver_teardown_strategy: Callable[
+            [Config, Callable[[], WebDriver]], None
+        ] = ...,
+        _teardown_driver_strategy: Callable[[Config, WebDriver], None] = ...,
         is_driver_set_strategy: Callable[[WebDriver], bool] = ...,
         is_driver_alive_strategy: Callable[[WebDriver], bool] = ...,
+        # Managed Driver
+        driver: WebDriver = ...,
         # Options to customize this config creation
         _deep_copy_implicitly_driver_with_name: bool = True,
         # Options to customize browser behavior

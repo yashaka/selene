@@ -19,31 +19,15 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
-from webdriver_manager.core.utils import ChromeType
-
-from selene.support.shared import browser
-from selene.support.webdriver import WebHelper
+from selene import browser, by, have
 
 
-def teardown_module():
-    browser.quit()
-    browser.config.driver = ...
+def test_search():
+    browser.open('https://www.ecosia.org/')
+    browser.element(by.name('q')).type(
+        'github yashaka selene python'
+    ).press_enter()
 
+    browser.all('.web-result').first.element('.result__link').click()
 
-def test_automatic_quit_for_previous_driver():
-    # driver_from_test_d = browser.config.driver
-    driver_from_test_d = browser.driver
-    assert WebHelper(driver_from_test_d).is_browser_still_alive() is True
-
-    browser.config.driver = webdriver.Chrome(
-        service=Service(
-            ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install()
-        )
-    )
-
-    assert WebHelper(driver_from_test_d).is_browser_still_alive() is False
-    assert WebHelper(browser.driver).is_browser_still_alive() is True
+    browser.should(have.title_containing('yashaka/selene'))

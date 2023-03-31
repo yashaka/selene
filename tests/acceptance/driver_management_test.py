@@ -19,6 +19,29 @@ def with_process_exit_teardown():
     atexit._run_exitfuncs()
 
 
+@pytest.fixture(scope='function')
+def manual_driver():
+
+    from selenium import webdriver
+    from selenium.webdriver.chrome.service import Service
+    from webdriver_manager.chrome import ChromeDriverManager
+    from webdriver_manager.core.utils import ChromeType
+
+    manual_driver = webdriver.Chrome(
+        service=Service(
+            ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install()
+        )
+    )
+
+    yield manual_driver
+
+    if (
+        manual_driver.service.process is not None
+        and manual_driver.service.process.poll() is None
+    ):
+        manual_driver.quit()
+
+
 def test_new_config_does_not_build_driver_on_init(with_process_exit_teardown):
 
     # WHEN
@@ -282,7 +305,7 @@ def test_can_build_second_driver_if_previous_was_forgotten(
     assert first_driver.session_id != second_driver.session_id
 
 
-def test_can_close_at_exit_all_built_drivers_for_same_browser(
+def test_should_kill_at_exit_all_built_drivers_including_forgotten_for_same_browser(
     with_process_exit_teardown,
 ):
     browser = selene.Browser(selene.Config())
@@ -294,6 +317,191 @@ def test_can_close_at_exit_all_built_drivers_for_same_browser(
 
     pytest.raises(MaxRetryError, lambda: first_driver.title)  # KILLED
     pytest.raises(MaxRetryError, lambda: second_driver.title)  # KILLED
+
+
+def test_driver_can_be_manually_set_on_init_and_live_to_death_on_quit(
+    with_process_exit_teardown, manual_driver
+):
+
+    # WHEN
+    browser = selene.Browser(selene.Config(driver=manual_driver))
+
+    assert manual_driver is browser.driver
+
+    # WHEN
+    browser.open(empty_page)
+
+    assert browser.driver.title == 'Selene Test Page'  # ALIVE
+    assert manual_driver is browser.driver
+
+    # WHEN
+    browser.quit()
+
+    pytest.raises(MaxRetryError, lambda: manual_driver.title)  # DEAD
+    assert manual_driver is persistent.Field.value_from(
+        browser.config, 'driver'
+    )
+    assert manual_driver is browser.with_(rebuild_dead_driver=False).driver
+
+
+def test_driver_can_be_manually_post_set_and_live_to_death_on_quit(
+    with_process_exit_teardown, manual_driver
+):
+    browser = selene.Browser(selene.Config())
+
+    # WHEN
+    browser.config.driver = manual_driver
+
+    assert manual_driver is browser.driver
+
+    # WHEN
+    browser.open(empty_page)
+
+    assert browser.driver.title == 'Selene Test Page'  # ALIVE
+    assert manual_driver is browser.driver
+
+    # WHEN
+    browser.quit()
+
+    pytest.raises(MaxRetryError, lambda: manual_driver.title)  # DEAD
+    assert manual_driver is persistent.Field.value_from(
+        browser.config, 'driver'
+    )
+    assert manual_driver is browser.with_(rebuild_dead_driver=False).driver
+
+
+def test_set_on_init_and_used_manual_driver_should_be_killed_by_default(
+    with_process_exit_teardown, manual_driver
+):
+    browser = selene.Browser(
+        selene.Config(
+            driver=manual_driver,  # <- GIVEN
+        )
+    )
+    browser.open(empty_page)  # <- AND
+
+    # WHEN
+    atexit._run_exitfuncs()
+
+    pytest.raises(MaxRetryError, lambda: manual_driver.title)  # DEAD
+
+
+def test_set_on_init_and_not_used_manual_driver_should_not_be_killed_if_post_configured_to_hold(
+    with_process_exit_teardown, manual_driver
+):
+    browser = selene.Browser(
+        selene.Config(
+            driver=manual_driver,  # <- GIVEN
+        )
+    )
+    browser.config.hold_driver_at_exit = True  # <- AND
+    # browser.open(empty_page)  # <- AND not used
+
+    # WHEN
+    atexit._run_exitfuncs()
+
+    assert manual_driver.title == ''  # ALIVE
+    assert manual_driver is persistent.Field.value_from(
+        browser.config, 'driver'
+    )
+    assert manual_driver is browser.with_(rebuild_dead_driver=False).driver
+
+
+def test_post_set_and_used_manual_driver_should_not_be_killed_if_pre_configured_to_hold(
+    with_process_exit_teardown, manual_driver
+):
+    browser = selene.Browser(
+        selene.Config(
+            hold_driver_at_exit=True,  # <- GIVEN
+        )
+    )
+    browser.config.driver = manual_driver
+    browser.open(empty_page)  # <- AND
+
+    # WHEN
+    atexit._run_exitfuncs()
+
+    assert manual_driver.title == 'Selene Test Page'  # ALIVE
+    assert manual_driver is persistent.Field.value_from(
+        browser.config, 'driver'
+    )
+    assert manual_driver is browser.with_(rebuild_dead_driver=False).driver
+
+
+def test_post_set_and_used_manual_driver_should_be_killed_by_default(
+    with_process_exit_teardown, manual_driver
+):
+    browser = selene.Browser(selene.Config())
+    browser.config.driver = manual_driver  # <- GIVEN
+    browser.open(empty_page)  # <- AND
+
+    # WHEN
+    atexit._run_exitfuncs()
+
+    pytest.raises(MaxRetryError, lambda: manual_driver.title)  # DEAD
+    assert manual_driver is persistent.Field.value_from(
+        browser.config, 'driver'
+    )
+    assert manual_driver is browser.with_(rebuild_dead_driver=False).driver
+
+
+def test_post_set_not_used_manual_driver_should_be_killed_by_default(
+    with_process_exit_teardown, manual_driver
+):
+    browser = selene.Browser(selene.Config())
+    browser.config.driver = manual_driver  # <- GIVEN
+    # browser.open(empty_page)  # <- AND not used
+
+    # WHEN
+    atexit._run_exitfuncs()
+
+    pytest.raises(MaxRetryError, lambda: manual_driver.title)  # DEAD
+    assert manual_driver is persistent.Field.value_from(
+        browser.config, 'driver'
+    )
+    assert manual_driver is browser.with_(rebuild_dead_driver=False).driver
+
+
+def test_can_build_second_driver_if_first_manually_set_on_init_was_used_n_forgotten(
+    with_process_exit_teardown, manual_driver
+):
+    browser = selene.Browser(selene.Config())
+    browser.config.driver = manual_driver
+    browser.open(empty_page)
+
+    # WHEN
+    browser.config.driver = ...
+
+    # THEN
+    assert manual_driver.title == 'Selene Test Page'  # ALIVE;)
+
+    # WHEN
+    second_driver = browser.driver
+
+    # THEN
+    assert second_driver.title == ''  # NEW ONE!
+    assert manual_driver.title == 'Selene Test Page'  # OLD IS ALIVE;)
+    assert manual_driver.session_id != second_driver.session_id
+
+
+def test_should_kill_at_exit_all_drivers_including_manually_set_n_forgotten(
+    with_process_exit_teardown, manual_driver
+):
+    browser = selene.Browser(selene.Config())
+    first_driver = browser.driver
+    browser.config.driver = manual_driver
+    browser.config.driver = (
+        manual_driver  # just in case:) TODO: move to separate test
+    )
+    browser.config.driver = ...
+    third_driver = browser.driver
+
+    # WHEN
+    atexit._run_exitfuncs()
+
+    pytest.raises(MaxRetryError, lambda: first_driver.title)  # KILLED
+    pytest.raises(MaxRetryError, lambda: manual_driver.title)  # KILLED
+    pytest.raises(MaxRetryError, lambda: third_driver.title)  # KILLED
 
 
 def test_builds_firefox_driver_for_browser_configured_with_firefox_as_name(

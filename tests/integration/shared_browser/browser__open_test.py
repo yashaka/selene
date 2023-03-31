@@ -21,7 +21,7 @@
 # SOFTWARE.
 import pytest
 
-from selene import Browser, managed
+from selene import Browser, _managed
 from tests.integration.helpers import givenpage
 
 
@@ -40,7 +40,7 @@ def test_changes_window_size_on_open_according_to_config(chrome_driver):
 def reset_window_size_afterwards():
     yield
 
-    from selene import browser, managed
+    from selene import browser, _managed
 
     browser.config.window_width = managed.Config().window_width
     browser.config.window_height = managed.Config().window_height

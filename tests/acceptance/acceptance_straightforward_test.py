@@ -19,9 +19,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from selene import have, by, be
-from selene.core.condition import not_
-from selene.support.shared import browser
+from selene import browser, have, by, be
 
 # app_url = f'file://{os.path.abspath(os.path.dirname(__file__))}/../resources/todomvcapp/home.html'
 app_url = 'https://todomvc4tasj.herokuapp.com/'
@@ -55,12 +53,8 @@ class TestTodoMVC:
         active_tasks.should(have.size(2))
 
         tasks.by(have.css_class('completed')).should(have.texts('3'))
-        tasks.element_by(not_(have.css_class('completed'))).should(
-            have.text('1')
-        )
-        tasks.by(not_(have.css_class('completed'))).should(
-            have.texts('1', '2')
-        )
+        tasks.element_by(have.no.css_class('completed')).should(have.text('1'))
+        tasks.by(have.no.css_class('completed')).should(have.texts('1', '2'))
 
         tasks.even.should(have.texts('2'))
 

@@ -102,13 +102,55 @@ def test_todos_storage_is_not_shared_between_browsers():
 
 ```
 
+TODO:
+- deprecate js_returned in favor of script_returned
+
 ## 2.0.0rc1 (to be released on ?.10.2022)
 
+### New
+
+- added `from selene import browser`
+  - to be used instead of `from selene.support.shared import browser`
+  - with ability to use `browser.with_(**config_options_to_override)` to create new browser instance
+    - Example: 
+     
+      ```python
+      from selene import browser
+      
+      chrome = browser
+      firefox = browser.with_(name='firefox')
+      edge = browser.with_(name='edge')
+      ...
+      # customizing all browsers at once:
+      browser.config.timeout = 10
+      ```
+      
+      as alternative to:
+     
+      ```python
+      from selene import Browser, Config
+      
+      chrome = Browser(Config())
+      firefox = Browser(Config(name='firefox'))
+      edge = Browser(Config(name='edge'))
+      
+      ...
+      
+      # customizing all browsers:
+      chrome.config.timeout = 10
+      firefox.config.timeout = 10
+      edge.config.timeout = 10
+      ```
+
+### Changes
+
+- any driver instance passed to `browser.config.driver` will be automatically quit at exit, unless `browser.config.hold_driver_at_exit = True`, that is `False` by default
+
+### Dependencies
 - update selenium (with weakened dependency to >=4.4.3)
 - update webdriver_manager (with weakened dependency to >=3.8.5)
 
-- added `from selene import browser`
-  - kind of «moved» `selene.support.shared.browser` to `selene.browser`
+### Other
 - deprecated 
   - shared.browser.config.get_or_create_driver
   - shared.browser.config.reset_driver

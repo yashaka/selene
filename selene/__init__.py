@@ -61,7 +61,7 @@ AND::
 
 """
 
-from selene import managed as _managed  # noqa
+from selene import _managed as _managed  # noqa
 
 browser = _managed.browser
 
