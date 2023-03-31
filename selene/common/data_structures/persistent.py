@@ -298,7 +298,7 @@ def dataclass(cls):
     return cls
 
 
-def replace(obj, /, **changes):
+def replace(obj, **changes):
     """Return a new object replacing specified fields with new values.
 
     Example:
