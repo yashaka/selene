@@ -27,25 +27,21 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.core.utils import ChromeType
 
-from selene import have, be
+from selene import have, be, browser
 from selene.core.exceptions import TimeoutException
-from selene.support.shared import browser, config
+from tests import resources
 from tests.helpers import headless_chrome_options
 
 
-EMPTY_PAGE_URL = (
-    'file://'
-    + os.path.abspath(os.path.dirname(__file__))
-    + '/../../resources/empty.html'
-)
+EMPTY_PAGE_URL = resources.url('empty.html')
 
-ORIGINAL_DEFAULT_SCREENSHOT_FOLDER = config.reports_folder
-ORIGINAL_TIMEOUT = config.timeout
+ORIGINAL_DEFAULT_SCREENSHOT_FOLDER = browser.config.reports_folder
+ORIGINAL_TIMEOUT = browser.config.timeout
 
 
 def setup_function():
-    config.reports_folder = ORIGINAL_DEFAULT_SCREENSHOT_FOLDER
-    config.timeout = ORIGINAL_TIMEOUT
+    browser.config.reports_folder = ORIGINAL_DEFAULT_SCREENSHOT_FOLDER
+    browser.config.timeout = ORIGINAL_TIMEOUT
 
 
 def setup_module():
@@ -62,11 +58,11 @@ def teardown_module():
 
 
 def get_default_screenshot_folder():
-    return config.reports_folder
+    return browser.config.reports_folder
 
 
 def get_screen_id():
-    return next(config._counter) - 1
+    return next(browser.config._counter) - 1
 
 
 def test_can_make_screenshot_with_default_name():
@@ -128,7 +124,7 @@ def test_can_make_screenshot_with_custom_folder_specified_as_parameter_with_empt
 
 
 def test_can_save_screenshot_to_custom_folder_specified_through_config():
-    config.reports_folder = (
+    browser.config.reports_folder = (
         os.path.dirname(os.path.abspath(__file__))
         + f'/../../build/screenshots_{next(browser.config._counter)}'
     )
@@ -147,7 +143,7 @@ def test_can_save_screenshot_to_custom_folder_specified_through_config():
 
 def test_can_make_screenshot_automatically():
     browser.open(EMPTY_PAGE_URL)
-    config.timeout = 0.1
+    browser.config.timeout = 0.1
 
     with pytest.raises(TimeoutException):
         browser.element("#selene_link").should(have.exact_text("Selen site"))
@@ -161,36 +157,40 @@ def test_can_make_screenshot_automatically():
 
 
 def test_can_get_last_screenshot_path():
-    config.reports_folder = (
+    browser.config.reports_folder = (
         os.path.dirname(os.path.abspath(__file__))
         + f'/../../build/screenshots_{next(browser.config._counter)}'
     )
     browser.open(EMPTY_PAGE_URL)
-    config.timeout = 0.1
+    browser.config.timeout = 0.1
 
     with pytest.raises(TimeoutException):
         browser.element("#s").should(be.visible)
 
     picture = browser.last_screenshot
-    expected = os.path.join(config.reports_folder, f'{get_screen_id()}.png')
+    expected = os.path.join(
+        browser.config.reports_folder, f'{get_screen_id()}.png'
+    )
     assert picture == expected
     assert os.path.exists(picture)
     assert os.path.isfile(picture)
 
 
 def test_can_get_latest_screenshot_path():
-    config.reports_folder = (
+    browser.config.reports_folder = (
         os.path.dirname(os.path.abspath(__file__))
         + f'/../../build/screenshots_{next(browser.config._counter)}'
     )
     browser.open(EMPTY_PAGE_URL)
-    config.timeout = 0.1
+    browser.config.timeout = 0.1
 
     with pytest.raises(TimeoutException):
         browser.element("#s").should(be.visible)
 
     picture = browser.last_screenshot
-    expected = os.path.join(config.reports_folder, f'{get_screen_id()}.png')
+    expected = os.path.join(
+        browser.config.reports_folder, f'{get_screen_id()}.png'
+    )
     assert picture == expected
     assert os.path.exists(picture)
     assert os.path.isfile(picture)

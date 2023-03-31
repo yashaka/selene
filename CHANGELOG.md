@@ -107,48 +107,47 @@ TODO:
 
 ## 2.0.0rc1 (to be released on ?.10.2022)
 
-### New
-
-- added `from selene import browser`
-  - to be used instead of `from selene.support.shared import browser`
-  - with ability to use `browser.with_(**config_options_to_override)` to create new browser instance
-    - Example: 
-     
-      ```python
-      from selene import browser
-      
-      chrome = browser
-      firefox = browser.with_(name='firefox')
-      edge = browser.with_(name='edge')
-      ...
-      # customizing all browsers at once:
-      browser.config.timeout = 10
-      ```
-      
-      as alternative to:
-     
-      ```python
-      from selene import Browser, Config
-      
-      chrome = Browser(Config())
-      firefox = Browser(Config(name='firefox'))
-      edge = Browser(Config(name='edge'))
-      
-      ...
-      
-      # customizing all browsers:
-      chrome.config.timeout = 10
-      firefox.config.timeout = 10
-      edge.config.timeout = 10
-      ```
-
 ### Changes
 
 - any driver instance passed to `browser.config.driver` will be automatically quit at exit, unless `browser.config.hold_driver_at_exit = True`, that is `False` by default
 
-### Dependencies
-- update selenium (with weakened dependency to >=4.4.3)
-- update webdriver_manager (with weakened dependency to >=3.8.5)
+### New
+
+#### `from selene import browser`
+
+– to be used instead of `from selene.support.shared import browser`. 
+
+No difference between Config and SharedConfig anymore. The new, completely refactored, Config is now used everywhere and allows to customize browser instance in a more convenient way.
+
+Adds ability to use `browser.with_(**config_options_to_override)` to create new browser instance, for example: 
+     
+```python
+from selene import browser
+
+chrome = browser
+firefox = browser.with_(name='firefox')
+edge = browser.with_(name='edge')
+...
+# customizing all browsers at once:
+browser.config.timeout = 10
+```
+  
+as alternative to:
+    
+```python
+from selene import Browser, Config
+
+chrome = Browser(Config())
+firefox = Browser(Config(name='firefox'))
+edge = Browser(Config(name='edge'))
+
+...
+
+# customizing all browsers:
+chrome.config.timeout = 10
+firefox.config.timeout = 10
+edge.config.timeout = 10
+```
 
 ### Other
 - deprecated 
@@ -169,6 +168,7 @@ TODO:
   - shared.browser.wait_to
   - shared.browser.title
   - shared.browser.take_screenshot
+  - jquery_style_selectors
 - removed not deprecated
   - shared.browser.config.Source
     - renamed to shared.browser.config._Source. 
@@ -178,6 +178,12 @@ TODO:
     - use shared.browser.config._counter instead, and better – not use it;)
   - shared.browser.config.generate_filename
     - use shared.browser.config._generate_filename instead, and better – not use it;)
+
+## 2.0.0b15-b17
+
+### Dependencies
+- update selenium (with weakened dependency to >=4.4.3)
+- update webdriver_manager (with weakened dependency to >=3.8.5)
 
 ## 2.0.0b14 (released on 06.10.2022)
 

@@ -1,5 +1,5 @@
 from selene import have, be
-from selene.support import shared
+import selene
 
 
 def test_remove_row_v1():
@@ -7,7 +7,7 @@ def test_remove_row_v1():
     use collection.element_by(condition)
     to filter proper row to find action element inside
     """
-    browser = shared.browser.with_(window_width=1400)
+    browser = selene.browser.with_(window_width=1400)
     browser.open('https://demoqa.com/webtables')
     fired_employee_email = 'alden@example.com'
     rows = browser.all('.rt-tbody [role=row]').by(have.no.exact_text(''))
@@ -26,7 +26,7 @@ def test_remove_row_v2():
     use collection.element_by(more_precise_lambda_condition)
     to filter proper row to find action element inside
     """
-    browser = shared.browser.with_(window_width=1400)
+    browser = selene.browser.with_(window_width=1400)
     browser.open('https://demoqa.com/webtables')
     fired_employee_email = 'alden@example.com'
     rows = browser.all('.rt-tbody [role=row]').by(have.no.exact_text(''))
@@ -49,7 +49,7 @@ def test_remove_row_v3():
 
     element_by_its is a shortcut to same receipt from v2
     """
-    browser = shared.browser.with_(window_width=1400)
+    browser = selene.browser.with_(window_width=1400)
     browser.open('https://demoqa.com/webtables')
     fired_employee_email = 'alden@example.com'
     rows = browser.all('.rt-tbody [role=row]').by(have.no.exact_text(''))

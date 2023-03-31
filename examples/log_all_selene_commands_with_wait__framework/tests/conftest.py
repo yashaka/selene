@@ -4,7 +4,7 @@ import logging
 from examples.log_all_selene_commands_with_wait__framework.framework import (
     extensions,
 )
-from selene.support.shared import browser
+from selene import browser
 
 
 log = logging.getLogger('SE')

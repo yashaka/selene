@@ -1,6 +1,4 @@
-from selene import by, be
-from selene.support.conditions import have
-from selene.support.shared import browser
+from selene import by, be, have, browser
 
 __author__ = 'yashaka'
 

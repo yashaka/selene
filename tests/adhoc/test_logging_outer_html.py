@@ -1,5 +1,4 @@
-from selene.support.shared import browser
-from selene import have, be
+from selene import browser, have, be
 
 
 def test_one_element_when_enabled():

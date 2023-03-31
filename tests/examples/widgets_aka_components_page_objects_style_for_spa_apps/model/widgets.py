@@ -22,9 +22,7 @@
 
 from future.utils import iteritems
 
-from selene.core.entity import Element
-from selene.support.conditions import be, have
-from selene.support.shared import browser
+from selene import browser, be, have, Element
 
 
 class SelectList:

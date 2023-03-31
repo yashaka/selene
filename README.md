@@ -33,7 +33,7 @@ Main features:
 
 Selene was inspired by [Selenide](https://selenide.org/) from Java world.
 
-Tests with Selene can be built either in a simple straightforward "selenide' style or with PageObjects composed from Widgets i.e. reusable element components.
+Tests with Selene can be built either in a simple straightforward "selenide" style or with PageObjects composed from Widgets i.e. reusable element components.
 
 ## Table of content
 
@@ -54,7 +54,7 @@ Tests with Selene can be built either in a simple straightforward "selenide' sty
 
 ## Versions
   
-* Latest recommended version to use is >= [2.0.0b14](https://pypi.org/project/selene/2.0.0b14/)
+* Latest recommended version to use is >= [2.0.0b17](https://pypi.org/project/selene/2.0.0b17/)
   * it's a completely new version of selene, with improved API and speed
   * supports 3.7 <= python <= 3.10,
   * bundled with Selenium >= 4.1
@@ -157,23 +157,21 @@ or using pip:
 Simply...
 
 ```python
-from selene.support.shared import browser
-from selene import by, be, have
+from selene import browser, by, be, have
 
 browser.open('https://google.com/ncr')
 browser.element(by.name('q')).should(be.blank)\
     .type('selenium').press_enter()
-browser.all('.srg .g').should(have.size(10))\
+browser.all('#rso>div').should(have.size_greater_than(5))\
     .first.should(have.text('Selenium automates browsers'))
 ```
 
 OR with custom setup
 
 ```python
-from selene.support.shared import browser
-from selene import by, be, have
+from selene import browser, by, be, have
 
-browser.config.browser_name = 'firefox'
+browser.config.name = 'firefox'
 browser.config.base_url = 'https://google.com'
 browser.config.timeout = 2
 # browser.config.* = ...
@@ -181,15 +179,15 @@ browser.config.timeout = 2
 browser.open('/ncr')
 browser.element(by.name('q')).should(be.blank)\
     .type('selenium').press_enter()
-browser.all('.srg .g').should(have.size(10))\
+browser.all('#rso>div').should(have.size_greater_than(5))\
     .first.should(have.text('Selenium automates browsers'))
 ```
 
 OR more Selenide from java style:
 
 ```python
-from selene.support.shared import config, browser
-from selene import by, be, have
+from selene import browser, by, be, have
+from selene.support.shared import config
 from selene.support.shared.jquery_style import s, ss
 
 
@@ -201,88 +199,70 @@ config.timeout = 2
 browser.open('/ncr')
 s(by.name('q')).should(be.blank)\
     .type('selenium').press_enter()
-ss('.srg .g').should(have.size(10))\
+ss('#rso>div').should(have.size_greater_than(5))\
     .first.should(have.text('Selenium automates browsers'))
 ```
 
 ### Core Api
 
-Given:
 
 ```python
+
+# Given:
 from selenium.webdriver import Chrome
-```
 
-AND chromedriver executable available in $PATH
+# AND chromedriver executable available in $PATH
 
-WHEN:
-```python
+# WHEN:
 from selene import Browser, Config
 
-browser = Browser(Config(
-    driver=Chrome(),
-    base_url='https://google.com',
-    timeout=2))
-```
+browser = Browser(
+    Config(
+        driver=Chrome(),
+        base_url='https://google.com',
+        timeout=2,
+    )
+)
 
-AND (uncomment if needed):
-
-```python
-# import atexit
-# atexit.register(browser.quit)
-```
-
-AND:
-
-```python
+# AND:
 browser.open('/ncr')
-```
 
-AND:
-
-```python
+# AND:
 # browser.element('//*[@name="q"]')).type('selenium').press_enter()
 # OR...
-
 # browser.element('[name=q]')).type('selenium').press_enter()
 # OR...
-
 from selene import by
-
 # browser.element(by.name('q')).type('selenium').press_enter()
 # OR...for total readability
-
-query = browser.element(by.name('q'))  # actual search doesn't start here, the element is "lazy"          
-     # here the actual webelement is found
+query = browser.element(by.name('q'))
+# actual search doesn't start on calling browser.element above, 
+# i.e. the element is "lazy"... or in other words it serves as locator         
+# Below, on calling actual first action, 
+#     ⬇ the actual webelement is located first time
 query.type('selenium').press_enter()       
-                      # and here it's located again, i.e. the element is "dynamic"
-```
+#                      ⬆
+#                  and here it's located again, i.e. the element is "dynamic"
 
-AND (in case we need to filter collection of items by some condition like visibility):
+# AND in case we need to filter collection of items 
+#     by some condition like visibility:
 
-```python
 from selene import be
+results = browser.all('#rso>div').by(be.visible)
 
-results = browser.all('.srg .g').by(be.visible)
-```
-
-THEN:
-
-```python
+# THEN we can assert some condition:
 from selene import have
-
-# results.should(have.size(10))
+# results.should(have.size_greater_than(5))
 # results.first.should(have.text('Selenium automates browsers'))
 # OR...
-
-results.should(have.size(10))\
+results.should(have.size_greater_than(5))\
     .first.should(have.text('Selenium automates browsers'))
-```
 
-FINALLY (if not registered "atexit" before):
-
-```python
+# FINALLY the browser can be quit:
 browser.quit()
+# but it's not mandatory, because by default Selenes kills all drivers on exit
+# that can be disabled by:
+browser.config.hold_driver_at_exit = True
 ```
 
 ### Automatic Driver and Browser Management
@@ -290,28 +270,50 @@ browser.quit()
 Instead of:
 
 ```python
+from selenium.webdriver import Chrome
 from selene import Browser, Config
 
-browser = Browser(Config(
-    driver=Chrome(),
-    base_url='https://google.com',
-    timeout=2))
+browser = Browser(
+    Config(
+        driver=Chrome(),
+        base_url='https://google.com',
+        timeout=2
+    )
+)
+
+browser.open('/ncr')
 ```
-You can simply use the browser and config instance predefined for you in `selene.support.shared` module:
+
+You can simply use the browser instance predefined for you in `selene` module:
 
 ```python
-from selene.support.shared import browser, config
+from selene import browser
 
-# ... do the same with browser.*
+browser.config.base_url = 'https://google.com'
+browser.config.timeout = 2
+
+browser.open('/ncr')
 ```
+
 So you don't need to create you driver instance manually. It will be created for you automatically.
 
 Yet, if you need some special case, like working with remote driver, etc., you can still use shared browser object, while providing driver to it through:
 
 ```python
-config.driver = my_remote_driver_instance
-# or
-browser.config.driver = my_remote_driver_instance
+from selenium import webdriver
+from selene import browser
+
+options = webdriver.ChromeOptions()
+options.add_argument('--headless')
+browser.config.driver = webdriver.Remote(
+  'http://localhost:4444/wd/hub', 
+  options=options
+)
+browser.config.base_url = 'https://google.com'
+browser.config.timeout = 2
+
+browser.open('/ncr')
+...
 ```
 
 ### Advanced API
@@ -319,7 +321,9 @@ browser.config.driver = my_remote_driver_instance
 Sometimes you might need some extra actions on elements, e.g. for workaround something through js:
 
 ```python
-from selene import command
+from selene import browser, command
+
+...
 
 browser.element('#not-in-view').perform(command.js.scroll_into_view)
 ```
@@ -327,7 +331,12 @@ browser.element('#not-in-view').perform(command.js.scroll_into_view)
 Probably you think that will need something like:
 
 ```python
-from selene import query
+from selene import browser, query
+
+...
+
+def my_int_from(text):
+    return int(text.split(' ')[0])
 
 product_text = browser.element('#to-assert-something-non-standard').get(query.text)
 price = my_int_from(product_text)
@@ -337,10 +346,13 @@ assert price > 100
 But usually it's either better to implement your custom condition:
 
 ```python
-browser.element('#to-assert-something-non-standard').should(have_in_text_the_int_number_more_than(100))
+...
+browser.element(
+  '#to-assert-something-non-standard'
+).should(have_in_text_the_int_number_more_than(100))
 ```
 
-Where the `have_in_text_the_int_number_more_than` is your defined custom condition. Such condition-based alternative will be less fragile, because python's assert does not have "implicit waiting", like selene's should ;)
+Where the `have_in_text_the_int_number_more_than` is your defined custom condition. Such condition-based alternative will be less fragile, because python's assert does not have "implicit waiting", like selene's `should` command ;)
 
 
 Furthermore, the good test is when you totally control your test data, and instead:

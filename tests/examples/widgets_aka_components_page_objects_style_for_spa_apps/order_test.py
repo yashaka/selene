@@ -26,20 +26,21 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.core.utils import ChromeType
 
-from selene.support.shared import config, browser
+from selene import browser
+
 from tests.examples.widgets_aka_components_page_objects_style_for_spa_apps.model.widgets import (
     Order,
 )
 
 
 def setup_function():
-    config.timeout = 4
+    browser.config.timeout = 4
     browser.config.driver = webdriver.Chrome(
         service=Service(
             ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install()
         )
     )
-    config.base_url = 'file://{}/../../resources/orderapp/'.format(
+    browser.config.base_url = 'file://{}/../../resources/orderapp/'.format(
         os.path.abspath(os.path.dirname(__file__))
     )
 

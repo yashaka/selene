@@ -1,7 +1,7 @@
 from selenium.webdriver import Keys
 
 from selene import have, be
-from selene.support import shared
+import selene
 import logging
 
 
@@ -47,7 +47,7 @@ class LogToStringStreamContext:
 def test_logging_via__wait_decorator(quit_shared_browser_afterwards):
     from selene import support
 
-    browser = shared.browser.with_(
+    browser = selene.browser.with_(
         _wait_decorator=support._logging.wait_with(
             context=LogToStringStreamContext
         ),

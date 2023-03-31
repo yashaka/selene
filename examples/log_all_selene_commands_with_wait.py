@@ -3,9 +3,8 @@ from typing import Tuple
 
 import pytest
 
-from selene import have
+from selene import have, browser
 from selene.core.wait import Wait
-from selene.support.shared import browser
 import logging
 
 

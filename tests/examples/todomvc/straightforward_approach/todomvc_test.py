@@ -24,8 +24,7 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.core.utils import ChromeType
 
-from selene import have, be, by
-from selene.support.shared import browser, config
+from selene import have, be, by, browser
 
 
 def setup_module():
@@ -34,7 +33,7 @@ def setup_module():
             ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install()
         )
     )
-    config.timeout = 4
+    browser.config.timeout = 4
 
 
 def teardown_module():

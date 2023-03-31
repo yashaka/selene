@@ -6,9 +6,8 @@ import pytest
 from examples.log_all_selene_commands_with_wait__framework.framework.extensions.python.logging import (
     TranslatingFormatter,
 )
-from selene import have
+from selene import browser, have
 from selene.core.wait import Wait
-from selene.support.shared import browser
 import logging
 
 
