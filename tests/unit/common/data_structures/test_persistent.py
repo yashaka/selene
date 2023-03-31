@@ -339,9 +339,7 @@ class Test__dataclass:
             Pet(age=3)
 
         except TypeError as e:
-            assert str(e) == (
-                "__init__() missing 1 required positional argument: 'name'"
-            )
+            assert "missing 1 required positional argument: 'name'" in str(e)
 
     def test_custom_descriptor_as_default_in_explicit_field_works_and_persists(
         self,
