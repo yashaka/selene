@@ -21,7 +21,6 @@ def with_process_exit_teardown():
 
 @pytest.fixture(scope='function')
 def manual_driver():
-
     from selenium import webdriver
     from selenium.webdriver.chrome.service import Service
     from webdriver_manager.chrome import ChromeDriverManager
@@ -43,7 +42,6 @@ def manual_driver():
 
 
 def test_new_config_does_not_build_driver_on_init(with_process_exit_teardown):
-
     # WHEN
     config = selene.Config()
 
@@ -54,7 +52,6 @@ def test_new_config_does_not_build_driver_on_init(with_process_exit_teardown):
 def test_first_access_to_driver_on_config_ensures_driver_for_chrome_is_built(
     with_process_exit_teardown,
 ):
-
     # WHEN
     config = selene.Config()
 
@@ -80,7 +77,6 @@ def test_persistent_means___(with_process_exit_teardown):
 
 
 def test_new_browser_does_not_build_driver_on_init(with_process_exit_teardown):
-
     # WHEN
     browser = selene.Browser(selene.Config())
 
@@ -229,7 +225,6 @@ def test_can_rebuild_browser_on_first_access_after_its_death(
 def test_browser_remains_dead_if_configured_with_not_rebuild_dead_driver_on_init(
     with_process_exit_teardown,
 ):
-
     browser = selene.Browser(
         selene.Config(
             rebuild_dead_driver=False,  # <- WHEN
@@ -322,7 +317,6 @@ def test_should_kill_at_exit_all_built_drivers_including_forgotten_for_same_brow
 def test_driver_can_be_manually_set_on_init_and_live_to_death_on_quit(
     with_process_exit_teardown, manual_driver
 ):
-
     # WHEN
     browser = selene.Browser(selene.Config(driver=manual_driver))
 

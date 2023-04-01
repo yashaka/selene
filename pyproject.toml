@@ -53,7 +53,7 @@ webdriver-manager = ">=3.8.5"
 typing-extensions = "==4.3.0"
 
 [tool.poetry.dev-dependencies]
-black = "^22.3.0"
+black = "^23.3.0"
 pycodestyle = "*"
 pylint = "^2.7.2"
 pytest = "*"

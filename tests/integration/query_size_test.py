@@ -5,7 +5,6 @@ from tests.integration.helpers.givenpage import GivenPage
 
 
 def test_query_size_of_browser(session_browser):
-
     size = session_browser.get(query.size)
 
     assert size == session_browser.driver.get_window_size()

@@ -1,5 +1,5 @@
 import logging
-from typing import Tuple, List
+from typing import Tuple, List, Optional
 
 from examples.log_all_selene_commands_with_wait__framework.framework.extensions.python.logging import (
     TranslatingFormatter,
@@ -9,7 +9,7 @@ from examples.log_all_selene_commands_with_wait__framework.framework.extensions.
 def log_with(
     logger,
     *,
-    added_handler_translations: List[Tuple[str, str]] = [],
+    added_handler_translations: Optional[List[Tuple[str, str]]] = None,
 ):
     """
     returns decorator factory with logging to specified logger
@@ -31,6 +31,8 @@ def log_with(
 
         ...
     """
+    if not added_handler_translations:
+        added_handler_translations = []
 
     TranslatingFormatter.translations = added_handler_translations
 
