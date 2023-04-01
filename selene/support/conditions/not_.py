@@ -33,8 +33,8 @@ hidden: Condition[Element] = _match.element_is_hidden.not_
 
 present: Condition[Element] = _match.element_is_present.not_
 in_dom: Condition[Element] = _match.element_is_present.not_
-# todo: do we need both present and in_dom?
-# todo: consider deprecating existing
+# TODO: do we need both present and in_dom?
+# TODO: consider deprecating existing
 existing: Condition[Element] = _match.element_is_present.not_
 
 absent: Condition[Element] = _match.element_is_absent.not_
@@ -52,18 +52,23 @@ def exact_text(value) -> Condition[Element]:
     return _match.element_has_exact_text(value).not_
 
 
-# todo: consider accepting int
+# TODO: consider accepting int
 def text(partial_value) -> Condition[Element]:
     return _match.element_has_text(partial_value).not_
 
 
-def attribute(name: str, value: str = None):
-    if value:
+def attribute(name: str, *args, **kwargs):
+    if args or 'value' in kwargs:
         warnings.warn(
-            'passing second argument is deprecated; use have.attribute(foo).value(bar) instead',
+            'passing second argument is deprecated; '
+            'use have.attribute(foo).value(bar) instead',
             DeprecationWarning,
         )
-        return _match.element_has_attribute(name).value(value).not_
+        return (
+            _match.element_has_attribute(name)
+            .value(args[0] if args else kwargs['value'])
+            .not_
+        )
 
     original = _match.element_has_attribute(name)
     negated = original.not_
@@ -90,13 +95,18 @@ def attribute(name: str, value: str = None):
     return negated
 
 
-def js_property(name: str, value: str = None):
-    if value:
+def js_property(name: str, *args, **kwargs):
+    if args or 'value' in kwargs:
         warnings.warn(
-            'passing second argument is deprecated; use have.js_property(foo).value(bar) instead',
+            'passing second argument is deprecated; '
+            'use have.js_property(foo).value(bar) instead',
             DeprecationWarning,
         )
-        return _match.element_has_js_property(name).value(value).not_
+        return (
+            _match.element_has_js_property(name)
+            .value(args[0] if args else kwargs['value'])
+            .not_
+        )
 
     original = _match.element_has_js_property(name)
     negated = original.not_
@@ -121,13 +131,18 @@ def js_property(name: str, value: str = None):
     return negated
 
 
-def css_property(name: str, value: str = None):
-    if value:
+def css_property(name: str, *args, **kwargs):
+    if args or 'value' in kwargs:
         warnings.warn(
-            'passing second argument is deprecated; use have.css_property(foo).value(bar) instead',
+            'passing second argument is deprecated; '
+            'use have.css_property(foo).value(bar) instead',
             DeprecationWarning,
         )
-        return _match.element_has_css_property(name).value(value).not_
+        return (
+            _match.element_has_css_property(name)
+            .value(args[0] if args else kwargs['value'])
+            .not_
+        )
 
     original = _match.element_has_css_property(name)
     negated = original.not_
@@ -203,7 +218,7 @@ def size_greater_than_or_equal(number: int) -> Condition[Collection]:
     return _match.collection_has_size_greater_than_or_equal(number).not_
 
 
-# todo: consider accepting ints
+# TODO: consider accepting ints
 def texts(*partial_values: str) -> Condition[Collection]:
     return _match.collection_has_texts(*partial_values).not_
 

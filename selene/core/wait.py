@@ -39,9 +39,9 @@ E = TypeVar('E')
 A generic TypeVar to identify an Entity Type, i.e. something to wait on
 '''
 
-# todo: not sure, if we need all these Lambda, Proc, Query, Command in python
-# todo: they was added just to quickly port selenidejs waiting mechanism
-# todo: let's consider removing them... or moving them e.g. to fp
+# TODO: not sure, if we need all these Lambda, Proc, Query, Command in python
+# TODO: they was added just to quickly port selenidejs waiting mechanism
+# TODO: let's consider removing them... or moving them e.g. to fp
 
 Lambda = Callable[[T], R]
 Proc = Callable[[T], None]
@@ -51,33 +51,33 @@ Predicate = Callable[[T], bool]
 Fn = Callable[[T], R]
 
 
-# todo: consider moving outside of "wait" module... because there is no direct cohesion with it
-class Query(Generic[T, R]):
-    def __init__(self, description: str, fn: Callable[[T], R]):
+# TODO: consider moving outside of "wait" module... because there is no direct cohesion with it
+class Query(Generic[E, R]):
+    def __init__(self, description: str, fn: Callable[[E], R]):
         self._description = description
         self._fn = fn
 
-    def __call__(self, entity: T) -> R:
+    def __call__(self, entity: E) -> R:
         return self._fn(entity)
 
     def __str__(self):
         return self._description
 
 
-class Command(Query[T, None]):
+class Command(Query[E, None]):
     pass
 
 
-# todo: provide sexy fluent implementation via builder, i.e. Wait.the(element).atMost(3).orFailWith(hook)
+# TODO: provide sexy fluent implementation via builder, i.e. Wait.the(element).atMost(3).orFailWith(hook)
 class Wait(Generic[E]):
-    # todo: provide the smallest possible timeout default, something like 1ms
+    # TODO: provide the smallest possible timeout default, something like 1ms
     def __init__(
         self,
         entity: E,
         at_most: float,
         or_fail_with: Optional[Callable[[TimeoutException], Exception]] = None,
         _decorator: Callable[
-            [Wait[E]], Callable[[fp.T], fp.T]
+            [Wait[E]], Callable[[Callable[..., R]], Callable[..., R]]
         ] = lambda _: identity,
     ):
         self.entity = entity
@@ -106,13 +106,12 @@ class Wait(Generic[E]):
     def hook_failure(
         self,
     ) -> Optional[Callable[[TimeoutException], Exception]]:
-        # todo: hook_failure or failure_hook?
+        # TODO: hook_failure or failure_hook?
         return self._hook_failure
 
-    # todo: consider renaming to `def to(...)`, though will sound awkward when wait.to(condition)
+    # TODO: consider renaming to `def to(...)`, though will sound awkward when wait.to(condition)
     def for_(self, fn: Callable[[E], R]) -> R:
-        @self._decorator(self)
-        def _(fn: Callable[[E], R]) -> R:
+        def logic(fn: Callable[[E], R]) -> R:
             finish_time = time.time() + self._timeout
 
             while True:
@@ -126,7 +125,7 @@ class Wait(Generic[E]):
                             name=reason.__class__.__name__,
                             message=reason_message,
                         )
-                        # todo: think on how can we improve logging failures in selene, e.g. reverse msg and stacktrace
+                        # TODO: think on how can we improve logging failures in selene, e.g. reverse msg and stacktrace
                         # stacktrace = getattr(reason, 'stacktrace', None)
                         timeout = self._timeout
                         entity = self.entity
@@ -141,7 +140,7 @@ class Wait(Generic[E]):
 
                         raise self._hook_failure(failure)
 
-        return _(fn)
+        return self._decorator(self)(logic)(fn)
 
     def until(self, fn: Callable[[E], R]) -> bool:
         try:
@@ -150,7 +149,7 @@ class Wait(Generic[E]):
         except TimeoutException:
             return False
 
-    # todo: do we really need these aliases?
+    # TODO: do we really need these aliases?
     def command(self, description: str, fn: Callable[[E], None]) -> None:
         self.for_(Command(description, fn))
 

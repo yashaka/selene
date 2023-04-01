@@ -138,7 +138,7 @@ e.g. for workaround something through js::
 from selene.core import query as _advanced_queries  # noqa
 
 query = _advanced_queries
-# its = _advanced_queries  # todo: do we really need it too? for better readability: .get(its.text)
+# its = _advanced_queries  # TODO: do we really need it too? for better readability: .get(its.text)
 """
 Probably you think that will need something like::
 

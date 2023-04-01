@@ -19,10 +19,8 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-import warnings
-from typing import Union, Tuple, List, Type, Iterable, Any
+from typing import Union, Tuple, Iterable, Any
 
-from dataclasses import dataclass
 from selenium.webdriver.common.by import By
 
 
@@ -38,8 +36,8 @@ def as_dict(o, skip_empty=True):
     )
 
 
-def to_by(selector_or_by: Union[str, tuple]) -> Tuple[str, str]:
-    # todo: will it work `if isinstance(css_selector_or_by, Tuple[str, str]):` ?
+def to_by(selector_or_by: Union[str, Tuple[str, str]]) -> Tuple[str, str]:
+    # TODO: will it work `if isinstance(css_selector_or_by, Tuple[str, str]):` ?
     if isinstance(selector_or_by, tuple):
         return selector_or_by
     if isinstance(selector_or_by, str):
@@ -59,7 +57,7 @@ def to_by(selector_or_by: Union[str, tuple]) -> Tuple[str, str]:
 
 
 def flatten(collection: Iterable[Union[Iterable[Any], Any]]) -> Iterable[Any]:
-    # todo: consider adding skip_none=False option
+    # TODO: consider adding skip_none=False option
     return tuple(  # TODO: refactor to return tuple
         item_or_inner
         for item in collection

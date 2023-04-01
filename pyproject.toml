@@ -76,7 +76,15 @@ requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.mypy]
+disable_error_code = 'annotation-unchecked'
 color_output=1
+exclude = [
+	'^selene/core/entity.py$',
+	'^selene/core/wait.py$',
+    '^test_.+\.py$',
+	'^.+_test\.py$',
+]
+
 
 [tool.black]
 line-length = 79
@@ -95,6 +103,12 @@ skip-string-normalization = 1
 	[tool.pylint.'MESSAGES CONTROL']
 	enable=['c-extension-no-member']
 	disable=['''no-else-return,
+		too-few-public-methods,
+		too-many-public-methods,
+		redefined-outer-name,
+	    missing-class-docstring,
+	    missing-module-docstring,
+	    missing-function-docstring,
         no-else-raise,
         print-statement,
         parameter-unpacking,
@@ -194,7 +208,7 @@ skip-string-normalization = 1
 	spelling-store-unknown-words=['no']
 
 	[tool.pylint.'MISCELLANEOUS']
-	notes=['FIXME,XXX,TODO']
+	notes=['FIXME,XXX']
 
 	[tool.pylint.'TYPECHECK']
 	contextmanager-decorators=['contextlib.contextmanager']
@@ -218,7 +232,7 @@ skip-string-normalization = 1
 	ignore-long-lines=['^\s*(# )?<?https?://\S+>?$']
 	indent-after-paren=4
 	indent-string='    '
-	max-line-length=79
+	max-line-length=88
 	max-module-lines=1000
 	single-line-class-stmt=['no']
 	single-line-if-stmt=['no']

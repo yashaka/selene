@@ -19,7 +19,6 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
 from __future__ import annotations
 
 import os
@@ -50,7 +49,7 @@ E = TypeVar('E', bound='Assertable')
 R = TypeVar('R')
 
 
-class Assertable(ABC):
+class Assertable(ABC, typing.Generic[E]):
     @abstractmethod
     # TODO: shouldn't we type self too?
     #       see #generic-methods-and-generic-self
@@ -60,8 +59,8 @@ class Assertable(ABC):
         pass
 
 
-# todo: try as Matchable(ABC) and check if autocomplete will still work
-class Matchable(Assertable):
+# TODO: try as Matchable(ABC) and check if autocomplete will still work
+class Matchable(Assertable[E]):
     @abstractmethod
     def wait_until(self, condition: Condition[E]) -> bool:
         pass
@@ -78,13 +77,13 @@ class Configured(ABC):
         pass
 
 
-class WaitingEntity(Matchable, Configured):
+class WaitingEntity(Matchable[E], Configured):
     def __init__(self, config: Config):
         self._config = config
 
     @property
     def wait(self) -> Wait[E]:
-        return self.config.wait(self)
+        return self.config.wait(self)  # type: ignore
 
     def perform(self, command: Command[E]) -> E:
         """Useful to call external commands.
@@ -94,7 +93,8 @@ class WaitingEntity(Matchable, Configured):
         or some custom defined by selene user:
             element.perform(my_action.triple_click)
 
-        You might think that it will be useful to use these methods also in Selene internally
+        You might think that it will be useful
+        to use these methods also in Selene internally
         in order to define built in commands e.g. in Element class, like:
 
             def click(self):
@@ -111,9 +111,10 @@ class WaitingEntity(Matchable, Configured):
 
         """
         self.wait.for_(command)
-        return self
+        return typing.cast(E, self)
 
-    # todo: what about `entity[query.something]` syntax over or in addition to `entity.get(query.something)` ?
+    # TODO: what about `entity[query.something]` syntax
+    #       over or in addition to `entity.get(query.something)` ?
     def get(self, query: Query[E, R]) -> R:
         return self.wait.for_(query)
 
@@ -127,7 +128,7 @@ class WaitingEntity(Matchable, Configured):
 
     def should(self, condition: Condition[E]) -> E:
         self.wait.for_(condition)
-        return self
+        return typing.cast(E, self)
 
     # --- Matchable --- #
 
@@ -135,7 +136,7 @@ class WaitingEntity(Matchable, Configured):
         return self.wait.until(condition)
 
     def matching(self, condition: Condition[E]) -> bool:
-        return condition.predicate(self)
+        return condition.predicate(typing.cast(E, self))
 
 
 class Element(WaitingEntity):
@@ -151,15 +152,15 @@ class Element(WaitingEntity):
 
             if cached.matching(element_is_present):
                 return TimeoutException(
-                    error.msg
-                    + f'\nActual webelement: {query.outer_html(element)}'
+                    f'{error.msg}\n'
+                    f'Actual webelement: {query.outer_html(element)}'  # type: ignore
                 )
             else:
                 return error
 
         return log_webelement_outer_html
 
-    # todo: should we move locator based init and with_ to Located base abstract class?
+    # TODO: should we move locator based init and with_ to Located base abstract class?
 
     def __init__(self, locator: Locator[WebElement], config: Config):
         self._locator = locator
@@ -167,7 +168,9 @@ class Element(WaitingEntity):
 
     # --- Configured --- #
 
-    def with_(self, config: Config = None, **config_as_kwargs) -> Element:
+    def with_(
+        self, config: Optional[Config] = None, **config_as_kwargs
+    ) -> Element:
         return Element(
             self._locator,
             config if config else self.config.with_(**config_as_kwargs),
@@ -192,18 +195,16 @@ class Element(WaitingEntity):
 
     @property
     def wait(self) -> Wait[E]:
-        # todo:  will not it break code like browser.with_(timeout=...)?
-        # todo: fix that will disable/break shared hooks (snapshots)
-        # return Wait(self,  # todo:  isn't it slower to create it each time from scratch? move to __init__?
+        # TODO:  will not it break code like browser.with_(timeout=...)?
+        # TODO: fix that will disable/break shared hooks (snapshots)
+        # return Wait(self,  # TODO:  isn't it slower to create it each time from scratch? move to __init__?
         #             at_most=self.config.timeout,
         #             or_fail_with=pipe(
         #                 Element._log_webelement_outer_html_for(self),
         #                 self.config.hook_wait_failure))
         if self.config.log_outer_html_on_failure:
-            """
-            todo: remove this part completely from core.entity logic
-                  move it to support.shared.config
-            """
+            # TODO: remove this part completely from core.entity logic
+            #       move it to support.shared.config
             return super().wait.or_fail_with(
                 pipe(
                     Element._log_webelement_outer_html_for(self),
@@ -215,7 +216,7 @@ class Element(WaitingEntity):
 
     @property
     def cached(self) -> Element:
-        # todo: do we need caching ? with lazy save of webelement to cache
+        # TODO: do we need caching ? with lazy save of webelement to cache
 
         cache = None
         error = None
@@ -229,13 +230,13 @@ class Element(WaitingEntity):
                 return cache
             raise error
 
-        return Element(
-            Locator(f'{self}.cached', lambda: get_webelement()), self.config
-        )
+        return Element(Locator(f'{self}.cached', get_webelement), self.config)
 
     # --- Relative location --- #
 
-    def element(self, css_or_xpath_or_by: Union[str, tuple]) -> Element:
+    def element(
+        self, css_or_xpath_or_by: Union[str, Tuple[str, str]]
+    ) -> Element:
         by = to_by(css_or_xpath_or_by)
 
         return Element(
@@ -243,7 +244,9 @@ class Element(WaitingEntity):
             self.config,
         )
 
-    def all(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection:
+    def all(
+        self, css_or_xpath_or_by: Union[str, Tuple[str, str]]
+    ) -> Collection:
         by = to_by(css_or_xpath_or_by)
 
         return Collection(
@@ -281,7 +284,7 @@ class Element(WaitingEntity):
         """
         driver: WebDriver = self.config.driver
         webelement = self()
-        # todo: should we wrap it in wait or not?
+        # TODO: should we wrap it in wait or not?
         # TODO: should we add additional it and/or its aliases for element?
         return driver.execute_script(
             f'''
@@ -295,7 +298,7 @@ class Element(WaitingEntity):
             arguments,
         )
 
-    # todo: do we need this method?
+    # TODO: do we need this method?
     #       do we really need to wrap script into function(element,args) here?
     #       if yes... wouldn't it be better to use standard arguments name
     #       instead of args?
@@ -313,7 +316,7 @@ class Element(WaitingEntity):
         )
         driver: WebDriver = self.config.driver
         webelement = self()
-        # todo: should we wrap it in wait or not?
+        # TODO: should we wrap it in wait or not?
         return driver.execute_script(
             f'''
                 return (function(element, args) {{
@@ -325,20 +328,20 @@ class Element(WaitingEntity):
         )
 
     def set_value(self, value: Union[str, int]) -> Element:
-        # todo: should we move all commands like following or queries like in conditions - to separate py modules?
-        # todo: should we make them webelement based (Callable[[WebElement], None]) instead of element based?
+        # TODO: should we move all commands like following or queries like in conditions - to separate py modules?
+        # TODO: should we make them webelement based (Callable[[WebElement], None]) instead of element based?
         def fn(element: Element):
             webelement = (
                 element._actual_not_overlapped_webelement
                 if self.config.wait_for_no_overlap_found_by_js
                 else element()
             )
-            webelement.clear()  # todo: change to impl based not on clear, because clear generates post-events...
+            webelement.clear()  # TODO: change to impl based not on clear, because clear generates post-events...
             webelement.send_keys(str(value))
 
         from selene.core import command
 
-        # todo: should we log the webelement source in the command name below?
+        # TODO: should we log the webelement source in the command name below?
         #       i.e. change from:
         #
         #   else Command(f'set value: {value}', fn)
@@ -358,7 +361,7 @@ class Element(WaitingEntity):
             else Command(f'set value: {value}', fn)
         )
 
-        # todo: consider returning self.cached, since after first successful call,
+        # TODO: consider returning self.cached, since after first successful call,
         #       all next ones should normally pass
         #       no waiting will be needed normally
         #       if yes - then we should pass fn commands to wait.for_ so the latter will return webelement to cache
@@ -379,7 +382,7 @@ class Element(WaitingEntity):
     def _actual_visible_webelement_and_maybe_its_cover(
         self, center_x_offset=0, center_y_offset=0
     ) -> Tuple[WebElement, WebElement]:
-        # todo: will it be faster render outerHTML via lazy rendered SeleneError
+        # TODO: will it be faster render outerHTML via lazy rendered SeleneError
         #       instead of: throw `element ${element.outerHTML} is not visible`
         #       in below js
         results = self.execute_script(
@@ -519,7 +522,7 @@ class Element(WaitingEntity):
 
         return self
 
-    # todo: add offset args with defaults, or add additional method, think on what is better
+    # TODO: add offset args with defaults, or add additional method, think on what is better
     def click(self) -> Element:
         """Just a normal click:)"""
 
@@ -578,7 +581,7 @@ class Element(WaitingEntity):
 
         return self
 
-    # todo: should we reflect queries as self methods? or not...
+    # TODO: should we reflect queries as self methods? or not...
     # pros: faster to query element attributes
     # cons: queries are not test oriented. test is steps + asserts
     #       so queries will be used only occasionally, then why to make a heap from Element?
@@ -658,7 +661,7 @@ class Collection(WaitingEntity, Iterable[Element]):
 
         return self.get(query.size)
 
-    # todo: add config.index_collection_from_1, disabled by default
+    # TODO: add config.index_collection_from_1, disabled by default
     def element(self, index: int) -> Element:
         def find() -> WebElement:
             webelements = self()
@@ -708,7 +711,7 @@ class Collection(WaitingEntity, Iterable[Element]):
         def find() -> typing.Collection[WebElement]:
             webelements = self()
 
-            # todo: assert length according to provided start, stop...
+            # TODO: assert length according to provided start, stop...
 
             return webelements[start:stop:step]
 
@@ -841,7 +844,7 @@ class Collection(WaitingEntity, Iterable[Element]):
     def element_by(
         self, condition: Union[Condition[Element], Callable[[E], None]]
     ) -> Element:
-        # todo: a first_by(condition) alias would be shorter,
+        # TODO: a first_by(condition) alias would be shorter,
         #  and more consistent with by(condition).first
         #  but the phrase items.element_by(have.text('foo')) leads to a more
         #  natural meaning that such element should be only one...
@@ -852,7 +855,7 @@ class Collection(WaitingEntity, Iterable[Element]):
         #  yet we don't fail if browser.element(selector) or element.element(selector)
         #  finds more than one element... o_O
 
-        # todo: In the implementation below...
+        # TODO: In the implementation below...
         #       We use condition in context of "matching", i.e. as a predicate...
         #       why then not accept Callable[[E], bool] also?
         #       (as you remember, Condition is Callable[[E], None] throwing Error)
@@ -889,7 +892,7 @@ class Collection(WaitingEntity, Iterable[Element]):
 
             if self.config.log_outer_html_on_failure:
                 """
-                todo: move it support.shared.config
+                TODO: move it support.shared.config
                 """
                 outer_htmls = [query.outer_html(element) for element in cached]
 
@@ -898,7 +901,7 @@ class Collection(WaitingEntity, Iterable[Element]):
                     f'\n\tAmong {self}'
                     f'\n\tActual webelements collection:'
                     f'\n\t{outer_htmls}'
-                )  # todo: isn't it better to print it all the time via hook, like for Element?
+                )  # TODO: isn't it better to print it all the time via hook, like for Element?
             else:
                 raise AssertionError(
                     f'\n\tCannot find element by condition «{condition}» '
@@ -972,7 +975,7 @@ class Collection(WaitingEntity, Iterable[Element]):
             # ...
         """
 
-        # todo: tune implementation to ensure error messages are ok
+        # TODO: tune implementation to ensure error messages are ok
 
         def find_in(parent: Element):
             if callable(selector):
@@ -985,7 +988,7 @@ class Collection(WaitingEntity, Iterable[Element]):
     def collected(
         self, finder: Callable[[Element], Union[Element, Collection]]
     ) -> Collection:
-        # todo: consider adding predefined queries to be able to write
+        # TODO: consider adding predefined queries to be able to write
         #         collected(query.element(selector))
         #       over
         #         collected(lambda element: element.element(selector))
@@ -999,7 +1002,7 @@ class Collection(WaitingEntity, Iterable[Element]):
         return Collection(
             Locator(
                 f'{self}.collected({finder})',
-                # todo: consider skipping None while flattening
+                # TODO: consider skipping None while flattening
                 lambda: flatten(
                     [finder(element)() for element in self.cached]
                 ),
@@ -1033,7 +1036,7 @@ class Collection(WaitingEntity, Iterable[Element]):
         """
         by = to_by(selector)
 
-        # todo: consider implement it through calling self.collected
+        # TODO: consider implement it through calling self.collected
         #       because actually the impl is self.collected(lambda element: element.all(selector))
 
         return Collection(
@@ -1073,7 +1076,7 @@ class Collection(WaitingEntity, Iterable[Element]):
         """
         by = to_by(selector)
 
-        # todo: consider implement it through calling self.collected
+        # TODO: consider implement it through calling self.collected
         #       because actually the impl is self.collected(lambda element: element.element(selector))
 
         return Collection(
@@ -1094,10 +1097,13 @@ class Collection(WaitingEntity, Iterable[Element]):
 
 
 class Browser(WaitingEntity):
-    def __init__(self, config: Config):
+    def __init__(self, config: Optional[Config] = None):
+        config = Config() if config is None else config
         super().__init__(config)
 
-    def with_(self, config: Config = None, **config_as_kwargs) -> Browser:
+    def with_(
+        self, config: Optional[Config] = None, **config_as_kwargs
+    ) -> Browser:
         return (
             Browser(config)
             if config
@@ -1117,7 +1123,7 @@ class Browser(WaitingEntity):
             else self.config.driver
         )
 
-    # todo: consider making it callable (self.__call__() to be shortcut to self.__raw__ ...)
+    # TODO: consider making it callable (self.__call__() to be shortcut to self.__raw__ ...)
 
     @property
     def __raw__(self):
@@ -1185,7 +1191,7 @@ class Browser(WaitingEntity):
 
         self.driver.switch_to.window(query.next_tab(self))
 
-        # todo: should we user waiting version here (and in other similar cases)?
+        # TODO: should we user waiting version here (and in other similar cases)?
         # self.perform(Command(
         #     'open next tab',
         #     lambda browser: browser.driver.switch_to.window(query.next_tab(self))))
@@ -1213,7 +1219,7 @@ class Browser(WaitingEntity):
     def switch_to(self) -> SwitchTo:
         return self.driver.switch_to
 
-    # todo: should we add also a shortcut for self.driver.switch_to.alert ?
+    # TODO: should we add also a shortcut for self.driver.switch_to.alert ?
     #       if we don't need to switch_to.'back' after switch to alert - then for sure we should...
     #       question is - should we implement our own alert as waiting entity?
 
@@ -1252,45 +1258,45 @@ class Browser(WaitingEntity):
         )
         return self.driver.execute_script(script, *args)
 
-    def save_screenshot(self, file: str = ...):
+    def save_screenshot(self, file: Optional[str] = None):
         warnings.warn(
             'browser.save_screenshot might be deprecated', FutureWarning
         )
 
-        if file is ...:
-            file = self.config._generate_filename(suffix='.png')
+        if file is None:
+            file = self.config._generate_filename(suffix='.png')  # type: ignore
         if file and not file.lower().endswith('.png'):
             file = os.path.join(file, f'{next(self.config._counter)}.png')
         folder = os.path.dirname(file)
         if not os.path.exists(folder) and folder:
             os.makedirs(folder)
-        # todo: refactor to catch errors smartly in get_screenshot_as_file. or not needed?
-        self.config.last_screenshot = WebHelper(self.driver).save_screenshot(
+        # TODO: refactor to catch errors smartly in get_screenshot_as_file. or not needed?
+        self.config.last_screenshot = WebHelper(self.driver).save_screenshot(  # type: ignore
             file
         )
 
-        return self.config.last_screenshot
+        return self.config.last_screenshot  # type: ignore
 
     @property
     def last_screenshot(self) -> str:
         warnings.warn(
             'browser.last_screenshot might be deprecated', FutureWarning
         )
-        return self.config.last_screenshot
+        return self.config.last_screenshot  # type: ignore
 
-    # todo: consider moving this to browser command.save_page_source(filename)
-    def save_page_source(self, file: str = ...) -> Optional[str]:
+    # TODO: consider moving this to browser command.save_page_source(filename)
+    def save_page_source(self, file: Optional[str] = None) -> Optional[str]:
         warnings.warn(
             'browser.save_page_source(file) might be deprecated in future',
             FutureWarning,
         )
 
-        if file is ...:
-            file = self.config._generate_filename(suffix='.html')
+        if file is None:
+            file = self.config._generate_filename(suffix='.html')  # type: ignore
 
         saved_file = WebHelper(self.driver).save_page_source(file)
 
-        self.config.last_page_source = saved_file
+        self.config.last_page_source = saved_file  # type: ignore
 
         return saved_file
 
@@ -1299,7 +1305,7 @@ class Browser(WaitingEntity):
         warnings.warn(
             'browser.last_page_source might be deprecated', FutureWarning
         )
-        return self.config.last_page_source
+        return self.config.last_page_source  # type: ignore
 
     def close_current_tab(self) -> Browser:
         warnings.warn(

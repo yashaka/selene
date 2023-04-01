@@ -72,7 +72,7 @@ def partial_text(value):
     )
 
 
-# todo: deprecate be_* ? since they hide "xpath" logic, which may not be working in all cases
+# TODO: deprecate be_* ? since they hide "xpath" logic, which may not be working in all cases
 #       for example in case of mobile...
 #       maybe the only good thing to keep is by.text and by.partial_text
 

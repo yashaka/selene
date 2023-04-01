@@ -31,13 +31,13 @@ class TimeoutException(AssertionError):
         return exception_msg
 
 
-# todo: should we extend it from SeleneError and make lazy in same way?
+# TODO: should we extend it from SeleneError and make lazy in same way?
 class ConditionNotMatchedError(AssertionError):
     def __init__(self, message='condition not matched'):
         super().__init__(message)
 
 
-# todo: should we name it *Error or *Exception?
+# TODO: should we name it *Error or *Exception?
 #       (see
 #        https://www.python.org/dev/peps/pep-0008/#exception-names
 #        https://www.datacamp.com/community/tutorials/exception-handling-python
@@ -46,8 +46,8 @@ class ConditionNotMatchedError(AssertionError):
 #       should we name it SeleneError and still allow to import as selene.Error?
 class _SeleneError(AssertionError):
     def __init__(self, message: Union[str, Callable[[], str]]):
-        self._render_message: Callable[[], str] = (
-            (lambda: message) if isinstance(message, str) else message
+        self._render_message: Callable[[], str] = lambda: (
+            message() if callable(message) else message
         )
 
     @property

@@ -39,14 +39,14 @@ def test_selene_demo():
     )
     browser.with_(timeout=config.timeout * 4).should(
         have.script_returned(True, is_todo_mvc_loaded)
-    )  # todo: make it work
+    )  # TODO: make it work
 
     for text in ['1', '2', '3']:
         s('#new-todo').type(text).should(
             have.no.value('')
         ).press_enter().should(
             have.attribute('value').value('')
-        )  # todo: ensure autocomplete works here too...
+        )  # TODO: ensure autocomplete works here too...
     tasks.should(have.texts('1', '2', '3')).should(
         have.css_class('active').each
     )

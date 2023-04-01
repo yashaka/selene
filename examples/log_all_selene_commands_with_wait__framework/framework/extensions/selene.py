@@ -9,7 +9,7 @@ from examples.log_all_selene_commands_with_wait__framework.framework.extensions.
 def log_with(
     logger,
     *,
-    added_handler_translations: List[Tuple[str, str]] = (),
+    added_handler_translations: List[Tuple[str, str]] = [],
 ):
     """
     returns decorator factory with logging to specified logger

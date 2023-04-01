@@ -49,7 +49,7 @@
   WHEN another failed THEN the logging will log nothing, 
     BECAUSE another has it's own config with its own last_screenshot source
     
-  - todo: fix?
+  - TODO: fix?
 - todo consider adding element.caching as lazy version of element.cached
 - consider adding hold_browser_opened_on_failure
 - consider browser.open() over browser.open('') (use some smart defaults)
@@ -57,8 +57,8 @@
   - `this.browser = new Browser(config.browser(), config.headless());`
   
 ## 2.0.0b2x+1 (to be released on ?.??.2022)
-- todo: add something like `element.click_with_offset`
-- todo: add something like `browser.perform(switch_to_tab('my tab title'))`
+- TODO: add something like `element.click_with_offset`
+- TODO: add something like `browser.perform(switch_to_tab('my tab title'))`
   - maybe make browser.switch ... to work with retry logic
     or make separate command.switch...
 - ensure we can't element.type on invisible element; add test for that
@@ -67,8 +67,8 @@
 
   
 ## 2.0.0b2x (to be released on ?.0?.2022)
-- todo: improve for other `all.*` methods (in addition to improved errors from `browser.all.element_by`)
-- todo: why in the past we had when outer_html this: `'<button class="destroy" type="submit" displayed:false></button>'`
+- TODO: improve for other `all.*` methods (in addition to improved errors from `browser.all.element_by`)
+- TODO: why in the past we had when outer_html this: `'<button class="destroy" type="submit" displayed:false></button>'`
   - but now we have this: `'<button class="destroy" type="submit"></button>'?`
     - can we improve it?
 - add `browser.all('.item').last`?
@@ -103,7 +103,15 @@ def test_todos_storage_is_not_shared_between_browsers():
 ```
 
 TODO:
-- deprecate js_returned in favor of script_returned
+- decide on config.wait
+- decide on config.last_screenshot
+  should be also boxed probably...
+  cover it with tests
+- decide on have.size vs query.size
+- resolve mypy errors in currently disabled:
+  '^selene/core/entity.py$',
+  '^selene/core/wait.py$',
+- review all `# type: ignore`
 
 ## 2.0.0rc1 (to be released on ?.10.2022)
 
@@ -796,7 +804,7 @@ Contributors release.
   - if actually webelement was found, but something was wrong with it (like hidden or non-interactable)
   
 - improved errors from browser.all.element_by
-  - todo: improve for other all.* methods
+  - TODO: improve for other all.* methods
 
 was:
 
@@ -1250,10 +1258,10 @@ results.element_by(
 ## 1.0.0a3 (next from master branch)
   - improvements:
     - error messages are cleaner
-      - todo: still lacks proper test coverage of all cases...
+      - TODO: still lacks proper test coverage of all cases...
   - internal
     - refactored wait_for implementation, made it cleaner
-      - todo: still need to refactor condition implementation
+      - TODO: still need to refactor condition implementation
     
 ## 1.0.0a2 (not published, available via direct install from sources)
 - new features:

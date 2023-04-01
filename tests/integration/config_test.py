@@ -26,8 +26,8 @@ class TestSeleneSharedConfig:
     old_timeout = config.timeout
     # old_polling_interval = config.poll_during_waits  # deprecated
     old_base_url = config.base_url
-    old_browser_name = config.browser_name
-    old_hold_browser_open = config.hold_browser_open
+    old_browser_name = config.name
+    old_hold_browser_open = config.hold_driver_at_exit
 
     def setup_class(self):
         config.timeout = 5

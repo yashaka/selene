@@ -32,7 +32,7 @@ from selene.core.conditions import (
 )
 from selene.core.entity import Collection, Element, Browser
 
-# todo: consider moving to selene.match.element.is_visible, etc...
+# TODO: consider moving to selene.match.element.is_visible, etc...
 element_is_visible: Condition[Element] = ElementCondition.raise_if_not(
     'is visible', lambda element: element().is_displayed()
 )
@@ -61,11 +61,11 @@ element_is_absent: Condition[Element] = ElementCondition.as_not(
     element_is_present
 )
 
+# TODO: how will it work for mobile?
 element_is_focused: Condition[Element] = ElementCondition.raise_if_not(
     'is focused',
-    # todo: change in the following line to element.execute_script or element.config.driver.execute_script
     lambda element: element()
-    == element._webdriver.execute_script('return document.activeElement'),
+    == element.config.driver.execute_script('return document.activeElement'),
 )
 
 
@@ -86,7 +86,7 @@ def element_has_exact_text(expected: str) -> Condition[Element]:
 
 
 def element_has_js_property(name: str):
-    # todo: should we keep simpler but less obvious name - *_has_property ?
+    # TODO: should we keep simpler but less obvious name - *_has_property ?
     def property_value(element: Element) -> str:
         return element().get_property(name)
 
@@ -115,23 +115,23 @@ def element_has_js_property(name: str):
         def values(
             self, *expected: Union[str, Iterable[str]]
         ) -> Condition[Collection]:
-            expected = helpers.flatten(expected)
+            expected_ = helpers.flatten(expected)
 
             return CollectionCondition.raise_if_not_actual(
-                f"has js property '{name}' with values '{expected}'",
+                f"has js property '{name}' with values '{expected_}'",
                 property_values,
-                predicate.equals_to_list(expected),
+                predicate.equals_to_list(expected_),
             )
 
         def values_containing(
             self, *expected: Union[str, Iterable[str]]
         ) -> Condition[Collection]:
-            expected = helpers.flatten(expected)
+            expected_ = helpers.flatten(expected)
 
             return CollectionCondition.raise_if_not_actual(
-                f"has js property '{name}' with values containing '{expected}'",
+                f"has js property '{name}' with values containing '{expected_}'",
                 property_values,
-                predicate.equals_by_contains_to_list(expected),
+                predicate.equals_by_contains_to_list(expected_),
             )
 
     return ConditionWithValues(
@@ -170,23 +170,23 @@ def element_has_css_property(name: str):
         def values(
             self, *expected: Union[str, Iterable[str]]
         ) -> Condition[Collection]:
-            expected = helpers.flatten(expected)
+            expected_ = helpers.flatten(expected)
 
             return CollectionCondition.raise_if_not_actual(
-                f"has css property '{name}' with values '{expected}'",
+                f"has css property '{name}' with values '{expected_}'",
                 property_values,
-                predicate.equals_to_list(expected),
+                predicate.equals_to_list(expected_),
             )
 
         def values_containing(
             self, *expected: Union[str, Iterable[str]]
         ) -> Condition[Collection]:
-            expected = helpers.flatten(expected)
+            expected_ = helpers.flatten(expected)
 
             return CollectionCondition.raise_if_not_actual(
-                f"has css property '{name}' with values containing '{expected}'",
+                f"has css property '{name}' with values containing '{expected_}'",
                 property_values,
-                predicate.equals_by_contains_to_list(expected),
+                predicate.equals_by_contains_to_list(expected_),
             )
 
     return ConditionWithValues(
@@ -238,23 +238,23 @@ def element_has_attribute(name: str):
         def values(
             self, *expected: Union[str, Iterable[str]]
         ) -> Condition[Collection]:
-            expected = helpers.flatten(expected)
+            expected_ = helpers.flatten(expected)
 
             return CollectionCondition.raise_if_not_actual(
-                f"has attribute '{name}' with values '{expected}'",
+                f"has attribute '{name}' with values '{expected_}'",
                 attribute_values,
-                predicate.equals_to_list(expected),
+                predicate.equals_to_list(expected_),
             )
 
         def values_containing(
             self, *expected: Union[str, Iterable[str]]
         ) -> Condition[Collection]:
-            expected = helpers.flatten(expected)
+            expected_ = helpers.flatten(expected)
 
             return CollectionCondition.raise_if_not_actual(
-                f"has attribute '{name}' with values containing '{expected}'",
+                f"has attribute '{name}' with values containing '{expected_}'",
                 attribute_values,
-                predicate.equals_by_contains_to_list(expected),
+                predicate.equals_by_contains_to_list(expected_),
             )
 
     return ConditionWithValues(
@@ -383,11 +383,11 @@ def collection_has_size_less_than_or_equal(
     )
 
 
-# todo: make it configurable whether assert only visible texts or ot
+# TODO: make it configurable whether assert only visible texts or ot
 def collection_has_texts(
     *expected: Union[str, Iterable[str]]
 ) -> Condition[Collection]:
-    expected = helpers.flatten(expected)
+    expected_ = helpers.flatten(expected)
 
     def visible_texts(collection: Collection) -> List[str]:
         return [
@@ -397,16 +397,16 @@ def collection_has_texts(
         ]
 
     return CollectionCondition.raise_if_not_actual(
-        f'has texts {expected}',
+        f'has texts {expected_}',
         visible_texts,
-        predicate.equals_by_contains_to_list(expected),
+        predicate.equals_by_contains_to_list(expected_),
     )
 
 
 def collection_has_exact_texts(
     *expected: Union[str, Iterable[str]]
 ) -> Condition[Collection]:
-    expected = helpers.flatten(expected)
+    expected_ = helpers.flatten(expected)
 
     def visible_texts(collection: Collection) -> List[str]:
         return [
@@ -416,14 +416,14 @@ def collection_has_exact_texts(
         ]
 
     return CollectionCondition.raise_if_not_actual(
-        f'has exact texts {expected}',
+        f'has exact texts {expected_}',
         visible_texts,
-        predicate.equals_to_list(expected),
+        predicate.equals_to_list(expected_),
     )
 
 
-# todo: consider refactoring the code like below by moving outside fns like url, title, etc...
-# todo: probably we will do that nevertheless when reusing "commands&queries" inside element class definitions
+# TODO: consider refactoring the code like below by moving outside fns like url, title, etc...
+# TODO: probably we will do that nevertheless when reusing "commands&queries" inside element class definitions
 def browser_has_url(
     expected: str,
     describing_matched_to='has url',

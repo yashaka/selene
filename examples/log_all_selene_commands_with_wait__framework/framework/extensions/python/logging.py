@@ -1,12 +1,12 @@
-import logging
+from logging import Formatter, LogRecord  # type: ignore
 from functools import reduce
 from typing import Tuple, List
 
 
-class TranslatingFormatter(logging.Formatter):
-    translations: List[Tuple[str, str]] = ()
+class TranslatingFormatter(Formatter):
+    translations: List[Tuple[str, str]] = []
 
-    def formatMessage(self, record: logging.LogRecord) -> str:
+    def formatMessage(self, record: LogRecord) -> str:
         original = super().formatMessage(record)
 
         def translate(initial: str, item: Tuple[str, str]):

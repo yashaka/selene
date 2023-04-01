@@ -94,10 +94,10 @@ def test_should_have_no_texts_exception(session_browser):
 
     with pytest.raises(TimeoutException) as error:
         browser.all('li').should(have.no.texts('Alex', 'Yakov'))
-    # todo: why do we have `has` below, should not it be `have`?
+    # TODO: why do we have `has` below, should not it be `have`?
     assert "has no (texts ('Alex', 'Yakov'))" in error.value.msg
     assert "ConditionNotMatchedError: condition not matched" in error.value.msg
-    # todo: should not we see here actual texts in log too?
+    # TODO: should not we see here actual texts in log too?
 
 
 def test_should_have_text(session_browser):
@@ -112,7 +112,7 @@ def test_should_have_text(session_browser):
 
     session_browser.all('li').should(have.text('ako').each)
     session_browser.all('li').should(have.text('').each)
-    # todo: this test is a bit weird here...
+    # TODO: this test is a bit weird here...
     # the file is called condition__collection__have_texts_test.py
     # specifying that here we tests collection conditions...
     # but have.text is not a collection condition

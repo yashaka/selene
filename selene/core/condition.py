@@ -23,29 +23,35 @@
 from __future__ import annotations
 
 import sys
-from typing import List, TypeVar, Generic, Iterable, Tuple
+import typing
+from typing import List, TypeVar, Generic, Iterable, Tuple, Optional
+
+from selene.core.exceptions import ConditionNotMatchedError
+from selene.core.wait import Predicate, Lambda
 
 if sys.version_info >= (3, 10):
     from collections.abc import Callable
 else:
     from typing import Callable
 
-from selene.core.exceptions import ConditionNotMatchedError
-from selene.core.wait import Predicate, Lambda
-
 
 E = TypeVar('E')
 R = TypeVar('R')
 
 
-class Condition(Generic[E], Callable[[E], None]):
+class Condition(Generic[E]):
+    """
+    Class for objects that are `Callable[[E], None]` like
+    and represent the "condition that can pass or fail".
+    """
+
     @classmethod
     def by_and(cls, *conditions):
-        def fn(entity):
+        def func(entity):
             for condition in conditions:
                 condition.call(entity)
 
-        return cls(' and '.join(map(str, conditions)), fn)
+        return cls(' and '.join(map(str, conditions)), func)
 
     @classmethod
     def by_or(cls, *conditions):
@@ -82,13 +88,15 @@ class Condition(Generic[E], Callable[[E], None]):
                     )
                 )
 
-        return cls(f' each {condition}', fn)
+        return typing.cast(
+            Condition[Iterable[E]], cls(f' each {condition}', fn)
+        )
 
     @classmethod
     def as_not(
-        cls, condition: Condition[E], description: str = None
+        cls, condition: Condition[E], description: Optional[str] = None
     ) -> Condition[E]:
-        # todo: how will it work composed conditions?
+        # TODO: how will it work composed conditions?
         condition_words = str(condition).split(' ')
         is_or_have = condition_words[0]
         name = ' '.join(condition_words[1:])
@@ -100,7 +108,7 @@ class Condition(Generic[E], Callable[[E], None]):
                 condition.call(entity)
             except Exception:
                 return
-            raise ConditionNotMatchedError()  # todo: try to handle printing actual values here too...
+            raise ConditionNotMatchedError()  # TODO: try to handle printing actual values here too...
 
         return cls(new_description, fn)
 
@@ -167,16 +175,16 @@ class Condition(Generic[E], Callable[[E], None]):
         return fn
 
     @property
-    def not_(self) -> Condition[E]:  # todo: better name?
+    def not_(self) -> Condition[E]:  # TODO: better name?
         return self.__class__.as_not(self)
 
     def __call__(self, entity: E) -> None:
         return self._fn(entity)
 
     def __str__(self):
-        # todo: consider changing has to have on the fly for CollectionConditions
-        # todo: or changing in collection locator rendering `all` to `collection`
-        # todo: or changing in match.* names from collection_has_* to all_have_*
+        # TODO: consider changing has to have on the fly for CollectionConditions
+        # TODO: or changing in collection locator rendering `all` to `collection`
+        # TODO: or changing in match.* names from collection_has_* to all_have_*
         return self._description
 
     def and_(self, condition: Condition[E]) -> Condition[E]:
@@ -190,5 +198,5 @@ class Condition(Generic[E], Callable[[E], None]):
         return Condition.for_each(self)
 
 
-def not_(condition_to_be_inverted: Condition):  # todo: do we really need it?
+def not_(condition_to_be_inverted: Condition):  # TODO: do we really need it?
     return condition_to_be_inverted.not_

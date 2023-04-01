@@ -20,8 +20,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 import functools
-from typing import TypeVar, Callable, Optional
+from typing import TypeVar, Callable, Any
 
+# T = TypeVar('T', bound=Callable[..., Any])
 T = TypeVar('T')
 '''
 A generic TypeVar to identify a Function Type, i.e. a function

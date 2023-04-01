@@ -26,8 +26,8 @@ from selene import browser, be, have, Element
 
 
 class SelectList:
-    def __init__(self, element):
-        self._element: Element = element
+    def __init__(self, element: Element):
+        self._element = element
 
     def open(self):
         self._element.click()
@@ -60,7 +60,7 @@ def merge(*dict_args):
     return result
 
 
-class Fields:  # todo: rename to Fields?
+class Fields:  # TODO: rename to Fields?
     def __init__(self, element):
         self._element = element
 
@@ -191,5 +191,5 @@ class Order:
 
             class AdvancedOption:
                 def __init__(self):
-                    # todo: implement...
+                    # TODO: implement...
                     pass

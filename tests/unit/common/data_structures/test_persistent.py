@@ -453,7 +453,7 @@ class Test__dataclass:
 
         assert isinstance(pet.name, AllStringsToUpperDescriptor)
 
-    # todo: break down into atomic unit tests
+    # TODO: break down into atomic unit tests
     def test_persistent_replace(self):
         @persistent.dataclass
         class Config:

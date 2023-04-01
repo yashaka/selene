@@ -30,7 +30,7 @@ from selene.core.exceptions import TimeoutException
 
 def x_test_waiting_for_conditions_like_url_containing(session_browser):
     """
-    todo: GivenPage(...).opened_with_body(...)\
+    TODO: GivenPage(...).opened_with_body(...)\
             .execute_script('script should click on link after 500ms'
                             'link should follow to #second')
           browser.should(have.url_containing('#second'))

@@ -63,7 +63,7 @@ class Config:
     log_outer_html_on_failure: bool = False
     _wait_decorator: Callable[
         [Wait[E]], Callable[[F], F]
-    ] = lambda _: fp.identity
+    ] = lambda w: lambda f: f
     reports_folder: Optional[str] = ...
     _counter: itertools.count = ...
     save_screenshot_on_failure: bool = True

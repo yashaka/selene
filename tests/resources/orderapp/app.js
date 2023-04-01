@@ -24,7 +24,7 @@
 $(document).ready(function(){
 
     // temporary solution for some specific waiting emulation
-    // todo: find a way to use setTimeout instead as in other cases
+    // TODO: find a way to use setTimeout instead as in other cases
     function hardWait(milliseconds) {
         var start = new Date().getTime();
         for (var i = 0; i < 1e7; i++) {
@@ -57,8 +57,8 @@ $(document).ready(function(){
             var $newItem = $templateItem.clone()
                 .attr('id','item_' + (++itemsCounter));
 
-            hardWait(1000)  // todo: refactor to use imitateLoading()
-            $(this).before($newItem);  // todo: delay adding this element to the dom also
+            hardWait(1000)  // TODO: refactor to use imitateLoading()
+            $(this).before($newItem);  // TODO: delay adding this element to the dom also
             imitateLoading(function(){
                 $newItem.show();
             })

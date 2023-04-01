@@ -9,7 +9,7 @@ _FIELDS = getattr(dataclasses, '_FIELDS', '__dataclass_fields__')
 _POST_INIT_NAME = getattr(dataclasses, '_POST_INIT_NAME', '__post_init__')
 
 
-# todo: add support for InitVar and ClassVar like in original dataclasses
+# TODO: add support for InitVar and ClassVar like in original dataclasses
 
 
 def _set_new_attribute(cls, name, value):
@@ -96,7 +96,7 @@ class Field:
         # for some compatibility with original dataclasses (not used in this impl)
         self.init = True
         self.default_factory = MISSING
-        self._field_type = dataclasses._FIELD
+        self._field_type = getattr(dataclasses, '_FIELD')
 
     def __set_name__(self, owner, name):
         if not self.name:

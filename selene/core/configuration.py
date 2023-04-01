@@ -417,14 +417,24 @@ class Config:
     regardless of what Selene thinks about it:D
     """
 
-    # TODO: deprecate
     @property
     def hold_browser_open(self) -> bool:
+        warnings.warn(
+            'Was deprecated because "browser" term '
+            'is not relevant to mobile context. '
+            'Use `config.hold_driver_at_exit` instead',
+            DeprecationWarning,
+        )
         return self.hold_driver_at_exit
 
-    # TODO: deprecate
     @hold_browser_open.setter
     def hold_browser_open(self, value: bool):
+        warnings.warn(
+            'Was deprecated because "browser" term '
+            'is not relevant to mobile context. '
+            'Use `config.hold_driver_at_exit = ...` instead',
+            DeprecationWarning,
+        )
         self.hold_driver_at_exit = value
 
     rebuild_dead_driver: bool = True
@@ -477,8 +487,8 @@ class Config:
     def __post_init__(self):
         # TODO: consider making private
         # TODO: do we even need them at __post_init__?
-        self.last_screenshot: Optional[str] = None
-        self.last_page_source: Optional[str] = None
+        self.last_screenshot: Optional[str] = None  # type: ignore
+        self.last_page_source: Optional[str] = None  # type: ignore
 
     base_url: str = ''
     window_width: Optional[int] = None
@@ -502,7 +512,7 @@ class Config:
     # maybe better time to decide on this will be once we have more such options :p
     _wait_decorator: Callable[
         [Wait[E]], Callable[[F], F]
-    ] = lambda _: fp.identity
+    ] = lambda w: lambda f: f
 
     hook_wait_failure: Optional[Callable[[TimeoutException], Exception]] = None
     '''
@@ -590,7 +600,7 @@ class Config:
 
     # TODO: consider moving this injection to the WaitingEntity.wait method to build Wait object instead of config.wait
     def _inject_screenshot_and_page_source_pre_hooks(self, hook):
-        # todo: consider moving hooks to class methods accepting config as argument
+        # TODO: consider moving hooks to class methods accepting config as argument
         #       or refactor somehow to eliminate all times defining hook fns
         def save_and_log_screenshot(error: TimeoutException) -> Exception:
             from selene.support.webdriver import WebHelper

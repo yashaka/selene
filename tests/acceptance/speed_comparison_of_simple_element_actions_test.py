@@ -82,7 +82,7 @@ def create_tasks_with_selene_with_cash():
         new_todo.send_keys(task_text + Keys.ENTER)
 
 
-# todo: review these tests
+# TODO: review these tests
 
 
 def test_selene_is_almost_as_fast_selenium_with_research_and_initial_wait_for_visibility():

@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 import warnings
-from typing import Any, Union, Iterable
+from typing import Any, Union, Iterable, Optional
 
 from selene.core import match
 from selene.core.condition import Condition
@@ -34,13 +34,13 @@ def exact_text(value) -> Condition[Element]:
     return match.element_has_exact_text(value)
 
 
-# todo: consider accepting int
+# TODO: consider accepting int
 def text(partial_value) -> Condition[Element]:
     return match.element_has_text(partial_value)
 
 
-# todo: should we use here js.property style (and below for js.returned(...))
-def js_property(name: str, value: str = None):
+# TODO: should we use here js.property style (and below for js.returned(...))
+def js_property(name: str, value: Optional[str] = None):
     if value:
         warnings.warn(
             'passing second argument is deprecated; use have.js_property(foo).value(bar) instead',
@@ -51,7 +51,7 @@ def js_property(name: str, value: str = None):
     return match.element_has_js_property(name)
 
 
-def css_property(name: str, value: str = None):
+def css_property(name: str, value: Optional[str] = None):
     if value:
         warnings.warn(
             'passing second argument is deprecated; use have.css_property(foo).value(bar) instead',
@@ -62,7 +62,7 @@ def css_property(name: str, value: str = None):
     return match.element_has_css_property(name)
 
 
-def attribute(name: str, value: str = None):
+def attribute(name: str, value: Optional[str] = None):
     if value:
         warnings.warn(
             'passing second argument is deprecated; use have.attribute(foo).value(bar) instead',
@@ -134,7 +134,7 @@ def size_greater_than_or_equal(number: int) -> Condition[Collection]:
     return match.collection_has_size_greater_than_or_equal(number)
 
 
-# todo: consider accepting ints
+# TODO: consider accepting ints
 def texts(*partial_values: Union[str, Iterable[str]]) -> Condition[Collection]:
     return match.collection_has_texts(*partial_values)
 

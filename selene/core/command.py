@@ -21,7 +21,7 @@
 # SOFTWARE.
 from typing import Union
 
-from selene.core.entity import Element
+from selene.core.entity import Element, Collection, Browser
 from selene.core.wait import Command
 
 
@@ -29,7 +29,7 @@ from selene.core.wait import Command
 class js:
     @staticmethod
     def set_value(value: Union[str, int]) -> Command[Element]:
-        def fn(element: Element):
+        def func(element: Element):
             element.execute_script(
                 """
                 var text = arguments[0];
@@ -46,11 +46,11 @@ class js:
                 str(value),
             )
 
-        return Command(f'set value by js: {value}', fn)
+        return Command(f'set value by js: {value}', func)
 
     @staticmethod
     def type(keys: Union[str, int]) -> Command[Element]:
-        def fn(element: Element):
+        def func(element: Element):
             element.execute_script(
                 """
                 textToAppend = arguments[0];
@@ -69,33 +69,34 @@ class js:
                 str(keys),
             )
 
-        return Command(f'set value by js: {keys}', fn)
+        return Command(f'set value by js: {keys}', func)
 
-    scroll_into_view = Command(
+    scroll_into_view: Command[Element] = Command(
         'scroll into view',
         lambda element: element.execute_script('element.scrollIntoView(true)'),
     )
 
-    click = Command(
+    click: Command[Element] = Command(
         'click',
+        # TODO: should we process collections too? i.e. click through all elements?
         lambda element: element.execute_script('element.click()'),
     )
 
-    clear_local_storage = Command(
+    clear_local_storage: Command[Browser] = Command(
         'clear local storage',
         lambda browser: browser.driver.execute_script(
             'window.localStorage.clear()'
         ),
     )
 
-    clear_session_storage = Command(
+    clear_session_storage: Command[Browser] = Command(
         'clear local storage',
         lambda browser: browser.driver.execute_script(
             'window.sessionStorage.clear()'
         ),
     )
 
-    remove = Command(
+    remove: Command[Union[Element, Collection]] = Command(
         'remove',
         lambda entity: (
             entity.execute_script('element.remove()')
@@ -123,7 +124,7 @@ class js:
             ),
         )
 
-    set_style_display_to_none = Command(
+    set_style_display_to_none: Command[Union[Element, Collection]] = Command(
         'set element.style.display="none"',
         lambda entity: (
             entity.execute_script('element.style.display="none"')
@@ -135,7 +136,7 @@ class js:
         ),
     )
 
-    set_style_display_to_block = Command(
+    set_style_display_to_block: Command[Union[Element, Collection]] = Command(
         'set element.style.display="block"',
         lambda entity: (
             entity.execute_script('element.style.display="block"')
@@ -147,7 +148,9 @@ class js:
         ),
     )
 
-    set_style_visibility_to_hidden = Command(
+    set_style_visibility_to_hidden: Command[
+        Union[Element, Collection]
+    ] = Command(
         'set element.style.visibility="hidden"',
         lambda entity: (
             entity.execute_script('element.style.visibility="hidden"')
@@ -159,7 +162,9 @@ class js:
         ),
     )
 
-    set_style_visibility_to_visible = Command(
+    set_style_visibility_to_visible: Command[
+        Union[Element, Collection]
+    ] = Command(
         'set element.style.visibility="visible"',
         lambda entity: (
             entity.execute_script('element.style.visibility="visible"')

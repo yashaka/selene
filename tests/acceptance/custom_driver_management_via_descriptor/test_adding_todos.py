@@ -98,7 +98,7 @@ def web():
     #       so far it seems to not support subclassing from Config
     #       and overriding descriptors
     class MyConfig(Config):
-        driver: WebDriver = CustomlyManagedDriverDescriptor()
+        driver: WebDriver = CustomlyManagedDriverDescriptor()  # type: ignore
 
     browser = Browser(MyConfig())
 

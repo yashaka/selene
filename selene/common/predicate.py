@@ -87,12 +87,12 @@ def includes_word(expected, ignore_case=False):
     )
 
 
-# will not work with empty seqs :( todo: fix
+# will not work with empty seqs :( TODO: fix
 # currently we use it only for non-empty seqs taking this into account
 seq_compare_by = (
     lambda f: lambda x=None, *xs: lambda y=None, *ys: True
     if x is None and y is None
-    else bool(f(x)(y)) and seq_compare_by(f)(*xs)(*ys)
+    else bool(f(x)(y)) and seq_compare_by(f)(*xs)(*ys)  # type: ignore
 )
 
 
