@@ -103,15 +103,14 @@ def test_todos_storage_is_not_shared_between_browsers():
 ```
 
 TODO:
+- autocomplete for entity.with_(**HERE)
 - decide on config.wait
 - decide on config.last_screenshot
   should be also boxed probably...
   cover it with tests
 - decide on have.size vs query.size
-- resolve mypy errors in currently disabled:
-  '^selene/core/entity.py$',
-  '^selene/core/wait.py$',
 - review all `# type: ignore`
+- review all typing.cast
 
 ## 2.0.0rc1 (to be released on ?.10.2022)
 
@@ -167,6 +166,7 @@ edge.config.timeout = 10
     - use `selene.browser.config.driver = ...`
 - removed
   - from selene.support.shared import SharedConfig, SharedBrowser
+  - from selene.core.entity import BrowserCondition, ElementCondition, CollectionCondition
 - removed deprecated 
   - shared.browser.config.desired_capabilities
   - shared.browser.config.start_maximized

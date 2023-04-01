@@ -79,8 +79,6 @@ build-backend = "poetry.core.masonry.api"
 disable_error_code = 'annotation-unchecked'
 color_output=1
 exclude = [
-	'^selene/core/entity.py$',
-	'^selene/core/wait.py$',
     '^test_.+\.py$',
 	'^.+_test\.py$',
 ]

@@ -45,7 +45,6 @@ from selene.common.helpers import to_by, flatten, is_absolute_url
 from selene.core.exceptions import TimeoutException, _SeleneError
 from selene.support.webdriver import WebHelper
 
-# type: ignore
 
 E = TypeVar('E', bound='Assertable')
 R = TypeVar('R')
@@ -85,7 +84,7 @@ class WaitingEntity(Matchable[E], Configured):
 
     @property
     def wait(self) -> Wait[E]:
-        return self.config.wait(self)  # type: ignore
+        return self.config.wait(typing.cast(E, self))  # type: ignore
 
     def perform(self, command: Command[E]) -> E:
         """Useful to call external commands.
@@ -196,7 +195,7 @@ class Element(WaitingEntity['Element']):
     # --- WaitingEntity --- #
 
     @property
-    def wait(self) -> Wait[E]:
+    def wait(self) -> Wait[Element]:
         # TODO:  will not it break code like browser.with_(timeout=...)?
         # TODO: fix that will disable/break shared hooks (snapshots)
         # return Wait(self,  # TODO:  isn't it slower to create it each time from scratch? move to __init__?
@@ -528,12 +527,15 @@ class Element(WaitingEntity['Element']):
     def click(self) -> Element:
         """Just a normal click:)"""
 
+        def raw_click(element: Element):
+            element.locate().click()
+
         from selene.core import command
 
         self.wait.for_(
-            command.js.click
+            typing.cast(Command[Element], command.js.click)
             if self.config.click_by_js
-            else Command('click', lambda element: element().click())
+            else Command('click', raw_click)
         )
 
         return self
@@ -594,23 +596,17 @@ class Element(WaitingEntity['Element']):
     # def outer_html(self) -> str:
     #     return self.wait.for_(query.outer_html)
 
-    # --- Assertable --- #
-
-    # we need this method here in order to make autocompletion work...
-    # unfortunately the "base class" version is not enough
-    def should(self, condition: Condition[Element]) -> Element:
-        super().should(condition)
-        return self
-
     # --- Deprecate or not? --- #
 
-    def s(self, css_or_xpath_or_by: Union[str, tuple]) -> Element:
+    def s(self, css_or_xpath_or_by: Union[str, Tuple[str, str]]) -> Element:
         # warnings.warn(
         #     "consider using more explicit `element` instead: browser.element('#foo').element('.bar')",
         #     SyntaxWarning)
         return self.element(css_or_xpath_or_by)
 
-    def ss(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection:
+    def ss(
+        self, css_or_xpath_or_by: Union[str, Tuple[str, str]]
+    ) -> Collection:
         # warnings.warn(
         #     "consider using `all` instead: browser.element('#foo').all('.bar')",
         #     SyntaxWarning)
@@ -619,12 +615,14 @@ class Element(WaitingEntity['Element']):
 
 class Collection(WaitingEntity['Collection'], Iterable[Element]):
     def __init__(
-        self, locator: Locator[typing.Collection[WebElement]], config: Config
+        self, locator: Locator[typing.Sequence[WebElement]], config: Config
     ):
         self._locator = locator
         super().__init__(config)
 
-    def with_(self, config: Config = None, **config_as_kwargs) -> Collection:
+    def with_(
+        self, config: Optional[Config] = None, **config_as_kwargs
+    ) -> Collection:
         return Collection(
             self._locator,
             config if config else self.config.with_(**config_as_kwargs),
@@ -633,14 +631,14 @@ class Collection(WaitingEntity['Collection'], Iterable[Element]):
     def __str__(self):
         return str(self._locator)
 
-    def locate(self) -> typing.Collection[WebElement]:
+    def locate(self) -> typing.Sequence[WebElement]:
         return self._locator()
 
     @property
     def __raw__(self):
         return self.locate()
 
-    def __call__(self) -> typing.Collection[WebElement]:
+    def __call__(self) -> typing.Sequence[WebElement]:
         return self.locate()
 
     @property
@@ -666,7 +664,7 @@ class Collection(WaitingEntity['Collection'], Iterable[Element]):
     # TODO: add config.index_collection_from_1, disabled by default
     def element(self, index: int) -> Element:
         def find() -> WebElement:
-            webelements = self()
+            webelements = self.locate()
             length = len(webelements)
 
             if length <= index:
@@ -680,18 +678,18 @@ class Collection(WaitingEntity['Collection'], Iterable[Element]):
         return Element(Locator(f'{self}[{index}]', find), self.config)
 
     @property
-    def first(self):
+    def first(self) -> Element:
         """
         A human-readable alias to .element(0) or [0]
         """
-        return self[0]
+        return typing.cast(Element, self[0])
 
     @property
-    def second(self):
+    def second(self) -> Element:
         """
         A human-readable alias to .element(1) or [1]
         """
-        return self[1]
+        return typing.cast(Element, self[1])
 
     @property
     def even(self):
@@ -708,9 +706,12 @@ class Collection(WaitingEntity['Collection'], Iterable[Element]):
         return self[::2]
 
     def sliced(
-        self, start: int = None, stop: int = None, step: int = 1
+        self,
+        start: Optional[int] = None,
+        stop: Optional[int] = None,
+        step: int = 1,
     ) -> Collection:
-        def find() -> typing.Collection[WebElement]:
+        def find() -> typing.Sequence[WebElement]:
             webelements = self()
 
             # TODO: assert length according to provided start, stop...
@@ -738,13 +739,13 @@ class Collection(WaitingEntity['Collection'], Iterable[Element]):
         return self.element(index_or_slice)
 
     def from_(self, start: int) -> Collection:
-        return self[start:]
+        return typing.cast(Collection, self[start:])
 
     def to(self, stop: int) -> Collection:
-        return self[:stop]
+        return typing.cast(Collection, self[:stop])
 
     def by(
-        self, condition: Union[Condition[Element], Callable[[E], None]]
+        self, condition: Union[Condition[Element], Callable[[Element], None]]
     ) -> Collection:
         condition = (
             condition
@@ -765,7 +766,7 @@ class Collection(WaitingEntity['Collection'], Iterable[Element]):
         )
 
     def filtered_by(
-        self, condition: Union[Condition[Element], Callable[[E], None]]
+        self, condition: Union[Condition[Element], Callable[[Element], None]]
     ) -> Collection:
         warnings.warn(
             'collection.filtered_by(condition) is deprecated in favor of collection.by(condition)',
@@ -775,7 +776,7 @@ class Collection(WaitingEntity['Collection'], Iterable[Element]):
 
     def by_their(
         self,
-        selector: Union[str, tuple, Callable[[Element], Element]],
+        selector: Union[str, Tuple[str, str], Callable[[Element], Element]],
         condition: Condition[Element],
     ) -> Collection:
         """
@@ -835,7 +836,7 @@ class Collection(WaitingEntity['Collection'], Iterable[Element]):
                 .should(have.size(3))
         """
 
-        def find_in(parent: Element):
+        def find_in(parent: Element) -> Element:
             if callable(selector):
                 return selector(parent)
             else:
@@ -844,7 +845,7 @@ class Collection(WaitingEntity['Collection'], Iterable[Element]):
         return self.by(lambda it: condition(find_in(it)))
 
     def element_by(
-        self, condition: Union[Condition[Element], Callable[[E], None]]
+        self, condition: Union[Condition[Element], Callable[[Element], None]]
     ) -> Element:
         # TODO: a first_by(condition) alias would be shorter,
         #  and more consistent with by(condition).first
@@ -916,7 +917,7 @@ class Collection(WaitingEntity['Collection'], Iterable[Element]):
 
     def element_by_its(
         self,
-        selector: Union[str, tuple, Callable[[Element], Element]],
+        selector: Union[str, Tuple[str, str], Callable[[Element], Element]],
         condition: Condition[Element],
     ) -> Element:
         """
@@ -1005,14 +1006,15 @@ class Collection(WaitingEntity['Collection'], Iterable[Element]):
             Locator(
                 f'{self}.collected({finder})',
                 # TODO: consider skipping None while flattening
-                lambda: flatten(
-                    [finder(element)() for element in self.cached]
+                lambda: typing.cast(
+                    typing.Sequence[WebElement],
+                    flatten([finder(element)() for element in self.cached]),
                 ),
             ),
             self.config,
         )
 
-    def all(self, selector: Union[str, tuple]) -> Collection:
+    def all(self, selector: Union[str, Tuple[str, str]]) -> Collection:
         """
         Returns a collection of all elements found be selector inside each element of self
 
@@ -1044,14 +1046,20 @@ class Collection(WaitingEntity['Collection'], Iterable[Element]):
         return Collection(
             Locator(
                 f'{self}.all({by})',
-                lambda: flatten(
-                    [webelement.find_elements(*by) for webelement in self()]
+                lambda: typing.cast(
+                    typing.Sequence[WebElement],
+                    flatten(
+                        [
+                            webelement.find_elements(*by)
+                            for webelement in self()
+                        ]
+                    ),
                 ),
             ),
             self.config,
         )
 
-    def all_first(self, selector: Union[str, tuple]) -> Collection:
+    def all_first(self, selector: Union[str, Tuple[str, str]]) -> Collection:
         """
         Returns a collection of each first element found be selector inside each element of self
 
@@ -1090,12 +1098,6 @@ class Collection(WaitingEntity['Collection'], Iterable[Element]):
             ),
             self.config,
         )
-
-    # --- Assertable --- #
-
-    def should(self, condition: Condition[Iterable[Element]]) -> Collection:
-        self.wait.for_(condition)
-        return self
 
 
 class Browser(WaitingEntity['Browser']):
@@ -1143,7 +1145,9 @@ class Browser(WaitingEntity['Browser']):
 
     # --- Element builders --- #
 
-    def element(self, css_or_xpath_or_by: Union[str, tuple]) -> Element:
+    def element(
+        self, css_or_xpath_or_by: Union[str, Tuple[str, str]]
+    ) -> Element:
         by = to_by(css_or_xpath_or_by)
 
         return Element(
@@ -1153,7 +1157,9 @@ class Browser(WaitingEntity['Browser']):
             self.config,
         )
 
-    def all(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection:
+    def all(
+        self, css_or_xpath_or_by: Union[str, Tuple[str, str]]
+    ) -> Collection:
         by = to_by(css_or_xpath_or_by)
 
         return Collection(
@@ -1240,14 +1246,6 @@ class Browser(WaitingEntity['Browser']):
 
     def close(self) -> Browser:
         self.driver.close()
-        return self
-
-    # --- Assertable --- #
-
-    # we need this method here in order to make autocompletion work...
-    # unfortunately the "base class" version is not enough
-    def should(self, condition: BrowserCondition) -> Browser:
-        super().should(condition)
         return self
 
     # --- Deprecated --- #
@@ -1339,11 +1337,3 @@ class Browser(WaitingEntity['Browser']):
 
         self.perform(command.js.clear_session_storage)
         return self
-
-
-# TODO: probably this was needed for migration from 1.0 to 2.0...
-from selene.core.conditions import (
-    CollectionCondition,
-    ElementCondition,
-    BrowserCondition,
-)

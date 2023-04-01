@@ -64,7 +64,7 @@ class Query(Generic[E, R]):
         return self._description
 
 
-class Command(Query[E, None]):
+class Command(Generic[E], Query[E, None]):
     pass
 
 
