@@ -38,6 +38,12 @@ inner_html = attribute('innerHTML')
 outer_html = attribute('outerHTML')
 
 
+text_content = attribute('textContent')
+"""
+full text of element without space normalization
+"""
+
+
 value = attribute('value')
 
 tag: Query[Element, str] = Query(
@@ -45,6 +51,9 @@ tag: Query[Element, str] = Query(
 )
 
 text: Query[Element, str] = Query('text', lambda element: element().text)
+"""
+normalized text of element
+"""
 
 # todo: do we need condition for the following?
 location_once_scrolled_into_view: Query[Element, Dict[str, int]] = Query(

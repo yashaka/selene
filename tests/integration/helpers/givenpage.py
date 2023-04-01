@@ -20,14 +20,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import os
+from tests import resources
 from tests.helpers import convert_sec_to_ms
 
-EMPTY_PAGE_URL = (
-    'file://'
-    + os.path.abspath(os.path.dirname(__file__))
-    + '/../../resources/empty.html'
-)
+EMPTY_PAGE_URL = resources.url('empty.html')
 
 
 class LoadingHtmlPage:

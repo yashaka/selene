@@ -1,0 +1,77 @@
+name: Deploy Docs to Pages
+
+env:
+  # Specify Python version to quick change in the future
+  # See: https://github.com/actions/setup-python/tree/main#available-versions-of-python
+  PYTHON_VERSION: "3.7"
+
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push events but only for the "main" branch
+  # and docs related files (paths)
+  push:
+    branches: [ "master" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains two jobs called "build-docs" and "deploy-docs"
+
+  # Build docs via MkDocs with poetry shell (environment)
+  build-docs:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install Poetry
+        run: pip install poetry
+
+      - name: Install Dependencies
+        run: poetry install --no-root --only docs
+
+      # Build MkDocs static files (in 'site' folder)
+      - name: Build docs
+        run: poetry run mkdocs build
+
+      # upload the static files as an artifact
+      - name: Upload static artifact (.zip)
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: "site/"
+
+  # Deploy docs job
+  deploy-docs:
+    # Add a dependency to the build job
+    needs: build-docs
+
+    # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
+    permissions:
+      pages: write      # to deploy to Pages
+      id-token: write   # to verify the deployment originates from an appropriate source
+
+    # Deploy to the github-pages environment
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    # Specify runner + deployment step
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy docs to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1

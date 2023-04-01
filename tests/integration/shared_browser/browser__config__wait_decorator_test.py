@@ -1,6 +1,6 @@
 from selene import have
 from selene.core.wait import Wait
-from selene.support import shared
+import selene
 import logging
 
 
@@ -56,7 +56,7 @@ def log_on_wait(prefix):
 
 
 def test_logging_via__wait_decorator(quit_shared_browser_afterwards):
-    browser = shared.browser.with_(
+    browser = selene.browser.with_(
         _wait_decorator=log_on_wait('[1] - '), timeout=0.3
     )
 

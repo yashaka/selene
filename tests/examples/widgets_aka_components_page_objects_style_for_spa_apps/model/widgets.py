@@ -22,9 +22,7 @@
 
 from future.utils import iteritems
 
-from selene.core.entity import Element
-from selene.support.conditions import be, have
-from selene.support.shared import browser
+from selene import browser, be, have, Element
 
 
 class SelectList:
@@ -80,7 +78,7 @@ class Fields:  # todo: rename to Fields?
         opts = {} if not opts else opts
         list_of_opts = [merge(opts, opts_as_kwargs)] + list(other_opts)
         for options in list_of_opts:
-            for (field, value) in iteritems(options):
+            for field, value in iteritems(options):
                 getattr(self._element, field).set_value(value)
         return self
 

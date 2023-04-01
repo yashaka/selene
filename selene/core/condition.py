@@ -23,7 +23,7 @@
 from __future__ import annotations
 
 import sys
-from typing import List, TypeVar, Generic
+from typing import List, TypeVar, Generic, Iterable, Tuple
 
 if sys.version_info >= (3, 10):
     from collections.abc import Callable
@@ -60,6 +60,29 @@ class Condition(Generic[E], Callable[[E], None]):
             raise AssertionError('; '.join(map(str, errors)))
 
         return cls(' or '.join(map(str, conditions)), fn)
+
+    @classmethod
+    def for_each(cls, condition) -> Condition[Iterable[E]]:
+        def fn(entity):
+            items_with_error: List[Tuple[str, str]] = []
+            index = None
+            for index, item in enumerate(entity):
+                try:
+                    condition.call(item)
+                except Exception as error:
+                    items_with_error.append((str(item), str(error)))
+            if items_with_error:
+                raise AssertionError(
+                    f'Not matched elements among all with indexes from 0 to {index}:\n'
+                    + '\n'.join(
+                        [
+                            f'{item}: {error}'
+                            for item, error in items_with_error
+                        ]
+                    )
+                )
+
+        return cls(f' each {condition}', fn)
 
     @classmethod
     def as_not(
@@ -161,6 +184,10 @@ class Condition(Generic[E], Callable[[E], None]):
 
     def or_(self, condition: Condition[E]) -> Condition[E]:
         return Condition.by_or(self, condition)
+
+    @property
+    def each(self) -> Condition[Iterable[E]]:
+        return Condition.for_each(self)
 
 
 def not_(condition_to_be_inverted: Condition):  # todo: do we really need it?

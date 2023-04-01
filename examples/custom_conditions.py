@@ -20,11 +20,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from selene import Browser, have
+from selene import browser, Browser, have
 from selene.core.condition import Condition
 from selene.core.conditions import ElementCondition, BrowserCondition
 from selene.core.entity import Element
-from selene.support.shared import browser
 
 
 def have_produced_todos(number: int) -> Condition[Element]:

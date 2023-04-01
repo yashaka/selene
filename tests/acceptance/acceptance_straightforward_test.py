@@ -19,9 +19,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from selene import have, by, be
-from selene.core.condition import not_
-from selene.support.shared import browser
+from selene import browser, have, by, be
 
 # app_url = f'file://{os.path.abspath(os.path.dirname(__file__))}/../resources/todomvcapp/home.html'
 app_url = 'https://todomvc4tasj.herokuapp.com/'
@@ -37,35 +35,41 @@ is_TodoMVC_loaded = (
 
 class TestTodoMVC:
     def test_selene_demo(self):
-        tasks = browser.all("#todo-list>li")
-        active_tasks = tasks.filtered_by(have.css_class("active"))
+        tasks = browser.all('#todo-list>li')
+        active_tasks = tasks.by(have.css_class('active'))
 
         browser.open(app_url)
-        browser.should(have.js_returned(True, is_TodoMVC_loaded))
+        browser.should(have.script_returned(True, is_TodoMVC_loaded))
 
-        for task_text in ["1", "2", "3"]:
-            browser.element("#new-todo").set_value(task_text).press_enter()
-        tasks.should(have.texts("1", "2", "3")).should_each(
-            have.css_class("active")
+        for task_text in ['1', '2', '3']:
+            browser.element('#new-todo').set_value(task_text).press_enter()
+        tasks.should(have.texts('1', '2', '3')).should(
+            have.css_class('active').each
         )
-        browser.element("#todo-count").should(have.text('3'))
+        browser.element('#todo-count').should(have.text('3'))
 
-        tasks[2].element(".toggle").click()
-        active_tasks.should(have.texts("1", "2"))
+        tasks[2].element('.toggle').click()
+        active_tasks.should(have.texts('1', '2'))
         active_tasks.should(have.size(2))
 
-        tasks.filtered_by(have.css_class("completed")).should(have.texts("3"))
-        tasks.element_by(not_(have.css_class("completed"))).should(
-            have.text("1")
-        )
-        tasks.filtered_by(not_(have.css_class("completed"))).should(
-            have.texts("1", "2")
-        )
+        tasks.by(have.css_class('completed')).should(have.texts('3'))
+        tasks.element_by(have.no.css_class('completed')).should(have.text('1'))
+        tasks.by(have.no.css_class('completed')).should(have.texts('1', '2'))
 
-        browser.element(by.link_text("Active")).click()
-        tasks[:2].should(have.texts("1", "2"))
+        tasks.even.should(have.texts('2'))
+
+        tasks.odd.should(have.texts('1', '3'))
+        # or
+        tasks.sliced(step=2).should(have.texts('1', '3'))
+
+        tasks.sliced().should(have.texts('1', '2', '3'))
+        # or
+        tasks[::].should(have.texts('1', '2', '3'))
+
+        browser.element(by.link_text('Active')).click()
+        tasks[:2].should(have.texts('1', '2'))
         tasks[2].should(be.hidden)
 
-        browser.element(by.id("toggle-all")).click()
-        browser.element("//*[@id='clear-completed']").click()
+        browser.element(by.id('toggle-all')).click()
+        browser.element('//*[@id="clear-completed"]').click()
         tasks.should(have.size(0))

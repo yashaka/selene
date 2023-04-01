@@ -41,14 +41,12 @@ def exception_message(ex):
     )
     msg_simplified = and_simplified_stacktrace
 
-    screenshot_pattern = (
-        r'\s*screenshot: .*?/\.selene/screenshots/\d+?/screen_\d+\.png\s*'
-    )
-
     return [
-        line.strip()
-        if not re.match(screenshot_pattern, line)
-        else 'screenshot: //.selene/screenshots/*/screen_*.png'
+        'Screenshot: *.png'
+        if re.search(r'Screenshot: file:///.*\.png', line)
+        else 'PageSource: *.html'
+        if re.search(r'PageSource: file:///.*\.html', line)
+        else line.strip()
         for line in msg_simplified.strip().splitlines()
     ]
 
@@ -71,6 +69,8 @@ def test_element_search_fails_with_message_when_explicitly_waits_for_condition(
         "browser.element(('css selector', '#element')).has exact text Hello wor",
         '',
         'Reason: AssertionError: actual text: Hello world!',
+        'Screenshot: *.png',
+        'PageSource: *.html',
     ]
 
 
@@ -202,6 +202,8 @@ def test_indexed_selement_search_fails_with_message_when_implicitly_waits_for_co
         '',
         'Reason: AssertionError: Cannot get element with index 1 from webelements '
         'collection with length 1',
+        'Screenshot: *.png',
+        'PageSource: *.html',
     ]
 
 
@@ -226,4 +228,6 @@ def test_element_search_fails_with_message_when_explicitly_waits_for_not_conditi
         "browser.element(('css selector', '#element')).has no (exact text Hello world!)",
         '',
         'Reason: ConditionNotMatchedError: condition not matched',
+        'Screenshot: *.png',
+        'PageSource: *.html',
     ]

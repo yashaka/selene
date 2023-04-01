@@ -1,5 +1,4 @@
-from selene import be
-from selene.support.shared import browser
+from selene import browser, be
 
 
 def test_opening_relative_url():

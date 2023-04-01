@@ -20,14 +20,20 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from . import support
 
-from selene.core.entity import (
-    Browser as _custom_browser,
-    Config as _custom_config_for_custom_browser,
+from selene.core.configuration import (
+    Config as _CustomConfigForCustomBrowser,
 )
 
-Config = _custom_config_for_custom_browser
-Browser = _custom_browser
+Config = _CustomConfigForCustomBrowser
+
+from selene.core.entity import (
+    Browser as _CustomBrowser,
+)
+
+Browser = _CustomBrowser
+
 """
 Given::
 
@@ -55,8 +61,11 @@ AND::
 
 """
 
+from selene import _managed as _managed  # noqa
 
-from selene.support import by as _by_style_selectors
+browser = _managed.browser
+
+from selene.support import by as _by_style_selectors  # noqa
 
 by = _by_style_selectors
 """
@@ -80,8 +89,7 @@ AND::
 
 """
 
-
-from selene.support.conditions import be as _be_style_conditions
+from selene.support.conditions import be as _be_style_conditions  # noqa
 
 be = _be_style_conditions
 """
@@ -92,8 +100,7 @@ AND (in case we need to filter collection of items by some condition like visibi
     results = browser.all('.srg .g').filtered_by(be.visible)
 """
 
-
-from selene.support.conditions import have as _have_style_conditions
+from selene.support.conditions import have as _have_style_conditions  # noqa
 
 have = _have_style_conditions
 """
@@ -113,10 +120,10 @@ FINALLY (if not registered "atexit" before)::
 """
 
 ####################
-# Advanced Helpers #  # todo: think on not adding them here...
+# Advanced Helpers #
 ####################
 
-from selene.core import command as _advanced_commands
+from selene.core import command as _advanced_commands  # noqa
 
 command = _advanced_commands
 """
@@ -128,7 +135,7 @@ e.g. for workaround something through js::
     browser.element('#not-in-view').perform(command.js.scroll_into_view)
 """
 
-from selene.core import query as _advanced_queries
+from selene.core import query as _advanced_queries  # noqa
 
 query = _advanced_queries
 # its = _advanced_queries  # todo: do we really need it too? for better readability: .get(its.text)
@@ -218,13 +225,6 @@ Or, by using non-waiting versions, if "you are in a rush:)"::
 # """
 # Just types...
 # """
-# todo: add here some type imports like Element, Collection, etc.
+from selene.core.entity import Element, Collection  # noqa
 
-__version__ = '2.0.0b8'
-
-# --- DEPRECATED, and will be removed soon --- #
-
-
-from selene.support.shared.deprecated import OldConfig as _OldConfig
-
-config = _OldConfig()
+__version__ = '2.0.0b14'

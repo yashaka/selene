@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 import warnings
-from typing import Any
+from typing import Any, Union, Iterable
 
 from selene.core import match
 from selene.core.condition import Condition
@@ -77,8 +77,18 @@ def value(text) -> Condition[Element]:
     return match.element_has_value(text)
 
 
+def values(*texts: Union[str, Iterable[str]]) -> Condition[Collection]:
+    return match.collection_has_values(*texts)
+
+
 def value_containing(partial_text) -> Condition[Element]:
     return match.element_has_value_containing(partial_text)
+
+
+def values_containing(
+    *partial_texts: Union[str, Iterable[str]]
+) -> Condition[Collection]:
+    return match.collection_has_values_containing(*partial_texts)
 
 
 def css_class(name) -> Condition[Element]:
@@ -125,11 +135,11 @@ def size_greater_than_or_equal(number: int) -> Condition[Collection]:
 
 
 # todo: consider accepting ints
-def texts(*partial_values: str) -> Condition[Collection]:
+def texts(*partial_values: Union[str, Iterable[str]]) -> Condition[Collection]:
     return match.collection_has_texts(*partial_values)
 
 
-def exact_texts(*values: str) -> Condition[Collection]:
+def exact_texts(*values: Union[str, Iterable[str]]) -> Condition[Collection]:
     return match.collection_has_exact_texts(*values)
 
 
@@ -171,11 +181,20 @@ def tabs_number_greater_than_or_equal(value: int) -> Condition[Browser]:
 
 def js_returned_true(script_to_return_bool: str) -> Condition[Browser]:
     warnings.warn(
-        'might be deprecated; use have.js_returned(True, ...) instead',
-        PendingDeprecationWarning,
+        'deprecated; use have.script_returned(True, ...) instead',
+        DeprecationWarning,
     )
-    return match.browser_has_js_returned(True, script_to_return_bool)
+    return match.browser_has_script_returned(True, script_to_return_bool)
 
 
 def js_returned(expected: Any, script: str, *args) -> Condition[Browser]:
-    return match.browser_has_js_returned(expected, script, *args)
+    warnings.warn(
+        'deprecated because js does not work for mobile; '
+        'use have.script_returned(True, ...) instead',
+        DeprecationWarning,
+    )
+    return match.browser_has_script_returned(expected, script, *args)
+
+
+def script_returned(expected: Any, script: str, *args) -> Condition[Browser]:
+    return match.browser_has_script_returned(expected, script, *args)

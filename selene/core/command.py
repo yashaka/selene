@@ -31,17 +31,18 @@ class js:
     def set_value(value: Union[str, int]) -> Command[Element]:
         def fn(element: Element):
             element.execute_script(
-                """return (function(element, text) {
-                    var maxlength = element.getAttribute('maxlength') === null
-                        ? -1
-                        : parseInt(element.getAttribute('maxlength'));
-                    element.value = maxlength === -1
+                """
+                var text = arguments[0];
+                var maxlength = element.getAttribute('maxlength') === null
+                    ? -1
+                    : parseInt(element.getAttribute('maxlength'));
+                element.value = maxlength === -1
+                    ? text
+                    : text.length <= maxlength
                         ? text
-                        : text.length <= maxlength
-                            ? text
-                            : text.substring(0, maxlength);
-                    return null;
-                })(arguments[0], arguments[1]);""",
+                        : text.substring(0, maxlength);
+                return null;
+                """,
                 str(value),
             )
 
@@ -51,19 +52,20 @@ class js:
     def type(keys: Union[str, int]) -> Command[Element]:
         def fn(element: Element):
             element.execute_script(
-                """return (function(element, textToAppend) {
-                    var value = element.value || '';
-                    var text = value + textToAppend;
-                    var maxlength = element.getAttribute('maxlength') === null
-                        ? -1
-                        : parseInt(element.getAttribute('maxlength'));
-                    element.value = maxlength === -1
+                """
+                textToAppend = arguments[0];
+                var value = element.value || '';
+                var text = value + textToAppend;
+                var maxlength = element.getAttribute('maxlength') === null
+                    ? -1
+                    : parseInt(element.getAttribute('maxlength'));
+                element.value = maxlength === -1
+                    ? text
+                    : text.length <= maxlength
                         ? text
-                        : text.length <= maxlength
-                            ? text
-                            : text.substring(0, maxlength);
-                    return null;
-                })(arguments[0], arguments[1]);""",
+                        : text.substring(0, maxlength);
+                return null;
+                """,
                 str(keys),
             )
 
@@ -71,50 +73,63 @@ class js:
 
     scroll_into_view = Command(
         'scroll into view',
-        lambda element: element.execute_script(
-            """return (function(element) {
-                element.scrollIntoView(true);
-            })(arguments[0]);"""
-        ),
+        lambda element: element.execute_script('element.scrollIntoView(true)'),
     )
 
     click = Command(
         'click',
-        lambda element: element.execute_script(
-            """return (function(element) {
-                element.click();
-            })(arguments[0]);"""
+        lambda element: element.execute_script('element.click()'),
+    )
+
+    clear_local_storage = Command(
+        'clear local storage',
+        lambda browser: browser.driver.execute_script(
+            'window.localStorage.clear()'
         ),
     )
 
-    # remove = Command(
-    #     'remove',
-    #     lambda element: element.execute_script(
-    #         """return (function(element) {
-    #             element.remove();
-    #         })(arguments[0]);"""
-    #     ),
-    # )
+    clear_session_storage = Command(
+        'clear local storage',
+        lambda browser: browser.driver.execute_script(
+            'window.sessionStorage.clear()'
+        ),
+    )
 
     remove = Command(
         'remove',
         lambda entity: (
-            entity._execute_script('element.remove()')
+            entity.execute_script('element.remove()')
             if not hasattr(entity, '__iter__')
             else [
-                element._execute_script('element.remove()')
+                element.execute_script('element.remove()')
                 for element in entity
             ]
         ),
     )
 
+    @staticmethod
+    def set_style_property(
+        name: str, value: Union[str, int]
+    ) -> Command[Element]:
+        return Command(
+            f'set element.style.{name}="{value}"',
+            lambda entity: (
+                entity.execute_script(f'element.style.{name}="{value}"')
+                if not hasattr(entity, '__iter__')
+                else [
+                    element.execute_script(f'element.style.{name}="{value}"')
+                    for element in entity
+                ]
+            ),
+        )
+
     set_style_display_to_none = Command(
         'set element.style.display="none"',
         lambda entity: (
-            entity._execute_script('element.style.display="none"')
+            entity.execute_script('element.style.display="none"')
             if not hasattr(entity, '__iter__')
             else [
-                element._execute_script('element.style.display="none"')
+                element.execute_script('element.style.display="none"')
                 for element in entity
             ]
         ),
@@ -123,10 +138,10 @@ class js:
     set_style_display_to_block = Command(
         'set element.style.display="block"',
         lambda entity: (
-            entity._execute_script('element.style.display="block"')
+            entity.execute_script('element.style.display="block"')
             if not hasattr(entity, '__iter__')
             else [
-                element._execute_script('element.style.display="block"')
+                element.execute_script('element.style.display="block"')
                 for element in entity
             ]
         ),
@@ -135,10 +150,10 @@ class js:
     set_style_visibility_to_hidden = Command(
         'set element.style.visibility="hidden"',
         lambda entity: (
-            entity._execute_script('element.style.visibility="hidden"')
+            entity.execute_script('element.style.visibility="hidden"')
             if not hasattr(entity, '__iter__')
             else [
-                element._execute_script('element.style.visibility="hidden"')
+                element.execute_script('element.style.visibility="hidden"')
                 for element in entity
             ]
         ),
@@ -147,10 +162,10 @@ class js:
     set_style_visibility_to_visible = Command(
         'set element.style.visibility="visible"',
         lambda entity: (
-            entity._execute_script('element.style.visibility="visible"')
+            entity.execute_script('element.style.visibility="visible"')
             if not hasattr(entity, '__iter__')
             else [
-                element._execute_script('element.style.visibility="visible"')
+                element.execute_script('element.style.visibility="visible"')
                 for element in entity
             ]
         ),

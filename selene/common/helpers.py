@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 import warnings
-from typing import Union, Tuple, List, Type
+from typing import Union, Tuple, List, Type, Iterable, Any
 
 from dataclasses import dataclass
 from selenium.webdriver.common.by import By
@@ -58,13 +58,17 @@ def to_by(selector_or_by: Union[str, tuple]) -> Tuple[str, str]:
     )
 
 
-def flatten(list_of_lists: List[list]) -> list:
+def flatten(collection: Iterable[Union[Iterable[Any], Any]]) -> Iterable[Any]:
     # todo: consider adding skip_none=False option
-    return [
-        item
-        for sublist in list_of_lists
-        for item in (sublist if isinstance(sublist, list) else [sublist])
-    ]
+    return tuple(  # TODO: refactor to return tuple
+        item_or_inner
+        for item in collection
+        for item_or_inner in (
+            item
+            if (isinstance(item, Iterable) and not isinstance(item, str))
+            else [item]
+        )
+    )
 
 
 def dissoc(associated: dict, *keys: str) -> dict:

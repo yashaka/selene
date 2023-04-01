@@ -25,6 +25,8 @@ from __future__ import annotations
 from selene.support.shared.browser import SharedBrowser
 from selene.support.shared.config import SharedConfig
 
-config = SharedConfig()
+from selene import _managed
 
-browser = SharedBrowser(config)
+
+config = _managed.config
+browser = _managed.browser

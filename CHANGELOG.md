@@ -76,13 +76,461 @@
 - deprecate `be.present`
 - repeat fix of #225 to other options in shared config, refactor it... 
   - should we make original config (not shared) mutable?
-- TODO: support python 3.10 [#393](https://github.com/yashaka/selene/issues/393)
 
-## 2.0.0b9 (to be released on xx.09.2022)
-- TODO: trim text in have.exact_text
+- TODO: config.location_strategy
+- TODO: this test should work:
+- 
+```python
+from selene import browser, have
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service as ChromeService
+from webdriver_manager.chrome import ChromeDriverManager
+
+def test_todos_storage_is_not_shared_between_browsers():
+    browser1 = browser.with_(driver=webdriver.Chrome(service=ChromeService(ChromeDriverManager().install())))
+    browser1.open('https://todomvc.com/examples/emberjs/')
+    browser.element('#new-todo').type('a').press_enter()
+    browser.element('#new-todo').type('b').press_enter()
+    browser.element('#new-todo').type('c').press_enter()
+    browser.all('#todo-list>li').should(have.exact_texts('a', 'b', 'c'))
+
+    browser2 = browser.with_(driver=webdriver.Chrome(service=ChromeService(ChromeDriverManager().install())))
+    browser2.open('https://todomvc.com/examples/emberjs/')
+    browser.element('#new-todo').type('d').press_enter()
+
+    browser.all('#todo-list>li').should(have.exact_texts('d'))
+
+```
+
+TODO:
+- deprecate js_returned in favor of script_returned
+
+## 2.0.0rc1 (to be released on ?.10.2022)
+
+### Changes
+
+- any driver instance passed to `browser.config.driver` will be automatically quit at exit, unless `browser.config.hold_driver_at_exit = True`, that is `False` by default
+
+### New
+
+#### `from selene import browser`
+
+– to be used instead of `from selene.support.shared import browser`. 
+
+No difference between Config and SharedConfig anymore. The new, completely refactored, Config is now used everywhere and allows to customize browser instance in a more convenient way.
+
+Adds ability to use `browser.with_(**config_options_to_override)` to create new browser instance, for example: 
+     
+```python
+from selene import browser
+
+chrome = browser
+firefox = browser.with_(name='firefox')
+edge = browser.with_(name='edge')
+...
+# customizing all browsers at once:
+browser.config.timeout = 10
+```
+  
+as alternative to:
+    
+```python
+from selene import Browser, Config
+
+chrome = Browser(Config())
+firefox = Browser(Config(name='firefox'))
+edge = Browser(Config(name='edge'))
+
+...
+
+# customizing all browsers:
+chrome.config.timeout = 10
+firefox.config.timeout = 10
+edge.config.timeout = 10
+```
+
+### Other
+- deprecated 
+  - match.browser_has_js_returned in favor of match.browser_has_script_returned
+  - have.js_returned in favor of have.script_returned
+  - have.js_returned_true(...) in favor of have.script_returned(True, ...)
+  - shared.browser.config.get_or_create_driver
+  - shared.browser.config.reset_driver
+    - use `selene.browser.config.driver = ...`
+- removed deprecated 
+  - shared.browser.config.desired_capabilities
+  - shared.browser.config.start_maximized
+  - shared.browser.config.start_maximized
+  - shared.browser.config.cash_elements
+  - shared.browser.config.quit_driver
+  - shared.browser.latest_page_source
+  - shared.browser.quit_driver
+  - shared.browser.set_driver
+  - shared.browser.open_url
+  - shared.browser.elements
+  - shared.browser.wait_to
+  - shared.browser.title
+  - shared.browser.take_screenshot
+  - jquery_style_selectors
+- removed not deprecated
+  - shared.browser.config.Source
+    - renamed to shared.browser.config._Source. 
+      Currently, is used nowhere in Selene
+  - shared.browser.config.set_driver (getter and setter)
+  - shared.browser.config.counter
+    - use shared.browser.config._counter instead, and better – not use it;)
+  - shared.browser.config.generate_filename
+    - use shared.browser.config._generate_filename instead, and better – not use it;)
+
+## 2.0.0b15-b17
+
+### Dependencies
+- update selenium (with weakened dependency to >=4.4.3)
+- update webdriver_manager (with weakened dependency to >=3.8.5)
+
+## 2.0.0b14 (released on 06.10.2022)
+
+### NEW
+
+#### command.js.set_style_property(name, value)
+
+```python
+from selene.support.shared import browser
+from selene import command
+
+# calling on element
+overlay = browser.element('#overlay')
+overlay.perform(command.js.set_style_property('display', 'none'))
+
+# can be also called on collection of elements:
+ads = browser.all('[id^=google_ads][id$=container__]')
+ads.perform(command.js.set_style_property('display', 'none'))
+```
 
 
-## 2.0.0b8 (to be released on 05.09.2022)
+#### added conditions: `have.values` and `have.values_containing`
+
+#### all conditions like `have.texts` & `have.exact_texts` – flatten passed lists of texts
+
+This allows to pass args as lists (even nested) not just as varagrs. 
+
+```python
+from selene.support.shared import browser
+from selene import have
+
+"""
+# GIVEN html page with:
+<table>
+  <tr class="row">
+    <td class="cell">A1</td><td class="cell">A2</td>
+  </tr>
+  <tr class="row">
+    <td class="cell">B1</td><td class="cell">B2</td>
+  </tr>
+</table>
+"""
+
+browser.all('.cell').should(
+    have.exact_texts('A1', 'A2', 'B1', 'B2')
+)
+
+browser.all('.cell').should(
+    have.exact_texts(['A1', 'A2', 'B1', 'B2'])
+)
+
+browser.all('.cell').should(
+    have.exact_texts(('A1', 'A2', 'B1', 'B2'))
+)
+
+browser.all('.cell').should(
+    have.exact_texts(
+        ('A1', 'A2'),
+        ('B1', 'B2'),
+    )
+)
+```
+
+#### removed trimming text on conditions like have.exact_text, have.texts, etc.
+
+because all string normalization is already done by Selenium Webdriver.
+
+##### but added query.text_content to give access to raw element text without space normalization
+
+## 2.0.0b13 (released on 04.10.2022)
+
+### NEW
+
+### have.text, have.exact_text, have.texts and have.exact_texts strip/trim text when matching
+
+#### config.window_width and config.window_height can be set separately
+
+Now, you can set only one axis dimension for the browser, and it will change it on `browser.open`. Before it would change browser window size only if both width and height were set;)
+
+#### access to self.locate() as `element` or `self` from the script passed to element.execute_script(script_on_self, *arguments)
+
+Examples: 
+
+```python
+from selene.support.shared import browser
+
+browser.element('[id^=google_ads]').execute_script('element.remove()')
+# OR
+browser.element('[id^=google_ads]').execute_script('self.remove()')
+'''
+# are shortcuts to
+browser.execute_script('arguments[0].remove()', browser.element('[id^=google_ads]')())
+'''
+
+browser.element('input').execute_script('element.value=arguments[0]', 'new value')
+# OR
+browser.element('input').execute_script('self.value=arguments[0]', 'new value')
+'''
+# are shortcuts to
+browser.execute_script('arguments[0].value=arguments[1]', browser.element('input').locate(), 'new value')
+'''
+```
+
+#### `collection.second` shortcut to `collection[1]`
+
+#### `element.locate() -> WebElement`, `collection.locate() -> List[WebElement]` [#284](https://github.com/yashaka/selene/issues/284)
+
+... as more human-readable aliases to element() and collection() correspondingly
+
+#### `entity.__raw__`
+
+It's a «dangled» property and so consider it an experimental/private feature. 
+For element and collection – it's same as `.locate()`.
+For `browser` it's same as `.driver` ;)
+
+Read more on it at this [comment to #284](https://github.com/yashaka/selene/issues/284#issuecomment-1265619606)
+
+... as aliases to element(), collection() correspondingly
+
+### NEW: DEPRECATED: 
+
+#### element._execute_script(script_on_self, *args)
+
+... in favor of .execute_script(script_on_self, *arguments) that uses access to arguments (NOT args!) in the script.
+
+#### collection.filtered_by(condition) in favor of collection.by(condition)
+
+#### browser.close_current_tab()
+
+Deprecated because the «tab» term is not relevant for mobile context. 
+Use a `browser.close()` or `browser.driver.close()` instead.
+
+The deprecation mark was removed from the `browser.close()` correspondingly.
+
+#### `browser.clear_session_storage()` and `browser.clear_local_storage()`
+
+Deprecated because of js nature and not-relevance for mobile context;
+Use `browser.perform(command.js.clear_session_storage)` and `browser.perform(command.js.clear_local_storage)` instead
+
+### NEW: BREAKING CHANGES
+
+#### arguments inside script passed to element.execute_script(script_on_self, *arguments) starts from 0
+
+```python
+from selene.support.shared import browser
+
+# before this version ...
+browser.element('input').execute_script('arguments[0].value=arguments[1]', 'new value')
+# NOW:
+browser.element('input').execute_script('element.value=arguments[0]', 'new value')
+```
+
+#### removed earlier deprecated 
+
+- `browser.elements(selector)` in favor of `browser.all(selector)`
+- `browser.ss(selector)` in favor of `browser.all(selector)`
+- `browser.s(selector)` in favor of `browser.element(selector)`
+- `element.get_actual_webelement()` in favor of `element.locate()`
+- `collection.get_actual_webelements()` in favor of `collection.locate()`
+
+#### renamed collection.filtered_by_their(selector, condition) to collection.by_their(selector, condition) 
+
+#### removed collection.should_each ... [#277](https://github.com/yashaka/selene/issues/277)
+
+- ... and ability to pass element_condition to `collection.should(HERE)`
+- Use instead: `collection.should(element_condition.each)`
+  - like in `browser.all('.selene-user').should(hava.css_class('cool').each)`
+
+## 2.0.0b12 (released on 26.09.2022)
+
+### NEW: collection.should(condition.each) [#277](https://github.com/yashaka/selene/issues/277)
+
+The older style is totally **deprecated** now:
+- Instead of:
+  - `collection.should(element_condition)` and `collection.should_each(element_condition)`
+- Use:
+  - `collection.should(element_condition.each)`
+  - see more examples at [tests/integration/condition_each_test.py](https://github.com/yashaka/selene/tree/master/tests/integration/condition_each_test.py)
+
+### NEW: BREAKING CHANGE: removed SeleneElement, SeleneCollection, SeleneDriver
+
+use instead:
+
+```python
+import selene
+
+element: selene.Element = ...
+collection: selene.Collection = ...
+browser: selene.Browser = ...
+```
+
+or:
+
+```python
+from selene import Element, Collection, Browser
+
+element: Element = ...
+collection: Collection = ...
+browser: Browser = ...
+```
+
+## 2.0.0b11 (released on 24.09.2022)
+
+### NEW: upgraded selenium to 4.4.3 & webdriver-manager to 3.8.3
+
+### BREAKING CHANGE: removed 'opera' support for shared.browser.config.browser_name
+
+see reasons at:
+- [Selenium Changelog for 4.3.0](https://github.com/SeleniumHQ/selenium/blob/31190f8edd801a2ead8ba3d49982cbdbc838885d/py/CHANGES#L22)
+- [[🐛 Bug]: Opera Browser in Selenium 4 Usage](https://github.com/SeleniumHQ/selenium/issues/10835)
+
+## 2.0.0b10 (released on 14.09.2022)
+
+### NEW: BREAKING CHANGE: removed deprecated selene.core.entity.Collection.:
+
+- `caching(self)` in favor of `cashed(self)`
+- `all_by(self, condition) -> Collection` in favor of `by(conditioin)`
+- `filter_by(self, condition) -> Collection` in favor of `by(condition)`
+- `find_by(self, condition) -> Element`
+- `size(self) -> int` in favor of `__len__(self)`
+
+## 2.0.0b9 (released on 14.09.2022)
+
+### NEW: `browser.all(selector).by(condition)` to filter collection
+
+```python
+from selene.support.shared import browser
+from selene import have
+
+browser.open('https://todomvc.com/examples/emberjs/')
+browser.element('#new-todo').type('a').press_enter()
+browser.element('#new-todo').type('b').press_enter()
+browser.element('#new-todo').type('c').press_enter()
+
+browser.all('#todo-list>li').by(have.text('b')).first.element('.toggle').click()
+
+browser.all('#todo-list>li').by(have.css_class('active')).should(have.texts('a', 'c'))
+browser.all('#todo-list>li').by(have.no.css_class('active')).should(have.texts('b'))
+```
+
+Hence, considering to deprecate:
+- `collection.filtered_by(condition)` in favor of `collection.by(condition)`
+- `collection.element_by(condition)` in favor of `collection.by(condition).first`
+
+### NEW: `collection.even` and `collection.odd` shortcuts
+
+```python
+from selene.support.shared import browser
+from selene import have
+
+browser.open('https://todomvc.com/examples/emberjs/')
+
+browser.element('#new-todo').type('1').press_enter()
+browser.element('#new-todo').type('2').press_enter()
+browser.element('#new-todo').type('3').press_enter()
+
+browser.all('#todo-list>li').even.should(have.texts('2'))
+browser.all('#todo-list>li').odd.should(have.texts('1', '3'))
+```
+
+### NEW: defaults for all params of `collection.sliced(start, stop, step)`
+
+Now you can achieve more readable `collection.sliced(step=2)` instead of awkward `collection.sliced(None, None, 2)`
+
+Remember that you still can use less readable but more concise `collection[::2]` ;)
+
+### DEPRECATED:
+
+- selene.core.entity.SeleneElement
+  - you can use selene.core.entity.Element
+- selene.core.entity.SeleneCollection
+  - you can use selene.core.entity.Collection
+- selene.core.entity.SeleneDriver
+  - you can use selene.core.entity.Browser
+
+### NEW: BREAKING CHANGE: removed deprecated
+
+- selene.browser module
+- selene.browsers module
+- selene.bys module
+- selene.driver module
+- selene.wait module
+- selene.elements module
+- selene.core.entity.Browser:
+  - .quit_driver(self) in favor of .quit(self)
+  - .wrap(self, webdriver) in favor of Browser(Config(driver=webdriver))
+  - .find(self, css_or_xpath_or_by: Union[str, tuple]) -> Element:
+    - in favor of .element(self, selector) -> Element
+  - .find_all(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection:
+    - in favor of .all(self, selector) -> Collection
+  - .find_elements in favor of browser.driver.find_elements
+  - .find_element in favor of browser.driver.find_element
+- selene.core.entity.Collection:
+  - .should(self, condition, timeout)
+    - in favor of selene.core.entity.Collection.should(self, condition)
+      with ability to customize timeout via collection.with_(timeout=...).should(condition)
+  - .should_each(self, condition, timeout)
+    - in favor of selene.core.entity.Collection.should_each(self, condition)
+      with ability to customize timeout via collection.with_(timeout=...).should_each(condition)
+  - .assure*(self, condition) -> Collection
+  - .should_*(self, condition) -> Collection
+- selene.core.entity.Element:
+  - .should(self, condition, timeout)
+    - in favor of selene.core.entity.Element.should(self, condition)
+      with ability to customize timeout via element.with_(timeout=...).should(condition)
+  - .assure*(self, condition) -> Element
+  - .should_*(self, condition) -> Element
+  - .caching(self)
+  - .find(self, css_or_xpath_or_by: Union[str, tuple]) -> Element
+  - .find_all(self, css_or_xpath_or_by: Union[str, tuple]) -> Collection
+  - .parent_element(self) -> Element
+    - use .element('..') instead
+  - .following_sibling(self) -> Element
+    - use .element('./following-sibling::*') instead
+  - .first_child(self) -> Element
+    - use .element('./*[1]')) instead
+  - .scroll_to(self) -> Element
+    - use .perform(command.js.scroll_into_view) instead
+  - .press_down(self) -> Element
+    - use .press(Keys.ARROW_DOWN) instead
+  - .find_element(self, by, value)
+  - .find_elements(self, by, value)
+  - .tag_name(self)
+  - .text(self)
+  - .attribute(self, name)
+  - .js_property(self, name)
+  - .value_of_css_property(self, name)
+  - .get_attribute(self, name)
+  - .get_property(self, name)
+  - .is_selected(self)
+  - .is_enabled(self)
+  - .is_displayed(self)
+  - .location(self)
+  - .location_once_scrolled_into_view(self)
+  - .size(self)
+  - .rect(self)
+  - .screenshot_as_base64(self)
+  - .screenshot_as_png(self)
+  - .screenshot(self, filename)
+  - .parent(self)
+  - .id(self)
+
+
+## 2.0.0b8 (released on 05.09.2022)
 
 ### NEW: `selene.support._logging.wait_with(context, translations)`
 

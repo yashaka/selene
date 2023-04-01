@@ -70,12 +70,11 @@ class Command(Query[T, None]):
 
 # todo: provide sexy fluent implementation via builder, i.e. Wait.the(element).atMost(3).orFailWith(hook)
 class Wait(Generic[E]):
-
     # todo: provide the smallest possible timeout default, something like 1ms
     def __init__(
         self,
         entity: E,
-        at_most: int,
+        at_most: float,
         or_fail_with: Optional[Callable[[TimeoutException], Exception]] = None,
         _decorator: Callable[
             [Wait[E]], Callable[[fp.T], fp.T]
@@ -95,13 +94,12 @@ class Wait(Generic[E]):
         )
         return self.entity
 
-    def at_most(self, timeout: int) -> Wait[E]:
+    def at_most(self, timeout: float) -> Wait[E]:
         return Wait(self.entity, timeout, self._hook_failure)
 
     def or_fail_with(
         self, hook_failure: Optional[Callable[[TimeoutException], Exception]]
     ) -> Wait[E]:
-
         return Wait(self.entity, self._timeout, hook_failure)
 
     @property
@@ -122,7 +120,6 @@ class Wait(Generic[E]):
                     return fn(self.entity)
                 except Exception as reason:
                     if time.time() > finish_time:
-
                         reason_message = str(reason)
 
                         reason_string = '{name}: {message}'.format(

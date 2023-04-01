@@ -1,7 +1,9 @@
 import pytest
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.firefox.service import Service as FirefoxService
 from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.core.utils import ChromeType
 
 from selene import Config, Browser
@@ -17,12 +19,21 @@ def chrome_driver(request):
         )
     else:
         chrome_driver = webdriver.Chrome(
-            service=Service(
+            service=ChromeService(
                 ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install()
             )
         )
     yield chrome_driver
     chrome_driver.quit()
+
+
+@pytest.fixture(scope='session')
+def firefox_driver(request):
+    gecko_driver = webdriver.Firefox(
+        service=FirefoxService(GeckoDriverManager().install())
+    )
+    yield gecko_driver
+    gecko_driver.quit()
 
 
 @pytest.fixture(scope='function')
@@ -39,7 +50,7 @@ def function_browser(request):
         )
     else:
         chrome_driver = webdriver.Chrome(
-            service=Service(
+            service=ChromeService(
                 ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install()
             )
         )
