@@ -39,6 +39,7 @@ packages = [
 	{include = "selene/support"},
 	{include = "selene/support/shared"},
 	{include = "selene/support/conditions"},
+	{include = "selene/py.typed"}
 ]
 
 [tool.poetry.urls]
@@ -58,6 +59,7 @@ pylint = "^2.7.2"
 pytest = "*"
 pytest-cov = "*"
 codecov = "*"
+mypy = "*"
 
 [tool.poetry.group.docs]
 optional = true
@@ -72,6 +74,9 @@ mkdocs-git-revision-date-localized-plugin = "^1.2.0"
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.mypy]
+color_output=1
 
 [tool.black]
 line-length = 79

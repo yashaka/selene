@@ -85,3 +85,16 @@ jobs:
           touch __init__.py
           pylint $(pwd) --disable="" --ignore-patterns=.venv --exit-zero
           rm __init__.py
+
+  Mypy:
+    name: Mypy
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.7'
+      - name: Mypy
+        run: |
+          pip install mypy
+          .run/lint_mypy.sh
