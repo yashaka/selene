@@ -345,6 +345,9 @@ class Test__dataclass:
         self,
     ):  # TODO: break this test into atomic ones
         class AllStringsToUpperDescriptor:
+            def __init__(self):
+                self.name = None
+
             def __set_name__(self, owner, name):
                 if getattr(self, name, None) is None:
                     self.name = name
@@ -401,6 +404,9 @@ class Test__dataclass:
         self,
     ):  # TODO: break this test into atomic ones
         class AllStringsToUpperDescriptor:
+            def __init__(self):
+                self.name = None
+
             def __set_name__(self, owner, name):
                 if getattr(self, name, None) is None:
                     self.name = name

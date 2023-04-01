@@ -23,6 +23,8 @@ from selene import browser, by, have
 
 
 def test_search():
+    browser.config.name = 'firefox'
+    browser.config.hold_driver_at_exit = True
     browser.open('https://www.ecosia.org/')
     browser.element(by.name('q')).type(
         'github yashaka selene python'

@@ -40,7 +40,7 @@ class Settings:
 @pytest.fixture(scope='module')
 def web():
     class CustomlyManagedDriverDescriptor:
-        def __get__(self):
+        def __get__(self, instance, owner):
             from selenium import webdriver
 
             def create_chrome():

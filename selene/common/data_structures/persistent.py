@@ -68,7 +68,7 @@ class Boxed:
                         if default:
                             setattr(instance, self.name, Box(default))
                             return
-                    except:
+                    except Exception:
                         pass
                 raise TypeError(
                     f"__init__() missing required argument to be stored as: '{value.name}'"
@@ -135,8 +135,8 @@ class Field:
         return f'_type_of_{self.name}'
 
     @staticmethod
-    def from_(cls, name: str, type_: type):
-        default = getattr(cls, name, MISSING)
+    def from_(class_, name: str, type_: type):
+        default = getattr(class_, name, MISSING)
         if isinstance(default, Field):
             # supporting attributes with default as field() instance
             a_field = default
@@ -164,10 +164,10 @@ class Field:
         return a_field
 
     @staticmethod
-    def s_from(cls):
+    def s_from(class_):
         return [
-            Field.from_(cls, name, type_)
-            for name, type_ in getattr(cls, '__annotations__', {}).items()
+            Field.from_(class_, name, type_)
+            for name, type_ in getattr(class_, '__annotations__', {}).items()
         ]
 
     @staticmethod
@@ -277,11 +277,12 @@ def dataclass(cls):
                 ]
             )
             or '  pass',
-            f' return __init__',
+            ' return __init__',
         ]
     )
 
     namespace = {}
+    # pylint: disable=exec-used
     exec(wrapper_fn, None, namespace)
 
     init_fn = namespace['wrapper'](**locals_)

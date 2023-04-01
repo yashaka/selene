@@ -271,7 +271,7 @@ skip-string-normalization = 1
 	max-parents=7
 	max-public-methods=20
 	max-returns=6
-	max-statementts=50
+	max-statements=80
 	min-public-methods=2
 
 	[tool.pylint.'EXCEPTIONS']

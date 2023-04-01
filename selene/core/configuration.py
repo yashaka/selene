@@ -141,6 +141,7 @@ def _build_local_driver_by_name_or_remote_by_url(
 class ManagedDriverDescriptor:
     def __init__(self, *, default: Optional[WebDriver] = ...):
         self.default = default
+        self.name = None
 
     def __set_name__(self, owner, name):
         self.name = name
@@ -267,7 +268,7 @@ class Config:
     The driver built with this factory will be available via `config.driver`.
     Hence, you can't use `config.driver` directly inside this factory,
     because it may lead to recursion.
-    
+
     The default factory builds:
     * either a local driver by value specified in `config.browser_name`
     * or remote driver by value specified in `config.remote_url`.
@@ -327,7 +328,7 @@ class Config:
     Desired name of the driver to be processed by Selene's default config.driver_factory.
     It is ignored by default `config.driver_factory` if `config.remote_url` is set.
 
-    GIVEN set to any of: 'chrome', 'firefox', 'edge', 
+    GIVEN set to any of: 'chrome', 'firefox', 'edge',
     AND config.driver is left unset (default value is ...),
     THEN default config.driver_factory will automatically install drivers
     AND build webdriver instance for you
@@ -337,27 +338,27 @@ class Config:
     # TODO: finalize the name of this option and consider making public
     _deep_copy_implicitly_driver_with_name: bool = True
     """
-    Controls whether driver will be deep copied with config.name 
+    Controls whether driver will be deep copied with config.name
     when customizing config via `config.with_(**options)`.
-    
+
     Examples:
         Building 2 drivers with implicit deep copy of driver storage:
-    
+
         >>> chrome_config = Config(
-        >>>     name='chrome', 
-        >>>     timeout=10.0, 
+        >>>     name='chrome',
+        >>>     timeout=10.0,
         >>>     base_url='https://autotest.how',
         >>> )
         >>> chrome = chrome_config.driver
         >>> firefox_config = chrome_config.with_(name='firefox')
         >>> firefox = firefox_config.driver
         >>> assert firefox is not chrome
-    
+
         Building 2 drivers with explicit deep copy of driver storage [1]:
-    
+
         >>> chrome_config = Config(
-        >>>     name='chrome', 
-        >>>     timeout=10.0, 
+        >>>     name='chrome',
+        >>>     timeout=10.0,
         >>>     base_url='https://autotest.how',
         >>>     _deep_copy_implicitly_driver_with_name=False,
         >>> )
@@ -365,12 +366,12 @@ class Config:
         >>> firefox_config = chrome_config.with_(name='firefox', driver=...)
         >>> firefox = firefox_config.driver
         >>> assert firefox is not chrome
-    
+
         Building 2 drivers with explicit deep copy of driver storage [2]:
-    
+
         >>> chrome_config = Config(
-        >>>     name='chrome', 
-        >>>     timeout=10.0, 
+        >>>     name='chrome',
+        >>>     timeout=10.0,
         >>>     base_url='https://autotest.how',
         >>> )
         >>> chrome_config._deep_copy_implicitly_driver_with_name = False
@@ -378,12 +379,12 @@ class Config:
         >>> firefox_config = chrome_config.with_(name='firefox', driver=...)
         >>> firefox = firefox_config.driver
         >>> assert firefox is not chrome
-    
+
         Building 1 driver because driver storage was not copied:
-    
+
         >>> chrome_config = Config(
-        >>>     name='chrome', 
-        >>>     timeout=10.0, 
+        >>>     name='chrome',
+        >>>     timeout=10.0,
         >>>     base_url='https://autotest.how',
         >>> )
         >>> chrome_config._deep_copy_implicitly_driver_with_name = False
@@ -391,7 +392,6 @@ class Config:
         >>> firefox_config = chrome_config.with_(name='firefox')
         >>> firefox = firefox_config.driver
         >>> assert firefox is chrome  # o_O ;)
-        
     """
 
     # TODO: consider to deprecate because might confuse in case of Appium usage
@@ -409,7 +409,13 @@ class Config:
     # """Controls whether driver will be automatically quit at reset of config.driver"""
 
     hold_driver_at_exit: bool = False
-    """Controls whether driver will be automatically quit at process exit or not."""
+    """
+    Controls whether driver will be automatically quit at process exit or not.
+
+    Will not take much effect for 4.5.0 < selenium versions <= 4.8.3 < ?.?.?,
+    Because for some reason, Selenium of such versions kills driver by himself,
+    regardless of what Selene thinks about it:D
+    """
 
     # TODO: deprecate
     @property
@@ -443,10 +449,10 @@ class Config:
     driver: WebDriver = ManagedDriverDescriptor(default=...)
     """
     A driver instance with lifecycle managed by this config special options
-    (TODO: specify these options...), 
+    (TODO: specify these options...),
     depending on their values and customization of this attribute.
 
-    GIVEN unset, i.e. equals to default `...`, 
+    GIVEN unset, i.e. equals to default `...`,
     WHEN accessed first time (e.g. via config.driver)
     THEN it will be set to the instance built by `config.driver_factory`.
 
@@ -455,13 +461,13 @@ class Config:
     THEN it will be reused at it is on any next access
     WHEN reset to `...`
     THEN will be rebuilt by `config.driver_factory`
-    
+
     GIVEN set manually to a callable that returns WebDriver instance
           (currently marked with FutureWarning, so might be deprecated)
     WHEN accessed fist time
     AND any next time
     THEN will call the callable and return the result
-    
+
     GIVEN unset or set manually to not callable
     AND `config.hold_driver_at_exit` is set to `False` (that is default)
     WHEN the process exits
