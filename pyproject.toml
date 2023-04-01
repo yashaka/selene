@@ -37,6 +37,7 @@ packages = [
 	{include = "selene/support"},
 	{include = "selene/support/shared"},
 	{include = "selene/support/conditions"},
+	{include = "selene/py.typed"}
 ]
 
 [tool.poetry.dependencies]
