@@ -45,6 +45,8 @@ from selene.common.helpers import to_by, flatten, is_absolute_url
 from selene.core.exceptions import TimeoutException, _SeleneError
 from selene.support.webdriver import WebHelper
 
+# type: ignore
+
 E = TypeVar('E', bound='Assertable')
 R = TypeVar('R')
 
@@ -139,7 +141,7 @@ class WaitingEntity(Matchable[E], Configured):
         return condition.predicate(typing.cast(E, self))
 
 
-class Element(WaitingEntity):
+class Element(WaitingEntity['Element']):
     @staticmethod
     def _log_webelement_outer_html_for(
         element: Element,
@@ -615,7 +617,7 @@ class Element(WaitingEntity):
         return self.all(css_or_xpath_or_by)
 
 
-class Collection(WaitingEntity, Iterable[Element]):
+class Collection(WaitingEntity['Collection'], Iterable[Element]):
     def __init__(
         self, locator: Locator[typing.Collection[WebElement]], config: Config
     ):
@@ -1096,7 +1098,7 @@ class Collection(WaitingEntity, Iterable[Element]):
         return self
 
 
-class Browser(WaitingEntity):
+class Browser(WaitingEntity['Browser']):
     def __init__(self, config: Optional[Config] = None):
         config = Config() if config is None else config
         super().__init__(config)
