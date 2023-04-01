@@ -21,10 +21,6 @@
 # SOFTWARE.
 
 from __future__ import annotations
-
-from selene.support.shared.browser import SharedBrowser
-from selene.support.shared.config import SharedConfig
-
 from selene import _managed
 
 

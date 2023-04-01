@@ -22,7 +22,7 @@
 from typing import Union
 
 from selene.core.entity import Element, Collection
-from selene.support.shared import browser
+from selene import browser
 
 
 def s(css_or_xpath_or_by: Union[str, tuple]) -> Element:

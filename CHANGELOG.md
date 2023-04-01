@@ -165,6 +165,8 @@ edge.config.timeout = 10
   - shared.browser.config.get_or_create_driver
   - shared.browser.config.reset_driver
     - use `selene.browser.config.driver = ...`
+- removed
+  - from selene.support.shared import SharedConfig, SharedBrowser
 - removed deprecated 
   - shared.browser.config.desired_capabilities
   - shared.browser.config.start_maximized
