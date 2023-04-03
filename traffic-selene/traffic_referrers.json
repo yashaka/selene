@@ -1,23 +1,23 @@
 [
   {
     "referrer": "Google",
-    "count": 423,
-    "uniques": 138
+    "count": 384,
+    "uniques": 136
   },
   {
     "referrer": "github.com",
-    "count": 131,
-    "uniques": 51
-  },
-  {
-    "referrer": "yandex.ru",
-    "count": 80,
-    "uniques": 17
+    "count": 198,
+    "uniques": 49
   },
   {
     "referrer": "ecosia.org",
-    "count": 36,
-    "uniques": 20
+    "count": 79,
+    "uniques": 45
+  },
+  {
+    "referrer": "yandex.ru",
+    "count": 43,
+    "uniques": 18
   },
   {
     "referrer": "yashaka.github.io",
@@ -46,7 +46,7 @@
   },
   {
     "referrer": "pypi.org",
-    "count": 6,
-    "uniques": 3
+    "count": 5,
+    "uniques": 2
   }
 ]
