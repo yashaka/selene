@@ -2,37 +2,25 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 489,
-    "uniques": 280
+    "count": 492,
+    "uniques": 274
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 58,
+    "count": 57,
     "uniques": 20
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 26,
-    "uniques": 13
+    "count": 27,
+    "uniques": 14
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 20,
-    "uniques": 10
-  },
-  {
-    "path": "/yashaka/selene/issues/188",
-    "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
-    "count": 17,
-    "uniques": 14
-  },
-  {
-    "path": "/yashaka/selene/tree/master/examples",
-    "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 17,
+    "count": 23,
     "uniques": 10
   },
   {
@@ -42,21 +30,33 @@
     "uniques": 6
   },
   {
+    "path": "/yashaka/selene/issues/188",
+    "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
+    "count": 15,
+    "uniques": 13
+  },
+  {
     "path": "/yashaka/selene/issues/287",
     "title": "from selenium to selene · Issue #287 · yashaka/selene · GitHub",
     "count": 15,
     "uniques": 10
   },
   {
-    "path": "/yashaka/selene/tree/master/tests",
-    "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 13,
-    "uniques": 12
+    "path": "/yashaka/selene/tree/master/examples",
+    "title": "selene/examples at master · yashaka/selene · GitHub",
+    "count": 15,
+    "uniques": 9
   },
   {
     "path": "/yashaka/selene/pull/431",
     "title": "Add type checker [Mypy] by aleksandr-kotlyar · Pull Request #431 · yashaka/se...",
+    "count": 15,
+    "uniques": 2
+  },
+  {
+    "path": "/yashaka/selene/tree/master/tests",
+    "title": "selene/tests at master · yashaka/selene · GitHub",
     "count": 13,
-    "uniques": 1
+    "uniques": 12
   }
 ]
