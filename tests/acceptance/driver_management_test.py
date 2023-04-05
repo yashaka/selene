@@ -1,7 +1,7 @@
-import pytest
 import atexit
+import pytest
 
-from urllib3.exceptions import MaxRetryError
+from urllib3.exceptions import MaxRetryError  # type: ignore
 
 import selene
 from selene.common.data_structures import persistent
@@ -12,7 +12,7 @@ empty_page = resources.url('empty.html')
 
 @pytest.fixture(scope='function')
 def with_process_exit_teardown():
-    ...
+    # ...
 
     yield
 
@@ -22,8 +22,8 @@ def with_process_exit_teardown():
 @pytest.fixture(scope='function')
 def manual_driver():
     from selenium import webdriver
-    from selenium.webdriver.chrome.service import Service
-    from webdriver_manager.chrome import ChromeDriverManager
+    from selenium.webdriver.chrome.service import Service  # type: ignore
+    from webdriver_manager.chrome import ChromeDriverManager  # type: ignore
     from webdriver_manager.core.utils import ChromeType
 
     manual_driver = webdriver.Chrome(

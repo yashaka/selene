@@ -170,12 +170,12 @@ class ManagedDriverDescriptor:
 
         value = driver_box.value
         if callable(value):
-            warnings.warn(
-                'Providing driver as callable might be deprecated in future. '
-                'Consider customizing driver management '
-                'via other config.* options',
-                FutureWarning,
-            )
+            # warnings.warn(
+            #     'Providing driver as callable might be deprecated in future. '
+            #     'Consider customizing driver management '
+            #     'via other config.* options',
+            #     FutureWarning,
+            # )
             return value()
 
         return value
@@ -484,12 +484,6 @@ class Config:
     THEN driver will be quit.
     """
 
-    def __post_init__(self):
-        # TODO: consider making private
-        # TODO: do we even need them at __post_init__?
-        self.last_screenshot: Optional[str] = None  # type: ignore
-        self.last_page_source: Optional[str] = None  # type: ignore
-
     base_url: str = ''
     window_width: Optional[int] = None
     window_height: Optional[int] = None
@@ -536,13 +530,20 @@ class Config:
     )
     save_screenshot_on_failure: bool = True
     save_page_source_on_failure: bool = True
+    # TODO: consider making public
     _counter: itertools.count = itertools.count(
         start=int(round(time.time() * 1000))
     )
+    # TODO: add stubs?
+    last_screenshot: Optional[str] = None
+    last_page_source: Optional[str] = None
     """
     A counter, currently used for incrementing screenshot names
     """
 
+    # TODO: consider adding option to disable persistence of all not-overridden options
+    #       or marking some of them as not persistent
+    #       (i.e. unbind some of them keeping the previous value set)
     def with_(self, **config_as_kwargs) -> Config:
         """
 

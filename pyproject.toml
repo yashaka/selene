@@ -77,6 +77,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.mypy]
 disable_error_code = 'annotation-unchecked'
+allow_redefinition = true  # TODO: how to properly make it work o_O ?
 color_output=1
 exclude = [
     '^test_.+\.py$',
@@ -101,6 +102,9 @@ skip-string-normalization = 1
 	[tool.pylint.'MESSAGES CONTROL']
 	enable=['c-extension-no-member']
 	disable=['''no-else-return,
+		unused-argument,
+		protected-access,
+		pointless-string-statement,
 		too-few-public-methods,
 		too-many-public-methods,
 		redefined-outer-name,

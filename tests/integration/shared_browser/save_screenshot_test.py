@@ -19,178 +19,182 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+import atexit
 import os
 
 import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
-from webdriver_manager.core.utils import ChromeType
+from webdriver_manager.chrome import ChromeDriverManager  # type: ignore
+from webdriver_manager.core.utils import ChromeType  # type: ignore
 
-from selene import have, be, browser
+from selene import have, be, browser, Browser, Config
 from selene.core.exceptions import TimeoutException
 from tests import resources
 from tests.helpers import headless_chrome_options
 
-
 EMPTY_PAGE_URL = resources.url('empty.html')
 
-ORIGINAL_DEFAULT_SCREENSHOT_FOLDER = browser.config.reports_folder
-ORIGINAL_TIMEOUT = browser.config.timeout
 
-
-def setup_function():
-    browser.config.reports_folder = ORIGINAL_DEFAULT_SCREENSHOT_FOLDER
-    browser.config.timeout = ORIGINAL_TIMEOUT
-
-
-def setup_module():
-    browser.config.driver = webdriver.Chrome(
+@pytest.fixture(scope='module')
+def the_driver():
+    driver = webdriver.Chrome(
         service=Service(
             ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install()
         ),
         options=headless_chrome_options(),
     )
 
+    yield driver
 
-def teardown_module():
-    browser.driver.quit()
-
-
-def get_default_screenshot_folder():
-    return browser.config.reports_folder
+    driver.quit()
 
 
-def get_screen_id():
-    return next(browser.config._counter) - 1
+@pytest.fixture(scope='function')
+def a_browser(the_driver):
+    browser_ = Browser(Config(driver=the_driver, hold_driver_at_exit=True))
+
+    yield browser_
+
+    # ...
 
 
-def test_can_make_screenshot_with_default_name():
-    browser.open(EMPTY_PAGE_URL)
+@pytest.fixture(scope='function')
+def with_process_exit_teardown():
+    # ...
 
-    actual = browser.save_screenshot()
+    yield
 
-    expected = os.path.join(
-        get_default_screenshot_folder(),
-        f'{get_screen_id()}.png',
+    atexit._run_exitfuncs()
+
+
+def test_can_make_screenshot_with_default_name(a_browser):
+    a_browser.open(EMPTY_PAGE_URL)
+
+    screenshot_path = a_browser.save_screenshot()
+
+    assert os.path.exists(screenshot_path)
+    assert os.path.isfile(screenshot_path)
+    assert screenshot_path == os.path.join(
+        a_browser.config.reports_folder,
+        f'{next(browser.config._counter) - 1}.png',
     )
-    assert actual == expected
-    assert os.path.exists(actual)
-    assert os.path.isfile(actual)
 
 
-def test_can_make_screenshot_with_custom_name_with_empty_path():
-    browser.open(EMPTY_PAGE_URL)
+def test_can_make_screenshot_with_custom_name_with_empty_path(a_browser):
+    a_browser.open(EMPTY_PAGE_URL)
 
-    actual = browser.save_screenshot(file="custom.png")
+    screenshot_path = a_browser.save_screenshot(file="custom.png")
 
-    expected = 'custom.png'
-    assert actual == expected
-    assert os.path.exists(actual)
-    assert os.path.isfile(actual)
+    assert os.path.exists(screenshot_path)
+    assert os.path.isfile(screenshot_path)
+    assert screenshot_path == 'custom.png'
 
 
-def test_can_save_screenshot_to_custom_folder_with_custom_name():
-    file = (
-        os.path.dirname(os.path.abspath(__file__))
-        + f'/../../build/screenshots_{next(browser.config._counter)}/custom.png'
+def test_can_make_screenshot_with_custom_path_to_folder_without_png_file_name(
+    a_browser,
+):
+    custom_folder = os.path.join(
+        a_browser.config.reports_folder,
+        f'custom_folder_{next(a_browser.config._counter)}',
     )
-    browser.open(EMPTY_PAGE_URL)
+    a_browser.open(EMPTY_PAGE_URL)
 
-    actual = browser.save_screenshot(file=file)
+    screenshot_path = a_browser.save_screenshot(file=custom_folder)
 
-    expected = file
-    assert actual == expected
-    assert os.path.exists(actual)
-    assert os.path.isfile(actual)
-
-
-def test_can_make_screenshot_with_custom_folder_specified_as_parameter_with_empty_filename():
-    screenshot_folder = (
-        os.path.dirname(os.path.abspath(__file__))
-        + f'/../../build/screenshots_{next(browser.config._counter)}'
+    assert os.path.exists(screenshot_path)
+    assert os.path.isfile(screenshot_path)
+    assert screenshot_path == os.path.join(
+        custom_folder,
+        f'{next(browser.config._counter) - 1}.png',
     )
-    browser.open(EMPTY_PAGE_URL)
 
-    actual = browser.save_screenshot(file=screenshot_folder)
 
-    expected = os.path.join(
-        screenshot_folder,
-        f'{get_screen_id()}.png',
+def test_can_save_screenshot_to_custom_folder_specified_through_config(
+    a_browser,
+):
+    custom_folder = os.path.join(
+        a_browser.config.reports_folder,
+        f'custom_folder_{next(a_browser.config._counter)}',
     )
-    assert actual == expected
-    assert os.path.exists(actual)
-    assert os.path.isfile(actual)
+    a_browser.config.reports_folder = custom_folder
+    a_browser.open(EMPTY_PAGE_URL)
 
+    screenshot_path = a_browser.save_screenshot()
 
-def test_can_save_screenshot_to_custom_folder_specified_through_config():
-    browser.config.reports_folder = (
-        os.path.dirname(os.path.abspath(__file__))
-        + f'/../../build/screenshots_{next(browser.config._counter)}'
+    assert os.path.exists(screenshot_path)
+    assert os.path.isfile(screenshot_path)
+    assert screenshot_path == os.path.join(
+        custom_folder,
+        f'{next(a_browser.config._counter) - 1}.png',
     )
-    browser.open(EMPTY_PAGE_URL)
-
-    actual = browser.save_screenshot()
-
-    expected = os.path.join(
-        get_default_screenshot_folder(),
-        f'{get_screen_id()}.png',
-    )
-    assert expected == actual
-    assert os.path.isfile(actual)
-    assert os.path.exists(actual)
 
 
-def test_can_make_screenshot_automatically():
-    browser.open(EMPTY_PAGE_URL)
-    browser.config.timeout = 0.1
+def test_saves_screenshot_on_failure(a_browser):
+    a_browser.open(EMPTY_PAGE_URL)
 
     with pytest.raises(TimeoutException):
-        browser.element("#selene_link").should(have.exact_text("Selen site"))
+        a_browser.element("#selene_link").with_(timeout=0.1).should(
+            have.exact_text("Selen site")
+        )
 
-    expected = os.path.join(
-        get_default_screenshot_folder(),
-        f'{get_screen_id()}.png',
+    expected_path = os.path.join(
+        a_browser.config.reports_folder,
+        f'{next(a_browser.config._counter) - 1}.png',
     )
-    assert os.path.exists(expected)
-    assert os.path.isfile(expected)
+    assert os.path.exists(expected_path)
+    assert os.path.isfile(expected_path)
 
 
-def test_can_get_last_screenshot_path():
-    browser.config.reports_folder = (
-        os.path.dirname(os.path.abspath(__file__))
-        + f'/../../build/screenshots_{next(browser.config._counter)}'
-    )
-    browser.open(EMPTY_PAGE_URL)
-    browser.config.timeout = 0.1
+def test_remembers_last_saved_screenshot(
+    a_browser, with_process_exit_teardown
+):
+    a_browser.open(EMPTY_PAGE_URL)
 
+    # WHEN on failure
     with pytest.raises(TimeoutException):
-        browser.element("#s").should(be.visible)
+        a_browser.element("#does-not-exist").with_(timeout=0.1).should(
+            be.visible
+        )
 
-    picture = browser.last_screenshot
-    expected = os.path.join(
-        browser.config.reports_folder, f'{get_screen_id()}.png'
+    # assert a_browser.config.last_screenshot == os.path.join(
+    assert a_browser.config.last_screenshot == os.path.join(
+        a_browser.config.reports_folder,
+        f'{next(a_browser.config._counter) - 1}.png',
     )
-    assert picture == expected
-    assert os.path.exists(picture)
-    assert os.path.isfile(picture)
 
+    # WHEN on explicit save
+    a_browser.save_screenshot()
 
-def test_can_get_latest_screenshot_path():
-    browser.config.reports_folder = (
-        os.path.dirname(os.path.abspath(__file__))
-        + f'/../../build/screenshots_{next(browser.config._counter)}'
+    # THEN overriden
+    assert a_browser.config.last_screenshot == os.path.join(
+        a_browser.config.reports_folder,
+        f'{next(a_browser.config._counter) - 1}.png',
     )
-    browser.open(EMPTY_PAGE_URL)
-    browser.config.timeout = 0.1
 
-    with pytest.raises(TimeoutException):
-        browser.element("#s").should(be.visible)
+    # WHEN on explicit save on another browser with shared last_screenshot
+    another = a_browser.with_(name='firefox', hold_driver_at_exit=False)
+    another.save_screenshot()
 
-    picture = browser.last_screenshot
-    expected = os.path.join(
-        browser.config.reports_folder, f'{get_screen_id()}.png'
+    # THEN overriden
+    assert (
+        another.config.last_screenshot
+        == a_browser.config.last_screenshot
+        == os.path.join(
+            a_browser.config.reports_folder,
+            f'{next(a_browser.config._counter) - 1}.png',
+        )
     )
-    assert picture == expected
-    assert os.path.exists(picture)
-    assert os.path.isfile(picture)
+
+    # WHEN on explicit save on another browser with own last_screenshot
+    another = a_browser.with_(
+        name='firefox', hold_driver_at_exit=False, last_screenshot=None
+    )
+    another.save_screenshot()
+
+    # THEN not overriden but stored separately
+    assert another.config.last_screenshot != a_browser.config.last_screenshot
+    assert another.config.last_screenshot == os.path.join(
+        a_browser.config.reports_folder,
+        f'{next(a_browser.config._counter) - 1}.png',
+    )

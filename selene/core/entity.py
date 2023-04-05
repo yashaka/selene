@@ -1119,13 +1119,7 @@ class Browser(WaitingEntity['Browser']):
 
     @property
     def driver(self) -> WebDriver:
-        # TODO: keep eye on it.. currently base Config.driver - might be driver of callable
-        #       that's why we need to check before returning it
-        return (
-            self.config.driver()
-            if callable(self.config.driver)
-            else self.config.driver
-        )
+        return self.config.driver
 
     # TODO: consider making it callable (self.__call__() to be shortcut to self.__raw__ ...)
 
@@ -1191,6 +1185,7 @@ class Browser(WaitingEntity['Browser']):
             else base_url + relative_or_absolute_url
         )
 
+        # TODO: should we wrap it into wait? at least for logging?
         self.driver.get(url)
         return self
 
@@ -1223,6 +1218,7 @@ class Browser(WaitingEntity['Browser']):
 
         return self
 
+    # TODO: consider deprecating
     @property
     def switch_to(self) -> SwitchTo:
         return self.driver.switch_to
@@ -1244,6 +1240,7 @@ class Browser(WaitingEntity['Browser']):
 
         self.driver.quit()  # TODO: quit silently... (i.e. catch error if it's already quit)
 
+    # TODO: consider deprecating, it does not close browser, it closes current tab/window
     def close(self) -> Browser:
         self.driver.close()
         return self
@@ -1258,6 +1255,11 @@ class Browser(WaitingEntity['Browser']):
         )
         return self.driver.execute_script(script, *args)
 
+    # TODO: should we move it to query.* and/or command.*?
+    #       like `browser.get(query.screenshot)` ?
+    #       like `browser.perform(command.save_screenshot)` ?
+    # TODO: deprecate file name, use path
+    #       because we can path folder path not file path and it will work
     def save_screenshot(self, file: Optional[str] = None):
         warnings.warn(
             'browser.save_screenshot might be deprecated', FutureWarning
@@ -1268,9 +1270,10 @@ class Browser(WaitingEntity['Browser']):
         if file and not file.lower().endswith('.png'):
             file = os.path.join(file, f'{next(self.config._counter)}.png')
         folder = os.path.dirname(file)
-        if not os.path.exists(folder) and folder:
+        if folder and not os.path.exists(folder):
             os.makedirs(folder)
-        # TODO: refactor to catch errors smartly in get_screenshot_as_file. or not needed?
+        # TODO: refactor to catch errors smartly in get_screenshot_as_file.
+        #       or not needed?
         self.config.last_screenshot = WebHelper(self.driver).save_screenshot(  # type: ignore
             file
         )

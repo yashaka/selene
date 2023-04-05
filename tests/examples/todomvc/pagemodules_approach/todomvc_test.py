@@ -19,33 +19,41 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from selene import browser
+import pytest
+
+from selene import browser, command
 from tests.examples.todomvc.pagemodules_approach.pages import tasks
 
 
-class TestTodoMVC:
-    def teardown(self):
-        browser.driver.execute_script('localStorage.clear()')
+@pytest.fixture(scope='function')
+def with_clean_storage_teardown():
+    # ...
 
-    def test_filter_tasks(self):
-        tasks.visit()
+    yield
 
-        tasks.add('a', 'b', 'c')
-        tasks.should_be('a', 'b', 'c')
+    browser.perform(command.js.clear_local_storage)
 
-        tasks.toggle('b')
 
-        tasks.filter_active()
-        tasks.should_be('a', 'c')
+def test_filter_tasks(with_clean_storage_teardown):
+    tasks.visit()
 
-        tasks.filter_completed()
-        tasks.should_be('b')
+    tasks.add('a', 'b', 'c')
+    tasks.should_be('a', 'b', 'c')
 
-    def test_clear_completed(self):
-        tasks.visit()
+    tasks.toggle('b')
 
-        tasks.add('a', 'b', 'c')
-        tasks.toggle('b')
-        tasks.clear_completed()
+    tasks.filter_active()
+    tasks.should_be('a', 'c')
 
-        tasks.should_be('a', 'c')
+    tasks.filter_completed()
+    tasks.should_be('b')
+
+
+def test_clear_completed(with_clean_storage_teardown):
+    tasks.visit()
+
+    tasks.add('a', 'b', 'c')
+    tasks.toggle('b')
+    tasks.clear_completed()
+
+    tasks.should_be('a', 'c')
