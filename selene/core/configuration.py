@@ -77,7 +77,7 @@ def _build_local_driver_by_name_or_remote_by_url(
                 )
             else:
                 raise ValueError(
-                    f'Default config.driver_factory («driver factory»), '
+                    f'Default config.build_driver_strategy («driver factory»), '
                     f'if config.name is set to "chrome", – '
                     f'expects only instance of ChromeOptions or None in config.driver_options,'
                     f'but got: {config.driver_options}'
@@ -112,7 +112,7 @@ def _build_local_driver_by_name_or_remote_by_url(
                 )
             else:
                 raise ValueError(
-                    f'Default config.driver_factory, '
+                    f'Default config.build_driver_strategy, '
                     f'if config.name is set to "edge", – '
                     f'expects only instance of EdgeOptions or None in config.driver_options,'
                     f'but got: {config.driver_options}'
@@ -139,7 +139,9 @@ def _build_local_driver_by_name_or_remote_by_url(
 
 
 class ManagedDriverDescriptor:
-    def __init__(self, *, default: Optional[WebDriver] = ...):
+    def __init__(
+        self, *, default: typing.Union[Optional[WebDriver], ...] = ...
+    ):
         self.default = default
         self.name = None
 
@@ -164,7 +166,7 @@ class ManagedDriverDescriptor:
             and not callable(driver_box.value)  # TODO: consider deprecating
             and not config.is_driver_alive_strategy(driver_box.value)
         ):
-            driver = config.driver_factory(config)
+            driver = config.build_driver_strategy(config)
             driver_box.value = driver
             config._schedule_driver_teardown_strategy(config, lambda: driver)
 
@@ -253,14 +255,7 @@ class Config:
     especially taking into account some historical reasons of Selene's design.
     """
 
-    # TODO: should we rename driver_factory to build_driver_strategy
-    #       for compliance with other *_strategy options?
-    #       especially with teardown_driver_strategy...
-    #       from other point of view...
-    #       this option is something bigger than *_strategy
-    #       because it's based on the whole config instance,
-    #       not just pure «unboxed» WebDriver instance
-    driver_factory: Callable[
+    build_driver_strategy: Callable[
         [Config], WebDriver
     ] = _build_local_driver_by_name_or_remote_by_url
     """
@@ -285,7 +280,7 @@ class Config:
     # Should we simplify things? Or keep it as is with get_driver?
     _schedule_driver_teardown_strategy: Callable[
         [Config, Callable[[], WebDriver]],
-        None,
+        typing.Union[None, typing.Any],
     ] = lambda config, get_driver: atexit.register(  # TODO: get_driver or simply driver?
         lambda: config._teardown_driver_strategy(config, get_driver())
     )
@@ -304,6 +299,8 @@ class Config:
         driver is not ... and driver is not None
     )
 
+    # TODO: refactor "alive" strategy,
+    #       because it probably will not work on remote driver
     is_driver_alive_strategy: Callable[[WebDriver], bool] = lambda driver: (
         driver.service.process is not None
         and driver.service.process.poll() is None
@@ -325,12 +322,13 @@ class Config:
     # TODO: consider setting to None or ... by default, and pick up by factory any installed browser in a system
     name: str = 'chrome'
     """
-    Desired name of the driver to be processed by Selene's default config.driver_factory.
-    It is ignored by default `config.driver_factory` if `config.remote_url` is set.
+    Desired name of the driver
+    to be processed by Selene's default config.build_driver_strategy.
+    It is ignored by default `config.build_driver_strategy` if `config.remote_url` is set.
 
     GIVEN set to any of: 'chrome', 'firefox', 'edge',
     AND config.driver is left unset (default value is ...),
-    THEN default config.driver_factory will automatically install drivers
+    THEN default config.build_driver_strategy will automatically install drivers
     AND build webdriver instance for you
     AND this config will store the instance in config.driver
     """
@@ -445,11 +443,11 @@ class Config:
     #           class MyConfig(Config):
     #              driver: WebDriver = HERE_DriverDescriptor(...)
     #       and then `MyConfig(driver=...)` will work as expected
-    # TODO: should we accept a callable here to bypass driver_factory logic?
+    # TODO: should we accept a callable here to bypass build_driver_strategy logic?
     #       currently we do... we don't show it explicitly...
     #       but the valid type is Union[WebDriver, Callable[[], WebDriver]]
     #       so... should we do it?
-    #       why not just use driver_factory for same?
+    #       why not just use config.build_driver_strategy for same?
     #       there is the difference though...
     #       the driver factory is only used as a driver builder,
     #       it does not cover other stages of driver lifecycle,
@@ -464,13 +462,13 @@ class Config:
 
     GIVEN unset, i.e. equals to default `...`,
     WHEN accessed first time (e.g. via config.driver)
-    THEN it will be set to the instance built by `config.driver_factory`.
+    THEN it will be set to the instance built by `config.build_driver_strategy`.
 
     GIVEN set manually to an existing driver instance,
           like: `config.driver = Chrome()`
     THEN it will be reused at it is on any next access
     WHEN reset to `...`
-    THEN will be rebuilt by `config.driver_factory`
+    THEN will be rebuilt by `config.build_driver_strategy`
 
     GIVEN set manually to a callable that returns WebDriver instance
           (currently marked with FutureWarning, so might be deprecated)

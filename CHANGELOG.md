@@ -103,6 +103,7 @@ def test_todos_storage_is_not_shared_between_browsers():
 ```
 
 TODO:
+- ensure alive strategy works for remote and mobile
 - autocomplete for entity.with_(**HERE)
 - decide on config.wait
 - decide on config.last_screenshot
@@ -111,6 +112,7 @@ TODO:
 - decide on have.size vs query.size
 - review all `# type: ignore`
 - review all typing.cast
+- decide on None as default in managed driver descriptor instead of ...
 
 ## 2.0.0rc1 (to be released on ?.10.2022)
 

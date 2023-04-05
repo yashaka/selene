@@ -41,7 +41,7 @@ class Config:
     hold_driver_at_exit: bool = False
     rebuild_dead_driver: bool = True
     # Options to customize driver management
-    driver_factory: Callable[[Config], WebDriver] = ...
+    build_driver_strategy: Callable[[Config], WebDriver] = ...
     _schedule_driver_teardown_strategy: Callable[
         [Config, Callable[[], WebDriver]], None
     ] = ...
@@ -84,7 +84,7 @@ class Config:
         hold_driver_at_exit: bool = False,
         rebuild_dead_driver: bool = True,
         # Options to customize driver management
-        driver_factory: Callable[[Config], WebDriver] = ...,
+        build_driver_strategy: Callable[[Config], WebDriver] = ...,
         _schedule_driver_teardown_strategy: Callable[
             [Config, Callable[[], WebDriver]], None
         ] = ...,
@@ -127,7 +127,7 @@ class Config:
         hold_driver_at_exit: bool = False,
         rebuild_dead_driver: bool = True,
         # Options to customize driver management
-        driver_factory: Callable[[Config], WebDriver] = ...,
+        build_driver_strategy: Callable[[Config], WebDriver] = ...,
         _schedule_driver_teardown_strategy: Callable[
             [Config, Callable[[], WebDriver]], None
         ] = ...,
