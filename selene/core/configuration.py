@@ -36,6 +36,7 @@ from selenium.webdriver.common.options import BaseOptions
 from selene.common import fp
 from selene.common.data_structures import persistent
 from selene.common.fp import F, pipe, thread
+from selene.common.helpers import on_error_return_false
 
 from selene.core.exceptions import TimeoutException
 from selenium.webdriver.remote.webdriver import WebDriver
@@ -302,8 +303,7 @@ class Config:
     # TODO: refactor "alive" strategy,
     #       because it probably will not work on remote driver
     is_driver_alive_strategy: Callable[[WebDriver], bool] = lambda driver: (
-        driver.service.process is not None
-        and driver.service.process.poll() is None
+        on_error_return_false(lambda: driver.title is not None)
     )
 
     driver_options: Optional[BaseOptions] = None

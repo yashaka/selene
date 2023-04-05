@@ -113,6 +113,7 @@ TODO:
 - review all `# type: ignore`
 - review all typing.cast
 - decide on None as default in managed driver descriptor instead of ...
+- fix «too much screenshots»
 
 ## 2.0.0rc1 (to be released on ?.10.2022)
 
