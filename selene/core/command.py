@@ -19,14 +19,47 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from typing import Union
+from typing import Union, Optional
 
 from selene.core.entity import Element, Collection, Browser
 from selene.core.wait import Command
 
 
-# noinspection PyPep8Naming
-class js:
+def save_screenshot(path: Optional[str] = None) -> Command[Browser]:
+    command: Command[Browser] = Command(
+        'save screenshot',
+        lambda browser: browser.config._save_screenshot_strategy(
+            browser.config, path
+        ),
+    )
+
+    if isinstance(path, Browser):
+        # somebody passed command as `.perform(command.save_screenshot)`
+        # not as `.perform(command.save_screenshot())`
+        browser = path
+        command.__call__(browser)
+
+    return command
+
+
+def save_page_source(path: Optional[str] = None) -> Command[Browser]:
+    command: Command[Browser] = Command(
+        'save page source',
+        lambda browser: browser.config._save_page_source_strategy(
+            browser.config, path
+        ),
+    )
+
+    if isinstance(path, Browser):
+        # somebody passed command as `.perform(command.save_screenshot)`
+        # not as `.perform(command.save_screenshot())`
+        browser = path
+        command.__call__(browser)
+
+    return command
+
+
+class js:  # pylint: disable=invalid-name
     @staticmethod
     def set_value(value: Union[str, int]) -> Command[Element]:
         def func(element: Element):

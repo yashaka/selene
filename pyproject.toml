@@ -102,6 +102,7 @@ skip-string-normalization = 1
 	[tool.pylint.'MESSAGES CONTROL']
 	enable=['c-extension-no-member']
 	disable=['''no-else-return,
+		not-callable,
 		unused-argument,
 		protected-access,
 		pointless-string-statement,

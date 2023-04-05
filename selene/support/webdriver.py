@@ -63,7 +63,7 @@ class WebHelper:
     def save_screenshot(self, file: str) -> Optional[str]:
         if not file.lower().endswith('.png'):
             warnings.warn(
-                "name used for saved pagesource does not match file "
+                "name used for saved screenshot does not match file "
                 "type. It should end with an `.png` extension",
                 UserWarning,
             )

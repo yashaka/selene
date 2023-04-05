@@ -189,3 +189,43 @@ previous_tab: Query[Browser, str] = Query('previous tab', __previous_tab_fn)
 page_source: Query[Browser, str] = Query(
     'page source', lambda browser: browser.driver.page_source
 )
+
+
+# TODO: consider changing entity.get signature to accept query builders,
+#       not jus query objects
+def screenshot_saved(
+    path: typing.Optional[str] = None,
+) -> Query[Browser, typing.Optional[str]]:
+    query: Query[Browser, typing.Optional[str]] = Query(
+        'save and get screenshot',
+        lambda browser: browser.config._save_screenshot_strategy(
+            browser.config, path
+        ),
+    )
+
+    if isinstance(path, Browser):
+        # somebody passed query as `.get(query.save_screenshot)`
+        # not as `.get(query.save_screenshot())`
+        browser = path
+        return query.__call__(browser)  # type: ignore
+
+    return query
+
+
+def page_source_saved(
+    path: typing.Optional[str] = None,
+) -> Query[Browser, typing.Optional[str]]:
+    query: Query[Browser, typing.Optional[str]] = Query(
+        'save and get page source',
+        lambda browser: browser.config._save_page_source_strategy(
+            browser.config, path
+        ),
+    )
+
+    if isinstance(path, Browser):
+        # somebody passed query as `.get(query.save_screenshot)`
+        # not as `.get(query.page_source_saved())`
+        browser = path
+        return query.__call__(browser)  # type: ignore
+
+    return query

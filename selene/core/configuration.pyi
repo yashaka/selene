@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 import itertools
-from typing import Callable, Optional
+from typing import Callable, Optional, Any
 
 from selenium.webdriver.common.options import BaseOptions
 from selenium.webdriver.remote.webdriver import WebDriver
@@ -68,6 +68,10 @@ class Config:
     _counter: itertools.count = ...
     save_screenshot_on_failure: bool = True
     save_page_source_on_failure: bool = True
+    last_screenshot: Optional[str] = None
+    last_page_source: Optional[str] = None
+    _save_screenshot_strategy: Callable[[Config, Optional[str]], Any] = ...
+    _save_page_source_strategy: Callable[[Config, Optional[str]], Any] = ...
     # Options to customize elements behavior
     set_value_by_js: bool = False
     type_by_js: bool = False
@@ -111,6 +115,14 @@ class Config:
         _counter: itertools.count = ...,
         save_screenshot_on_failure: bool = True,
         save_page_source_on_failure: bool = True,
+        last_screenshot: Optional[str] = None,
+        last_page_source: Optional[str] = None,
+        _save_screenshot_strategy: Callable[
+            [Config, Optional[str]], Any
+        ] = ...,
+        _save_page_source_strategy: Callable[
+            [Config, Optional[str]], Any
+        ] = ...,
         # Options to customize elements behavior
         set_value_by_js: bool = False,
         type_by_js: bool = False,
@@ -154,6 +166,14 @@ class Config:
         _counter: itertools.count = ...,
         save_screenshot_on_failure: bool = True,
         save_page_source_on_failure: bool = True,
+        last_screenshot: Optional[str] = None,
+        last_page_source: Optional[str] = None,
+        _save_screenshot_strategy: Callable[
+            [Config, Optional[str]], Any
+        ] = ...,
+        _save_page_source_strategy: Callable[
+            [Config, Optional[str]], Any
+        ] = ...,
         # Options to customize elements behavior
         set_value_by_js: bool = False,
         type_by_js: bool = False,

@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 import functools
-from typing import TypeVar, Callable, Any
+from typing import TypeVar, Callable, Any, Tuple, Optional
 
 # T = TypeVar('T', bound=Callable[..., Any])
 T = TypeVar('T')
@@ -62,7 +62,7 @@ def identity(it: T) -> T:
     return it
 
 
-def pipe(*functions):
+def pipe(*functions) -> Optional[Callable[[Any], Any]]:
     """
     pipes functions one by one in the provided order
     i.e. applies arg1, then arg2, then arg3, and so on
@@ -77,3 +77,26 @@ def pipe(*functions):
         if functions
         else None
     )
+
+
+def thread(arg, *functions):
+    return pipe(*functions)(arg)
+
+
+def do(function: Callable[[T], Any]) -> Callable[[T], T]:
+    def func(arg: T) -> T:
+        function(arg)
+        return arg
+
+    return func
+
+
+def write_silently(
+    file: str, string: str, encoding: str = 'utf-8'
+) -> Optional[Tuple[str, str]]:
+    try:
+        with open(file, 'w', encoding=encoding) as f:
+            f.write(string)
+            return file, string
+    except OSError:
+        return None

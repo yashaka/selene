@@ -160,11 +160,15 @@ edge.config.timeout = 10
 
 ### Other
 - deprecated 
-  - match.browser_has_js_returned in favor of match.browser_has_script_returned
-  - have.js_returned in favor of have.script_returned
-  - have.js_returned_true(...) in favor of have.script_returned(True, ...)
-  - shared.browser.config.get_or_create_driver
-  - shared.browser.config.reset_driver
+  - `browser.save_screenshot` in favor of `browser.get(query.screenshot_saved())`
+  - `browser.save_page_source` in favor of `browser.get(query.page_source_saved())`
+  - `browser.last_screenshot` in favor of `browser.config.last_screenshot`
+  - `browser.last_page_source` in favor of `browser.config.last_page_source`
+  - `match.browser_has_js_returned` in favor of `match.browser_has_script_returned`
+  - `have.js_returned` in favor of `have.script_returned`
+  - `have.js_returned_true(...)` in favor of `have.script_returned(True, ...)`
+  - `browser.config.get_or_create_driver`
+  - `browser.config.reset_driver`
     - use `selene.browser.config.driver = ...`
 - removed
   - from selene.support.shared import SharedConfig, SharedBrowser

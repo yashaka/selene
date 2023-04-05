@@ -1262,36 +1262,30 @@ class Browser(WaitingEntity['Browser']):
     #       because we can path folder path not file path and it will work
     def save_screenshot(self, file: Optional[str] = None):
         warnings.warn(
-            'browser.save_screenshot might be deprecated', FutureWarning
+            'browser.save_screenshot is deprecated, '
+            'use browser.get(query.screenshot_saved())',
+            DeprecationWarning,
         )
 
-        if file is None:
-            file = self.config._generate_filename(suffix='.png')  # type: ignore
-        if file and not file.lower().endswith('.png'):
-            file = os.path.join(file, f'{next(self.config._counter)}.png')
-        folder = os.path.dirname(file)
-        if folder and not os.path.exists(folder):
-            os.makedirs(folder)
-        # TODO: refactor to catch errors smartly in get_screenshot_as_file.
-        #       or not needed?
-        self.config.last_screenshot = WebHelper(self.driver).save_screenshot(  # type: ignore
-            file
-        )
+        from selene.core import query  # type: ignore
 
-        return self.config.last_screenshot  # type: ignore
+        return self.get(query.screenshot_saved())  # type: ignore
 
     @property
     def last_screenshot(self) -> str:
         warnings.warn(
-            'browser.last_screenshot might be deprecated', FutureWarning
+            'browser.last_screenshot is deprecated, '
+            'use browser.config.last_screenshot',
+            DeprecationWarning,
         )
         return self.config.last_screenshot  # type: ignore
 
     # TODO: consider moving this to browser command.save_page_source(filename)
     def save_page_source(self, file: Optional[str] = None) -> Optional[str]:
         warnings.warn(
-            'browser.save_page_source(file) might be deprecated in future',
-            FutureWarning,
+            'browser.save_page_source is deprecated, '
+            'use browser.config.last_screenshot',
+            DeprecationWarning,
         )
 
         if file is None:
@@ -1306,7 +1300,9 @@ class Browser(WaitingEntity['Browser']):
     @property
     def last_page_source(self) -> str:
         warnings.warn(
-            'browser.last_page_source might be deprecated', FutureWarning
+            'browser.last_page_source is deprecated, '
+            'use browser.config.last_page_source',
+            DeprecationWarning,
         )
         return self.config.last_page_source  # type: ignore
 

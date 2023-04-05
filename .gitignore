@@ -9,6 +9,7 @@ skip-covered/
 tests/comparison/
 examples/test_anything.py
 custom.png
+custom.html
 
 # allure
 allure-results/

@@ -29,13 +29,13 @@ import os
 import time
 import typing
 import warnings
-from typing import Callable, Optional
+from typing import Callable, Optional, Any
 
 from selenium.webdriver.common.options import BaseOptions
 
 from selene.common import fp
 from selene.common.data_structures import persistent
-from selene.common.fp import F
+from selene.common.fp import F, pipe, thread
 
 from selene.core.exceptions import TimeoutException
 from selenium.webdriver.remote.webdriver import WebDriver
@@ -532,12 +532,102 @@ class Config:
     _counter: itertools.count = itertools.count(
         start=int(round(time.time() * 1000))
     )
-    # TODO: add stubs?
-    last_screenshot: Optional[str] = None
-    last_page_source: Optional[str] = None
     """
     A counter, currently used for incrementing screenshot names
     """
+    # TODO: add stubs?
+    last_screenshot: Optional[str] = None
+    last_page_source: Optional[str] = None
+    # TODO: is a _strategy suffix a good naming convention in this context?
+    #       maybe yes, because we yet accept config in it...
+    #       so we expect it to be a Strategy of some bigger Context
+    _save_screenshot_strategy: Callable[
+        [Config, Optional[str]], Any
+    ] = lambda config, path=None: fp.thread(
+        path,
+        lambda path: (
+            config._generate_filename(suffix='.png') if path is None else path
+        ),
+        lambda path: (
+            os.path.join(path, f'{next(config._counter)}.png')
+            if path and not path.lower().endswith('.png')
+            else path
+        ),
+        fp.do(
+            fp.pipe(
+                os.path.dirname,
+                lambda folder: (
+                    os.makedirs(folder)
+                    if folder and not os.path.exists(folder)
+                    else ...
+                ),
+            )
+        ),
+        fp.do(
+            lambda path: (
+                warnings.warn(
+                    "name used for saved screenshot does not match file "
+                    "type. It should end with an `.png` extension",
+                    UserWarning,
+                )
+                if not path.lower().endswith('.png')
+                else ...
+            )
+        ),
+        lambda path: (
+            path if config.driver.get_screenshot_as_file(path) else None
+        ),
+        fp.do(
+            lambda path: setattr(config, 'last_screenshot', path)
+        ),  # On refactor>rename, we may miss it here :( better would be like:
+        #  setattr(config, config.__class__.last_screenshot.name, path)
+        #  but currently .name will return '__boxed_last_screenshot' :(
+        #  think on how we can resolve this...
+    )
+
+    _save_page_source_strategy: Callable[
+        [Config, Optional[str]], Any
+    ] = lambda config, path=None: fp.thread(
+        path,
+        lambda path: (
+            config._generate_filename(suffix='.html') if path is None else path
+        ),
+        lambda path: (
+            os.path.join(path, f'{next(config._counter)}.html')
+            if path and not path.lower().endswith('.html')
+            else path
+        ),
+        fp.do(
+            fp.pipe(
+                os.path.dirname,
+                lambda folder: (
+                    os.makedirs(folder)
+                    if folder and not os.path.exists(folder)
+                    else ...
+                ),
+            )
+        ),
+        fp.do(
+            lambda path: (
+                warnings.warn(
+                    "name used for saved page source does not match file "
+                    "type. It should end with an `.html` extension",
+                    UserWarning,
+                )
+                if not path.lower().endswith('.html')
+                else ...
+            )
+        ),
+        lambda path: (path, config.driver.page_source),
+        fp.do(lambda path_and_source: fp.write_silently(*path_and_source)),
+        lambda path_and_source: path_and_source[0],
+        fp.do(
+            lambda path: setattr(config, 'last_page_source', path)
+        ),  # On refactor>rename, we may miss it here :( better would be like:
+        #  setattr(config, config.__class__.last_screenshot.name, path)
+        #  but currently .name will return '__boxed_last_screenshot' :(
+        #  think on how we can resolve this...
+    )
 
     # TODO: consider adding option to disable persistence of all not-overridden options
     #       or marking some of them as not persistent
@@ -597,17 +687,13 @@ class Config:
 
         return file
 
-    # TODO: consider moving this injection to the WaitingEntity.wait method to build Wait object instead of config.wait
+    # TODO: consider moving this injection to the WaitingEntity.wait method
+    #       to build Wait object instead of config.wait
     def _inject_screenshot_and_page_source_pre_hooks(self, hook):
         # TODO: consider moving hooks to class methods accepting config as argument
         #       or refactor somehow to eliminate all times defining hook fns
         def save_and_log_screenshot(error: TimeoutException) -> Exception:
-            from selene.support.webdriver import WebHelper
-
-            path = WebHelper(self.driver).save_screenshot(
-                self._generate_filename(suffix='.png')
-            )
-            self.last_screenshot = path
+            path = self._save_screenshot_strategy(self)
             return TimeoutException(
                 error.msg
                 + f'''
@@ -616,16 +702,14 @@ Screenshot: file://{path}'''
 
         def save_and_log_page_source(error: TimeoutException) -> Exception:
             filename = (
-                # TODO: this dependency to last_screenshot might lead to code,
-                #       when wrong screenshot name is taken
+                # TODO: this dependency to last_page_source might lead to code,
+                #       when wrong last_page_source name is taken
                 self.last_screenshot.replace('.png', '.html')
-                if getattr(self, 'last_screenshot', None)
+                if self.last_screenshot
                 else self._generate_filename(suffix='.html')
             )
-            from selene.support.webdriver import WebHelper
 
-            path = WebHelper(self.driver).save_page_source(filename)
-            self.last_page_source = path
+            path = self._save_page_source_strategy(self, filename)
             return TimeoutException(error.msg + f'\nPageSource: file://{path}')
 
         return fp.pipe(
@@ -638,7 +722,8 @@ Screenshot: file://{path}'''
             hook,
         )
 
-    # TODO: we definitely not need it inside something called Config, especially "base interface like config
+    # TODO: we definitely not need it inside something called Config,
+    #       especially "base interface like config
     #       consider refactor to wait_factory as configurable config property
     def wait(self, entity):
         hook = self._inject_screenshot_and_page_source_pre_hooks(

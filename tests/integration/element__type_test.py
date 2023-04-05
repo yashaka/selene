@@ -8,7 +8,7 @@ from tests.integration.helpers.givenpage import GivenPage
 
 def test_type_appends_text(session_browser):
     browser = session_browser.with_(timeout=1)
-    browser.config.hold_browser_open = True
+    browser.config.hold_driver_at_exit = True
     page = GivenPage(browser.driver)
     page.opened_with_body(
         '''

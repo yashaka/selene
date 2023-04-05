@@ -69,85 +69,87 @@ def with_process_exit_teardown():
     atexit._run_exitfuncs()
 
 
-def test_can_make_screenshot_with_default_name(a_browser):
+def test_can_make_page_source_with_default_name(a_browser):
     a_browser.open(EMPTY_PAGE_URL)
 
-    screenshot_path = a_browser.get(query.screenshot_saved())
+    page_source_path = a_browser.get(query.page_source_saved())
 
-    assert os.path.exists(screenshot_path)
-    assert os.path.isfile(screenshot_path)
-    assert screenshot_path == os.path.join(
+    assert os.path.exists(page_source_path)
+    assert os.path.isfile(page_source_path)
+    assert page_source_path == os.path.join(
         a_browser.config.reports_folder,
-        f'{next(browser.config._counter) - 1}.png',
+        f'{next(browser.config._counter) - 1}.html',
     )
 
 
 def test_can_make_screenshot_with_custom_name_with_empty_path(a_browser):
     a_browser.open(EMPTY_PAGE_URL)
 
-    screenshot_path = a_browser.get(query.screenshot_saved(path='custom.png'))
+    screenshot_path = a_browser.get(
+        query.page_source_saved(path='custom.html')
+    )
 
     assert os.path.exists(screenshot_path)
     assert os.path.isfile(screenshot_path)
-    assert screenshot_path == 'custom.png'
+    assert screenshot_path == 'custom.html'
 
 
-def test_can_make_screenshot_with_custom_path_to_folder_without_png_file_name(
-    a_browser,
-):
-    custom_folder = os.path.join(
-        a_browser.config.reports_folder,
-        f'custom_folder_{next(a_browser.config._counter)}',
-    )
-    a_browser.open(EMPTY_PAGE_URL)
-
-    screenshot_path = a_browser.get(query.screenshot_saved(path=custom_folder))
-
-    assert os.path.exists(screenshot_path)
-    assert os.path.isfile(screenshot_path)
-    assert screenshot_path == os.path.join(
-        custom_folder,
-        f'{next(browser.config._counter) - 1}.png',
-    )
-
-
-def test_can_save_screenshot_to_custom_folder_specified_through_config(
-    a_browser,
-):
-    custom_folder = os.path.join(
-        a_browser.config.reports_folder,
-        f'custom_folder_{next(a_browser.config._counter)}',
-    )
-    a_browser.config.reports_folder = custom_folder
-    a_browser.open(EMPTY_PAGE_URL)
-
-    screenshot_path = a_browser.get(query.screenshot_saved())
-
-    assert os.path.exists(screenshot_path)
-    assert os.path.isfile(screenshot_path)
-    assert screenshot_path == os.path.join(
-        custom_folder,
-        f'{next(a_browser.config._counter) - 1}.png',
-    )
+# def test_can_make_screenshot_with_custom_path_to_folder_without_png_file_name(
+#     a_browser,
+# ):
+#     custom_folder = os.path.join(
+#         a_browser.config.reports_folder,
+#         f'custom_folder_{next(a_browser.config._counter)}',
+#     )
+#     a_browser.open(EMPTY_PAGE_URL)
+#
+#     screenshot_path = a_browser.get(query.screenshot_saved(path=custom_folder))
+#
+#     assert os.path.exists(screenshot_path)
+#     assert os.path.isfile(screenshot_path)
+#     assert screenshot_path == os.path.join(
+#         custom_folder,
+#         f'{next(browser.config._counter) - 1}.png',
+#     )
 
 
-def test_saves_screenshot_on_failure(a_browser):
+# def test_can_save_screenshot_to_custom_folder_specified_through_config(
+#     a_browser,
+# ):
+#     custom_folder = os.path.join(
+#         a_browser.config.reports_folder,
+#         f'custom_folder_{next(a_browser.config._counter)}',
+#     )
+#     a_browser.config.reports_folder = custom_folder
+#     a_browser.open(EMPTY_PAGE_URL)
+#
+#     screenshot_path = a_browser.get(query.screenshot_saved())
+#
+#     assert os.path.exists(screenshot_path)
+#     assert os.path.isfile(screenshot_path)
+#     assert screenshot_path == os.path.join(
+#         custom_folder,
+#         f'{next(a_browser.config._counter) - 1}.png',
+#     )
+
+
+def test_saves_page_source_on_failure(a_browser):
     a_browser.open(EMPTY_PAGE_URL)
 
     with pytest.raises(TimeoutException):
-        a_browser.element("#selene_link").with_(timeout=0.1).should(
-            have.exact_text("Selen site")
+        a_browser.element("#does-not-exist").with_(timeout=0.1).should(
+            be.visible
         )
 
     expected_path = os.path.join(
         a_browser.config.reports_folder,
-        f'{next(a_browser.config._counter) - 1}.png',
+        f'{next(a_browser.config._counter) - 1}.html',
     )
     assert os.path.exists(expected_path)
     assert os.path.isfile(expected_path)
 
 
-def test_remembers_last_saved_screenshot(
+def test_remembers_last_saved_page_source(
     a_browser, with_process_exit_teardown
 ):
     a_browser.open(EMPTY_PAGE_URL)
@@ -159,43 +161,43 @@ def test_remembers_last_saved_screenshot(
         )
 
     # assert a_browser.config.last_screenshot == os.path.join(
-    assert a_browser.config.last_screenshot == os.path.join(
+    assert a_browser.config.last_page_source == os.path.join(
         a_browser.config.reports_folder,
-        f'{next(a_browser.config._counter) - 1}.png',
+        f'{next(a_browser.config._counter) - 1}.html',
     )
 
     # WHEN on explicit save
-    a_browser.perform(command.save_screenshot())
+    a_browser.perform(command.save_page_source())
 
     # THEN overriden
-    assert a_browser.config.last_screenshot == os.path.join(
+    assert a_browser.config.last_page_source == os.path.join(
         a_browser.config.reports_folder,
-        f'{next(a_browser.config._counter) - 1}.png',
+        f'{next(a_browser.config._counter) - 1}.html',
     )
 
     # WHEN on explicit save on another browser with shared last_screenshot
     another = a_browser.with_(name='firefox', hold_driver_at_exit=False)
-    another.perform(command.save_screenshot())
+    another.perform(command.save_page_source())
 
     # THEN overriden
     assert (
-        another.config.last_screenshot
-        == a_browser.config.last_screenshot
+        another.config.last_page_source
+        == a_browser.config.last_page_source
         == os.path.join(
             a_browser.config.reports_folder,
-            f'{next(a_browser.config._counter) - 1}.png',
+            f'{next(a_browser.config._counter) - 1}.html',
         )
     )
 
     # WHEN on explicit save on another browser with own last_screenshot
     another = a_browser.with_(
-        name='firefox', hold_driver_at_exit=False, last_screenshot=None
+        name='firefox', hold_driver_at_exit=False, last_page_source=None
     )
-    another.perform(command.save_screenshot())
+    another.perform(command.save_page_source())
 
     # THEN not overriden but stored separately
-    assert another.config.last_screenshot != a_browser.config.last_screenshot
-    assert another.config.last_screenshot == os.path.join(
+    assert another.config.last_page_source != a_browser.config.last_page_source
+    assert another.config.last_page_source == os.path.join(
         a_browser.config.reports_folder,
-        f'{next(a_browser.config._counter) - 1}.png',
+        f'{next(a_browser.config._counter) - 1}.html',
     )
