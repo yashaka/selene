@@ -1,27 +1,37 @@
 [
   {
     "referrer": "Google",
-    "count": 406,
-    "uniques": 138
+    "count": 518,
+    "uniques": 160
   },
   {
     "referrer": "github.com",
-    "count": 247,
-    "uniques": 42
+    "count": 269,
+    "uniques": 45
   },
   {
     "referrer": "ecosia.org",
-    "count": 84,
-    "uniques": 47
+    "count": 101,
+    "uniques": 54
   },
   {
     "referrer": "yandex.ru",
-    "count": 35,
-    "uniques": 13
+    "count": 39,
+    "uniques": 15
   },
   {
     "referrer": "yashaka.github.io",
     "count": 18,
+    "uniques": 6
+  },
+  {
+    "referrer": "statics.teams.cdn.office.net",
+    "count": 10,
+    "uniques": 2
+  },
+  {
+    "referrer": "pypi.org",
+    "count": 9,
     "uniques": 6
   },
   {
@@ -35,18 +45,8 @@
     "uniques": 6
   },
   {
-    "referrer": "pypi.org",
-    "count": 8,
-    "uniques": 5
-  },
-  {
     "referrer": "t.me",
     "count": 7,
     "uniques": 2
-  },
-  {
-    "referrer": "web.telegram.org",
-    "count": 5,
-    "uniques": 1
   }
 ]
