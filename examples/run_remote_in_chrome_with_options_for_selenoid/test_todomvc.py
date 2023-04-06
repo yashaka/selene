@@ -17,7 +17,7 @@ def test_complete_task():
     )
     browser.config.driver_options = options
     project_config = dotenv.dotenv_values()
-    browser.config.remote_url = (
+    browser.config.driver_remote_url = (
         f'https://{project_config["LOGIN"]}:{project_config["PASSWORD"]}@'
         f'selenoid.autotests.cloud/wd/hub'
     )

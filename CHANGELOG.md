@@ -120,9 +120,81 @@ TODO:
 
 ### Changes
 
-- any driver instance passed to `browser.config.driver` will be automatically quit at exit, unless `browser.config.hold_driver_at_exit = True`, that is `False` by default
+### Any custom driver will now be automatically quit at exit
+
+Any driver instance passed to `browser.config.driver` will be automatically quit at exit, unless `browser.config.hold_driver_at_exit = True`, that is `False` by default
+
+### Automatic driver rebuilding is now happens not only on `browser.open`
+
+but on any explicit or implicit call to `browser.config.driver`.
+
+#### It also happens by default for custom and remote drivers if they became dead
+
+You can disable this by setting `browser.config.rebuild_dead_driver = False`. Then, if you want to force to rebuild dead driver you have to "reset" driver instance by setting it to `None` or `...` (ellipsis), for example:
+
+```python
+import pytest
+from selene import browser
+
+@pytest.fixture(scope='function', autouse=True)
+def browser_management():
+    browser.config.rebuild_dead_driver = False
+    browser.config.driver = ...  # force to build it on first call
+    
+    yield
+    
+    browser.quit()  # kill it
+```
+
+
+### «browser» term is deprecated in a lot of places
+
+except Browser class itself, of course (but this might be changed somewhere in 3.0🙃)
+
+TODO: document it...
 
 ### New
+
+#### `browser.config.driver_options` + `browser.config.driver_remote_url`
+
+Finally you can delegate building driver to config manager by passing `driver_options` and `driver_remote_url` to it:
+
+```python
+import dotenv
+from selenium import webdriver
+from selene import browser, have
+
+
+def test_complete_task():
+    options = webdriver.ChromeOptions()
+    options.browser_version = '100.0'
+    options.set_capability(
+        'selenoid:options',
+        {
+            'screenResolution': '1920x1080x24',
+            'enableVNC': True,
+            'enableVideo': True,
+            'enableLog': True,
+        },
+    )
+    browser.config.driver_options = options  # <- 🥳
+    project_config = dotenv.dotenv_values()
+    browser.config.driver_remote_url = (  # <- 🎉🎉🎉
+        f'https://{project_config["LOGIN"]}:{project_config["PASSWORD"]}@'
+        f'selenoid.autotests.cloud/wd/hub'
+    )
+    # To speed tests a bit
+    # by not checking if driver is alive before each action
+    browser.config.rebuild_dead_driver = False
+
+    browser.open('http://todomvc.com/examples/emberjs/')
+    browser.should(have.title_containing('TodoMVC'))
+
+    browser.element('#new-todo').type('a').press_enter()
+    browser.element('#new-todo').type('b').press_enter()
+    browser.element('#new-todo').type('c').press_enter()
+    browser.all('#todo-list>li').should(have.exact_texts('a', 'b', 'c'))
+```
 
 #### `from selene import browser`
 

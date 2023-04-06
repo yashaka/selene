@@ -48,7 +48,7 @@ def a_remote_browser():
     browser_ = Browser(
         Config(
             driver_options=options,
-            remote_url=(
+            driver_remote_url=(
                 f'https://{project_config["LOGIN"]}:{project_config["PASSWORD"]}@'
                 f'selenoid.autotests.cloud/wd/hub'
             ),
@@ -87,7 +87,7 @@ def the_module_remote_browser():
     browser_ = Browser(
         Config(
             driver_options=options,
-            remote_url=(
+            driver_remote_url=(
                 f'https://{project_config.LOGIN}:{project_config.PASSWORD}@'
                 f'selenoid.autotests.cloud/wd/hub'
             ),

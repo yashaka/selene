@@ -37,7 +37,7 @@ class Config:
     # Options to customize default driver lifecycle
     name: str = 'chrome'
     driver_options: Optional[BaseOptions] = None
-    remote_url: Optional[str] = None
+    driver_remote_url: Optional[str] = None
     hold_driver_at_exit: bool = False
     rebuild_dead_driver: bool = True
     # Options to customize driver management
@@ -84,7 +84,7 @@ class Config:
         # Options to customize default driver lifecycle
         name: str = 'chrome',
         driver_options: Optional[BaseOptions] = None,
-        remote_url: Optional[str] = None,
+        driver_remote_url: Optional[str] = None,
         hold_driver_at_exit: bool = False,
         rebuild_dead_driver: bool = True,
         # Options to customize driver management
@@ -135,7 +135,7 @@ class Config:
         # Options to customize default driver lifecycle
         name: str = 'chrome',
         driver_options: Optional[BaseOptions] = None,
-        remote_url: Optional[str] = None,
+        remote_remote_url: Optional[str] = None,
         hold_driver_at_exit: bool = False,
         rebuild_dead_driver: bool = True,
         # Options to customize driver management

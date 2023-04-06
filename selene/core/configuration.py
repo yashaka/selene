@@ -128,7 +128,7 @@ def _build_local_driver_by_name_or_remote_by_url(
         from selenium.webdriver import Remote
 
         return Remote(
-            command_executor=config.remote_url,
+            command_executor=config.driver_remote_url,
             options=config.driver_options,
         )
 
@@ -137,7 +137,9 @@ def _build_local_driver_by_name_or_remote_by_url(
         'firefox': install_and_build_firefox,
         'edge': install_and_build_edge,
         'remote': build_remote_driver,
-    }.get(config.name if not config.remote_url else 'remote', 'chrome')()
+    }.get(
+        config.name if not config.driver_remote_url else 'remote', 'chrome'
+    )()
 
 
 class ManagedDriverDescriptor:
@@ -269,8 +271,8 @@ class Config:
     because it may lead to recursion.
 
     The default factory builds:
-    * either a local driver by value specified in `config.browser_name`
-    * or remote driver by value specified in `config.remote_url`.
+    * either a local driver by value specified in `config.name`
+    * or remote driver by value specified in `config.driver_remote_url`.
     """
 
     # TODO: isn't this option too much?
@@ -316,11 +318,7 @@ class Config:
     )
 
     driver_options: Optional[BaseOptions] = None
-
-    # TODO: should we name it driver_executor?
-    #       as it's named in RemoteWebDriver constructor...
-    #       or maybe driver_url?
-    remote_url: Optional[str] = None
+    driver_remote_url: Optional[str] = None
 
     # TODO: Consider alternative naming among:
     #           browser.config.name = 'chrome'
@@ -333,7 +331,7 @@ class Config:
     """
     Desired name of the driver
     to be processed by Selene's default config.build_driver_strategy.
-    It is ignored by default `config.build_driver_strategy` if `config.remote_url` is set.
+    It is ignored by default `config.build_driver_strategy` if `config.driver_remote_url` is set.
 
     GIVEN set to any of: 'chrome', 'firefox', 'edge',
     AND config.driver is left unset (default value is ...),
@@ -453,6 +451,9 @@ class Config:
     #       we can get into recursion or something like that?
     #       probably not recursion, but a lot of times trying to rebuild driver
     #       in the middle of a test... no?
+    # TODO: should we rename it to rebuild_driver_if_not_alive?
+    #       i.e. reusing the alive term,
+    #       that was already used in is_driver_alive_strategy
     rebuild_dead_driver: bool = True
     """
     Controls whether driver should be automatically rebuilt
