@@ -2,13 +2,13 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 571,
-    "uniques": 296
+    "count": 533,
+    "uniques": 279
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 82,
+    "count": 80,
     "uniques": 24
   },
   {
@@ -20,25 +20,13 @@
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 29,
-    "uniques": 12
+    "count": 28,
+    "uniques": 11
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
     "count": 21,
-    "uniques": 11
-  },
-  {
-    "path": "/yashaka/selene/issues/188",
-    "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
-    "count": 17,
-    "uniques": 14
-  },
-  {
-    "path": "/yashaka/selene/issues/287",
-    "title": "from selenium to selene · Issue #287 · yashaka/selene · GitHub",
-    "count": 17,
     "uniques": 11
   },
   {
@@ -48,15 +36,27 @@
     "uniques": 9
   },
   {
+    "path": "/yashaka/selene/issues/188",
+    "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
+    "count": 16,
+    "uniques": 13
+  },
+  {
     "path": "/yashaka/selene/tree/master/selene/api",
     "title": "selene/selene/api at master · yashaka/selene · GitHub",
     "count": 16,
     "uniques": 7
   },
   {
-    "path": "/yashaka/selene/blob/master/README.md",
-    "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 16,
-    "uniques": 6
+    "path": "/yashaka/selene/pull/431",
+    "title": "Add type checker [Mypy] by aleksandr-kotlyar · Pull Request #431 · yashaka/se...",
+    "count": 15,
+    "uniques": 2
+  },
+  {
+    "path": "/yashaka/selene/commits/master",
+    "title": "Commits · yashaka/selene · GitHub",
+    "count": 14,
+    "uniques": 8
   }
 ]

@@ -1,13 +1,13 @@
 [
   {
     "referrer": "Google",
-    "count": 435,
-    "uniques": 150
+    "count": 406,
+    "uniques": 138
   },
   {
     "referrer": "github.com",
-    "count": 259,
-    "uniques": 48
+    "count": 247,
+    "uniques": 42
   },
   {
     "referrer": "ecosia.org",
@@ -16,18 +16,13 @@
   },
   {
     "referrer": "yandex.ru",
-    "count": 40,
-    "uniques": 16
+    "count": 35,
+    "uniques": 13
   },
   {
     "referrer": "yashaka.github.io",
     "count": 18,
     "uniques": 6
-  },
-  {
-    "referrer": "automation-remarks.com",
-    "count": 9,
-    "uniques": 2
   },
   {
     "referrer": "readthedocs.org",
@@ -48,5 +43,10 @@
     "referrer": "t.me",
     "count": 7,
     "uniques": 2
+  },
+  {
+    "referrer": "web.telegram.org",
+    "count": 5,
+    "uniques": 1
   }
 ]
