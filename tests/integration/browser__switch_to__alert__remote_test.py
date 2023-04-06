@@ -19,59 +19,83 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+import pytest
 from selenium.common.exceptions import NoAlertPresentException
 
 from tests.integration.helpers.givenpage import GivenPage
 
 
-def test_can_accept_alert(session_browser):
-    GivenPage(session_browser.driver).opened_with_body(
-        """
-        <p>
-        <input id="alert_btn" type="button" onclick="alert('Good morning')" value="Run">
-        </p>"""
-    )
+@pytest.fixture(scope='function')
+def with_dismiss_alerts_teardown(the_module_remote_browser):
+    browser = the_module_remote_browser
 
-    session_browser.element("#alert_btn").click()
-    session_browser.switch_to.alert.accept()
+    yield
 
     try:
-        session_browser.switch_to.alert.accept()
-        assert False, 'actual: alert presents, expected: alert not present'
+        while True:
+            _ = browser.switch_to.alert
+            browser.switch_to.alert.dismiss()
     except NoAlertPresentException:
-        assert True
+        pass
 
 
-def test_can_dismiss_confirm_dialog(session_browser):
-    GivenPage(session_browser.driver).opened_with_body(
+def test_alert_is_present(
+    the_module_remote_browser, with_dismiss_alerts_teardown
+):
+    browser = the_module_remote_browser
+    GivenPage(browser.driver).opened_with_body(
         """
         <p>
         <input id="alert_btn" type="button" onclick="alert('Good morning')" value="Run">
         </p>"""
     )
 
-    session_browser.element("#alert_btn").click()
-    session_browser.switch_to.alert.dismiss()
+    browser.element("#alert_btn").click()
 
     try:
-        session_browser.switch_to.alert.accept()
-        assert False, 'actual: alert presents, expected: alert not present'
-    except NoAlertPresentException:
-        assert True
-
-
-def test_alert_is_present(session_browser):
-    GivenPage(session_browser.driver).opened_with_body(
-        """
-        <p>
-        <input id="alert_btn" type="button" onclick="alert('Good morning')" value="Run">
-        </p>"""
-    )
-
-    session_browser.element("#alert_btn").click()
-
-    try:
-        session_browser.switch_to.alert.accept()
+        _ = browser.switch_to.alert
         assert True
     except NoAlertPresentException:
         assert False, 'actual: alert not present, expected: alert is present'
+
+
+def test_can_accept_alert(
+    the_module_remote_browser, with_dismiss_alerts_teardown
+):
+    browser = the_module_remote_browser
+    GivenPage(browser.driver).opened_with_body(
+        """
+        <p>
+        <input id="alert_btn" type="button" onclick="alert('Good morning')" value="Run">
+        </p>"""
+    )
+    browser.element("#alert_btn").click()
+
+    browser.switch_to.alert.accept()
+
+    try:
+        browser.switch_to.alert.accept()
+        assert False, 'actual: alert presents, expected: alert not present'
+    except NoAlertPresentException:
+        assert True
+
+
+def test_can_dismiss_confirm_dialog(
+    the_module_remote_browser, with_dismiss_alerts_teardown
+):
+    browser = the_module_remote_browser
+    GivenPage(browser.driver).opened_with_body(
+        """
+        <p>
+        <input id="alert_btn" type="button" onclick="alert('Good morning')" value="Run">
+        </p>"""
+    )
+    browser.element("#alert_btn").click()
+
+    browser.switch_to.alert.dismiss()
+
+    try:
+        browser.switch_to.alert.accept()
+        assert False, 'actual: alert presents, expected: alert not present'
+    except NoAlertPresentException:
+        assert True

@@ -60,6 +60,7 @@ pytest = "*"
 pytest-cov = "*"
 codecov = "*"
 mypy = "*"
+python-dotenv = "0.21.1"
 
 [tool.poetry.group.docs]
 optional = true

@@ -114,6 +114,7 @@ TODO:
 - review all typing.cast
 - decide on None as default in managed driver descriptor instead of ...
 - fix «too much screenshots»
+- decide on default value for `rebuild_dead_driver: bool = True` (currently)
 
 ## 2.0.0rc1 (to be released on ?.10.2022)
 

@@ -32,6 +32,7 @@ import warnings
 from typing import Callable, Optional, Any
 
 from selenium.webdriver.common.options import BaseOptions
+from selenium.webdriver.remote.command import Command
 
 from selene.common import fp
 from selene.common.data_structures import persistent
@@ -163,6 +164,8 @@ class ManagedDriverDescriptor:
             persistent.Box[WebDriver], getattr(config, self.name)
         )
         if driver_box.value is ... or (
+            # TODO: think on: if turned on, may slow down tests...
+            #       especially when running remote tests...
             config.rebuild_dead_driver
             and not callable(driver_box.value)  # TODO: consider deprecating
             and not config.is_driver_alive_strategy(driver_box.value)
@@ -303,7 +306,13 @@ class Config:
     # TODO: refactor "alive" strategy,
     #       because it probably will not work on remote driver
     is_driver_alive_strategy: Callable[[WebDriver], bool] = lambda driver: (
-        on_error_return_false(lambda: driver.title is not None)
+        # on_error_return_false(lambda: driver.title is not None)
+        (
+            driver.service.process is not None
+            and driver.service.process.poll() is None
+        )
+        if hasattr(driver, 'service')
+        else on_error_return_false(lambda: driver.window_handles is not None)
     )
 
     driver_options: Optional[BaseOptions] = None
@@ -435,8 +444,20 @@ class Config:
         )
         self.hold_driver_at_exit = value
 
+    # TODO: should we make it False by default?
+    #       for backward compatibility in case of manually set driver at least?
+    # TODO: should rebuild only on next open?
+    #       like it was in the past for SharedBrowser and SharedConfig?
+    #       but is "next open" enough? if it happens in same test second time,
+    #       and driver was crashed between first and second open, then
+    #       we can get into recursion or something like that?
+    #       probably not recursion, but a lot of times trying to rebuild driver
+    #       in the middle of a test... no?
     rebuild_dead_driver: bool = True
-    """Controls whether driver should be automatically rebuilt if it was quit or crashed."""
+    """
+    Controls whether driver should be automatically rebuilt
+    if it was quit or crashed.
+    """
 
     # TODO: consider allowing to provide a Descriptor as a value
     #       by inheritance like:
