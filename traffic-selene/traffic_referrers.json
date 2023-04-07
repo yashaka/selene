@@ -1,23 +1,23 @@
 [
   {
     "referrer": "Google",
-    "count": 488,
-    "uniques": 146
+    "count": 518,
+    "uniques": 158
   },
   {
     "referrer": "github.com",
-    "count": 259,
-    "uniques": 41
+    "count": 286,
+    "uniques": 43
   },
   {
     "referrer": "ecosia.org",
-    "count": 101,
-    "uniques": 54
+    "count": 111,
+    "uniques": 60
   },
   {
     "referrer": "yandex.ru",
-    "count": 32,
-    "uniques": 14
+    "count": 41,
+    "uniques": 16
   },
   {
     "referrer": "pypi.org",
