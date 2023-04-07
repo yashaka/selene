@@ -318,7 +318,22 @@ class Config:
     )
 
     driver_options: Optional[BaseOptions] = None
+
+    # Probably, more precise and technically correct name and signature would be:
+    #     driver_remote_connection: Optional[Union[str, RemoteConnection]] = None
+    # But we decided to keep it more simple and user-friendly
+    # in context of the majority of use cases when we just need to pass a URL:
     driver_remote_url: Optional[str] = None
+    """
+    A URL to be used as remote server address to instantiate a RemoteConnection
+    to be used by RemoteWebDriver to connect to the remote server.
+    
+    Also known as `command_executor`,
+    when passing on init: `driver = remote.WebDriver(command_executor=HERE)`.
+    Currently we name it and type hint as URL,
+    but if you pass a RemoteConnection object,
+    it will work same way as in Selenium WebDriver.
+    """
 
     # TODO: Consider alternative naming among:
     #           browser.config.name = 'chrome'
