@@ -327,7 +327,7 @@ class Config:
     """
     A URL to be used as remote server address to instantiate a RemoteConnection
     to be used by RemoteWebDriver to connect to the remote server.
-    
+
     Also known as `command_executor`,
     when passing on init: `driver = remote.WebDriver(command_executor=HERE)`.
     Currently we name it and type hint as URL,
