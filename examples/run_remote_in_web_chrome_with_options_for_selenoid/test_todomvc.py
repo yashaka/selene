@@ -1,9 +1,21 @@
-import dotenv
+import os
+
+from dotenv import dotenv_values
 from selenium import webdriver
 from selene import browser, have
 
 
 def test_complete_task():
+    dotenv = dotenv_values()
+
+    class ProjectConfig:
+        selenoid_login = os.getenv(
+            'selenoid_login', dotenv.get('selenoid_login')
+        )
+        selenoid_password = os.getenv(
+            'selenoid_password', dotenv.get('selenoid_password')
+        )
+
     options = webdriver.ChromeOptions()
     options.browser_version = '100.0'
     options.set_capability(
@@ -16,16 +28,15 @@ def test_complete_task():
         },
     )
     browser.config.driver_options = options
-    project_config = dotenv.dotenv_values()
     browser.config.driver_remote_url = (
-        f'https://{project_config["LOGIN"]}:{project_config["PASSWORD"]}@'
+        f'https://{ProjectConfig.selenoid_login}:{ProjectConfig.selenoid_password}@'
         f'selenoid.autotests.cloud/wd/hub'
     )
     # To speed tests a bit
     # by not checking if driver is alive before each action
     browser.config.rebuild_dead_driver = False
 
-    browser.open('http://todomvc.com/examples/emberjs/')
+    browser.open('https://todomvc.com/examples/emberjs/')
     browser.should(have.title_containing('TodoMVC'))
 
     browser.element('#new-todo').type('a').press_enter()

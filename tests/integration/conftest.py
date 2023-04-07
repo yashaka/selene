@@ -1,8 +1,8 @@
 import dataclasses
 import os
 
-import dotenv
 import pytest
+from dotenv import dotenv_values
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.firefox.service import Service as FirefoxService
@@ -62,6 +62,16 @@ def a_remote_browser():
 
 @pytest.fixture(scope='module')
 def the_module_remote_browser():
+    dotenv = dotenv_values()
+
+    class ProjectConfig:
+        selenoid_login = os.getenv(
+            'selenoid_login', dotenv.get('selenoid_login')
+        )
+        selenoid_password = os.getenv(
+            'selenoid_password', dotenv.get('selenoid_password')
+        )
+
     options = webdriver.ChromeOptions()
     options.browser_version = '100.0'
     options.set_capability(
@@ -74,21 +84,12 @@ def the_module_remote_browser():
         },
     )
 
-    @dataclasses.dataclass
-    class ProjectConfig:
-        LOGIN: str = dataclasses.field(
-            default_factory=lambda: os.getenv('LOGIN', None)
-        )
-        PASSWORD: str = dataclasses.field(
-            default_factory=lambda: os.getenv('PASSWORD', None)
-        )
-
-    project_config = ProjectConfig(**dotenv.dotenv_values())
     browser_ = Browser(
         Config(
             driver_options=options,
             driver_remote_url=(
-                f'https://{project_config.LOGIN}:{project_config.PASSWORD}@'
+                f'https://{ProjectConfig.selenoid_login}:'
+                f'{ProjectConfig.selenoid_password}@'
                 f'selenoid.autotests.cloud/wd/hub'
             ),
         )

@@ -45,8 +45,8 @@ jobs:
     env:
       DISPLAY: ":99"
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      LOGIN: ${{ secrets.SELENOID_LOGIN }}
-      PASSWORD: ${{ secrets.SELENOID_PASSWORD }}
+      selenoid_login: ${{ secrets.SELENOID_LOGIN }}
+      selenoid_password: ${{ secrets.SELENOID_PASSWORD }}
     strategy:
       fail-fast: false
       matrix:
