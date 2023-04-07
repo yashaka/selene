@@ -2,32 +2,32 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 610,
-    "uniques": 313
+    "count": 573,
+    "uniques": 294
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 87,
-    "uniques": 29
+    "count": 75,
+    "uniques": 26
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 48,
-    "uniques": 22
+    "count": 47,
+    "uniques": 21
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 33,
-    "uniques": 13
+    "count": 32,
+    "uniques": 12
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 25,
-    "uniques": 13
+    "count": 22,
+    "uniques": 10
   },
   {
     "path": "/yashaka/selene/tree/master/selene/core",
@@ -36,27 +36,27 @@
     "uniques": 12
   },
   {
-    "path": "/yashaka/selene/tree/master/docs",
-    "title": "selene/docs at master · yashaka/selene · GitHub",
-    "count": 19,
-    "uniques": 10
-  },
-  {
-    "path": "/yashaka/selene/tree/master/tests",
-    "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 18,
-    "uniques": 16
-  },
-  {
     "path": "/yashaka/selene/issues/188",
     "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
     "count": 18,
     "uniques": 15
   },
   {
+    "path": "/yashaka/selene/tree/master/docs",
+    "title": "selene/docs at master · yashaka/selene · GitHub",
+    "count": 18,
+    "uniques": 9
+  },
+  {
     "path": "/yashaka/selene/tree/master/selene/api",
     "title": "selene/selene/api at master · yashaka/selene · GitHub",
     "count": 18,
     "uniques": 8
+  },
+  {
+    "path": "/yashaka/selene/tree/master/tests",
+    "title": "selene/tests at master · yashaka/selene · GitHub",
+    "count": 16,
+    "uniques": 14
   }
 ]
