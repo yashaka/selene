@@ -32,9 +32,6 @@ def test_complete_task():
     options.set_capability(
         'bstack:options',
         {
-            # 'platformName': 'ios',
-            # 'deviceName': 'iPhone 14 Pro Max',
-            # 'platformVersion': '16',
             'deviceName': 'Google Pixel 7',
             # 'browserName': 'chrome',  # default for Pixel
             # 'deviceOrientation': 'landscape',
@@ -49,17 +46,23 @@ def test_complete_task():
     # by not checking if driver is alive before each action
     browser.config.rebuild_dead_driver = False
 
+    # WHEN
     browser.open('https://todomvc.com/examples/emberjs/')
+
     browser.should(have.title_containing('TodoMVC'))
 
+    # WHEN
     browser.element('#new-todo').type('a').press_enter()
     browser.element('#new-todo').type('b').press_enter()
     browser.element('#new-todo').type('c').press_enter()
+
     browser.all('#todo-list>li').should(have.exact_texts('a', 'b', 'c'))
 
+    # WHEN
     browser.all('#todo-list>li').element_by(have.exact_text('b')).element(
         '.toggle'
     ).click()
+
     browser.all('#todo-list>li').by(have.css_class('completed')).should(
         have.exact_texts('b')
     )
