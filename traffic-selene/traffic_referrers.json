@@ -1,23 +1,28 @@
 [
   {
     "referrer": "Google",
-    "count": 507,
-    "uniques": 156
+    "count": 559,
+    "uniques": 164
   },
   {
     "referrer": "github.com",
-    "count": 269,
-    "uniques": 43
+    "count": 308,
+    "uniques": 45
   },
   {
     "referrer": "ecosia.org",
-    "count": 110,
-    "uniques": 60
+    "count": 115,
+    "uniques": 64
   },
   {
     "referrer": "yandex.ru",
-    "count": 41,
-    "uniques": 16
+    "count": 44,
+    "uniques": 17
+  },
+  {
+    "referrer": "ondosis.atlassian.net",
+    "count": 18,
+    "uniques": 1
   },
   {
     "referrer": "pypi.org",
@@ -36,17 +41,12 @@
   },
   {
     "referrer": "automated-testing.info",
-    "count": 6,
-    "uniques": 5
+    "count": 7,
+    "uniques": 6
   },
   {
-    "referrer": "Bing",
+    "referrer": "qwiki.nixs.com",
     "count": 6,
-    "uniques": 2
-  },
-  {
-    "referrer": "t.me",
-    "count": 6,
-    "uniques": 1
+    "uniques": 3
   }
 ]

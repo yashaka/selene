@@ -2,61 +2,61 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 616,
-    "uniques": 316
+    "count": 672,
+    "uniques": 338
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 81,
-    "uniques": 25
+    "count": 87,
+    "uniques": 28
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 46,
-    "uniques": 22
+    "count": 59,
+    "uniques": 27
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 31,
+    "count": 32,
     "uniques": 11
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 22,
-    "uniques": 10
+    "count": 26,
+    "uniques": 12
   },
   {
     "path": "/yashaka/selene/tree/master/selene/core",
     "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 20,
-    "uniques": 12
-  },
-  {
-    "path": "/yashaka/selene/tree/master/docs",
-    "title": "selene/docs at master · yashaka/selene · GitHub",
-    "count": 20,
-    "uniques": 10
+    "count": 25,
+    "uniques": 16
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 18,
-    "uniques": 16
+    "count": 21,
+    "uniques": 18
+  },
+  {
+    "path": "/yashaka/selene/tree/master/docs",
+    "title": "selene/docs at master · yashaka/selene · GitHub",
+    "count": 21,
+    "uniques": 11
+  },
+  {
+    "path": "/yashaka/selene/commits/master",
+    "title": "Commits · yashaka/selene · GitHub",
+    "count": 21,
+    "uniques": 9
   },
   {
     "path": "/yashaka/selene/issues/188",
     "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
     "count": 18,
     "uniques": 15
-  },
-  {
-    "path": "/yashaka/selene/blob/master/README.md",
-    "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 17,
-    "uniques": 11
   }
 ]
