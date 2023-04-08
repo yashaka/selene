@@ -115,6 +115,7 @@ TODO:
 - decide on None as default in managed driver descriptor instead of ...
 - fix «too much screenshots»
 - decide on default value for `rebuild_dead_driver: bool = True` (currently)
+- update README for rc1
 
 ## 2.0.0rc1 (to be released on ?.10.2022)
 
@@ -208,8 +209,8 @@ Adds ability to use `browser.with_(**config_options_to_override)` to create new 
 from selene import browser
 
 chrome = browser
-firefox = browser.with_(name='firefox')
-edge = browser.with_(name='edge')
+firefox = browser.with_(driver_name='firefox')
+edge = browser.with_(driver_name='edge')
 ...
 # customizing all browsers at once:
 browser.config.timeout = 10
@@ -221,8 +222,8 @@ as alternative to:
 from selene import Browser, Config
 
 chrome = Browser(Config())
-firefox = Browser(Config(name='firefox'))
-edge = Browser(Config(name='edge'))
+firefox = Browser(Config(driver_name='firefox'))
+edge = Browser(Config(driver_name='edge'))
 
 ...
 
@@ -244,6 +245,7 @@ edge.config.timeout = 10
   - `browser.config.get_or_create_driver`
   - `browser.config.reset_driver`
     - use `selene.browser.config.driver = ...`
+  - `browser.config.browser_name` in favor of `browser.config.driver_name`
 - removed
   - from selene.support.shared import SharedConfig, SharedBrowser
   - from selene.core.entity import BrowserCondition, ElementCondition, CollectionCondition

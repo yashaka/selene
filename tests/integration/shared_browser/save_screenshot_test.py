@@ -174,7 +174,7 @@ def test_remembers_last_saved_screenshot(
     )
 
     # WHEN on explicit save on another browser with shared last_screenshot
-    another = a_browser.with_(name='firefox', hold_driver_at_exit=False)
+    another = a_browser.with_(driver_name='firefox', hold_driver_at_exit=False)
     another.perform(command.save_screenshot())
 
     # THEN overriden
@@ -189,7 +189,7 @@ def test_remembers_last_saved_screenshot(
 
     # WHEN on explicit save on another browser with own last_screenshot
     another = a_browser.with_(
-        name='firefox', hold_driver_at_exit=False, last_screenshot=None
+        driver_name='firefox', hold_driver_at_exit=False, last_screenshot=None
     )
     another.perform(command.save_screenshot())
 

@@ -35,7 +35,7 @@ class Config:
     """
 
     # Options to customize default driver lifecycle
-    name: str = 'chrome'
+    driver_name: str = 'chrome'
     driver_options: Optional[BaseOptions] = None
     driver_remote_url: Optional[str] = None
     hold_driver_at_exit: bool = False
@@ -51,16 +51,11 @@ class Config:
     # Managed Driver
     driver: WebDriver = ...
     # Options to customize this config creation
-    _deep_copy_implicitly_driver_with_name: bool = True
-    # Options to customize browser behavior
-    base_url: str = ''
-    window_width: Optional[int] = None
-    window_height: Optional[int] = None
-    # Options to customize browser and elements behavior
+    _override_driver_with_all_driver_like_options: bool = True
+    # Options to customize general Selene behavior
     # > to customize waiting logic
     timeout: float = 4
     poll_during_waits: int = ...  # currently fake option
-    log_outer_html_on_failure: bool = False
     _wait_decorator: Callable[
         [Wait[E]], Callable[[F], F]
     ] = lambda w: lambda f: f
@@ -72,7 +67,11 @@ class Config:
     last_page_source: Optional[str] = None
     _save_screenshot_strategy: Callable[[Config, Optional[str]], Any] = ...
     _save_page_source_strategy: Callable[[Config, Optional[str]], Any] = ...
-    # Options to customize elements behavior
+    # Options to customize web browser and elements behavior
+    base_url: str = ''
+    window_width: Optional[int] = None
+    window_height: Optional[int] = None
+    log_outer_html_on_failure: bool = False
     set_value_by_js: bool = False
     type_by_js: bool = False
     click_by_js: bool = False
@@ -82,7 +81,7 @@ class Config:
         self,
         *,
         # Options to customize default driver lifecycle
-        name: str = 'chrome',
+        driver_name: str = 'chrome',
         driver_options: Optional[BaseOptions] = None,
         driver_remote_url: Optional[str] = None,
         hold_driver_at_exit: bool = False,
@@ -98,19 +97,14 @@ class Config:
         # Managed Driver
         driver: WebDriver = ...,
         # Options to customize this config creation
-        _deep_copy_implicitly_driver_with_name: bool = True,
-        # Options to customize browser behavior
-        base_url: str = '',
-        window_width: Optional[int] = None,
-        window_height: Optional[int] = None,
-        # Options to customize browser and elements behavior
+        _override_driver_with_all_driver_like_options: bool = True,
+        # Options to customize general Selene behavior
         # > to customize waiting logic
         timeout: float = 4,
         poll_during_waits: int = ...,  # currently fake option
-        log_outer_html_on_failure: bool = False,
         _wait_decorator: Callable[
             [Wait[E]], Callable[[F], F]
-        ] = lambda _: fp.identity,
+        ] = lambda w: lambda f: f,
         reports_folder: Optional[str] = ...,
         _counter: itertools.count = ...,
         save_screenshot_on_failure: bool = True,
@@ -123,7 +117,11 @@ class Config:
         _save_page_source_strategy: Callable[
             [Config, Optional[str]], Any
         ] = ...,
-        # Options to customize elements behavior
+        # Options to customize web browser and elements behavior
+        base_url: str = '',
+        window_width: Optional[int] = None,
+        window_height: Optional[int] = None,
+        log_outer_html_on_failure: bool = False,
         set_value_by_js: bool = False,
         type_by_js: bool = False,
         click_by_js: bool = False,
@@ -133,7 +131,7 @@ class Config:
         self,
         *,
         # Options to customize default driver lifecycle
-        name: str = 'chrome',
+        driver_name: str = 'chrome',
         driver_options: Optional[BaseOptions] = None,
         remote_remote_url: Optional[str] = None,
         hold_driver_at_exit: bool = False,
@@ -149,19 +147,14 @@ class Config:
         # Managed Driver
         driver: WebDriver = ...,
         # Options to customize this config creation
-        _deep_copy_implicitly_driver_with_name: bool = True,
-        # Options to customize browser behavior
-        base_url: str = '',
-        window_width: Optional[int] = None,
-        window_height: Optional[int] = None,
-        # Options to customize browser and elements behavior
+        _override_driver_with_all_driver_like_options: bool = True,
+        # Options to customize general Selene behavior
         # > to customize waiting logic
         timeout: float = 4,
         poll_during_waits: int = ...,  # currently fake option
-        log_outer_html_on_failure: bool = False,
         _wait_decorator: Callable[
             [Wait[E]], Callable[[F], F]
-        ] = lambda _: fp.identity,
+        ] = lambda w: lambda f: f,
         reports_folder: Optional[str] = ...,
         _counter: itertools.count = ...,
         save_screenshot_on_failure: bool = True,
@@ -174,7 +167,11 @@ class Config:
         _save_page_source_strategy: Callable[
             [Config, Optional[str]], Any
         ] = ...,
-        # Options to customize elements behavior
+        # Options to customize web browser and elements behavior
+        base_url: str = '',
+        window_width: Optional[int] = None,
+        window_height: Optional[int] = None,
+        log_outer_html_on_failure: bool = False,
         set_value_by_js: bool = False,
         type_by_js: bool = False,
         click_by_js: bool = False,

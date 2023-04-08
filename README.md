@@ -183,15 +183,15 @@ OR with custom setup
 ```python
 from selene import browser, by, be, have
 
-browser.config.name = 'firefox'
+browser.config.driver_name = 'firefox'
 browser.config.base_url = 'https://google.com'
 browser.config.timeout = 2
 # browser.config.* = ...
 
 browser.open('/ncr')
-browser.element(by.name('q')).should(be.blank)\
+browser.element(by.name('q')).should(be.blank)
     .type('selenium').press_enter()
-browser.all('#rso>div').should(have.size_greater_than(5))\
+browser.all('#rso>div').should(have.size_greater_than(5))
     .first.should(have.text('Selenium automates browsers'))
 ```
 

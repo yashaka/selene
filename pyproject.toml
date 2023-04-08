@@ -61,6 +61,7 @@ pytest-cov = "*"
 codecov = "*"
 mypy = "*"
 python-dotenv = "0.21.1"
+Appium-Python-Client = "^2.9.0"
 
 [tool.poetry.group.docs]
 optional = true

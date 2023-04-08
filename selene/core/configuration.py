@@ -138,7 +138,8 @@ def _build_local_driver_by_name_or_remote_by_url(
         'edge': install_and_build_edge,
         'remote': build_remote_driver,
     }.get(
-        config.name if not config.driver_remote_url else 'remote', 'chrome'
+        config.driver_name if not config.driver_remote_url else 'remote',
+        'chrome',
     )()
 
 
@@ -217,7 +218,7 @@ class ManagedDriverDescriptor:
                         'You would be able to provide it only on init,'
                         'and use it only via attribute access,'
                         'without possibility to override value with `persistent.replace` '
-                        'or `config.with_(**overrides)`. '
+                        'or `config.with_(**optioins_to_override)`. '
                         'If you want to use custom descriptor, '
                         'you have to subclass Config and provide your descriptor object'
                         'on class attributes definition level.'
@@ -253,12 +254,36 @@ class Config:
     that might influence Selene behavior depending on context.
     As option the driver instance is also considered.
     More over, this config is not just config,
-    but partially manages the driver lifecycle.
-    By this we definitely break SRP principle... in the name of Good:D
+    but fully manages the driver lifecycle.
+    By this we definitely break SRP principle...
+    In the name of Good:D. Kind of;).
 
     All this makes it far from being a simple options data class...
     – yet kept as one «class for everything» to keep things easier to use,
-    especially taking into account some historical reasons of Selene's design.
+    especially taking into account some historical reasons of Selene's design,
+    that was influenced a lot by the Selenide from Java world.
+    As a result sometimes options are not consistent with each other,
+    when we speak about different contexts of their usage.
+    For example, this same config,
+    once customized with `config.driver_options = UiAutomator2Options()`,
+    will result in mobile driver built, but then all other web-related options,
+    for example, a `config.base_url` will be not relevant.
+    Some of them will be ignored, while some of them,
+    for example js-related, like `config.set_value_by_js`,
+    will break the code execution (JavaScript does not work in mobile apps).
+    In an ideal world, we would have to split this config into several ones,
+    starting BaseConfig and continuing with WebConfig, MobileConfig, etc.
+    Yet, we have what we have. This complicates things a bit,
+    especially for us, contributors of Selene,
+    but makes easier for newbies in a lot of "harder" cases,
+    like customizing same shared browser instance for multi-platform test runs,
+    when we have one test that works for all platforms.
+    Thus, we allow to do "harder" tasks easier for "less experienced" users.
+    Again, such "easiness" does not mean "simplicity" for us, contributors,
+    and also for advanced Selene users,
+    who want to customize things in a lot of ways
+    and have them easier to support on a long run.
+    But for now, let's keep it as is, considered as a trade-off.
     """
 
     build_driver_strategy: Callable[
@@ -287,7 +312,7 @@ class Config:
     _schedule_driver_teardown_strategy: Callable[
         [Config, Callable[[], WebDriver]],
         typing.Union[None, typing.Any],
-    ] = lambda config, get_driver: atexit.register(  # TODO: get_driver or simply driver?
+    ] = lambda config, get_driver: atexit.register(
         lambda: config._teardown_driver_strategy(config, get_driver())
     )
 
@@ -335,18 +360,14 @@ class Config:
     it will work same way as in Selenium WebDriver.
     """
 
-    # TODO: Consider alternative naming among:
-    #           browser.config.name = 'chrome'
-    #           browser.config.driver_name = 'chrome'
-    #           browser.config.automation_name = 'chrome'
-    #       Maybe driver_name is the best one?
-    #       * TODO: Check what it actually is set under driver.name for appium and remote cases
-    # TODO: consider setting to None or ... by default, and pick up by factory any installed browser in a system
-    name: str = 'chrome'
+    #               for appium and remote cases
+    # TODO: consider setting to None or ... by default,
+    #       and pick up by factory any installed browser in a system
+    driver_name: str = 'chrome'
     """
-    Desired name of the driver
-    to be processed by Selene's default config.build_driver_strategy.
-    It is ignored by default `config.build_driver_strategy` if `config.driver_remote_url` is set.
+    A desired name of the driver to build by `config.build_driver_strategy`.
+    It is ignored by default `config.build_driver_strategy`
+    if `config.driver_remote_url` is set.
 
     GIVEN set to any of: 'chrome', 'firefox', 'edge',
     AND config.driver is left unset (default value is ...),
@@ -356,45 +377,47 @@ class Config:
     """
 
     # TODO: finalize the name of this option and consider making public
-    _deep_copy_implicitly_driver_with_name: bool = True
+    _override_driver_with_all_driver_like_options: bool = True
     """
-    Controls whether driver will be deep copied with config.name
-    when customizing config via `config.with_(**options)`.
+    Controls whether driver will be deep copied
+    with `config.driver_name`, `config.driver_remote_url`,
+    and so for any other `config.*driver*` option.
+    when customizing config via `config.with_(**options_to_override)`.
 
     Examples:
         Building 2 drivers with implicit deep copy of driver storage:
 
         >>> chrome_config = Config(
-        >>>     name='chrome',
+        >>>     driver_name='chrome',
         >>>     timeout=10.0,
         >>>     base_url='https://autotest.how',
         >>> )
         >>> chrome = chrome_config.driver
-        >>> firefox_config = chrome_config.with_(name='firefox')
+        >>> firefox_config = chrome_config.with_(driver_name='firefox')
         >>> firefox = firefox_config.driver
         >>> assert firefox is not chrome
 
         Building 2 drivers with explicit deep copy of driver storage [1]:
 
         >>> chrome_config = Config(
-        >>>     name='chrome',
+        >>>     driver_name='chrome',
         >>>     timeout=10.0,
         >>>     base_url='https://autotest.how',
-        >>>     _deep_copy_implicitly_driver_with_name=False,
+        >>>     _override_driver_with_all_driver_like_options=False,
         >>> )
         >>> chrome = chrome_config.driver
-        >>> firefox_config = chrome_config.with_(name='firefox', driver=...)
+        >>> firefox_config = chrome_config.with_(driver_name='firefox', driver=...)
         >>> firefox = firefox_config.driver
         >>> assert firefox is not chrome
 
         Building 2 drivers with explicit deep copy of driver storage [2]:
 
         >>> chrome_config = Config(
-        >>>     name='chrome',
+        >>>     driver_name='chrome',
         >>>     timeout=10.0,
         >>>     base_url='https://autotest.how',
         >>> )
-        >>> chrome_config._deep_copy_implicitly_driver_with_name = False
+        >>> chrome_config._override_driver_with_all_driver_like_options = False
         >>> chrome = chrome_config.driver
         >>> firefox_config = chrome_config.with_(name='firefox', driver=...)
         >>> firefox = firefox_config.driver
@@ -403,11 +426,11 @@ class Config:
         Building 1 driver because driver storage was not copied:
 
         >>> chrome_config = Config(
-        >>>     name='chrome',
+        >>>     driver_name='chrome',
         >>>     timeout=10.0,
         >>>     base_url='https://autotest.how',
         >>> )
-        >>> chrome_config._deep_copy_implicitly_driver_with_name = False
+        >>> chrome_config._override_driver_with_all_driver_like_options = False
         >>> chrome = chrome_config.driver
         >>> firefox_config = chrome_config.with_(name='firefox')
         >>> firefox = firefox_config.driver
@@ -417,12 +440,12 @@ class Config:
     # TODO: consider to deprecate because might confuse in case of Appium usage
     @property
     def browser_name(self) -> str:
-        return self.name
+        return self.driver_name
 
     # TODO: consider to deprecate because might confuse in case of Appium usage
     @browser_name.setter
     def browser_name(self, value: str):
-        self.name = value
+        self.driver_name = value
 
     # TODO: do we need it?
     # quit_last_driver_on_reset: bool = False
@@ -457,6 +480,9 @@ class Config:
         )
         self.hold_driver_at_exit = value
 
+    # TODO: consider adding option to reset driver on browser.open if is not alive
+    # reset_dead_driver_on_open: bool = False
+
     # TODO: should we make it False by default?
     #       for backward compatibility in case of manually set driver at least?
     # TODO: should rebuild only on next open?
@@ -472,7 +498,8 @@ class Config:
     rebuild_dead_driver: bool = True
     """
     Controls whether driver should be automatically rebuilt
-    if it was quit or crashed.
+    when on next call to config.driver
+    it was noticed as not alive (e.g. after quit or crash).
     """
 
     # TODO: consider allowing to provide a Descriptor as a value
@@ -491,7 +518,7 @@ class Config:
     #       like teardown...
     #       but if we provide a callable instance to driver,
     #       then it will just substitute the whole lifecycle
-    driver: WebDriver = ManagedDriverDescriptor(default=...)
+    driver: WebDriver = ManagedDriverDescriptor(default=...)  # type: ignore
     """
     A driver instance with lifecycle managed by this config special options
     (TODO: specify these options...),
@@ -519,11 +546,17 @@ class Config:
     THEN driver will be quit.
     """
 
+    timeout: float = 4
+    poll_during_waits: int = 100
+    """
+    a fake option, not currently used in Selene waiting:)
+    """
+
+    # --- Web-specific options ---
+
     base_url: str = ''
     window_width: Optional[int] = None
     window_height: Optional[int] = None
-
-    timeout: float = 4
     log_outer_html_on_failure: bool = False
     set_value_by_js: bool = False
     type_by_js: bool = False
@@ -551,11 +584,6 @@ class Config:
     TODO: why we name it as hook_* why not handle_* ?
           what would be proper style?
     '''
-
-    poll_during_waits: int = 100
-    """
-    a fake option, not currently used in Selene waiting:)
-    """
 
     reports_folder: str = os.path.join(
         os.path.expanduser('~'),
@@ -669,28 +697,36 @@ class Config:
     # TODO: consider adding option to disable persistence of all not-overridden options
     #       or marking some of them as not persistent
     #       (i.e. unbind some of them keeping the previous value set)
-    def with_(self, **config_as_kwargs) -> Config:
+    def with_(self, **options_to_override) -> Config:
         """
 
         Parameters:
-            **config_as_kwargs:
+            **options_to_override:
                 options to override in the new config.
 
-                If `name` is among them, and `driver` is not among them,
-                and `self._deep_copy_implicitly_driver_with_name` is True,
+                Technically "override" here means:
+                "deep copy option storage and update its value to the specified one".
+                All other option storages will be:
+                "shallow copied from the current config".
+
+                If `driver_name` is among `options_to_override`,
+                and `driver` is not among them,
+                and `self._override_driver_with_all_driver_like_options` is True,
                 then `driver` will be implicitly added to the options to override,
-                i.e. `with_(name='firefox')` will be equivalent
-                to `with_(name='firefox', driver=...)`.
+                i.e. `with_(driver_name='firefox')` will be equivalent
+                to `with_(driver_name='firefox', driver=...)`.
                 The latter gives a readable and concise shortcut
                 to spawn more than one browser:
 
                 >>> config = Config(timeout=10.0, base_url='https://autotest.how')
                 >>> chrome = config.driver  # chrome is default browser
-                >>> firefox_config = config.with_(name='firefox')
+                >>> firefox_config = config.with_(driver_name='firefox')
                 >>> firefox = firefox_config.driver
-                >>> edge_config = config.with_(name='edge')
+                >>> edge_config = config.with_(driver_name='edge')
                 >>> edge = edge_config.driver
 
+                Same logic applies to `remote_url`,
+                and all other config.*driver* options.
 
         Returns:
             a new config with overridden options that were specified as arguments.
@@ -702,13 +738,13 @@ class Config:
             i.e. in a truly shallow way.
         """
         options = (
-            {'driver': ..., **config_as_kwargs}
+            {'driver': ..., **options_to_override}
             if (
-                self._deep_copy_implicitly_driver_with_name
-                and 'name' in config_as_kwargs
-                and 'driver' not in config_as_kwargs
+                self._override_driver_with_all_driver_like_options
+                and 'driver' not in options_to_override
+                and any('driver' in key for key in options_to_override)
             )
-            else config_as_kwargs
+            else options_to_override
         )
         return persistent.replace(self, **options)
 

@@ -10,6 +10,7 @@ tests/comparison/
 examples/test_anything.py
 custom.png
 custom.html
+*.apk
 
 # allure
 allure-results/
