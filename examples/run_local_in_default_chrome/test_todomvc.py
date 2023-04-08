@@ -22,12 +22,21 @@
 from selene import browser, by, have
 
 
-def test_search():
-    browser.open('https://www.ecosia.org/')
-    browser.element(by.name('q')).type(
-        'github yashaka selene python'
-    ).press_enter()
+def test_completes_todo():
+    browser.open('http://todomvc.com/examples/emberjs/')
+    browser.should(have.title_containing('TodoMVC'))
 
-    browser.all('.web-result').first.element('.result__link').click()
+    browser.element('#new-todo').type('a').press_enter()
+    browser.element('#new-todo').type('b').press_enter()
+    browser.element('#new-todo').type('c').press_enter()
+    browser.all('#todo-list>li').should(have.exact_texts('a', 'b', 'c'))
 
-    browser.should(have.title_containing('yashaka/selene'))
+    browser.all('#todo-list>li').element_by(have.exact_text('b')).element(
+        '.toggle'
+    ).click()
+    browser.all('#todo-list>li').by(have.css_class('completed')).should(
+        have.exact_texts('b')
+    )
+    browser.all('#todo-list>li').by(have.no.css_class('completed')).should(
+        have.exact_texts('a', 'c')
+    )

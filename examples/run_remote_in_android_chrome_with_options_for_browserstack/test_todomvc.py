@@ -52,8 +52,6 @@ def test_complete_task():
     browser.open('https://todomvc.com/examples/emberjs/')
     browser.should(have.title_containing('TodoMVC'))
 
-    print('\ndriver.name: ' + browser.driver.driver_name)
-
     browser.element('#new-todo').type('a').press_enter()
     browser.element('#new-todo').type('b').press_enter()
     browser.element('#new-todo').type('c').press_enter()

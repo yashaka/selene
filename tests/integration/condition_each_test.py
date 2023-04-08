@@ -47,9 +47,12 @@ def test_on_collection(session_browser):
         assert (
             "browser.all(('css selector', 'li')). each has text Ron\n"
             "\n"
-            "Reason: AssertionError: Not matched elements among all with indexes from 0 to 2:\n"
-            "browser.all(('css selector', 'li')).cached[0]: actual text: Harry from Hogwarts\n"
-            "browser.all(('css selector', 'li')).cached[2]: actual text: Hermione from Hogwarts"
+            "Reason: AssertionError: "
+            "Not matched elements among all with indexes from 0 to 2:\n"
+            "browser.all(('css selector', 'li')).cached[0]: actual text: "
+            "Harry from Hogwarts\n"
+            "browser.all(('css selector', 'li')).cached[2]: actual text: "
+            "Hermione from Hogwarts"
         ) in str(error)
     elements.should(have.text('Ron').each.not_)
     try:
@@ -58,7 +61,8 @@ def test_on_collection(session_browser):
         assert (
             "browser.all(('css selector', 'li')). each has no (text Ron)\n"
             "\n"
-            "Reason: AssertionError: Not matched elements among all with indexes from 0 to 2:\n"
+            "Reason: AssertionError: "
+            "Not matched elements among all with indexes from 0 to 2:\n"
             "browser.all(('css selector', 'li')).cached[1]: condition not matched"
         ) in str(error)
     try:
@@ -67,6 +71,7 @@ def test_on_collection(session_browser):
         assert (
             "browser.all(('css selector', 'li')). each has no (text Ron)\n"
             "\n"
-            "Reason: AssertionError: Not matched elements among all with indexes from 0 to 2:\n"
+            "Reason: AssertionError: "
+            "Not matched elements among all with indexes from 0 to 2:\n"
             "browser.all(('css selector', 'li')).cached[1]: condition not matched"
         ) in str(error)

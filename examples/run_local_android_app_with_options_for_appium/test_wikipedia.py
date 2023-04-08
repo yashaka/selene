@@ -16,7 +16,7 @@ def abs_path_at_examples(relative_path):
     )
 
 
-def test_complete_task():
+def test_searches():
     options = UiAutomator2Options()
     options.new_command_timeout = 60
     options.app = abs_path_at_examples('wikipedia-alpha-universal-release.apk')
