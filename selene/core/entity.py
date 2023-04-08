@@ -1140,8 +1140,11 @@ class Browser(WaitingEntity['Browser']):
     # --- Element builders --- #
 
     def element(
-        self, css_or_xpath_or_by: Union[str, Tuple[str, str]]
+        self, css_or_xpath_or_by: Union[str, Tuple[str, str], Locator]
     ) -> Element:
+        if isinstance(css_or_xpath_or_by, Locator):
+            return Element(css_or_xpath_or_by, self.config)
+
         by = to_by(css_or_xpath_or_by)
 
         return Element(
@@ -1152,8 +1155,11 @@ class Browser(WaitingEntity['Browser']):
         )
 
     def all(
-        self, css_or_xpath_or_by: Union[str, Tuple[str, str]]
+        self, css_or_xpath_or_by: Union[str, Tuple[str, str], Locator]
     ) -> Collection:
+        if isinstance(css_or_xpath_or_by, Locator):
+            return Collection(css_or_xpath_or_by, self.config)
+
         by = to_by(css_or_xpath_or_by)
 
         return Collection(
@@ -1165,7 +1171,21 @@ class Browser(WaitingEntity['Browser']):
 
     # --- High Level Commands--- #
 
-    def open(self, relative_or_absolute_url: str) -> Browser:
+    def open(self, relative_or_absolute_url: Optional[str] = None) -> Browser:
+        if relative_or_absolute_url is None:
+            # force to init driver and open browser
+            _ = self.driver
+            if not self.config.base_url:
+                # do nothing more
+                return self
+            if not self.config._get_base_url_on_open_with_no_args:
+                # yet do nothing more
+                return self
+            # proceed with adjusted relative url
+            # to be concatenated with base url
+            relative_or_absolute_url = ''
+
+        # TODO: skip for mobile
         width = self.config.window_width
         height = self.config.window_height
 
@@ -1187,6 +1207,9 @@ class Browser(WaitingEntity['Browser']):
 
         # TODO: should we wrap it into wait? at least for logging?
         self.driver.get(url)
+        # TODO: consider refactoring to:
+        # self.config.driver_get_strategy(self.config, url)
+
         return self
 
     def switch_to_next_tab(self) -> Browser:

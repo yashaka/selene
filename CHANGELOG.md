@@ -116,6 +116,10 @@ TODO:
 - fix «too much screenshots»
 - decide on default value for `rebuild_dead_driver: bool = True` (currently)
 - update README for rc1
+- what about accepting None as locator of Element?
+  in such case it such element will just do nothing regardless of what command is called on it
+  - even better, we can accept Locators in browser.element(here)!!!
+    and so we can implement own behavior, locating some kind of proxy that skips all commands!
 
 ## 2.0.0rc1 (to be released on ?.10.2022)
 
@@ -505,6 +509,7 @@ see reasons at:
 ### NEW: `browser.all(selector).by(condition)` to filter collection
 
 ```python
+import examples.run_cross_platform.wikipedia_e2e_tests.utils.locators
 from selene.support.shared import browser
 from selene import have
 
@@ -513,10 +518,10 @@ browser.element('#new-todo').type('a').press_enter()
 browser.element('#new-todo').type('b').press_enter()
 browser.element('#new-todo').type('c').press_enter()
 
-browser.all('#todo-list>li').by(have.text('b')).first.element('.toggle').click()
+examples.run_cross_platform.wikipedia_e2e_tests.utils.locators.by(have.text('b')).first.element('.toggle').click()
 
-browser.all('#todo-list>li').by(have.css_class('active')).should(have.texts('a', 'c'))
-browser.all('#todo-list>li').by(have.no.css_class('active')).should(have.texts('b'))
+examples.run_cross_platform.wikipedia_e2e_tests.utils.locators.by(have.css_class('active')).should(have.texts('a', 'c'))
+examples.run_cross_platform.wikipedia_e2e_tests.utils.locators.by(have.no.css_class('active')).should(have.texts('b'))
 ```
 
 Hence, considering to deprecate:

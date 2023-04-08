@@ -60,6 +60,7 @@ pytest = "*"
 pytest-cov = "*"
 codecov = "*"
 mypy = "*"
+pydantic = "^1.10.7"
 python-dotenv = "0.21.1"
 Appium-Python-Client = "^2.9.0"
 

@@ -69,6 +69,7 @@ class Config:
     _save_page_source_strategy: Callable[[Config, Optional[str]], Any] = ...
     # Options to customize web browser and elements behavior
     base_url: str = ''
+    _get_base_url_on_open_with_no_args: bool = False
     window_width: Optional[int] = None
     window_height: Optional[int] = None
     log_outer_html_on_failure: bool = False
@@ -119,6 +120,7 @@ class Config:
         ] = ...,
         # Options to customize web browser and elements behavior
         base_url: str = '',
+        _get_base_url_on_open_with_no_args: bool = False,
         window_width: Optional[int] = None,
         window_height: Optional[int] = None,
         log_outer_html_on_failure: bool = False,
@@ -169,6 +171,7 @@ class Config:
         ] = ...,
         # Options to customize web browser and elements behavior
         base_url: str = '',
+        _get_base_url_on_open_with_no_args: bool = False,
         window_width: Optional[int] = None,
         window_height: Optional[int] = None,
         log_outer_html_on_failure: bool = False,

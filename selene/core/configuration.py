@@ -553,8 +553,13 @@ class Config:
     """
 
     # --- Web-specific options ---
-
+    # TODO: should we pass here None?
+    #       and use "not None" as _get_base_url_on_open_with_no_args=True?
     base_url: str = ''
+    # TODO: when adding driver_get_url_strategy
+    #       should we rename it to get_base_url_when_relative_url_is_missed?
+    #       should we use driver term in the name?
+    _get_base_url_on_open_with_no_args: bool = False
     window_width: Optional[int] = None
     window_height: Optional[int] = None
     log_outer_html_on_failure: bool = False
