@@ -13,7 +13,6 @@ def android_chrome_options():
 
 def test_complete_task():
     browser.config.driver_options = android_chrome_options()
-    browser.config.rebuild_dead_driver = False
     browser.config.base_url = 'https://todomvc.com/examples/emberjs'
 
     # WHEN

@@ -35,9 +35,6 @@ def test_searches():
     )
     mobile.config.driver_options = options
     mobile.config.driver_remote_url = 'http://hub.browserstack.com/wd/hub'
-    # To speed tests a bit
-    # by not checking if driver is alive before each action
-    mobile.config.rebuild_dead_driver = False
 
     by_id = lambda id: (AppiumBy.ID, f'org.wikipedia.alpha:id/{id}')
 

@@ -34,7 +34,7 @@ from typing import Callable, Optional, Any
 from selenium.webdriver.common.options import BaseOptions
 from selenium.webdriver.remote.command import Command
 
-from selene.common import fp
+from selene.common import fp, helpers
 from selene.common.data_structures import persistent
 from selene.common.fp import F, pipe, thread
 from selene.common.helpers import on_error_return_false
@@ -47,7 +47,7 @@ from selene.core.wait import Wait, E
 
 # TODO: consider moving to support.*
 #       like support._loging.wait_with
-def _build_local_driver_by_name_or_remote_by_url(
+def _build_local_driver_by_name_or_remote_by_url_and_options(
     config: Config,
 ) -> WebDriver:
     from selenium.webdriver import (
@@ -60,13 +60,13 @@ def _build_local_driver_by_name_or_remote_by_url(
 
     from selenium.webdriver.chrome.service import Service as ChromeService
     from selenium.webdriver.firefox.service import Service as FirefoxService
-    from selenium.webdriver.edge.service import Service as EdgeService
+    from selenium.webdriver.edge.service import Service as EdgeService  # type: ignore
 
-    from webdriver_manager.chrome import ChromeDriverManager
-    from webdriver_manager.firefox import GeckoDriverManager
-    from webdriver_manager.microsoft import EdgeChromiumDriverManager
+    from webdriver_manager.chrome import ChromeDriverManager  # type: ignore
+    from webdriver_manager.firefox import GeckoDriverManager  # type: ignore
+    from webdriver_manager.microsoft import EdgeChromiumDriverManager  # type: ignore
 
-    from webdriver_manager.core.utils import ChromeType
+    from webdriver_manager.core.utils import ChromeType  # type: ignore
 
     def install_and_build_chrome():
         if config.driver_options:
@@ -197,6 +197,63 @@ def _build_local_driver_by_name_or_remote_by_url(
     )()
 
 
+def _maybe_reset_driver_then_tune_window_and_get_with_base_url(config: Config):
+    def get(url: Optional[str] = None) -> None:
+        stored_driver: WebDriver = persistent.Field.value_from(
+            config, 'driver'
+        )
+        if (
+            config._reset_not_alive_driver_on_get_url
+            and config.is_driver_set_strategy(stored_driver)
+            and not callable(stored_driver)
+            and not config.is_driver_alive_strategy(stored_driver)
+        ):
+            # TODO: consider logging this reset
+            #       so user will see it and decide to disable it
+            config.driver = typing.cast(WebDriver, ...)
+
+        driver = config.driver
+
+        relative_or_absolute_url = url
+        if relative_or_absolute_url is None:
+            # force to init driver and open browser or app (for mobile)
+            # _ = config.driver  # TODO: why not doing this in all cases?
+            if not config.base_url:
+                # do nothing more
+                return
+            if not config._get_base_url_on_open_with_no_args:
+                # yet do nothing more
+                return
+            # proceed with adjusted relative url
+            # to be concatenated with base url
+            relative_or_absolute_url = ''
+
+        # TODO: skip for mobile
+        width = config.window_width
+        height = config.window_height
+
+        if width or height:
+            if not (width and height):
+                size = driver.get_window_size()
+                width = width or size['width']
+                height = height or size['height']
+
+            driver.set_window_size(int(width), int(height))
+
+        is_absolute = helpers.is_absolute_url(relative_or_absolute_url)
+        base_url = config.base_url
+        url = (
+            relative_or_absolute_url
+            if is_absolute
+            else base_url + relative_or_absolute_url
+        )
+
+        # TODO: should we wrap it into wait? at least for logging?
+        driver.get(url)
+
+    return get
+
+
 class ManagedDriverDescriptor:
     def __init__(
         self, *, default: typing.Union[Optional[WebDriver], ...] = ...  # type: ignore
@@ -223,7 +280,7 @@ class ManagedDriverDescriptor:
         if driver_box.value is ... or (
             # TODO: think on: if turned on, may slow down tests...
             #       especially when running remote tests...
-            config.rebuild_dead_driver
+            config.rebuild_not_alive_driver
             and not callable(driver_box.value)  # TODO: consider deprecating
             and not config.is_driver_alive_strategy(driver_box.value)
         ):
@@ -280,6 +337,9 @@ class ManagedDriverDescriptor:
             else:
                 # setting WebDriver instance directly on init
                 driver_box = persistent.Box(value)
+
+                # TODO: here we could remember somehow that driver was set manually
+                #       do we need this?
 
                 if not callable(value):
                     config._schedule_driver_teardown_strategy(
@@ -342,7 +402,7 @@ class Config:
 
     build_driver_strategy: Callable[
         [Config], WebDriver
-    ] = _build_local_driver_by_name_or_remote_by_url
+    ] = _build_local_driver_by_name_or_remote_by_url_and_options
     """
     A factory to build a driver instance based on this config instance.
     The driver built with this factory will be available via `config.driver`.
@@ -380,12 +440,13 @@ class Config:
         else None
     )
 
+    # TODO: should we make it private so far?
+    # TODO: shouldn't it be config-based?
     is_driver_set_strategy: Callable[[WebDriver], bool] = lambda driver: (
         driver is not ... and driver is not None
     )
 
-    # TODO: refactor "alive" strategy,
-    #       because it probably will not work on remote driver
+    # TODO: should we make it private so far?
     is_driver_alive_strategy: Callable[[WebDriver], bool] = lambda driver: (
         # on_error_return_false(lambda: driver.title is not None)
         (
@@ -402,6 +463,7 @@ class Config:
     #     driver_remote_connection: Optional[Union[str, RemoteConnection]] = None
     # But we decided to keep it more simple and user-friendly
     # in context of the majority of use cases when we just need to pass a URL:
+    # for appium and remote cases
     driver_remote_url: Optional[str] = None
     """
     A URL to be used as remote server address to instantiate a RemoteConnection
@@ -414,7 +476,6 @@ class Config:
     it will work same way as in Selenium WebDriver.
     """
 
-    #               for appium and remote cases
     # TODO: consider setting to None or ... by default,
     #       and pick up by factory any installed browser in a system
     driver_name: str = 'chrome'
@@ -534,26 +595,46 @@ class Config:
         )
         self.hold_driver_at_exit = value
 
-    # TODO: consider adding option to reset driver on browser.open if is not alive
-    # reset_dead_driver_on_open: bool = False
+    # TODO: maybe like this:
+    #         _driver_get_url_strategy: Callable[[Config, str], None] = get_driver
+    #       or should we implement same "decorator-like" style
+    #       for other config-based strategies too?
+    # TODO: refactor to inline definition with lambda style
+    _driver_get_url_strategy: Callable[
+        [Config],
+        Callable[[Optional[str]], None],
+    ] = _maybe_reset_driver_then_tune_window_and_get_with_base_url
 
-    # TODO: should we make it False by default?
-    #       for backward compatibility in case of manually set driver at least?
-    # TODO: should rebuild only on next open?
-    #       like it was in the past for SharedBrowser and SharedConfig?
-    #       but is "next open" enough? if it happens in same test second time,
-    #       and driver was crashed between first and second open, then
-    #       we can get into recursion or something like that?
-    #       probably not recursion, but a lot of times trying to rebuild driver
-    #       in the middle of a test... no?
-    # TODO: should we rename it to rebuild_driver_if_not_alive?
-    #       i.e. reusing the alive term,
-    #       that was already used in is_driver_alive_strategy
-    rebuild_dead_driver: bool = True
+    # TODO: consider adding option to reset driver on browser.open if is not alive
+    _reset_not_alive_driver_on_get_url: bool = True
+    """
+    Controls whether driver should be automatically rebuilt
+    if it was noticed as not alive (e.g. after quit or crash)
+    on next call to `config.driver.get(url)`
+    (via `config._driver_get_url_strategy`).
+
+    Does not work if `config.driver` was set manually to `Callable[[], WebDriver]`.
+
+    Is a more "week" option than `config.rebuild_not_alive_driver`,
+    that is disabled by default,
+    that forces to rebuild driver on any next access.
+    """
+
+    rebuild_not_alive_driver: bool = False
     """
     Controls whether driver should be automatically rebuilt
     when on next call to config.driver
     it was noticed as not alive (e.g. after quit or crash).
+
+    May slow down your tests if running against remote Selenium server,
+    e.g. Grid or selenoid, because of additional request to check
+    if driver is alive per each driver action.
+
+    Does not work if `config.driver` was set manually to `Callable[[], WebDriver]`.
+
+    Is a more "strong" option than `config._reset_not_alive_driver_on_get_url`,
+    (enabled by default), that schedules rebuilding driver
+    on next access only inside "get url" logic.
     """
 
     # TODO: consider allowing to provide a Descriptor as a value
@@ -584,9 +665,20 @@ class Config:
 
     GIVEN set manually to an existing driver instance,
           like: `config.driver = Chrome()`
-    THEN it will be reused at it is on any next access
+    THEN it will be reused as it is on any next access
     WHEN reset to `...`
     THEN will be rebuilt by `config.build_driver_strategy`
+
+    GIVEN set manually to an existing driver instance (not callable),
+          like: `config.driver = Chrome()`
+    AND at some point of time the driver is not alive
+        like crashed or quit
+    AND `config._reset_not_alive_driver_on_get_url` is set to `True`,
+        that is default
+    WHEN driver.get(url) is requested under the hood
+         like at `browser.open(url)`
+    THEN config.driver will be reset to `...`
+    AND thus will be rebuilt by `config.build_driver_strategy`
 
     GIVEN set manually to a callable that returns WebDriver instance
           (currently marked with FutureWarning, so might be deprecated)

@@ -33,10 +33,6 @@ def test_searches():
     # # Possible, but not needed, because will be used by default:
     # browser.config.driver_remote_url = 'http://127.0.0.1:4723/wd/hub'
 
-    # To speed tests a bit
-    # by not checking if driver is alive before each action
-    browser.config.rebuild_dead_driver = False
-
     by_id = lambda id: (AppiumBy.ID, f'org.wikipedia.alpha:id/{id}')
 
     # GIVEN

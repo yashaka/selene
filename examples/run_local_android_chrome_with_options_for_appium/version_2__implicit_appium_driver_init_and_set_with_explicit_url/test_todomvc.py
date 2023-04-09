@@ -12,9 +12,6 @@ def test_complete_task():
     browser.config.driver_options = mobile_options
     # Not mandatory (because same value in defaults), but let's be explicit now:
     browser.config.driver_remote_url = 'http://127.0.0.1:4723/wd/hub'
-    # To speed tests a bit
-    # by not checking if driver is alive before each action
-    browser.config.rebuild_dead_driver = False
     browser.config.base_url = 'https://todomvc.com/examples/emberjs'
 
     # WHEN

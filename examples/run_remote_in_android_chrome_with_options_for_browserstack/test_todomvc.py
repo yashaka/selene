@@ -42,9 +42,6 @@ def test_complete_task():
     )
     browser.config.driver_options = options
     browser.config.driver_remote_url = 'http://hub.browserstack.com/wd/hub'
-    # To speed tests a bit
-    # by not checking if driver is alive before each action
-    browser.config.rebuild_dead_driver = False
 
     # WHEN
     browser.open('https://todomvc.com/examples/emberjs/')

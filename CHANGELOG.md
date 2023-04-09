@@ -133,17 +133,19 @@ TODOs:
 
 ## 2.0.0rc1 (to be released on `??`.04.2023)
 
+TODOs:
+* change codebase style to <=88 chars per line
+* decide on config.driver = ... and mypy does not like it
+* decide on private is_driver_alive_strategy and Co for now 
+* config.manager?
+
 ### Changes
 
-### Any custom driver will now be automatically quit at exit
+#### Any custom driver will now be automatically quit at exit
 
 Any driver instance passed to `browser.config.driver` will be automatically quit at exit, unless `browser.config.hold_driver_at_exit = True`, that is `False` by default
 
-### Automatic driver rebuilding is now happens not only on `browser.open`
-
-but on any explicit or implicit call to `browser.config.driver`.
-
-#### It also happens by default for custom and remote drivers if they became dead
+##### It also happens by default for custom and remote drivers if they became dead
 
 You can disable this by setting `browser.config.rebuild_dead_driver = False`. Then, if you want to force to rebuild dead driver you have to "reset" driver instance by setting it to `None` or `...` (ellipsis), for example:
 
@@ -151,17 +153,18 @@ You can disable this by setting `browser.config.rebuild_dead_driver = False`. Th
 import pytest
 from selene import browser
 
+
 @pytest.fixture(scope='function', autouse=True)
 def browser_management():
-    browser.config.rebuild_dead_driver = False
-    browser.config.driver = ...  # force to build it on first call
-    
-    yield
-    
-    browser.quit()  # kill it
+  browser.config.rebuild_not_alive_driver = False
+  browser.config.driver = ...  # force to build it on first call
+
+  yield
+
+  browser.quit()  # kill it
 ```
 
-### «browser» term is deprecated in a lot of places
+#### «browser» term is deprecated in a lot of places
 
 except Browser class itself, of course (but this might be changed somewhere in 3.0🙃)
 
@@ -216,34 +219,31 @@ from selene import browser, have
 
 
 def test_complete_task():
-    options = webdriver.ChromeOptions()
-    options.browser_version = '100.0'
-    options.set_capability(
-        'selenoid:options',
-        {
-            'screenResolution': '1920x1080x24',
-            'enableVNC': True,
-            'enableVideo': True,
-            'enableLog': True,
-        },
-    )
-    browser.config.driver_options = options  # <- 🥳
-    project_config = dotenv.dotenv_values()
-    browser.config.driver_remote_url = (  # <- 🎉🎉🎉
-        f'https://{project_config["LOGIN"]}:{project_config["PASSWORD"]}@'
-        f'selenoid.autotests.cloud/wd/hub'
-    )
-    # To speed tests a bit
-    # by not checking if driver is alive before each action
-    browser.config.rebuild_dead_driver = False
+  options = webdriver.ChromeOptions()
+  options.browser_version = '100.0'
+  options.set_capability(
+    'selenoid:options',
+    {
+      'screenResolution': '1920x1080x24',
+      'enableVNC': True,
+      'enableVideo': True,
+      'enableLog': True,
+    },
+  )
+  browser.config.driver_options = options  # <- 🥳
+  project_config = dotenv.dotenv_values()
+  browser.config.driver_remote_url = (  # <- 🎉🎉🎉
+    f'https://{project_config["LOGIN"]}:{project_config["PASSWORD"]}@'
+    f'selenoid.autotests.cloud/wd/hub'
+  )
 
-    browser.open('http://todomvc.com/examples/emberjs/')
-    browser.should(have.title_containing('TodoMVC'))
+  browser.open('http://todomvc.com/examples/emberjs/')
+  browser.should(have.title_containing('TodoMVC'))
 
-    browser.element('#new-todo').type('a').press_enter()
-    browser.element('#new-todo').type('b').press_enter()
-    browser.element('#new-todo').type('c').press_enter()
-    browser.all('#todo-list>li').should(have.exact_texts('a', 'b', 'c'))
+  browser.element('#new-todo').type('a').press_enter()
+  browser.element('#new-todo').type('b').press_enter()
+  browser.element('#new-todo').type('c').press_enter()
+  browser.all('#todo-list>li').should(have.exact_texts('a', 'b', 'c'))
 ```
 
 #### `browser.open()` without args
@@ -251,6 +251,15 @@ def test_complete_task():
 Will just open driver or do nothing if driver is already opened.
 
 Can also load page from `browser.config.base_url` if it is set and additional experimental `browser.config._get_base_url_on_open_with_no_args = True` option is set (that is `False` by default).
+
+#### Automatic driver rebuilding still happens on `browser.open`, but...
+
+but can be configured as follows:
+
+* can be disabled by setting `browser.config.__reset_not_alive_driver_on_get_url = False`,
+  that is `True` by default
+* can be enabled on any explicit or implicit call to `browser.config.driver`,
+  if set `browser.config.rebuild_not_alive_driver = True` (that is `False` by default)
 
 #### Appium support out of the box:)
 
@@ -263,7 +272,6 @@ from appium.options.android import UiAutomator2Options
 from appium.webdriver.common.appiumby import AppiumBy
 from selene import browser, have
 
-
 android_options = UiAutomator2Options()
 android_options.new_command_timeout = 60
 android_options.app = 'wikipedia-alpha-universal-release.apk'
@@ -271,10 +279,6 @@ android_options.app_wait_activity = 'org.wikipedia.*'
 browser.config.driver_options = android_options
 # # Possible, but not needed, because will be used by default:
 # browser.config.driver_remote_url = 'http://127.0.0.1:4723/wd/hub'
-
-# To speed tests a bit
-# by not checking if driver is alive before each action
-browser.config.rebuild_dead_driver = False
 
 by_id = lambda id: (AppiumBy.ID, f'org.wikipedia.alpha:id/{id}')
 
@@ -288,7 +292,7 @@ browser.element(by_id('search_src_text')).type('Appium')
 
 # THEN
 browser.all(by_id('page_list_item_title')).should(
-    have.size_greater_than(0)
+  have.size_greater_than(0)
 )
 ```
 
@@ -299,22 +303,18 @@ from appium.options.android import UiAutomator2Options
 from appium.webdriver.common.appiumby import AppiumBy
 from selene import browser, have
 
-
 options = UiAutomator2Options()
 options.app = 'bs://c700ce60cf13ae8ed97705a55b8e022f13c5827c'
 options.set_capability(
-    'bstack:options',
-    {
-        'deviceName': 'Google Pixel 7',
-        'userName': 'adminadminovych_qzqzqz',
-        'accessKey': 'qzqzqzqzqzqzqzqzqzqz',
-    },
+  'bstack:options',
+  {
+    'deviceName': 'Google Pixel 7',
+    'userName': 'adminadminovych_qzqzqz',
+    'accessKey': 'qzqzqzqzqzqzqzqzqzqz',
+  },
 )
 browser.config.driver_options = options
 browser.config.driver_remote_url = 'http://hub.browserstack.com/wd/hub'
-# To speed tests a bit
-# by not checking if driver is alive before each action
-browser.config.rebuild_dead_driver = False
 
 by_id = lambda id: (AppiumBy.ID, f'org.wikipedia.alpha:id/{id}')
 
@@ -327,7 +327,7 @@ browser.element(by_id('search_src_text')).type('Appium')
 
 # THEN
 browser.all(by_id('page_list_item_title')).should(
-    have.size_greater_than(0)
+  have.size_greater_than(0)
 )
 
 ```

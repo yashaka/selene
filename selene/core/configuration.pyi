@@ -39,7 +39,11 @@ class Config:
     driver_options: Optional[BaseOptions] = None
     driver_remote_url: Optional[str] = None
     hold_driver_at_exit: bool = False
-    rebuild_dead_driver: bool = True
+    _reset_not_alive_driver_on_get_url: bool = True
+    rebuild_not_alive_driver: bool = False
+    _driver_get_url_strategy: Callable[
+        [Config], Callable[[Optional[str]], None]
+    ] = ...
     # Options to customize driver management
     build_driver_strategy: Callable[[Config], WebDriver] = ...
     _schedule_driver_teardown_strategy: Callable[
@@ -86,7 +90,11 @@ class Config:
         driver_options: Optional[BaseOptions] = None,
         driver_remote_url: Optional[str] = None,
         hold_driver_at_exit: bool = False,
-        rebuild_dead_driver: bool = True,
+        _reset_not_alive_driver_on_get_url: bool = True,
+        rebuild_not_alive_driver: bool = False,
+        _driver_get_url_strategy: Callable[
+            [Config], Callable[[Optional[str]], None]
+        ] = ...,
         # Options to customize driver management
         build_driver_strategy: Callable[[Config], WebDriver] = ...,
         _schedule_driver_teardown_strategy: Callable[
@@ -137,7 +145,11 @@ class Config:
         driver_options: Optional[BaseOptions] = None,
         remote_remote_url: Optional[str] = None,
         hold_driver_at_exit: bool = False,
-        rebuild_dead_driver: bool = True,
+        _reset_not_alive_driver_on_get_url: bool = True,
+        rebuild_not_alive_driver: bool = False,
+        _driver_get_url_strategy: Callable[
+            [Config], Callable[[Optional[str]], None]
+        ] = ...,
         # Options to customize driver management
         build_driver_strategy: Callable[[Config], WebDriver] = ...,
         _schedule_driver_teardown_strategy: Callable[

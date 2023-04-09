@@ -1176,43 +1176,14 @@ class Browser(WaitingEntity['Browser']):
     # --- High Level Commands--- #
 
     def open(self, relative_or_absolute_url: Optional[str] = None) -> Browser:
-        if relative_or_absolute_url is None:
-            # force to init driver and open browser
-            _ = self.driver
-            if not self.config.base_url:
-                # do nothing more
-                return self
-            if not self.config._get_base_url_on_open_with_no_args:
-                # yet do nothing more
-                return self
-            # proceed with adjusted relative url
-            # to be concatenated with base url
-            relative_or_absolute_url = ''
-
-        # TODO: skip for mobile
-        width = self.config.window_width
-        height = self.config.window_height
-
-        if width or height:
-            if not (width and height):
-                size = self.driver.get_window_size()
-                width = width or size['width']
-                height = height or size['height']
-
-            self.driver.set_window_size(int(width), int(height))
-
-        is_absolute = is_absolute_url(relative_or_absolute_url)
-        base_url = self.config.base_url
-        url = (
+        # TODO: what about:
+        # self.config.managed_driver.get(url)
+        # OR:
+        # self.config.managed.get(url)
+        # self.config.manager.get(url)
+        self.config._driver_get_url_strategy(self.config)(
             relative_or_absolute_url
-            if is_absolute
-            else base_url + relative_or_absolute_url
         )
-
-        # TODO: should we wrap it into wait? at least for logging?
-        self.driver.get(url)
-        # TODO: consider refactoring to:
-        # self.config.driver_get_strategy(self.config, url)
 
         return self
 

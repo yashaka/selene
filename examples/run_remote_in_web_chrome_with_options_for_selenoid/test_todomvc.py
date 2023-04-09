@@ -32,9 +32,6 @@ def test_complete_task():
         f'https://{ProjectConfig.selenoid_login}:{ProjectConfig.selenoid_password}@'
         f'selenoid.autotests.cloud/wd/hub'
     )
-    # To speed tests a bit
-    # by not checking if driver is alive before each action
-    browser.config.rebuild_dead_driver = False
 
     browser.open('https://todomvc.com/examples/emberjs/')
     browser.should(have.title_containing('TodoMVC'))

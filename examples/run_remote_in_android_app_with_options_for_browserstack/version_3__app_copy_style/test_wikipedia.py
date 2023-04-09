@@ -32,7 +32,6 @@ def test_searches():
     app = browser.with_(
         driver_options=android_options,
         driver_remote_url='http://hub.browserstack.com/wd/hub',
-        rebuild_dead_driver=False,
     )
 
     by_id = lambda id: (AppiumBy.ID, f'org.wikipedia.alpha:id/{id}')

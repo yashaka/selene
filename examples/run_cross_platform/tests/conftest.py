@@ -21,9 +21,6 @@ def driver_management():
         )
         browser.config.driver_options = android_options
         browser.config.driver_remote_url = 'http://hub.browserstack.com/wd/hub'
-        # To speed tests a bit
-        # by not checking if driver is alive before each action
-        browser.config.rebuild_dead_driver = False
     elif project.config.context is project.Context.local_web:
         browser.config.base_url = 'https://www.wikipedia.org'
         # if not set, will load nothing on browser.open() for web, but just init driver:

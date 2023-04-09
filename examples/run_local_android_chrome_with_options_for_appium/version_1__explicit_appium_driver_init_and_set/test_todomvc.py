@@ -14,9 +14,6 @@ def test_complete_task():
         command_executor='http://127.0.0.1:4723/wd/hub',
         options=mobile_options,
     )
-    # To speed tests a bit
-    # by not checking if driver is alive before each action
-    browser.config.rebuild_dead_driver = False
     browser.config.base_url = 'https://todomvc.com/examples/emberjs'
 
     # WHEN
