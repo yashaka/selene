@@ -54,6 +54,36 @@ def wait_with(
     :param translations:
         Iterable of translations as (from, to) substitution pairs
         to apply to final title string to log
+
+    Examples:
+        Given added allure dependency to your project,
+        you can configure logging Selene commands to Allure report as simply as:
+
+        >>> from selene import browser, support
+        >>> import allure_commons
+        >>>
+        >>> browser.config._wait_decorator = support._logging.wait_with(
+        >>>     context=allure_commons._allure.StepContext
+        >>> )
+
+        You also can pass a list of translations to be applied to final message to log,
+        something like:
+
+        >>> from selene import browser, support
+        >>> import allure_commons
+        >>>
+        >>> browser.config._wait_decorator = support._logging.wait_with(
+        >>>   context=allure_commons._allure.StepContext,
+        >>>   translations=(
+        >>>         ('browser.element', '$'),
+        >>>         ('browser.all', '$$'),
+        >>>   )
+        >>> )
+
+        You can also implement your own version of StepContext – feel free to use
+        Alure's context manager as example.
+        Or check some examples in Selene's tests, like this one:
+        browser__config__wait_decorator_with_decorator_from_support_logging_test.py
     """
 
     def decorator_factory(wait):

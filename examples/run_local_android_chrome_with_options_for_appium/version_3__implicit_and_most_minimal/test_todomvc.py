@@ -1,22 +1,18 @@
 from appium.options.common import AppiumOptions
-from appium import webdriver
 from selene import browser, have
 
 
-def test_complete_task():
+# Normally to be stored in a separate file,
+# somewhere at project_package/utils/driver_options.py
+def android_chrome_options():
     options = AppiumOptions()
-    options.new_command_timeout = 60
     options.platform_name = 'android'  # mandatory
     options.set_capability('browserName', 'chrome')
+    return options
 
-    browser.config.driver_options = options
-    browser.config.driver_remote_url = 'http://127.0.0.1:4723/wd/hub'
-    browser.config.driver = webdriver.Remote(
-        command_executor=browser.config.driver_remote_url,
-        options=browser.config.driver_options,
-    )
-    # To speed tests a bit
-    # by not checking if driver is alive before each action
+
+def test_complete_task():
+    browser.config.driver_options = android_chrome_options()
     browser.config.rebuild_dead_driver = False
     browser.config.base_url = 'https://todomvc.com/examples/emberjs'
 

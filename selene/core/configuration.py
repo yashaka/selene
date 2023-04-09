@@ -45,6 +45,8 @@ from selenium.webdriver.remote.webdriver import WebDriver
 from selene.core.wait import Wait, E
 
 
+# TODO: consider moving to support.*
+#       like support._loging.wait_with
 def _build_local_driver_by_name_or_remote_by_url(
     config: Config,
 ) -> WebDriver:
@@ -127,25 +129,77 @@ def _build_local_driver_by_name_or_remote_by_url(
     def build_remote_driver():
         from selenium.webdriver import Remote
 
+        # TODO: consider guessing browserstack remote url
+        #       if noticed 'bstack:options' in config.driver_options
+
         return Remote(
             command_executor=config.driver_remote_url,
             options=config.driver_options,
         )
 
-    return {
+    def build_appium_driver():
+        try:
+            from appium import webdriver
+        except ImportError as error:
+            raise ImportError(
+                'Appium-Python-Client is not installed, '
+                'run `pip install Appium-Python-Client`,'
+                'or add and install dependency '
+                'with your favorite dependency manager like poetry: '
+                '`poetry add Appium-Python-Client`'
+            ) from error
+
+        # TODO: consider to add more smart guessing of options if not set...
+        #       like if driver_name is set to 'appium'
+        #       and driver_options is not set
+        #       and the base_url is set to url of some web app
+        #       then build appium driver options
+        #       to run web test on mobile browser
+        #       else if base_url is set to app path or url,
+        #       parse app type and build corresponding appium driver options
+        #       ...
+        #       TODO: should we even rename base_url to app_url
+        #             to cover both web and mobile? or just app?
+        #             what about keeping both?
+        #             but allowing to set only one of them at same moment?
+
+        return webdriver.Remote(
+            command_executor=(
+                config.driver_remote_url
+                if config.driver_remote_url
+                else 'http://127.0.0.1:4723/wd/hub'
+            ),
+            options=config.driver_options,
+        )
+
+    return {  # type: ignore
         'chrome': install_and_build_chrome,
         'firefox': install_and_build_firefox,
         'edge': install_and_build_edge,
         'remote': build_remote_driver,
+        'appium': build_appium_driver,
     }.get(
-        config.driver_name if not config.driver_remote_url else 'remote',
+        'appium'
+        if (
+            config.driver_name == 'appium'
+            or (
+                config.driver_options
+                and 'platformName' in config.driver_options.capabilities
+                and config.driver_options.capabilities['platformName'].lower()
+                in ['android', 'ios']
+            )
+        )
+        # TODO: consider automatically detect installed browser if driver_name not set
+        else (config.driver_name or 'chrome')
+        if not config.driver_remote_url
+        else 'remote',
         'chrome',
     )()
 
 
 class ManagedDriverDescriptor:
     def __init__(
-        self, *, default: typing.Union[Optional[WebDriver], ...] = ...
+        self, *, default: typing.Union[Optional[WebDriver], ...] = ...  # type: ignore
     ):
         self.default = default
         self.name = None
@@ -555,6 +609,9 @@ class Config:
     # --- Web-specific options ---
     # TODO: should we pass here None?
     #       and use "not None" as _get_base_url_on_open_with_no_args=True?
+    # TODO: should we rename it to app_url? or even just app?
+    #       and use it as app capability for mobile?
+    #       if not set in driver_options...
     base_url: str = ''
     # TODO: when adding driver_get_url_strategy
     #       should we rename it to get_base_url_when_relative_url_is_missed?

@@ -1,6 +1,5 @@
 from appium.options.android import UiAutomator2Options
 from appium.webdriver.common.appiumby import AppiumBy
-from appium import webdriver
 from selene import browser, have
 
 
@@ -17,18 +16,23 @@ def abs_path_at_examples(relative_path):
 
 
 def test_searches():
-    options = UiAutomator2Options()
-    options.new_command_timeout = 60
-    options.app = abs_path_at_examples('wikipedia-alpha-universal-release.apk')
-    # options.app_package = 'org.wikipedia.alpha'
-    options.app_wait_activity = 'org.wikipedia.*'
-
-    browser.config.driver_options = options
-    browser.config.driver_remote_url = 'http://127.0.0.1:4723/wd/hub'
-    browser.config.driver = webdriver.Remote(
-        command_executor=browser.config.driver_remote_url,
-        options=browser.config.driver_options,
+    android_options = UiAutomator2Options()
+    android_options.new_command_timeout = 60
+    android_options.app = abs_path_at_examples(
+        'wikipedia-alpha-universal-release.apk'
     )
+    android_options.app_wait_activity = 'org.wikipedia.*'
+    # android_options.app_package = 'org.wikipedia.alpha'  # not mandatory
+
+    # # Possible, but not needed, because of Selene's implicit driver init logic
+    # browser.config.driver = webdriver.Remote(
+    #     command_executor='http://127.0.0.1:4723/wd/hub',
+    #     options=android_options,
+    # )
+    browser.config.driver_options = android_options
+    # # Possible, but not needed, because will be used by default:
+    # browser.config.driver_remote_url = 'http://127.0.0.1:4723/wd/hub'
+
     # To speed tests a bit
     # by not checking if driver is alive before each action
     browser.config.rebuild_dead_driver = False
@@ -36,6 +40,7 @@ def test_searches():
     by_id = lambda id: (AppiumBy.ID, f'org.wikipedia.alpha:id/{id}')
 
     # GIVEN
+    browser.open()
     browser.element(by_id('fragment_onboarding_skip_button')).click()
 
     # WHEN

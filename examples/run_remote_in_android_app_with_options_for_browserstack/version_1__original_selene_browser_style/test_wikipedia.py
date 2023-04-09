@@ -1,6 +1,5 @@
 import dotenv
 import pydantic
-from appium import webdriver
 from appium.options.android import UiAutomator2Options
 from appium.webdriver.common.appiumby import AppiumBy
 from selene import browser, have
@@ -32,10 +31,6 @@ def test_searches():
     )
     browser.config.driver_options = options
     browser.config.driver_remote_url = 'http://hub.browserstack.com/wd/hub'
-    browser.config.driver = webdriver.Remote(
-        command_executor=browser.config.driver_remote_url,
-        options=browser.config.driver_options,
-    )
     # To speed tests a bit
     # by not checking if driver is alive before each action
     browser.config.rebuild_dead_driver = False
@@ -43,7 +38,7 @@ def test_searches():
     by_id = lambda id: (AppiumBy.ID, f'org.wikipedia.alpha:id/{id}')
 
     # GIVEN
-    # ... app is opened on driver init from above
+    browser.open()  # not needed, but to explicitly force appium to open app
 
     # WHEN
     browser.element((AppiumBy.ACCESSIBILITY_ID, 'Search Wikipedia')).click()

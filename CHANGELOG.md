@@ -121,7 +121,17 @@ TODO:
   - even better, we can accept Locators in browser.element(here)!!!
     and so we can implement own behavior, locating some kind of proxy that skips all commands!
 
-## 2.0.0rc1 (to be released on ?.10.2022)
+
+## 2.0.0rc2 (to be released on ?.10.2022)
+
+TODOs:
+
+* implement run_cross_platform_with_fixture_and_custom_location_strategy example with:
+  * location strategy
+  * element actions logging to allure
+  * jenkins pipeline with matrix job
+
+## 2.0.0rc1 (to be released on `??`.04.2023)
 
 ### Changes
 
@@ -151,7 +161,6 @@ def browser_management():
     browser.quit()  # kill it
 ```
 
-
 ### «browser» term is deprecated in a lot of places
 
 except Browser class itself, of course (but this might be changed somewhere in 3.0🙃)
@@ -160,9 +169,45 @@ TODO: document it...
 
 ### New
 
+#### `from selene import browser`
+
+– to be used instead of `from selene.support.shared import browser`. 
+
+No difference between Config and SharedConfig anymore. The new, completely refactored, Config is now used everywhere and allows to customize browser instance in a more convenient way.
+
+Adds ability to use `browser.with_(**config_options_to_override)` to create new browser instance, for example: 
+     
+```python
+from selene import browser
+
+chrome = browser
+firefox = browser.with_(driver_name='firefox')
+edge = browser.with_(driver_name='edge')
+...
+# customizing all browsers at once:
+browser.config.timeout = 10
+```
+  
+as alternative to:
+    
+```python
+from selene import Browser, Config
+
+chrome = Browser(Config())
+firefox = Browser(Config(driver_name='firefox'))
+edge = Browser(Config(driver_name='edge'))
+
+...
+
+# customizing all browsers:
+chrome.config.timeout = 10
+firefox.config.timeout = 10
+edge.config.timeout = 10
+```
+
 #### `browser.config.driver_options` + `browser.config.driver_remote_url`
 
-Finally you can delegate building driver to config manager by passing `driver_options` and `driver_remote_url` to it:
+Finally, you can delegate building driver to config manager by passing `driver_options` and `driver_remote_url` to it:
 
 ```python
 import dotenv
@@ -201,82 +246,143 @@ def test_complete_task():
     browser.all('#todo-list>li').should(have.exact_texts('a', 'b', 'c'))
 ```
 
-#### `from selene import browser`
+#### `browser.open()` without args
 
-– to be used instead of `from selene.support.shared import browser`. 
+Will just open driver or do nothing if driver is already opened.
 
-No difference between Config and SharedConfig anymore. The new, completely refactored, Config is now used everywhere and allows to customize browser instance in a more convenient way.
+Can also load page from `browser.config.base_url` if it is set and additional experimental `browser.config._get_base_url_on_open_with_no_args = True` option is set (that is `False` by default).
 
-Adds ability to use `browser.with_(**config_options_to_override)` to create new browser instance, for example: 
-     
+#### Appium support out of the box:)
+
+Yet you have to install it manually. But given installed via `pip install Appium-Python-Client` or something like `poetry add Appium-Python-Client`, running tests on mobile devices is as easy as...
+
+##### Running locally against Appium server:
+
 ```python
-from selene import browser
+from appium.options.android import UiAutomator2Options
+from appium.webdriver.common.appiumby import AppiumBy
+from selene import browser, have
 
-chrome = browser
-firefox = browser.with_(driver_name='firefox')
-edge = browser.with_(driver_name='edge')
-...
-# customizing all browsers at once:
-browser.config.timeout = 10
+
+android_options = UiAutomator2Options()
+android_options.new_command_timeout = 60
+android_options.app = 'wikipedia-alpha-universal-release.apk'
+android_options.app_wait_activity = 'org.wikipedia.*'
+browser.config.driver_options = android_options
+# # Possible, but not needed, because will be used by default:
+# browser.config.driver_remote_url = 'http://127.0.0.1:4723/wd/hub'
+
+# To speed tests a bit
+# by not checking if driver is alive before each action
+browser.config.rebuild_dead_driver = False
+
+by_id = lambda id: (AppiumBy.ID, f'org.wikipedia.alpha:id/{id}')
+
+# GIVEN
+browser.open()
+browser.element(by_id('fragment_onboarding_skip_button')).click()
+
+# WHEN
+browser.element((AppiumBy.ACCESSIBILITY_ID, 'Search Wikipedia')).click()
+browser.element(by_id('search_src_text')).type('Appium')
+
+# THEN
+browser.all(by_id('page_list_item_title')).should(
+    have.size_greater_than(0)
+)
 ```
-  
-as alternative to:
-    
+
+##### Running remotely against Browserstack server:
+
 ```python
-from selene import Browser, Config
+from appium.options.android import UiAutomator2Options
+from appium.webdriver.common.appiumby import AppiumBy
+from selene import browser, have
 
-chrome = Browser(Config())
-firefox = Browser(Config(driver_name='firefox'))
-edge = Browser(Config(driver_name='edge'))
 
-...
+options = UiAutomator2Options()
+options.app = 'bs://c700ce60cf13ae8ed97705a55b8e022f13c5827c'
+options.set_capability(
+    'bstack:options',
+    {
+        'deviceName': 'Google Pixel 7',
+        'userName': 'adminadminovych_qzqzqz',
+        'accessKey': 'qzqzqzqzqzqzqzqzqzqz',
+    },
+)
+browser.config.driver_options = options
+browser.config.driver_remote_url = 'http://hub.browserstack.com/wd/hub'
+# To speed tests a bit
+# by not checking if driver is alive before each action
+browser.config.rebuild_dead_driver = False
 
-# customizing all browsers:
-chrome.config.timeout = 10
-firefox.config.timeout = 10
-edge.config.timeout = 10
+by_id = lambda id: (AppiumBy.ID, f'org.wikipedia.alpha:id/{id}')
+
+# GIVEN
+browser.open()  # not needed, but to explicitly force appium to open app
+
+# WHEN
+browser.element((AppiumBy.ACCESSIBILITY_ID, 'Search Wikipedia')).click()
+browser.element(by_id('search_src_text')).type('Appium')
+
+# THEN
+browser.all(by_id('page_list_item_title')).should(
+    have.size_greater_than(0)
+)
+
 ```
+
+#### A lot of other local, remote and mobile test examples at...
+
+https://github.com/yashaka/selene/tree/master/examples
 
 ### Other
-- deprecated 
-  - `browser.save_screenshot` in favor of `browser.get(query.screenshot_saved())`
-  - `browser.save_page_source` in favor of `browser.get(query.page_source_saved())`
-  - `browser.last_screenshot` in favor of `browser.config.last_screenshot`
-  - `browser.last_page_source` in favor of `browser.config.last_page_source`
-  - `match.browser_has_js_returned` in favor of `match.browser_has_script_returned`
-  - `have.js_returned` in favor of `have.script_returned`
-  - `have.js_returned_true(...)` in favor of `have.script_returned(True, ...)`
-  - `browser.config.get_or_create_driver`
-  - `browser.config.reset_driver`
-    - use `selene.browser.config.driver = ...`
-  - `browser.config.browser_name` in favor of `browser.config.driver_name`
-- removed
-  - from selene.support.shared import SharedConfig, SharedBrowser
-  - from selene.core.entity import BrowserCondition, ElementCondition, CollectionCondition
-- removed deprecated 
-  - shared.browser.config.desired_capabilities
-  - shared.browser.config.start_maximized
-  - shared.browser.config.start_maximized
-  - shared.browser.config.cash_elements
-  - shared.browser.config.quit_driver
-  - shared.browser.latest_page_source
-  - shared.browser.quit_driver
-  - shared.browser.set_driver
-  - shared.browser.open_url
-  - shared.browser.elements
-  - shared.browser.wait_to
-  - shared.browser.title
-  - shared.browser.take_screenshot
-  - jquery_style_selectors
-- removed not deprecated
-  - shared.browser.config.Source
-    - renamed to shared.browser.config._Source. 
-      Currently, is used nowhere in Selene
-  - shared.browser.config.set_driver (getter and setter)
-  - shared.browser.config.counter
-    - use shared.browser.config._counter instead, and better – not use it;)
-  - shared.browser.config.generate_filename
-    - use shared.browser.config._generate_filename instead, and better – not use it;)
+
+#### Deprecated 
+
+- `browser.save_screenshot` in favor of `browser.get(query.screenshot_saved())`
+- `browser.save_page_source` in favor of `browser.get(query.page_source_saved())`
+- `browser.last_screenshot` in favor of `browser.config.last_screenshot`
+- `browser.last_page_source` in favor of `browser.config.last_page_source`
+- `match.browser_has_js_returned` in favor of `match.browser_has_script_returned`
+- `have.js_returned` in favor of `have.script_returned`
+- `have.js_returned_true(...)` in favor of `have.script_returned(True, ...)`
+- `browser.config.get_or_create_driver`
+- `browser.config.reset_driver`
+  - use `selene.browser.config.driver = ...`
+- `browser.config.browser_name` in favor of `browser.config.driver_name`
+
+#### Removed
+
+- from selene.support.shared import SharedConfig, SharedBrowser
+- from selene.core.entity import BrowserCondition, ElementCondition, CollectionCondition 
+
+#### Removed deprecated 
+- shared.browser.config.desired_capabilities
+- shared.browser.config.start_maximized
+- shared.browser.config.start_maximized
+- shared.browser.config.cash_elements
+- shared.browser.config.quit_driver
+- shared.browser.latest_page_source
+- shared.browser.quit_driver
+- shared.browser.set_driver
+- shared.browser.open_url
+- shared.browser.elements
+- shared.browser.wait_to
+- shared.browser.title
+- shared.browser.take_screenshot
+- jquery_style_selectors
+
+#### Removed not deprecated
+
+- shared.browser.config.Source
+  - renamed to shared.browser.config._Source. 
+    Currently, is used nowhere in Selene
+- shared.browser.config.set_driver (getter and setter)
+- shared.browser.config.counter
+  - use shared.browser.config._counter instead, and better – not use it;)
+- shared.browser.config.generate_filename
+  - use shared.browser.config._generate_filename instead, and better – not use it;)
 
 ## 2.0.0b15-b17
 

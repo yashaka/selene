@@ -1139,6 +1139,10 @@ class Browser(WaitingEntity['Browser']):
 
     # --- Element builders --- #
 
+    # TODO: consider None by default,
+    #       and *args, **kwargs to be able to pass custom things
+    #       to be processed by config.location_strategy
+    #       and by default process none as "element to skip all actions on it"
     def element(
         self, css_or_xpath_or_by: Union[str, Tuple[str, str], Locator]
     ) -> Element:
