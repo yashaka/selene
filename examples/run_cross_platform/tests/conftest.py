@@ -9,7 +9,7 @@ from selene import browser
 @pytest.fixture(scope='function', autouse=True)
 def driver_management():
     # TODO: move all values to project.config
-    if project.config.context == 'bstack_android':
+    if project.config.context is project.Context.bstack_android:
         options = UiAutomator2Options()
         options.app = 'bs://c700ce60cf13ae8ed97705a55b8e022f13c5827c'
         options.set_capability(
@@ -29,7 +29,7 @@ def driver_management():
         # To speed tests a bit
         # by not checking if driver is alive before each action
         browser.config.rebuild_dead_driver = False
-    elif project.config.context == 'local_web':
+    elif project.config.context is project.Context.local_web:
         browser.config.base_url = 'https://www.wikipedia.org'
         browser.config._get_base_url_on_open_with_no_args = True
 
