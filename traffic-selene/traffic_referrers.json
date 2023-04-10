@@ -1,13 +1,13 @@
 [
   {
     "referrer": "Google",
-    "count": 548,
-    "uniques": 163
+    "count": 501,
+    "uniques": 153
   },
   {
     "referrer": "github.com",
-    "count": 343,
-    "uniques": 45
+    "count": 331,
+    "uniques": 38
   },
   {
     "referrer": "ecosia.org",
@@ -40,13 +40,13 @@
     "uniques": 1
   },
   {
-    "referrer": "automated-testing.info",
-    "count": 7,
-    "uniques": 6
-  },
-  {
     "referrer": "qwiki.nixs.com",
     "count": 6,
     "uniques": 3
+  },
+  {
+    "referrer": "Bing",
+    "count": 6,
+    "uniques": 2
   }
 ]
