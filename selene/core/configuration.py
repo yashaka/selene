@@ -931,7 +931,6 @@ class Config:
     """
     A counter, currently used for incrementing screenshot names
     """
-    # TODO: add stubs?
     last_screenshot: Optional[str] = None
     last_page_source: Optional[str] = None
     # TODO: is a _strategy suffix a good naming convention in this context?

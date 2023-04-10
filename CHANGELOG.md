@@ -1,126 +1,52 @@
 # Changelog
 
-## next
-- consider adding config.quit_user_driver_on_exit (maybe even True by default, maybe not...)
+## > 2.0.0 release
+
+TODOs:
+
+- improve for other `all.*` methods (in addition to improved errors from `browser.all.element_by`)
+- why in the past we had when outer_html this: `'<button class="destroy" type="submit" displayed:false></button>'`
+  - but now we have this: `'<button class="destroy" type="submit"></button>'?`
+    - can we improve it?
+- add something like `element.click_with_offset`
+- consider adding hold_driver_open_at_exit_on_failure
 - case insensitive versions of conditions like have.attribute(...).value(...)
   - experimental impl was already added in 2.0.0a16
-- consider making have.size to work with elements too...
+- consider adding more readable alias to by tuple, like in:
+  `css_or_xpath_or_by: Union[str, tuple]`
+- improve error messages
+  - should we come back to the "actual vs expected" style in error messages?
+- improve stacktraces
+  - consider using something like `__tracebackhide__ = True`
+- what about ActionChains?
+  - with retries?
+- what about soft assertions in selene?
 - maybe somewhen in 3.0 consider adding selene.support.shared.selenide module
   - with selenide style api
     - like s, ss, open_url
     - SelenideElement#find, #find_all
     - ElementsCollection#find, #filter, #get
     - etc.
-- what about ActionChains?
-  - with retries?
-- what about soft assertions in selene?
-- improve stacktraces
-  - consider using something like `__tracebackhide__ = True`
-- consider adding more readable alias to by tuple, like in:
-  `css_or_xpath_or_by: Union[str, tuple]`
-- what about `element('#go-forward').with_(retry = (times=2, dismiss_element='#confirm')).click()`?
-  - and even `browser.element('#loading-bar').with(condition=lambda: element('#loading-bar').matching(be.visible)).should(be.hidden)`
-    - or even browser.when.element('#loading-bar', matching=be.visible).then.element('#loading-bar').should(be.hidden)
-    - how in such case the '#loading-bar' can be reused as element?
-  - other ideas
-    - custom action condition
-      - element('#can-be-not-ready').when.click().then.element('#some-new-element').should(be.visible)
-      - element('#can-be-not-ready').with_(hook_wait=lambda: be.visible(element('#some-new-element))).click()
-- improve error messages
-  - should we come back to the "actual vs expected" style in error messages?
-  
-## 2.0.1
-- add hooks
-- refine API  
-  - remove deprecated things
 
-## 2.0.0rc1 (to be released on .??.2022)
-- remove all deprecated things and stay calm:)
-- or maybe remove all deprecated stuff only in 3.0?
+## < 2.0.0 release ? o_O
 
-## 2.0.0bNEXT (to be released on ??.??.2022)
-- config.browser_name -> config.name was bad idea
-  - but config.executor accepting both 'chrome'/'firefox' or 'http://<remoteurl>'
-    - might be a good idea... think on it... 
-- DOING: update docs
-- GIVEN some.should(be.visible) and another.with_(timeout=2).should(be.visible)
-  AND some test fixture logging last_screenshot from shared.config.last_screenshot
-  WHEN some failed THEN the logging will work
-  WHEN another failed THEN the logging will log nothing, 
-    BECAUSE another has it's own config with its own last_screenshot source
-    
-  - TODO: fix?
-- todo consider adding element.caching as lazy version of element.cached
-- consider adding hold_browser_opened_on_failure
-- consider browser.open() over browser.open('') (use some smart defaults)
-- consider config.headless = False like in selenide 
-  - `this.browser = new Browser(config.browser(), config.headless());`
-  
-## 2.0.0b2x+1 (to be released on ?.??.2022)
-- TODO: add something like `element.click_with_offset`
-- TODO: add something like `browser.perform(switch_to_tab('my tab title'))`
-  - maybe make browser.switch ... to work with retry logic
-    or make separate command.switch...
+TODOs:
+- consider a way to customize "locator description" [#439](https://github.com/yashaka/selene/issues/439)
+  - consider storing "raw selector" of locator to be able to log it as it is [#438](https://github.com/yashaka/selene/issues/438)
 - ensure we can't element.type on invisible element; add test for that
-- use `__all__` in selene api imports, etc
-  - The variable `__all__` is a list of public objects of that module, as interpreted by import *. ... In other words, __all__ is a list of strings defining what symbols in a module will be exported when from <module> import * is used on the module
-
-  
-## 2.0.0b2x (to be released on ?.0?.2022)
-- TODO: improve for other `all.*` methods (in addition to improved errors from `browser.all.element_by`)
-- TODO: why in the past we had when outer_html this: `'<button class="destroy" type="submit" displayed:false></button>'`
-  - but now we have this: `'<button class="destroy" type="submit"></button>'?`
-    - can we improve it?
-- add `browser.all('.item').last`?
-- make `browser.switch_to.frame` to accept element
-- deprecate `be.present`
-- repeat fix of #225 to other options in shared config, refactor it... 
-  - should we make original config (not shared) mutable?
-
-- TODO: config.location_strategy
-- TODO: this test should work:
-- 
-```python
-from selene import browser, have
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service as ChromeService
-from webdriver_manager.chrome import ChromeDriverManager
-
-def test_todos_storage_is_not_shared_between_browsers():
-    browser1 = browser.with_(driver=webdriver.Chrome(service=ChromeService(ChromeDriverManager().install())))
-    browser1.open('https://todomvc.com/examples/emberjs/')
-    browser.element('#new-todo').type('a').press_enter()
-    browser.element('#new-todo').type('b').press_enter()
-    browser.element('#new-todo').type('c').press_enter()
-    browser.all('#todo-list>li').should(have.exact_texts('a', 'b', 'c'))
-
-    browser2 = browser.with_(driver=webdriver.Chrome(service=ChromeService(ChromeDriverManager().install())))
-    browser2.open('https://todomvc.com/examples/emberjs/')
-    browser.element('#new-todo').type('d').press_enter()
-
-    browser.all('#todo-list>li').should(have.exact_texts('d'))
-
-```
-
-TODO:
-- ensure alive strategy works for remote and mobile
-- autocomplete for entity.with_(**HERE)
-- decide on config.wait
-- decide on config.last_screenshot
-  should be also boxed probably...
-  cover it with tests
 - decide on have.size vs query.size
+  - consider making have.size to work with elements too...
 - review all `# type: ignore`
 - review all typing.cast
-- decide on None as default in managed driver descriptor instead of ...
-- fix «too much screenshots»
-- decide on default value for `rebuild_dead_driver: bool = True` (currently)
-- update README for rc1
+- fix «too much screenshots»? if can reproduce
 - what about accepting None as locator of Element?
   in such case it such element will just do nothing regardless of what command is called on it
   - even better, we can accept Locators in browser.element(here)!!!
     and so we can implement own behavior, locating some kind of proxy that skips all commands!
-
+- deprecate `be.present`
+- todo consider adding element.caching as lazy version of element.cached
+- use `__all__` in selene api imports, etc
+  - The variable `__all__` is a list of public objects of that module, as interpreted by `import *`. ... In other words, `__all__` is a list of strings defining what symbols in a module will be exported when `from module import *` is used on the module
 
 ## 2.0.0rc2 (to be released on ?.10.2022)
 
@@ -130,13 +56,23 @@ TODOs:
   * location strategy
   * element actions logging to allure
   * jenkins pipeline with matrix job
+* deprecate browser.switch_to?
+  * add corresponding set of commands to be used as waiting commands via `browser.perform` 
+    * make `command.switch_to_frame` to accept selene element?
+    - add something like `browser.perform(switch_to_tab('my tab title'))`
+          - maybe make browser.switch ... to work with retry logic
+            or make separate command.switch...
 
 ## 2.0.0rc1 (to be released on `??`.04.2023)
 
 TODOs:
-* decide on config.driver = ... and mypy does not like it
+
+* decide on None as default in managed driver descriptor instead of ...
+  taking into account that mypy does not like it
 * decide on private is_driver_alive_strategy and Co for now 
 * config.manager?
+* decide on config.wait
+* autocomplete for entity.with_(**HERE)
 
 ### Changes
 
