@@ -41,9 +41,7 @@ class Config:
     hold_driver_at_exit: bool = False
     _reset_not_alive_driver_on_get_url: bool = True
     rebuild_not_alive_driver: bool = False
-    _driver_get_url_strategy: Callable[
-        [Config], Callable[[Optional[str]], None]
-    ] = ...
+    _driver_get_url_strategy: Callable[[Config], Callable[[Optional[str]], None]] = ...
     # Options to customize driver management
     build_driver_strategy: Callable[[Config], WebDriver] = ...
     _schedule_driver_teardown_strategy: Callable[
@@ -60,9 +58,7 @@ class Config:
     # > to customize waiting logic
     timeout: float = 4
     poll_during_waits: int = ...  # currently fake option
-    _wait_decorator: Callable[
-        [Wait[E]], Callable[[F], F]
-    ] = lambda w: lambda f: f
+    _wait_decorator: Callable[[Wait[E]], Callable[[F], F]] = lambda w: lambda f: f
     reports_folder: Optional[str] = ...
     _counter: itertools.count = ...
     save_screenshot_on_failure: bool = True
@@ -111,21 +107,15 @@ class Config:
         # > to customize waiting logic
         timeout: float = 4,
         poll_during_waits: int = ...,  # currently fake option
-        _wait_decorator: Callable[
-            [Wait[E]], Callable[[F], F]
-        ] = lambda w: lambda f: f,
+        _wait_decorator: Callable[[Wait[E]], Callable[[F], F]] = lambda w: lambda f: f,
         reports_folder: Optional[str] = ...,
         _counter: itertools.count = ...,
         save_screenshot_on_failure: bool = True,
         save_page_source_on_failure: bool = True,
         last_screenshot: Optional[str] = None,
         last_page_source: Optional[str] = None,
-        _save_screenshot_strategy: Callable[
-            [Config, Optional[str]], Any
-        ] = ...,
-        _save_page_source_strategy: Callable[
-            [Config, Optional[str]], Any
-        ] = ...,
+        _save_screenshot_strategy: Callable[[Config, Optional[str]], Any] = ...,
+        _save_page_source_strategy: Callable[[Config, Optional[str]], Any] = ...,
         # Options to customize web browser and elements behavior
         base_url: str = '',
         _get_base_url_on_open_with_no_args: bool = False,
@@ -166,21 +156,15 @@ class Config:
         # > to customize waiting logic
         timeout: float = 4,
         poll_during_waits: int = ...,  # currently fake option
-        _wait_decorator: Callable[
-            [Wait[E]], Callable[[F], F]
-        ] = lambda w: lambda f: f,
+        _wait_decorator: Callable[[Wait[E]], Callable[[F], F]] = lambda w: lambda f: f,
         reports_folder: Optional[str] = ...,
         _counter: itertools.count = ...,
         save_screenshot_on_failure: bool = True,
         save_page_source_on_failure: bool = True,
         last_screenshot: Optional[str] = None,
         last_page_source: Optional[str] = None,
-        _save_screenshot_strategy: Callable[
-            [Config, Optional[str]], Any
-        ] = ...,
-        _save_page_source_strategy: Callable[
-            [Config, Optional[str]], Any
-        ] = ...,
+        _save_screenshot_strategy: Callable[[Config, Optional[str]], Any] = ...,
+        _save_page_source_strategy: Callable[[Config, Optional[str]], Any] = ...,
         # Options to customize web browser and elements behavior
         base_url: str = '',
         _get_base_url_on_open_with_no_args: bool = False,

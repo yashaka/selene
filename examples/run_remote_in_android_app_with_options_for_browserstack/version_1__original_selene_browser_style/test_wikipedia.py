@@ -42,6 +42,4 @@ def test_searches():
     browser.element(by_id('search_src_text')).type('Appium')
 
     # THEN
-    browser.all(by_id('page_list_item_title')).should(
-        have.size_greater_than(0)
-    )
+    browser.all(by_id('page_list_item_title')).should(have.size_greater_than(0))

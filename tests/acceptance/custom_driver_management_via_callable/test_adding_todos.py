@@ -49,9 +49,7 @@ def web():
 
             return webdriver.Chrome(
                 service=ChromeService(
-                    ChromeDriverManager(
-                        chrome_type=ChromeType.GOOGLE
-                    ).install()
+                    ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install()
                 ),
                 options=webdriver.ChromeOptions(),
             )

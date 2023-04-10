@@ -48,19 +48,13 @@ def test_logging_via__wait_decorator(quit_shared_browser_afterwards):
     from selene import support
 
     browser = selene.browser.with_(
-        _wait_decorator=support._logging.wait_with(
-            context=LogToStringStreamContext
-        ),
+        _wait_decorator=support._logging.wait_with(context=LogToStringStreamContext),
         timeout=0.3,
     )
 
     browser.open('http://todomvc.com/examples/emberjs/')
 
-    (
-        browser.element('#new-todo')
-        .should(be.enabled.and_(be.visible))
-        .should(be.blank)
-    )
+    (browser.element('#new-todo').should(be.enabled.and_(be.visible)).should(be.blank))
     browser.element('#new-todo').type('a').press_enter()
     (
         browser.element('#new-todo')

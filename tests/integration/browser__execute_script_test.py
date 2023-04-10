@@ -38,9 +38,7 @@ def test_can_scroll_to_via_js(function_browser):
     #   - because all available in python options needs a change to json.dumps call - adding a second parameter to it
     #     and specify a custom encoder, but we can't change this call inside selenium webdriver implementation
 
-    function_browser.driver.execute_script(
-        "arguments[0].scrollIntoView();", link()
-    )
+    function_browser.driver.execute_script("arguments[0].scrollIntoView();", link())
     link.click()
     # actually, selene .click() scrolls to any element in dom, so it's not an option fo
     # in this case we should find another way to check page is scrolled down or to choose another script.

@@ -40,9 +40,7 @@ EMPTY_PAGE_URL = resources.url('empty.html')
 @pytest.fixture(scope='module')
 def the_driver():
     driver = webdriver.Chrome(
-        service=Service(
-            ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install()
-        ),
+        service=Service(ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install()),
         options=headless_chrome_options(),
     )
 
@@ -85,9 +83,7 @@ def test_can_make_page_source_with_default_name(a_browser):
 def test_can_make_screenshot_with_custom_name_with_empty_path(a_browser):
     a_browser.open(EMPTY_PAGE_URL)
 
-    screenshot_path = a_browser.get(
-        query.page_source_saved(path='custom.html')
-    )
+    screenshot_path = a_browser.get(query.page_source_saved(path='custom.html'))
 
     assert os.path.exists(screenshot_path)
     assert os.path.isfile(screenshot_path)
@@ -137,9 +133,7 @@ def test_saves_page_source_on_failure(a_browser):
     a_browser.open(EMPTY_PAGE_URL)
 
     with pytest.raises(TimeoutException):
-        a_browser.element("#does-not-exist").with_(timeout=0.1).should(
-            be.visible
-        )
+        a_browser.element("#does-not-exist").with_(timeout=0.1).should(be.visible)
 
     expected_path = os.path.join(
         a_browser.config.reports_folder,
@@ -149,16 +143,12 @@ def test_saves_page_source_on_failure(a_browser):
     assert os.path.isfile(expected_path)
 
 
-def test_remembers_last_saved_page_source(
-    a_browser, with_process_exit_teardown
-):
+def test_remembers_last_saved_page_source(a_browser, with_process_exit_teardown):
     a_browser.open(EMPTY_PAGE_URL)
 
     # WHEN on failure
     with pytest.raises(TimeoutException):
-        a_browser.element("#does-not-exist").with_(timeout=0.1).should(
-            be.visible
-        )
+        a_browser.element("#does-not-exist").with_(timeout=0.1).should(be.visible)
 
     # assert a_browser.config.last_screenshot == os.path.join(
     assert a_browser.config.last_page_source == os.path.join(

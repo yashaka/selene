@@ -72,9 +72,7 @@ def test_can_accept_alert(session_browser, with_dismiss_alerts_teardown):
         assert True
 
 
-def test_can_dismiss_confirm_dialog(
-    session_browser, with_dismiss_alerts_teardown
-):
+def test_can_dismiss_confirm_dialog(session_browser, with_dismiss_alerts_teardown):
     GivenPage(session_browser.driver).opened_with_body(
         """
         <p>

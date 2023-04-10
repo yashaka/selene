@@ -76,9 +76,7 @@ def attribute(name: str, *args, **kwargs):
     def value(self, expected: str, ignore_case=False) -> Condition[Element]:
         return original.value(expected, ignore_case).not_
 
-    def value_containing(
-        self, expected: str, ignore_case=False
-    ) -> Condition[Element]:
+    def value_containing(self, expected: str, ignore_case=False) -> Condition[Element]:
         return original.value_containing(expected, ignore_case).not_
 
     def values(self, *expected: str) -> Condition[Collection]:

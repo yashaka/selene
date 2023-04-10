@@ -219,9 +219,7 @@ def test_element_search_fails_with_message_when_explicitly_waits_for_not_conditi
     )
 
     with pytest.raises(TimeoutException) as ex:
-        browser.element('#element').should(
-            have._not_.exact_text('Hello world!')
-        )
+        browser.element('#element').should(have._not_.exact_text('Hello world!'))
 
     assert exception_message(ex) == [
         'Timed out after 0.1s, while waiting for:',

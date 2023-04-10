@@ -12,8 +12,7 @@ from selene.core.locator import Locator
 
 def is_mobile():
     return hasattr(browser.config.driver_options, 'platform_name') and (
-        browser.config.driver_options.platform_name.lower()
-        in ('android', 'ios')
+        browser.config.driver_options.platform_name.lower() in ('android', 'ios')
     )
 
 
@@ -48,9 +47,7 @@ class By:
 
     @staticmethod
     def _value_per_platform(same: Optional[str] = None, **kwargs):
-        return same or (
-            kwargs.get('drd') if is_mobile() else kwargs.get('web')
-        )
+        return same or (kwargs.get('drd') if is_mobile() else kwargs.get('web'))
 
     def id(self, same=None, **kwargs):
         value = self._value_per_platform(same, **kwargs)
@@ -70,9 +67,7 @@ class By:
             return LOCATOR_FOR_ELEMENT_TO_SKIP
 
         return (
-            (AppiumBy.ACCESSIBILITY_ID, value)
-            if is_mobile()
-            else selene.by.text(value)
+            (AppiumBy.ACCESSIBILITY_ID, value) if is_mobile() else selene.by.text(value)
         )
 
     def text(self, same=None, **kwargs):

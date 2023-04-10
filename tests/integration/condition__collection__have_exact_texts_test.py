@@ -68,17 +68,11 @@ def test_should_have_exact_texts_passed_as_collections(session_browser):
         '''
     )
 
-    session_browser.all('.cell').should(
-        have.exact_texts('A1', 'A2', 'B1', 'B2')
-    )
+    session_browser.all('.cell').should(have.exact_texts('A1', 'A2', 'B1', 'B2'))
 
-    session_browser.all('.cell').should(
-        have.exact_texts(['A1', 'A2', 'B1', 'B2'])
-    )
+    session_browser.all('.cell').should(have.exact_texts(['A1', 'A2', 'B1', 'B2']))
 
-    session_browser.all('.cell').should(
-        have.exact_texts(('A1', 'A2', 'B1', 'B2'))
-    )
+    session_browser.all('.cell').should(have.exact_texts(('A1', 'A2', 'B1', 'B2')))
 
     session_browser.all('.cell').should(
         have.exact_texts(
@@ -102,7 +96,4 @@ def test_should_have_exact_texts_exception(session_browser):
     with pytest.raises(TimeoutException) as error:
         browser.all('li').should(have.exact_texts('Alex'))
     assert "has exact texts ('Alex',)" in error.value.msg
-    assert (
-        "AssertionError: actual visible_texts: ['Alex', 'Yakov']"
-        in error.value.msg
-    )
+    assert "AssertionError: actual visible_texts: ['Alex', 'Yakov']" in error.value.msg

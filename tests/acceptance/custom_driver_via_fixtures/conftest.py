@@ -11,9 +11,7 @@ from selene.support.by import name
 @pytest.fixture(scope='function')
 def driver_per_test():
     chrome_driver = webdriver.Chrome(
-        service=Service(
-            ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install()
-        )
+        service=Service(ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install())
     )
     yield chrome_driver
     chrome_driver.quit()

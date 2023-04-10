@@ -99,9 +99,7 @@ class Test__dataclass:
                 )
                 for field in fields.values():
                     if field.type_ is str:
-                        setattr(
-                            self, field.name, getattr(self, field.name).upper()
-                        )
+                        setattr(self, field.name, getattr(self, field.name).upper())
 
         pet = Pet('fido', 3, False)
 
@@ -172,9 +170,7 @@ class Test__dataclass:
             Pet(age=3)
 
         except TypeError as e:
-            assert '__init__() missing required argument to be stored' in str(
-                e
-            )
+            assert '__init__() missing required argument to be stored' in str(e)
 
     def test_boxed_descriptor_subclass_with_default_allow_to_miss_args(
         self,
@@ -279,9 +275,7 @@ class Test__dataclass:
                         # try to find default inside descriptor
                         default = getattr(value, 'default', None)
                         if default is not None:
-                            setattr(
-                                instance, self.name, persistent.Box(default)
-                            )
+                            setattr(instance, self.name, persistent.Box(default))
                             return
                         else:
                             raise ValueError(
@@ -481,18 +475,13 @@ class Test__dataclass:
         assert sub_avatar_with_own_url.browser_name == 'chrome'
 
         # WHEN
-        sub_sub_avatar_with_sub_url_n_own_timeout = (
-            sub_avatar_with_own_url.with_(timeout=20.0)
+        sub_sub_avatar_with_sub_url_n_own_timeout = sub_avatar_with_own_url.with_(
+            timeout=20.0
         )
 
-        assert (
-            sub_sub_avatar_with_sub_url_n_own_timeout.base_url
-            == 'https://new.com'
-        )
+        assert sub_sub_avatar_with_sub_url_n_own_timeout.base_url == 'https://new.com'
         assert sub_sub_avatar_with_sub_url_n_own_timeout.timeout == 20.0
-        assert (
-            sub_sub_avatar_with_sub_url_n_own_timeout.browser_name == 'chrome'
-        )
+        assert sub_sub_avatar_with_sub_url_n_own_timeout.browser_name == 'chrome'
 
         # WHEN
         sub_sub_avatar_with_sub_url_n_own_timeout.timeout = 21.0
@@ -527,14 +516,9 @@ class Test__dataclass:
         assert config.timeout == 5.0
 
         # WHEN
-        sub_sub_avatar_with_sub_url_n_own_timeout.base_url = (
-            'https://new_2.com'
-        )
+        sub_sub_avatar_with_sub_url_n_own_timeout.base_url = 'https://new_2.com'
 
-        assert (
-            sub_sub_avatar_with_sub_url_n_own_timeout.base_url
-            == 'https://new_2.com'
-        )
+        assert sub_sub_avatar_with_sub_url_n_own_timeout.base_url == 'https://new_2.com'
         assert sub_avatar_with_own_url.base_url == 'https://new_2.com'
         assert sub_avatar.base_url == 'https://original.com'
         assert config.base_url == 'https://original.com'
@@ -542,10 +526,7 @@ class Test__dataclass:
         # WHEN
         sub_avatar_with_own_url.base_url = 'https://new_3.com'
 
-        assert (
-            sub_sub_avatar_with_sub_url_n_own_timeout.base_url
-            == 'https://new_3.com'
-        )
+        assert sub_sub_avatar_with_sub_url_n_own_timeout.base_url == 'https://new_3.com'
         assert sub_avatar_with_own_url.base_url == 'https://new_3.com'
         assert sub_avatar.base_url == 'https://original.com'
         assert config.base_url == 'https://original.com'
@@ -553,10 +534,7 @@ class Test__dataclass:
         # WHEN
         sub_avatar.base_url = 'https://original_2.com'
 
-        assert (
-            sub_sub_avatar_with_sub_url_n_own_timeout.base_url
-            == 'https://new_3.com'
-        )
+        assert sub_sub_avatar_with_sub_url_n_own_timeout.base_url == 'https://new_3.com'
         assert sub_avatar_with_own_url.base_url == 'https://new_3.com'
         assert sub_avatar.base_url == 'https://original_2.com'
         assert config.base_url == 'https://original_2.com'
@@ -564,10 +542,7 @@ class Test__dataclass:
         # WHEN
         config.base_url = 'https://original_3.com'
 
-        assert (
-            sub_sub_avatar_with_sub_url_n_own_timeout.base_url
-            == 'https://new_3.com'
-        )
+        assert sub_sub_avatar_with_sub_url_n_own_timeout.base_url == 'https://new_3.com'
         assert sub_avatar_with_own_url.base_url == 'https://new_3.com'
         assert sub_avatar.base_url == 'https://original_3.com'
         assert config.base_url == 'https://original_3.com'
@@ -575,10 +550,7 @@ class Test__dataclass:
         # WHEN
         config.base_url = 'https://original_3.com'
 
-        assert (
-            sub_sub_avatar_with_sub_url_n_own_timeout.base_url
-            == 'https://new_3.com'
-        )
+        assert sub_sub_avatar_with_sub_url_n_own_timeout.base_url == 'https://new_3.com'
         assert sub_avatar_with_own_url.base_url == 'https://new_3.com'
         assert sub_avatar.base_url == 'https://original_3.com'
         assert config.base_url == 'https://original_3.com'
@@ -586,9 +558,7 @@ class Test__dataclass:
         # WHEN
         config.browser_name = 'firefox'
 
-        assert (
-            sub_sub_avatar_with_sub_url_n_own_timeout.browser_name == 'firefox'
-        )
+        assert sub_sub_avatar_with_sub_url_n_own_timeout.browser_name == 'firefox'
         assert sub_avatar_with_own_url.browser_name == 'firefox'
         assert sub_avatar.browser_name == 'firefox'
         assert config.browser_name == 'firefox'

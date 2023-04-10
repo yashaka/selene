@@ -28,9 +28,7 @@ from selene.core.wait import Command
 def save_screenshot(path: Optional[str] = None) -> Command[Browser]:
     command: Command[Browser] = Command(
         'save screenshot',
-        lambda browser: browser.config._save_screenshot_strategy(
-            browser.config, path
-        ),
+        lambda browser: browser.config._save_screenshot_strategy(browser.config, path),
     )
 
     if isinstance(path, Browser):
@@ -45,9 +43,7 @@ def save_screenshot(path: Optional[str] = None) -> Command[Browser]:
 def save_page_source(path: Optional[str] = None) -> Command[Browser]:
     command: Command[Browser] = Command(
         'save page source',
-        lambda browser: browser.config._save_page_source_strategy(
-            browser.config, path
-        ),
+        lambda browser: browser.config._save_page_source_strategy(browser.config, path),
     )
 
     if isinstance(path, Browser):
@@ -117,16 +113,12 @@ class js:  # pylint: disable=invalid-name
 
     clear_local_storage: Command[Browser] = Command(
         'clear local storage',
-        lambda browser: browser.driver.execute_script(
-            'window.localStorage.clear()'
-        ),
+        lambda browser: browser.driver.execute_script('window.localStorage.clear()'),
     )
 
     clear_session_storage: Command[Browser] = Command(
         'clear local storage',
-        lambda browser: browser.driver.execute_script(
-            'window.sessionStorage.clear()'
-        ),
+        lambda browser: browser.driver.execute_script('window.sessionStorage.clear()'),
     )
 
     remove: Command[Union[Element, Collection]] = Command(
@@ -134,17 +126,12 @@ class js:  # pylint: disable=invalid-name
         lambda entity: (
             entity.execute_script('element.remove()')
             if not hasattr(entity, '__iter__')
-            else [
-                element.execute_script('element.remove()')
-                for element in entity
-            ]
+            else [element.execute_script('element.remove()') for element in entity]
         ),
     )
 
     @staticmethod
-    def set_style_property(
-        name: str, value: Union[str, int]
-    ) -> Command[Element]:
+    def set_style_property(name: str, value: Union[str, int]) -> Command[Element]:
         return Command(
             f'set element.style.{name}="{value}"',
             lambda entity: (
@@ -181,9 +168,7 @@ class js:  # pylint: disable=invalid-name
         ),
     )
 
-    set_style_visibility_to_hidden: Command[
-        Union[Element, Collection]
-    ] = Command(
+    set_style_visibility_to_hidden: Command[Union[Element, Collection]] = Command(
         'set element.style.visibility="hidden"',
         lambda entity: (
             entity.execute_script('element.style.visibility="hidden"')
@@ -195,9 +180,7 @@ class js:  # pylint: disable=invalid-name
         ),
     )
 
-    set_style_visibility_to_visible: Command[
-        Union[Element, Collection]
-    ] = Command(
+    set_style_visibility_to_visible: Command[Union[Element, Collection]] = Command(
         'set element.style.visibility="visible"',
         lambda entity: (
             entity.execute_script('element.style.visibility="visible"')

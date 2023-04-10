@@ -29,9 +29,7 @@ from selene import have, be, by, browser
 
 def setup_module():
     browser.config.driver = webdriver.Chrome(
-        service=Service(
-            ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install()
-        )
+        service=Service(ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install())
     )
     browser.config.timeout = 4
 
@@ -44,20 +42,12 @@ class TestTodoMVC:
     def test_filter_tasks(self):
         browser.open('https://todomvc4tasj.herokuapp.com/')
         clear_completed_js_loaded = "return $._data($('#clear-completed').get(0), 'events').hasOwnProperty('click')"
-        browser.wait.for_(
-            have.script_returned(True, clear_completed_js_loaded)
-        )
+        browser.wait.for_(have.script_returned(True, clear_completed_js_loaded))
         browser.wait.for_(have.title('TroopJS • TodoMVC'))
 
-        browser.element('#new-todo').should(be.enabled).set_value(
-            'a'
-        ).press_enter()
-        browser.element('#new-todo').should(be.enabled).set_value(
-            'b'
-        ).press_enter()
-        browser.element('#new-todo').should(be.enabled).set_value(
-            'c'
-        ).press_enter()
+        browser.element('#new-todo').should(be.enabled).set_value('a').press_enter()
+        browser.element('#new-todo').should(be.enabled).set_value('b').press_enter()
+        browser.element('#new-todo').should(be.enabled).set_value('c').press_enter()
 
         browser.all("#todo-list>li").should(have.texts('a', 'b', 'c'))
 
@@ -66,9 +56,7 @@ class TestTodoMVC:
         ).click()
 
         browser.element(by.link_text("Active")).click()
-        browser.all("#todo-list>li").by(be.visible).should(
-            have.texts('a', 'c')
-        )
+        browser.all("#todo-list>li").by(be.visible).should(have.texts('a', 'c'))
 
         browser.element(by.link_text("Completed")).click()
         browser.all("#todo-list>li").by(be.visible).should(have.texts('b'))

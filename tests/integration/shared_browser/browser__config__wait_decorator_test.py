@@ -56,20 +56,18 @@ def log_on_wait(prefix):
 
 
 def test_logging_via__wait_decorator(quit_shared_browser_afterwards):
-    browser = selene.browser.with_(
-        _wait_decorator=log_on_wait('[1] - '), timeout=0.3
-    )
+    browser = selene.browser.with_(_wait_decorator=log_on_wait('[1] - '), timeout=0.3)
 
     browser.open('http://todomvc.com/examples/emberjs/')
 
     browser.element('#new-todo').type('a').press_enter()
-    browser.with_(_wait_decorator=log_on_wait('[2] - ')).element(
-        '#new-todo'
-    ).type('b').press_enter()
+    browser.with_(_wait_decorator=log_on_wait('[2] - ')).element('#new-todo').type(
+        'b'
+    ).press_enter()
     browser.config._wait_decorator = log_on_wait('[4] - ')
-    browser.element('#new-todo').with_(
-        _wait_decorator=log_on_wait('[3] - ')
-    ).type('c').press_enter()
+    browser.element('#new-todo').with_(_wait_decorator=log_on_wait('[3] - ')).type(
+        'c'
+    ).press_enter()
 
     try:
         browser.all('#todo-list>li').should(have.texts('ab', 'b', 'c', 'd'))

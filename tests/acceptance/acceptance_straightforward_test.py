@@ -28,9 +28,7 @@ app_url = 'https://todomvc4tasj.herokuapp.com/'
 #                      '$._data($("#toggle-all").get(0), "events").hasOwnProperty("change") && '
 #                      '$._data($("#todo-list").get(0), "events").hasOwnProperty("change") && '
 #                      '$._data($("#clear-completed").get(0), "events").hasOwnProperty("click")')
-is_TodoMVC_loaded = (
-    'return (Object.keys(require.s.contexts._.defined).length === 39)'
-)
+is_TodoMVC_loaded = 'return (Object.keys(require.s.contexts._.defined).length === 39)'
 
 
 class TestTodoMVC:
@@ -43,9 +41,7 @@ class TestTodoMVC:
 
         for task_text in ['1', '2', '3']:
             browser.element('#new-todo').set_value(task_text).press_enter()
-        tasks.should(have.texts('1', '2', '3')).should(
-            have.css_class('active').each
-        )
+        tasks.should(have.texts('1', '2', '3')).should(have.css_class('active').each)
         browser.element('#todo-count').should(have.text('3'))
 
         tasks[2].element('.toggle').click()

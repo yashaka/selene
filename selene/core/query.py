@@ -49,9 +49,7 @@ full text of element without space normalization
 
 value = attribute('value')
 
-tag: Query[Element, str] = Query(
-    'tag name', lambda element: element().tag_name
-)
+tag: Query[Element, str] = Query('tag name', lambda element: element().tag_name)
 
 text: Query[Element, str] = Query('text', lambda element: element().text)
 """
@@ -82,9 +80,7 @@ location: Query[Element, Dict[str, int]] = Query(
 )
 
 # TODO: do we need condition for the following?
-rect: Query[Element, Dict[str, Any]] = Query(
-    'rect', lambda element: element().rect
-)
+rect: Query[Element, Dict[str, Any]] = Query('rect', lambda element: element().rect)
 
 screenshot_as_base64: Query[Element, Any] = Query(
     'screenshot as base64', lambda element: element().screenshot_as_base64
@@ -108,9 +104,7 @@ def screenshot(filename: str) -> Query[Element, bool]:
 # TODO: but should we add it with another name?
 
 
-internal_id: Query[Element, Any] = Query(
-    'internal id', lambda element: element().id
-)
+internal_id: Query[Element, Any] = Query('internal id', lambda element: element().id)
 
 
 def css_property(name: str) -> Query[Element, str]:
@@ -134,13 +128,9 @@ def js_property(
 # --- Browser queries --- #
 
 
-url: Query[Browser, str] = Query(
-    'url', lambda browser: browser.driver.current_url
-)
+url: Query[Browser, str] = Query('url', lambda browser: browser.driver.current_url)
 
-title: Query[Browser, str] = Query(
-    'title', lambda browser: browser.driver.title
-)
+title: Query[Browser, str] = Query('title', lambda browser: browser.driver.title)
 
 tabs: Query[Browser, List[str]] = Query(
     'tabs', lambda browser: browser.driver.window_handles
@@ -168,9 +158,7 @@ def __next_tab_fn(browser: Browser) -> str:
     tabs = browser.driver.window_handles
     current = browser.driver.current_window_handle
     current_index = tabs.index(current)
-    return (
-        tabs[0] if current_index >= len(tabs) - 1 else tabs[current_index + 1]
-    )
+    return tabs[0] if current_index >= len(tabs) - 1 else tabs[current_index + 1]
 
 
 next_tab: Query[Browser, str] = Query('next tab', __next_tab_fn)
@@ -198,9 +186,7 @@ def screenshot_saved(
 ) -> Query[Browser, typing.Optional[str]]:
     query: Query[Browser, typing.Optional[str]] = Query(
         'save and get screenshot',
-        lambda browser: browser.config._save_screenshot_strategy(
-            browser.config, path
-        ),
+        lambda browser: browser.config._save_screenshot_strategy(browser.config, path),
     )
 
     if isinstance(path, Browser):
@@ -217,9 +203,7 @@ def page_source_saved(
 ) -> Query[Browser, typing.Optional[str]]:
     query: Query[Browser, typing.Optional[str]] = Query(
         'save and get page source',
-        lambda browser: browser.config._save_page_source_strategy(
-            browser.config, path
-        ),
+        lambda browser: browser.config._save_page_source_strategy(browser.config, path),
     )
 
     if isinstance(path, Browser):

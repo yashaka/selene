@@ -36,9 +36,7 @@ from tests.examples.widgets_aka_components_page_objects_style_for_spa_apps.model
 def setup_function():
     browser.config.timeout = 4
     browser.config.driver = webdriver.Chrome(
-        service=Service(
-            ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install()
-        )
+        service=Service(ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install())
     )
     browser.config.base_url = 'file://{}/../../resources/orderapp/'.format(
         os.path.abspath(os.path.dirname(__file__))
@@ -70,9 +68,7 @@ def test_it_fills_order():
     )
 
     item.show_advanced_options.click()
-    item.advanced_options.should_be(
-        'optionscope2fortype1', 'optionscope3fortype2'
-    )
+    item.advanced_options.should_be('optionscope2fortype1', 'optionscope3fortype2')
 
     item.clear_options.click()
     item.advanced_options.should_be_empty()

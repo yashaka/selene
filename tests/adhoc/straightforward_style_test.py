@@ -42,14 +42,10 @@ def test_selene_demo():
     )  # TODO: make it work
 
     for text in ['1', '2', '3']:
-        s('#new-todo').type(text).should(
-            have.no.value('')
-        ).press_enter().should(
+        s('#new-todo').type(text).should(have.no.value('')).press_enter().should(
             have.attribute('value').value('')
         )  # TODO: ensure autocomplete works here too...
-    tasks.should(have.texts('1', '2', '3')).should(
-        have.css_class('active').each
-    )
+    tasks.should(have.texts('1', '2', '3')).should(have.css_class('active').each)
     browser.element('#todo-count').should(have.text('3'))
 
     tasks[2].s('.toggle').click()
@@ -68,14 +64,10 @@ def test_selene_demo():
     tasks[2].should(be.hidden)  # same as: ...
     tasks[2].should(be.not_.visible)
 
-    tasks.collected(lambda task: task.all('label')).should(
-        have.texts('1', '2')
-    )
+    tasks.collected(lambda task: task.all('label')).should(have.texts('1', '2'))
     # tasks.all('label').should(have.texts('1', '2'))
 
-    tasks.collected(lambda task: task.element('label')).should(
-        have.texts('1', '2')
-    )
+    tasks.collected(lambda task: task.element('label')).should(have.texts('1', '2'))
     # tasks.all_first('label').should(have.texts('1', '2'))
 
     s(by.id('toggle-all')).with_(timeout=config.timeout / 2).click()

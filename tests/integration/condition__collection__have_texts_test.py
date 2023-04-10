@@ -36,9 +36,7 @@ def test_should_have_texts(session_browser):
         '''
     )
 
-    session_browser.all('li').should(
-        have.texts('', '')
-    )  # funny:) but as it is
+    session_browser.all('li').should(have.texts('', ''))  # funny:) but as it is
     session_browser.all('li').should(have.texts('Alex', 'Yakov'))
     session_browser.all('li').should(have.texts('Alex', 'Yakov'))
     session_browser.all('li').should(have.texts('Alex!', 'Yakov!'))
@@ -58,10 +56,7 @@ def test_should_have_texts_exception(session_browser):
     with pytest.raises(TimeoutException) as error:
         browser.all('li').should(have.texts('Alex'))
     assert "has texts ('Alex',)" in error.value.msg
-    assert (
-        "AssertionError: actual visible_texts: ['Alex', 'Yakov']"
-        in error.value.msg
-    )
+    assert "AssertionError: actual visible_texts: ['Alex', 'Yakov']" in error.value.msg
 
 
 def test_should_have_no_texts(session_browser):

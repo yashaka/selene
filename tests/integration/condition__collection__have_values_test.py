@@ -40,17 +40,11 @@ def test_should_have_exact_values(session_browser):
         '''
     )
 
-    session_browser.all('.cell input').should(
-        have.values('A1', 'A2', 'B1', 'B2')
-    )
+    session_browser.all('.cell input').should(have.values('A1', 'A2', 'B1', 'B2'))
 
-    session_browser.all('.cell input').should(
-        have.values(['A1', 'A2', 'B1', 'B2'])
-    )
+    session_browser.all('.cell input').should(have.values(['A1', 'A2', 'B1', 'B2']))
 
-    session_browser.all('.cell input').should(
-        have.values(('A1', 'A2', 'B1', 'B2'))
-    )
+    session_browser.all('.cell input').should(have.values(('A1', 'A2', 'B1', 'B2')))
 
     session_browser.all('.cell input').should(
         have.values(

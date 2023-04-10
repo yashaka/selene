@@ -9,9 +9,7 @@ def test_complete_task():
     dotenv = dotenv_values()
 
     class ProjectConfig:
-        selenoid_login = os.getenv(
-            'selenoid_login', dotenv.get('selenoid_login')
-        )
+        selenoid_login = os.getenv('selenoid_login', dotenv.get('selenoid_login'))
         selenoid_password = os.getenv(
             'selenoid_password', dotenv.get('selenoid_password')
         )

@@ -9,7 +9,9 @@ app_url = 'https://todomvc4tasj.herokuapp.com/'
 
 def visit():
     browser.open(app_url)
-    clear_completed_js_loaded = "return $._data($('#clear-completed').get(0), 'events').hasOwnProperty('click')"
+    clear_completed_js_loaded = (
+        "return $._data($('#clear-completed').get(0), 'events').hasOwnProperty('click')"
+    )
     browser.with_(timeout=browser.config.timeout * 3).wait.for_(
         have.script_returned(True, clear_completed_js_loaded)
     )
@@ -25,9 +27,7 @@ def filter_completed():
 
 def add(*task_texts):
     for text in task_texts:
-        browser.element("#new-todo").should(be.enabled).set_value(
-            text
-        ).press_enter()
+        browser.element("#new-todo").should(be.enabled).set_value(text).press_enter()
 
 
 def toggle(task_text):

@@ -26,9 +26,7 @@ def test_search_does_not_start_on_creation(session_browser):
     page = GivenPage(session_browser.driver)
     page.opened_empty()
 
-    non_existent_collection = session_browser.element('ul').all(
-        '.not-existing'
-    )
+    non_existent_collection = session_browser.element('ul').all('.not-existing')
 
     assert str(non_existent_collection)
 

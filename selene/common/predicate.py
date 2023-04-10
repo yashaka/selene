@@ -74,9 +74,7 @@ def includes(expected, ignore_case=False):
 
 
 def includes_word_ignoring_case(expected):
-    return lambda actual: str(expected).lower() in re.split(
-        r'\s+', str(actual).lower()
-    )
+    return lambda actual: str(expected).lower() in re.split(r'\s+', str(actual).lower())
 
 
 def includes_word(expected, ignore_case=False):

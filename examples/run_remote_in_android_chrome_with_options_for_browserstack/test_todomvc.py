@@ -16,9 +16,7 @@ class EnvField:
         self.env_name = self.env_name or name
 
     def __get__(self, instance, owner):
-        return os.getenv(
-            self.env_name, self.dotenv.get(self.env_name, self.default)
-        )
+        return os.getenv(self.env_name, self.dotenv.get(self.env_name, self.default))
 
 
 def test_complete_task():

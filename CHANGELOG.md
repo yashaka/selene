@@ -134,7 +134,6 @@ TODOs:
 ## 2.0.0rc1 (to be released on `??`.04.2023)
 
 TODOs:
-* change codebase style to <=88 chars per line
 * decide on config.driver = ... and mypy does not like it
 * decide on private is_driver_alive_strategy and Co for now 
 * config.manager?

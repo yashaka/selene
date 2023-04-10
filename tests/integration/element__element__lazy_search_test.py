@@ -27,9 +27,9 @@ def test_search_does_not_start_on_creation_for_both_parent_and_inner(
 ):
     GivenPage(session_browser.driver).opened_empty()
 
-    non_existent_element = session_browser.element(
-        '#not-existing-element'
-    ).element('.not-existing-inner')
+    non_existent_element = session_browser.element('#not-existing-element').element(
+        '.not-existing-inner'
+    )
 
     assert str(non_existent_element)
 

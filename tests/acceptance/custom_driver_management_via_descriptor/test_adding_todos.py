@@ -50,9 +50,7 @@ def web():
 
                 return webdriver.Chrome(
                     service=ChromeService(
-                        ChromeDriverManager(
-                            chrome_type=ChromeType.GOOGLE
-                        ).install()
+                        ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install()
                     ),
                     options=webdriver.ChromeOptions(),
                 )
@@ -87,10 +85,7 @@ def web():
                     'Only None or ... is allowed on setting driver to reset it'
                 )
 
-            if (
-                Settings.driver
-                and WebHelper(Settings.driver).is_browser_still_alive()
-            ):
+            if Settings.driver and WebHelper(Settings.driver).is_browser_still_alive():
                 Settings.driver.quit()
                 Settings.reset_driver = False
 

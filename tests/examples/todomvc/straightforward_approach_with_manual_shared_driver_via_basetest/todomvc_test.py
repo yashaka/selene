@@ -33,15 +33,9 @@ class TestTodoMVC(BaseTest):
     def test_filter_tasks(self):
         browser.open(APP_URL)
 
-        browser.element('#new-todo').should(be.enabled).set_value(
-            'a'
-        ).press_enter()
-        browser.element('#new-todo').should(be.enabled).set_value(
-            'b'
-        ).press_enter()
-        browser.element('#new-todo').should(be.enabled).set_value(
-            'c'
-        ).press_enter()
+        browser.element('#new-todo').should(be.enabled).set_value('a').press_enter()
+        browser.element('#new-todo').should(be.enabled).set_value('b').press_enter()
+        browser.element('#new-todo').should(be.enabled).set_value('c').press_enter()
 
         browser.all('#todo-list>li').should(have.texts('a', 'b', 'c'))
 

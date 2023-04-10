@@ -81,16 +81,11 @@ class Condition(Generic[E]):
                 raise AssertionError(
                     f'Not matched elements among all with indexes from 0 to {index}:\n'
                     + '\n'.join(
-                        [
-                            f'{item}: {error}'
-                            for item, error in items_with_error
-                        ]
+                        [f'{item}: {error}' for item, error in items_with_error]
                     )
                 )
 
-        return typing.cast(
-            Condition[Iterable[E]], cls(f' each {condition}', fn)
-        )
+        return typing.cast(Condition[Iterable[E]], cls(f' each {condition}', fn))
 
     @classmethod
     def as_not(
@@ -121,9 +116,7 @@ class Condition(Generic[E]):
     # }
 
     @classmethod
-    def raise_if_not(
-        cls, description: str, predicate: Predicate[E]
-    ) -> Condition[E]:
+    def raise_if_not(cls, description: str, predicate: Predicate[E]) -> Condition[E]:
         def fn(entity: E) -> None:
             if not predicate(entity):
                 raise ConditionNotMatchedError()
@@ -146,9 +139,7 @@ class Condition(Generic[E]):
         def fn(entity: E) -> None:
             query_to_str = str(query)
             result = (
-                query.__name__
-                if query_to_str.startswith('<function')
-                else query_to_str
+                query.__name__ if query_to_str.startswith('<function') else query_to_str
             )
             actual = query(entity)
             if not predicate(actual):

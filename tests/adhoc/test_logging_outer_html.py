@@ -38,9 +38,9 @@ def test_collection_when_enabled():
 
     message = None
     try:
-        browser.all('footer p').element_by(
-            have.attribute('wrong_attr')
-        ).should(be.visible)
+        browser.all('footer p').element_by(have.attribute('wrong_attr')).should(
+            be.visible
+        )
     except Exception as e:
         message = str(e)
 
@@ -55,9 +55,9 @@ def test_collection_when_disabled():
 
     message = None
     try:
-        browser.all('footer p').element_by(
-            have.attribute('wrong_attr')
-        ).should(be.visible)
+        browser.all('footer p').element_by(have.attribute('wrong_attr')).should(
+            be.visible
+        )
     except Exception as e:
         message = str(e)
 

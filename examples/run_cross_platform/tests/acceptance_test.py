@@ -8,14 +8,10 @@ def test_wikipedia_searches():
 
     # WHEN
     browser.element(by.name(drd='Search Wikipedia')).click()
-    browser.element(by.id(web='searchInput', drd='search_src_text')).type(
-        'Appium'
-    )
+    browser.element(by.id(web='searchInput', drd='search_src_text')).type('Appium')
 
     # THEN
-    results = browser.all(
-        by(web='.suggestion-link', drd='#page_list_item_title')
-    )
+    results = browser.all(by(web='.suggestion-link', drd='#page_list_item_title'))
     results.should(have.size_greater_than(0))
     results.first.should(have.text('Appium'))
 

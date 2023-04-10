@@ -7,20 +7,13 @@ def abs_path_at_examples(relative_path):
     import examples  # pylint: disable=import-outside-toplevel
     from pathlib import Path  # pylint: disable=import-outside-toplevel
 
-    return (
-        Path(examples.__file__)
-        .parent.joinpath(relative_path)
-        .absolute()
-        .__str__()
-    )
+    return Path(examples.__file__).parent.joinpath(relative_path).absolute().__str__()
 
 
 def test_searches():
     android_options = UiAutomator2Options()
     android_options.new_command_timeout = 60
-    android_options.app = abs_path_at_examples(
-        'wikipedia-alpha-universal-release.apk'
-    )
+    android_options.app = abs_path_at_examples('wikipedia-alpha-universal-release.apk')
     android_options.app_wait_activity = 'org.wikipedia.*'
     # android_options.app_package = 'org.wikipedia.alpha'  # not mandatory
 
@@ -44,6 +37,4 @@ def test_searches():
     browser.element(by_id('search_src_text')).type('Appium')
 
     # THEN
-    browser.all(by_id('page_list_item_title')).should(
-        have.size_greater_than(0)
-    )
+    browser.all(by_id('page_list_item_title')).should(have.size_greater_than(0))

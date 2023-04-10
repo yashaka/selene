@@ -169,9 +169,7 @@ class Element(WaitingEntity['Element']):
 
     # --- Configured --- #
 
-    def with_(
-        self, config: Optional[Config] = None, **config_as_kwargs
-    ) -> Element:
+    def with_(self, config: Optional[Config] = None, **config_as_kwargs) -> Element:
         return Element(
             self._locator,
             config if config else self.config.with_(**config_as_kwargs),
@@ -235,9 +233,7 @@ class Element(WaitingEntity['Element']):
 
     # --- Relative location --- #
 
-    def element(
-        self, css_or_xpath_or_by: Union[str, Tuple[str, str]]
-    ) -> Element:
+    def element(self, css_or_xpath_or_by: Union[str, Tuple[str, str]]) -> Element:
         by = to_by(css_or_xpath_or_by)
 
         return Element(
@@ -245,9 +241,7 @@ class Element(WaitingEntity['Element']):
             self.config,
         )
 
-    def all(
-        self, css_or_xpath_or_by: Union[str, Tuple[str, str]]
-    ) -> Collection:
+    def all(self, css_or_xpath_or_by: Union[str, Tuple[str, str]]) -> Collection:
         by = to_by(css_or_xpath_or_by)
 
         return Collection(
@@ -470,9 +464,7 @@ class Element(WaitingEntity['Element']):
         To be used for more low level operations like «uploading files», etc.
         To simulate normal input of keys by user when typing – use Element.type(self, text).
         """
-        self.wait.command(
-            'send keys', lambda element: element().send_keys(*value)
-        )
+        self.wait.command('send keys', lambda element: element().send_keys(*value))
         return self
 
     def press(self, *keys) -> Element:
@@ -604,9 +596,7 @@ class Element(WaitingEntity['Element']):
         #     SyntaxWarning)
         return self.element(css_or_xpath_or_by)
 
-    def ss(
-        self, css_or_xpath_or_by: Union[str, Tuple[str, str]]
-    ) -> Collection:
+    def ss(self, css_or_xpath_or_by: Union[str, Tuple[str, str]]) -> Collection:
         # warnings.warn(
         #     "consider using `all` instead: browser.element('#foo').all('.bar')",
         #     SyntaxWarning)
@@ -614,15 +604,11 @@ class Element(WaitingEntity['Element']):
 
 
 class Collection(WaitingEntity['Collection'], Iterable[Element]):
-    def __init__(
-        self, locator: Locator[typing.Sequence[WebElement]], config: Config
-    ):
+    def __init__(self, locator: Locator[typing.Sequence[WebElement]], config: Config):
         self._locator = locator
         super().__init__(config)
 
-    def with_(
-        self, config: Optional[Config] = None, **config_as_kwargs
-    ) -> Collection:
+    def with_(self, config: Optional[Config] = None, **config_as_kwargs) -> Collection:
         return Collection(
             self._locator,
             config if config else self.config.with_(**config_as_kwargs),
@@ -644,9 +630,7 @@ class Collection(WaitingEntity['Collection'], Iterable[Element]):
     @property
     def cached(self) -> Collection:
         webelements = self()
-        return Collection(
-            Locator(f'{self}.cached', lambda: webelements), self.config
-        )
+        return Collection(Locator(f'{self}.cached', lambda: webelements), self.config)
 
     def __iter__(self):
         i = 0
@@ -757,9 +741,7 @@ class Collection(WaitingEntity['Collection'], Iterable[Element]):
             Locator(
                 f'{self}.filtered_by({condition})',
                 lambda: [
-                    element()
-                    for element in self.cached
-                    if element.matching(condition)
+                    element() for element in self.cached if element.matching(condition)
                 ],
             ),
             self.config,
@@ -911,9 +893,7 @@ class Collection(WaitingEntity['Collection'], Iterable[Element]):
                     f'\n\tAmong {self}'
                 )
 
-        return Element(
-            Locator(f'{self}.element_by({condition})', find), self.config
-        )
+        return Element(Locator(f'{self}.element_by({condition})', find), self.config)
 
     def element_by_its(
         self,
@@ -1048,12 +1028,7 @@ class Collection(WaitingEntity['Collection'], Iterable[Element]):
                 f'{self}.all({by})',
                 lambda: typing.cast(
                     typing.Sequence[WebElement],
-                    flatten(
-                        [
-                            webelement.find_elements(*by)
-                            for webelement in self()
-                        ]
-                    ),
+                    flatten([webelement.find_elements(*by) for webelement in self()]),
                 ),
             ),
             self.config,
@@ -1092,9 +1067,7 @@ class Collection(WaitingEntity['Collection'], Iterable[Element]):
         return Collection(
             Locator(
                 f'{self}.all_first({by})',
-                lambda: [
-                    webelement.find_element(*by) for webelement in self()
-                ],
+                lambda: [webelement.find_element(*by) for webelement in self()],
             ),
             self.config,
         )
@@ -1105,9 +1078,7 @@ class Browser(WaitingEntity['Browser']):
         config = Config() if config is None else config
         super().__init__(config)
 
-    def with_(
-        self, config: Optional[Config] = None, **config_as_kwargs
-    ) -> Browser:
+    def with_(self, config: Optional[Config] = None, **config_as_kwargs) -> Browser:
         return (
             Browser(config)
             if config
@@ -1152,9 +1123,7 @@ class Browser(WaitingEntity['Browser']):
         by = to_by(css_or_xpath_or_by)
 
         return Element(
-            Locator(
-                f'{self}.element({by})', lambda: self.driver.find_element(*by)
-            ),
+            Locator(f'{self}.element({by})', lambda: self.driver.find_element(*by)),
             self.config,
         )
 
@@ -1167,9 +1136,7 @@ class Browser(WaitingEntity['Browser']):
         by = to_by(css_or_xpath_or_by)
 
         return Collection(
-            Locator(
-                f'{self}.all({by})', lambda: self.driver.find_elements(*by)
-            ),
+            Locator(f'{self}.all({by})', lambda: self.driver.find_elements(*by)),
             self.config,
         )
 
@@ -1181,9 +1148,7 @@ class Browser(WaitingEntity['Browser']):
         # OR:
         # self.config.managed.get(url)
         # self.config.manager.get(url)
-        self.config._driver_get_url_strategy(self.config)(
-            relative_or_absolute_url
-        )
+        self.config._driver_get_url_strategy(self.config)(relative_or_absolute_url)
 
         return self
 

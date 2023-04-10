@@ -73,9 +73,7 @@ class GivenPage:
         self._driver = driver
 
     def load_body_with_timeout(self, body, timeout):
-        return LoadedHtmlPage(self._driver).render_body_with_timeout(
-            body, timeout
-        )
+        return LoadedHtmlPage(self._driver).render_body_with_timeout(body, timeout)
 
     def opened_with_body_with_timeout(self, body, timeout):
         return LoadingHtmlPage(timeout, body).load_in(self._driver)

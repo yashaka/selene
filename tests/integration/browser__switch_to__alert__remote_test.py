@@ -39,9 +39,7 @@ def with_dismiss_alerts_teardown(the_module_remote_browser):
         pass
 
 
-def test_alert_is_present(
-    the_module_remote_browser, with_dismiss_alerts_teardown
-):
+def test_alert_is_present(the_module_remote_browser, with_dismiss_alerts_teardown):
     browser = the_module_remote_browser
     GivenPage(browser.driver).opened_with_body(
         """
@@ -59,9 +57,7 @@ def test_alert_is_present(
         assert False, 'actual: alert not present, expected: alert is present'
 
 
-def test_can_accept_alert(
-    the_module_remote_browser, with_dismiss_alerts_teardown
-):
+def test_can_accept_alert(the_module_remote_browser, with_dismiss_alerts_teardown):
     browser = the_module_remote_browser
     GivenPage(browser.driver).opened_with_body(
         """

@@ -41,9 +41,7 @@ def test_search_is_postponed_until_actual_action_like_questioning_displayed(
 ):
     page = GivenPage(session_browser.driver)
     page.opened_empty()
-    element = session_browser.all('.will-appear').element_by(
-        have.exact_text('Kate')
-    )
+    element = session_browser.all('.will-appear').element_by(have.exact_text('Kate'))
 
     page.load_body(
         '''
@@ -61,9 +59,7 @@ def test_search_is_updated_on_next_actual_action_like_questioning_displayed(
 ):
     page = GivenPage(session_browser.driver)
     page.opened_empty()
-    element = session_browser.all('.will-appear').element_by(
-        have.css_class('special')
-    )
+    element = session_browser.all('.will-appear').element_by(have.css_class('special'))
 
     page.load_body(
         '''

@@ -65,9 +65,7 @@ def the_module_remote_browser():
     dotenv = dotenv_values()
 
     class ProjectConfig:
-        selenoid_login = os.getenv(
-            'selenoid_login', dotenv.get('selenoid_login')
-        )
+        selenoid_login = os.getenv('selenoid_login', dotenv.get('selenoid_login'))
         selenoid_password = os.getenv(
             'selenoid_password', dotenv.get('selenoid_password')
         )

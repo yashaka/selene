@@ -73,9 +73,7 @@ def _build_local_driver_by_name_or_remote_by_url_and_options(
             if isinstance(config.driver_options, ChromeOptions):
                 return Chrome(
                     service=ChromeService(
-                        ChromeDriverManager(
-                            chrome_type=ChromeType.GOOGLE
-                        ).install()
+                        ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install()
                     ),
                     options=config.driver_options,
                 )
@@ -89,9 +87,7 @@ def _build_local_driver_by_name_or_remote_by_url_and_options(
         else:
             return Chrome(
                 service=ChromeService(
-                    ChromeDriverManager(
-                        chrome_type=ChromeType.GOOGLE
-                    ).install()
+                    ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install()
                 )
             )
 
@@ -102,9 +98,7 @@ def _build_local_driver_by_name_or_remote_by_url_and_options(
                 options=config.driver_options,
             )
             if config.driver_options
-            else Firefox(
-                service=FirefoxService(GeckoDriverManager().install())
-            )
+            else Firefox(service=FirefoxService(GeckoDriverManager().install()))
         )
 
     def install_and_build_edge():
@@ -122,9 +116,7 @@ def _build_local_driver_by_name_or_remote_by_url_and_options(
                     f'but got: {config.driver_options}'
                 )
         else:
-            return Edge(
-                service=EdgeService(EdgeChromiumDriverManager().install())
-            )
+            return Edge(service=EdgeService(EdgeChromiumDriverManager().install()))
 
     def build_remote_driver():
         from selenium.webdriver import Remote
@@ -199,9 +191,7 @@ def _build_local_driver_by_name_or_remote_by_url_and_options(
 
 def _maybe_reset_driver_then_tune_window_and_get_with_base_url(config: Config):
     def get(url: Optional[str] = None) -> None:
-        stored_driver: WebDriver = persistent.Field.value_from(
-            config, 'driver'
-        )
+        stored_driver: WebDriver = persistent.Field.value_from(config, 'driver')
         if (
             config._reset_not_alive_driver_on_get_url
             and config.is_driver_set_strategy(stored_driver)
@@ -274,9 +264,7 @@ class ManagedDriverDescriptor:
         # or implicitly by calling other config.* methods,
         # because it will lead to recursion!!!
 
-        driver_box = typing.cast(
-            persistent.Box[WebDriver], getattr(config, self.name)
-        )
+        driver_box = typing.cast(persistent.Box[WebDriver], getattr(config, self.name))
         if driver_box.value is ... or (
             # TODO: think on: if turned on, may slow down tests...
             #       especially when running remote tests...
@@ -342,9 +330,7 @@ class ManagedDriverDescriptor:
                 #       do we need this?
 
                 if not callable(value):
-                    config._schedule_driver_teardown_strategy(
-                        config, lambda: value
-                    )
+                    config._schedule_driver_teardown_strategy(config, lambda: value)
 
             setattr(instance, self.name, driver_box)
         else:
@@ -356,9 +342,7 @@ class ManagedDriverDescriptor:
             #       wasn't the same as was in driver_box.value before?
             #       if yes, we might not want to add one more atexit handler
             if not callable(value):
-                config._schedule_driver_teardown_strategy(
-                    config, lambda: value
-                )
+                config._schedule_driver_teardown_strategy(config, lambda: value)
 
 
 @persistent.dataclass
@@ -649,10 +633,7 @@ class Config:
     # TODO: should we make it private so far?
     is_driver_alive_strategy: Callable[[WebDriver], bool] = lambda driver: (
         # on_error_return_false(lambda: driver.title is not None)
-        (
-            driver.service.process is not None
-            and driver.service.process.poll() is None
-        )
+        (driver.service.process is not None and driver.service.process.poll() is None)
         if hasattr(driver, 'service')
         else on_error_return_false(lambda: driver.window_handles is not None)
     )
@@ -926,9 +907,7 @@ class Config:
     # yet... should we for verbosity distinguish options
     # that a decorator factories from options that are simple decorators?
     # maybe better time to decide on this will be once we have more such options :p
-    _wait_decorator: Callable[
-        [Wait[E]], Callable[[F], F]
-    ] = lambda w: lambda f: f
+    _wait_decorator: Callable[[Wait[E]], Callable[[F], F]] = lambda w: lambda f: f
 
     hook_wait_failure: Optional[Callable[[TimeoutException], Exception]] = None
     '''
@@ -948,9 +927,7 @@ class Config:
     save_screenshot_on_failure: bool = True
     save_page_source_on_failure: bool = True
     # TODO: consider making public
-    _counter: itertools.count = itertools.count(
-        start=int(round(time.time() * 1000))
-    )
+    _counter: itertools.count = itertools.count(start=int(round(time.time() * 1000)))
     """
     A counter, currently used for incrementing screenshot names
     """
@@ -993,9 +970,7 @@ class Config:
                 else ...
             )
         ),
-        lambda path: (
-            path if config.driver.get_screenshot_as_file(path) else None
-        ),
+        lambda path: (path if config.driver.get_screenshot_as_file(path) else None),
         fp.do(
             lambda path: setattr(config, 'last_screenshot', path)
         ),  # On refactor>rename, we may miss it here :( better would be like:
@@ -1140,12 +1115,8 @@ Screenshot: file://{path}'''
             return TimeoutException(error.msg + f'\nPageSource: file://{path}')
 
         return fp.pipe(
-            save_and_log_screenshot
-            if self.save_screenshot_on_failure
-            else None,
-            save_and_log_page_source
-            if self.save_page_source_on_failure
-            else None,
+            save_and_log_screenshot if self.save_screenshot_on_failure else None,
+            save_and_log_page_source if self.save_page_source_on_failure else None,
             hook,
         )
 
@@ -1153,9 +1124,7 @@ Screenshot: file://{path}'''
     #       especially "base interface like config
     #       consider refactor to wait_factory as configurable config property
     def wait(self, entity):
-        hook = self._inject_screenshot_and_page_source_pre_hooks(
-            self.hook_wait_failure
-        )
+        hook = self._inject_screenshot_and_page_source_pre_hooks(self.hook_wait_failure)
         return Wait(
             entity,
             at_most=self.timeout,

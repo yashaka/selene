@@ -40,9 +40,7 @@ EMPTY_PAGE_URL = resources.url('empty.html')
 @pytest.fixture(scope='module')
 def the_driver():
     driver = webdriver.Chrome(
-        service=Service(
-            ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install()
-        ),
+        service=Service(ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install()),
         options=headless_chrome_options(),
     )
 
@@ -147,16 +145,12 @@ def test_saves_screenshot_on_failure(a_browser):
     assert os.path.isfile(expected_path)
 
 
-def test_remembers_last_saved_screenshot(
-    a_browser, with_process_exit_teardown
-):
+def test_remembers_last_saved_screenshot(a_browser, with_process_exit_teardown):
     a_browser.open(EMPTY_PAGE_URL)
 
     # WHEN on failure
     with pytest.raises(TimeoutException):
-        a_browser.element("#does-not-exist").with_(timeout=0.1).should(
-            be.visible
-        )
+        a_browser.element("#does-not-exist").with_(timeout=0.1).should(be.visible)
 
     # assert a_browser.config.last_screenshot == os.path.join(
     assert a_browser.config.last_screenshot == os.path.join(

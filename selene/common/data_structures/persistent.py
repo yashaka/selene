@@ -292,9 +292,7 @@ def dataclass(cls):
         setattr(cls, field.name, field.descriptor)
 
     if not getattr(cls, '__doc__'):
-        cls.__doc__ = cls.__name__ + str(inspect.signature(cls)).replace(
-            ' -> None', ''
-        )
+        cls.__doc__ = cls.__name__ + str(inspect.signature(cls)).replace(' -> None', '')
 
     return cls
 
@@ -333,10 +331,7 @@ def replace(obj, **changes):
             continue
 
         if f.name not in changes:
-            if (
-                f._field_type is dataclasses._FIELD_INITVAR
-                and f.default is MISSING
-            ):
+            if f._field_type is dataclasses._FIELD_INITVAR and f.default is MISSING:
                 raise ValueError(
                     f"InitVar {f.name!r} " 'must be specified with replace()'
                 )

@@ -25,6 +25,4 @@ from selene.core.configuration import Config
 
 
 class SharedConfig(Config):
-    warnings.warn(
-        'SharedConfig is deprecated. Use Config instead', DeprecationWarning
-    )
+    warnings.warn('SharedConfig is deprecated. Use Config instead', DeprecationWarning)
