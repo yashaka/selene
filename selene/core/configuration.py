@@ -366,15 +366,215 @@ class Config:
     """
     A one cross-cutting-concern-like object to group all options
     that might influence Selene behavior depending on context.
-    As option the driver instance is also considered.
-    More over, this config is not just config,
-    but fully manages the driver lifecycle.
-    By this we definitely break SRP principle...
-    In the name of Good:D. Kind of;).
+    For example, `config.timeout` is used in all "waiting" logic
+    of Selene commands. And `config.base_url` is used
+    in `browser.open(relative_url)` command.
+
+    As option, the driver instance is also considered. Moreover, this config
+    is not just config, but fully manages the driver lifecycle.
+    Actually, the "driver manager" is a part of this config.
+    Here's how you can build a driver with the instance of this config:
+
+    >>> from selene import Config
+    >>> config = Config()
+    >>> driver = config.driver  # new instance, built on 1st access to `driver`
+    >>> assert driver.name == 'chrome'
+
+    Or pre-configuring the firefox driver:
+
+    >>> from selene import Config
+    >>> config = Config(driver_name='firefox')
+    >>> driver = config.driver
+    >>> assert driver.name == 'firefox'
+
+    Or post-configuring the firefox driver:
+
+    >>> from selene import Config
+    >>> config = Config()
+    >>> config.driver_name = 'firefox'
+    >>> driver = config.driver
+    >>> assert driver.name == 'firefox'
+
+    Selene has already predefined shared instance of Config,
+    so you can economize on lines of code;)...
+
+    >>> from selene.support.shared import config
+    >>> config.driver_name = 'firefox'
+    >>> driver = config.driver
+    >>> assert driver.name == 'firefox'
+
+    Same shared Config instance is available as browser.config:
+
+    >>> from selene import browser
+    >>> browser.config.driver_name = 'firefox'
+    >>> driver = browser.config.driver
+    >>> assert driver.name == 'firefox'
+
+    There is an alternative style of customizing config.
+    The `config.option_name = value` is known in programming
+    as "imperative programming" style. When you are creating
+    a new Config from scratch, you are actually using
+    a "declarative programming" style:
+
+    >>> from selene import Config
+    >>> my_config = Config(driver_name='firefox')
+    >>> driver = my_config.driver
+    >>> assert driver.name == 'firefox'
+
+    Here is an alternative declarative style of
+    customizing new config by copying existing:
+
+    >>> from selene import browser
+    >>> my_config = browser.config.with_(driver_name='firefox')
+    >>> driver = my_config.driver
+    >>> assert driver.name == 'firefox'
+    >>> # AND...
+    >>> assert driver is not browser.config.driver  # ;)
+    >>> assert browser.config.driver.name == 'chrome'
+
+    As you can see Selene config is closely related to the browser.
+    Moreover, the same type of "declarative config copying" happens implicitely,
+    when you apply "copying" to browser:
+
+    >>> from selene import browser
+    >>> second_browser = browser.with_(driver_name='firefox')
+    >>> assert second_browser.config.driver.name == 'firefox'
+    >>> # AND...
+    >>> assert second_browser.config.driver is not browser.config.driver  # ;)
+    >>> assert browser.config.driver.name == 'chrome'
+
+    Moreover, if you need only a driver, you can have it
+    via `browser.driver` shortcut, thus, completely hiding the config:
+
+    >>> from selene import browser
+    >>> second_browser = browser.with_(driver_name='firefox')
+    >>> assert second_browser.driver.name == 'firefox'
+    >>> # AND...
+    >>> assert second_browser.driver is not browser.driver  # ;)
+    >>> assert browser.driver.name == 'chrome'
+
+    – such shortcut exists only for the `driver` option of config,
+    not for other options like `timeout` or `base_url`.
+    More nuances of `browser` behavior find in its docs;).
+
+    Examples:
+        And here are some more examples of customizing config
+        for common test automation use cases...
+
+        Scenario: "Run locally in headless Chrome"
+
+        >>> from selene import browser
+        >>> from selenium import webdriver
+        >>>
+        >>> options = webdriver.ChromeOptions()
+        >>> options.add_argument('--headless')
+        >>> # additional options:
+        >>> options.add_argument('--no-sandbox')
+        >>> options.add_argument('--disable-gpu')
+        >>> options.add_argument('--disable-notifications')
+        >>> options.add_argument('--disable-extensions')
+        >>> options.add_argument('--disable-infobars')
+        >>> options.add_argument('--enable-automation')
+        >>> options.add_argument('--disable-dev-shm-usage')
+        >>> options.add_argument('--disable-setuid-sandbox')
+        >>> browser.config.driver_options = options
+
+        Scenario: "Run remotely on Selenoid"
+
+        >>> import os
+        >>> from selene import browser
+        >>> from selenium import webdriver
+        >>>
+        >>> options = webdriver.ChromeOptions()
+        >>> options.browser_version = '100.0'
+        >>> options.set_capability(
+        >>>     'selenoid:options',
+        >>>     {
+        >>>         'screenResolution': '1920x1080x24',
+        >>>         'enableVNC': True,
+        >>>         'enableVideo': True,
+        >>>         'enableLog': True,
+        >>>     },
+        >>> )
+        >>> browser.config.driver_options = options
+        >>> browser.config.driver_remote_url = (
+        >>>     f'https://{os.getenv("LOGIN")}:{os.getenv("PASSWORD")}@'
+        >>>     f'selenoid.autotests.cloud/wd/hub'
+        >>> )
+
+        Scenario: "Run remotely on BrowserStack in iOS Safari"
+
+        >>> import os
+        >>> from selene import browser
+        >>> from selenium.webdriver.common.options import ArgOptions
+        >>>
+        >>> options = ArgOptions()
+        >>> options.set_capability(
+        >>>     'bstack:options',
+        >>>     {
+        >>>         'deviceName': 'iPhone 14 Pro Max',
+        >>>         # 'browserName': 'safari',  # default for iPhone
+        >>>         'userName': os.getenv('BROWSERSTACK_USERNAME'),
+        >>>         'accessKey': os.getenv('BROWSERSTACK_ACCESS_KEY'),
+        >>>     },
+        >>> )
+        >>> browser.config.driver_options = options
+        >>> browser.config.driver_remote_url = 'http://hub.browserstack.com/wd/hub'
+
+        Scenario: "Run locally in Android Chrome"
+
+        >>> from selene import browser
+        >>> from appium.options.common import AppiumOptions
+        >>>
+        >>> mobile_options = AppiumOptions()
+        >>> mobile_options.new_command_timeout = 60
+        >>> # Mandatory, also tells Selene to build Appium driver:
+        >>> mobile_options.platform_name = 'android'
+        >>> mobile_options.set_capability('browserName', 'chrome')
+        >>>
+        >>> browser.config.driver_options = mobile_options
+        >>> # Not mandatory, because it is the default value:
+        >>> # browser.config.driver_remote_url = 'http://127.0.0.1:4723/wd/hub'
+
+        Scenario: "Run locally in Android App"
+
+        >>> from selene import browser
+        >>> from appium.options.android import UiAutomator2Options
+        >>>
+        >>> android_options = UiAutomator2Options()
+        >>> android_options.new_command_timeout = 60
+        >>> android_options.app = 'wikipedia-alpha-universal-release.apk'
+        >>> android_options.app_wait_activity = 'org.wikipedia.*'
+        >>>
+        >>> browser.config.driver_options = android_options
+
+        Scenario: "Run remotely in Android App on BrowserStack"
+
+        >>> import os
+        >>> from selene import browser
+        >>> from appium.options.android import UiAutomator2Options
+        >>>
+        >>> options = UiAutomator2Options()
+        >>> options.app = 'bs://c700ce60cf13ae8ed97705a55b8e022f13c5827c'
+        >>> options.set_capability(
+        >>>     'bstack:options',
+        >>>     {
+        >>>         'deviceName': 'Google Pixel 7',
+        >>>         'userName': os.getenv('BROWSERSTACK_USERNAME'),
+        >>>         'accessKey': os.getenv('BROWSERSTACK_ACCESS_KEY'),
+        >>>     },
+        >>> )
+        >>> browser.config.driver_options = options
+        >>> browser.config.driver_remote_url = 'http://hub.browserstack.com/wd/hub'
+
+    By having config options that influences Selene behavior,
+    like `config.timeout` and `config.base_url`,
+    – together with complete "driver management",
+    we definitely break SRP principle... In the name of Good:D. Kind of;).
 
     All this makes it far from being a simple options data class...
     – yet kept as one «class for everything» to keep things easier to use,
-    especially taking into account some historical reasons of Selene's design,
+    especially taking into account some historical reasons of Selenes design,
     that was influenced a lot by the Selenide from Java world.
     As a result sometimes options are not consistent with each other,
     when we speak about different contexts of their usage.

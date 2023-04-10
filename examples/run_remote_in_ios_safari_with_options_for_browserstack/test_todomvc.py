@@ -1,7 +1,8 @@
 import os
 
 from dotenv import dotenv_values
-from selenium import webdriver
+from selenium.webdriver.common.options import ArgOptions
+
 from selene import browser, have
 
 
@@ -59,7 +60,7 @@ def test_complete_task():
 
     project_config = ProjectConfig()
 
-    options = webdriver.ChromeOptions()
+    options = ArgOptions()
     options.set_capability(
         'bstack:options',
         {
