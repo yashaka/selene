@@ -61,7 +61,7 @@ TODOs:
 - use `__all__` in selene api imports, etc
   - The variable `__all__` is a list of public objects of that module, as interpreted by `import *`. ... In other words, `__all__` is a list of strings defining what symbols in a module will be exported when `from module import *` is used on the module
 
-## 2.0.0rc2 (to be released on ?.10.2022)
+## 2.0.0rc2 (to be released on ??.??.2023)
 
 TODOs:
 
@@ -76,7 +76,7 @@ TODOs:
           - maybe make browser.switch ... to work with retry logic
             or make separate command.switch...
 
-## 2.0.0rc1 (to be released on `??`.04.2023)
+## 2.0.0rc1 (released on 11.04.2023)
 
 ### Changes
 
@@ -84,30 +84,20 @@ TODOs:
 
 Any driver instance passed to `browser.config.driver` will be automatically quit at exit, unless `browser.config.hold_driver_at_exit = True`, that is `False` by default
 
-##### It also happens by default for custom and remote drivers if they became dead
+#### Manually set driver can be still automatically rebuilt on next call to browser.open(url)
 
-You can disable this by setting `browser.config.rebuild_dead_driver = False`. Then, if you want to force to rebuild dead driver you have to "reset" driver instance by setting it to `None` or `...` (ellipsis), for example:
+... if happened to be not alive, e.g. after quit or crash. This was relevant in the past, but not for manually set drivers. Not it works for all cases by default, including manually set driver by `browser.config.driver = my_driver_instance`. To disable this behavior set `browser.config._reset_not_alive_driver_on_get_url = False` (currently this option is still marked as experimental with `_` prefix, it may be renamed till final 2.0 release).
 
-```python
-import pytest
-from selene import browser
+Once automatic rebuild is disabled, you can schedule rebuild on next access to driver by setting `browser.config.driver = ...` (besides ellipsis, setting to `None` also works). This is actually what is done inside `browser.open(url)` if `browser.config._reset_not_alive_driver_on_get_url = True` and driver is not alive.
 
+There is another "rebuild" option in config that is disabled by default: `browser.config.rebuild_not_alive_driver`. It is used to rebuild driver on **any** next access to it, if it is not alive. This is different from `browser.config._reset_not_alive_driver_on_get_url` that resets driver (scheduling to be rebuilt) **only** on next call to `browser.open(url)`. Take into account that enabling this option may leed to slower tests when running on remote drivers, because it will check if driver is alive on any access to it, not only on `browser.open(url)`.
 
-@pytest.fixture(scope='function', autouse=True)
-def browser_management():
-  browser.config.rebuild_not_alive_driver = False
-  browser.config.driver = ...  # force to build it on first call
-
-  yield
-
-  browser.quit()  # kill it
-```
 
 #### «browser» term is deprecated in a lot of places
 
-except Browser class itself, of course (but this might be changed somewhere in 3.0🙃)
+... except `Browser` class itself, of course (but this might be changed somewhere in 3.0🙃)
 
-TODO: document it...
+For example, `config.browser_name` is deprecated in favor of `config.driver_name`. Main reason – «browser» term is not relevant to mobile testing, where in a lot of cases we test user actions in app, not browser.
 
 ### New
 
