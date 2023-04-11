@@ -4,6 +4,7 @@
 
 TODOs:
 
+- `config.quit_last_driver_on_reset` (`False` by default)?
 - improve for other `all.*` methods (in addition to improved errors from `browser.all.element_by`)
 - why in the past we had when outer_html this: `'<button class="destroy" type="submit" displayed:false></button>'`
   - but now we have this: `'<button class="destroy" type="submit"></button>'?`
@@ -31,6 +32,18 @@ TODOs:
 ## < 2.0.0 release ? o_O
 
 TODOs:
+
+- manager or executor at `config._executor`?
+- deprecate config.wait(entity) factory?
+  - isn't it enough to have `config._build_wait_strategy(entity)`?
+- decide on `config._reset_not_alive_driver_on_get_url` name
+  - reset vs rebuild?
+  - etc?
+- decide on None as default in managed driver descriptor instead of ...
+  taking into account that mypy does not like it
+  - actually I tend to keep both `...` and `None`, yet using `...` as default
+    in Selene's internals. But let's document this at least. 
+    Mentioning also this: https://github.com/python/mypy/issues/7818
 - consider a way to customize "locator description" [#439](https://github.com/yashaka/selene/issues/439)
   - consider storing "raw selector" of locator to be able to log it as it is [#438](https://github.com/yashaka/selene/issues/438)
 - ensure we can't element.type on invisible element; add test for that
@@ -66,12 +79,6 @@ TODOs:
 ## 2.0.0rc1 (to be released on `??`.04.2023)
 
 TODOs:
-
-* decide on None as default in managed driver descriptor instead of ...
-  taking into account that mypy does not like it
-* decide on private is_driver_alive_strategy and Co for now 
-* config.manager?
-* decide on config.wait
 * autocomplete for entity.with_(**HERE)
 
 ### Changes

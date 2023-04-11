@@ -24,7 +24,7 @@ def manual_driver():
     from selenium import webdriver
     from selenium.webdriver.chrome.service import Service  # type: ignore
     from webdriver_manager.chrome import ChromeDriverManager  # type: ignore
-    from webdriver_manager.core.utils import ChromeType
+    from webdriver_manager.core.utils import ChromeType  # type: ignore
 
     manual_driver = webdriver.Chrome(
         service=Service(ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install())
@@ -218,6 +218,7 @@ def test_driver_built_on_browser__will_be_killed_even__if_copied_with_hold_drive
     atexit._run_exitfuncs()
 
     driver = persistent.Field.value_from(browser.config, 'driver')
+    assert driver is persistent.Field.value_from(copied.config, 'driver')
     pytest.raises(MaxRetryError, lambda: driver.title)  # KILLED
 
 
@@ -371,7 +372,7 @@ def test_browser_resurrects_itself_and_copy__after_copy_programmed_to_death_fore
     assert driver is persistent.Field.value_from(copy.config, 'driver')
 
 
-def test_can_build_second_driver_if_previous_was_forgotten(
+def test_can_build_second_driver_if_previous_was_forgotten_via_reset_to_ellipsis(
     with_process_exit_teardown,
 ):
     # GIVEN
@@ -380,6 +381,28 @@ def test_can_build_second_driver_if_previous_was_forgotten(
 
     # WHEN
     browser.config.driver = ...
+
+    # THEN
+    assert first_driver.title == ''  # ALIVE;)
+
+    # WHEN
+    second_driver = browser.driver
+
+    # THEN
+    assert second_driver.title == ''  # NEW ONE!
+    assert first_driver.title == ''  # OLD IS ALIVE;)
+    assert first_driver.session_id != second_driver.session_id
+
+
+def test_can_build_second_driver_if_previous_was_forgotten_via_reset_to_none(
+    with_process_exit_teardown,
+):
+    # GIVEN
+    browser = selene.Browser(selene.Config())
+    first_driver = browser.driver
+
+    # WHEN
+    browser.config.driver = None
 
     # THEN
     assert first_driver.title == ''  # ALIVE;)
@@ -553,7 +576,7 @@ def test_can_build_second_driver_if_first_manually_set_on_init_was_used_n_forgot
     assert manual_driver.session_id != second_driver.session_id
 
 
-def test_should_kill_at_exit_all_drivers_including_manually_set_n_forgotten(
+def test_should_kill_at_exit_all_drivers_including_manually_set_and_forgotten(
     with_process_exit_teardown, manual_driver
 ):
     browser = selene.Browser(selene.Config())
@@ -637,7 +660,7 @@ def test_build_post_tuned_driver_by_name_on_second_access_after_first_quit_if(
     assert driver.title == ''
 
 
-def test_build_post_tuned_driver_by_name_on_second_access_after_first_reset(
+def test_build_post_tuned_driver_by_name_on_2nd_access_after_1st_reset_with_ellipsis(
     with_process_exit_teardown,
 ):
     browser = selene.Browser(selene.Config())
@@ -645,6 +668,20 @@ def test_build_post_tuned_driver_by_name_on_second_access_after_first_reset(
     browser.config.driver_name = 'firefox'
 
     browser.config.driver = ...
+    driver = browser.driver
+
+    assert driver.name == 'firefox'
+    assert driver.title == ''
+
+
+def test_build_post_tuned_driver_by_name_on_2nd_access_after_1st_reset_with_none(
+    with_process_exit_teardown,
+):
+    browser = selene.Browser(selene.Config())
+    driver = browser.driver
+    browser.config.driver_name = 'firefox'
+
+    browser.config.driver = None
     driver = browser.driver
 
     assert driver.name == 'firefox'
@@ -710,7 +747,7 @@ def test_preconfigured_sharing_driver_between_original_and_copy_when_nothing_dif
     assert driver_of_copied is driver_of_origin
 
 
-def test_preconfigured_new_driver_for_copy_by_explicit_driver_set_on_cloning_nothing(
+def test_preconfigured_new_driver_for_copy_by_explicit_driver_set_on_copying_nothing(
     with_process_exit_teardown,
 ):
     origin = selene.Browser(
@@ -726,7 +763,7 @@ def test_preconfigured_new_driver_for_copy_by_explicit_driver_set_on_cloning_not
     assert driver_of_copied is not driver_of_origin
 
 
-def test_new_driver_for_copy_by_explicit_driver_set_on_cloning_nothing(
+def test_new_driver_for_copy_by_explicit_driver_set_ellipsis_on_copying_nothing(
     with_process_exit_teardown,
 ):
     origin = selene.Browser(selene.Config())  # <- GIVEN
@@ -738,7 +775,19 @@ def test_new_driver_for_copy_by_explicit_driver_set_on_cloning_nothing(
     assert driver_of_copied is not driver_of_origin
 
 
-def test_post_configured_new_driver_for_copy_by_explicit_driver_set_on_cloning_with_name(
+def test_new_driver_for_copy_by_explicit_driver_set_none_on_copying_nothing(
+    with_process_exit_teardown,
+):
+    origin = selene.Browser(selene.Config())  # <- GIVEN
+    copied = origin.with_(driver=None)  # <- AND
+
+    driver_of_copied = copied.driver
+    driver_of_origin = origin.driver
+
+    assert driver_of_copied is not driver_of_origin
+
+
+def test_post_configured_new_driver_to_copy_by_explicit_driver_set_on_copying_with_name(
     with_process_exit_teardown,
 ):
     origin = selene.Browser(selene.Config())
@@ -751,7 +800,7 @@ def test_post_configured_new_driver_for_copy_by_explicit_driver_set_on_cloning_w
     assert driver_of_copied is not driver_of_origin
 
 
-def test_new_driver_for_copy_by_implicit_driver_set_on_cloning_with_name(
+def test_new_driver_to_copy_by_implicit_driver_set_on_cloning_with_name(
     with_process_exit_teardown,
 ):
     origin = selene.Browser(selene.Config())

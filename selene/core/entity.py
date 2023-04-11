@@ -1143,12 +1143,9 @@ class Browser(WaitingEntity['Browser']):
     # --- High Level Commands--- #
 
     def open(self, relative_or_absolute_url: Optional[str] = None) -> Browser:
-        # TODO: what about:
-        # self.config.managed_driver.get(url)
-        # OR:
-        # self.config.managed.get(url)
-        # self.config.manager.get(url)
-        self.config._driver_get_url_strategy(self.config)(relative_or_absolute_url)
+        # TODO: should we keep it less pretty but more KISS? like:
+        # self.config._driver_get_url_strategy(self.config)(relative_or_absolute_url)
+        self.config._executor.get_url(relative_or_absolute_url)
 
         return self
 
@@ -1157,7 +1154,7 @@ class Browser(WaitingEntity['Browser']):
 
         self.driver.switch_to.window(query.next_tab(self))
 
-        # TODO: should we user waiting version here (and in other similar cases)?
+        # TODO: should we use waiting version here (and in other similar cases)?
         # self.perform(Command(
         #     'open next tab',
         #     lambda browser: browser.driver.switch_to.window(query.next_tab(self))))
@@ -1191,17 +1188,14 @@ class Browser(WaitingEntity['Browser']):
     #       question is - should we implement our own alert as waiting entity?
 
     def quit(self) -> None:
-        if not getattr(
-            self.config,
-            '_is_browser_alive',  # TODO: o_O ... what is this?
-            True,
-        ):
-            warnings.warn(
-                'Tried to quit driver that is not alive (already closed or was not opened)'
-            )
-            return
+        """
+        Quits the driver.
 
-        self.driver.quit()  # TODO: quit silently... (i.e. catch error if it's already quit)
+        If the driver was not even set, will build it just to quit it:D.
+
+        Will fail if the driver was already quit or crashed.
+        """
+        self.driver.quit()
 
     # TODO: consider deprecating, it does not close browser, it closes current tab/window
     def close(self) -> Browser:
@@ -1213,7 +1207,8 @@ class Browser(WaitingEntity['Browser']):
     # TODO: should we keep it?
     def execute_script(self, script, *args):
         warnings.warn(
-            'consider using browser.driver.execute_script instead of browser.execute_script',
+            'consider using browser.driver.execute_script '
+            'instead of browser.execute_script',
             PendingDeprecationWarning,
         )
         return self.driver.execute_script(script, *args)

@@ -191,12 +191,11 @@ def _build_local_driver_by_name_or_remote_by_url_and_options(
 
 def _maybe_reset_driver_then_tune_window_and_get_with_base_url(config: Config):
     def get(url: Optional[str] = None) -> None:
-        stored_driver: WebDriver = persistent.Field.value_from(config, 'driver')
         if (
             config._reset_not_alive_driver_on_get_url
-            and config.is_driver_set_strategy(stored_driver)
-            and not callable(stored_driver)
-            and not config.is_driver_alive_strategy(stored_driver)
+            and config._executor.is_driver_set
+            and config._executor.is_driver_managed
+            and not config._executor.is_driver_alive
         ):
             # TODO: consider logging this reset
             #       so user will see it and decide to disable it
@@ -244,7 +243,60 @@ def _maybe_reset_driver_then_tune_window_and_get_with_base_url(config: Config):
     return get
 
 
-class ManagedDriverDescriptor:
+# TODO: should we do a complete Manager from it, not just executor,
+#       by moving the corresponding logic from _ManagedDriverDescriptor?
+# TODO: do we even need it? shouldn't we keep it more KISS?
+class _DriverStrategiesExecutor:
+    def __init__(self, config: Config):
+        self.config = config
+
+    @property
+    def driver_instance(self) -> typing.Union[Optional[WebDriver], ...]:  # type: ignore
+        return persistent.Field.value_from(self.config, 'driver')
+
+    @property
+    def is_driver_managed(self) -> bool:
+        return not callable(self.driver_instance)
+
+    def build_driver(self) -> WebDriver:
+        return self.config.build_driver_strategy(self.config)
+
+    # TODO: is_set or is_driver_set?
+    #       kind of depends on class name.
+    #       If named as ManagedDriver, then is_set
+    #       If named as DriverManager, then is_driver_set
+    @property
+    def is_driver_set(self) -> bool:
+        return self.config._is_driver_set_strategy(self.driver_instance)
+
+    @property
+    def is_driver_alive(self) -> bool:
+        # TODO: should we check first if driver is set here?
+        return self.config._is_driver_alive_strategy(self.driver_instance)  # type: ignore
+
+    # TODO: this property suits better
+    #       for something called as DriverManager not ManagedDriver ;)
+    @property
+    def teardown(self) -> Callable[[WebDriver], None]:
+        return self.config._teardown_driver_strategy(self.config)
+
+    # TODO: this property suits better
+    #       for something called as DriverManager not ManagedDriver ;)
+    def schedule_teardown(self, get_driver: Callable[[], WebDriver]) -> None:
+        self.config._schedule_driver_teardown_strategy(self.config, get_driver)
+
+    def get_url(self, url: Optional[str] = None) -> None:
+        self.config._driver_get_url_strategy(self.config)(url)
+
+    def save_screenshot(self, path: Optional[str] = None) -> Any:
+        return self.config._save_screenshot_strategy(self.config, path)
+
+    def save_page_source(self, path: Optional[str] = None) -> Any:
+        return self.config._save_page_source_strategy(self.config, path)
+
+
+# TODO: consider reusing config._executor inside this descriptor
+class _ManagedDriverDescriptor:
     def __init__(
         self, *, default: typing.Union[Optional[WebDriver], ...] = ...  # type: ignore
     ):
@@ -265,12 +317,16 @@ class ManagedDriverDescriptor:
         # because it will lead to recursion!!!
 
         driver_box = typing.cast(persistent.Box[WebDriver], getattr(config, self.name))
-        if driver_box.value is ... or (
-            # TODO: think on: if turned on, may slow down tests...
-            #       especially when running remote tests...
-            config.rebuild_not_alive_driver
-            and not callable(driver_box.value)  # TODO: consider deprecating
-            and not config.is_driver_alive_strategy(driver_box.value)
+        if (
+            driver_box.value is None
+            or driver_box.value is ...
+            or (
+                # TODO: think on: if turned on, may slow down tests...
+                #       especially when running remote tests...
+                config.rebuild_not_alive_driver
+                and not callable(driver_box.value)  # TODO: consider deprecating
+                and not config._is_driver_alive_strategy(driver_box.value)
+            )
         ):
             driver = config.build_driver_strategy(config)
             driver_box.value = driver
@@ -329,6 +385,7 @@ class ManagedDriverDescriptor:
                 # TODO: here we could remember somehow that driver was set manually
                 #       do we need this?
 
+                # currently passing driver as callable disables driver teardown
                 if not callable(value):
                     config._schedule_driver_teardown_strategy(config, lambda: value)
 
@@ -338,10 +395,11 @@ class ManagedDriverDescriptor:
             driver_box = getattr(instance, self.name)
             driver_box.value = value
 
-            # TODO: should not we check value set above,
-            #       wasn't the same as was in driver_box.value before?
-            #       if yes, we might not want to add one more atexit handler
+            # currently passing driver as callable disables driver teardown
             if not callable(value):
+                # TODO: should not we check value set above,
+                #       wasn't the same as was in driver_box.value before?
+                #       if yes, we might not want to add one more atexit handler
                 config._schedule_driver_teardown_strategy(config, lambda: value)
 
 
@@ -584,6 +642,12 @@ class Config:
     But for now, let's keep it as is, considered as a trade-off.
     """
 
+    # TODO: should it be more as a strategy builder (i.e. curried function)?
+    #       i.e.
+    #           build_driver_strategy: Callable[
+    #             [Config], Callable[[], WebDriver]
+    #           ]
+    #       for consistency with some other options...
     build_driver_strategy: Callable[
         [Config], WebDriver
     ] = _build_local_driver_by_name_or_remote_by_url_and_options
@@ -594,8 +658,9 @@ class Config:
     because it may lead to recursion.
 
     The default factory builds:
-    * either a local driver by value specified in `config.name`
+    * either a local driver by value specified in `config.driver_name`
     * or remote driver by value specified in `config.driver_remote_url`.
+    * or mobile driver according to `config.driver_options` capabilities.
     """
 
     # TODO: isn't this option too much?
@@ -611,27 +676,28 @@ class Config:
         [Config, Callable[[], WebDriver]],
         typing.Union[None, typing.Any],
     ] = lambda config, get_driver: atexit.register(
-        lambda: config._teardown_driver_strategy(config, get_driver())
+        lambda: config._teardown_driver_strategy(config)(get_driver())
     )
 
+    # TODO: since it's curried, shouldn't we rename it driver_teardown_strategy?
     _teardown_driver_strategy: Callable[
-        [Config, WebDriver], None
-    ] = lambda config, driver: (
+        [Config], Callable[[WebDriver], None]
+    ] = lambda config: lambda driver: (
         driver.quit()
         if not config.hold_driver_at_exit
-        and config.is_driver_set_strategy(driver)
-        and config.is_driver_alive_strategy(driver)
+        and config._is_driver_set_strategy(driver)
+        and config._is_driver_alive_strategy(driver)
         else None
     )
 
     # TODO: should we make it private so far?
     # TODO: shouldn't it be config-based?
-    is_driver_set_strategy: Callable[[WebDriver], bool] = lambda driver: (
+    _is_driver_set_strategy: Callable[[Optional[WebDriver]], bool] = lambda driver: (
         driver is not ... and driver is not None
     )
 
     # TODO: should we make it private so far?
-    is_driver_alive_strategy: Callable[[WebDriver], bool] = lambda driver: (
+    _is_driver_alive_strategy: Callable[[WebDriver], bool] = lambda driver: (
         # on_error_return_false(lambda: driver.title is not None)
         (driver.service.process is not None and driver.service.process.poll() is None)
         if hasattr(driver, 'service')
@@ -751,7 +817,8 @@ class Config:
     """
     Controls whether driver will be automatically quit at process exit or not.
 
-    Will not take much effect for 4.5.0 < selenium versions <= 4.8.3 < ?.?.?,
+    Will not take much effect on Chrome
+    for 4.5.0 < selenium versions <= 4.8.3 < ?.?.?,
     Because for some reason, Selenium of such versions kills driver by himself,
     regardless of what Selene thinks about it:D
     """
@@ -786,11 +853,15 @@ class Config:
         Callable[[Optional[str]], None],
     ] = _maybe_reset_driver_then_tune_window_and_get_with_base_url
 
-    # TODO: consider adding option to reset driver on browser.open if is not alive
+    # TODO: should we use `rebuild` term instead of `reset`?
+    #       to be consistent with `rebuild_not_alive_driver`...
+    #       Technically, we are not explicitely rebuilding it with this option,
+    #       we do reset it by setting to `...`. But then in same `get_url`,
+    #       on first access it will be rebuilt automatically.
     _reset_not_alive_driver_on_get_url: bool = True
     """
-    Controls whether driver should be automatically rebuilt
-    if it was noticed as not alive (e.g. after quit or crash)
+    Controls whether driver should be automatically reset and, thus,
+    forced to be rebuilt, if it was noticed as not alive (e.g. after quit or crash)
     on next call to `config.driver.get(url)`
     (via `config._driver_get_url_strategy`).
 
@@ -818,6 +889,14 @@ class Config:
     on next access only inside "get url" logic.
     """
 
+    # # TODO: why it is not working as attribute + post init?
+    # _executor: _DriverStrategiesExecutor = typing.cast(_DriverStrategiesExecutor, ...)
+    # def __post_init__(self):
+    #     self._executor = _DriverStrategiesExecutor(self)
+    @property
+    def _executor(self):
+        return _DriverStrategiesExecutor(self)
+
     # TODO: consider allowing to provide a Descriptor as a value
     #       by inheritance like:
     #           class MyConfig(Config):
@@ -834,20 +913,26 @@ class Config:
     #       like teardown...
     #       but if we provide a callable instance to driver,
     #       then it will just substitute the whole lifecycle
-    driver: WebDriver = ManagedDriverDescriptor(default=...)  # type: ignore
+    # TODO: consider renaming the class of *Descriptor.
+    #       It can be named as ManagedDriverDescriptor, because this is what it is.
+    #       But since we have another object named as _managed_driver,
+    #       it might be confusing... so maybe DriverManagerDescriptor?
+    #       or DriverLifeCycleDescriptor?
+    #       or is it ok to have similar names? We still have a Descriptor suffix...
+    driver: WebDriver = _ManagedDriverDescriptor(default=...)  # type: ignore
     """
     A driver instance with lifecycle managed by this config special options
     (TODO: specify these options...),
     depending on their values and customization of this attribute.
 
-    GIVEN unset, i.e. equals to default `...`,
+    GIVEN unset, i.e. equals to default `...` or `None`,
     WHEN accessed first time (e.g. via config.driver)
     THEN it will be set to the instance built by `config.build_driver_strategy`.
 
     GIVEN set manually to an existing driver instance,
           like: `config.driver = Chrome()`
     THEN it will be reused as it is on any next access
-    WHEN reset to `...`
+    WHEN reset to `...` OR `None`
     THEN will be rebuilt by `config.build_driver_strategy`
 
     GIVEN set manually to an existing driver instance (not callable),
@@ -876,7 +961,7 @@ class Config:
     timeout: float = 4
     poll_during_waits: int = 100
     """
-    a fake option, not currently used in Selene waiting:)
+    A fake option, not currently used in Selene waiting:)
     """
 
     # --- Web-specific options ---
@@ -1119,14 +1204,23 @@ Screenshot: file://{path}'''
             hook,
         )
 
+    # TODO: maybe here wait_factory would be better name?
+    #       yes, it's also a strategy, but completely not connected with other
+    #       driver lifecycle strategies
+    _build_wait_strategy: Callable[
+        [Config], Callable[[E], Wait[E]]
+    ] = lambda config: lambda entity: Wait(
+        entity,
+        at_most=config.timeout,
+        or_fail_with=config._inject_screenshot_and_page_source_pre_hooks(
+            config.hook_wait_failure
+        ),
+        _decorator=config._wait_decorator,
+    )
+
     # TODO: we definitely not need it inside something called Config,
     #       especially "base interface like config
     #       consider refactor to wait_factory as configurable config property
-    def wait(self, entity):
-        hook = self._inject_screenshot_and_page_source_pre_hooks(self.hook_wait_failure)
-        return Wait(
-            entity,
-            at_most=self.timeout,
-            or_fail_with=hook,
-            _decorator=self._wait_decorator,
-        )
+    # TODO: should we move it config._executor.wait(entity) ?
+    def wait(self, entity: E) -> Wait[E]:
+        return self._build_wait_strategy(self)(entity)

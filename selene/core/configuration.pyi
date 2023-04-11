@@ -20,14 +20,31 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 import itertools
-from typing import Callable, Optional, Any
+from typing import Callable, Optional, Any, Union
 
 from selenium.webdriver.common.options import BaseOptions
 from selenium.webdriver.remote.webdriver import WebDriver
 
-from selene.common import fp
 from selene.common.fp import F
 from selene.core.wait import Wait, E
+
+class _DriverStrategiesExecutor:
+    def __init__(self, config: Config): ...
+    @property
+    def driver_instance(self) -> Union[Optional[WebDriver], ...]: ...  # type: ignore
+    @property
+    def is_driver_managed(self) -> bool: ...
+    def build_driver(self) -> WebDriver: ...
+    @property
+    def is_driver_set(self) -> bool: ...
+    @property
+    def is_driver_alive(self) -> bool: ...
+    @property
+    def teardown(self) -> Callable[[WebDriver], None]: ...
+    def schedule_teardown(self, get_driver: Callable[[], WebDriver]) -> None: ...
+    def get_url(self, url: Optional[str] = None) -> None: ...
+    def save_screenshot(self, path: Optional[str] = None) -> Any: ...
+    def save_page_source(self, path: Optional[str] = None) -> Any: ...
 
 class Config:
     """
@@ -48,8 +65,8 @@ class Config:
         [Config, Callable[[], WebDriver]], None
     ] = ...
     _teardown_driver_strategy: Callable[[Config, WebDriver], None] = ...
-    is_driver_set_strategy: Callable[[WebDriver], bool] = ...
-    is_driver_alive_strategy: Callable[[WebDriver], bool] = ...
+    _is_driver_set_strategy: Callable[[WebDriver], bool] = ...
+    _is_driver_alive_strategy: Callable[[WebDriver], bool] = ...
     # Managed Driver
     driver: WebDriver = ...
     # Options to customize this config creation
@@ -77,6 +94,9 @@ class Config:
     type_by_js: bool = False
     click_by_js: bool = False
     wait_for_no_overlap_found_by_js: bool = False
+    # Etc.
+    _build_wait_strategy: Callable[[Config], Callable[[E], Wait[E]]] = ...
+    _executor: _DriverStrategiesExecutor = ...
 
     def __init__(
         self,
@@ -97,8 +117,8 @@ class Config:
             [Config, Callable[[], WebDriver]], None
         ] = ...,
         _teardown_driver_strategy: Callable[[Config, WebDriver], None] = ...,
-        is_driver_set_strategy: Callable[[WebDriver], bool] = ...,
-        is_driver_alive_strategy: Callable[[WebDriver], bool] = ...,
+        _is_driver_set_strategy: Callable[[WebDriver], bool] = ...,
+        _is_driver_alive_strategy: Callable[[WebDriver], bool] = ...,
         # Managed Driver
         driver: WebDriver = ...,
         # Options to customize this config creation
@@ -126,6 +146,8 @@ class Config:
         type_by_js: bool = False,
         click_by_js: bool = False,
         wait_for_no_overlap_found_by_js: bool = False,
+        # Etc.
+        _build_wait_strategy: Callable[[Config], Callable[[E], Wait[E]]] = ...,
     ): ...
     def with_(
         self,
@@ -146,8 +168,8 @@ class Config:
             [Config, Callable[[], WebDriver]], None
         ] = ...,
         _teardown_driver_strategy: Callable[[Config, WebDriver], None] = ...,
-        is_driver_set_strategy: Callable[[WebDriver], bool] = ...,
-        is_driver_alive_strategy: Callable[[WebDriver], bool] = ...,
+        _is_driver_set_strategy: Callable[[WebDriver], bool] = ...,
+        _is_driver_alive_strategy: Callable[[WebDriver], bool] = ...,
         # Managed Driver
         driver: WebDriver = ...,
         # Options to customize this config creation
@@ -175,4 +197,6 @@ class Config:
         type_by_js: bool = False,
         click_by_js: bool = False,
         wait_for_no_overlap_found_by_js: bool = False,
+        # Etc.
+        _build_wait_strategy: Callable[[Config], Callable[[E], Wait[E]]] = ...,
     ): ...
