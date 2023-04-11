@@ -155,7 +155,7 @@ class Config:
         # Options to customize default driver lifecycle
         driver_name: str = 'chrome',
         driver_options: Optional[BaseOptions] = None,
-        remote_remote_url: Optional[str] = None,
+        driver_remote_url: Optional[str] = None,
         hold_driver_at_exit: bool = False,
         _reset_not_alive_driver_on_get_url: bool = True,
         rebuild_not_alive_driver: bool = False,

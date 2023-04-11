@@ -78,9 +78,6 @@ TODOs:
 
 ## 2.0.0rc1 (to be released on `??`.04.2023)
 
-TODOs:
-* autocomplete for entity.with_(**HERE)
-
 ### Changes
 
 #### Any custom driver will now be automatically quit at exit
@@ -277,6 +274,8 @@ browser.all(by_id('page_list_item_title')).should(
 #### A lot of other local, remote and mobile test examples at...
 
 https://github.com/yashaka/selene/tree/master/examples
+
+#### autocomplete for entity.with_(HERE)
 
 ### Other
 

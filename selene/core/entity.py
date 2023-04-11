@@ -71,11 +71,16 @@ class Matchable(Assertable[E]):
         pass
 
 
+# class Configured(ABC, typing.Generic[E]):
 class Configured(ABC):
     @property
     @abstractmethod
     def config(self) -> Config:
         pass
+
+    # @abstractmethod
+    # def with_(self, config: Optional[Config] = None, **config_as_kwargs) -> E:
+    #     pass
 
 
 class WaitingEntity(Matchable[E], Configured):
