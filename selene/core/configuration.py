@@ -69,6 +69,9 @@ def _build_local_driver_by_name_or_remote_by_url_and_options(
     from webdriver_manager.core.utils import ChromeType  # type: ignore
 
     def install_and_build_chrome():
+        # TODO: consider simplifying the logic... to much of ifs
+        #       probably all ifs were already before calling this function
+        #       see example of simplification in install_and_build_firefox
         if config.driver_options:
             if isinstance(config.driver_options, ChromeOptions):
                 return Chrome(
@@ -80,8 +83,9 @@ def _build_local_driver_by_name_or_remote_by_url_and_options(
             else:
                 raise ValueError(
                     f'Default config.build_driver_strategy («driver factory»), '
-                    f'if config.name is set to "chrome", – '
-                    f'expects only instance of ChromeOptions or None in config.driver_options,'
+                    f'if config.driver_name is set to "chrome", – '
+                    f'expects only instance of ChromeOptions or None'
+                    f'in config.driver_options,'
                     f'but got: {config.driver_options}'
                 )
         else:
@@ -92,13 +96,9 @@ def _build_local_driver_by_name_or_remote_by_url_and_options(
             )
 
     def install_and_build_firefox():
-        return (
-            Firefox(
-                service=FirefoxService(GeckoDriverManager().install()),
-                options=config.driver_options,
-            )
-            if config.driver_options
-            else Firefox(service=FirefoxService(GeckoDriverManager().install()))
+        return Firefox(
+            service=FirefoxService(GeckoDriverManager().install()),
+            options=config.driver_options,
         )
 
     def install_and_build_edge():
@@ -111,7 +111,7 @@ def _build_local_driver_by_name_or_remote_by_url_and_options(
             else:
                 raise ValueError(
                     f'Default config.build_driver_strategy, '
-                    f'if config.name is set to "edge", – '
+                    f'if config.driver_name is set to "edge", – '
                     f'expects only instance of EdgeOptions or None in config.driver_options,'
                     f'but got: {config.driver_options}'
                 )
@@ -181,11 +181,19 @@ def _build_local_driver_by_name_or_remote_by_url_and_options(
                 in ['android', 'ios']
             )
         )
+        else 'remote'
+        if (config.driver_remote_url or config.driver_name == 'remote')
         # TODO: consider automatically detect installed browser if driver_name not set
-        else (config.driver_name or 'chrome')
-        if not config.driver_remote_url
-        else 'remote',
-        'chrome',
+        else (
+            config.driver_name
+            if config.driver_name
+            else config.driver_options.capabilities['browserName']
+            if (
+                config.driver_options
+                and 'browserName' in config.driver_options.capabilities
+            )
+            else 'chrome'
+        )
     )()
 
 
@@ -723,13 +731,30 @@ class Config:
     it will work same way as in Selenium WebDriver.
     """
 
+    # TODO: consider typing as Optional[Literal['chrome', 'firefox', 'edge', 'appium']]
     # TODO: consider setting to None or ... by default,
     #       and pick up by factory any installed browser in a system
-    driver_name: str = 'chrome'
+    driver_name: Optional[str] = None
     """
     A desired name of the driver to build by `config.build_driver_strategy`.
+
+    If not set (i.e. set to None, that is a current default value),
+    the 'chrome' driver will be used by default.
+
     It is ignored by default `config.build_driver_strategy`
     if `config.driver_remote_url` is set.
+
+    If you are going to provide your desired driver options
+    via `config.driver_options`,
+    then Selene will try to guess the corresponding driver name
+    based on the options you provided. I.e. no need to provide both:
+
+    >>> config.driver_name = 'chrome'
+    >>> config.driver_options = ChromeOptions()
+
+    It's enough to provide only the options:
+
+    >>> config.driver_options = ChromeOptions()
 
     GIVEN set to any of: 'chrome', 'firefox', 'edge',
     AND config.driver is left unset (default value is ...),
@@ -801,7 +826,7 @@ class Config:
 
     # TODO: consider to deprecate because might confuse in case of Appium usage
     @property
-    def browser_name(self) -> str:
+    def browser_name(self) -> Optional[str]:
         return self.driver_name
 
     # TODO: consider to deprecate because might confuse in case of Appium usage

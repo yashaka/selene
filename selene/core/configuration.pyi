@@ -52,7 +52,7 @@ class Config:
     """
 
     # Options to customize default driver lifecycle
-    driver_name: str = 'chrome'
+    driver_name: Optional[str] = None
     driver_options: Optional[BaseOptions] = None
     driver_remote_url: Optional[str] = None
     hold_driver_at_exit: bool = False
@@ -102,7 +102,7 @@ class Config:
         self,
         *,
         # Options to customize default driver lifecycle
-        driver_name: str = 'chrome',
+        driver_name: Optional[str] = None,
         driver_options: Optional[BaseOptions] = None,
         driver_remote_url: Optional[str] = None,
         hold_driver_at_exit: bool = False,
@@ -153,7 +153,7 @@ class Config:
         self,
         *,
         # Options to customize default driver lifecycle
-        driver_name: str = 'chrome',
+        driver_name: Optional[str] = None,
         driver_options: Optional[BaseOptions] = None,
         driver_remote_url: Optional[str] = None,
         hold_driver_at_exit: bool = False,

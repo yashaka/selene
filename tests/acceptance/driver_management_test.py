@@ -605,6 +605,19 @@ def test_builds_firefox_driver_for_browser_configured_with_firefox_as_name(
     assert driver.title == ''
 
 
+def test_builds_firefox_driver_for_browser_configured_with_firefox_options(
+    with_process_exit_teardown,
+):
+    from selenium.webdriver import FirefoxOptions
+
+    browser = selene.Browser(selene.Config(driver_options=FirefoxOptions()))
+
+    driver = browser.driver
+
+    assert driver.name == 'firefox'
+    assert driver.title == ''
+
+
 def test_builds_firefox_driver_for_browser_post_tuned_for_firefox_as_name(
     with_process_exit_teardown,
 ):

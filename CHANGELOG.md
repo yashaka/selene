@@ -46,6 +46,14 @@ TODOs:
     Mentioning also this: https://github.com/python/mypy/issues/7818
 - consider a way to customize "locator description" [#439](https://github.com/yashaka/selene/issues/439)
   - consider storing "raw selector" of locator to be able to log it as it is [#438](https://github.com/yashaka/selene/issues/438)
+  - consider storing `locator.name` and take it from class attribute name if Element object
+    is used as descriptor (via `__set_name__` impl.)
+    - while being a descriptor...
+      check if `hassattr(owner, 'element')` (or context, or container?)
+      then consider starting the search from the context 
+      and make this configurable via `config.search_from_defined_context = True`
+      (probably `False` by default)
+      and being able to override somehow on element definition level
 - ensure we can't element.type on invisible element; add test for that
 - decide on have.size vs query.size
   - consider making have.size to work with elements too...
@@ -61,7 +69,7 @@ TODOs:
 - use `__all__` in selene api imports, etc
   - The variable `__all__` is a list of public objects of that module, as interpreted by `import *`. ... In other words, `__all__` is a list of strings defining what symbols in a module will be exported when `from module import *` is used on the module
 
-## 2.0.0rc2 (to be released on ??.??.2023)
+## 2.0.0rc? (to be released on ??.??.2023)
 
 TODOs:
 
@@ -75,6 +83,28 @@ TODOs:
     - add something like `browser.perform(switch_to_tab('my tab title'))`
           - maybe make browser.switch ... to work with retry logic
             or make separate command.switch...
+
+## 2.0.0rc2 (to be released on 13.04.2023)
+
+### Driver is guessed by config.driver_options too
+
+Before:
+
+  * `config.driver_name` was `'chrome'` by default
+
+Now:
+
+  * `config.driver_name` is `None` by default
+    * and means "desired requested driver name"
+  * setting `config.driver_options` usually is enough to guess the driver name,
+    e.g., just by setting `config.driver_options = FirefoxOptions()`
+    you already tell Selene to build Firefox driver.
+
+
+## 2.0.0rc1.post1 (to be released on ??.??.2023)
+
+* allow guessing local driver name based on config.driver_options
+* examples with specifying binary location for driver, ignoring wdm
 
 ## 2.0.0rc1 (released on 11.04.2023)
 
