@@ -429,91 +429,101 @@ class Config:
     As option, the driver instance is also considered. Moreover, this config
     is not just config, but fully manages the driver lifecycle.
     Actually, the "driver manager" is a part of this config.
-    Here's how you can build a driver with the instance of this config:
 
-    >>> from selene import Config
-    >>> config = Config()
-    >>> driver = config.driver  # new instance, built on 1st access to `driver`
-    >>> assert driver.name == 'chrome'
-
-    Or pre-configuring the firefox driver:
-
-    >>> from selene import Config
-    >>> config = Config(driver_name='firefox')
-    >>> driver = config.driver
-    >>> assert driver.name == 'firefox'
-
-    Or post-configuring the firefox driver:
-
-    >>> from selene import Config
-    >>> config = Config()
-    >>> config.driver_name = 'firefox'
-    >>> driver = config.driver
-    >>> assert driver.name == 'firefox'
-
-    Selene has already predefined shared instance of Config,
-    so you can economize on lines of code;)...
-
-    >>> from selene.support.shared import config
-    >>> config.driver_name = 'firefox'
-    >>> driver = config.driver
-    >>> assert driver.name == 'firefox'
-
-    Same shared Config instance is available as browser.config:
-
-    >>> from selene import browser
-    >>> browser.config.driver_name = 'firefox'
-    >>> driver = browser.config.driver
-    >>> assert driver.name == 'firefox'
-
-    There is an alternative style of customizing config.
-    The `config.option_name = value` is known in programming
-    as "imperative programming" style. When you are creating
-    a new Config from scratch, you are actually using
-    a "declarative programming" style:
-
-    >>> from selene import Config
-    >>> my_config = Config(driver_name='firefox')
-    >>> driver = my_config.driver
-    >>> assert driver.name == 'firefox'
-
-    Here is an alternative declarative style of
-    customizing new config by copying existing:
-
-    >>> from selene import browser
-    >>> my_config = browser.config.with_(driver_name='firefox')
-    >>> driver = my_config.driver
-    >>> assert driver.name == 'firefox'
-    >>> # AND...
-    >>> assert driver is not browser.config.driver  # ;)
-    >>> assert browser.config.driver.name == 'chrome'
-
-    As you can see Selene config is closely related to the browser.
-    Moreover, the same type of "declarative config copying" happens implicitely,
-    when you apply "copying" to browser:
-
-    >>> from selene import browser
-    >>> second_browser = browser.with_(driver_name='firefox')
-    >>> assert second_browser.config.driver.name == 'firefox'
-    >>> # AND...
-    >>> assert second_browser.config.driver is not browser.config.driver  # ;)
-    >>> assert browser.config.driver.name == 'chrome'
-
-    Moreover, if you need only a driver, you can have it
-    via `browser.driver` shortcut, thus, completely hiding the config:
-
-    >>> from selene import browser
-    >>> second_browser = browser.with_(driver_name='firefox')
-    >>> assert second_browser.driver.name == 'firefox'
-    >>> # AND...
-    >>> assert second_browser.driver is not browser.driver  # ;)
-    >>> assert browser.driver.name == 'chrome'
-
-    – such shortcut exists only for the `driver` option of config,
-    not for other options like `timeout` or `base_url`.
-    More nuances of `browser` behavior find in its docs;).
+    While surfing through all avaialable options, pay attention to terminology:
+    * all options that have a `driver` word in their name
+      are related to driver management, and they are connected in a specific way:)
+      – read more on this under `config.with_` doc section;)
+    * all options that have a `strategy` word in their name directly influence
+      the driver lifecycle in context of driver management.
+    * all options that are prefixed with `_` are considered "experimental"
+      – their naming can be changed in the future, or even an option can be removed
 
     Examples:
+        Here's how you can build a driver with the instance of this config:
+
+        >>> from selene import Config
+        >>> config = Config()
+        >>> driver = config.driver  # new instance, built on 1st access to `driver`
+        >>> assert driver.name == 'chrome'
+
+        Or pre-configuring the firefox driver:
+
+        >>> from selene import Config
+        >>> config = Config(driver_name='firefox')
+        >>> driver = config.driver
+        >>> assert driver.name == 'firefox'
+
+        Or post-configuring the firefox driver:
+
+        >>> from selene import Config
+        >>> config = Config()
+        >>> config.driver_name = 'firefox'
+        >>> driver = config.driver
+        >>> assert driver.name == 'firefox'
+
+        Selene has already predefined shared instance of Config,
+        so you can economize on lines of code;)...
+
+        >>> from selene.support.shared import config
+        >>> config.driver_name = 'firefox'
+        >>> driver = config.driver
+        >>> assert driver.name == 'firefox'
+
+        Same shared Config instance is available as browser.config:
+
+        >>> from selene import browser
+        >>> browser.config.driver_name = 'firefox'
+        >>> driver = browser.config.driver
+        >>> assert driver.name == 'firefox'
+
+        There is an alternative style of customizing config.
+        The `config.option_name = value` is known in programming
+        as "imperative programming" style. When you are creating
+        a new Config from scratch, you are actually using
+        a "declarative programming" style:
+
+        >>> from selene import Config
+        >>> my_config = Config(driver_name='firefox')
+        >>> driver = my_config.driver
+        >>> assert driver.name == 'firefox'
+
+        Here is an alternative declarative style of
+        customizing new config by copying existing:
+
+        >>> from selene import browser
+        >>> my_config = browser.config.with_(driver_name='firefox')
+        >>> driver = my_config.driver
+        >>> assert driver.name == 'firefox'
+        >>> # AND...
+        >>> assert driver is not browser.config.driver  # ;)
+        >>> assert browser.config.driver.name == 'chrome'
+
+        As you can see Selene config is closely related to the browser.
+        Moreover, the same type of "declarative config copying" happens implicitely,
+        when you apply "copying" to browser:
+
+        >>> from selene import browser
+        >>> second_browser = browser.with_(driver_name='firefox')
+        >>> assert second_browser.config.driver.name == 'firefox'
+        >>> # AND...
+        >>> assert second_browser.config.driver is not browser.config.driver  # ;)
+        >>> assert browser.config.driver.name == 'chrome'
+
+        Moreover, if you need only a driver, you can have it
+        via `browser.driver` shortcut, thus, completely hiding the config:
+
+        >>> from selene import browser
+        >>> second_browser = browser.with_(driver_name='firefox')
+        >>> assert second_browser.driver.name == 'firefox'
+        >>> # AND...
+        >>> assert second_browser.driver is not browser.driver  # ;)
+        >>> assert browser.driver.name == 'chrome'
+
+        – such shortcut exists only for the `driver` option of config,
+        not for other options like `timeout` or `base_url`.
+        More nuances of `browser` behavior find in its docs;).
+
         And here are some more examples of customizing config
         for common test automation use cases...
 
@@ -673,6 +683,7 @@ class Config:
 
     The default factory builds:
     * either a local driver by value specified in `config.driver_name`
+    * or a local driver by browserName capability specified in `config.driver_options`
     * or remote driver by value specified in `config.driver_remote_url`.
     * or mobile driver according to `config.driver_options` capabilities.
     """
@@ -692,6 +703,12 @@ class Config:
     ] = lambda config, get_driver: atexit.register(
         lambda: config._teardown_driver_strategy(config)(get_driver())
     )
+    """
+    Defines when drier will be teardown.
+    Is supposed to use config._teardown_driver_strategy under the hood.
+
+    By default, it's registered as an atexit handler.
+    """
 
     # TODO: since it's curried, shouldn't we rename it driver_teardown_strategy?
     _teardown_driver_strategy: Callable[
@@ -703,12 +720,21 @@ class Config:
         and config._is_driver_alive_strategy(driver)
         else None
     )
+    """
+    Defines how driver will be teardown.
+
+    By default it quits the driver if it's alive and not asked to be held at exit
+    via `config.hold_driver_at_exit`.
+    """
 
     # TODO: should we make it private so far?
     # TODO: shouldn't it be config-based?
     _is_driver_set_strategy: Callable[[Optional[WebDriver]], bool] = lambda driver: (
         driver is not ... and driver is not None
     )
+    """
+    Defines how to check if driver is set, and so defines how to "unset" or "reset" it.
+    """
 
     # TODO: should we make it private so far?
     _is_driver_alive_strategy: Callable[[WebDriver], bool] = lambda driver: (
@@ -717,6 +743,12 @@ class Config:
         if hasattr(driver, 'service')
         else on_error_return_false(lambda: driver.window_handles is not None)
     )
+    """
+    Defines the logic of checking driver for being alive.
+
+    Is supposed to be used in context of triggering automatic driver rebuild,
+    depending on context.
+    """
 
     driver_options: Optional[BaseOptions] = None
     """
@@ -915,6 +947,12 @@ class Config:
         [Config],
         Callable[[Optional[str]], None],
     ] = _maybe_reset_driver_then_tune_window_and_get_with_base_url
+    """
+    Defines how to get url with driver depending on other options, like config.base_url.
+
+    Is used inside `browser.open(relative_or_absolute_url)`,
+    and defines its behavior correspondingly.
+    """
 
     # TODO: should we use `rebuild` term instead of `reset`?
     #       to be consistent with `rebuild_not_alive_driver`...
@@ -985,43 +1023,58 @@ class Config:
     driver: WebDriver = _ManagedDriverDescriptor(default=...)  # type: ignore
     """
     A driver instance with lifecycle managed by this config special options
-    (TODO: specify these options...),
     depending on their values and customization of this attribute.
 
-    GIVEN unset, i.e. equals to default `...` or `None`,
-    WHEN accessed first time (e.g. via config.driver)
-    THEN it will be set to the instance built by `config.build_driver_strategy`.
+    Once driver-definition-related options are set
+    (like `config.driver_options`, `config.driver_remote_url`),
+    the driver will be built on first access to this attribute.
+    Thus, to build the driver with Selene,
+    you simply call `config.driver` for the first time,
+    and usually the simplest way to access it
+    – is through either `browser.config.driver` or even `browser.driver` shortcut.
+    Moreover, usually you don't do this explicitly,
+    but rather use `browser.open(url)` to build a driver and open a page.
 
-    GIVEN set manually to an existing driver instance,
-          like: `config.driver = Chrome()`
-    THEN it will be reused as it is on any next access
-    WHEN reset to `...` OR `None`
-    THEN will be rebuilt by `config.build_driver_strategy`
+    Scenarios:
+        GIVEN unset, i.e. equals to default `...` or `None`,
+        WHEN accessed first time (e.g. via config.driver)
+        THEN it will be set to the instance built by `config.build_driver_strategy`.
 
-    GIVEN set manually to an existing driver instance (not callable),
-          like: `config.driver = Chrome()`
-    AND at some point of time the driver is not alive
-        like crashed or quit
-    AND `config._reset_not_alive_driver_on_get_url` is set to `True`,
-        that is default
-    WHEN driver.get(url) is requested under the hood
-         like at `browser.open(url)`
-    THEN config.driver will be reset to `...`
-    AND thus will be rebuilt by `config.build_driver_strategy`
+        GIVEN set manually to an existing driver instance,
+              like: `config.driver = Chrome()`
+        THEN it will be reused as it is on any next access
+        WHEN reset to `...` OR `None`
+        THEN will be rebuilt by `config.build_driver_strategy`
 
-    GIVEN set manually to a callable that returns WebDriver instance
-          (currently marked with FutureWarning, so might be deprecated)
-    WHEN accessed fist time
-    AND any next time
-    THEN will call the callable and return the result
+        GIVEN set manually to an existing driver instance (not callable),
+              like: `config.driver = Chrome()`
+        AND at some point of time the driver is not alive
+            like crashed or quit
+        AND `config._reset_not_alive_driver_on_get_url` is set to `True`,
+            that is default
+        WHEN driver.get(url) is requested under the hood
+             like at `browser.open(url)`
+        THEN config.driver will be reset to `...`
+        AND thus will be rebuilt by `config.build_driver_strategy`
 
-    GIVEN unset or set manually to not callable
-    AND `config.hold_driver_at_exit` is set to `False` (that is default)
-    WHEN the process exits
-    THEN driver will be quit.
+        GIVEN set manually to a callable that returns WebDriver instance
+              (currently marked with FutureWarning, so might be deprecated)
+        WHEN accessed fist time
+        AND any next time
+        THEN will call the callable and return the result
+
+        GIVEN unset or set manually to not callable
+        AND `config.hold_driver_at_exit` is set to `False` (that is default)
+        WHEN the process exits
+        THEN driver will be quit.
     """
 
     timeout: float = 4
+    """
+    A default timeout for all Selene waiting that happens under the hood
+    of the majority of Selene commands and assertions.
+    """
+
     poll_during_waits: int = 100
     """
     A fake option, not currently used in Selene waiting:)
@@ -1034,17 +1087,100 @@ class Config:
     #       and use it as app capability for mobile?
     #       if not set in driver_options...
     base_url: str = ''
+    """
+    A base url to be used when opening a page with relative url.
+
+    Examples:
+        Instead of duplicating the same base url in all your tests:
+
+        >>> from selene import browser
+        >>> browser.open('https://mywebapp.xyz/signin')
+        >>> ...
+        >>> browser.open('https://mywebapp.xyz/signup')
+        >>> ...
+        >>> browser.open('https://mywebapp.xyz/profile')
+        >>> ...
+
+        You can set it once in your config and then just use relative urls:
+
+        >>> from selene import browser
+        >>> browser.config.base_url = 'https://mywebapp.xyz'
+        >>> browser.open('/signin')
+        >>> ...
+        >>> browser.open('/signup')
+        >>> ...
+        >>> browser.open('/profile')
+        >>> ...
+    """
     # TODO: when adding driver_get_url_strategy
     #       should we rename it to get_base_url_when_relative_url_is_missed?
     #       should we use driver term in the name?
     _get_base_url_on_open_with_no_args: bool = False
+    """
+    A flag to indicate whether to use `config.base_url`
+    when opening a page with `browser.open()` command without arguments.
+
+    If you call `browser.open()` without arguments,
+    it will just force the driver to be built and real browser to be opened.
+
+    Even if you have set `config.base_url`, to reuse it in your tests on `browser.open`,
+    you have to specify the url explicitly, like `browser.open('/')`
+    or at least `browser.open('')`.
+
+    But there are cases where you would like to load base url on `browser.open()`,
+    for example in context of cross-platform testing. Then you use this option;)
+    See example at https://github.com/yashaka/selene/blob/master/examples/run_cross_platform
+    """
     window_width: Optional[int] = None
+    """
+    If set, will be used to set the window width on next call to `browser.open(url)`.
+    """
     window_height: Optional[int] = None
+    """
+    If set, will be used to set the window height on next call to `browser.open(url)`.
+    """
     log_outer_html_on_failure: bool = False
+    """
+    If set to True, will log outer html of the element on failure of any Selene command.
+
+    Is disabled by default, because:
+    * it might add too much of noise to the logs
+    * will not work on mobile app tests because under the hood – uses JavaScript
+    """
     set_value_by_js: bool = False
+    """
+    A flag to indicate whether to use JavaScript to set value of an element
+    on `element.set_value(value)` for purposes of speeding up the test execution,
+    or as a workaround when default selenium-based implementation does not work.
+    """
     type_by_js: bool = False
+    """
+    A flag to indicate whether to use JavaScript to type text to an element
+    on `element.type(text)` for purposes of speeding up the test execution,
+    or as a workaround when default selenium-based implementation does not work.
+    """
     click_by_js: bool = False
+    """
+    A flag to indicate whether to use JavaScript to click on element
+    via `element.click()`, usually, as a workaround,
+    when default selenium-based implementation does not work.
+    """
     wait_for_no_overlap_found_by_js: bool = False
+    """
+    A flag to indicate whether to use JavaScript to detect overlapping elements
+    and wait for them to disappear, when calling commands like `element.type(text)`.
+    It is needed because Selenium does not support overlapping elements detection
+    on any command except `click`. Hence, when you call `click` on an element,
+    and there is some overlay on top of it
+    (e.g. for the sake of indicating "loading in progress"),
+    that is going to disappear after some time,
+    then Selenium will detect such overlap,
+    that tells Selene to wait for it to disappear.
+    But for any other command (double_click, context_click, type, etc.)
+    Selenium will not and so Selene will not wait.
+    Hence, if you want to wait in such cases, turn on this option.
+    Just keep in mind, that it will work only for web tests, not mobile.
+    """
 
     # TODO: better name? now technically it's not a decorator but decorator_builder...
     # or decorator_factory...
@@ -1056,14 +1192,36 @@ class Config:
     # that a decorator factories from options that are simple decorators?
     # maybe better time to decide on this will be once we have more such options :p
     _wait_decorator: Callable[[Wait[E]], Callable[[F], F]] = lambda w: lambda f: f
+    """
+    Is used when performing any element command and assertion (i.e. should)
+    Hence, can be used to log corresponding commands with waits,
+    and integrate with something like allure reporting;)
 
+    Yet prefixed with underscore, indicating that method is experimental,
+    and so can be renamed or change its type signature, etc.
+
+    The default value of this option just does nothing.
+
+    See example of implementing and setting a custom wait decorator
+    at https://github.com/yashaka/selene/blob/master/examples/log_all_selene_commands_with_wait.py
+
+    And here is how you can use some predefined wait decorators in Selene,
+    for example, to configure logging Selene commands to Allure report:
+    >>> from selene.support.shared import browser
+    >>> from selene import support
+    >>> import allure_commons
+    >>> 
+    >>> browser.config._wait_decorator = support._logging.wait_with(
+    >>>   context=allure_commons._allure.StepContext
+    >>> )
+    """
+
+    # TODO: why we name it as hook_* why not handle_* ?
+    #       what would be proper style?
     hook_wait_failure: Optional[Callable[[TimeoutException], Exception]] = None
     '''
     A handler for all exceptions, thrown on failed waiting for timeout.
     Should process the original exception and rethrow it or the modified one.
-
-    TODO: why we name it as hook_* why not handle_* ?
-          what would be proper style?
     '''
 
     reports_folder: str = os.path.join(
@@ -1077,7 +1235,7 @@ class Config:
     # TODO: consider making public
     _counter: itertools.count = itertools.count(start=int(round(time.time() * 1000)))
     """
-    A counter, currently used for incrementing screenshot names
+    A counter, currently used for incrementing screenshot and page source names
     """
     last_screenshot: Optional[str] = None
     last_page_source: Optional[str] = None
@@ -1125,6 +1283,12 @@ class Config:
         #  but currently .name will return '__boxed_last_screenshot' :(
         #  think on how we can resolve this...
     )
+    """
+    Defines a strategy for saving a screenshot.
+
+    The default strategy saves a screenshot to a file,
+    and stores the path to `config.last_screenshot`.
+    """
 
     _save_page_source_strategy: Callable[
         [Config, Optional[str]], Any
@@ -1169,12 +1333,27 @@ class Config:
         #  but currently .name will return '__boxed_last_screenshot' :(
         #  think on how we can resolve this...
     )
+    """
+    Defines a strategy for saving a page source on failure.
+
+    The default strategy saves a page_source to a file,
+    and stores the path to `config.last_page_source`.
+    """
 
     # TODO: consider adding option to disable persistence of all not-overridden options
     #       or marking some of them as not persistent
     #       (i.e. unbind some of them keeping the previous value set)
     def with_(self, **options_to_override) -> Config:
         """
+
+        Returns:
+            a new config with overridden options that were specified as arguments.
+
+            All other config options will be shallow-copied
+            from the current config.
+            Those other options that are of immutable types,
+            like `int` – will be also copied by reference,
+            i.e. in a truly shallow way.
 
         Parameters:
             **options_to_override:
@@ -1203,15 +1382,6 @@ class Config:
 
                 Same logic applies to `remote_url`,
                 and all other config.*driver* options.
-
-        Returns:
-            a new config with overridden options that were specified as arguments.
-
-            All other config options will be shallow-copied
-            from the current config.
-            Those other options that are of immutable types,
-            like `int` – will be also copied by reference,
-            i.e. in a truly shallow way.
         """
         options = (
             {'driver': ..., **options_to_override}
