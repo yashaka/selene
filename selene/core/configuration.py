@@ -1210,7 +1210,7 @@ class Config:
     >>> from selene.support.shared import browser
     >>> from selene import support
     >>> import allure_commons
-    >>> 
+    >>>
     >>> browser.config._wait_decorator = support._logging.wait_with(
     >>>   context=allure_commons._allure.StepContext
     >>> )
