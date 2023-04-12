@@ -32,11 +32,11 @@ import warnings
 from typing import Callable, Optional, Any
 
 from selenium.webdriver.common.options import BaseOptions
-from selenium.webdriver.remote.command import Command
+from selenium.webdriver.common.service import Service
 
 from selene.common import fp, helpers
 from selene.common.data_structures import persistent
-from selene.common.fp import F, pipe, thread
+from selene.common.fp import F
 from selene.common.helpers import on_error_return_false
 
 from selene.core.exceptions import TimeoutException
@@ -75,7 +75,8 @@ def _build_local_driver_by_name_or_remote_by_url_and_options(
         if config.driver_options:
             if isinstance(config.driver_options, ChromeOptions):
                 return Chrome(
-                    service=ChromeService(
+                    service=config.driver_service
+                    or ChromeService(
                         ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install()
                     ),
                     options=config.driver_options,
@@ -90,14 +91,16 @@ def _build_local_driver_by_name_or_remote_by_url_and_options(
                 )
         else:
             return Chrome(
-                service=ChromeService(
+                service=config.driver_service
+                or ChromeService(
                     ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install()
                 )
             )
 
     def install_and_build_firefox():
         return Firefox(
-            service=FirefoxService(GeckoDriverManager().install()),
+            service=config.driver_service
+            or FirefoxService(GeckoDriverManager().install()),
             options=config.driver_options,
         )
 
@@ -105,7 +108,8 @@ def _build_local_driver_by_name_or_remote_by_url_and_options(
         if config.driver_options:
             if isinstance(config.driver_options, EdgeOptions):
                 return Edge(
-                    service=EdgeService(EdgeChromiumDriverManager().install()),
+                    service=config.driver_service
+                    or EdgeService(EdgeChromiumDriverManager().install()),
                     options=config.driver_options,
                 )
             else:
@@ -116,7 +120,9 @@ def _build_local_driver_by_name_or_remote_by_url_and_options(
                     f'but got: {config.driver_options}'
                 )
         else:
-            return Edge(service=EdgeService(EdgeChromiumDriverManager().install()))
+            return Edge(
+                service=config.driver_service or (EdgeChromiumDriverManager().install())
+            )
 
     def build_remote_driver():
         from selenium.webdriver import Remote
@@ -713,6 +719,38 @@ class Config:
     )
 
     driver_options: Optional[BaseOptions] = None
+    """
+    Individual browser options to be used on building a driver.
+
+    Examples:
+        Can be used instead of `config.driver_name` to tell Selene
+        which driver to build, e.g. just specifying
+
+        >>> from selene import browser
+        >>> from selenium import webdriver
+        >>>
+        >>> browser.config.driver_options = webdriver.FirefoxOptions()`
+
+        – will tell Selene to build a Firefox driver.
+
+        But usually you want something more specific,
+        like specifying to run a browser in headless more:
+
+        >>> from selene import browser
+        >>> from selenium import webdriver
+        >>>
+        >>> options = webdriver.ChromeOptions()
+        >>> options.add_argument('--headless')
+        >>> browser.config.driver_options = options
+    """
+
+    driver_service: Optional[Service] = None
+    """
+    Service instance for managing the starting and stopping of the driver.
+    Might be useful, for example, for customizing driver executable path,
+    if you want to use a custom driver executable instead of the one,
+    downloaded by Selene automatically via WDM.
+    """
 
     # Probably, more precise and technically correct name and signature would be:
     #     driver_remote_connection: Optional[Union[str, RemoteConnection]] = None

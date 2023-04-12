@@ -4,6 +4,7 @@ import typing
 from abc import ABC, abstractmethod
 
 from selenium.webdriver.common.options import BaseOptions
+from selenium.webdriver.common.service import Service
 
 from selene.common.fp import pipe as pipe, F
 from selene.common.helpers import (
@@ -207,6 +208,7 @@ class Browser(WaitingEntity['Browser']):
         # Options to customize default driver lifecycle
         driver_name: str = 'chrome',
         driver_options: Optional[BaseOptions] = None,
+        driver_service: Optional[Service] = None,
         driver_remote_url: Optional[str] = None,
         hold_driver_at_exit: bool = False,
         _reset_not_alive_driver_on_get_url: bool = True,

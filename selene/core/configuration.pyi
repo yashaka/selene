@@ -23,6 +23,7 @@ import itertools
 from typing import Callable, Optional, Any, Union
 
 from selenium.webdriver.common.options import BaseOptions
+from selenium.webdriver.common.service import Service
 from selenium.webdriver.remote.webdriver import WebDriver
 
 from selene.common.fp import F
@@ -54,6 +55,7 @@ class Config:
     # Options to customize default driver lifecycle
     driver_name: Optional[str] = None
     driver_options: Optional[BaseOptions] = None
+    driver_service: Optional[Service] = None
     driver_remote_url: Optional[str] = None
     hold_driver_at_exit: bool = False
     _reset_not_alive_driver_on_get_url: bool = True
@@ -104,6 +106,7 @@ class Config:
         # Options to customize default driver lifecycle
         driver_name: Optional[str] = None,
         driver_options: Optional[BaseOptions] = None,
+        driver_service: Optional[Service] = None,
         driver_remote_url: Optional[str] = None,
         hold_driver_at_exit: bool = False,
         _reset_not_alive_driver_on_get_url: bool = True,
@@ -155,6 +158,7 @@ class Config:
         # Options to customize default driver lifecycle
         driver_name: Optional[str] = None,
         driver_options: Optional[BaseOptions] = None,
+        driver_service: Optional[Service] = None,
         driver_remote_url: Optional[str] = None,
         hold_driver_at_exit: bool = False,
         _reset_not_alive_driver_on_get_url: bool = True,

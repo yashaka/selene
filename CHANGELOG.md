@@ -68,6 +68,7 @@ TODOs:
 - todo consider adding element.caching as lazy version of element.cached
 - use `__all__` in selene api imports, etc
   - The variable `__all__` is a list of public objects of that module, as interpreted by `import *`. ... In other words, `__all__` is a list of strings defining what symbols in a module will be exported when `from module import *` is used on the module
+- config.driver_proxy or config.driver_remote_proxy?
 
 ## 2.0.0rc? (to be released on ??.??.2023)
 
@@ -100,6 +101,20 @@ Now:
     e.g., just by setting `config.driver_options = FirefoxOptions()`
     you already tell Selene to build Firefox driver.
 
+### config.driver_service 
+
+Just in case you want, e.g. to use own driver executable like:
+
+```python
+from selene import browser
+from selenium.webdriver.chrome.service import Service
+from selenium import webdriver
+
+browser.config.driver_service = Service('/path/to/my/chromedriver')
+chrome_options = webdriver.ChromeOptions()
+chrome_options.add_argument('--headless')
+browser.config.driver_options = chrome_options
+```
 
 ## 2.0.0rc1.post1 (to be released on ??.??.2023)
 
