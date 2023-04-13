@@ -132,6 +132,10 @@ browser.element(by.name('q')).should(have.value('github yashaka selene'))
 
 Probably might be useful for cases where normal `element.set_value(text)`, while based on `webelement.clear(); webelement.send_keys(text)`, - does not work, in most cases because of some events handled on `clear()`.
 
+### command._long_press
+
+More relevant to the mobile case. Might work for web too, but not tested fully for web, not covered with tests. That's why is still marked with `_` as experimental.
+
 ## 2.0.0rc1.post1 (to be released on ??.??.2023)
 
 - allow guessing local driver name based on config.driver_options

@@ -27,6 +27,10 @@ from selenium.webdriver import Keys
 
 from selene.core.entity import Element, Collection, Browser
 from selene.core.wait import Command
+from selenium.webdriver import ActionChains
+from selenium.webdriver.common.actions import interaction
+from selenium.webdriver.common.actions.action_builder import ActionBuilder
+from selenium.webdriver.common.actions.pointer_input import PointerInput
 
 
 def save_screenshot(path: Optional[str] = None) -> Command[Browser]:
@@ -67,6 +71,37 @@ select_all: Command[Element] = Command(
         (Keys.COMMAND if sys.platform == 'darwin' else Keys.CONTROL) + 'a' + Keys.NULL,
     ),
 )
+
+
+# TODO: can we make it work for both mobile and web?
+#       should we selectively choose proper interaction.POINTER_TOUCH below?
+def _long_press(duration=1.0):
+    def func(element: Element):
+        located_element = element.locate()
+        driver = element.config.driver
+        actions: ActionChains = ActionChains(driver)
+
+        actions.w3c_actions = ActionBuilder(
+            driver, mouse=PointerInput(interaction.POINTER_TOUCH, 'touch')
+        )
+        (
+            actions.w3c_actions.pointer_action.move_to(located_element)
+            .pointer_down()
+            .pause(duration)
+            .release()
+        )
+        actions.perform()
+
+    command = Command(f'long press with duration={duration}', func)
+
+    if isinstance(duration, Element):
+        # somebody passed command as `.perform(command.long_press)`
+        # not as `.perform(command.long_press())`
+        # TODO: refactor to really allow such use case without conflicts on types
+        element = duration
+        command.__call__(element)
+
+    return command
 
 
 class js:  # pylint: disable=invalid-name
