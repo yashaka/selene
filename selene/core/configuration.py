@@ -1240,8 +1240,19 @@ class Config:
         'screenshots',
         str(round(time.time() * 1000)),
     )
+    """
+    A folder to save screenshots and page sources on failure.
+    """
     save_screenshot_on_failure: bool = True
+    """
+    A flag to indicate whether to save screenshot on failure or not.
+    If saved, will be also logged to the console on failure.
+    """
     save_page_source_on_failure: bool = True
+    """
+    A flag to indicate whether to save page source on failure or not.
+    If saved, will be also logged to the console on failure.
+    """
     # TODO: consider making public
     _counter: itertools.count = itertools.count(start=int(round(time.time() * 1000)))
     """
@@ -1464,6 +1475,10 @@ Screenshot: file://{path}'''
         ),
         _decorator=config._wait_decorator,
     )
+    """
+    A strategy for building a Wait object based on other config options
+    like `config.timeout`, `config.hook_wait_failure`, `config._wait_decorator`, etc.
+    """
 
     # TODO: we definitely not need it inside something called Config,
     #       especially "base interface like config
