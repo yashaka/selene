@@ -74,15 +74,15 @@ TODOs:
 
 TODOs:
 
-* implement run_cross_platform_with_fixture_and_custom_location_strategy example with:
-  * location strategy
-  * element actions logging to allure
-  * jenkins pipeline with matrix job
-* deprecate browser.switch_to?
-  * add corresponding set of commands to be used as waiting commands via `browser.perform` 
-    * make `command.switch_to_frame` to accept selene element?
+- implement run_cross_platform_with_fixture_and_custom_location_strategy example with:
+    - location strategy
+    - element actions logging to allure
+    - jenkins pipeline with matrix job
+- deprecate browser.switch_to?
+    - add corresponding set of commands to be used as waiting commands via `browser.perform` 
+        - make `command.switch_to_frame` to accept selene element?
     - add something like `browser.perform(switch_to_tab('my tab title'))`
-          - maybe make browser.switch ... to work with retry logic
+        - maybe make browser.switch ... to work with retry logic
             or make separate command.switch...
 
 ## 2.0.0rc2 (to be released on 13.04.2023)
@@ -91,15 +91,15 @@ TODOs:
 
 Before:
 
-  * `config.driver_name` was `'chrome'` by default
+ - `config.driver_name` was `'chrome'` by default
 
 Now:
 
-  * `config.driver_name` is `None` by default
-    * and means "desired requested driver name"
-  * setting `config.driver_options` usually is enough to guess the driver name,
-    e.g., just by setting `config.driver_options = FirefoxOptions()`
-    you already tell Selene to build Firefox driver.
+- `config.driver_name` is `None` by default
+    - and means "desired requested driver name"
+- setting `config.driver_options` usually is enough to guess the driver name,
+  e.g., just by setting `config.driver_options = FirefoxOptions()`
+  you already tell Selene to build Firefox driver.
 
 ### config.driver_service 
 
@@ -116,10 +116,26 @@ chrome_options.add_argument('--headless')
 browser.config.driver_options = chrome_options
 ```
 
+### command.select_all to simulate ctrl+a or cmd+a on mac
+
+```python
+from selene import browser, by, have, command
+
+browser.open('https://www.ecosia.org/')
+
+browser.element(by.name('q')).type('selene').should(have.value('selene'))
+
+browser.element(by.name('q')).perform(command.select_all).type('github yashaka selene')
+browser.element(by.name('q')).should(have.value('github yashaka selene'))
+
+```
+
+Probably might be useful for cases where normal `element.set_value(text)`, while based on `webelement.clear(); webelement.send_keys(text)`, - does not work, in most cases because of some events handled on `clear()`.
+
 ## 2.0.0rc1.post1 (to be released on ??.??.2023)
 
-* allow guessing local driver name based on config.driver_options
-* examples with specifying binary location for driver, ignoring wdm
+- allow guessing local driver name based on config.driver_options
+- examples with specifying binary location for driver, ignoring wdm
 
 ## 2.0.0rc1 (released on 11.04.2023)
 
@@ -230,9 +246,9 @@ Can also load page from `browser.config.base_url` if it is set and additional ex
 
 but can be configured as follows:
 
-* can be disabled by setting `browser.config.__reset_not_alive_driver_on_get_url = False`,
+- can be disabled by setting `browser.config.__reset_not_alive_driver_on_get_url = False`,
   that is `True` by default
-* can be enabled on any explicit or implicit call to `browser.config.driver`,
+- can be enabled on any explicit or implicit call to `browser.config.driver`,
   if set `browser.config.rebuild_not_alive_driver = True` (that is `False` by default)
 
 #### Appium support out of the box:)

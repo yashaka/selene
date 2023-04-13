@@ -84,7 +84,7 @@ def _build_local_driver_by_name_or_remote_by_url_and_options(
             else:
                 raise ValueError(
                     f'Default config.build_driver_strategy («driver factory»), '
-                    f'if config.driver_name is set to "chrome", – '
+                    f'if config.driver_name is set to "chrome", - '
                     f'expects only instance of ChromeOptions or None'
                     f'in config.driver_options,'
                     f'but got: {config.driver_options}'
@@ -115,7 +115,7 @@ def _build_local_driver_by_name_or_remote_by_url_and_options(
             else:
                 raise ValueError(
                     f'Default config.build_driver_strategy, '
-                    f'if config.driver_name is set to "edge", – '
+                    f'if config.driver_name is set to "edge", - '
                     f'expects only instance of EdgeOptions or None in config.driver_options,'
                     f'but got: {config.driver_options}'
                 )
@@ -431,13 +431,14 @@ class Config:
     Actually, the "driver manager" is a part of this config.
 
     While surfing through all avaialable options, pay attention to terminology:
-    * all options that have a `driver` word in their name
+
+    - all options that have a `driver` word in their name
       are related to driver management, and they are connected in a specific way:)
-      – read more on this under `config.with_` doc section;)
-    * all options that have a `strategy` word in their name directly influence
+      - read more on this under `config.with_` doc section;)
+    - all options that have a `strategy` word in their name directly influence
       the driver lifecycle in context of driver management.
-    * all options that are prefixed with `_` are considered "experimental"
-      – their naming can be changed in the future, or even an option can be removed
+    - all options that are prefixed with `_` are considered "experimental"
+        - their naming can be changed in the future, or even an option can be removed
 
     Examples:
         Here's how you can build a driver with the instance of this config:
@@ -520,7 +521,7 @@ class Config:
         >>> assert second_browser.driver is not browser.driver  # ;)
         >>> assert browser.driver.name == 'chrome'
 
-        – such shortcut exists only for the `driver` option of config,
+        - such shortcut exists only for the `driver` option of config,
         not for other options like `timeout` or `base_url`.
         More nuances of `browser` behavior find in its docs;).
 
@@ -635,11 +636,11 @@ class Config:
 
     By having config options that influences Selene behavior,
     like `config.timeout` and `config.base_url`,
-    – together with complete "driver management",
+    - together with complete "driver management",
     we definitely break SRP principle... In the name of Good:D. Kind of;).
 
     All this makes it far from being a simple options data class...
-    – yet kept as one «class for everything» to keep things easier to use,
+    - yet kept as one «class for everything» to keep things easier to use,
     especially taking into account some historical reasons of Selenes design,
     that was influenced a lot by the Selenide from Java world.
     As a result sometimes options are not consistent with each other,
@@ -682,10 +683,11 @@ class Config:
     because it may lead to recursion.
 
     The default factory builds:
-    * either a local driver by value specified in `config.driver_name`
-    * or a local driver by browserName capability specified in `config.driver_options`
-    * or remote driver by value specified in `config.driver_remote_url`.
-    * or mobile driver according to `config.driver_options` capabilities.
+
+    - either a local driver by value specified in `config.driver_name`
+    - or a local driver by browserName capability specified in `config.driver_options`
+    - or remote driver by value specified in `config.driver_remote_url`.
+    - or mobile driver according to `config.driver_options` capabilities.
     """
 
     # TODO: isn't this option too much?
@@ -763,7 +765,7 @@ class Config:
         >>>
         >>> browser.config.driver_options = webdriver.FirefoxOptions()`
 
-        – will tell Selene to build a Firefox driver.
+        - will tell Selene to build a Firefox driver.
 
         But usually you want something more specific,
         like specifying to run a browser in headless more:
@@ -819,18 +821,22 @@ class Config:
     then Selene will try to guess the corresponding driver name
     based on the options you provided. I.e. no need to provide both:
 
-    >>> config.driver_name = 'chrome'
-    >>> config.driver_options = ChromeOptions()
+    ```python
+    config.driver_name = 'chrome'
+    config.driver_options = ChromeOptions()
+    ```
 
     It's enough to provide only the options:
 
-    >>> config.driver_options = ChromeOptions()
+    ```python
+    config.driver_options = ChromeOptions()
+    ```
 
-    GIVEN set to any of: 'chrome', 'firefox', 'edge',
-    AND config.driver is left unset (default value is ...),
-    THEN default config.build_driver_strategy will automatically install drivers
-    AND build webdriver instance for you
-    AND this config will store the instance in config.driver
+    GIVEN set to any of: 'chrome', 'firefox', 'edge',<br>
+    AND config.driver is left unset (default value is ...),<br>
+    THEN default config.build_driver_strategy will automatically install drivers<br>
+    AND build webdriver instance for you<br>
+    AND this config will store the instance in config.driver<br>
     """
 
     # TODO: finalize the name of this option and consider making public
@@ -1031,42 +1037,42 @@ class Config:
     Thus, to build the driver with Selene,
     you simply call `config.driver` for the first time,
     and usually the simplest way to access it
-    – is through either `browser.config.driver` or even `browser.driver` shortcut.
+    - is through either `browser.config.driver` or even `browser.driver` shortcut.
     Moreover, usually you don't do this explicitly,
     but rather use `browser.open(url)` to build a driver and open a page.
 
     Scenarios:
-        GIVEN unset, i.e. equals to default `...` or `None`,
-        WHEN accessed first time (e.g. via config.driver)
-        THEN it will be set to the instance built by `config.build_driver_strategy`.
+        GIVEN unset, i.e. equals to default `...` or `None`,<br>
+        WHEN accessed first time (e.g. via config.driver)<br>
+        THEN it will be set to the instance built by `config.build_driver_strategy`.<br>
 
         GIVEN set manually to an existing driver instance,
-              like: `config.driver = Chrome()`
-        THEN it will be reused as it is on any next access
-        WHEN reset to `...` OR `None`
-        THEN will be rebuilt by `config.build_driver_strategy`
+              like: `config.driver = Chrome()`<br>
+        THEN it will be reused as it is on any next access<br>
+        WHEN reset to `...` OR `None`<br>
+        THEN will be rebuilt by `config.build_driver_strategy`<br>
 
         GIVEN set manually to an existing driver instance (not callable),
-              like: `config.driver = Chrome()`
+              like: `config.driver = Chrome()`<br>
         AND at some point of time the driver is not alive
-            like crashed or quit
+            like crashed or quit<br>
         AND `config._reset_not_alive_driver_on_get_url` is set to `True`,
-            that is default
+            that is default<br>
         WHEN driver.get(url) is requested under the hood
-             like at `browser.open(url)`
-        THEN config.driver will be reset to `...`
-        AND thus will be rebuilt by `config.build_driver_strategy`
+             like at `browser.open(url)`<br>
+        THEN config.driver will be reset to `...`<br>
+        AND thus will be rebuilt by `config.build_driver_strategy`<br>
 
         GIVEN set manually to a callable that returns WebDriver instance
-              (currently marked with FutureWarning, so might be deprecated)
-        WHEN accessed fist time
-        AND any next time
-        THEN will call the callable and return the result
+              (currently marked with FutureWarning, so might be deprecated)<br>
+        WHEN accessed fist time<br>
+        AND any next time<br>
+        THEN will call the callable and return the result<br>
 
-        GIVEN unset or set manually to not callable
-        AND `config.hold_driver_at_exit` is set to `False` (that is default)
-        WHEN the process exits
-        THEN driver will be quit.
+        GIVEN unset or set manually to not callable<br>
+        AND `config.hold_driver_at_exit` is set to `False` (that is default)<br>
+        WHEN the process exits<br>
+        THEN driver will be quit.<br>
     """
 
     timeout: float = 4
@@ -1129,7 +1135,8 @@ class Config:
 
     But there are cases where you would like to load base url on `browser.open()`,
     for example in context of cross-platform testing. Then you use this option;)
-    See example at https://github.com/yashaka/selene/blob/master/examples/run_cross_platform
+    See example at
+    https://github.com/yashaka/selene/blob/master/examples/run_cross_platform
     """
     window_width: Optional[int] = None
     """
@@ -1144,8 +1151,9 @@ class Config:
     If set to True, will log outer html of the element on failure of any Selene command.
 
     Is disabled by default, because:
-    * it might add too much of noise to the logs
-    * will not work on mobile app tests because under the hood – uses JavaScript
+
+    - it might add too much of noise to the logs
+    - will not work on mobile app tests because under the hood - uses JavaScript
     """
     set_value_by_js: bool = False
     """
@@ -1205,15 +1213,17 @@ class Config:
     See example of implementing and setting a custom wait decorator
     at https://github.com/yashaka/selene/blob/master/examples/log_all_selene_commands_with_wait.py
 
-    And here is how you can use some predefined wait decorators in Selene,
-    for example, to configure logging Selene commands to Allure report:
-    >>> from selene.support.shared import browser
-    >>> from selene import support
-    >>> import allure_commons
-    >>>
-    >>> browser.config._wait_decorator = support._logging.wait_with(
-    >>>   context=allure_commons._allure.StepContext
-    >>> )
+    Examples:
+        And here is how you can use some predefined wait decorators in Selene,
+        for example, to configure logging Selene commands to Allure report:
+
+        >>> from selene.support.shared import browser
+        >>> from selene import support
+        >>> import allure_commons
+        >>>
+        >>> browser.config._wait_decorator = support._logging.wait_with(
+        >>>   context=allure_commons._allure.StepContext
+        >>> )
     """
 
     # TODO: why we name it as hook_* why not handle_* ?
@@ -1230,8 +1240,19 @@ class Config:
         'screenshots',
         str(round(time.time() * 1000)),
     )
+    """
+    A folder to save screenshots and page sources on failure.
+    """
     save_screenshot_on_failure: bool = True
+    """
+    A flag to indicate whether to save screenshot on failure or not.
+    If saved, will be also logged to the console on failure.
+    """
     save_page_source_on_failure: bool = True
+    """
+    A flag to indicate whether to save page source on failure or not.
+    If saved, will be also logged to the console on failure.
+    """
     # TODO: consider making public
     _counter: itertools.count = itertools.count(start=int(round(time.time() * 1000)))
     """
@@ -1347,13 +1368,13 @@ class Config:
         """
 
         Returns:
-            a new config with overridden options that were specified as arguments.
+            A new config with overridden options that were specified as arguments.
 
-            All other config options will be shallow-copied
-            from the current config.
-            Those other options that are of immutable types,
-            like `int` – will be also copied by reference,
-            i.e. in a truly shallow way.
+                All other config options will be shallow-copied
+                from the current config.
+                Those other options that are of immutable types,
+                like `int` - will be also copied by reference,
+                i.e. in a truly shallow way.
 
         Parameters:
             **options_to_override:
@@ -1373,12 +1394,16 @@ class Config:
                 The latter gives a readable and concise shortcut
                 to spawn more than one browser:
 
-                >>> config = Config(timeout=10.0, base_url='https://autotest.how')
-                >>> chrome = config.driver  # chrome is default browser
-                >>> firefox_config = config.with_(driver_name='firefox')
-                >>> firefox = firefox_config.driver
-                >>> edge_config = config.with_(driver_name='edge')
-                >>> edge = edge_config.driver
+                ```python
+                from selene import Config
+
+                config = Config(timeout=10.0, base_url='https://autotest.how')
+                chrome = config.driver  # chrome is default browser
+                firefox_config = config.with_(driver_name='firefox')
+                firefox = firefox_config.driver
+                edge_config = config.with_(driver_name='edge')
+                edge = edge_config.driver
+                ```
 
                 Same logic applies to `remote_url`,
                 and all other config.*driver* options.
@@ -1450,6 +1475,10 @@ Screenshot: file://{path}'''
         ),
         _decorator=config._wait_decorator,
     )
+    """
+    A strategy for building a Wait object based on other config options
+    like `config.timeout`, `config.hook_wait_failure`, `config._wait_decorator`, etc.
+    """
 
     # TODO: we definitely not need it inside something called Config,
     #       especially "base interface like config

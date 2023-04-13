@@ -19,7 +19,11 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+import sys
 from typing import Union, Optional
+
+import typing
+from selenium.webdriver import Keys
 
 from selene.core.entity import Element, Collection, Browser
 from selene.core.wait import Command
@@ -53,6 +57,16 @@ def save_page_source(path: Optional[str] = None) -> Command[Browser]:
         command.__call__(browser)
 
     return command
+
+
+select_all: Command[Element] = Command(
+    'select all by ctrl+a or cmd+a for mac',
+    lambda element: typing.cast(Element, element)
+    .locate()
+    .send_keys(
+        (Keys.COMMAND if sys.platform == 'darwin' else Keys.CONTROL) + 'a' + Keys.NULL,
+    ),
+)
 
 
 class js:  # pylint: disable=invalid-name
