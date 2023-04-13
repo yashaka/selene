@@ -1,22 +1,22 @@
 [
   {
     "referrer": "Google",
-    "count": 575,
-    "uniques": 166
+    "count": 658,
+    "uniques": 188
   },
   {
     "referrer": "github.com",
-    "count": 355,
-    "uniques": 36
+    "count": 408,
+    "uniques": 43
   },
   {
     "referrer": "ecosia.org",
-    "count": 141,
-    "uniques": 75
+    "count": 150,
+    "uniques": 81
   },
   {
     "referrer": "yandex.ru",
-    "count": 41,
+    "count": 47,
     "uniques": 19
   },
   {
@@ -26,18 +26,18 @@
   },
   {
     "referrer": "statics.teams.cdn.office.net",
-    "count": 11,
+    "count": 13,
     "uniques": 1
+  },
+  {
+    "referrer": "pypi.org",
+    "count": 10,
+    "uniques": 6
   },
   {
     "referrer": "heisenbug.ru",
     "count": 7,
     "uniques": 2
-  },
-  {
-    "referrer": "pypi.org",
-    "count": 5,
-    "uniques": 4
   },
   {
     "referrer": "qwiki.nixs.com",
