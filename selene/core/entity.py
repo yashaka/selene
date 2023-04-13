@@ -467,7 +467,8 @@ class Element(WaitingEntity['Element']):
     def send_keys(self, *value) -> Element:
         """
         To be used for more low level operations like «uploading files», etc.
-        To simulate normal input of keys by user when typing – use Element.type(self, text).
+        To simulate normal input of keys by user when typing
+        - use Element.type(self, text).
         """
         self.wait.command('send keys', lambda element: element().send_keys(*value))
         return self

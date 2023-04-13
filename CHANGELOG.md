@@ -116,6 +116,22 @@ chrome_options.add_argument('--headless')
 browser.config.driver_options = chrome_options
 ```
 
+### command.select_all to simulate ctrl+a or cmd+a on mac
+
+```python
+from selene import browser, by, have, command
+
+browser.open('https://www.ecosia.org/')
+
+browser.element(by.name('q')).type('selene').should(have.value('selene'))
+
+browser.element(by.name('q')).perform(command.select_all).type('github yashaka selene')
+browser.element(by.name('q')).should(have.value('github yashaka selene'))
+
+```
+
+Probably might be useful for cases where normal `element.set_value(text)`, while based on `webelement.clear(); webelement.send_keys(text)`, - does not work, in most cases because of some events handled on `clear()`.
+
 ## 2.0.0rc1.post1 (to be released on ??.??.2023)
 
 - allow guessing local driver name based on config.driver_options
