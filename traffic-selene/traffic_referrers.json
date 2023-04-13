@@ -1,18 +1,18 @@
 [
   {
     "referrer": "Google",
-    "count": 605,
-    "uniques": 179
+    "count": 575,
+    "uniques": 166
   },
   {
     "referrer": "github.com",
-    "count": 375,
-    "uniques": 41
+    "count": 355,
+    "uniques": 36
   },
   {
     "referrer": "ecosia.org",
-    "count": 144,
-    "uniques": 78
+    "count": 141,
+    "uniques": 75
   },
   {
     "referrer": "yandex.ru",
@@ -30,23 +30,23 @@
     "uniques": 1
   },
   {
-    "referrer": "pypi.org",
-    "count": 9,
-    "uniques": 5
-  },
-  {
     "referrer": "heisenbug.ru",
     "count": 7,
     "uniques": 2
   },
   {
+    "referrer": "pypi.org",
+    "count": 5,
+    "uniques": 4
+  },
+  {
     "referrer": "qwiki.nixs.com",
-    "count": 6,
+    "count": 5,
     "uniques": 3
   },
   {
     "referrer": "Bing",
-    "count": 6,
-    "uniques": 2
+    "count": 5,
+    "uniques": 1
   }
 ]
