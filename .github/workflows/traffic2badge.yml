@@ -16,7 +16,7 @@ jobs:
 
       - name: Get Commit Message
         id: message
-        uses: actions/github-script@v3.0.0
+        uses: actions/github-script@v6
         env:
           FULL_COMMIT_MESSAGE: '${{ github.event.head_commit.message }}'
         with:
@@ -31,7 +31,7 @@ jobs:
 
       - name: Set Traffic
         id: traffic
-        uses: yi-Xu-0100/traffic-to-badge@v1.2.1
+        uses: yi-Xu-0100/traffic-to-badge@v1.4.0
         with:
           my_token: ${{ secrets.TRAFFIC_TOKEN }}
           #(default) static_list: ${{ github.repository }}
