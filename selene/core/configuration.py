@@ -683,7 +683,7 @@ class Config:
     because it may lead to recursion.
 
     The default factory builds:
-    
+
     - either a local driver by value specified in `config.driver_name`
     - or a local driver by browserName capability specified in `config.driver_options`
     - or remote driver by value specified in `config.driver_remote_url`.
@@ -1151,7 +1151,7 @@ class Config:
     If set to True, will log outer html of the element on failure of any Selene command.
 
     Is disabled by default, because:
-    
+
     - it might add too much of noise to the logs
     - will not work on mobile app tests because under the hood - uses JavaScript
     """
