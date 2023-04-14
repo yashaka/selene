@@ -46,7 +46,7 @@ from selene.core.wait import Wait, E
 
 
 # TODO: consider moving to support.*
-#       like support._loging.wait_with
+#       like support._logging.wait_with
 def _build_local_driver_by_name_or_remote_by_url_and_options(
     config: Config,
 ) -> WebDriver:
@@ -387,7 +387,7 @@ class _ManagedDriverDescriptor:
                         'You would be able to provide it only on init,'
                         'and use it only via attribute access,'
                         'without possibility to override value with `persistent.replace` '
-                        'or `config.with_(**optioins_to_override)`. '
+                        'or `config.with_(**options_to_override)`. '
                         'If you want to use custom descriptor, '
                         'you have to subclass Config and provide your descriptor object'
                         'on class attributes definition level.'
@@ -430,11 +430,11 @@ class Config:
     is not just config, but fully manages the driver lifecycle.
     Actually, the "driver manager" is a part of this config.
 
-    While surfing through all avaialable options, pay attention to terminology:
+    While surfing through all available options, pay attention to terminology:
 
     - all options that have a `driver` word in their name
       are related to driver management, and they are connected in a specific way:)
-      - read more on this under `config.with_` doc section;)
+        - read more on this under `config.with_` doc section;)
     - all options that have a `strategy` word in their name directly influence
       the driver lifecycle in context of driver management.
     - all options that are prefixed with `_` are considered "experimental"
@@ -501,7 +501,7 @@ class Config:
         >>> assert browser.config.driver.name == 'chrome'
 
         As you can see Selene config is closely related to the browser.
-        Moreover, the same type of "declarative config copying" happens implicitely,
+        Moreover, the same type of "declarative config copying" happens implicitly,
         when you apply "copying" to browser:
 
         >>> from selene import browser
@@ -640,8 +640,8 @@ class Config:
     we definitely break SRP principle... In the name of Good:D. Kind of;).
 
     All this makes it far from being a simple options data class...
-    - yet kept as one «class for everything» to keep things easier to use,
-    especially taking into account some historical reasons of Selenes design,
+    - yet kept as one "class for everything" to keep things easier to use,
+    especially taking into account some historical reasons of Selene design,
     that was influenced a lot by the Selenide from Java world.
     As a result sometimes options are not consistent with each other,
     when we speak about different contexts of their usage.
@@ -686,8 +686,8 @@ class Config:
 
     - either a local driver by value specified in `config.driver_name`
     - or a local driver by browserName capability specified in `config.driver_options`
-    - or remote driver by value specified in `config.driver_remote_url`.
-    - or mobile driver according to `config.driver_options` capabilities.
+    - or remote driver by value specified in `config.driver_remote_url`
+    - or mobile driver according to `config.driver_options` capabilities
     """
 
     # TODO: isn't this option too much?
@@ -962,7 +962,7 @@ class Config:
 
     # TODO: should we use `rebuild` term instead of `reset`?
     #       to be consistent with `rebuild_not_alive_driver`...
-    #       Technically, we are not explicitely rebuilding it with this option,
+    #       Technically, we are not explicitly rebuilding it with this option,
     #       we do reset it by setting to `...`. But then in same `get_url`,
     #       on first access it will be rebuilt automatically.
     _reset_not_alive_driver_on_get_url: bool = True

@@ -85,6 +85,12 @@ TODOs:
         - maybe make browser.switch ... to work with retry logic
             or make separate command.switch...
 
+## 2.0.0rc3 (to be released on 13.04.2023)
+
+- set window size inside driver factory
+- add safari support (trim space on text in case of safari)
+- example of basic auth and auth via cookies (https://github.com/autotests-cloud/example_project/blob/master/src/test/java/cloud/autotests/tests/demowebshop/LoginTests.java)
+
 ## 2.0.0rc2 (to be released on 13.04.2023)
 
 ### Driver is guessed by config.driver_options too
@@ -135,11 +141,6 @@ Probably might be useful for cases where normal `element.set_value(text)`, while
 ### command._long_press
 
 More relevant to the mobile case. Might work for web too, but not tested fully for web, not covered with tests. That's why is still marked with `_` as experimental.
-
-## 2.0.0rc1.post1 (to be released on ??.??.2023)
-
-- allow guessing local driver name based on config.driver_options
-- examples with specifying binary location for driver, ignoring wdm
 
 ## 2.0.0rc1 (released on 11.04.2023)
 
