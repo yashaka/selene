@@ -1,23 +1,23 @@
 [
   {
     "referrer": "Google",
-    "count": 641,
-    "uniques": 184
+    "count": 632,
+    "uniques": 177
   },
   {
     "referrer": "github.com",
-    "count": 466,
-    "uniques": 48
+    "count": 394,
+    "uniques": 45
   },
   {
     "referrer": "ecosia.org",
-    "count": 165,
-    "uniques": 97
+    "count": 118,
+    "uniques": 72
   },
   {
     "referrer": "yandex.ru",
-    "count": 47,
-    "uniques": 18
+    "count": 39,
+    "uniques": 15
   },
   {
     "referrer": "ondosis.atlassian.net",
@@ -40,13 +40,13 @@
     "uniques": 2
   },
   {
-    "referrer": "qwiki.nixs.com",
-    "count": 6,
-    "uniques": 3
-  },
-  {
     "referrer": "Bing",
     "count": 6,
     "uniques": 2
+  },
+  {
+    "referrer": "automated-testing.info",
+    "count": 5,
+    "uniques": 5
   }
 ]
