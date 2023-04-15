@@ -83,7 +83,7 @@ def _build_local_driver_by_name_or_remote_by_url_and_options(
                 )
             else:
                 raise ValueError(
-                    f'Default config.build_driver_strategy («driver factory»), '
+                    f'Default config.build_driver_strategy ("driver factory"), '
                     f'if config.driver_name is set to "chrome", - '
                     f'expects only instance of ChromeOptions or None'
                     f'in config.driver_options,'
@@ -433,12 +433,16 @@ class Config:
     While surfing through all available options, pay attention to terminology:
 
     - all options that have a `driver` word in their name
-      are related to driver management, and they are connected in a specific way:)
-        - read more on this under `config.with_` doc section;)
+    are related to driver management, and they are connected in a specific way:)
+        - read more on this under
+        [`config.with_`](selene.core.configuration.Config.with_) doc section;)
     - all options that have a `strategy` word in their name directly influence
-      the driver lifecycle in context of driver management.
-    - all options that are prefixed with `_` are considered "experimental"
-        - their naming can be changed in the future, or even an option can be removed
+    the driver lifecycle in context of driver management.
+    - !!! warning ""
+
+        - all options that are prefixed with `_` are considered "experimental"
+
+            - their naming can be changed in the future, or even an option can be removed
 
     Examples:
         Here's how you can build a driver with the instance of this config:
@@ -636,11 +640,11 @@ class Config:
 
     By having config options that influences Selene behavior,
     like `config.timeout` and `config.base_url`,
-    - together with complete "driver management",
+    – together with complete "driver management",
     we definitely break SRP principle... In the name of Good:D. Kind of;).
 
     All this makes it far from being a simple options data class...
-    - yet kept as one "class for everything" to keep things easier to use,
+    – yet kept as one "class for everything" to keep things easier to use,
     especially taking into account some historical reasons of Selene design,
     that was influenced a lot by the Selenide from Java world.
     As a result sometimes options are not consistent with each other,
@@ -765,7 +769,7 @@ class Config:
         >>>
         >>> browser.config.driver_options = webdriver.FirefoxOptions()`
 
-        - will tell Selene to build a Firefox driver.
+        – will tell Selene to build a Firefox driver.
 
         But usually you want something more specific,
         like specifying to run a browser in headless more:
@@ -965,6 +969,8 @@ class Config:
     #       Technically, we are not explicitly rebuilding it with this option,
     #       we do reset it by setting to `...`. But then in same `get_url`,
     #       on first access it will be rebuilt automatically.
+    #       But shouldn't we use a goal-oriented term, not impl-oriented?
+    #       The goal is actually to rebuild driver on get url!
     _reset_not_alive_driver_on_get_url: bool = True
     """
     Controls whether driver should be automatically reset and, thus,
@@ -1037,7 +1043,7 @@ class Config:
     Thus, to build the driver with Selene,
     you simply call `config.driver` for the first time,
     and usually the simplest way to access it
-    - is through either `browser.config.driver` or even `browser.driver` shortcut.
+    – is through either `browser.config.driver` or even `browser.driver` shortcut.
     Moreover, usually you don't do this explicitly,
     but rather use `browser.open(url)` to build a driver and open a page.
 
@@ -1192,13 +1198,15 @@ class Config:
 
     # TODO: better name? now technically it's not a decorator but decorator_builder...
     # or decorator_factory...
-    # yet in python they call it just «decorator with args» or «decorator with params»
+    # yet in python they call it just "decorator with args" or "decorator with params"
     # so technically we are correct naming it simply _wait_decorator
     # by type hint end users yet will see the real signature
-    # and hence guess its «builder-like» nature
+    # and hence guess its "builder-like" nature
     # yet... should we for verbosity distinguish options
     # that a decorator factories from options that are simple decorators?
     # maybe better time to decide on this will be once we have more such options :p
+    # TODO: What about config.wait_decorator_strategy?
+    #       or even config.build_wait_decorator_strategy?
     _wait_decorator: Callable[[Wait[E]], Callable[[F], F]] = lambda w: lambda f: f
     """
     Is used when performing any element command and assertion (i.e. should)
@@ -1288,8 +1296,8 @@ class Config:
         fp.do(
             lambda path: (
                 warnings.warn(
-                    "name used for saved screenshot does not match file "
-                    "type. It should end with an `.png` extension",
+                    'name used for saved screenshot does not match file '
+                    'type. It should end with an `.png` extension',
                     UserWarning,
                 )
                 if not path.lower().endswith('.png')
@@ -1336,8 +1344,8 @@ class Config:
         fp.do(
             lambda path: (
                 warnings.warn(
-                    "name used for saved page source does not match file "
-                    "type. It should end with an `.html` extension",
+                    'name used for saved page source does not match file '
+                    'type. It should end with an `.html` extension',
                     UserWarning,
                 )
                 if not path.lower().endswith('.html')

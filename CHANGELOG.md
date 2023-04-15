@@ -69,6 +69,8 @@ TODOs:
 - use `__all__` in selene api imports, etc
   - The variable `__all__` is a list of public objects of that module, as interpreted by `import *`. ... In other words, `__all__` is a list of strings defining what symbols in a module will be exported when `from module import *` is used on the module
 - config.driver_proxy or config.driver_remote_proxy?
+- decide on driver as callable, and decide on driver as callable with config as param
+    - how can we check that user passed fn with params? 
 
 ## 2.0.0rc? (to be released on ??.??.2023)
 
@@ -90,6 +92,7 @@ TODOs:
 - set window size inside driver factory
 - add safari support (trim space on text in case of safari)
 - example of basic auth and auth via cookies (https://github.com/autotests-cloud/example_project/blob/master/src/test/java/cloud/autotests/tests/demowebshop/LoginTests.java)
+- can we force order of how `selene.*` is rendered on autocomplete? via `__all__`...
 
 ## 2.0.0rc2 (to be released on 13.04.2023)
 
