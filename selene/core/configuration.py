@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2015-2023 Iakiv Kramarenko
+# Copyright (c) 2015 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -435,14 +435,14 @@ class Config:
     - all options that have a `driver` word in their name
     are related to driver management, and they are connected in a specific way:)
         - read more on this under
-        [`config.with_`](selene.core.configuration.Config.with_) doc section;)
+        [`config.with_`][selene.core.configuration.Config.with_] doc section;)
     - all options that have a `strategy` word in their name directly influence
     the driver lifecycle in context of driver management.
     - !!! warning ""
 
-        - all options that are prefixed with `_` are considered "experimental"
-
-            - their naming can be changed in the future, or even an option can be removed
+            all options that are prefixed with `_` are considered "experimental"
+            (their naming can be changed in the future,
+            or even an option can be removed)
 
     Examples:
         Here's how you can build a driver with the instance of this config:
@@ -1237,10 +1237,10 @@ class Config:
     # TODO: why we name it as hook_* why not handle_* ?
     #       what would be proper style?
     hook_wait_failure: Optional[Callable[[TimeoutException], Exception]] = None
-    '''
+    """
     A handler for all exceptions, thrown on failed waiting for timeout.
     Should process the original exception and rethrow it or the modified one.
-    '''
+    """
 
     reports_folder: str = os.path.join(
         os.path.expanduser('~'),
