@@ -21,6 +21,8 @@ nav:
     - How to use custom profile: faq/custom-user-profile-howto.md
   # - Use Cases:
   #   - Stub Title 1: use-cases/path-to-some-example.md
+  - Reference:
+    - Config: reference/configuration.md
   - Contribution:
     - How to contribute: contribution/to-source-code-guide.md
     - Code conventions: contribution/code-conventions-guide.md
@@ -87,7 +89,12 @@ extra:
 plugins:
   - search
   - autorefs
-  - mkdocstrings
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            show_source: false
+            docstring_section_style: list
   - git-revision-date-localized:
       enable_creation_date: true
       type: timeago
