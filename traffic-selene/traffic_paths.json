@@ -2,61 +2,61 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 603,
-    "uniques": 284
+    "count": 559,
+    "uniques": 263
   },
   {
     "path": "/yashaka/selene/search",
     "title": "Search · visible",
-    "count": 64,
+    "count": 60,
     "uniques": 12
-  },
-  {
-    "path": "/yashaka/selene/issues",
-    "title": "Issues · yashaka/selene · GitHub",
-    "count": 58,
-    "uniques": 21
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 53,
-    "uniques": 22
+    "count": 54,
+    "uniques": 23
   },
   {
-    "path": "/yashaka/selene/releases/tag/2.0.0rc1",
-    "title": "Release 2.0.0rc1 · yashaka/selene · GitHub",
-    "count": 44,
-    "uniques": 31
+    "path": "/yashaka/selene/issues",
+    "title": "Issues · yashaka/selene · GitHub",
+    "count": 47,
+    "uniques": 17
   },
   {
     "path": "/yashaka/selene/releases",
     "title": "Releases · yashaka/selene · GitHub",
-    "count": 42,
-    "uniques": 23
+    "count": 40,
+    "uniques": 22
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 30,
-    "uniques": 9
+    "count": 28,
+    "uniques": 7
   },
   {
     "path": "/yashaka/selene/commits/master",
     "title": "Commits · yashaka/selene · GitHub",
-    "count": 25,
+    "count": 23,
     "uniques": 8
-  },
-  {
-    "path": "/yashaka/selene/tree/master/examples",
-    "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 24,
-    "uniques": 19
   },
   {
     "path": "/yashaka/selene/blob/master/README.md",
     "title": "selene/README.md at master · yashaka/selene · GitHub",
     "count": 22,
+    "uniques": 17
+  },
+  {
+    "path": "/yashaka/selene/issues/188",
+    "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
+    "count": 22,
+    "uniques": 10
+  },
+  {
+    "path": "/yashaka/selene/tree/master/examples",
+    "title": "selene/examples at master · yashaka/selene · GitHub",
+    "count": 21,
     "uniques": 17
   }
 ]
