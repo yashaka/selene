@@ -2,32 +2,32 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 425,
-    "uniques": 211
+    "count": 438,
+    "uniques": 208
   },
   {
     "path": "/yashaka/selene/search",
     "title": "Search · visible",
     "count": 52,
-    "uniques": 8
+    "uniques": 9
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 39,
+    "count": 38,
     "uniques": 19
-  },
-  {
-    "path": "/yashaka/selene/issues",
-    "title": "Issues · yashaka/selene · GitHub",
-    "count": 37,
-    "uniques": 14
   },
   {
     "path": "/yashaka/selene/releases",
     "title": "Releases · yashaka/selene · GitHub",
-    "count": 25,
-    "uniques": 18
+    "count": 30,
+    "uniques": 20
+  },
+  {
+    "path": "/yashaka/selene/issues",
+    "title": "Issues · yashaka/selene · GitHub",
+    "count": 26,
+    "uniques": 13
   },
   {
     "path": "/yashaka/selene/issues/188",
@@ -36,27 +36,27 @@
     "uniques": 11
   },
   {
+    "path": "/yashaka/selene/tree/master/examples",
+    "title": "selene/examples at master · yashaka/selene · GitHub",
+    "count": 18,
+    "uniques": 17
+  },
+  {
     "path": "/yashaka/selene/blob/master/README.md",
     "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 18,
-    "uniques": 13
+    "count": 15,
+    "uniques": 12
   },
   {
     "path": "/yashaka/selene/commits/master",
     "title": "Commits · yashaka/selene · GitHub",
-    "count": 17,
-    "uniques": 7
-  },
-  {
-    "path": "/yashaka/selene/pulls",
-    "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 17,
+    "count": 15,
     "uniques": 6
   },
   {
-    "path": "/yashaka/selene/tree/master/examples",
-    "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 16,
-    "uniques": 15
+    "path": "/yashaka/selene/tree/master/tests",
+    "title": "selene/tests at master · yashaka/selene · GitHub",
+    "count": 14,
+    "uniques": 10
   }
 ]
