@@ -1,23 +1,18 @@
 [
   {
     "referrer": "Google",
-    "count": 351,
-    "uniques": 131
+    "count": 302,
+    "uniques": 118
   },
   {
     "referrer": "github.com",
-    "count": 152,
-    "uniques": 34
+    "count": 127,
+    "uniques": 32
   },
   {
     "referrer": "yandex.ru",
     "count": 64,
     "uniques": 18
-  },
-  {
-    "referrer": "automated-testing.info",
-    "count": 9,
-    "uniques": 6
   },
   {
     "referrer": "yashaka.github.io",
@@ -40,13 +35,18 @@
     "uniques": 3
   },
   {
+    "referrer": "automated-testing.info",
+    "count": 4,
+    "uniques": 3
+  },
+  {
     "referrer": "gist.github.com",
     "count": 2,
     "uniques": 2
   },
   {
-    "referrer": "StartPage",
+    "referrer": "tts.bitrix24.in",
     "count": 2,
-    "uniques": 1
+    "uniques": 2
   }
 ]
