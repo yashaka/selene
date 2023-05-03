@@ -1,18 +1,23 @@
 [
   {
     "referrer": "Google",
-    "count": 302,
-    "uniques": 118
+    "count": 305,
+    "uniques": 110
   },
   {
     "referrer": "github.com",
-    "count": 127,
-    "uniques": 32
+    "count": 100,
+    "uniques": 29
   },
   {
     "referrer": "yandex.ru",
-    "count": 64,
-    "uniques": 18
+    "count": 59,
+    "uniques": 16
+  },
+  {
+    "referrer": "qiita.com",
+    "count": 10,
+    "uniques": 4
   },
   {
     "referrer": "yashaka.github.io",
@@ -25,11 +30,6 @@
     "uniques": 4
   },
   {
-    "referrer": "qiita.com",
-    "count": 5,
-    "uniques": 2
-  },
-  {
     "referrer": "DuckDuckGo",
     "count": 4,
     "uniques": 3
@@ -40,9 +40,9 @@
     "uniques": 3
   },
   {
-    "referrer": "gist.github.com",
-    "count": 2,
-    "uniques": 2
+    "referrer": "Bing",
+    "count": 4,
+    "uniques": 1
   },
   {
     "referrer": "tts.bitrix24.in",
