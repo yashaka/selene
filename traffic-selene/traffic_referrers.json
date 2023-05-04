@@ -1,17 +1,17 @@
 [
   {
     "referrer": "Google",
-    "count": 305,
-    "uniques": 110
+    "count": 288,
+    "uniques": 111
   },
   {
     "referrer": "github.com",
-    "count": 100,
-    "uniques": 29
+    "count": 102,
+    "uniques": 32
   },
   {
     "referrer": "yandex.ru",
-    "count": 59,
+    "count": 52,
     "uniques": 16
   },
   {
@@ -26,16 +26,16 @@
   },
   {
     "referrer": "pypi.org",
-    "count": 7,
+    "count": 6,
+    "uniques": 4
+  },
+  {
+    "referrer": "tts.bitrix24.in",
+    "count": 5,
     "uniques": 4
   },
   {
     "referrer": "DuckDuckGo",
-    "count": 4,
-    "uniques": 3
-  },
-  {
-    "referrer": "automated-testing.info",
     "count": 4,
     "uniques": 3
   },
@@ -45,8 +45,8 @@
     "uniques": 1
   },
   {
-    "referrer": "tts.bitrix24.in",
-    "count": 2,
-    "uniques": 2
+    "referrer": "automated-testing.info",
+    "count": 3,
+    "uniques": 3
   }
 ]
