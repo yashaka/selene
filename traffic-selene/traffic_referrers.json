@@ -1,8 +1,8 @@
 [
   {
     "referrer": "Google",
-    "count": 301,
-    "uniques": 123
+    "count": 318,
+    "uniques": 117
   },
   {
     "referrer": "github.com",
@@ -11,8 +11,8 @@
   },
   {
     "referrer": "yandex.ru",
-    "count": 54,
-    "uniques": 16
+    "count": 52,
+    "uniques": 15
   },
   {
     "referrer": "qiita.com",
@@ -26,18 +26,18 @@
   },
   {
     "referrer": "automated-testing.info",
-    "count": 7,
-    "uniques": 4
+    "count": 6,
+    "uniques": 3
+  },
+  {
+    "referrer": "qa.guru",
+    "count": 6,
+    "uniques": 3
   },
   {
     "referrer": "tts.bitrix24.in",
     "count": 5,
     "uniques": 4
-  },
-  {
-    "referrer": "pypi.org",
-    "count": 5,
-    "uniques": 3
   },
   {
     "referrer": "DuckDuckGo",
