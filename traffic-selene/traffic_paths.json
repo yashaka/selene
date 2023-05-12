@@ -2,32 +2,32 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 298,
-    "uniques": 172
+    "count": 302,
+    "uniques": 162
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
-    "title": "selene/examples at master · yashaka/selene",
-    "count": 45,
+    "title": "selene/examples at master · yashaka/selene · GitHub",
+    "count": 61,
     "uniques": 16
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 40,
-    "uniques": 15
-  },
-  {
-    "path": "/yashaka/selene/blob/master/CHANGELOG.md",
-    "title": "selene/CHANGELOG.md at master · yashaka/selene · GitHub",
-    "count": 19,
-    "uniques": 9
+    "count": 45,
+    "uniques": 18
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 19,
-    "uniques": 5
+    "count": 26,
+    "uniques": 6
+  },
+  {
+    "path": "/yashaka/selene/blob/master/CHANGELOG.md",
+    "title": "selene/CHANGELOG.md at master · yashaka/selene · GitHub",
+    "count": 18,
+    "uniques": 8
   },
   {
     "path": "/yashaka/selene/tree/master/selene/api",
@@ -42,21 +42,21 @@
     "uniques": 5
   },
   {
+    "path": "/yashaka/selene/issues",
+    "title": "Issues · yashaka/selene · GitHub",
+    "count": 14,
+    "uniques": 5
+  },
+  {
     "path": "/yashaka/selene/tree/master/selene/common",
     "title": "selene/selene/common at master · yashaka/selene · GitHub",
     "count": 13,
     "uniques": 6
   },
   {
-    "path": "/yashaka/selene/issues",
-    "title": "Issues · yashaka/selene · GitHub",
-    "count": 13,
-    "uniques": 5
-  },
-  {
-    "path": "/yashaka/selene/tree/master/docs",
-    "title": "selene/docs at master · yashaka/selene · GitHub",
-    "count": 11,
-    "uniques": 5
+    "path": "/yashaka/selene/releases",
+    "title": "Releases · yashaka/selene · GitHub",
+    "count": 12,
+    "uniques": 10
   }
 ]
