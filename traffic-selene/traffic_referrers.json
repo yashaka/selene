@@ -1,22 +1,22 @@
 [
   {
     "referrer": "Google",
-    "count": 442,
-    "uniques": 111
+    "count": 427,
+    "uniques": 112
   },
   {
     "referrer": "github.com",
-    "count": 183,
-    "uniques": 36
+    "count": 179,
+    "uniques": 34
   },
   {
     "referrer": "qa.guru",
-    "count": 42,
+    "count": 46,
     "uniques": 6
   },
   {
     "referrer": "yandex.ru",
-    "count": 32,
+    "count": 34,
     "uniques": 10
   },
   {
@@ -26,11 +26,16 @@
   },
   {
     "referrer": "qiita.com",
-    "count": 9,
-    "uniques": 5
+    "count": 5,
+    "uniques": 4
   },
   {
     "referrer": "blog.csdn.net",
+    "count": 4,
+    "uniques": 1
+  },
+  {
+    "referrer": "qwiki.nixs.com",
     "count": 4,
     "uniques": 1
   },
@@ -41,11 +46,6 @@
   },
   {
     "referrer": "DuckDuckGo",
-    "count": 2,
-    "uniques": 2
-  },
-  {
-    "referrer": "pypi.org",
     "count": 2,
     "uniques": 2
   }
