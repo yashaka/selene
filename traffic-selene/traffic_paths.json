@@ -2,8 +2,8 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 335,
-    "uniques": 181
+    "count": 313,
+    "uniques": 173
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
@@ -20,8 +20,8 @@
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 31,
-    "uniques": 17
+    "count": 28,
+    "uniques": 16
   },
   {
     "path": "/yashaka/selene/issues",
@@ -42,21 +42,21 @@
     "uniques": 7
   },
   {
-    "path": "/yashaka/selene/search",
-    "title": "Search · pytest",
-    "count": 14,
-    "uniques": 3
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene/core",
-    "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 13,
-    "uniques": 8
-  },
-  {
     "path": "/yashaka/selene/tree/master/docs",
     "title": "selene/docs at master · yashaka/selene · GitHub",
     "count": 13,
     "uniques": 6
+  },
+  {
+    "path": "/yashaka/selene/blob/master/examples/run_remote_in_web_chrome_with_options_for_selenoid/test_todomvc.py",
+    "title": "selene/test_todomvc.py at master · yashaka/selene · GitHub",
+    "count": 13,
+    "uniques": 3
+  },
+  {
+    "path": "/yashaka/selene/tree/master/tests/integration",
+    "title": "selene/tests/integration at master · yashaka/selene · GitHub",
+    "count": 13,
+    "uniques": 3
   }
 ]

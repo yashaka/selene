@@ -1,12 +1,12 @@
 [
   {
     "referrer": "Google",
-    "count": 461,
-    "uniques": 122
+    "count": 438,
+    "uniques": 110
   },
   {
     "referrer": "github.com",
-    "count": 217,
+    "count": 215,
     "uniques": 34
   },
   {
@@ -16,13 +16,13 @@
   },
   {
     "referrer": "yandex.ru",
-    "count": 29,
+    "count": 27,
     "uniques": 11
   },
   {
     "referrer": "automated-testing.info",
-    "count": 12,
-    "uniques": 5
+    "count": 11,
+    "uniques": 4
   },
   {
     "referrer": "qwiki.nixs.com",
@@ -35,14 +35,14 @@
     "uniques": 4
   },
   {
-    "referrer": "gist.github.com",
-    "count": 6,
-    "uniques": 2
-  },
-  {
     "referrer": "qiita.com",
     "count": 5,
     "uniques": 4
+  },
+  {
+    "referrer": "gist.github.com",
+    "count": 5,
+    "uniques": 1
   },
   {
     "referrer": "blog.csdn.net",
