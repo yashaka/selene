@@ -1,38 +1,38 @@
 [
   {
     "referrer": "Google",
-    "count": 438,
-    "uniques": 110
+    "count": 467,
+    "uniques": 115
   },
   {
     "referrer": "github.com",
-    "count": 215,
-    "uniques": 34
+    "count": 237,
+    "uniques": 36
   },
   {
     "referrer": "qa.guru",
-    "count": 92,
-    "uniques": 6
+    "count": 159,
+    "uniques": 8
   },
   {
     "referrer": "yandex.ru",
-    "count": 27,
-    "uniques": 11
-  },
-  {
-    "referrer": "automated-testing.info",
-    "count": 11,
-    "uniques": 4
-  },
-  {
-    "referrer": "qwiki.nixs.com",
-    "count": 9,
-    "uniques": 1
+    "count": 28,
+    "uniques": 13
   },
   {
     "referrer": "ecosia.org",
-    "count": 6,
-    "uniques": 4
+    "count": 17,
+    "uniques": 12
+  },
+  {
+    "referrer": "qwiki.nixs.com",
+    "count": 10,
+    "uniques": 1
+  },
+  {
+    "referrer": "automated-testing.info",
+    "count": 8,
+    "uniques": 3
   },
   {
     "referrer": "qiita.com",
