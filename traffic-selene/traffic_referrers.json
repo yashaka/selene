@@ -1,28 +1,28 @@
 [
   {
     "referrer": "Google",
-    "count": 456,
-    "uniques": 123
+    "count": 457,
+    "uniques": 134
   },
   {
     "referrer": "github.com",
-    "count": 263,
-    "uniques": 38
+    "count": 233,
+    "uniques": 39
   },
   {
     "referrer": "qa.guru",
-    "count": 184,
-    "uniques": 8
+    "count": 187,
+    "uniques": 9
   },
   {
     "referrer": "confluence.inno.tech",
-    "count": 43,
+    "count": 50,
     "uniques": 2
   },
   {
     "referrer": "yandex.ru",
-    "count": 31,
-    "uniques": 16
+    "count": 32,
+    "uniques": 17
   },
   {
     "referrer": "ecosia.org",
@@ -30,13 +30,13 @@
     "uniques": 14
   },
   {
-    "referrer": "big3.bitrix24.ru",
-    "count": 13,
+    "referrer": "qwiki.nixs.com",
+    "count": 14,
     "uniques": 1
   },
   {
-    "referrer": "qwiki.nixs.com",
-    "count": 12,
+    "referrer": "big3.bitrix24.ru",
+    "count": 13,
     "uniques": 1
   },
   {
@@ -45,8 +45,8 @@
     "uniques": 4
   },
   {
-    "referrer": "qiita.com",
-    "count": 7,
-    "uniques": 5
+    "referrer": "kit-docs.internal.eng.qops.net",
+    "count": 8,
+    "uniques": 2
   }
 ]
