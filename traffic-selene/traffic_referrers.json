@@ -1,18 +1,18 @@
 [
   {
     "referrer": "Google",
-    "count": 457,
-    "uniques": 134
-  },
-  {
-    "referrer": "github.com",
-    "count": 233,
-    "uniques": 39
+    "count": 425,
+    "uniques": 128
   },
   {
     "referrer": "qa.guru",
-    "count": 187,
-    "uniques": 9
+    "count": 243,
+    "uniques": 7
+  },
+  {
+    "referrer": "github.com",
+    "count": 232,
+    "uniques": 39
   },
   {
     "referrer": "confluence.inno.tech",
@@ -31,7 +31,7 @@
   },
   {
     "referrer": "qwiki.nixs.com",
-    "count": 14,
+    "count": 15,
     "uniques": 1
   },
   {
