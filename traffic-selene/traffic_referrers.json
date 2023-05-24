@@ -1,17 +1,17 @@
 [
   {
     "referrer": "Google",
-    "count": 416,
-    "uniques": 122
+    "count": 385,
+    "uniques": 125
   },
   {
     "referrer": "github.com",
-    "count": 329,
-    "uniques": 36
+    "count": 298,
+    "uniques": 33
   },
   {
     "referrer": "qa.guru",
-    "count": 243,
+    "count": 239,
     "uniques": 7
   },
   {
@@ -31,7 +31,7 @@
   },
   {
     "referrer": "qwiki.nixs.com",
-    "count": 15,
+    "count": 16,
     "uniques": 1
   },
   {
@@ -40,13 +40,13 @@
     "uniques": 1
   },
   {
-    "referrer": "automated-testing.info",
-    "count": 11,
-    "uniques": 4
-  },
-  {
     "referrer": "kit-docs.internal.eng.qops.net",
     "count": 8,
     "uniques": 2
+  },
+  {
+    "referrer": "automated-testing.info",
+    "count": 7,
+    "uniques": 3
   }
 ]
