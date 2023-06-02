@@ -1,22 +1,22 @@
 [
   {
     "referrer": "Google",
-    "count": 337,
+    "count": 352,
     "uniques": 131
   },
   {
     "referrer": "github.com",
-    "count": 255,
-    "uniques": 34
+    "count": 248,
+    "uniques": 36
   },
   {
     "referrer": "qa.guru",
-    "count": 140,
-    "uniques": 7
+    "count": 135,
+    "uniques": 6
   },
   {
     "referrer": "yandex.ru",
-    "count": 109,
+    "count": 111,
     "uniques": 11
   },
   {
@@ -40,13 +40,13 @@
     "uniques": 3
   },
   {
-    "referrer": "kit-docs.internal.eng.qops.net",
-    "count": 8,
-    "uniques": 2
-  },
-  {
     "referrer": "qiita.com",
     "count": 7,
     "uniques": 4
+  },
+  {
+    "referrer": "qwiki.nixs.com",
+    "count": 5,
+    "uniques": 2
   }
 ]
