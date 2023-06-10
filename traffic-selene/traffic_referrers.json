@@ -1,28 +1,28 @@
 [
   {
     "referrer": "Google",
-    "count": 360,
-    "uniques": 156
+    "count": 403,
+    "uniques": 174
   },
   {
     "referrer": "github.com",
-    "count": 167,
-    "uniques": 41
+    "count": 210,
+    "uniques": 48
   },
   {
     "referrer": "yandex.ru",
-    "count": 152,
+    "count": 157,
     "uniques": 18
   },
   {
     "referrer": "qa.guru",
-    "count": 63,
-    "uniques": 5
+    "count": 51,
+    "uniques": 3
   },
   {
     "referrer": "pypi.org",
-    "count": 20,
-    "uniques": 4
+    "count": 22,
+    "uniques": 5
   },
   {
     "referrer": "yashaka.github.io",
@@ -36,8 +36,8 @@
   },
   {
     "referrer": "qiita.com",
-    "count": 11,
-    "uniques": 7
+    "count": 13,
+    "uniques": 8
   },
   {
     "referrer": "kit-docs.internal.eng.qops.net",
