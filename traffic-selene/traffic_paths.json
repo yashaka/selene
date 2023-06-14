@@ -2,56 +2,56 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 504,
-    "uniques": 251
+    "count": 507,
+    "uniques": 254
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 67,
-    "uniques": 22
+    "count": 64,
+    "uniques": 19
   },
   {
     "path": "/yashaka/selene/blob/master/examples/run_cross_platform/tests/acceptance_test.py",
     "title": "selene/acceptance_test.py at master · yashaka/selene · GitHub",
-    "count": 60,
+    "count": 62,
     "uniques": 1
   },
   {
     "path": "/yashaka/selene/blob/master/README.md",
     "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 46,
-    "uniques": 22
+    "count": 55,
+    "uniques": 27
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 37,
-    "uniques": 17
+    "count": 35,
+    "uniques": 15
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 31,
-    "uniques": 12
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene/core",
-    "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 23,
-    "uniques": 12
+    "count": 30,
+    "uniques": 11
   },
   {
     "path": "/yashaka/selene/releases",
     "title": "Releases · yashaka/selene · GitHub",
-    "count": 20,
-    "uniques": 12
+    "count": 27,
+    "uniques": 14
+  },
+  {
+    "path": "/yashaka/selene/tree/master/selene/core",
+    "title": "selene/selene/core at master · yashaka/selene · GitHub",
+    "count": 21,
+    "uniques": 11
   },
   {
     "path": "/yashaka/selene/blob/master/CHANGELOG.md",
     "title": "selene/CHANGELOG.md at master · yashaka/selene · GitHub",
     "count": 16,
-    "uniques": 6
+    "uniques": 5
   },
   {
     "path": "/yashaka/selene/issues/188",
