@@ -1,37 +1,27 @@
 [
   {
     "referrer": "Google",
-    "count": 425,
-    "uniques": 174
+    "count": 553,
+    "uniques": 176
   },
   {
     "referrer": "github.com",
-    "count": 230,
-    "uniques": 46
+    "count": 233,
+    "uniques": 48
   },
   {
     "referrer": "yandex.ru",
-    "count": 134,
-    "uniques": 18
+    "count": 132,
+    "uniques": 16
   },
   {
     "referrer": "yashaka.github.io",
-    "count": 42,
-    "uniques": 5
+    "count": 45,
+    "uniques": 6
   },
   {
     "referrer": "pypi.org",
-    "count": 18,
-    "uniques": 5
-  },
-  {
-    "referrer": "qa.guru",
-    "count": 10,
-    "uniques": 2
-  },
-  {
-    "referrer": "automated-testing.info",
-    "count": 9,
+    "count": 21,
     "uniques": 6
   },
   {
@@ -40,12 +30,22 @@
     "uniques": 6
   },
   {
+    "referrer": "automated-testing.info",
+    "count": 8,
+    "uniques": 5
+  },
+  {
+    "referrer": "qa.guru",
+    "count": 8,
+    "uniques": 2
+  },
+  {
     "referrer": "kit-docs.internal.eng.qops.net",
     "count": 4,
     "uniques": 1
   },
   {
-    "referrer": "selene-docs-test.readthedocs.io",
+    "referrer": "ya.ru",
     "count": 2,
     "uniques": 1
   }
