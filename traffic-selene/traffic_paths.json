@@ -2,8 +2,14 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 484,
-    "uniques": 241
+    "count": 511,
+    "uniques": 258
+  },
+  {
+    "path": "/yashaka/selene/blob/master/README.md",
+    "title": "selene/README.md at master · yashaka/selene · GitHub",
+    "count": 66,
+    "uniques": 27
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
@@ -12,9 +18,9 @@
     "uniques": 17
   },
   {
-    "path": "/yashaka/selene/blob/master/README.md",
-    "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 60,
+    "path": "/yashaka/selene/tree/master/examples",
+    "title": "selene/examples at master · yashaka/selene · GitHub",
+    "count": 59,
     "uniques": 23
   },
   {
@@ -24,16 +30,10 @@
     "uniques": 2
   },
   {
-    "path": "/yashaka/selene/tree/master/examples",
-    "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 48,
-    "uniques": 19
-  },
-  {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 33,
-    "uniques": 15
+    "count": 35,
+    "uniques": 16
   },
   {
     "path": "/yashaka/selene/tree/master/selene/core",
@@ -44,7 +44,7 @@
   {
     "path": "/yashaka/selene/blob/master/examples/custom_conditions.py",
     "title": "selene/examples/custom_conditions.py at master · yashaka/selene · GitHub",
-    "count": 24,
+    "count": 28,
     "uniques": 1
   },
   {
