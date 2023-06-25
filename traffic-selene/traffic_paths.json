@@ -2,56 +2,56 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 375,
-    "uniques": 201
+    "count": 365,
+    "uniques": 197
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 105,
-    "uniques": 34
-  },
-  {
-    "path": "/yashaka/selene/blob/master/README.md",
-    "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 61,
-    "uniques": 25
+    "count": 103,
+    "uniques": 33
   },
   {
     "path": "/yashaka/selene/blob/master/examples/run_cross_platform/tests/acceptance_test.py",
     "title": "selene/examples/run_cross_platform/tests/acceptance_test.py at master · yasha...",
-    "count": 58,
+    "count": 54,
     "uniques": 5
   },
   {
-    "path": "/yashaka/selene/blob/master/examples/custom_conditions.py",
-    "title": "selene/examples/custom_conditions.py at master · yashaka/selene · GitHub",
-    "count": 54,
-    "uniques": 6
+    "path": "/yashaka/selene/blob/master/README.md",
+    "title": "selene/README.md at master · yashaka/selene · GitHub",
+    "count": 52,
+    "uniques": 24
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 50,
-    "uniques": 11
+    "count": 48,
+    "uniques": 10
+  },
+  {
+    "path": "/yashaka/selene/blob/master/examples/custom_conditions.py",
+    "title": "selene/examples/custom_conditions.py at master · yashaka/selene · GitHub",
+    "count": 46,
+    "uniques": 6
   },
   {
     "path": "/yashaka/selene/tree/master/selene/core",
     "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 31,
-    "uniques": 5
-  },
-  {
-    "path": "/yashaka/selene/tree/master/docs",
-    "title": "selene/docs at master · yashaka/selene · GitHub",
-    "count": 25,
-    "uniques": 8
+    "count": 29,
+    "uniques": 2
   },
   {
     "path": "/yashaka/selene/issues/287",
     "title": "from selenium to selene · Issue #287 · yashaka/selene · GitHub",
     "count": 23,
     "uniques": 17
+  },
+  {
+    "path": "/yashaka/selene/tree/master/docs",
+    "title": "selene/docs at master · yashaka/selene · GitHub",
+    "count": 22,
+    "uniques": 9
   },
   {
     "path": "/yashaka/selene/tree/master/examples/run_cross_platform",
