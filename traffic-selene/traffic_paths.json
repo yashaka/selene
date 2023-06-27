@@ -2,50 +2,38 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 333,
-    "uniques": 179
+    "count": 289,
+    "uniques": 164
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 107,
+    "count": 106,
     "uniques": 34
   },
   {
     "path": "/yashaka/selene/blob/master/examples/run_cross_platform/tests/acceptance_test.py",
     "title": "selene/examples/run_cross_platform/tests/acceptance_test.py at master · yasha...",
-    "count": 52,
+    "count": 50,
     "uniques": 5
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene",
-    "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 47,
-    "uniques": 10
   },
   {
     "path": "/yashaka/selene/blob/master/examples/custom_conditions.py",
     "title": "selene/examples/custom_conditions.py at master · yashaka/selene · GitHub",
-    "count": 44,
+    "count": 42,
     "uniques": 6
   },
   {
     "path": "/yashaka/selene/blob/master/README.md",
     "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 42,
-    "uniques": 19
+    "count": 39,
+    "uniques": 17
   },
   {
-    "path": "/yashaka/selene/tree/master/selene/core",
-    "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 29,
-    "uniques": 2
-  },
-  {
-    "path": "/yashaka/selene/tree/master/docs",
-    "title": "selene/docs at master · yashaka/selene · GitHub",
-    "count": 23,
-    "uniques": 10
+    "path": "/yashaka/selene/tree/master/selene",
+    "title": "selene/selene at master · yashaka/selene · GitHub",
+    "count": 35,
+    "uniques": 8
   },
   {
     "path": "/yashaka/selene/tree/master/examples/run_cross_platform",
@@ -54,9 +42,21 @@
     "uniques": 5
   },
   {
-    "path": "/yashaka/selene/issues/287",
-    "title": "from selenium to selene · Issue #287 · yashaka/selene · GitHub",
+    "path": "/yashaka/selene/tree/master/selene/core",
+    "title": "selene/selene/core at master · yashaka/selene · GitHub",
+    "count": 22,
+    "uniques": 1
+  },
+  {
+    "path": "/yashaka/selene/tree/master/tests",
+    "title": "selene/tests at master · yashaka/selene · GitHub",
     "count": 21,
-    "uniques": 15
+    "uniques": 10
+  },
+  {
+    "path": "/yashaka/selene/blob/9baf811e86263984fcdd4b378e68291d626eb0bc/tests/examples/todomvc/straightforward_approach/todomvc_test.py",
+    "title": "selene/tests/examples/todomvc/straightforward_approach/todomvc_test.py at 9ba...",
+    "count": 21,
+    "uniques": 2
   }
 ]
