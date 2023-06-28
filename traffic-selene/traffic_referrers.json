@@ -1,33 +1,33 @@
 [
   {
     "referrer": "Google",
-    "count": 764,
-    "uniques": 145
+    "count": 771,
+    "uniques": 135
   },
   {
     "referrer": "qa.guru",
-    "count": 163,
-    "uniques": 21
+    "count": 187,
+    "uniques": 23
   },
   {
     "referrer": "github.com",
-    "count": 158,
-    "uniques": 31
+    "count": 156,
+    "uniques": 33
   },
   {
     "referrer": "yandex.ru",
-    "count": 67,
+    "count": 61,
     "uniques": 13
   },
   {
-    "referrer": "automated-testing.info",
+    "referrer": "pypi.org",
     "count": 12,
-    "uniques": 4
+    "uniques": 6
   },
   {
-    "referrer": "pypi.org",
+    "referrer": "automated-testing.info",
     "count": 9,
-    "uniques": 5
+    "uniques": 3
   },
   {
     "referrer": "yashaka.github.io",
@@ -40,7 +40,7 @@
     "uniques": 2
   },
   {
-    "referrer": "news.ycombinator.com",
+    "referrer": "lms.ithillel.ua",
     "count": 1,
     "uniques": 1
   },
