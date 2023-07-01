@@ -15,12 +15,12 @@ keywords = [
 	"wrapper"
 ]
 homepage = "https://yashaka.github.io/selene/"
-repository = "http://github.com/yashaka/selene/"
+repository = "https://github.com/yashaka/selene/"
 documentation = "https://yashaka.github.io/selene/"
 classifiers = [
 	"Programming Language :: Python",
 	"Programming Language :: Python :: 3",
-	"Development Status :: 3 - Alpha",
+	"Development Status :: 3 - Beta",
 	"Natural Language :: English",
 	"Environment :: Web Environment",
 	"Intended Audience :: Developers",
