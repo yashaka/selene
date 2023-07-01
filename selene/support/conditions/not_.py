@@ -28,6 +28,9 @@ from selene.core import match as _match
 from selene.core.condition import Condition
 from selene.core.entity import Element, Collection, Browser
 
+# TODO: consider refactoring to class for better extendability
+#       when creating custom conditions
+
 visible: Condition[Element] = _match.element_is_visible.not_
 hidden: Condition[Element] = _match.element_is_hidden.not_
 

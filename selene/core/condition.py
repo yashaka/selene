@@ -165,6 +165,7 @@ class Condition(Generic[E]):
 
         return fn
 
+    # TODO: fix typing issues when passing to should explicitly
     @property
     def not_(self) -> Condition[E]:  # TODO: better name?
         return self.__class__.as_not(self)
