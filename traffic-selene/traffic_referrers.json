@@ -1,23 +1,23 @@
 [
   {
     "referrer": "Google",
-    "count": 739,
-    "uniques": 124
-  },
-  {
-    "referrer": "qa.guru",
-    "count": 167,
-    "uniques": 16
+    "count": 744,
+    "uniques": 127
   },
   {
     "referrer": "github.com",
-    "count": 120,
-    "uniques": 37
+    "count": 171,
+    "uniques": 40
+  },
+  {
+    "referrer": "qa.guru",
+    "count": 169,
+    "uniques": 16
   },
   {
     "referrer": "yandex.ru",
-    "count": 31,
-    "uniques": 13
+    "count": 35,
+    "uniques": 14
   },
   {
     "referrer": "yashaka.github.io",
@@ -40,13 +40,13 @@
     "uniques": 4
   },
   {
-    "referrer": "bettergpt.chat",
+    "referrer": "ecosia.org",
     "count": 2,
-    "uniques": 1
+    "uniques": 2
   },
   {
-    "referrer": "news.ycombinator.com",
-    "count": 1,
+    "referrer": "kit-docs.internal.eng.qops.net",
+    "count": 2,
     "uniques": 1
   }
 ]
