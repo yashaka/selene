@@ -15,7 +15,7 @@ from tests.helpers import headless_chrome_options
 
 @pytest.fixture(scope='session')
 def chrome_driver(request):
-    if request.config.getoption('--headless'):
+    if request.config.getoption('--headless', True):
         chrome_driver = webdriver.Chrome(
             options=headless_chrome_options(),
             service=ChromeService(
@@ -118,7 +118,7 @@ def session_browser(chrome_driver):
 
 @pytest.fixture(scope='function')
 def function_browser(request):
-    if request.config.getoption('--headless'):
+    if request.config.getoption('--headless', True):
         chrome_driver = webdriver.Chrome(
             options=headless_chrome_options(),
             service=ChromeService(
