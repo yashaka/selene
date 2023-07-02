@@ -1,4 +1,3 @@
-import dataclasses
 import os
 
 import pytest
@@ -18,8 +17,10 @@ from tests.helpers import headless_chrome_options
 def chrome_driver(request):
     if request.config.getoption('--headless'):
         chrome_driver = webdriver.Chrome(
-            ChromeDriverManager().install(),
             options=headless_chrome_options(),
+            service=ChromeService(
+                ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install()
+            ),
         )
     else:
         chrome_driver = webdriver.Chrome(
@@ -44,7 +45,7 @@ def a_remote_browser():
             'enableLog': True,
         },
     )
-    project_config = dotenv.dotenv_values()
+    project_config = dotenv_values()
     browser_ = Browser(
         Config(
             driver_options=options,
@@ -99,7 +100,7 @@ def the_module_remote_browser():
 
 
 @pytest.fixture(scope='session')
-def firefox_driver(request):
+def firefox_driver():
     gecko_driver = webdriver.Firefox(
         service=FirefoxService(GeckoDriverManager().install())
     )
@@ -119,8 +120,10 @@ def session_browser(chrome_driver):
 def function_browser(request):
     if request.config.getoption('--headless'):
         chrome_driver = webdriver.Chrome(
-            ChromeDriverManager().install(),
             options=headless_chrome_options(),
+            service=ChromeService(
+                ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install()
+            ),
         )
     else:
         chrome_driver = webdriver.Chrome(
