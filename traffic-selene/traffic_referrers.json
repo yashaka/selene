@@ -1,17 +1,17 @@
 [
   {
     "referrer": "Google",
-    "count": 645,
-    "uniques": 110
+    "count": 619,
+    "uniques": 103
   },
   {
     "referrer": "github.com",
-    "count": 163,
-    "uniques": 37
+    "count": 140,
+    "uniques": 36
   },
   {
     "referrer": "qa.guru",
-    "count": 132,
+    "count": 106,
     "uniques": 13
   },
   {
@@ -21,7 +21,7 @@
   },
   {
     "referrer": "yandex.ru",
-    "count": 28,
+    "count": 25,
     "uniques": 13
   },
   {
@@ -35,14 +35,14 @@
     "uniques": 7
   },
   {
+    "referrer": "ecosia.org",
+    "count": 8,
+    "uniques": 6
+  },
+  {
     "referrer": "qiita.com",
     "count": 6,
     "uniques": 4
-  },
-  {
-    "referrer": "ecosia.org",
-    "count": 2,
-    "uniques": 2
   },
   {
     "referrer": "kit-docs.internal.eng.qops.net",
