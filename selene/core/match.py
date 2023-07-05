@@ -243,7 +243,9 @@ def element_has_attribute(name: str):
     )
 
 
-element_is_selected: Condition[Element] = element_has_attribute('elementIsSelected')
+element_is_selected: Condition[Element] = ElementCondition.raise_if_not(
+    'is selected', lambda element: element().is_selected()
+)
 
 
 def element_has_value(expected: str) -> Condition[Element]:
