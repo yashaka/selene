@@ -1,12 +1,12 @@
 [
   {
     "referrer": "Google",
-    "count": 433,
-    "uniques": 114
+    "count": 426,
+    "uniques": 107
   },
   {
     "referrer": "qa.guru",
-    "count": 158,
+    "count": 160,
     "uniques": 15
   },
   {
@@ -21,13 +21,13 @@
   },
   {
     "referrer": "ecosia.org",
-    "count": 28,
+    "count": 29,
     "uniques": 13
   },
   {
     "referrer": "yandex.ru",
-    "count": 25,
-    "uniques": 10
+    "count": 24,
+    "uniques": 9
   },
   {
     "referrer": "yashaka.github.io",
