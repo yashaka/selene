@@ -2,61 +2,61 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 286,
-    "uniques": 167
+    "count": 275,
+    "uniques": 161
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 116,
-    "uniques": 25
+    "count": 114,
+    "uniques": 23
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 68,
+    "count": 65,
     "uniques": 20
   },
   {
     "path": "/yashaka/selene/blob/master/examples/run_remote_in_web_chrome_with_options_for_selenoid/test_todomvc.py",
     "title": "selene/examples/run_remote_in_web_chrome_with_options_for_selenoid/test_todom...",
-    "count": 51,
-    "uniques": 17
-  },
-  {
-    "path": "/yashaka/selene/tree/master/tests",
-    "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 40,
-    "uniques": 13
+    "count": 45,
+    "uniques": 16
   },
   {
     "path": "/yashaka/selene/blob/master/README.md",
     "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 34,
-    "uniques": 8
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene/core",
-    "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 27,
+    "count": 37,
     "uniques": 9
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 25,
+    "count": 32,
+    "uniques": 12
+  },
+  {
+    "path": "/yashaka/selene/tree/master/selene/core",
+    "title": "selene/selene/core at master · yashaka/selene · GitHub",
+    "count": 29,
+    "uniques": 9
+  },
+  {
+    "path": "/yashaka/selene/tree/master/examples/run_remote_in_web_chrome_with_options_for_selenoid",
+    "title": "selene/examples/run_remote_in_web_chrome_with_options_for_selenoid at master ...",
+    "count": 27,
+    "uniques": 6
+  },
+  {
+    "path": "/yashaka/selene/tree/master/tests",
+    "title": "selene/tests at master · yashaka/selene · GitHub",
+    "count": 26,
     "uniques": 12
   },
   {
     "path": "/yashaka/selene/tree/master/examples/run_cross_platform",
     "title": "selene/examples/run_cross_platform at master · yashaka/selene · GitHub",
-    "count": 25,
-    "uniques": 6
-  },
-  {
-    "path": "/yashaka/selene/tree/master/examples/run_remote_in_web_chrome_with_options_for_selenoid",
-    "title": "selene/examples/run_remote_in_web_chrome_with_options_for_selenoid at master ...",
-    "count": 25,
-    "uniques": 6
+    "count": 23,
+    "uniques": 5
   }
 ]
