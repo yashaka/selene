@@ -682,6 +682,13 @@ class Collection(WaitingEntity['Collection'], Iterable[Element]):
         return typing.cast(Element, self[1])
 
     @property
+    def last(self) -> Element:
+        """
+        A human-readable alias to .element(-1) or [-1]
+        """
+        return typing.cast(Element, self[-1])
+
+    @property
     def even(self):
         """
         A human-readable alias to [1::2], i.e. filtering collection to have only even elements
