@@ -99,7 +99,49 @@ TODOs:
 - can we force order of how `selene.*` is rendered on autocomplete? via `__all__`...
 - deprecate `have.js_returned` in favour of `have.script_returned`
 
-## 2.0.0rc2 (to be released on 13.04.2023)
+## 2.0.0rc3 (to be released on 21.07.2023)
+
+### HOTFIX webdriver_manager after changes in google chromedrivers APIs
+
+This hotfix is really hot, so might break something. Use it on your own risk.
+If something went wrong, roll back to 2.0.0rc2.
+
+We also froze webdriver_manager version to 3.8.6, so it will not be updated automatically and our hotfix will not be broken :D. Let's see how it goes further... One day we hope to remove hotfix and unfreeze webdriver_manager version.
+
+Should work for new versions of Chrome from v115 out of the box. 
+
+If you use webdriver_manager on your own, you can do the following trick to patch it with the fix:
+
+```python
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.core.utils import ChromeType
+
+from selene import support
+
+chrome_driver = webdriver.Chrome(
+    service=Service(
+        support._extensions.webdriver_manager.patch._to_find_chromedrivers_from_115(
+            ChromeDriverManager(chrome_type=ChromeType.GOOGLE)
+        ).install()
+    )
+)
+```
+
+Notice underscore prefixes in module and patch function names at `_extensions.webdriver_manager.patch._to_find_chromedrivers_from_115`. Use it on your own risk, as it is marked as private and experimental;).
+
+Remember that currently on macOS the fix itself might not be enough, for Chrome versions less than 117, you probably will have to install [Chrome for Testing](https://github.com/GoogleChromeLabs/chrome-for-testing#what-is-chrome-for-testing) browser instead of Chrome and fix it with `xattr -cr 'Google Chrome for Testing.app'` command. An alternative to installing Chrome for Testing, can be setting binary location manually via:
+
+```python
+from selene import browser
+from selenium import webdriver
+
+browser.config.driver_options = webdriver.ChromeOptions()
+browser.config.driver_options.binary_location = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+```
+
+## 2.0.0rc2 (released on 13.04.2023)
 
 ### Driver is guessed by config.driver_options too
 

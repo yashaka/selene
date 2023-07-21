@@ -27,8 +27,7 @@ from selenium import webdriver
 
 
 def test_completes_todo():
-    webdriver.Op
-    # browser.config.driver = webdriver.Safari(service=SafariService())
+    browser.config.driver = webdriver.Safari(service=SafariService())
 
     browser.open('http://todomvc.com/examples/emberjs/')
     browser.should(have.title_containing('TodoMVC'))

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "selene"
-version = "2.0.0rc2"
+version = "2.0.0rc3"
 description = "User-oriented browser tests in Python (Selenide port)"
 authors = ["Iakiv Kramarenko <yashaka@gmail.com>"]
 license = "MIT"
@@ -49,7 +49,7 @@ Changelog = "https://github.com/yashaka/selene/releases"
 python = "^3.7"
 selenium = ">=4.4.3"
 future = "*"
-webdriver-manager = ">=3.8.5"
+webdriver-manager = "==3.8.6"
 typing-extensions = "==4.3.0"
 
 [tool.poetry.dev-dependencies]

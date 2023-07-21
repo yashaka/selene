@@ -34,6 +34,7 @@ from typing import Callable, Optional, Any
 from selenium.webdriver.common.options import BaseOptions
 from selenium.webdriver.common.service import Service
 
+from selene import support
 from selene.common import fp, helpers
 from selene.common.data_structures import persistent
 from selene.common.fp import F
@@ -72,30 +73,27 @@ def _build_local_driver_by_name_or_remote_by_url_and_options(
         # TODO: consider simplifying the logic... to much of ifs
         #       probably all ifs were already before calling this function
         #       see example of simplification in install_and_build_firefox
-        if config.driver_options:
-            if isinstance(config.driver_options, ChromeOptions):
-                return Chrome(
-                    service=config.driver_service
-                    or ChromeService(
-                        ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install()
-                    ),
-                    options=config.driver_options,
-                )
-            else:
-                raise ValueError(
-                    f'Default config.build_driver_strategy ("driver factory"), '
-                    f'if config.driver_name is set to "chrome", - '
-                    f'expects only instance of ChromeOptions or None'
-                    f'in config.driver_options,'
-                    f'but got: {config.driver_options}'
-                )
-        else:
-            return Chrome(
-                service=config.driver_service
-                or ChromeService(
-                    ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install()
-                )
+        if config.driver_options and not isinstance(
+            config.driver_options, ChromeOptions
+        ):
+            raise ValueError(
+                f'Default config.build_driver_strategy ("driver factory"), '
+                f'if config.driver_name is set to "chrome", - '
+                f'expects only instance of ChromeOptions or None'
+                f'in config.driver_options,'
+                f'but got: {config.driver_options}'
             )
+
+        driver_manager = (
+            support._extensions.webdriver_manager.patch._to_find_chromedrivers_from_115(
+                ChromeDriverManager(chrome_type=ChromeType.GOOGLE)
+            )
+        )
+
+        return Chrome(
+            service=config.driver_service or ChromeService(driver_manager.install()),
+            options=config.driver_options,
+        )
 
     def install_and_build_firefox():
         return Firefox(

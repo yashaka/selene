@@ -4,6 +4,7 @@ import pytest
 from urllib3.exceptions import MaxRetryError  # type: ignore
 
 import selene
+from selene import support
 from selene.common.data_structures import persistent
 from tests import resources
 
@@ -27,7 +28,11 @@ def manual_driver():
     from webdriver_manager.core.utils import ChromeType  # type: ignore
 
     manual_driver = webdriver.Chrome(
-        service=Service(ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install())
+        service=Service(
+            support._extensions.webdriver_manager.patch._to_find_chromedrivers_from_115(
+                ChromeDriverManager(chrome_type=ChromeType.GOOGLE)
+            ).install()
+        )
     )
 
     yield manual_driver
