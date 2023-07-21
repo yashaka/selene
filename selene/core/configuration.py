@@ -1179,6 +1179,9 @@ class Config:
     via `element.click()`, usually, as a workaround,
     when default selenium-based implementation does not work.
     """
+    # TODO: consider wait_with_js_for_element_interactable
+    #       should we add also (or instead?)
+    #       config.is_element_interactable_strategy?
     wait_for_no_overlap_found_by_js: bool = False
     """
     A flag to indicate whether to use JavaScript to detect overlapping elements

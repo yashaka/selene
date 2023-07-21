@@ -54,6 +54,7 @@ TODOs:
       and make this configurable via `config.search_from_defined_context = True`
       (probably `False` by default)
       and being able to override somehow on element definition level
+      - what about `config.search_context_strategy` ?
 - ensure we can't element.type on invisible element; add test for that
 - decide on have.size vs query.size
   - consider making have.size to work with elements too...
@@ -71,6 +72,9 @@ TODOs:
 - config.driver_proxy or config.driver_remote_proxy?
 - decide on driver as callable, and decide on driver as callable with config as param
     - how can we check that user passed fn with params? 
+- consider renaming everything inside match.* so it can be readable when used as `.should(match.*)`
+  - take into account that `.matching(match.*)` is yet less readable
+  compared to `matching(have.*)` or `matching(be.*)`
 
 ## 2.0.0rc? (to be released on ??.??.2023)
 
@@ -93,6 +97,7 @@ TODOs:
 - add safari support (trim space on text in case of safari)
 - example of basic auth and auth via cookies (https://github.com/autotests-cloud/example_project/blob/master/src/test/java/cloud/autotests/tests/demowebshop/LoginTests.java)
 - can we force order of how `selene.*` is rendered on autocomplete? via `__all__`...
+- deprecate `have.js_returned` in favour of `have.script_returned`
 
 ## 2.0.0rc2 (to be released on 13.04.2023)
 

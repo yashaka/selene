@@ -1040,6 +1040,7 @@ class Collection(WaitingEntity['Collection'], Iterable[Element]):
             self.config,
         )
 
+    # todo: consider collection.all_first(number, selector) to get e.g. two first td from each tr
     def all_first(self, selector: Union[str, Tuple[str, str]]) -> Collection:
         """
         Returns a collection of each first element found be selector inside each element of self

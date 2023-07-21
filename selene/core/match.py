@@ -37,6 +37,7 @@ element_is_visible: Condition[Element] = ElementCondition.raise_if_not(
     'is visible', lambda element: element().is_displayed()
 )
 
+
 element_is_hidden: Condition[Element] = ElementCondition.as_not(
     element_is_visible, 'is hidden'
 )
