@@ -20,7 +20,7 @@ documentation = "https://yashaka.github.io/selene/"
 classifiers = [
 	"Programming Language :: Python",
 	"Programming Language :: Python :: 3",
-	"Development Status :: 3 - Beta",
+	"Development Status :: 4 - Beta",
 	"Natural Language :: English",
 	"Environment :: Web Environment",
 	"Intended Audience :: Developers",
