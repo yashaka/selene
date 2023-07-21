@@ -26,7 +26,7 @@ from selenium.webdriver.remote.webdriver import WebDriver
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.core.utils import ChromeType
 
-from selene import by, have, Browser, Config
+from selene import by, have, Browser, Config, support
 import pytest
 
 from selene.support.webdriver import WebHelper
@@ -49,7 +49,9 @@ def web():
 
             return webdriver.Chrome(
                 service=ChromeService(
-                    ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install()
+                    support._extensions.webdriver_manager.patch._to_find_chromedrivers_from_115(
+                        ChromeDriverManager(chrome_type=ChromeType.GOOGLE)
+                    ).install()
                 ),
                 options=webdriver.ChromeOptions(),
             )

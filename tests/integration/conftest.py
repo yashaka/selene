@@ -9,7 +9,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.core.utils import ChromeType
 
-from selene import Config, Browser
+from selene import Config, Browser, support
 from tests.helpers import headless_chrome_options
 
 
@@ -19,13 +19,17 @@ def chrome_driver(request):
         chrome_driver = webdriver.Chrome(
             options=headless_chrome_options(),
             service=ChromeService(
-                ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install()
+                support._extensions.webdriver_manager.patch._to_find_chromedrivers_from_115(
+                    ChromeDriverManager(chrome_type=ChromeType.GOOGLE)
+                ).install()
             ),
         )
     else:
         chrome_driver = webdriver.Chrome(
             service=ChromeService(
-                ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install()
+                support._extensions.webdriver_manager.patch._to_find_chromedrivers_from_115(
+                    ChromeDriverManager(chrome_type=ChromeType.GOOGLE)
+                ).install()
             )
         )
     yield chrome_driver
@@ -122,13 +126,17 @@ def function_browser(request):
         chrome_driver = webdriver.Chrome(
             options=headless_chrome_options(),
             service=ChromeService(
-                ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install()
+                support._extensions.webdriver_manager.patch._to_find_chromedrivers_from_115(
+                    ChromeDriverManager(chrome_type=ChromeType.GOOGLE)
+                ).install()
             ),
         )
     else:
         chrome_driver = webdriver.Chrome(
             service=ChromeService(
-                ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install()
+                support._extensions.webdriver_manager.patch._to_find_chromedrivers_from_115(
+                    ChromeDriverManager(chrome_type=ChromeType.GOOGLE)
+                ).install()
             )
         )
     yield Browser(Config(driver=chrome_driver))
