@@ -47,6 +47,12 @@ def _to_find_chromedrivers_from_115(driver_manager: ChromeDriverManager):
     from webdriver_manager.core import utils as wdm_utils
     from webdriver_manager.core.utils import ChromeType
 
+    # We alias driver object from driver_manager as driver_utils
+    # for lesser confusion.
+    # In fact wdm driver object is more a bunch of utility functions.
+    # From OOP perspective,
+    # it's not a pure object representing actual "low level driver binary".
+    # And 'driver' name also conflicts with common 'driver' client object from selenium.
     driver_utils = driver_manager.driver
     http_client = driver_utils._http_client
 
@@ -58,6 +64,7 @@ def _to_find_chromedrivers_from_115(driver_manager: ChromeDriverManager):
     installed_browser_version = driver_utils.get_browser_version_from_os()
 
     if not installed_browser_version:
+        # this branch of logic is not quite tested yet:p
         wdm_logger.log(
             'Failed to get version of Chrome installed at your OS '
             f'(detected os type: {driver_utils.os_type}).'
@@ -71,15 +78,28 @@ def _to_find_chromedrivers_from_115(driver_manager: ChromeDriverManager):
             'channels', {}
         ).get('Stable', {})
 
-        last_known_good_version = (stable_channel.get('version', {})) or None
+        # Above and below, we allways use get('key', default) instead of just ['key']
+        # to provide default value in case of missing key
+        # and make further processing easier and safer
+        # (we don't need to check for None when processing via comprehensions).
+        # Sometimes, like below we use `get('key', '') or None`
+        # instead of just `get('key', None)` or even `get('key)`
+        # in order to hint the type of result of the value by the key to get
+        # (in this case - string by hinting it via default empty string '').
+        # We could use just type hinting on a variable,
+        # but we prefer the style consistent with other similar parts of this code...
+        last_known_good_version = (stable_channel.get('version', '')) or None
         platform_and_url_pairs = stable_channel.get('downloads', {}).get(
             'chromedriver', []
         )
         url_where_platform_is_os_type = next(
             iter(
+                # url is obviously a string and if absent we are interested in None
+                # emphasizing this by providing it explicitly
                 pair.get('url', None)
                 for pair in platform_and_url_pairs
-                if pair.get('platform', None) == driver_utils.get_os_type()
+                # .get_os_type() may return None, hence '' as default in get is intended
+                if pair.get('platform', '') == driver_utils.get_os_type()
             ),
             None,
         )
