@@ -23,6 +23,12 @@ from selene import browser, by, have
 
 
 def test_search():
+    from selenium import webdriver
+
+    browser.config.driver_options = webdriver.ChromeOptions()
+    browser.config.driver_options.binary_location = (
+        '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+    )
     browser.open('https://www.ecosia.org/')
     browser.element(by.name('q')).type('github yashaka selene python').press_enter()
 

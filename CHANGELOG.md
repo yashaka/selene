@@ -99,7 +99,31 @@ TODOs:
 - can we force order of how `selene.*` is rendered on autocomplete? via `__all__`...
 - deprecate `have.js_returned` in favour of `have.script_returned`
 
-## 2.0.0rc3 (to be released on 21.07.2023)
+## 2.0.0rc3post1 (released on 21.07.2023)
+
+### Fixes patch from rc3 to download latest chromedriver if google did not publish matched chromedriver for latest Chrome version.
+
+webdriver-manager is still frozen to 3.8.6, though there are already 4.0.
+
+### Reminder for MacOS users
+
+Remember that on MacOS you probably have either to install Chrome for Testing or specify browser location manually via:
+
+```python
+from selene import browser
+from selenium import webdriver
+
+browser.config.driver_options = webdriver.ChromeOptions()
+browser.config.driver_options.binary_location = (
+    '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+)
+browser.open('https://www.ecosia.org/')
+
+```
+
+See more in [2.0.0rc3](https://github.com/yashaka/selene/releases/tag/2.0.0rc3) release notes.
+
+## 2.0.0rc3 (released on 21.07.2023)
 
 ### HOTFIX webdriver_manager after changes in google chromedrivers APIs
 

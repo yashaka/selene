@@ -26,7 +26,7 @@ import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager  # type: ignore
-from webdriver_manager.core.utils import ChromeType  # type: ignore
+from selene.support._extensions.webdriver_manager import ChromeType  # type: ignore
 
 from selene import have, be, browser, Browser, Config, command, support
 from selene.core import query

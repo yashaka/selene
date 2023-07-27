@@ -63,11 +63,11 @@ def _build_local_driver_by_name_or_remote_by_url_and_options(
     from selenium.webdriver.firefox.service import Service as FirefoxService
     from selenium.webdriver.edge.service import Service as EdgeService  # type: ignore
 
+    from selene.support._extensions.webdriver_manager import ChromeType  # type: ignore
+
     from webdriver_manager.chrome import ChromeDriverManager  # type: ignore
     from webdriver_manager.firefox import GeckoDriverManager  # type: ignore
     from webdriver_manager.microsoft import EdgeChromiumDriverManager  # type: ignore
-
-    from webdriver_manager.core.utils import ChromeType  # type: ignore
 
     def install_and_build_chrome():
         # TODO: consider simplifying the logic... to much of ifs

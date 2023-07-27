@@ -22,7 +22,7 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
-from webdriver_manager.core.utils import ChromeType
+from selene.support._extensions.webdriver_manager import ChromeType
 
 from selene import support
 from selene.support.shared import browser

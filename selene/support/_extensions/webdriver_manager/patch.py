@@ -63,11 +63,53 @@ def _to_find_chromedrivers_from_115(driver_manager: ChromeDriverManager):
     good_binary_url = None
     installed_browser_version = driver_utils.get_browser_version_from_os()
 
-    if not installed_browser_version:
-        # this branch of logic is not quite tested yet:p
+    if installed_browser_version:
+        if version.parse(installed_browser_version) < version.parse('115.0.5763.0'):
+            # if browser version is less than 115.0.5763.0
+            # then we use old wdm logic
+            # and just return the driver_manager as is
+            return driver_manager
+
+        # patching wdm_utils.PATTERN
+        # we need all 4 sub-versions not just 3 of them
+        wdm_utils.PATTERN[ChromeType.GOOGLE] = r"\d+\.\d+\.\d+.\d+"
+        # retaking version from os after patched pattern
+        good_binary_version = wdm_utils.get_browser_version_from_os(
+            driver_utils.get_browser_type()
+        )
+        # let's reset _browser_version to the new 4-sub-versions value
+        # from here, we assume that
+        # "good" binary version is the same as "good" browser version
+        driver_utils._browser_version = good_binary_version
+
+        known_good_versions = (
+            http_client.get(chrome_apis_url('known-good-versions-with-downloads.json'))
+            .json()
+            .get('versions', [])
+        )
+
+        matched_version_downloads_chromedriver_per_platform: list = next(
+            iter(
+                info.get('downloads', {}).get('chromedriver', [])
+                for info in known_good_versions
+                if info.get('version', None) == good_binary_version
+            ),
+            [],
+        )
+
+        good_binary_url = next(
+            iter(
+                info.get('url', None)
+                for info in matched_version_downloads_chromedriver_per_platform
+                if info.get('platform') == driver_utils.get_os_type().replace('_', '-')
+            ),
+            None,
+        )
+
+    if (not installed_browser_version) or (not good_binary_url):
         wdm_logger.log(
             'Failed to get version of Chrome installed at your OS '
-            f'(detected os type: {driver_utils.os_type}).'
+            f'(detected os type: {driver_utils._os_type}).'
             f'Going to install the chromedriver binary '
             f'matching latest known stable version of Chrome...'
         )
@@ -99,7 +141,8 @@ def _to_find_chromedrivers_from_115(driver_manager: ChromeDriverManager):
                 pair.get('url', None)
                 for pair in platform_and_url_pairs
                 # .get_os_type() may return None, hence '' as default in get is intended
-                if pair.get('platform', '') == driver_utils.get_os_type()
+                if pair.get('platform', '')
+                == driver_utils.get_os_type().replace('_', '-')
             ),
             None,
         )
@@ -109,47 +152,6 @@ def _to_find_chromedrivers_from_115(driver_manager: ChromeDriverManager):
 
         good_binary_version = last_known_good_version
         good_binary_url = url_where_platform_is_os_type
-
-    if installed_browser_version:
-        if version.parse(installed_browser_version) >= version.parse('115.0.5763.0'):
-            # patching wdm_utils.PATTERN
-            # we need all 4 sub-versions not just 3 of them
-            wdm_utils.PATTERN[ChromeType.GOOGLE] = r"\d+\.\d+\.\d+.\d+"
-            # retaking version from os after patched pattern
-            good_binary_version = wdm_utils.get_browser_version_from_os(
-                driver_utils.get_browser_type()
-            )
-            # let's reset _browser_version to the new 4-sub-versions value
-            # from here, we assume that
-            # "good" binary version is the same as "good" browser version
-            driver_utils._browser_version = good_binary_version
-
-            known_good_versions = (
-                http_client.get(
-                    chrome_apis_url('known-good-versions-with-downloads.json')
-                )
-                .json()
-                .get('versions', [])
-            )
-
-            matched_version_downloads_chromedriver_per_platform: list = next(
-                iter(
-                    info.get('downloads', {}).get('chromedriver', [])
-                    for info in known_good_versions
-                    if info.get('version', None) == good_binary_version
-                ),
-                [],
-            )
-
-            good_binary_url = next(
-                iter(
-                    info.get('url', None)
-                    for info in matched_version_downloads_chromedriver_per_platform
-                    if info.get('platform')
-                    == driver_utils.get_os_type().replace('_', '-')
-                ),
-                None,
-            )
 
     if good_binary_url:
         # it happened that we found good binary url on our own
