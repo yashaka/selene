@@ -99,7 +99,13 @@ TODOs:
 - can we force order of how `selene.*` is rendered on autocomplete? via `__all__`...
 - deprecate `have.js_returned` in favour of `have.script_returned`
 
-## 2.0.0rc3post1 (released on 21.07.2023)
+## 2.0.0rc3post2 (released on 27.07.2023)
+
+### Prepare Selene to work with wdm > 3.8.6
+
+Hence, 4.0.0 should be kind of supported now... But Selene's tests, if executed on macOS arm64 – are very unstable with chromedriver downloaded by wdm 4.0.0 :(. That's why we still freeze wdm to 3.8.6, but on your own risk you can try 4.0.0.
+
+## 2.0.0rc3post1 (released on 27.07.2023)
 
 ### Fixes patch from rc3 to download latest chromedriver if google did not publish matched chromedriver for latest Chrome version.
 

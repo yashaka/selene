@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "selene"
-version = "2.0.0rc3post1"
+version = "2.0.0rc3post2"
 description = "User-oriented browser tests in Python (Selenide port)"
 authors = ["Iakiv Kramarenko <yashaka@gmail.com>"]
 license = "MIT"
@@ -107,6 +107,7 @@ skip-string-normalization = 1
 		import-outside-toplevel,
 		too-many-locals,
 		too-many-lines,
+		too-many-branches,
 		invalid-name,
 		not-callable,
 		unused-argument,

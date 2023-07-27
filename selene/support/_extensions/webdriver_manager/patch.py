@@ -24,8 +24,11 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 def _to_find_chromedrivers_from_115(driver_manager: ChromeDriverManager):
     """
-    Fixes webdriver_manager issue with latest chrome versions (>= 115.0.5763.0)
+    Fixes webdriver_manager 3.8.6 issue with latest chrome versions (>= 115.0.5763.0)
     See https://github.com/SergeyPirogov/webdriver_manager/issues/536
+
+    Will work for any version of webdriver_manager >= 3.8.6,
+    but actually, only 3.8.6 is affected by patching.
 
     Fix is based on simple ideas from:
     * https://github.com/SergeyPirogov/webdriver_manager/issues/536#issuecomment-1641266654
@@ -41,6 +44,10 @@ def _to_find_chromedrivers_from_115(driver_manager: ChromeDriverManager):
     not just the object passed to this function.
     Let's keep fingers crossed;p
     """
+    import webdriver_manager
+
+    if webdriver_manager.__version__ != '3.8.6':
+        return driver_manager
 
     from webdriver_manager.core import logger as wdm_logger
     from packaging import version
