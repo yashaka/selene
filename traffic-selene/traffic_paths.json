@@ -2,20 +2,26 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 341,
-    "uniques": 192
+    "count": 364,
+    "uniques": 210
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 107,
-    "uniques": 21
+    "count": 84,
+    "uniques": 18
+  },
+  {
+    "path": "/yashaka/selene/releases/tag/2.0.0rc3",
+    "title": "Release 2.0.0rc3 · yashaka/selene · GitHub",
+    "count": 67,
+    "uniques": 39
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 69,
-    "uniques": 19
+    "count": 60,
+    "uniques": 18
   },
   {
     "path": "/yashaka/selene/blob/9052e817536ed0be33977586c42f97c35eb9e471/selene/support/_extensions/webdriver_manager/patch.py",
@@ -24,39 +30,33 @@
     "uniques": 13
   },
   {
-    "path": "/yashaka/selene/releases/tag/2.0.0rc3",
-    "title": "Release 2.0.0rc3 · yashaka/selene · GitHub",
-    "count": 48,
-    "uniques": 29
-  },
-  {
-    "path": "/yashaka/selene/blob/master/examples/run_remote_in_web_chrome_with_options_for_selenoid/test_todomvc.py",
-    "title": "selene/examples/run_remote_in_web_chrome_with_options_for_selenoid/test_todom...",
-    "count": 46,
-    "uniques": 12
-  },
-  {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 45,
+    "count": 48,
     "uniques": 13
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene/core",
-    "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 38,
-    "uniques": 9
-  },
-  {
-    "path": "/yashaka/selene/pulls",
-    "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 29,
-    "uniques": 16
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 29,
-    "uniques": 14
+    "count": 43,
+    "uniques": 18
+  },
+  {
+    "path": "/yashaka/selene/pulls",
+    "title": "Pull requests · yashaka/selene · GitHub",
+    "count": 32,
+    "uniques": 18
+  },
+  {
+    "path": "/yashaka/selene/blob/master/examples/run_remote_in_web_chrome_with_options_for_selenoid/test_todomvc.py",
+    "title": "selene/examples/run_remote_in_web_chrome_with_options_for_selenoid/test_todom...",
+    "count": 32,
+    "uniques": 8
+  },
+  {
+    "path": "/yashaka/selene/tree/master/docs",
+    "title": "selene/docs at master · yashaka/selene · GitHub",
+    "count": 28,
+    "uniques": 6
   }
 ]
