@@ -66,6 +66,15 @@ def _to_find_chromedrivers_from_115(driver_manager: ChromeDriverManager):
     def chrome_apis_url(endpoint):
         return f'https://googlechromelabs.github.io/chrome-for-testing/{endpoint}'
 
+    os_type = driver_utils.get_os_type()
+    expected_os_type_in_url = (
+        'mac-x64'  # expected by drivers json from chrome api
+        if os_type == 'mac64'  # wdm 3.8.6 detects intel macs as 'mac64'
+        else os_type
+    ).replace(
+        '_', '-'  # wdm 3.8.6 uses '_' but drivers json uses '-'
+    )
+
     good_binary_version = None
     good_binary_url = None
     installed_browser_version = driver_utils.get_browser_version_from_os()
@@ -108,7 +117,7 @@ def _to_find_chromedrivers_from_115(driver_manager: ChromeDriverManager):
             iter(
                 info.get('url', None)
                 for info in matched_version_downloads_chromedriver_per_platform
-                if info.get('platform') == driver_utils.get_os_type().replace('_', '-')
+                if info.get('platform') == expected_os_type_in_url
             ),
             None,
         )
@@ -141,14 +150,7 @@ def _to_find_chromedrivers_from_115(driver_manager: ChromeDriverManager):
         platform_and_url_pairs = stable_channel.get('downloads', {}).get(
             'chromedriver', []
         )
-        os_type = driver_utils.get_os_type()
-        expected_os_type_in_url = (
-            'mac-x64'  # expected by drivers json
-            if os_type == 'mac64'  # wdm 3.8.6 detects intel macs as 'mac64'
-            else os_type
-        ).replace(
-            '_', '-'  # wdm 3.8.6 uses '_' but drivers json uses '-'
-        )
+
         url_where_platform_is_os_type = next(
             iter(
                 # url is obviously a string and if absent we are interested in None
