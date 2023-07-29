@@ -99,6 +99,10 @@ TODOs:
 - can we force order of how `selene.*` is rendered on autocomplete? via `__all__`...
 - deprecate `have.js_returned` in favour of `have.script_returned`
 
+## 2.0.0rc3post2 (to be released on 29.07.2023)
+
+Improves patch to find chromedrivers also for macs with intel processors.
+
 ## 2.0.0rc3post2 (released on 27.07.2023)
 
 ### Prepare Selene to work with wdm > 3.8.6

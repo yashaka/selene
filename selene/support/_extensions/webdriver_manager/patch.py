@@ -115,7 +115,7 @@ def _to_find_chromedrivers_from_115(driver_manager: ChromeDriverManager):
 
     if (not installed_browser_version) or (not good_binary_url):
         wdm_logger.log(
-            'Failed to get version of Chrome installed at your OS '
+            'Failed to get version of Chrome installed at this OS '
             f'(detected os type: {driver_utils._os_type}).'
             f'Going to install the chromedriver binary '
             f'matching latest known stable version of Chrome...'
@@ -141,6 +141,14 @@ def _to_find_chromedrivers_from_115(driver_manager: ChromeDriverManager):
         platform_and_url_pairs = stable_channel.get('downloads', {}).get(
             'chromedriver', []
         )
+        os_type = driver_utils.get_os_type()
+        expected_os_type_in_url = (
+            'mac-x64'  # expected by drivers json
+            if os_type == 'mac64'  # wdm 3.8.6 detects intel macs as 'mac64'
+            else os_type
+        ).replace(
+            '_', '-'  # wdm 3.8.6 uses '_' but drivers json uses '-'
+        )
         url_where_platform_is_os_type = next(
             iter(
                 # url is obviously a string and if absent we are interested in None
@@ -148,8 +156,7 @@ def _to_find_chromedrivers_from_115(driver_manager: ChromeDriverManager):
                 pair.get('url', None)
                 for pair in platform_and_url_pairs
                 # .get_os_type() may return None, hence '' as default in get is intended
-                if pair.get('platform', '')
-                == driver_utils.get_os_type().replace('_', '-')
+                if pair.get('platform', '') == expected_os_type_in_url
             ),
             None,
         )
