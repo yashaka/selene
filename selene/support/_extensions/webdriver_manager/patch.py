@@ -63,6 +63,35 @@ def _to_find_chromedrivers_from_115(driver_manager: ChromeDriverManager):
     driver_utils = driver_manager.driver
     http_client = driver_utils._http_client
 
+    import subprocess
+
+    def is_mac_arm(os_type):
+        print('\nPATCHED VERSION OF is_arch was called!\n')
+        if '_m1' in os_type:
+            return True
+        try:
+            return subprocess.check_output('arch').strip() != b'i386'
+        except Exception:
+            return False
+
+    def get_os_type(self):
+        os_type = super(driver_utils.__class__, self).get_os_type()
+        print(
+            '\nPATCHED VERSION OF get_os_type was called! ' f'with os_type: {os_type}\n'
+        )
+        if "win" in os_type:
+            return "win32"
+
+        if not wdm_utils.is_mac_os(os_type):
+            return os_type
+
+        if is_mac_arm(os_type):
+            return "mac_arm64"
+
+        return os_type
+
+    driver_utils.__class__.get_os_type = get_os_type
+
     def chrome_apis_url(endpoint):
         return f'https://googlechromelabs.github.io/chrome-for-testing/{endpoint}'
 
