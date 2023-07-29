@@ -2,61 +2,61 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 389,
-    "uniques": 217
+    "count": 434,
+    "uniques": 232
   },
   {
     "path": "/yashaka/selene/releases/tag/2.0.0rc3",
     "title": "Release 2.0.0rc3 · yashaka/selene · GitHub",
-    "count": 97,
-    "uniques": 52
+    "count": 112,
+    "uniques": 60
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 66,
-    "uniques": 15
+    "count": 71,
+    "uniques": 17
   },
   {
     "path": "/yashaka/selene/tree/master/docs",
     "title": "selene/docs at master · yashaka/selene · GitHub",
-    "count": 61,
-    "uniques": 11
+    "count": 69,
+    "uniques": 12
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 52,
-    "uniques": 14
+    "count": 66,
+    "uniques": 12
+  },
+  {
+    "path": "/yashaka/selene/blob/04d5fc5ad0d10a319b895c775f4bbb1d93002729/selene/support/_extensions/webdriver_manager/patch.py",
+    "title": "selene/selene/support/_extensions/webdriver_manager/patch.py at 04d5fc5ad0d10...",
+    "count": 62,
+    "uniques": 23
   },
   {
     "path": "/yashaka/selene/blob/9052e817536ed0be33977586c42f97c35eb9e471/selene/support/_extensions/webdriver_manager/patch.py",
     "title": "selene/selene/support/_extensions/webdriver_manager/patch.py at 9052e817536ed...",
-    "count": 52,
-    "uniques": 13
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene",
-    "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 49,
-    "uniques": 16
+    "count": 58,
+    "uniques": 14
   },
   {
     "path": "/yashaka/selene/blob/master/README.md",
     "title": "selene/README.md at master · yashaka/selene · GitHub",
     "count": 48,
-    "uniques": 19
+    "uniques": 20
   },
   {
-    "path": "/yashaka/selene/blob/04d5fc5ad0d10a319b895c775f4bbb1d93002729/selene/support/_extensions/webdriver_manager/patch.py",
-    "title": "selene/selene/support/_extensions/webdriver_manager/patch.py at 04d5fc5ad0d10...",
-    "count": 43,
-    "uniques": 18
+    "path": "/yashaka/selene/tree/master/selene",
+    "title": "selene/selene at master · yashaka/selene · GitHub",
+    "count": 47,
+    "uniques": 15
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 43,
-    "uniques": 18
+    "count": 46,
+    "uniques": 22
   }
 ]
