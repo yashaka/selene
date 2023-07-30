@@ -1,23 +1,18 @@
 [
   {
     "referrer": "Google",
-    "count": 696,
-    "uniques": 175
+    "count": 686,
+    "uniques": 170
   },
   {
     "referrer": "github.com",
-    "count": 227,
-    "uniques": 36
+    "count": 226,
+    "uniques": 35
   },
   {
     "referrer": "qa.guru",
-    "count": 89,
-    "uniques": 10
-  },
-  {
-    "referrer": "yandex.ru",
-    "count": 40,
-    "uniques": 15
+    "count": 59,
+    "uniques": 8
   },
   {
     "referrer": "ecosia.org",
@@ -26,8 +21,13 @@
   },
   {
     "referrer": "pypi.org",
-    "count": 31,
-    "uniques": 7
+    "count": 30,
+    "uniques": 6
+  },
+  {
+    "referrer": "yandex.ru",
+    "count": 29,
+    "uniques": 14
   },
   {
     "referrer": "teams.microsoft.com",
