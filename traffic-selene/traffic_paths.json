@@ -2,7 +2,7 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 443,
+    "count": 434,
     "uniques": 241
   },
   {
@@ -14,13 +14,13 @@
   {
     "path": "/yashaka/selene/tree/master/docs",
     "title": "selene/docs at master · yashaka/selene · GitHub",
-    "count": 73,
+    "count": 72,
     "uniques": 13
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 72,
+    "count": 68,
     "uniques": 16
   },
   {
@@ -30,16 +30,16 @@
     "uniques": 16
   },
   {
+    "path": "/yashaka/selene/tree/master/selene",
+    "title": "selene/selene at master · yashaka/selene · GitHub",
+    "count": 65,
+    "uniques": 20
+  },
+  {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
     "count": 64,
     "uniques": 11
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene",
-    "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 63,
-    "uniques": 19
   },
   {
     "path": "/yashaka/selene/blob/04d5fc5ad0d10a319b895c775f4bbb1d93002729/selene/support/_extensions/webdriver_manager/patch.py",
@@ -48,15 +48,15 @@
     "uniques": 23
   },
   {
-    "path": "/yashaka/selene/issues",
-    "title": "Issues · yashaka/selene · GitHub",
-    "count": 50,
-    "uniques": 25
-  },
-  {
     "path": "/yashaka/selene/blob/master/README.md",
     "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 50,
-    "uniques": 21
+    "count": 55,
+    "uniques": 23
+  },
+  {
+    "path": "/yashaka/selene/issues",
+    "title": "Issues · yashaka/selene · GitHub",
+    "count": 48,
+    "uniques": 24
   }
 ]
