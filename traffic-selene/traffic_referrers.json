@@ -1,17 +1,17 @@
 [
   {
     "referrer": "Google",
-    "count": 677,
-    "uniques": 158
+    "count": 720,
+    "uniques": 152
   },
   {
     "referrer": "github.com",
-    "count": 232,
-    "uniques": 37
+    "count": 214,
+    "uniques": 36
   },
   {
     "referrer": "qa.guru",
-    "count": 57,
+    "count": 49,
     "uniques": 8
   },
   {
@@ -21,8 +21,8 @@
   },
   {
     "referrer": "yandex.ru",
-    "count": 31,
-    "uniques": 16
+    "count": 37,
+    "uniques": 17
   },
   {
     "referrer": "pypi.org",
@@ -46,7 +46,7 @@
   },
   {
     "referrer": "web.telegram.org",
-    "count": 12,
-    "uniques": 3
+    "count": 14,
+    "uniques": 4
   }
 ]
