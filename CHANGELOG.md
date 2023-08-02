@@ -76,7 +76,7 @@ TODOs:
   - take into account that `.matching(match.*)` is yet less readable
   compared to `matching(have.*)` or `matching(be.*)`
 
-## 2.0.0rc? (to be released on ??.??.2023)
+## 2.0.0rc?+1 (to be released on ??.??.2023)
 
 TODOs:
 
@@ -91,7 +91,7 @@ TODOs:
         - maybe make browser.switch ... to work with retry logic
             or make separate command.switch...
 
-## 2.0.0rc3 (to be released on 13.04.2023)
+## 2.0.0rc? (to be released on 13.04.2023)
 
 - set window size inside driver factory
 - add safari support (trim space on text in case of safari)
@@ -99,7 +99,11 @@ TODOs:
 - can we force order of how `selene.*` is rendered on autocomplete? via `__all__`...
 - deprecate `have.js_returned` in favour of `have.script_returned`
 
-## 2.0.0rc3post2 (to be released on 29.07.2023)
+## 2.0.0rc4 (released on 29.07.2023)
+
+Unfreeze version of typing-extensions to >=4.6.1 to support pydantic v2.0
+
+## 2.0.0rc3post3 (released on 29.07.2023)
 
 Improves patch to find chromedrivers also for macs with intel processors.
 
