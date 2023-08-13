@@ -1,23 +1,23 @@
 [
   {
     "referrer": "Google",
-    "count": 854,
-    "uniques": 172
+    "count": 827,
+    "uniques": 173
   },
   {
     "referrer": "github.com",
-    "count": 437,
+    "count": 436,
     "uniques": 38
   },
   {
     "referrer": "qa.guru",
-    "count": 175,
-    "uniques": 19
+    "count": 187,
+    "uniques": 21
   },
   {
     "referrer": "yandex.ru",
     "count": 106,
-    "uniques": 20
+    "uniques": 24
   },
   {
     "referrer": "yashaka.github.io",
@@ -30,11 +30,6 @@
     "uniques": 8
   },
   {
-    "referrer": "Bing",
-    "count": 10,
-    "uniques": 5
-  },
-  {
     "referrer": "t.me",
     "count": 10,
     "uniques": 3
@@ -43,6 +38,11 @@
     "referrer": "automated-testing.info",
     "count": 9,
     "uniques": 7
+  },
+  {
+    "referrer": "Bing",
+    "count": 9,
+    "uniques": 4
   },
   {
     "referrer": "qiita.com",
