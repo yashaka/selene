@@ -2,20 +2,14 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 426,
-    "uniques": 222
+    "count": 388,
+    "uniques": 204
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 181,
-    "uniques": 33
-  },
-  {
-    "path": "/yashaka/selene/releases",
-    "title": "Releases · yashaka/selene",
-    "count": 108,
-    "uniques": 47
+    "count": 180,
+    "uniques": 30
   },
   {
     "path": "/yashaka/selene/tree/master/selene/core",
@@ -24,22 +18,22 @@
     "uniques": 6
   },
   {
+    "path": "/yashaka/selene/releases",
+    "title": "Releases · yashaka/selene",
+    "count": 88,
+    "uniques": 42
+  },
+  {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 85,
-    "uniques": 14
+    "count": 86,
+    "uniques": 13
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 65,
-    "uniques": 29
-  },
-  {
-    "path": "/yashaka/selene/blob/master/README.md",
-    "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 48,
-    "uniques": 19
+    "count": 51,
+    "uniques": 23
   },
   {
     "path": "/yashaka/selene/releases/tag/2.0.0rc4",
@@ -48,15 +42,21 @@
     "uniques": 27
   },
   {
-    "path": "/yashaka/selene/releases/tag/2.0.0rc3post3",
-    "title": "Release 2.0.0rc3post3 · yashaka/selene · GitHub",
-    "count": 37,
-    "uniques": 27
+    "path": "/yashaka/selene/blob/master/README.md",
+    "title": "selene/README.md at master · yashaka/selene · GitHub",
+    "count": 42,
+    "uniques": 17
+  },
+  {
+    "path": "/yashaka/selene/issues/494",
+    "title": "migrate to selenium 4.11 which allows manage drivers automatically · Issue #4...",
+    "count": 33,
+    "uniques": 23
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 37,
-    "uniques": 11
+    "count": 32,
+    "uniques": 8
   }
 ]
