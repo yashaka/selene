@@ -2,32 +2,32 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 343,
-    "uniques": 186
+    "count": 336,
+    "uniques": 179
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 183,
-    "uniques": 31
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene/core",
-    "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 93,
-    "uniques": 5
+    "count": 176,
+    "uniques": 34
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 85,
-    "uniques": 13
+    "count": 89,
+    "uniques": 16
+  },
+  {
+    "path": "/yashaka/selene/tree/master/selene/core",
+    "title": "selene/selene/core at master · yashaka/selene · GitHub",
+    "count": 87,
+    "uniques": 5
   },
   {
     "path": "/yashaka/selene/releases",
     "title": "Releases · yashaka/selene",
-    "count": 74,
-    "uniques": 35
+    "count": 61,
+    "uniques": 28
   },
   {
     "path": "/yashaka/selene/releases/tag/2.0.0rc4",
@@ -38,20 +38,20 @@
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 41,
-    "uniques": 18
-  },
-  {
-    "path": "/yashaka/selene/blob/master/README.md",
-    "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 38,
-    "uniques": 15
+    "count": 37,
+    "uniques": 14
   },
   {
     "path": "/yashaka/selene/issues/494",
     "title": "migrate to selenium 4.11 which allows manage drivers automatically · Issue #4...",
-    "count": 33,
-    "uniques": 23
+    "count": 36,
+    "uniques": 25
+  },
+  {
+    "path": "/yashaka/selene/blob/master/README.md",
+    "title": "selene/README.md at master · yashaka/selene · GitHub",
+    "count": 36,
+    "uniques": 14
   },
   {
     "path": "/yashaka/selene/tree/master/selene/support",
