@@ -3,60 +3,60 @@
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
     "count": 324,
-    "uniques": 181
+    "uniques": 180
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 174,
-    "uniques": 35
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene/core",
-    "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 91,
-    "uniques": 6
+    "count": 147,
+    "uniques": 31
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 86,
-    "uniques": 14
+    "count": 85,
+    "uniques": 12
+  },
+  {
+    "path": "/yashaka/selene/tree/master/selene/core",
+    "title": "selene/selene/core at master · yashaka/selene · GitHub",
+    "count": 85,
+    "uniques": 5
   },
   {
     "path": "/yashaka/selene/releases",
     "title": "Releases · yashaka/selene · GitHub",
-    "count": 53,
-    "uniques": 26
+    "count": 48,
+    "uniques": 25
   },
   {
     "path": "/yashaka/selene/issues/494",
     "title": "migrate to selenium 4.11 which allows manage drivers automatically · Issue #4...",
-    "count": 36,
-    "uniques": 25
+    "count": 39,
+    "uniques": 27
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 36,
+    "count": 37,
+    "uniques": 13
+  },
+  {
+    "path": "/yashaka/selene/blob/master/README.md",
+    "title": "selene/README.md at master · yashaka/selene · GitHub",
+    "count": 34,
     "uniques": 13
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
     "count": 34,
-    "uniques": 8
+    "uniques": 9
   },
   {
-    "path": "/yashaka/selene/releases/tag/2.0.0rc4",
-    "title": "Release 2.0.0rc4 · yashaka/selene · GitHub",
+    "path": "/yashaka/selene/tree/master/selene/api",
+    "title": "selene/selene/api at master · yashaka/selene · GitHub",
     "count": 33,
-    "uniques": 19
-  },
-  {
-    "path": "/yashaka/selene/blob/master/README.md",
-    "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 32,
-    "uniques": 12
+    "uniques": 5
   }
 ]
