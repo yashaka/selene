@@ -1,17 +1,17 @@
 [
   {
     "referrer": "Google",
-    "count": 726,
-    "uniques": 119
+    "count": 693,
+    "uniques": 111
   },
   {
     "referrer": "github.com",
-    "count": 391,
-    "uniques": 38
+    "count": 323,
+    "uniques": 36
   },
   {
     "referrer": "qa.guru",
-    "count": 147,
+    "count": 145,
     "uniques": 12
   },
   {
@@ -21,18 +21,18 @@
   },
   {
     "referrer": "automated-testing.info",
-    "count": 56,
-    "uniques": 7
+    "count": 55,
+    "uniques": 6
   },
   {
     "referrer": "yandex.ru",
-    "count": 42,
+    "count": 36,
     "uniques": 19
   },
   {
     "referrer": "pypi.org",
-    "count": 17,
-    "uniques": 5
+    "count": 18,
+    "uniques": 6
   },
   {
     "referrer": "snyk.io",
