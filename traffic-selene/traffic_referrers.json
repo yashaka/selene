@@ -1,22 +1,22 @@
 [
   {
     "referrer": "Google",
-    "count": 716,
-    "uniques": 108
+    "count": 725,
+    "uniques": 117
   },
   {
     "referrer": "github.com",
-    "count": 189,
-    "uniques": 35
+    "count": 152,
+    "uniques": 36
   },
   {
     "referrer": "qiita.com",
-    "count": 98,
-    "uniques": 6
+    "count": 90,
+    "uniques": 5
   },
   {
     "referrer": "qa.guru",
-    "count": 88,
+    "count": 82,
     "uniques": 11
   },
   {
@@ -26,8 +26,8 @@
   },
   {
     "referrer": "yandex.ru",
-    "count": 32,
-    "uniques": 15
+    "count": 37,
+    "uniques": 17
   },
   {
     "referrer": "snyk.io",
@@ -45,8 +45,8 @@
     "uniques": 4
   },
   {
-    "referrer": "Bing",
-    "count": 5,
-    "uniques": 5
+    "referrer": "t.me",
+    "count": 6,
+    "uniques": 3
   }
 ]
