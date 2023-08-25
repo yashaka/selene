@@ -1249,7 +1249,7 @@ class Browser(WaitingEntity['Browser']):
     def save_page_source(self, file: Optional[str] = None) -> Optional[str]:
         warnings.warn(
             'browser.save_page_source is deprecated, '
-            'use browser.config.last_screenshot',
+            'use browser.get(query.page_source_saved())',
             DeprecationWarning,
         )
 
