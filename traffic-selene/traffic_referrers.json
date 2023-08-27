@@ -1,48 +1,48 @@
 [
   {
     "referrer": "Google",
-    "count": 775,
-    "uniques": 126
+    "count": 770,
+    "uniques": 133
   },
   {
     "referrer": "github.com",
-    "count": 158,
-    "uniques": 33
+    "count": 183,
+    "uniques": 34
   },
   {
     "referrer": "qiita.com",
-    "count": 114,
-    "uniques": 7
+    "count": 113,
+    "uniques": 6
   },
   {
     "referrer": "qa.guru",
-    "count": 60,
-    "uniques": 9
+    "count": 69,
+    "uniques": 11
   },
   {
     "referrer": "automated-testing.info",
-    "count": 57,
-    "uniques": 8
-  },
-  {
-    "referrer": "yandex.ru",
-    "count": 32,
-    "uniques": 13
+    "count": 56,
+    "uniques": 7
   },
   {
     "referrer": "ecosia.org",
-    "count": 18,
-    "uniques": 6
+    "count": 34,
+    "uniques": 14
+  },
+  {
+    "referrer": "yandex.ru",
+    "count": 33,
+    "uniques": 14
+  },
+  {
+    "referrer": "t.me",
+    "count": 14,
+    "uniques": 3
   },
   {
     "referrer": "snyk.io",
     "count": 13,
     "uniques": 1
-  },
-  {
-    "referrer": "t.me",
-    "count": 10,
-    "uniques": 3
   },
   {
     "referrer": "readthedocs.org",
