@@ -2,26 +2,26 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 294,
-    "uniques": 167
+    "count": 296,
+    "uniques": 168
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 69,
-    "uniques": 18
+    "count": 68,
+    "uniques": 16
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 63,
-    "uniques": 15
+    "count": 58,
+    "uniques": 12
   },
   {
     "path": "/yashaka/selene/blob/master/README.md",
     "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 28,
-    "uniques": 12
+    "count": 24,
+    "uniques": 10
   },
   {
     "path": "/yashaka/selene/tree/master/selene/api",
@@ -32,8 +32,8 @@
   {
     "path": "/yashaka/selene/releases/tag/2.0.0rc4",
     "title": "Release 2.0.0rc4 · yashaka/selene · GitHub",
-    "count": 22,
-    "uniques": 16
+    "count": 23,
+    "uniques": 18
   },
   {
     "path": "/yashaka/selene/tree/master/examples/log_all_selene_commands_with_wait__framework",
@@ -44,19 +44,19 @@
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 21,
-    "uniques": 16
-  },
-  {
-    "path": "/yashaka/selene/tree/master/tests",
-    "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 19,
-    "uniques": 6
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene/core",
-    "title": "selene/selene/core at master · yashaka/selene · GitHub",
     "count": 18,
-    "uniques": 6
+    "uniques": 13
+  },
+  {
+    "path": "/yashaka/selene/tree/master/selene/api/base",
+    "title": "selene/selene/api/base at master · yashaka/selene · GitHub",
+    "count": 18,
+    "uniques": 5
+  },
+  {
+    "path": "/yashaka/selene/blob/master/examples/run_cross_platform/tests/conftest.py",
+    "title": "selene/examples/run_cross_platform/tests/conftest.py at master · yashaka/selene",
+    "count": 18,
+    "uniques": 2
   }
 ]
