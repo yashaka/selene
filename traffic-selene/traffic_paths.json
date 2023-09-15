@@ -3,37 +3,19 @@
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
     "count": 296,
-    "uniques": 168
+    "uniques": 167
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 68,
+    "count": 72,
     "uniques": 16
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 58,
-    "uniques": 12
-  },
-  {
-    "path": "/yashaka/selene/blob/master/README.md",
-    "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 24,
-    "uniques": 10
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene/api",
-    "title": "selene/selene/api at master · yashaka/selene · GitHub",
-    "count": 24,
-    "uniques": 7
-  },
-  {
-    "path": "/yashaka/selene/releases/tag/2.0.0rc4",
-    "title": "Release 2.0.0rc4 · yashaka/selene · GitHub",
-    "count": 23,
-    "uniques": 18
+    "count": 39,
+    "uniques": 11
   },
   {
     "path": "/yashaka/selene/tree/master/examples/log_all_selene_commands_with_wait__framework",
@@ -42,21 +24,39 @@
     "uniques": 7
   },
   {
+    "path": "/yashaka/selene/releases/tag/2.0.0rc4",
+    "title": "Release 2.0.0rc4 · yashaka/selene · GitHub",
+    "count": 20,
+    "uniques": 14
+  },
+  {
+    "path": "/yashaka/selene/blob/master/README.md",
+    "title": "selene/README.md at master · yashaka/selene · GitHub",
+    "count": 20,
+    "uniques": 9
+  },
+  {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
     "count": 18,
-    "uniques": 13
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene/api/base",
-    "title": "selene/selene/api/base at master · yashaka/selene · GitHub",
-    "count": 18,
-    "uniques": 5
+    "uniques": 12
   },
   {
     "path": "/yashaka/selene/blob/master/examples/run_cross_platform/tests/conftest.py",
     "title": "selene/examples/run_cross_platform/tests/conftest.py at master · yashaka/selene",
     "count": 18,
     "uniques": 2
+  },
+  {
+    "path": "/yashaka/selene/releases",
+    "title": "Releases · yashaka/selene · GitHub",
+    "count": 17,
+    "uniques": 14
+  },
+  {
+    "path": "/yashaka/selene/blob/master/examples/run_cross_platform/project.py",
+    "title": "selene/examples/run_cross_platform/project.py at master · yashaka/selene",
+    "count": 16,
+    "uniques": 3
   }
 ]
