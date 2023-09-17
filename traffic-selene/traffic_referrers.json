@@ -1,8 +1,8 @@
 [
   {
     "referrer": "Google",
-    "count": 704,
-    "uniques": 134
+    "count": 665,
+    "uniques": 130
   },
   {
     "referrer": "github.com",
@@ -21,13 +21,8 @@
   },
   {
     "referrer": "yandex.ru",
-    "count": 20,
-    "uniques": 13
-  },
-  {
-    "referrer": "pypi.org",
-    "count": 16,
-    "uniques": 6
+    "count": 19,
+    "uniques": 12
   },
   {
     "referrer": "swisscows.com",
@@ -48,5 +43,10 @@
     "referrer": "lms.ithillel.ua",
     "count": 9,
     "uniques": 1
+  },
+  {
+    "referrer": "pypi.org",
+    "count": 6,
+    "uniques": 5
   }
 ]
