@@ -2,48 +2,42 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 351,
-    "uniques": 192
+    "count": 332,
+    "uniques": 180
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 84,
-    "uniques": 16
+    "count": 80,
+    "uniques": 15
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 49,
-    "uniques": 14
+    "count": 56,
+    "uniques": 16
   },
   {
     "path": "/yashaka/selene/releases",
     "title": "Releases · yashaka/selene · GitHub",
-    "count": 30,
-    "uniques": 21
+    "count": 25,
+    "uniques": 18
   },
   {
     "path": "/yashaka/selene/blob/master/README.md",
     "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 26,
-    "uniques": 8
+    "count": 24,
+    "uniques": 7
   },
   {
     "path": "/yashaka/selene/releases/tag/2.0.0rc4",
     "title": "Release 2.0.0rc4 · yashaka/selene · GitHub",
-    "count": 24,
-    "uniques": 18
-  },
-  {
-    "path": "/yashaka/selene/tree/master/examples/log_all_selene_commands_with_wait__framework",
-    "title": "selene/examples/log_all_selene_commands_with_wait__framework at master · yash...",
     "count": 22,
-    "uniques": 7
+    "uniques": 16
   },
   {
-    "path": "/yashaka/selene/blob/master/selene/__init__.py",
-    "title": "selene/selene/__init__.py at master · yashaka/selene · GitHub",
+    "path": "/yashaka/selene/blob/master/examples/run_cross_platform/tests/conftest.py",
+    "title": "selene/examples/run_cross_platform/tests/conftest.py at master · yashaka/selene",
     "count": 20,
     "uniques": 2
   },
@@ -54,9 +48,15 @@
     "uniques": 2
   },
   {
-    "path": "/yashaka/selene/blob/master/examples/run_cross_platform/tests/conftest.py",
-    "title": "selene/examples/run_cross_platform/tests/conftest.py at master · yashaka/selene",
+    "path": "/yashaka/selene/blob/master/selene/__init__.py",
+    "title": "selene/selene/__init__.py at master · yashaka/selene · GitHub",
     "count": 18,
-    "uniques": 2
+    "uniques": 1
+  },
+  {
+    "path": "/yashaka/selene/tree/master/docs",
+    "title": "selene/docs at master · yashaka/selene · GitHub",
+    "count": 17,
+    "uniques": 4
   }
 ]

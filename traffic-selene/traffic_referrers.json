@@ -1,17 +1,17 @@
 [
   {
     "referrer": "Google",
-    "count": 649,
-    "uniques": 126
+    "count": 572,
+    "uniques": 115
   },
   {
     "referrer": "github.com",
-    "count": 227,
-    "uniques": 33
+    "count": 248,
+    "uniques": 32
   },
   {
     "referrer": "qa.guru",
-    "count": 82,
+    "count": 84,
     "uniques": 8
   },
   {
@@ -26,7 +26,7 @@
   },
   {
     "referrer": "swisscows.com",
-    "count": 15,
+    "count": 16,
     "uniques": 1
   },
   {
@@ -35,14 +35,14 @@
     "uniques": 6
   },
   {
-    "referrer": "ecosia.org",
-    "count": 9,
-    "uniques": 3
-  },
-  {
     "referrer": "lms.ithillel.ua",
     "count": 9,
     "uniques": 1
+  },
+  {
+    "referrer": "pypi.org",
+    "count": 8,
+    "uniques": 6
   },
   {
     "referrer": "Bing",
