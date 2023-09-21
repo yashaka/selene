@@ -1,28 +1,28 @@
 [
   {
     "referrer": "Google",
-    "count": 651,
-    "uniques": 122
+    "count": 605,
+    "uniques": 124
   },
   {
     "referrer": "github.com",
-    "count": 282,
-    "uniques": 32
+    "count": 268,
+    "uniques": 31
   },
   {
     "referrer": "qa.guru",
-    "count": 88,
+    "count": 92,
     "uniques": 9
   },
   {
-    "referrer": "yashaka.github.io",
-    "count": 35,
-    "uniques": 4
+    "referrer": "yandex.ru",
+    "count": 81,
+    "uniques": 20
   },
   {
-    "referrer": "yandex.ru",
-    "count": 25,
-    "uniques": 15
+    "referrer": "yashaka.github.io",
+    "count": 36,
+    "uniques": 4
   },
   {
     "referrer": "swisscows.com",

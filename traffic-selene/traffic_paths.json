@@ -2,56 +2,56 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 345,
-    "uniques": 185
+    "count": 359,
+    "uniques": 191
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 91,
-    "uniques": 17
+    "count": 85,
+    "uniques": 16
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 65,
+    "count": 60,
     "uniques": 18
   },
   {
     "path": "/yashaka/selene/releases",
     "title": "Releases · yashaka/selene · GitHub",
-    "count": 30,
-    "uniques": 21
+    "count": 35,
+    "uniques": 23
   },
   {
     "path": "/yashaka/selene/blob/master/README.md",
     "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 28,
-    "uniques": 9
-  },
-  {
-    "path": "/yashaka/selene/releases/tag/2.0.0rc4",
-    "title": "Release 2.0.0rc4 · yashaka/selene · GitHub",
-    "count": 23,
-    "uniques": 17
-  },
-  {
-    "path": "/yashaka/selene/blob/master/selene/core/configuration.py",
-    "title": "selene/selene/core/configuration.py at master · yashaka/selene",
-    "count": 23,
-    "uniques": 3
+    "count": 30,
+    "uniques": 10
   },
   {
     "path": "/yashaka/selene/tree/master/selene/core",
     "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 22,
-    "uniques": 8
+    "count": 26,
+    "uniques": 9
   },
   {
     "path": "/yashaka/selene/blob/master/examples/run_cross_platform/tests/conftest.py",
     "title": "selene/examples/run_cross_platform/tests/conftest.py at master · yashaka/selene",
     "count": 22,
     "uniques": 2
+  },
+  {
+    "path": "/yashaka/selene/releases/tag/2.0.0rc4",
+    "title": "Release 2.0.0rc4 · yashaka/selene · GitHub",
+    "count": 21,
+    "uniques": 15
+  },
+  {
+    "path": "/yashaka/selene/blob/master/selene/core/configuration.py",
+    "title": "selene/selene/core/configuration.py at master · yashaka/selene",
+    "count": 21,
+    "uniques": 3
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
