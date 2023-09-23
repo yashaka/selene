@@ -2,26 +2,32 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 369,
-    "uniques": 198
+    "count": 398,
+    "uniques": 218
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 89,
-    "uniques": 17
+    "count": 94,
+    "uniques": 18
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 63,
-    "uniques": 19
+    "count": 68,
+    "uniques": 20
   },
   {
     "path": "/yashaka/selene/releases",
     "title": "Releases · yashaka/selene · GitHub",
+    "count": 41,
+    "uniques": 23
+  },
+  {
+    "path": "/yashaka/selene/tree/master/selene/core",
+    "title": "selene/selene/core at master · yashaka/selene · GitHub",
     "count": 33,
-    "uniques": 21
+    "uniques": 11
   },
   {
     "path": "/yashaka/selene/blob/master/README.md",
@@ -30,33 +36,27 @@
     "uniques": 10
   },
   {
-    "path": "/yashaka/selene/tree/master/selene/core",
-    "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 30,
-    "uniques": 10
+    "path": "/yashaka/selene/blob/master/selene/__init__.py",
+    "title": "selene/selene/__init__.py at master · yashaka/selene · GitHub",
+    "count": 22,
+    "uniques": 2
   },
   {
-    "path": "/yashaka/selene/blob/master/examples/run_cross_platform/tests/conftest.py",
-    "title": "selene/examples/run_cross_platform/tests/conftest.py at master · yashaka/selene",
-    "count": 24,
-    "uniques": 3
-  },
-  {
-    "path": "/yashaka/selene/releases/tag/2.0.0rc4",
-    "title": "Release 2.0.0rc4 · yashaka/selene · GitHub",
+    "path": "/yashaka/selene/tree/master/examples/run_cross_platform",
+    "title": "selene/examples/run_cross_platform at master · yashaka/selene · GitHub",
     "count": 21,
-    "uniques": 15
-  },
-  {
-    "path": "/yashaka/selene/tree/master/docs",
-    "title": "selene/docs at master · yashaka/selene · GitHub",
-    "count": 19,
     "uniques": 5
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 18,
-    "uniques": 5
+    "count": 20,
+    "uniques": 6
+  },
+  {
+    "path": "/yashaka/selene/blob/master/examples/run_cross_platform/tests/conftest.py",
+    "title": "selene/examples/run_cross_platform/tests/conftest.py at master · yashaka/selene",
+    "count": 20,
+    "uniques": 3
   }
 ]
