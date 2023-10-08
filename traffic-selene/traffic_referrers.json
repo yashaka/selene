@@ -1,23 +1,23 @@
 [
   {
     "referrer": "Google",
-    "count": 856,
-    "uniques": 130
+    "count": 880,
+    "uniques": 135
   },
   {
     "referrer": "github.com",
-    "count": 217,
-    "uniques": 37
+    "count": 209,
+    "uniques": 36
   },
   {
     "referrer": "qa.guru",
-    "count": 178,
+    "count": 176,
     "uniques": 30
   },
   {
     "referrer": "yandex.ru",
-    "count": 166,
-    "uniques": 13
+    "count": 176,
+    "uniques": 17
   },
   {
     "referrer": "yashaka.github.io",
