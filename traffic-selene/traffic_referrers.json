@@ -1,32 +1,32 @@
 [
   {
     "referrer": "Google",
-    "count": 880,
-    "uniques": 135
+    "count": 704,
+    "uniques": 127
   },
   {
     "referrer": "github.com",
-    "count": 209,
-    "uniques": 36
+    "count": 196,
+    "uniques": 35
   },
   {
     "referrer": "qa.guru",
-    "count": 176,
+    "count": 172,
     "uniques": 30
   },
   {
     "referrer": "yandex.ru",
-    "count": 176,
-    "uniques": 17
+    "count": 153,
+    "uniques": 15
   },
   {
     "referrer": "yashaka.github.io",
-    "count": 56,
-    "uniques": 7
+    "count": 52,
+    "uniques": 5
   },
   {
     "referrer": "t.me",
-    "count": 28,
+    "count": 26,
     "uniques": 5
   },
   {
@@ -35,14 +35,14 @@
     "uniques": 2
   },
   {
+    "referrer": "qiita.com",
+    "count": 20,
+    "uniques": 4
+  },
+  {
     "referrer": "selene-docs-test.readthedocs.io",
     "count": 19,
     "uniques": 2
-  },
-  {
-    "referrer": "qiita.com",
-    "count": 18,
-    "uniques": 3
   },
   {
     "referrer": "yandex.kz",
