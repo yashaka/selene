@@ -1,27 +1,27 @@
 [
   {
     "referrer": "Google",
-    "count": 511,
-    "uniques": 121
+    "count": 485,
+    "uniques": 116
   },
   {
     "referrer": "yashaka.github.io",
-    "count": 232,
+    "count": 242,
     "uniques": 5
   },
   {
     "referrer": "qa.guru",
-    "count": 194,
-    "uniques": 25
+    "count": 204,
+    "uniques": 22
   },
   {
     "referrer": "github.com",
-    "count": 183,
-    "uniques": 32
+    "count": 149,
+    "uniques": 30
   },
   {
     "referrer": "yandex.ru",
-    "count": 70,
+    "count": 57,
     "uniques": 17
   },
   {
@@ -32,12 +32,7 @@
   {
     "referrer": "ya.ru",
     "count": 24,
-    "uniques": 3
-  },
-  {
-    "referrer": "pypi.org",
-    "count": 9,
-    "uniques": 8
+    "uniques": 4
   },
   {
     "referrer": "lightrun.com",
@@ -45,8 +40,13 @@
     "uniques": 1
   },
   {
+    "referrer": "pypi.org",
+    "count": 6,
+    "uniques": 5
+  },
+  {
     "referrer": "qiita.com",
-    "count": 5,
-    "uniques": 4
+    "count": 6,
+    "uniques": 5
   }
 ]
