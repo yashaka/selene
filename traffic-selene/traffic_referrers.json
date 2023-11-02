@@ -1,7 +1,7 @@
 [
   {
     "referrer": "Google",
-    "count": 574,
+    "count": 569,
     "uniques": 135
   },
   {
@@ -11,23 +11,23 @@
   },
   {
     "referrer": "qa.guru",
-    "count": 216,
-    "uniques": 23
+    "count": 176,
+    "uniques": 21
   },
   {
     "referrer": "github.com",
-    "count": 172,
-    "uniques": 35
+    "count": 171,
+    "uniques": 37
   },
   {
     "referrer": "automated-testing.info",
-    "count": 54,
-    "uniques": 9
+    "count": 52,
+    "uniques": 7
   },
   {
     "referrer": "yandex.ru",
-    "count": 52,
-    "uniques": 12
+    "count": 25,
+    "uniques": 14
   },
   {
     "referrer": "DuckDuckGo",
@@ -45,8 +45,8 @@
     "uniques": 3
   },
   {
-    "referrer": "lightrun.com",
-    "count": 4,
-    "uniques": 1
+    "referrer": "qiita.com",
+    "count": 3,
+    "uniques": 3
   }
 ]
