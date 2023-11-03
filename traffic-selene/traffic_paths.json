@@ -3,55 +3,55 @@
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
     "count": 322,
-    "uniques": 206
+    "uniques": 202
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 85,
+    "count": 83,
     "uniques": 23
   },
   {
     "path": "/yashaka/selene/blob/master/README.md",
     "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 73,
-    "uniques": 16
+    "count": 69,
+    "uniques": 15
   },
   {
     "path": "/yashaka/selene/blob/master/examples/run_remote_in_web_chrome_with_options_for_selenoid/test_todomvc.py",
     "title": "selene/examples/run_remote_in_web_chrome_with_options_for_selenoid/test_todom...",
-    "count": 52,
-    "uniques": 15
+    "count": 50,
+    "uniques": 14
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 51,
-    "uniques": 14
-  },
-  {
-    "path": "/yashaka/selene/tree/master/tests",
-    "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 29,
-    "uniques": 10
+    "count": 47,
+    "uniques": 13
   },
   {
     "path": "/yashaka/selene/tree/master/docs",
     "title": "selene/docs at master · yashaka/selene · GitHub",
-    "count": 29,
-    "uniques": 8
+    "count": 28,
+    "uniques": 9
   },
   {
     "path": "/yashaka/selene/blob/master/docs/contribution/how-to-write-docs-guide.md",
     "title": "selene/docs/contribution/how-to-write-docs-guide.md at master · yashaka/selene",
-    "count": 26,
+    "count": 28,
     "uniques": 2
   },
   {
-    "path": "/yashaka/selene/blob/master/CHANGELOG.md",
-    "title": "selene/CHANGELOG.md at master · yashaka/selene · GitHub",
-    "count": 25,
-    "uniques": 6
+    "path": "/yashaka/selene/tree/master/tests",
+    "title": "selene/tests at master · yashaka/selene · GitHub",
+    "count": 26,
+    "uniques": 9
+  },
+  {
+    "path": "/yashaka/selene/issues",
+    "title": "Issues · yashaka/selene · GitHub",
+    "count": 23,
+    "uniques": 14
   },
   {
     "path": "/yashaka/selene/tree/master/examples/custom_condition_be_visible_in_view_port",
