@@ -2,14 +2,14 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 322,
-    "uniques": 202
+    "count": 332,
+    "uniques": 208
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 83,
-    "uniques": 23
+    "count": 90,
+    "uniques": 24
   },
   {
     "path": "/yashaka/selene/blob/master/README.md",
@@ -18,22 +18,16 @@
     "uniques": 15
   },
   {
-    "path": "/yashaka/selene/blob/master/examples/run_remote_in_web_chrome_with_options_for_selenoid/test_todomvc.py",
-    "title": "selene/examples/run_remote_in_web_chrome_with_options_for_selenoid/test_todom...",
-    "count": 50,
-    "uniques": 14
-  },
-  {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 47,
-    "uniques": 13
+    "count": 41,
+    "uniques": 12
   },
   {
-    "path": "/yashaka/selene/tree/master/docs",
-    "title": "selene/docs at master · yashaka/selene · GitHub",
-    "count": 28,
-    "uniques": 9
+    "path": "/yashaka/selene/blob/master/examples/run_remote_in_web_chrome_with_options_for_selenoid/test_todomvc.py",
+    "title": "selene/examples/run_remote_in_web_chrome_with_options_for_selenoid/test_todom...",
+    "count": 40,
+    "uniques": 12
   },
   {
     "path": "/yashaka/selene/blob/master/docs/contribution/how-to-write-docs-guide.md",
@@ -42,21 +36,27 @@
     "uniques": 2
   },
   {
-    "path": "/yashaka/selene/tree/master/tests",
-    "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 26,
-    "uniques": 9
-  },
-  {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
     "count": 23,
     "uniques": 14
   },
   {
+    "path": "/yashaka/selene/tree/master/tests",
+    "title": "selene/tests at master · yashaka/selene · GitHub",
+    "count": 23,
+    "uniques": 8
+  },
+  {
     "path": "/yashaka/selene/tree/master/examples/custom_condition_be_visible_in_view_port",
     "title": "selene/examples/custom_condition_be_visible_in_view_port at master · yashaka/...",
     "count": 23,
     "uniques": 5
+  },
+  {
+    "path": "/yashaka/selene/tree/master/docs",
+    "title": "selene/docs at master · yashaka/selene · GitHub",
+    "count": 20,
+    "uniques": 8
   }
 ]
