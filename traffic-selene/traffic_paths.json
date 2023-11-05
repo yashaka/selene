@@ -2,32 +2,32 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 332,
-    "uniques": 208
+    "count": 328,
+    "uniques": 204
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 90,
-    "uniques": 24
+    "count": 82,
+    "uniques": 22
   },
   {
     "path": "/yashaka/selene/blob/master/README.md",
     "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 69,
-    "uniques": 15
+    "count": 67,
+    "uniques": 14
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 41,
-    "uniques": 12
+    "count": 37,
+    "uniques": 10
   },
   {
     "path": "/yashaka/selene/blob/master/examples/run_remote_in_web_chrome_with_options_for_selenoid/test_todomvc.py",
     "title": "selene/examples/run_remote_in_web_chrome_with_options_for_selenoid/test_todom...",
-    "count": 40,
-    "uniques": 12
+    "count": 28,
+    "uniques": 10
   },
   {
     "path": "/yashaka/selene/blob/master/docs/contribution/how-to-write-docs-guide.md",
@@ -36,15 +36,9 @@
     "uniques": 2
   },
   {
-    "path": "/yashaka/selene/issues",
-    "title": "Issues · yashaka/selene · GitHub",
-    "count": 23,
-    "uniques": 14
-  },
-  {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 23,
+    "count": 24,
     "uniques": 8
   },
   {
@@ -54,9 +48,15 @@
     "uniques": 5
   },
   {
-    "path": "/yashaka/selene/tree/master/docs",
-    "title": "selene/docs at master · yashaka/selene · GitHub",
-    "count": 20,
-    "uniques": 8
+    "path": "/yashaka/selene/issues",
+    "title": "Issues · yashaka/selene · GitHub",
+    "count": 22,
+    "uniques": 13
+  },
+  {
+    "path": "/yashaka/selene/tree/master/examples/run_local_in_default_chrome",
+    "title": "selene/examples/run_local_in_default_chrome at master · yashaka/selene · GitHub",
+    "count": 18,
+    "uniques": 5
   }
 ]
