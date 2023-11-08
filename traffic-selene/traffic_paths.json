@@ -2,61 +2,61 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 245,
-    "uniques": 163
-  },
-  {
-    "path": "/yashaka/selene/tree/master/examples",
-    "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 60,
-    "uniques": 16
+    "count": 251,
+    "uniques": 167
   },
   {
     "path": "/yashaka/selene/blob/master/README.md",
     "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 58,
-    "uniques": 12
+    "count": 69,
+    "uniques": 17
+  },
+  {
+    "path": "/yashaka/selene/tree/master/examples",
+    "title": "selene/examples at master · yashaka/selene · GitHub",
+    "count": 53,
+    "uniques": 13
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
     "count": 25,
-    "uniques": 8
-  },
-  {
-    "path": "/yashaka/selene/tree/master/examples/custom_condition_be_visible_in_view_port",
-    "title": "selene/examples/custom_condition_be_visible_in_view_port at master · yashaka/...",
-    "count": 19,
-    "uniques": 5
+    "uniques": 9
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 18,
-    "uniques": 10
+    "count": 22,
+    "uniques": 12
+  },
+  {
+    "path": "/yashaka/selene/tree/master/examples/custom_condition_be_visible_in_view_port",
+    "title": "selene/examples/custom_condition_be_visible_in_view_port at master · yashaka/...",
+    "count": 17,
+    "uniques": 4
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 18,
-    "uniques": 5
-  },
-  {
-    "path": "/yashaka/selene/blob/master/docs/contribution/how-to-write-docs-guide.md",
-    "title": "selene/docs/contribution/how-to-write-docs-guide.md at master · yashaka/selene",
-    "count": 18,
-    "uniques": 1
-  },
-  {
-    "path": "/yashaka/selene/tree/master/examples/custom_condition_be_visible_in_view_port/tests",
-    "title": "selene/examples/custom_condition_be_visible_in_view_port/tests at master · ya...",
     "count": 16,
     "uniques": 4
   },
   {
-    "path": "/yashaka/selene/blob/master/examples/custom_condition_be_visible_in_view_port/tests/test_the_internet_app.py",
-    "title": "selene/examples/custom_condition_be_visible_in_view_port/tests/test_the_inter...",
+    "path": "/yashaka/selene/releases",
+    "title": "Releases · yashaka/selene",
+    "count": 14,
+    "uniques": 8
+  },
+  {
+    "path": "/yashaka/selene/tree/master/examples/custom_condition_be_visible_in_view_port/tests",
+    "title": "selene/examples/custom_condition_be_visible_in_view_port/tests at master · ya...",
     "count": 14,
     "uniques": 3
+  },
+  {
+    "path": "/yashaka/selene/blob/master/docs/contribution/how-to-write-docs-guide.md",
+    "title": "selene/docs/contribution/how-to-write-docs-guide.md at master · yashaka/selene",
+    "count": 14,
+    "uniques": 1
   }
 ]
