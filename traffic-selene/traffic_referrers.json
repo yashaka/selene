@@ -1,13 +1,13 @@
 [
   {
     "referrer": "Google",
-    "count": 503,
-    "uniques": 116
+    "count": 464,
+    "uniques": 124
   },
   {
     "referrer": "github.com",
-    "count": 106,
-    "uniques": 34
+    "count": 124,
+    "uniques": 35
   },
   {
     "referrer": "pypi.org",
@@ -17,17 +17,17 @@
   {
     "referrer": "qa.guru",
     "count": 32,
-    "uniques": 6
+    "uniques": 7
   },
   {
     "referrer": "yandex.ru",
-    "count": 29,
-    "uniques": 10
+    "count": 31,
+    "uniques": 11
   },
   {
     "referrer": "yashaka.github.io",
-    "count": 13,
-    "uniques": 2
+    "count": 19,
+    "uniques": 4
   },
   {
     "referrer": "autotest.how",
