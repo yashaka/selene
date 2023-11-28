@@ -2,26 +2,20 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 282,
+    "count": 283,
     "uniques": 184
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 88,
-    "uniques": 28
+    "count": 90,
+    "uniques": 29
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 36,
-    "uniques": 12
-  },
-  {
-    "path": "/yashaka/selene/blob/master/README.md",
-    "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 28,
-    "uniques": 12
+    "count": 33,
+    "uniques": 11
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
@@ -30,10 +24,10 @@
     "uniques": 6
   },
   {
-    "path": "/yashaka/selene/issues",
-    "title": "Issues · yashaka/selene · GitHub",
+    "path": "/yashaka/selene/blob/master/README.md",
+    "title": "selene/README.md at master · yashaka/selene · GitHub",
     "count": 20,
-    "uniques": 12
+    "uniques": 8
   },
   {
     "path": "/yashaka/selene/releases",
@@ -42,21 +36,27 @@
     "uniques": 6
   },
   {
-    "path": "/yashaka/selene/tree/master/selene/core",
-    "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 19,
-    "uniques": 5
+    "path": "/yashaka/selene/issues",
+    "title": "Issues · yashaka/selene · GitHub",
+    "count": 18,
+    "uniques": 10
   },
   {
     "path": "/yashaka/selene/issues/287",
     "title": "from selenium to selene · Issue #287 · yashaka/selene · GitHub",
     "count": 15,
-    "uniques": 11
+    "uniques": 10
   },
   {
-    "path": "/yashaka/selene/blob/master/examples/run_local_in_chrome_with_options_for_headless/test_todomvc.py",
-    "title": "selene/examples/run_local_in_chrome_with_options_for_headless/test_todomvc.py...",
+    "path": "/yashaka/selene/tree/master/examples/run_local_in_default_chrome",
+    "title": "selene/examples/run_local_in_default_chrome at master · yashaka/selene",
+    "count": 15,
+    "uniques": 6
+  },
+  {
+    "path": "/yashaka/selene/issues/439",
+    "title": "consider a way to customize \"locator description\" · Issue #439 · yashaka/selene",
     "count": 14,
-    "uniques": 7
+    "uniques": 12
   }
 ]
