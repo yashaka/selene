@@ -2,20 +2,26 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 320,
-    "uniques": 198
+    "count": 324,
+    "uniques": 194
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 83,
-    "uniques": 31
+    "count": 72,
+    "uniques": 25
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 55,
+    "count": 65,
     "uniques": 10
+  },
+  {
+    "path": "/yashaka/selene/tree/master/selene/core",
+    "title": "selene/selene/core at master · yashaka/selene · GitHub",
+    "count": 31,
+    "uniques": 5
   },
   {
     "path": "/yashaka/selene/blob/master/README.md",
@@ -24,10 +30,10 @@
     "uniques": 12
   },
   {
-    "path": "/yashaka/selene/tree/master/selene/core",
-    "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 28,
-    "uniques": 4
+    "path": "/yashaka/selene/issues",
+    "title": "Issues · yashaka/selene · GitHub",
+    "count": 27,
+    "uniques": 17
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
@@ -36,27 +42,21 @@
     "uniques": 6
   },
   {
-    "path": "/yashaka/selene/issues",
-    "title": "Issues · yashaka/selene · GitHub",
-    "count": 25,
-    "uniques": 16
-  },
-  {
     "path": "/yashaka/selene/issues/287",
     "title": "from selenium to selene · Issue #287 · yashaka/selene · GitHub",
-    "count": 19,
-    "uniques": 12
-  },
-  {
-    "path": "/yashaka/selene/releases",
-    "title": "Releases · yashaka/selene · GitHub",
-    "count": 18,
-    "uniques": 6
+    "count": 20,
+    "uniques": 13
   },
   {
     "path": "/yashaka/selene/tree/master/selene/support",
     "title": "selene/selene/support at master · yashaka/selene · GitHub",
     "count": 18,
     "uniques": 2
+  },
+  {
+    "path": "/yashaka/selene/issues/439",
+    "title": "consider a way to customize \"locator description\" · Issue #439 · yashaka/selene",
+    "count": 17,
+    "uniques": 15
   }
 ]
