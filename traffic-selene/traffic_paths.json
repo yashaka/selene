@@ -2,14 +2,14 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 303,
-    "uniques": 181
+    "count": 304,
+    "uniques": 179
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 75,
-    "uniques": 10
+    "count": 72,
+    "uniques": 9
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
@@ -20,26 +20,20 @@
   {
     "path": "/yashaka/selene/tree/master/selene/core",
     "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 33,
-    "uniques": 6
+    "count": 31,
+    "uniques": 5
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 26,
-    "uniques": 6
-  },
-  {
-    "path": "/yashaka/selene/blob/master/README.md",
-    "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 25,
-    "uniques": 10
+    "count": 28,
+    "uniques": 7
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 23,
-    "uniques": 14
+    "count": 25,
+    "uniques": 13
   },
   {
     "path": "/yashaka/selene/tree/master/selene/support",
@@ -50,8 +44,14 @@
   {
     "path": "/yashaka/selene/issues/287",
     "title": "from selenium to selene · Issue #287 · yashaka/selene · GitHub",
-    "count": 20,
-    "uniques": 13
+    "count": 18,
+    "uniques": 11
+  },
+  {
+    "path": "/yashaka/selene/blob/master/README.md",
+    "title": "selene/README.md at master · yashaka/selene · GitHub",
+    "count": 18,
+    "uniques": 7
   },
   {
     "path": "/yashaka/selene/issues/439",
