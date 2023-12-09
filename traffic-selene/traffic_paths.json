@@ -2,8 +2,8 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 273,
-    "uniques": 166
+    "count": 281,
+    "uniques": 173
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
@@ -14,14 +14,14 @@
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 50,
-    "uniques": 14
+    "count": 59,
+    "uniques": 16
   },
   {
     "path": "/yashaka/selene/tree/master/selene/core",
     "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 28,
-    "uniques": 4
+    "count": 23,
+    "uniques": 3
   },
   {
     "path": "/yashaka/selene/tree/master/selene/support",
@@ -30,33 +30,33 @@
     "uniques": 3
   },
   {
+    "path": "/yashaka/selene/issues",
+    "title": "Issues · yashaka/selene · GitHub",
+    "count": 22,
+    "uniques": 16
+  },
+  {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene",
     "count": 22,
     "uniques": 5
   },
   {
-    "path": "/yashaka/selene/issues",
-    "title": "Issues · yashaka/selene · GitHub",
-    "count": 20,
-    "uniques": 14
+    "path": "/yashaka/selene/blob/master/README.md",
+    "title": "selene/README.md at master · yashaka/selene · GitHub",
+    "count": 18,
+    "uniques": 8
+  },
+  {
+    "path": "/yashaka/selene/blob/master/examples/run_remote_in_android_chrome_with_options_for_browserstack/test_todomvc.py",
+    "title": "selene/examples/run_remote_in_android_chrome_with_options_for_browserstack/te...",
+    "count": 18,
+    "uniques": 1
   },
   {
     "path": "/yashaka/selene/blob/master/selene/core/command.py",
     "title": "selene/selene/core/command.py at master · yashaka/selene · GitHub",
     "count": 18,
-    "uniques": 2
-  },
-  {
-    "path": "/yashaka/selene/blob/master/selene/core/locator.py",
-    "title": "selene/selene/core/locator.py at master · yashaka/selene · GitHub",
-    "count": 18,
-    "uniques": 2
-  },
-  {
-    "path": "/yashaka/selene/issues/439",
-    "title": "consider a way to customize \"locator description\" · Issue #439 · yashaka/selene",
-    "count": 17,
-    "uniques": 15
+    "uniques": 1
   }
 ]
