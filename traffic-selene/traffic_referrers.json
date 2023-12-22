@@ -1,38 +1,33 @@
 [
   {
     "referrer": "Google",
-    "count": 296,
-    "uniques": 86
-  },
-  {
-    "referrer": "github.com",
-    "count": 165,
-    "uniques": 16
+    "count": 350,
+    "uniques": 90
   },
   {
     "referrer": "qa.guru",
-    "count": 159,
+    "count": 186,
+    "uniques": 21
+  },
+  {
+    "referrer": "github.com",
+    "count": 173,
     "uniques": 18
   },
   {
+    "referrer": "yashaka.github.io",
+    "count": 27,
+    "uniques": 3
+  },
+  {
     "referrer": "qiita.com",
-    "count": 18,
-    "uniques": 4
+    "count": 23,
+    "uniques": 5
   },
   {
     "referrer": "yandex.ru",
-    "count": 14,
-    "uniques": 6
-  },
-  {
-    "referrer": "yashaka.github.io",
-    "count": 14,
-    "uniques": 3
-  },
-  {
-    "referrer": "pypi.org",
-    "count": 5,
-    "uniques": 3
+    "count": 15,
+    "uniques": 7
   },
   {
     "referrer": "ya.ru",
@@ -43,6 +38,11 @@
     "referrer": "yandex.kz",
     "count": 3,
     "uniques": 1
+  },
+  {
+    "referrer": "pypi.org",
+    "count": 2,
+    "uniques": 2
   },
   {
     "referrer": "chat.openai.com",
