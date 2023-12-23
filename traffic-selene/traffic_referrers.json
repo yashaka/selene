@@ -1,18 +1,18 @@
 [
   {
     "referrer": "Google",
-    "count": 350,
-    "uniques": 90
+    "count": 401,
+    "uniques": 96
   },
   {
     "referrer": "qa.guru",
-    "count": 186,
-    "uniques": 21
+    "count": 194,
+    "uniques": 20
   },
   {
     "referrer": "github.com",
-    "count": 173,
-    "uniques": 18
+    "count": 182,
+    "uniques": 20
   },
   {
     "referrer": "yashaka.github.io",
@@ -21,13 +21,13 @@
   },
   {
     "referrer": "qiita.com",
-    "count": 23,
+    "count": 25,
     "uniques": 5
   },
   {
     "referrer": "yandex.ru",
-    "count": 15,
-    "uniques": 7
+    "count": 16,
+    "uniques": 8
   },
   {
     "referrer": "ya.ru",
