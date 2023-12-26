@@ -2,43 +2,49 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 233,
-    "uniques": 153
+    "count": 219,
+    "uniques": 140
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 98,
-    "uniques": 20
+    "count": 112,
+    "uniques": 19
   },
   {
     "path": "/yashaka/selene/blob/master/examples/run_remote_in_web_chrome_with_options_for_selenoid/test_todomvc.py",
     "title": "selene/examples/run_remote_in_web_chrome_with_options_for_selenoid/test_todom...",
-    "count": 51,
-    "uniques": 12
-  },
-  {
-    "path": "/yashaka/selene/blob/master/README.md",
-    "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 44,
-    "uniques": 11
+    "count": 55,
+    "uniques": 13
   },
   {
     "path": "/yashaka/selene/blob/master/examples/run_remote_in_android_chrome_with_options_for_browserstack/test_todomvc.py",
     "title": "selene/examples/run_remote_in_android_chrome_with_options_for_browserstack/te...",
-    "count": 36,
-    "uniques": 8
+    "count": 44,
+    "uniques": 9
+  },
+  {
+    "path": "/yashaka/selene/blob/master/README.md",
+    "title": "selene/README.md at master · yashaka/selene · GitHub",
+    "count": 34,
+    "uniques": 9
+  },
+  {
+    "path": "/yashaka/selene/blob/master/examples/run_remote_in_android_app_with_options_for_browserstack/version_4__app_fixture_style/test_wikipedia.py",
+    "title": "selene/examples/run_remote_in_android_app_with_options_for_browserstack/versi...",
+    "count": 24,
+    "uniques": 4
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 25,
-    "uniques": 19
+    "count": 22,
+    "uniques": 17
   },
   {
     "path": "/yashaka/selene/blob/master/selene/core/locator.py",
     "title": "selene/selene/core/locator.py at master · yashaka/selene · GitHub",
-    "count": 23,
+    "count": 21,
     "uniques": 4
   },
   {
@@ -46,12 +52,6 @@
     "title": "selene/selene at master · yashaka/selene · GitHub",
     "count": 20,
     "uniques": 8
-  },
-  {
-    "path": "/yashaka/selene/blob/master/selene/core/command.py",
-    "title": "selene/selene/core/command.py at master · yashaka/selene · GitHub",
-    "count": 19,
-    "uniques": 2
   },
   {
     "path": "/yashaka/selene/blob/master/examples/run_local_android_app_with_options_for_appium/test_wikipedia.py",
