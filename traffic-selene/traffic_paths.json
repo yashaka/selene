@@ -2,32 +2,32 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 229,
-    "uniques": 140
+    "count": 244,
+    "uniques": 146
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 110,
-    "uniques": 20
+    "count": 95,
+    "uniques": 17
   },
   {
     "path": "/yashaka/selene/blob/master/examples/run_remote_in_android_chrome_with_options_for_browserstack/test_todomvc.py",
     "title": "selene/examples/run_remote_in_android_chrome_with_options_for_browserstack/te...",
-    "count": 48,
+    "count": 44,
     "uniques": 8
   },
   {
     "path": "/yashaka/selene/blob/master/examples/run_remote_in_web_chrome_with_options_for_selenoid/test_todomvc.py",
     "title": "selene/examples/run_remote_in_web_chrome_with_options_for_selenoid/test_todom...",
-    "count": 47,
-    "uniques": 13
+    "count": 43,
+    "uniques": 11
   },
   {
     "path": "/yashaka/selene/blob/master/README.md",
     "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 27,
-    "uniques": 7
+    "count": 29,
+    "uniques": 8
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
@@ -36,27 +36,27 @@
     "uniques": 10
   },
   {
-    "path": "/yashaka/selene/blob/master/selene/core/locator.py",
-    "title": "selene/selene/core/locator.py at master · yashaka/selene · GitHub",
-    "count": 25,
-    "uniques": 3
-  },
-  {
     "path": "/yashaka/selene/blob/master/examples/run_remote_in_android_app_with_options_for_browserstack/version_4__app_fixture_style/test_wikipedia.py",
     "title": "selene/examples/run_remote_in_android_app_with_options_for_browserstack/versi...",
     "count": 24,
     "uniques": 5
   },
   {
-    "path": "/yashaka/selene/blob/master/selene/core/command.py",
-    "title": "selene/selene/core/command.py at master · yashaka/selene · GitHub",
+    "path": "/yashaka/selene/blob/master/selene/core/locator.py",
+    "title": "selene/selene/core/locator.py at master · yashaka/selene · GitHub",
     "count": 23,
-    "uniques": 2
+    "uniques": 3
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 20,
-    "uniques": 16
+    "count": 21,
+    "uniques": 17
+  },
+  {
+    "path": "/yashaka/selene/blob/master/selene/core/command.py",
+    "title": "selene/selene/core/command.py at master · yashaka/selene · GitHub",
+    "count": 21,
+    "uniques": 2
   }
 ]
