@@ -2,25 +2,25 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 244,
-    "uniques": 146
+    "count": 222,
+    "uniques": 134
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 95,
-    "uniques": 17
+    "count": 87,
+    "uniques": 16
   },
   {
     "path": "/yashaka/selene/blob/master/examples/run_remote_in_android_chrome_with_options_for_browserstack/test_todomvc.py",
     "title": "selene/examples/run_remote_in_android_chrome_with_options_for_browserstack/te...",
-    "count": 44,
+    "count": 42,
     "uniques": 8
   },
   {
     "path": "/yashaka/selene/blob/master/examples/run_remote_in_web_chrome_with_options_for_selenoid/test_todomvc.py",
     "title": "selene/examples/run_remote_in_web_chrome_with_options_for_selenoid/test_todom...",
-    "count": 43,
+    "count": 41,
     "uniques": 11
   },
   {
@@ -28,12 +28,6 @@
     "title": "selene/README.md at master · yashaka/selene · GitHub",
     "count": 29,
     "uniques": 8
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene",
-    "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 25,
-    "uniques": 10
   },
   {
     "path": "/yashaka/selene/blob/master/examples/run_remote_in_android_app_with_options_for_browserstack/version_4__app_fixture_style/test_wikipedia.py",
@@ -44,19 +38,25 @@
   {
     "path": "/yashaka/selene/blob/master/selene/core/locator.py",
     "title": "selene/selene/core/locator.py at master · yashaka/selene · GitHub",
-    "count": 23,
-    "uniques": 3
-  },
-  {
-    "path": "/yashaka/selene/issues",
-    "title": "Issues · yashaka/selene · GitHub",
     "count": 21,
-    "uniques": 17
+    "uniques": 3
   },
   {
     "path": "/yashaka/selene/blob/master/selene/core/command.py",
     "title": "selene/selene/core/command.py at master · yashaka/selene · GitHub",
-    "count": 21,
+    "count": 19,
     "uniques": 2
+  },
+  {
+    "path": "/yashaka/selene/blob/master/tests/conftest.py",
+    "title": "selene/tests/conftest.py at master · yashaka/selene · GitHub",
+    "count": 18,
+    "uniques": 7
+  },
+  {
+    "path": "/yashaka/selene/tree/master/tests",
+    "title": "selene/tests at master · yashaka/selene · GitHub",
+    "count": 18,
+    "uniques": 6
   }
 ]
