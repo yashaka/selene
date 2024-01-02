@@ -2,48 +2,48 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 222,
-    "uniques": 134
+    "count": 200,
+    "uniques": 122
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 87,
-    "uniques": 16
+    "count": 70,
+    "uniques": 14
   },
   {
     "path": "/yashaka/selene/blob/master/examples/run_remote_in_android_chrome_with_options_for_browserstack/test_todomvc.py",
     "title": "selene/examples/run_remote_in_android_chrome_with_options_for_browserstack/te...",
-    "count": 42,
-    "uniques": 8
+    "count": 40,
+    "uniques": 7
   },
   {
     "path": "/yashaka/selene/blob/master/examples/run_remote_in_web_chrome_with_options_for_selenoid/test_todomvc.py",
     "title": "selene/examples/run_remote_in_web_chrome_with_options_for_selenoid/test_todom...",
-    "count": 41,
-    "uniques": 11
+    "count": 39,
+    "uniques": 10
   },
   {
     "path": "/yashaka/selene/blob/master/README.md",
     "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 29,
-    "uniques": 8
+    "count": 23,
+    "uniques": 7
   },
   {
     "path": "/yashaka/selene/blob/master/examples/run_remote_in_android_app_with_options_for_browserstack/version_4__app_fixture_style/test_wikipedia.py",
     "title": "selene/examples/run_remote_in_android_app_with_options_for_browserstack/versi...",
-    "count": 24,
-    "uniques": 5
-  },
-  {
-    "path": "/yashaka/selene/blob/master/selene/core/locator.py",
-    "title": "selene/selene/core/locator.py at master · yashaka/selene · GitHub",
-    "count": 21,
-    "uniques": 3
+    "count": 22,
+    "uniques": 4
   },
   {
     "path": "/yashaka/selene/blob/master/selene/core/command.py",
     "title": "selene/selene/core/command.py at master · yashaka/selene · GitHub",
+    "count": 19,
+    "uniques": 2
+  },
+  {
+    "path": "/yashaka/selene/blob/master/selene/core/locator.py",
+    "title": "selene/selene/core/locator.py at master · yashaka/selene · GitHub",
     "count": 19,
     "uniques": 2
   },
