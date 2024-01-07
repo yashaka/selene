@@ -2,32 +2,26 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 162,
-    "uniques": 102
+    "count": 174,
+    "uniques": 108
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 41,
+    "count": 27,
     "uniques": 8
   },
   {
-    "path": "/yashaka/selene/blob/master/examples/run_remote_in_android_app_with_options_for_browserstack/version_4__app_fixture_style/test_wikipedia.py",
-    "title": "selene/examples/run_remote_in_android_app_with_options_for_browserstack/versi...",
-    "count": 22,
-    "uniques": 4
-  },
-  {
-    "path": "/yashaka/selene/blob/master/examples/run_remote_in_android_chrome_with_options_for_browserstack/test_todomvc.py",
-    "title": "selene/examples/run_remote_in_android_chrome_with_options_for_browserstack/te...",
-    "count": 20,
-    "uniques": 4
-  },
-  {
-    "path": "/yashaka/selene/tree/master/tests",
-    "title": "selene/tests at master · yashaka/selene · GitHub",
+    "path": "/yashaka/selene/tree/master/selene",
+    "title": "selene/selene at master · yashaka/selene · GitHub",
     "count": 16,
-    "uniques": 5
+    "uniques": 7
+  },
+  {
+    "path": "/yashaka/selene/releases",
+    "title": "Releases · yashaka/selene · GitHub",
+    "count": 15,
+    "uniques": 9
   },
   {
     "path": "/yashaka/selene/blob/master/selene/core/entity.py",
@@ -36,10 +30,10 @@
     "uniques": 1
   },
   {
-    "path": "/yashaka/selene/tree/master/selene",
-    "title": "selene/selene at master · yashaka/selene · GitHub",
+    "path": "/yashaka/selene/tree/master/tests",
+    "title": "selene/tests at master · yashaka/selene · GitHub",
     "count": 14,
-    "uniques": 6
+    "uniques": 5
   },
   {
     "path": "/yashaka/selene/blob/master/selene/core/command.py",
@@ -48,15 +42,21 @@
     "uniques": 2
   },
   {
-    "path": "/yashaka/selene/releases",
-    "title": "Releases · yashaka/selene · GitHub",
-    "count": 13,
-    "uniques": 8
-  },
-  {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 11,
-    "uniques": 6
+    "count": 12,
+    "uniques": 7
+  },
+  {
+    "path": "/yashaka/selene/blob/master/README.md",
+    "title": "selene/README.md at master · yashaka/selene · GitHub",
+    "count": 10,
+    "uniques": 5
+  },
+  {
+    "path": "/yashaka/selene/blob/master/examples/run_remote_in_android_chrome_with_options_for_browserstack/test_todomvc.py",
+    "title": "selene/examples/run_remote_in_android_chrome_with_options_for_browserstack/te...",
+    "count": 10,
+    "uniques": 2
   }
 ]
