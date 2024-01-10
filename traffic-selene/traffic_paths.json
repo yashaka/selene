@@ -2,32 +2,38 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 170,
-    "uniques": 104
+    "count": 183,
+    "uniques": 111
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 46,
-    "uniques": 6
-  },
-  {
-    "path": "/yashaka/selene/blob/master/examples/run_local_android_app_with_options_for_appium/test_wikipedia.py",
-    "title": "selene/examples/run_local_android_app_with_options_for_appium/test_wikipedia....",
-    "count": 24,
-    "uniques": 3
-  },
-  {
-    "path": "/yashaka/selene/tree/master/examples/run_local_android_app_with_options_for_appium",
-    "title": "selene/examples/run_local_android_app_with_options_for_appium at master · yas...",
-    "count": 18,
-    "uniques": 2
+    "count": 43,
+    "uniques": 5
   },
   {
     "path": "/yashaka/selene/releases",
     "title": "Releases · yashaka/selene · GitHub",
-    "count": 15,
-    "uniques": 8
+    "count": 23,
+    "uniques": 10
+  },
+  {
+    "path": "/yashaka/selene/blob/master/examples/run_local_android_app_with_options_for_appium/test_wikipedia.py",
+    "title": "selene/examples/run_local_android_app_with_options_for_appium/test_wikipedia....",
+    "count": 22,
+    "uniques": 2
+  },
+  {
+    "path": "/yashaka/selene/blob/master/README.md",
+    "title": "selene/README.md at master · yashaka/selene · GitHub",
+    "count": 19,
+    "uniques": 7
+  },
+  {
+    "path": "/yashaka/selene/issues",
+    "title": "Issues · yashaka/selene · GitHub",
+    "count": 17,
+    "uniques": 9
   },
   {
     "path": "/yashaka/selene/blob/master/selene/core/entity.py",
@@ -36,27 +42,21 @@
     "uniques": 1
   },
   {
-    "path": "/yashaka/selene/issues",
-    "title": "Issues · yashaka/selene · GitHub",
-    "count": 13,
-    "uniques": 8
+    "path": "/yashaka/selene/tree/master/examples/run_local_android_app_with_options_for_appium",
+    "title": "selene/examples/run_local_android_app_with_options_for_appium at master · yas...",
+    "count": 15,
+    "uniques": 1
   },
   {
-    "path": "/yashaka/selene/blob/master/README.md",
-    "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 10,
-    "uniques": 4
+    "path": "/yashaka/selene/commits/master",
+    "title": "Commits · yashaka/selene · GitHub",
+    "count": 11,
+    "uniques": 6
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
     "count": 10,
-    "uniques": 4
-  },
-  {
-    "path": "/yashaka/selene/tree/master/tests",
-    "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 9,
     "uniques": 4
   }
 ]
