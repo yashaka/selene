@@ -1,8 +1,13 @@
 [
   {
     "referrer": "Google",
-    "count": 219,
-    "uniques": 69
+    "count": 239,
+    "uniques": 73
+  },
+  {
+    "referrer": "github.com",
+    "count": 82,
+    "uniques": 20
   },
   {
     "referrer": "yandex.kz",
@@ -10,37 +15,32 @@
     "uniques": 2
   },
   {
-    "referrer": "github.com",
-    "count": 68,
-    "uniques": 19
-  },
-  {
     "referrer": "qa.guru",
-    "count": 34,
-    "uniques": 7
+    "count": 30,
+    "uniques": 6
   },
   {
     "referrer": "yashaka.github.io",
-    "count": 10,
-    "uniques": 2
-  },
-  {
-    "referrer": "qiita.com",
-    "count": 5,
-    "uniques": 2
+    "count": 6,
+    "uniques": 3
   },
   {
     "referrer": "yandex.ru",
+    "count": 5,
+    "uniques": 4
+  },
+  {
+    "referrer": "autotest.how",
+    "count": 5,
+    "uniques": 3
+  },
+  {
+    "referrer": "docs.bw.vimpelcom.ru",
     "count": 4,
     "uniques": 3
   },
   {
     "referrer": "confluence.atl.ring.com",
-    "count": 4,
-    "uniques": 2
-  },
-  {
-    "referrer": "autotest.how",
     "count": 4,
     "uniques": 2
   },
