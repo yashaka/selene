@@ -2,26 +2,26 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 347,
-    "uniques": 192
+    "count": 345,
+    "uniques": 198
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 119,
+    "count": 96,
     "uniques": 26
-  },
-  {
-    "path": "/yashaka/selene/issues",
-    "title": "Issues · yashaka/selene · GitHub",
-    "count": 41,
-    "uniques": 14
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 37,
-    "uniques": 11
+    "count": 43,
+    "uniques": 12
+  },
+  {
+    "path": "/yashaka/selene/issues",
+    "title": "Issues · yashaka/selene",
+    "count": 40,
+    "uniques": 13
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
@@ -32,20 +32,14 @@
   {
     "path": "/yashaka/selene/blob/master/README.md",
     "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 32,
+    "count": 34,
     "uniques": 12
   },
   {
     "path": "/yashaka/selene/releases",
     "title": "Releases · yashaka/selene · GitHub",
-    "count": 30,
-    "uniques": 15
-  },
-  {
-    "path": "/yashaka/selene/blob/master/examples/run_local_android_app_with_options_for_appium/test_wikipedia.py",
-    "title": "selene/examples/run_local_android_app_with_options_for_appium/test_wikipedia....",
-    "count": 29,
-    "uniques": 2
+    "count": 33,
+    "uniques": 17
   },
   {
     "path": "/yashaka/selene/tree/master/examples/run_cross_platform",
@@ -58,5 +52,11 @@
     "title": "selene/docs at master · yashaka/selene · GitHub",
     "count": 25,
     "uniques": 7
+  },
+  {
+    "path": "/yashaka/selene/issues/287",
+    "title": "from selenium to selene · Issue #287 · yashaka/selene · GitHub",
+    "count": 23,
+    "uniques": 16
   }
 ]
