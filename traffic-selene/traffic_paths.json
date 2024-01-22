@@ -2,14 +2,14 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 345,
-    "uniques": 198
+    "count": 327,
+    "uniques": 192
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 96,
-    "uniques": 26
+    "count": 94,
+    "uniques": 25
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
@@ -19,9 +19,9 @@
   },
   {
     "path": "/yashaka/selene/issues",
-    "title": "Issues · yashaka/selene",
+    "title": "Issues · yashaka/selene · GitHub",
     "count": 40,
-    "uniques": 13
+    "uniques": 14
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
@@ -30,22 +30,22 @@
     "uniques": 11
   },
   {
-    "path": "/yashaka/selene/blob/master/README.md",
-    "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 34,
-    "uniques": 12
-  },
-  {
-    "path": "/yashaka/selene/releases",
-    "title": "Releases · yashaka/selene · GitHub",
-    "count": 33,
-    "uniques": 17
-  },
-  {
     "path": "/yashaka/selene/tree/master/examples/run_cross_platform",
     "title": "selene/examples/run_cross_platform at master · yashaka/selene · GitHub",
     "count": 26,
     "uniques": 4
+  },
+  {
+    "path": "/yashaka/selene/releases",
+    "title": "Releases · yashaka/selene · GitHub",
+    "count": 25,
+    "uniques": 16
+  },
+  {
+    "path": "/yashaka/selene/blob/master/README.md",
+    "title": "selene/README.md at master · yashaka/selene · GitHub",
+    "count": 25,
+    "uniques": 10
   },
   {
     "path": "/yashaka/selene/tree/master/docs",
@@ -54,9 +54,9 @@
     "uniques": 7
   },
   {
-    "path": "/yashaka/selene/issues/287",
-    "title": "from selenium to selene · Issue #287 · yashaka/selene · GitHub",
-    "count": 23,
-    "uniques": 16
+    "path": "/yashaka/selene/tree/master",
+    "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
+    "count": 24,
+    "uniques": 17
   }
 ]
