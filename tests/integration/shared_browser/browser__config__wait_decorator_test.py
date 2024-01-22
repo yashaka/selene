@@ -3,6 +3,8 @@ from selene.core.wait import Wait
 import selene
 import logging
 
+from tests import resources
+
 
 class StringHandler(logging.Handler):
     terminator = '\n'
@@ -58,7 +60,7 @@ def log_on_wait(prefix):
 def test_logging_via__wait_decorator(quit_shared_browser_afterwards):
     browser = selene.browser.with_(_wait_decorator=log_on_wait('[1] - '), timeout=0.3)
 
-    browser.open('http://todomvc.com/examples/emberjs/')
+    browser.open(resources.TODOMVC_URL)
 
     browser.element('#new-todo').type('a').press_enter()
     browser.with_(_wait_decorator=log_on_wait('[2] - ')).element('#new-todo').type(

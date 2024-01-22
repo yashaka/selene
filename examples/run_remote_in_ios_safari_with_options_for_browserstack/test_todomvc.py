@@ -4,6 +4,7 @@ from dotenv import dotenv_values
 from selenium.webdriver.common.options import ArgOptions
 
 from selene import browser, have
+from tests import resources
 
 
 class EnvField:
@@ -77,7 +78,7 @@ def test_complete_task():
     browser.config.driver_remote_url = 'http://hub.browserstack.com/wd/hub'
 
     # WHEN
-    browser.open('https://todomvc.com/examples/emberjs/')
+    browser.open(resources.TODOMVC_URL)
 
     browser.should(have.title_containing('TodoMVC'))
 

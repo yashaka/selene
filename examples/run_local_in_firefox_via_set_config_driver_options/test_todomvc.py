@@ -21,12 +21,13 @@
 # SOFTWARE.
 from selenium.webdriver import FirefoxOptions
 from selene import browser, have
+from tests import resources
 
 
 def test_completes_todo():
     browser.config.driver_options = FirefoxOptions()
 
-    browser.open('http://todomvc.com/examples/emberjs/')
+    browser.open(resources.TODOMVC_URL)
     browser.should(have.title_containing('TodoMVC'))
 
     browser.element('#new-todo').type('a').press_enter()

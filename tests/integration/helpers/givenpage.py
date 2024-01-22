@@ -89,3 +89,26 @@ class GivenPage:
 
     def execute_script_with_timeout(self, script, timeout):
         LoadedHtmlPage(self._driver).execute_script_with_timeout(script, timeout)
+
+    def execute_script(self, script):
+        LoadedHtmlPage(self._driver).execute_script(script)
+
+    def add_style_to_head(self, text_node):
+        self.execute_script(
+            f"""
+            var style = document.createElement('style')
+            style.appendChild(document.createTextNode(`{text_node}`))
+            document.getElementsByTagName('head')[0].appendChild(style)
+            """
+        )
+        return self
+
+    def add_script_to_head(self, text_node):
+        self.execute_script(
+            f"""
+            var script = document.createElement('script')
+            script.appendChild(document.createTextNode(`{text_node}`))
+            document.getElementsByTagName('head')[0].appendChild(script)
+            """
+        )
+        return self

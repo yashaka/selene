@@ -24,6 +24,7 @@ from selene import browser, Browser, have
 from selene.core.condition import Condition
 from selene.core.conditions import ElementCondition, BrowserCondition
 from selene.core.entity import Element
+from tests import resources
 
 
 def have_produced_todos(number: int) -> Condition[Element]:
@@ -38,7 +39,7 @@ def have_produced_todos(number: int) -> Condition[Element]:
 
 
 def test_wait_for_produced_todos_v1():
-    browser.open('http://todomvc.com/examples/emberjs/')
+    browser.open(resources.TODOMVC_URL)
     browser.element('#new-todo').should(have_produced_todos(3))
 
 

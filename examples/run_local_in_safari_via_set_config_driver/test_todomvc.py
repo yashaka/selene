@@ -25,11 +25,13 @@ from selenium.webdriver.safari.options import Options as SafariOptions
 from selene import browser, by, have
 from selenium import webdriver
 
+from tests import resources
+
 
 def test_completes_todo():
     browser.config.driver = webdriver.Safari(service=SafariService())
 
-    browser.open('http://todomvc.com/examples/emberjs/')
+    browser.open(resources.TODOMVC_URL)
     browser.should(have.title_containing('TodoMVC'))
 
     browser.element('#new-todo').type('a').press_enter()

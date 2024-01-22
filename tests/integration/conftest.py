@@ -15,7 +15,12 @@ from tests.helpers import headless_chrome_options
 
 @pytest.fixture(scope='session')
 def chrome_driver(request):
-    if request.config.getoption('--headless', True):
+    dotenv = dotenv_values()
+    headless = (
+        str(request.config.getoption('--headless', dotenv.get('headless'))).lower()
+        == 'true'
+    )
+    if headless:
         chrome_driver = webdriver.Chrome(
             options=headless_chrome_options(),
             service=ChromeService(

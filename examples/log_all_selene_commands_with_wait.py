@@ -7,6 +7,8 @@ from selene import have, browser
 from selene.core.wait import Wait
 import logging
 
+from tests import resources
+
 
 class SeleneFormatter(logging.Formatter):
     translations = (
@@ -97,7 +99,7 @@ def test_logging_via__wait_decorator():
 
     """
 
-    browser.open('http://todomvc.com/examples/emberjs/')
+    browser.open(resources.TODOMVC_URL)
 
     browser.element('#new-todo').type('a').press_enter()
     browser.element('#new-todo').type('b').press_enter()

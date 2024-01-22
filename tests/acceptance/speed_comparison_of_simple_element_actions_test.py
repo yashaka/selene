@@ -28,10 +28,11 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selene import be
 
 from selene.support.shared import browser
+from tests import resources
 from tests.acceptance.helpers.helper import get_test_driver
 from tests.helpers import time_spent
 
-TODOMVC_URL = 'https://todomvc.com/examples/emberjs/'
+TODOMVC_URL = resources.TODOMVC_URL
 
 selenium_browser: WebDriver
 

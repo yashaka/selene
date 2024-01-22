@@ -24,8 +24,11 @@ from typing import Union, Optional
 
 import typing
 from selenium.webdriver import Keys
+from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.support.wait import WebDriverWait
 
 from selene.core.entity import Element, Collection, Browser
+from selene.core.exceptions import _SeleneError
 from selene.core.wait import Command
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.actions import interaction
@@ -102,6 +105,57 @@ def _long_press(duration=1.0):
         command.__call__(element)
 
     return command
+
+
+# TODO: consider
+#       .with(ensure_state_changed=True).perform(command.drag_and_drop_to(target))
+#       over
+#       .perform(command.drag_and_drop_to(target, assert_location_changed=True))
+#       but how should we interpret `ensure_state_changed` for other commands?
+#       – case by case? i.e. location_changed for drag_and_drop_to
+#         and something different for other commands?
+#       – or maybe actually check the overall state of the page,
+#         i.e. something like page_source_changed or dom_changed?
+def drag_and_drop_to(
+    target: Element, _assert_location_changed: bool = False
+) -> Command[Element]:
+    """
+    Args:
+        target: a destination element to drag and drop to
+        _assert_location_changed: False by default, but if True,
+            then will assert that element was dragged to the new location,
+            hence forcing a command retry if command was under waiting.
+            This option is marked as experimental (by leading underscore),
+            it may be renamed or removed completely.
+    """
+
+    def func(source: Element):
+        source_webelement = source.locate()
+        source_location = (
+            source_webelement.location if _assert_location_changed else None
+        )
+
+        ActionChains(source.config.driver).drag_and_drop(
+            source_webelement,
+            target.locate(),
+        ).perform()
+
+        if _assert_location_changed and source_location == source.locate().location:
+            raise _SeleneError('Element was not dragged to the new place')
+
+    return Command(f'drag and drop to: {target}', func)
+
+
+# TODO: consider adding 0 as default for x and y
+def drag_and_drop_by_offset(x: int, y: int) -> Command[Element]:
+    def func(source: Element):
+        ActionChains(source.config.driver).drag_and_drop_by_offset(
+            source.locate(),
+            x,
+            y,
+        ).perform()
+
+    return Command(f'drag and drop by offset: x={x}, y={y}', func)
 
 
 class js:  # pylint: disable=invalid-name
@@ -240,3 +294,128 @@ class js:  # pylint: disable=invalid-name
             ]
         ),
     )
+
+    @staticmethod
+    def drag_and_drop_to(target: Element) -> Command[Element]:
+        """
+        Simulates drag and drop via JavaScript.
+
+        May not work everywhere. Among known cases:
+        * does not work on https://mui.com/material-ui/react-slider/#ContinuousSlider
+          where the normal drag and drop works fine.
+        """
+
+        def func(source: Element):
+            script = """
+            (function() {
+              function createEvent(typeOfEvent) {
+                var event = document.createEvent('CustomEvent');
+                event.initCustomEvent(typeOfEvent, true, true, null);
+                event.dataTransfer = {
+                  data: {},
+                  setData: function(key, value) {
+                    this.data[key] = value;
+                  },
+                  getData: function(key) {
+                    return this.data[key];
+                  }
+                };
+                return event;
+              }
+
+              function dispatchEvent(element, event, transferData) {
+                if (transferData !== undefined) {
+                  event.dataTransfer = transferData;
+                }
+                if (element.dispatchEvent) {
+                  element.dispatchEvent(event);
+                } else if (element.fireEvent) {
+                  element.fireEvent("on" + event.type, event);
+                }
+              }
+
+              function dragAndDrop(element, target) {
+                var dragStartEvent = createEvent('dragstart');
+                dispatchEvent(element, dragStartEvent);
+                var dropEvent = createEvent('drop');
+                dispatchEvent(target, dropEvent, dragStartEvent.dataTransfer);
+                var dragEndEvent = createEvent('dragend');
+                dispatchEvent(element, dragEndEvent, dropEvent.dataTransfer);
+              }
+
+              return dragAndDrop(arguments[0], arguments[1]);
+            })(...arguments)
+            """.strip()
+            source.config.driver.execute_script(
+                script,
+                source.locate(),
+                target.locate(),
+            )
+
+        return Command(f'drag and drop to: {target}', func)
+
+    @staticmethod
+    def drop_file(path: str) -> Command[Element]:
+        """
+        Simulates via JavaScript the “drag and drop” of file into self (this element).
+
+        The command is useful in cases,
+        when there is no actual hidden input of type file to `send_keys(path)` to.
+
+        Args:
+            path: an absolute path to the file
+        """
+
+        # TODO: should we move them to params?
+        #       what do they actually do? something like this? –
+        #           xoffset: x offset (from this element center) to drop file
+        #           yoffset: y offset (from this element center) to drop file
+        xoffset = 0
+        yoffset = 0
+
+        def func(source: Element):
+            script = """
+            var target = arguments[0],
+            offsetX = arguments[1],
+            offsetY = arguments[2],
+            document = target.ownerDocument || document,
+            window = document.defaultView || window;
+
+            var input = document.createElement('INPUT');
+            input.type = 'file';
+            input.style.display = 'none';
+            input.onchange = function () {
+              var rect = target.getBoundingClientRect(),
+                  x = rect.left + (offsetX || (rect.width >> 1)),
+                  y = rect.top + (offsetY || (rect.height >> 1)),
+                  dataTransfer = {
+                    files: this.files,
+                    types: [ 'Files' ],
+                  };
+
+              ['dragenter', 'dragover', 'drop'].forEach(function (name) {
+                var evt = document.createEvent('MouseEvent');
+                evt.initMouseEvent(name, !0, !0, window, 0, 0, 0, x, y, !1, !1, !1, !1, 0, null);
+                evt.dataTransfer = dataTransfer;
+                target.dispatchEvent(evt);
+              });
+
+              setTimeout(function () { document.body.removeChild(input); }, 25);
+            };
+            document.body.appendChild(input);
+            return input;
+            """.strip()
+
+            temp_input = source.config.driver.execute_script(
+                script,
+                source.locate(),
+                xoffset,
+                yoffset,
+            )
+            temp_input.send_keys(path)
+
+            WebDriverWait(source.config.driver, 50).until(
+                expected_conditions.staleness_of(temp_input)
+            )
+
+        return Command(f'drop file: {path}', func)

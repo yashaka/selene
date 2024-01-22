@@ -105,7 +105,7 @@ def web():
 
 
 # def test_add_todo_1(web):
-#     web.open('https://todomvc.com/examples/emberjs/')
+#     web.open(resources.TODOMVC_URL)
 #     web.element('#new-todo').type('a').press_enter()
 #     web.all('#todo-list>li').should(have.exact_texts('a'))
 #

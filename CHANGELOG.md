@@ -91,13 +91,37 @@ TODOs:
         - maybe make browser.switch ... to work with retry logic
             or make separate command.switch...
 
-## 2.0.0rc? (to be released on 13.04.2023)
+## 2.0.0rc? (to be released on DD.MM.2024)
 
 - set window size inside driver factory
 - add safari support (trim space on text in case of safari)
 - example of basic auth and auth via cookies (https://github.com/autotests-cloud/example_project/blob/master/src/test/java/cloud/autotests/tests/demowebshop/LoginTests.java)
 - can we force order of how `selene.*` is rendered on autocomplete? via `__all__`...
 - deprecate `have.js_returned` in favour of `have.script_returned`
+
+## 2.0.0rc5 (released on 22.01.2024)
+
+### drag & drop in advanced commands
+
+when Selenium can interact with simple draggable controls:
+* `browser.element('#volume-slider-thumb').perform(command.drag_and_drop_to(browser.element('#volume-up')))`
+* when for some reason, for example because of not loaded page yet, you have to retry dragging until we can asset that element actually was moved to the new location:
+  * `browser.element('#volume-slider-thumb').perform(command.drag_and_drop_to(browser.element('#volume-up'), _assert_location_changed=True))`
+    the `_assert_location_changed=True` is marked as experimental by `_` prefix,
+    so it may be renamed or removed in future releases.
+* `browser.element('#volume-slider-thumb').perform(command.drag_and_drop_by_offset(x=-10, y=0))`
+
+when Selenium can not interact with simple draggable controls:
+* `browser.element('#volume-slider-thumb').perform(command.js.drag_and_drop_to(browser.element('#volume-up')))`
+
+when there is no input element with type file, and you need to simulate the "drop file" by JS:
+* `browser.element('#drag-file-here-to-upload').perform(command.js.drop_file('/path/to/file'))`
+
+Find more examples at these tests:
+* element__perform__drag_and_drop_by_offset_test.py
+* element__perform__drag_and_drop_to_test.py
+* element__perform__drop_file_test.py
+* element__perform__js__drag_and_drop_to_test.py
 
 ## 2.0.0rc4 (released on 29.07.2023)
 

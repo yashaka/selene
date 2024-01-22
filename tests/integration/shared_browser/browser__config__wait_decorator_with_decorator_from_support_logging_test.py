@@ -4,6 +4,8 @@ from selene import have, be
 import selene
 import logging
 
+from tests import resources
+
 
 class StringHandler(logging.Handler):
     terminator = '\n'
@@ -52,7 +54,7 @@ def test_logging_via__wait_decorator(quit_shared_browser_afterwards):
         timeout=0.3,
     )
 
-    browser.open('http://todomvc.com/examples/emberjs/')
+    browser.open(resources.TODOMVC_URL)
 
     (browser.element('#new-todo').should(be.enabled.and_(be.visible)).should(be.blank))
     browser.element('#new-todo').type('a').press_enter()

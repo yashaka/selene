@@ -20,6 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 from selene import have, browser
+from tests import resources
 
 
 def setup_function():
@@ -32,7 +33,7 @@ def teardown_function():
 
 
 def test_add_todos():
-    browser.open('https://todomvc.com/examples/emberjs/')
+    browser.open(resources.TODOMVC_URL)
 
     browser.element('#new-todo').set_value('a').press_enter()
     browser.element('#new-todo').set_value('b').press_enter()

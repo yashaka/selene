@@ -1,9 +1,10 @@
 from selene import have
 from selene.support.shared import browser
+from tests import resources
 
 
 def test_complete_task():
-    browser.open('http://todomvc.com/examples/emberjs/')
+    browser.open(resources.TODOMVC_URL)
 
     browser.element('#new-todo').type('a').press_enter()
     browser.element('#new-todo').type('b').press_enter()

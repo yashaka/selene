@@ -20,9 +20,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 from selene import have, be, by, browser
+from tests import resources
 from tests.base_test import BaseTest
 
-APP_URL = 'https://todomvc.com/examples/emberjs/'
+APP_URL = resources.TODOMVC_URL
 
 
 def setup_module():

@@ -20,12 +20,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 from selene import browser, have
+from tests import resources
 
 
 def test_completes_todo():
     browser.config.driver_name = 'firefox'
 
-    browser.open('http://todomvc.com/examples/emberjs/')
+    browser.open(resources.TODOMVC_URL)
     browser.should(have.title_containing('TodoMVC'))
 
     browser.element('#new-todo').type('a').press_enter()

@@ -1,10 +1,11 @@
 from selene import browser, have, be
+from tests import resources
 
 
 def test_one_element_when_enabled():
     browser.config.timeout = 0.5
     browser.config.log_outer_html_on_failure = True
-    browser.open('http://todomvc.com/examples/emberjs/')
+    browser.open(resources.TODOMVC_URL)
 
     message = None
     try:
@@ -34,7 +35,7 @@ def test_one_element_when_disabled():
 def test_collection_when_enabled():
     browser.config.timeout = 0.5
     browser.config.log_outer_html_on_failure = True
-    browser.open('http://todomvc.com/examples/emberjs/')
+    browser.open(resources.TODOMVC_URL)
 
     message = None
     try:

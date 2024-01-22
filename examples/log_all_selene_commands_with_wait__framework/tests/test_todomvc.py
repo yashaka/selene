@@ -10,6 +10,8 @@ from selene import browser, have
 from selene.core.wait import Wait
 import logging
 
+from tests import resources
+
 
 def test_add_todos():
     """
@@ -36,7 +38,7 @@ def test_add_todos():
 
     """
 
-    browser.open('http://todomvc.com/examples/emberjs/')
+    browser.open(resources.TODOMVC_URL)
 
     browser.element('#new-todo').type('a').press_enter()
     browser.element('#new-todo').type('b').press_enter()

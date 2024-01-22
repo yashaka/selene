@@ -30,6 +30,7 @@ from selene import by, have, Browser, Config, support
 import pytest
 
 from selene.support.webdriver import WebHelper
+from tests import resources
 
 
 class Settings:
@@ -85,7 +86,7 @@ def web():
 
 
 def test_add_todo_1(web):
-    web.open('https://todomvc.com/examples/emberjs/')
+    web.open(resources.TODOMVC_URL)
     web.element('#new-todo').type('a').press_enter()
     web.all('#todo-list>li').should(have.exact_texts('a'))
 
@@ -98,7 +99,7 @@ def test_add_todo_2_at_same_page(web):
 def test_add_todo_3_at_new_page_in_fresh_browser(web):
     Settings.reset_driver = True
     assert Settings.reset_driver
-    web.open('https://todomvc.com/examples/emberjs/')
+    web.open(resources.TODOMVC_URL)
     assert not Settings.reset_driver
 
     web.element('#new-todo').type('c').press_enter()
