@@ -1,13 +1,13 @@
 [
   {
     "referrer": "Google",
-    "count": 741,
-    "uniques": 133
+    "count": 752,
+    "uniques": 135
   },
   {
     "referrer": "github.com",
-    "count": 108,
-    "uniques": 32
+    "count": 110,
+    "uniques": 34
   },
   {
     "referrer": "selene-docs-test.readthedocs.io",
@@ -21,13 +21,13 @@
   },
   {
     "referrer": "yandex.ru",
-    "count": 35,
-    "uniques": 10
+    "count": 36,
+    "uniques": 11
   },
   {
     "referrer": "school.qa.guru",
-    "count": 20,
-    "uniques": 4
+    "count": 30,
+    "uniques": 6
   },
   {
     "referrer": "automated-testing.info",
