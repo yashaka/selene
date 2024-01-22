@@ -29,6 +29,14 @@ Selene was inspired by [Selenide][selenide] from Java world.
 
 Tests with Selene can be built either in a simple straightforward "selenide" style or with PageObjects composed from Widgets i.e. reusable element components.
 
+Currently, this [official documentation](https://yashaka.github.io/selene/) is far from being complete. Please, use the following links to get started from scratch:
+
+* [Selenides – Quick Start](https://autotest.how/selenides-quick-start-docs-md)
+* [Selenides in Action](https://autotest.how/selenides-in-action-docs-md)
+* [Selene Cheatsheet](https://autotest.how/selene-cheatsheet-md)
+
+Find more below...
+
 - [Versions](#versions)
     - [Migration Guide](#migration-guide)
 - [Prerequisites](#prerequisites)
@@ -46,7 +54,7 @@ Tests with Selene can be built either in a simple straightforward "selenide" sty
 
 ## Versions
 
-- Latest recommended version to use is [2.0.0b17+][latest-recommended-version]
+- Latest recommended version to use is [2.0.0rc5+][latest-recommended-version]
     - it's a completely new version of selene, with improved API and speed
     - supports Python `3.7+`
     - bundled with Selenium `4.1+`
@@ -549,7 +557,7 @@ TBD
 
 <!-- References -->
 [selenide]: http://selenide.org/
-[latest-recommended-version]: https://pypi.org/project/selene/2.0.0rc2/
+[latest-recommended-version]: https://pypi.org/project/selene/2.0.0rc5/
 [brunch-ver-1]: https://github.com/yashaka/selene/tree/1.x
 [selene-stable]: https://pypi.org/project/selene/1.0.2/
 [python-37]: https://www.python.org/downloads/release/python-370/
