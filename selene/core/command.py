@@ -116,6 +116,12 @@ def _long_press(duration=1.0):
 #         and something different for other commands?
 #       – or maybe actually check the overall state of the page,
 #         i.e. something like page_source_changed or dom_changed?
+#       what about:
+#       perform(command.drag_and_drop_to(target).to_change_location())
+#       over
+#       .perform(command.drag_and_drop_to(target, assert_location_changed=True))
+
+
 def drag_and_drop_to(
     target: Element, _assert_location_changed: bool = False
 ) -> Command[Element]:
@@ -294,6 +300,8 @@ class js:  # pylint: disable=invalid-name
             ]
         ),
     )
+
+    # TODO: add js.drag_and_drop_by_offset(x, y)
 
     @staticmethod
     def drag_and_drop_to(target: Element) -> Command[Element]:
