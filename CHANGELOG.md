@@ -99,6 +99,10 @@ TODOs:
 - can we force order of how `selene.*` is rendered on autocomplete? via `__all__`...
 - deprecate `have.js_returned` in favour of `have.script_returned`
 
+## 2.0.0rc6 (to be released on ??.01.2024)
+
+* drop py3.7 support + upgrade selenium>=4.12.0
+
 ## 2.0.0rc5 (released on 22.01.2024)
 
 ### drag & drop in advanced commands

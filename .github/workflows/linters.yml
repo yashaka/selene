@@ -42,7 +42,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:
-          python-version: '3.7'
+          python-version: '3.8'
       - run: |
           pip install black
           .run/lint_black.sh
@@ -54,7 +54,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:
-          python-version: '3.7'
+          python-version: '3.8'
       - name: Pycodestyle
         run: |
           pip install pycodestyle
@@ -67,7 +67,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:
-          python-version: '3.7'
+          python-version: '3.8'
       - name: Pylint
         run: |
           pip install pylint
@@ -80,7 +80,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:
-          python-version: '3.7'
+          python-version: '3.8'
       - name: Pylint Full Report
         run: |
           pip install pylint
@@ -95,7 +95,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:
-          python-version: '3.7'
+          python-version: '3.8'
       - name: Mypy
         run: |
           pip install mypy
