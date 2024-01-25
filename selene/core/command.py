@@ -123,16 +123,22 @@ def _long_press(duration=1.0):
 
 
 def drag_and_drop_to(
-    target: Element, _assert_location_changed: bool = False
+    target: Element,
+    *,
+    _pause_in_between: float = 0.0,
+    _assert_location_changed: bool = False,
 ) -> Command[Element]:
     """
     Args:
         target: a destination element to drag and drop to
+        _pause_in_between: pause in seconds between all intermediate actions
+            during drag and drop.
         _assert_location_changed: False by default, but if True,
             then will assert that element was dragged to the new location,
             hence forcing a command retry if command was under waiting.
-            This option is marked as experimental (by leading underscore),
-            it may be renamed or removed completely.
+
+    The options marked by leading underscore are experimental
+    and may be renamed or removed completely in the future.
     """
 
     def func(source: Element):
@@ -140,16 +146,35 @@ def drag_and_drop_to(
         source_location = (
             source_webelement.location if _assert_location_changed else None
         )
+        actions = ActionChains(source.config.driver)
 
-        ActionChains(source.config.driver).drag_and_drop(
-            source_webelement,
-            target.locate(),
-        ).perform()
+        actions.move_to_element(source_webelement)
+        actions.w3c_actions.pointer_action.click_and_hold()
+
+        # key_action.pause accepts int, how does it even work?
+        # how to make it usable in our case?
+        actions.w3c_actions.key_action.pause(round(_pause_in_between))
+
+        actions.move_to_element(target.locate())
+
+        # this is the only pause that was not present in original selenium's code
+        # of actions.drag_and_drop:
+        actions.pause(_pause_in_between)
+
+        actions.w3c_actions.pointer_action.release()
+
+        actions.w3c_actions.key_action.pause(round(_pause_in_between))
+
+        actions.perform()
 
         if _assert_location_changed and source_location == source.locate().location:
             raise _SeleneError('Element was not dragged to the new place')
 
-    return Command(f'drag and drop to: {target}', func)
+    return Command(
+        f'drag and drop to: {target} '
+        f'with pause in between: {_pause_in_between} seconds',
+        func,
+    )
 
 
 # TODO: consider adding 0 as default for x and y
