@@ -27,7 +27,8 @@ from selenium.webdriver import Keys
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 
-from selene.core.entity import Element, Collection, Browser
+from selene.core.entity import Element, Collection
+from selene.core._browser import Browser
 from selene.core.exceptions import _SeleneError
 from selene.core.wait import Command
 from selenium.webdriver import ActionChains

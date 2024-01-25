@@ -30,7 +30,8 @@ from selene.core.conditions import (
     CollectionCondition,
     BrowserCondition,
 )
-from selene.core.entity import Collection, Element, Browser
+from selene.core.entity import Collection, Element
+from selene.core._browser import Browser
 
 # TODO: consider moving to selene.match.element.is_visible, etc...
 element_is_visible: Condition[Element] = ElementCondition.raise_if_not(

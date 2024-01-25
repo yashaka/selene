@@ -24,7 +24,8 @@ from typing import Any, Union, Iterable, Optional
 
 from selene.core import match
 from selene.core.condition import Condition
-from selene.core.entity import Element, Collection, Browser
+from selene.core.entity import Element, Collection
+from selene.core._browser import Browser
 from selene.support.conditions import not_ as _not_
 
 no = _not_

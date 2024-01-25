@@ -22,7 +22,7 @@
 
 # --- BASE -- #
 
-from selene.core.entity import Browser
+from selene.core._browser import Browser
 from selene.core.configuration import Config
 
 from selene.support import by

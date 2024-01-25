@@ -101,6 +101,59 @@ TODOs:
 
 ## 2.0.0rc6 (released on 25.01.2024)
 
+### Experimental browser._actions
+
+`browser._actions` is an instance of experimental _Actions class – an alternative implementation of ActionChains from Selenium... 
+
+So you can use:
+
+```python
+from selene import browser
+from selene.support.shared.jquery_style import s
+
+browser._actions.move_to(s('#point1')).pause(1).click_and_hold(s('#point1')).pause(1).move_by_offset(0, 5).move_to(s('#point2')).pause(1).release().perform()
+```
+
+instead of something like:
+
+```python
+from selene import browser
+from selene.support.shared.jquery_style import s
+from selenium.webdriver.common.action_chains import ActionChains
+
+ActionChains(browser.driver).move_to_element(s('#point1').locate()).pause(1).click_and_hold(s('#point1').locate()).pause(1).move_by_offset(0, 5).move_to_element(s('#point2').locate()).pause(1).release().perform()
+```
+
+or actually even instead of this:
+
+```python
+from selene import browser, be
+from selene.support.shared.jquery_style import s
+from selenium.webdriver.common.action_chains import ActionChains
+
+ActionChains(browser.driver).move_to_element(s('#point1').should(be.in_dom).locate()).pause(1).click_and_hold(s('#point1').should(be.in_dom).locate()).pause(1).move_by_offset(0, 5).move_to_element(s('#point2').should(be.in_dom).locate()).pause(1).release().perform()
+```
+
+Here are advantages of Selene's _actions over Selenium's ActionChains:
+
+* the code is more concise
+* you can pass Selene's elements to it, instead of Selenium's webelements
+* adding new command to the chain automatically includes automatic waiting for element to be in DOM
+* if some error happens inside `.perform` – it will be automatically retried in context of common Selene's implicit waiting logic
+
+Here are some open points regarding this implementation and why this feature is marked as experimental:
+* the implicit waiting are yet not same powerful as in other Selene's commands
+  * error messages are less readable, too low level
+  * not sure if retry logic inside `.perform` is needed at all... can hardly imagine any failure there that can be fixed by retrying
+* not sure how will it work with Appium drivers...
+
+### Some inner refactoring...
+
+* moved Browser class from selene.core.entity.py to selene.core._browser.py
+  (yet the module is named as experimental, yet the safest way to import Browser is `from selene import Browser` that is unchanged!)
+
+## 2.0.0rc6 (released on 25.01.2024)
+
 ### Goodbye python 3.7 and webdriver-manager 👋🏻
 
 * drop py3.7 support + upgrade selenium>=4.12.0

@@ -26,7 +26,8 @@ from selene.core import match as _match
 
 # --- be.* conditions --- #
 from selene.core.condition import Condition
-from selene.core.entity import Element, Collection, Browser
+from selene.core.entity import Element, Collection
+from selene.core._browser import Browser
 
 # TODO: consider refactoring to class for better extendability
 #       when creating custom conditions

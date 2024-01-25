@@ -24,7 +24,8 @@ from typing import List, Dict, Any, Union
 
 from selenium.webdriver.remote.webelement import WebElement
 
-from selene.core.entity import Browser, Element, Collection
+from selene.core.entity import Element, Collection
+from selene.core._browser import Browser
 from selene.core.wait import Query
 
 

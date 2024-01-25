@@ -28,9 +28,7 @@ from selene.core.configuration import (
 
 Config = _CustomConfigForCustomBrowser
 
-from selene.core.entity import (
-    Browser as _CustomBrowser,
-)
+from .core._browser import Browser as _CustomBrowser
 
 Browser = _CustomBrowser
 
