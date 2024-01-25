@@ -2,38 +2,32 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 434,
-    "uniques": 233
+    "count": 397,
+    "uniques": 208
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 110,
-    "uniques": 32
+    "count": 104,
+    "uniques": 29
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 51,
-    "uniques": 15
+    "count": 47,
+    "uniques": 14
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 43,
-    "uniques": 11
-  },
-  {
-    "path": "/yashaka/selene/issues",
-    "title": "Issues · yashaka/selene · GitHub",
-    "count": 38,
-    "uniques": 16
+    "count": 37,
+    "uniques": 9
   },
   {
     "path": "/yashaka/selene/blob/master/README.md",
     "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 34,
-    "uniques": 11
+    "count": 31,
+    "uniques": 10
   },
   {
     "path": "/yashaka/selene/releases",
@@ -42,21 +36,27 @@
     "uniques": 20
   },
   {
-    "path": "/yashaka/selene/tree/master",
-    "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 27,
-    "uniques": 17
+    "path": "/yashaka/selene/issues",
+    "title": "Issues · yashaka/selene · GitHub",
+    "count": 30,
+    "uniques": 16
+  },
+  {
+    "path": "/yashaka/selene/releases/tag/2.0.0rc5",
+    "title": "Release 2.0.0rc5 · yashaka/selene · GitHub",
+    "count": 23,
+    "uniques": 16
   },
   {
     "path": "/yashaka/selene/tree/master/examples/run_cross_platform",
     "title": "selene/examples/run_cross_platform at master · yashaka/selene · GitHub",
-    "count": 26,
-    "uniques": 4
+    "count": 22,
+    "uniques": 3
   },
   {
-    "path": "/yashaka/selene/tree/master/docs",
-    "title": "selene/docs at master · yashaka/selene · GitHub",
-    "count": 25,
-    "uniques": 7
+    "path": "/yashaka/selene/blob/master/CHANGELOG.md",
+    "title": "selene/CHANGELOG.md at master · yashaka/selene · GitHub",
+    "count": 20,
+    "uniques": 4
   }
 ]
