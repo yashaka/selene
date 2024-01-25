@@ -25,8 +25,6 @@ import os
 import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager  # type: ignore
-from selene.support._extensions.webdriver_manager import ChromeType  # type: ignore
 
 from selene import have, be, browser, Browser, Config, command, support
 from selene.core import query
@@ -40,11 +38,7 @@ EMPTY_PAGE_URL = resources.url('empty.html')
 @pytest.fixture(scope='module')
 def the_driver():
     driver = webdriver.Chrome(
-        service=Service(
-            support._extensions.webdriver_manager.patch._to_find_chromedrivers_from_115(
-                ChromeDriverManager(chrome_type=ChromeType.GOOGLE)
-            ).install()
-        ),
+        service=Service(),
         options=headless_chrome_options(),
     )
 

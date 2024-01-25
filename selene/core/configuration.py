@@ -34,7 +34,6 @@ from typing import Callable, Optional, Any
 from selenium.webdriver.common.options import BaseOptions
 from selenium.webdriver.common.service import Service
 
-from selene import support
 from selene.common import fp, helpers
 from selene.common.data_structures import persistent
 from selene.common.fp import F
@@ -63,64 +62,23 @@ def _build_local_driver_by_name_or_remote_by_url_and_options(
     from selenium.webdriver.firefox.service import Service as FirefoxService
     from selenium.webdriver.edge.service import Service as EdgeService  # type: ignore
 
-    from selene.support._extensions.webdriver_manager import ChromeType  # type: ignore
-
-    from webdriver_manager.chrome import ChromeDriverManager  # type: ignore
-    from webdriver_manager.firefox import GeckoDriverManager  # type: ignore
-    from webdriver_manager.microsoft import EdgeChromiumDriverManager  # type: ignore
-
-    def install_and_build_chrome():
-        # TODO: consider simplifying the logic... to much of ifs
-        #       probably all ifs were already before calling this function
-        #       see example of simplification in install_and_build_firefox
-        if config.driver_options and not isinstance(
-            config.driver_options, ChromeOptions
-        ):
-            raise ValueError(
-                f'Default config.build_driver_strategy ("driver factory"), '
-                f'if config.driver_name is set to "chrome", - '
-                f'expects only instance of ChromeOptions or None'
-                f'in config.driver_options,'
-                f'but got: {config.driver_options}'
-            )
-
-        driver_manager = (
-            support._extensions.webdriver_manager.patch._to_find_chromedrivers_from_115(
-                ChromeDriverManager(chrome_type=ChromeType.GOOGLE)
-            )
-        )
-
+    def build_chrome():
         return Chrome(
-            service=config.driver_service or ChromeService(driver_manager.install()),
+            service=config.driver_service or ChromeService(),
             options=config.driver_options,
         )
 
-    def install_and_build_firefox():
+    def build_firefox():
         return Firefox(
-            service=config.driver_service
-            or FirefoxService(GeckoDriverManager().install()),
+            service=config.driver_service or FirefoxService(),
             options=config.driver_options,
         )
 
-    def install_and_build_edge():
-        if config.driver_options:
-            if isinstance(config.driver_options, EdgeOptions):
-                return Edge(
-                    service=config.driver_service
-                    or EdgeService(EdgeChromiumDriverManager().install()),
-                    options=config.driver_options,
-                )
-            else:
-                raise ValueError(
-                    f'Default config.build_driver_strategy, '
-                    f'if config.driver_name is set to "edge", - '
-                    f'expects only instance of EdgeOptions or None in config.driver_options,'
-                    f'but got: {config.driver_options}'
-                )
-        else:
-            return Edge(
-                service=config.driver_service or (EdgeChromiumDriverManager().install())
-            )
+    def build_edge():
+        return Edge(
+            service=config.driver_service or EdgeService(),
+            options=config.driver_options,
+        )
 
     def build_remote_driver():
         from selenium.webdriver import Remote
@@ -169,9 +127,9 @@ def _build_local_driver_by_name_or_remote_by_url_and_options(
         )
 
     return {  # type: ignore
-        'chrome': install_and_build_chrome,
-        'firefox': install_and_build_firefox,
-        'edge': install_and_build_edge,
+        'chrome': build_chrome,
+        'firefox': build_firefox,
+        'edge': build_edge,
         'remote': build_remote_driver,
         'appium': build_appium_driver,
     }.get(

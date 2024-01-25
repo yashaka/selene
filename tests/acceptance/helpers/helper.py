@@ -22,17 +22,7 @@
 
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
-from selene.support._extensions.webdriver_manager import ChromeType
-
-from selene import support
 
 
 def get_test_driver():
-    return webdriver.Chrome(
-        service=Service(
-            support._extensions.webdriver_manager.patch._to_find_chromedrivers_from_115(
-                ChromeDriverManager(chrome_type=ChromeType.GOOGLE)
-            ).install()
-        )
-    )
+    return webdriver.Chrome(service=Service())

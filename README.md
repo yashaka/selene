@@ -155,7 +155,7 @@ pip install selene
 
 ### from sources
 
-GIVEN webdriver and webdriver_manager are already installed
+GIVEN webdriver
 
 THEN
 

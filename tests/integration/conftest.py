@@ -5,9 +5,6 @@ from dotenv import dotenv_values
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.firefox.service import Service as FirefoxService
-from webdriver_manager.chrome import ChromeDriverManager
-from webdriver_manager.firefox import GeckoDriverManager
-from selene.support._extensions.webdriver_manager import ChromeType
 
 from selene import Config, Browser, support
 from tests.helpers import headless_chrome_options
@@ -23,20 +20,10 @@ def chrome_driver(request):
     if headless:
         chrome_driver = webdriver.Chrome(
             options=headless_chrome_options(),
-            service=ChromeService(
-                support._extensions.webdriver_manager.patch._to_find_chromedrivers_from_115(
-                    ChromeDriverManager(chrome_type=ChromeType.GOOGLE)
-                ).install()
-            ),
+            service=ChromeService(),
         )
     else:
-        chrome_driver = webdriver.Chrome(
-            service=ChromeService(
-                support._extensions.webdriver_manager.patch._to_find_chromedrivers_from_115(
-                    ChromeDriverManager(chrome_type=ChromeType.GOOGLE)
-                ).install()
-            )
-        )
+        chrome_driver = webdriver.Chrome(service=ChromeService())
     yield chrome_driver
     chrome_driver.quit()
 
@@ -110,9 +97,7 @@ def the_module_remote_browser():
 
 @pytest.fixture(scope='session')
 def firefox_driver():
-    gecko_driver = webdriver.Firefox(
-        service=FirefoxService(GeckoDriverManager().install())
-    )
+    gecko_driver = webdriver.Firefox(service=FirefoxService())
     yield gecko_driver
     gecko_driver.quit()
 
@@ -130,19 +115,9 @@ def function_browser(request):
     if request.config.getoption('--headless', True):
         chrome_driver = webdriver.Chrome(
             options=headless_chrome_options(),
-            service=ChromeService(
-                support._extensions.webdriver_manager.patch._to_find_chromedrivers_from_115(
-                    ChromeDriverManager(chrome_type=ChromeType.GOOGLE)
-                ).install()
-            ),
+            service=ChromeService(),
         )
     else:
-        chrome_driver = webdriver.Chrome(
-            service=ChromeService(
-                support._extensions.webdriver_manager.patch._to_find_chromedrivers_from_115(
-                    ChromeDriverManager(chrome_type=ChromeType.GOOGLE)
-                ).install()
-            )
-        )
+        chrome_driver = webdriver.Chrome(service=ChromeService())
     yield Browser(Config(driver=chrome_driver))
     chrome_driver.quit()

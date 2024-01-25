@@ -101,7 +101,10 @@ TODOs:
 
 ## 2.0.0rc6 (to be released on ??.01.2024)
 
+### Goodbye python 3.7 and webdriver-manager 👋🏻
+
 * drop py3.7 support + upgrade selenium>=4.12.0
+* drop webdriver-manager in favor of Selenium Manager
 
 ## 2.0.0rc5 (released on 22.01.2024)
 
