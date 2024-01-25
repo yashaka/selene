@@ -54,7 +54,7 @@ Find more below...
 
 ## Versions
 
-- Latest recommended version to use is [2.0.0rc5+][latest-recommended-version]
+- Latest recommended version to use is latest among [2.0.0rc*][latest-recommended-version]
     - it's a completely new version of selene, with improved API and speed
     - supports Python `3.8+`
     - supports Selenium `>=4.12.0`
@@ -96,15 +96,15 @@ From `1.0.2` to `2.0.0b<LATEST>`:
 
 ## Prerequisites
 
-[Python 3.7+][python-37]
+[Python 3.8+][python-38]
 
 Given [pyenv][pyenv] installed, installing needed version of Python is pretty simple:
 
 ```plain
-$ pyenv install 3.7.3
-$ pyenv global 3.7.3
+$ pyenv install 3.8.13
+$ pyenv global 3.8.13
 $ python -V
-Python 3.7.3
+Python 3.8.13
 ```
 
 ## Installation
@@ -118,7 +118,7 @@ AND
 ```plain
 poetry new my-tests-with-selene
 cd my-tests-with-selene
-pyenv local 3.7.3
+pyenv local 3.8.13
 ```
 
 WHEN latest pre-release recommended version:
@@ -557,10 +557,10 @@ TBD
 
 <!-- References -->
 [selenide]: http://selenide.org/
-[latest-recommended-version]: https://pypi.org/project/selene/2.0.0rc5/
+[latest-recommended-version]: https://pypi.org/project/selene/2.0.0rc6/
 [brunch-ver-1]: https://github.com/yashaka/selene/tree/1.x
 [selene-stable]: https://pypi.org/project/selene/1.0.2/
-[python-37]: https://www.python.org/downloads/release/python-370/
+[python-37]: https://www.python.org/downloads/release/python-380/
 [pyenv]: https://github.com/pyenv/pyenv
 [poetry]: https://python-poetry.org/
 [project-template]: https://github.com/yashaka/python-web-test
