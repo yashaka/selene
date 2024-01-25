@@ -225,4 +225,4 @@ Or, by using non-waiting versions, if "you are in a rush:)"::
 # """
 from selene.core.entity import Element, Collection  # noqa
 
-__version__ = '2.0.0rc6'
+__version__ = '2.0.0rc7'

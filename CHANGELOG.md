@@ -99,7 +99,7 @@ TODOs:
 - can we force order of how `selene.*` is rendered on autocomplete? via `__all__`...
 - deprecate `have.js_returned` in favour of `have.script_returned`
 
-## 2.0.0rc6 (released on 25.01.2024)
+## 2.0.0rc7 (released on 25.01.2024)
 
 ### Experimental browser._actions
 
