@@ -2,32 +2,32 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 628,
-    "uniques": 219
+    "count": 562,
+    "uniques": 203
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 99,
-    "uniques": 33
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene",
-    "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 57,
-    "uniques": 16
+    "count": 93,
+    "uniques": 31
   },
   {
     "path": "/yashaka/selene/releases",
     "title": "Releases · yashaka/selene · GitHub",
-    "count": 55,
-    "uniques": 30
+    "count": 53,
+    "uniques": 27
+  },
+  {
+    "path": "/yashaka/selene/tree/master/selene",
+    "title": "selene/selene at master · yashaka/selene · GitHub",
+    "count": 53,
+    "uniques": 14
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 55,
-    "uniques": 14
+    "count": 50,
+    "uniques": 12
   },
   {
     "path": "/yashaka/selene/commits/master",
@@ -38,25 +38,25 @@
   {
     "path": "/yashaka/selene/tree/master/selene/core",
     "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 28,
-    "uniques": 9
-  },
-  {
-    "path": "/yashaka/selene/blob/master/README.md",
-    "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 28,
+    "count": 26,
     "uniques": 8
   },
   {
     "path": "/yashaka/selene/tree/master",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 26,
+    "count": 25,
     "uniques": 17
   },
   {
-    "path": "/yashaka/selene/blob/master/CHANGELOG.md",
-    "title": "selene/CHANGELOG.md at master · yashaka/selene · GitHub",
-    "count": 25,
-    "uniques": 10
+    "path": "/yashaka/selene/branches",
+    "title": "Branches · yashaka/selene · GitHub",
+    "count": 24,
+    "uniques": 3
+  },
+  {
+    "path": "/yashaka/selene/issues",
+    "title": "Issues · yashaka/selene · GitHub",
+    "count": 23,
+    "uniques": 16
   }
 ]
