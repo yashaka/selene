@@ -1,28 +1,28 @@
 [
   {
     "referrer": "Google",
-    "count": 455,
-    "uniques": 114
+    "count": 447,
+    "uniques": 115
   },
   {
     "referrer": "school.qa.guru",
-    "count": 166,
-    "uniques": 16
-  },
-  {
-    "referrer": "github.com",
-    "count": 138,
-    "uniques": 35
+    "count": 162,
+    "uniques": 15
   },
   {
     "referrer": "yashaka.github.io",
-    "count": 82,
+    "count": 99,
     "uniques": 1
   },
   {
+    "referrer": "github.com",
+    "count": 74,
+    "uniques": 30
+  },
+  {
     "referrer": "automated-testing.info",
-    "count": 21,
-    "uniques": 5
+    "count": 31,
+    "uniques": 8
   },
   {
     "referrer": "qa.guru",
@@ -30,23 +30,23 @@
     "uniques": 4
   },
   {
-    "referrer": "DuckDuckGo",
-    "count": 13,
-    "uniques": 12
-  },
-  {
-    "referrer": "yandex.ru",
-    "count": 12,
-    "uniques": 5
-  },
-  {
     "referrer": "qaguruschool.getcourse.ru",
-    "count": 12,
+    "count": 10,
     "uniques": 1
   },
   {
-    "referrer": "ecosia.org",
-    "count": 10,
-    "uniques": 10
+    "referrer": "yandex.ru",
+    "count": 9,
+    "uniques": 4
+  },
+  {
+    "referrer": "confluence.atl.ring.com",
+    "count": 8,
+    "uniques": 3
+  },
+  {
+    "referrer": "selene-docs-test.readthedocs.io",
+    "count": 6,
+    "uniques": 2
   }
 ]
