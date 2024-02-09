@@ -119,11 +119,9 @@ class Wait(Generic[E]):
                     return fn(self.entity)
                 except Exception as reason:
                     if time.time() > finish_time:
-                        reason_message = str(reason)
-
                         reason_string = '{name}: {message}'.format(
                             name=reason.__class__.__name__,
-                            message=reason_message,
+                            message=getattr(reason, "msg", str(reason)),
                         )
                         # TODO: think on how can we improve logging failures in selene, e.g. reverse msg and stacktrace
                         # stacktrace = getattr(reason, 'stacktrace', None)
