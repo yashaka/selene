@@ -2,61 +2,61 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 335,
+    "count": 328,
     "uniques": 174
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 68,
+    "count": 66,
     "uniques": 23
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
     "count": 60,
-    "uniques": 16
+    "uniques": 15
   },
   {
     "path": "/yashaka/selene/releases",
     "title": "Releases · yashaka/selene · GitHub",
-    "count": 40,
-    "uniques": 23
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene/core",
-    "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 33,
-    "uniques": 10
-  },
-  {
-    "path": "/yashaka/selene/blob/master/CHANGELOG.md",
-    "title": "selene/CHANGELOG.md at master · yashaka/selene · GitHub",
-    "count": 30,
-    "uniques": 10
+    "count": 44,
+    "uniques": 27
   },
   {
     "path": "/yashaka/selene/commits/master",
     "title": "Commits · yashaka/selene · GitHub",
-    "count": 25,
-    "uniques": 9
+    "count": 27,
+    "uniques": 10
   },
   {
-    "path": "/yashaka/selene/tree/master/tests",
-    "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 24,
-    "uniques": 7
-  },
-  {
-    "path": "/yashaka/selene/blob/master/pyproject.toml",
-    "title": "selene/pyproject.toml at master · yashaka/selene · GitHub",
-    "count": 22,
-    "uniques": 4
+    "path": "/yashaka/selene/tree/master/selene/core",
+    "title": "selene/selene/core at master · yashaka/selene · GitHub",
+    "count": 27,
+    "uniques": 8
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 18,
-    "uniques": 12
+    "count": 26,
+    "uniques": 14
+  },
+  {
+    "path": "/yashaka/selene/blob/master/CHANGELOG.md",
+    "title": "selene/CHANGELOG.md at master · yashaka/selene · GitHub",
+    "count": 26,
+    "uniques": 8
+  },
+  {
+    "path": "/yashaka/selene/blob/master/pyproject.toml",
+    "title": "selene/pyproject.toml at master · yashaka/selene · GitHub",
+    "count": 26,
+    "uniques": 6
+  },
+  {
+    "path": "/yashaka/selene/tree/master/tests",
+    "title": "selene/tests at master · yashaka/selene · GitHub",
+    "count": 23,
+    "uniques": 8
   }
 ]
