@@ -2,8 +2,8 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 347,
-    "uniques": 179
+    "count": 368,
+    "uniques": 188
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
@@ -20,32 +20,32 @@
   {
     "path": "/yashaka/selene/releases",
     "title": "Releases · yashaka/selene · GitHub",
-    "count": 45,
+    "count": 47,
     "uniques": 28
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 43,
+    "count": 44,
     "uniques": 9
+  },
+  {
+    "path": "/yashaka/selene/blob/1dd26e2a4482080215cc1e846a854f1f06338521/selene/core/configuration.py",
+    "title": "selene/selene/core/configuration.py at 1dd26e2a4482080215cc1e846a854f1f063385...",
+    "count": 43,
+    "uniques": 2
   },
   {
     "path": "/yashaka/selene/pull/512",
     "title": "FIX: Fix error message thrown by selenium exceptions upon wait by jacekziembl...",
-    "count": 39,
+    "count": 40,
     "uniques": 5
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 34,
-    "uniques": 17
-  },
-  {
-    "path": "/yashaka/selene/blob/1dd26e2a4482080215cc1e846a854f1f06338521/selene/core/configuration.py",
-    "title": "selene/selene/core/configuration.py at 1dd26e2a4482080215cc1e846a854f1f063385...",
-    "count": 33,
-    "uniques": 2
+    "count": 35,
+    "uniques": 18
   },
   {
     "path": "/yashaka/selene/tree/master/selene/core",
@@ -56,7 +56,7 @@
   {
     "path": "/yashaka/selene/blob/master/pyproject.toml",
     "title": "selene/pyproject.toml at master · yashaka/selene · GitHub",
-    "count": 28,
+    "count": 30,
     "uniques": 6
   }
 ]
