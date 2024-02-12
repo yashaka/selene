@@ -2,61 +2,61 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 343,
-    "uniques": 178
+    "count": 347,
+    "uniques": 179
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 66,
-    "uniques": 17
+    "count": 60,
+    "uniques": 15
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 63,
-    "uniques": 22
+    "count": 49,
+    "uniques": 18
   },
   {
     "path": "/yashaka/selene/releases",
     "title": "Releases · yashaka/selene · GitHub",
-    "count": 46,
+    "count": 45,
     "uniques": 28
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene/core",
-    "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 33,
-    "uniques": 10
-  },
-  {
-    "path": "/yashaka/selene/issues",
-    "title": "Issues · yashaka/selene · GitHub",
-    "count": 31,
-    "uniques": 15
-  },
-  {
-    "path": "/yashaka/selene/blob/master/CHANGELOG.md",
-    "title": "selene/CHANGELOG.md at master · yashaka/selene · GitHub",
-    "count": 30,
-    "uniques": 10
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 28,
-    "uniques": 8
+    "count": 43,
+    "uniques": 9
+  },
+  {
+    "path": "/yashaka/selene/pull/512",
+    "title": "FIX: Fix error message thrown by selenium exceptions upon wait by jacekziembl...",
+    "count": 39,
+    "uniques": 5
+  },
+  {
+    "path": "/yashaka/selene/issues",
+    "title": "Issues · yashaka/selene · GitHub",
+    "count": 34,
+    "uniques": 17
+  },
+  {
+    "path": "/yashaka/selene/blob/1dd26e2a4482080215cc1e846a854f1f06338521/selene/core/configuration.py",
+    "title": "selene/selene/core/configuration.py at 1dd26e2a4482080215cc1e846a854f1f063385...",
+    "count": 33,
+    "uniques": 2
+  },
+  {
+    "path": "/yashaka/selene/tree/master/selene/core",
+    "title": "selene/selene/core at master · yashaka/selene · GitHub",
+    "count": 31,
+    "uniques": 9
   },
   {
     "path": "/yashaka/selene/blob/master/pyproject.toml",
     "title": "selene/pyproject.toml at master · yashaka/selene · GitHub",
     "count": 28,
     "uniques": 6
-  },
-  {
-    "path": "/yashaka/selene/commits/master",
-    "title": "Commits · yashaka/selene · GitHub",
-    "count": 27,
-    "uniques": 10
   }
 ]
