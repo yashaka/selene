@@ -148,7 +148,7 @@ def test_browser_actions_fails_to_wait_for_drag_and_drop_before_perform(
         assert (
             "browser.element(('css selector', '#draggable')).locate webelement\n"
             "\n"
-            "Reason: NoSuchElementException: Message: "
+            "Reason: NoSuchElementException: "
             "no such element: Unable to locate element: "
             "{\"method\":\"css selector\",\"selector\":\"#draggable\"}\n"
         ) in str(error)

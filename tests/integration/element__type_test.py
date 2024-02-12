@@ -161,7 +161,7 @@ def test_type_failure_when_invisible(session_browser):
         assert time_spent >= 1
         browser.element('#text-field').should(have.value('before'))
         assert (
-            'Reason: JavascriptException: Message: javascript error: '
+            'Reason: JavascriptException: javascript error: '
             'element '
             '<input id="text-field" value="before" style="display: none"> '
             'is not visible\n'

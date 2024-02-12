@@ -92,9 +92,10 @@ def test_element_search_fails_with_message_when_implicitly_waits_for_condition(
         'Timed out after 0.1s, while waiting for:',
         "browser.element(('css selector', '#hidden-button')).click",
         '',
-        'Reason: ElementNotInteractableException: Message: element not interactable',
+        'Reason: ElementNotInteractableException: element not interactable',
         '(Session info: *)',
-        'Stacktrace: *',
+        'Screenshot: *.png',
+        'PageSource: *.html',
     ]
 
 
@@ -119,9 +120,10 @@ def test_inner_element_search_fails_with_message_when_implicitly_waits_for_condi
         "browser.element(('css selector', '#container')).element(('css selector', "
         "'#hidden-button')).click",
         '',
-        'Reason: ElementNotInteractableException: Message: element not interactable',
+        'Reason: ElementNotInteractableException: element not interactable',
         '(Session info: *)',
-        'Stacktrace: *',
+        'Screenshot: *.png',
+        'PageSource: *.html',
     ]
 
 
@@ -146,9 +148,10 @@ def test_inner_element_search_fails_with_message_when_implicitly_waits_for_condi
         "browser.element(('css selector', '#hidden-container')).element(('css "
         "selector', '#button')).click",
         '',
-        'Reason: ElementNotInteractableException: Message: element not interactable',
+        'Reason: ElementNotInteractableException: element not interactable',
         '(Session info: *)',
-        'Stacktrace: *',
+        'Screenshot: *.png',
+        'PageSource: *.html',
     ]
 
 
@@ -173,11 +176,12 @@ def test_inner_element_search_fails_with_message_when_implicitly_waits_for_condi
         "browser.element(('css selector', '#not-existing')).element(('css selector', "
         "'#button')).click",
         '',
-        'Reason: NoSuchElementException: Message: no such element: Unable to locate '
+        'Reason: NoSuchElementException: no such element: Unable to locate '
         'element: {"method":"css selector","selector":"#not-existing"}',
         '(Session info: *); For documentation on this error, please visit: '
         'https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception',
-        'Stacktrace: *',
+        'Screenshot: *.png',
+        'PageSource: *.html',
     ]
 
 
