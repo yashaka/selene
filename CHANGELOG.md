@@ -99,6 +99,12 @@ TODOs:
 - can we force order of how `selene.*` is rendered on autocomplete? via `__all__`...
 - deprecate `have.js_returned` in favour of `have.script_returned`
 
+## 2.0.0rc8 (released on 13.02.2024)
+
+### Nicer logging of "reason" in error messages
+
+– by removed stacktrace in processing of timeout exception at wait.py (thanks to [@jacekziembla](https://github.com/jacekziembla))
+
 ## 2.0.0rc7 (released on 25.01.2024)
 
 ### Experimental browser._actions

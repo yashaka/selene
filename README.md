@@ -557,7 +557,7 @@ TBD
 
 <!-- References -->
 [selenide]: http://selenide.org/
-[latest-recommended-version]: https://pypi.org/project/selene/2.0.0rc7/
+[latest-recommended-version]: https://pypi.org/project/selene/2.0.0rc8/
 [brunch-ver-1]: https://github.com/yashaka/selene/tree/1.x
 [selene-stable]: https://pypi.org/project/selene/1.0.2/
 [python-37]: https://www.python.org/downloads/release/python-380/

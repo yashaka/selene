@@ -125,6 +125,7 @@ class Wait(Generic[E]):
                         )
                         # TODO: think on how can we improve logging failures in selene, e.g. reverse msg and stacktrace
                         # stacktrace = getattr(reason, 'stacktrace', None)
+                        # TODO: should we have an option to turn on stacktrace logging?
                         timeout = self._timeout
                         entity = self.entity
 
