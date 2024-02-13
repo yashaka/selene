@@ -44,7 +44,7 @@ jobs:
         with:
           python-version: '3.8'
       - run: |
-          pip install black
+          pip install black==24.2.0
           .run/lint_black.sh
 
   Pycodestyle:

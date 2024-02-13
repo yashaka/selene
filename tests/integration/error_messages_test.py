@@ -42,11 +42,15 @@ def exception_message(ex):
     msg_simplified = and_simplified_stacktrace
 
     return [
-        'Screenshot: *.png'
-        if re.search(r'Screenshot: file:///.*\.png', line)
-        else 'PageSource: *.html'
-        if re.search(r'PageSource: file:///.*\.html', line)
-        else line.strip()
+        (
+            'Screenshot: *.png'
+            if re.search(r'Screenshot: file:///.*\.png', line)
+            else (
+                'PageSource: *.html'
+                if re.search(r'PageSource: file:///.*\.html', line)
+                else line.strip()
+            )
+        )
         for line in msg_simplified.strip().splitlines()
     ]
 

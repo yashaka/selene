@@ -36,13 +36,11 @@ from selene.core.wait import Command, Query
 
 
 @overload
-def _ensure_located(element: Element | WebElement) -> WebElement:
-    ...
+def _ensure_located(element: Element | WebElement) -> WebElement: ...
 
 
 @overload
-def _ensure_located(element: Element | WebElement | None) -> WebElement | None:
-    ...
+def _ensure_located(element: Element | WebElement | None) -> WebElement | None: ...
 
 
 def _ensure_located(element):

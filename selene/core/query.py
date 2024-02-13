@@ -69,9 +69,11 @@ size: Query[Union[Element, Collection, Browser], Union[dict, int]] = Query(
     lambda entity: (
         entity().size
         if isinstance(entity, Element)
-        else len(entity())
-        if isinstance(entity, Collection)
-        else typing.cast(Browser, entity).driver.get_window_size()
+        else (
+            len(entity())
+            if isinstance(entity, Collection)
+            else typing.cast(Browser, entity).driver.get_window_size()
+        )
     ),
 )
 

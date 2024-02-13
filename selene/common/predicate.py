@@ -32,10 +32,8 @@ def equals_ignoring_case(expected):
 
 
 def equals(expected, ignore_case=False):
-    return (
-        lambda actual: expected == actual
-        if not ignore_case
-        else equals_ignoring_case(expected)
+    return lambda actual: (
+        expected == actual if not ignore_case else equals_ignoring_case(expected)
     )
 
 
@@ -78,8 +76,8 @@ def includes_word_ignoring_case(expected):
 
 
 def includes_word(expected, ignore_case=False):
-    return (
-        lambda actual: expected in re.split(r'\s+', actual)
+    return lambda actual: (
+        expected in re.split(r'\s+', actual)
         if not ignore_case
         else includes_ignoring_case(expected)
     )
@@ -87,10 +85,8 @@ def includes_word(expected, ignore_case=False):
 
 # will not work with empty seqs :( TODO: fix
 # currently we use it only for non-empty seqs taking this into account
-seq_compare_by = (
-    lambda f: lambda x=None, *xs: lambda y=None, *ys: True
-    if x is None and y is None
-    else bool(f(x)(y)) and seq_compare_by(f)(*xs)(*ys)  # type: ignore
+seq_compare_by = lambda f: lambda x=None, *xs: lambda y=None, *ys: (
+    True if x is None and y is None else bool(f(x)(y)) and seq_compare_by(f)(*xs)(*ys)  # type: ignore
 )
 
 

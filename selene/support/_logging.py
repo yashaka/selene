@@ -8,8 +8,7 @@ from selenium.webdriver import Keys
 class _ContextManagerFactory(Protocol):
     def __call__(
         self, *, title: str, params: Dict[str, Any], **kwargs
-    ) -> ContextManager:
-        ...
+    ) -> ContextManager: ...
 
 
 class _default_translations:
