@@ -2,25 +2,25 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 333,
-    "uniques": 175
+    "count": 330,
+    "uniques": 178
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 70,
+    "count": 71,
     "uniques": 20
   },
   {
     "path": "/yashaka/selene/pull/512",
     "title": "FIX: Fix error message thrown by selenium exceptions upon wait by jacekziembl...",
-    "count": 56,
-    "uniques": 8
+    "count": 60,
+    "uniques": 9
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 55,
+    "count": 51,
     "uniques": 17
   },
   {
@@ -30,16 +30,22 @@
     "uniques": 9
   },
   {
+    "path": "/yashaka/selene/blob/master/README.md",
+    "title": "selene/README.md at master · yashaka/selene · GitHub",
+    "count": 45,
+    "uniques": 13
+  },
+  {
     "path": "/yashaka/selene/blob/1dd26e2a4482080215cc1e846a854f1f06338521/selene/core/configuration.py",
     "title": "selene/selene/core/configuration.py at 1dd26e2a4482080215cc1e846a854f1f063385...",
     "count": 43,
     "uniques": 2
   },
   {
-    "path": "/yashaka/selene/blob/master/README.md",
-    "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 41,
-    "uniques": 10
+    "path": "/yashaka/selene/blob/master/examples/run_remote_in_web_chrome_with_options_for_selenoid/test_todomvc.py",
+    "title": "selene/examples/run_remote_in_web_chrome_with_options_for_selenoid/test_todom...",
+    "count": 39,
+    "uniques": 9
   },
   {
     "path": "/yashaka/selene/releases",
@@ -48,15 +54,9 @@
     "uniques": 22
   },
   {
-    "path": "/yashaka/selene/issues",
-    "title": "Issues · yashaka/selene · GitHub",
-    "count": 37,
-    "uniques": 19
-  },
-  {
-    "path": "/yashaka/selene/blob/master/examples/run_remote_in_web_chrome_with_options_for_selenoid/test_todomvc.py",
-    "title": "selene/examples/run_remote_in_web_chrome_with_options_for_selenoid/test_todom...",
-    "count": 35,
-    "uniques": 9
+    "path": "/yashaka/selene/blob/master/CHANGELOG.md",
+    "title": "selene/CHANGELOG.md at master · yashaka/selene · GitHub",
+    "count": 36,
+    "uniques": 12
   }
 ]
