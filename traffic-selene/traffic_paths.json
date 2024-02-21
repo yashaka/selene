@@ -2,19 +2,19 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 322,
-    "uniques": 176
+    "count": 307,
+    "uniques": 166
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 102,
-    "uniques": 23
+    "count": 106,
+    "uniques": 24
   },
   {
     "path": "/yashaka/selene/blob/master/README.md",
     "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 71,
+    "count": 95,
     "uniques": 11
   },
   {
@@ -24,22 +24,16 @@
     "uniques": 9
   },
   {
-    "path": "/yashaka/selene/tree/master/selene",
-    "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 56,
-    "uniques": 17
-  },
-  {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
-    "count": 48,
-    "uniques": 10
+    "count": 47,
+    "uniques": 9
   },
   {
-    "path": "/yashaka/selene/blob/master/examples/run_remote_in_web_chrome_with_options_for_selenoid/test_todomvc.py",
-    "title": "selene/examples/run_remote_in_web_chrome_with_options_for_selenoid/test_todom...",
+    "path": "/yashaka/selene/tree/master/selene",
+    "title": "selene/selene at master · yashaka/selene · GitHub",
     "count": 45,
-    "uniques": 11
+    "uniques": 13
   },
   {
     "path": "/yashaka/selene/blob/1dd26e2a4482080215cc1e846a854f1f06338521/selene/core/configuration.py",
@@ -48,15 +42,21 @@
     "uniques": 2
   },
   {
-    "path": "/yashaka/selene/blob/master/CHANGELOG.md",
-    "title": "selene/CHANGELOG.md at master · yashaka/selene · GitHub",
-    "count": 38,
-    "uniques": 13
+    "path": "/yashaka/selene/blob/master/examples/run_remote_in_web_chrome_with_options_for_selenoid/test_todomvc.py",
+    "title": "selene/examples/run_remote_in_web_chrome_with_options_for_selenoid/test_todom...",
+    "count": 43,
+    "uniques": 11
   },
   {
-    "path": "/yashaka/selene/tree/master/selene/core",
-    "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 30,
-    "uniques": 9
+    "path": "/yashaka/selene/issues",
+    "title": "Issues · yashaka/selene · GitHub",
+    "count": 26,
+    "uniques": 14
+  },
+  {
+    "path": "/yashaka/selene/releases",
+    "title": "Releases · yashaka/selene · GitHub",
+    "count": 25,
+    "uniques": 14
   }
 ]
