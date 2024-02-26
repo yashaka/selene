@@ -2,38 +2,38 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 306,
-    "uniques": 179
-  },
-  {
-    "path": "/yashaka/selene/blob/master/README.md",
-    "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 134,
-    "uniques": 14
+    "count": 290,
+    "uniques": 174
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 132,
-    "uniques": 28
+    "count": 125,
+    "uniques": 27
+  },
+  {
+    "path": "/yashaka/selene/blob/master/README.md",
+    "title": "selene/README.md at master · yashaka/selene · GitHub",
+    "count": 124,
+    "uniques": 12
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 58,
-    "uniques": 15
-  },
-  {
-    "path": "/yashaka/selene/blob/master/examples/run_remote_in_web_chrome_with_options_for_selenoid/test_todomvc.py",
-    "title": "selene/examples/run_remote_in_web_chrome_with_options_for_selenoid/test_todom...",
-    "count": 43,
-    "uniques": 13
+    "count": 61,
+    "uniques": 16
   },
   {
     "path": "/yashaka/selene/releases",
     "title": "Releases · yashaka/selene · GitHub",
-    "count": 39,
+    "count": 40,
     "uniques": 11
+  },
+  {
+    "path": "/yashaka/selene/blob/master/examples/run_remote_in_web_chrome_with_options_for_selenoid/test_todomvc.py",
+    "title": "selene/examples/run_remote_in_web_chrome_with_options_for_selenoid/test_todom...",
+    "count": 38,
+    "uniques": 12
   },
   {
     "path": "/yashaka/selene/releases/tag/2.0.0rc8",
@@ -45,18 +45,18 @@
     "path": "/yashaka/selene/blob/master/examples/run_local_android_chrome_with_options_for_appium/version_1__explicit_appium_driver_init_and_set/test_todomvc.py",
     "title": "selene/examples/run_local_android_chrome_with_options_for_appium/version_1__e...",
     "count": 26,
-    "uniques": 2
-  },
-  {
-    "path": "/yashaka/selene/tree/master",
-    "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 25,
-    "uniques": 7
+    "uniques": 1
   },
   {
     "path": "/yashaka/selene/tree/master/examples/run_cross_platform",
     "title": "selene/examples/run_cross_platform at master · yashaka/selene · GitHub",
     "count": 25,
     "uniques": 3
+  },
+  {
+    "path": "/yashaka/selene/tree/master",
+    "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
+    "count": 22,
+    "uniques": 6
   }
 ]

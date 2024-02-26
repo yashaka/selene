@@ -1,18 +1,18 @@
 [
   {
     "referrer": "Google",
-    "count": 562,
-    "uniques": 105
+    "count": 540,
+    "uniques": 101
   },
   {
     "referrer": "school.qa.guru",
-    "count": 232,
-    "uniques": 19
+    "count": 242,
+    "uniques": 18
   },
   {
     "referrer": "github.com",
-    "count": 105,
-    "uniques": 35
+    "count": 99,
+    "uniques": 33
   },
   {
     "referrer": "pypi.org",
@@ -21,18 +21,18 @@
   },
   {
     "referrer": "qaguruschool.getcourse.ru",
-    "count": 44,
+    "count": 42,
     "uniques": 4
   },
   {
     "referrer": "yashaka.github.io",
-    "count": 43,
-    "uniques": 4
+    "count": 21,
+    "uniques": 3
   },
   {
     "referrer": "yandex.ru",
-    "count": 17,
-    "uniques": 9
+    "count": 19,
+    "uniques": 11
   },
   {
     "referrer": "ya.ru",
@@ -46,7 +46,7 @@
   },
   {
     "referrer": "DuckDuckGo",
-    "count": 10,
-    "uniques": 8
+    "count": 8,
+    "uniques": 6
   }
 ]
