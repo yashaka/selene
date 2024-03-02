@@ -2,61 +2,61 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 295,
-    "uniques": 154
+    "count": 321,
+    "uniques": 160
   },
   {
     "path": "/yashaka/selene/blob/master/README.md",
     "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 151,
-    "uniques": 10
+    "count": 141,
+    "uniques": 9
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 131,
-    "uniques": 27
+    "count": 107,
+    "uniques": 28
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 53,
-    "uniques": 15
+    "count": 56,
+    "uniques": 18
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 53,
+    "count": 48,
     "uniques": 12
   },
   {
     "path": "/yashaka/selene/releases",
     "title": "Releases · yashaka/selene · GitHub",
-    "count": 48,
+    "count": 47,
     "uniques": 14
   },
   {
     "path": "/yashaka/selene/blob/master/examples/run_remote_in_web_chrome_with_options_for_selenoid/test_todomvc.py",
     "title": "selene/examples/run_remote_in_web_chrome_with_options_for_selenoid/test_todom...",
-    "count": 36,
+    "count": 32,
     "uniques": 9
-  },
-  {
-    "path": "/yashaka/selene/tree/master/tests",
-    "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 25,
-    "uniques": 10
   },
   {
     "path": "/yashaka/selene/tree/master",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 24,
-    "uniques": 7
+    "count": 22,
+    "uniques": 6
   },
   {
-    "path": "/yashaka/selene/tree/master/examples/run_cross_platform",
-    "title": "selene/examples/run_cross_platform at master · yashaka/selene · GitHub",
-    "count": 24,
-    "uniques": 3
+    "path": "/yashaka/selene/blob/master/examples/run_local_android_chrome_with_options_for_appium/version_1__explicit_appium_driver_init_and_set/test_todomvc.py",
+    "title": "selene/examples/run_local_android_chrome_with_options_for_appium/version_1__e...",
+    "count": 22,
+    "uniques": 1
+  },
+  {
+    "path": "/yashaka/selene/tree/master/tests",
+    "title": "selene/tests at master · yashaka/selene · GitHub",
+    "count": 20,
+    "uniques": 9
   }
 ]
