@@ -99,6 +99,36 @@ TODOs:
 - can we force order of how `selene.*` is rendered on autocomplete? via `__all__`...
 - deprecate `have.js_returned` in favour of `have.script_returned`
 
+## 2.0.0rc8 (to be released on 03.03.2024)
+
+### Smarter command.select_all
+
+Seems like the `send_keys(Keys.COMMAND + 'a' + Keys.NULL)` receipe has stopped working since some Selenium version...
+So we update the command.select_all implementation to be based on ActionChains, and also work both on browser and element. Here go two examples that demonstrate the new behavior:
+
+when called on element:
+
+```pytnon
+page.opened_with_body('<input id="text-field" value="text"></input>')
+
+browser.element('#text-field').perform(command.select_all).type('reset')
+
+browser.element('#text-field').should(have.value('reset'))
+```
+
+when called on browser:
+
+```pytnon
+page.opened_with_body('<input id="text-field" value="text"></input>')
+
+browser.element('#text-field').click()  # <- MANDATORY to make the input focused
+
+browser.perform(command.select_all)
+browser.element('#text-field').type('reset')
+
+browser.element('#text-field').should(have.value('reset'))
+```
+
 ## 2.0.0rc8 (released on 13.02.2024)
 
 ### Nicer logging of "reason" in error messages

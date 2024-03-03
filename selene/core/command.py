@@ -19,6 +19,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+from __future__ import annotations
 import sys
 from typing import Union, Optional
 
@@ -27,6 +28,7 @@ from selenium.webdriver import Keys
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 
+from selene.core._actions import _Actions
 from selene.core.entity import Element, Collection
 from selene.core._browser import Browser
 from selene.core.exceptions import _SeleneError
@@ -67,13 +69,22 @@ def save_page_source(path: Optional[str] = None) -> Command[Browser]:
     return command
 
 
-select_all: Command[Element] = Command(
-    'select all by ctrl+a or cmd+a for mac',
-    lambda element: typing.cast(Element, element)
-    .locate()
-    .send_keys(
-        (Keys.COMMAND if sys.platform == 'darwin' else Keys.CONTROL) + 'a' + Keys.NULL,
-    ),
+def __select_all_actions(entity: Element | Browser):
+    _COMMAND_KEY = Keys.COMMAND if sys.platform == 'darwin' else Keys.CONTROL
+    actions: ActionChains = ActionChains(entity.config.driver)
+
+    actions.key_down(_COMMAND_KEY)
+    actions.send_keys_to_element(entity.locate(), 'a') if isinstance(
+        entity, Element
+    ) else actions.send_keys('a')
+    actions.key_up(_COMMAND_KEY)
+
+    actions.perform()
+
+
+select_all: Command[Element | Browser] = Command(
+    'send «select all» keys shortcut as ctrl+a or cmd+a for mac',
+    __select_all_actions,
 )
 
 
