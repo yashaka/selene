@@ -74,9 +74,12 @@ def __select_all_actions(entity: Element | Browser):
     actions: ActionChains = ActionChains(entity.config.driver)
 
     actions.key_down(_COMMAND_KEY)
-    actions.send_keys_to_element(entity.locate(), 'a') if isinstance(
-        entity, Element
-    ) else actions.send_keys('a')
+
+    if isinstance(entity, Element):
+        actions.send_keys_to_element(entity.locate(), 'a')
+    else:
+        actions.send_keys('a')
+
     actions.key_up(_COMMAND_KEY)
 
     actions.perform()

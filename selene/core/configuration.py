@@ -637,9 +637,9 @@ class Config:
     #             [Config], Callable[[], WebDriver]
     #           ]
     #       for consistency with some other options...
-    build_driver_strategy: Callable[
-        [Config], WebDriver
-    ] = _build_local_driver_by_name_or_remote_by_url_and_options
+    build_driver_strategy: Callable[[Config], WebDriver] = (
+        _build_local_driver_by_name_or_remote_by_url_and_options
+    )
     """
     A factory to build a driver instance based on this config instance.
     The driver built with this factory will be available via `config.driver`.
@@ -677,14 +677,14 @@ class Config:
     """
 
     # TODO: since it's curried, shouldn't we rename it driver_teardown_strategy?
-    _teardown_driver_strategy: Callable[
-        [Config], Callable[[WebDriver], None]
-    ] = lambda config: lambda driver: (
-        driver.quit()
-        if not config.hold_driver_at_exit
-        and config._is_driver_set_strategy(driver)
-        and config._is_driver_alive_strategy(driver)
-        else None
+    _teardown_driver_strategy: Callable[[Config], Callable[[WebDriver], None]] = (
+        lambda config: lambda driver: (
+            driver.quit()
+            if not config.hold_driver_at_exit
+            and config._is_driver_set_strategy(driver)
+            and config._is_driver_alive_strategy(driver)
+            else None
+        )
     )
     """
     Defines how driver will be teardown.
@@ -1234,46 +1234,46 @@ class Config:
     # TODO: is a _strategy suffix a good naming convention in this context?
     #       maybe yes, because we yet accept config in it...
     #       so we expect it to be a Strategy of some bigger Context
-    _save_screenshot_strategy: Callable[
-        [Config, Optional[str]], Any
-    ] = lambda config, path=None: fp.thread(
-        path,
-        lambda path: (
-            config._generate_filename(suffix='.png') if path is None else path
-        ),
-        lambda path: (
-            os.path.join(path, f'{next(config._counter)}.png')
-            if path and not path.lower().endswith('.png')
-            else path
-        ),
-        fp.do(
-            fp.pipe(
-                os.path.dirname,
-                lambda folder: (
-                    os.makedirs(folder)
-                    if folder and not os.path.exists(folder)
-                    else ...
-                ),
-            )
-        ),
-        fp.do(
+    _save_screenshot_strategy: Callable[[Config, Optional[str]], Any] = (
+        lambda config, path=None: fp.thread(  # type: ignore
+            path,
             lambda path: (
-                warnings.warn(
-                    'name used for saved screenshot does not match file '
-                    'type. It should end with an `.png` extension',
-                    UserWarning,
+                config._generate_filename(suffix='.png') if path is None else path
+            ),
+            lambda path: (
+                os.path.join(path, f'{next(config._counter)}.png')
+                if path and not path.lower().endswith('.png')
+                else path
+            ),
+            fp.do(
+                fp.pipe(  # type: ignore
+                    os.path.dirname,
+                    lambda folder: (
+                        os.makedirs(folder)
+                        if folder and not os.path.exists(folder)
+                        else ...
+                    ),
                 )
-                if not path.lower().endswith('.png')
-                else ...
-            )
-        ),
-        lambda path: (path if config.driver.get_screenshot_as_file(path) else None),
-        fp.do(
-            lambda path: setattr(config, 'last_screenshot', path)
-        ),  # On refactor>rename, we may miss it here :( better would be like:
-        #  setattr(config, config.__class__.last_screenshot.name, path)
-        #  but currently .name will return '__boxed_last_screenshot' :(
-        #  think on how we can resolve this...
+            ),
+            fp.do(
+                lambda path: (
+                    warnings.warn(
+                        'name used for saved screenshot does not match file '
+                        'type. It should end with an `.png` extension',
+                        UserWarning,
+                    )
+                    if not path.lower().endswith('.png')
+                    else ...
+                )
+            ),
+            lambda path: (path if config.driver.get_screenshot_as_file(path) else None),
+            fp.do(
+                lambda path: setattr(config, 'last_screenshot', path)
+            ),  # On refactor>rename, we may miss it here :( better would be like:
+            #  setattr(config, config.__class__.last_screenshot.name, path)
+            #  but currently .name will return '__boxed_last_screenshot' :(
+            #  think on how we can resolve this...
+        )
     )
     """
     Defines a strategy for saving a screenshot.
@@ -1282,48 +1282,48 @@ class Config:
     and stores the path to `config.last_screenshot`.
     """
 
-    _save_page_source_strategy: Callable[
-        [Config, Optional[str]], Any
-    ] = lambda config, path=None: fp.thread(
-        path,
-        lambda path: (
-            config._generate_filename(suffix='.html') if path is None else path
-        ),
-        lambda path: (
-            os.path.join(path, f'{next(config._counter)}.html')
-            if path and not path.lower().endswith('.html')
-            else path
-        ),
-        fp.do(
-            fp.pipe(
-                os.path.dirname,
-                lambda folder: (
-                    os.makedirs(folder)
-                    if folder and not os.path.exists(folder)
-                    else ...
-                ),
-            )
-        ),
-        fp.do(
+    _save_page_source_strategy: Callable[[Config, Optional[str]], Any] = (
+        lambda config, path=None: fp.thread(  # type: ignore
+            path,
             lambda path: (
-                warnings.warn(
-                    'name used for saved page source does not match file '
-                    'type. It should end with an `.html` extension',
-                    UserWarning,
+                config._generate_filename(suffix='.html') if path is None else path
+            ),
+            lambda path: (
+                os.path.join(path, f'{next(config._counter)}.html')
+                if path and not path.lower().endswith('.html')
+                else path
+            ),
+            fp.do(
+                fp.pipe(  # type: ignore
+                    os.path.dirname,
+                    lambda folder: (
+                        os.makedirs(folder)
+                        if folder and not os.path.exists(folder)
+                        else ...
+                    ),
                 )
-                if not path.lower().endswith('.html')
-                else ...
-            )
-        ),
-        lambda path: (path, config.driver.page_source),
-        fp.do(lambda path_and_source: fp.write_silently(*path_and_source)),
-        lambda path_and_source: path_and_source[0],
-        fp.do(
-            lambda path: setattr(config, 'last_page_source', path)
-        ),  # On refactor>rename, we may miss it here :( better would be like:
-        #  setattr(config, config.__class__.last_screenshot.name, path)
-        #  but currently .name will return '__boxed_last_screenshot' :(
-        #  think on how we can resolve this...
+            ),
+            fp.do(
+                lambda path: (
+                    warnings.warn(
+                        'name used for saved page source does not match file '
+                        'type. It should end with an `.html` extension',
+                        UserWarning,
+                    )
+                    if not path.lower().endswith('.html')
+                    else ...
+                )
+            ),
+            lambda path: (path, config.driver.page_source),
+            fp.do(lambda path_and_source: fp.write_silently(*path_and_source)),
+            lambda path_and_source: path_and_source[0],
+            fp.do(
+                lambda path: setattr(config, 'last_page_source', path)
+            ),  # On refactor>rename, we may miss it here :( better would be like:
+            #  setattr(config, config.__class__.last_screenshot.name, path)
+            #  but currently .name will return '__boxed_last_screenshot' :(
+            #  think on how we can resolve this...
+        )
     )
     """
     Defines a strategy for saving a page source on failure.
@@ -1408,7 +1408,7 @@ class Config:
         # TODO: consider moving hooks to class methods accepting config as argument
         #       or refactor somehow to eliminate all times defining hook fns
         def save_and_log_screenshot(error: TimeoutException) -> Exception:
-            path = self._save_screenshot_strategy(self)
+            path = self._save_screenshot_strategy(self)  # type: ignore
             return TimeoutException(
                 error.msg
                 + f'''
@@ -1436,15 +1436,15 @@ Screenshot: file://{path}'''
     # TODO: maybe here wait_factory would be better name?
     #       yes, it's also a strategy, but completely not connected with other
     #       driver lifecycle strategies
-    _build_wait_strategy: Callable[
-        [Config], Callable[[E], Wait[E]]
-    ] = lambda config: lambda entity: Wait(
-        entity,
-        at_most=config.timeout,
-        or_fail_with=config._inject_screenshot_and_page_source_pre_hooks(
-            config.hook_wait_failure
-        ),
-        _decorator=config._wait_decorator,
+    _build_wait_strategy: Callable[[Config], Callable[[E], Wait[E]]] = (
+        lambda config: lambda entity: Wait(
+            entity,
+            at_most=config.timeout,
+            or_fail_with=config._inject_screenshot_and_page_source_pre_hooks(
+                config.hook_wait_failure
+            ),
+            _decorator=config._wait_decorator,
+        )
     )
     """
     A strategy for building a Wait object based on other config options
