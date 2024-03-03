@@ -55,6 +55,33 @@ def exception_message(ex):
     ]
 
 
+def test_element_search_fails_with_message__when_no_such_element(
+    session_browser,
+):
+    browser = session_browser.with_(timeout=0.1)
+    GivenPage(browser.driver).opened_with_body(
+        '''
+        <label id='element'>Hello world!</label>
+        '''
+    )
+
+    with pytest.raises(TimeoutException) as ex:
+        browser.element('#non-existing').click()
+
+    assert exception_message(ex) == [
+        'Timed out after 0.1s, while waiting for:',
+        "browser.element(('css selector', '#non-existing')).click",
+        '',
+        'Reason: NoSuchElementException: no such element: Unable to locate element: '
+        '{"method":"css selector","selector":"#non-existing"}',
+        '(Session info: *); For documentation on this error, please visit: '
+        'https://www.selenium.dev/documentation/webdriver/troubleshooting'
+        '/errors#no-such-element-exception',
+        'Screenshot: *.png',
+        'PageSource: *.html',
+    ]
+
+
 def test_element_search_fails_with_message_when_explicitly_waits_for_condition(
     session_browser,
 ):
