@@ -99,7 +99,26 @@ TODOs:
 - can we force order of how `selene.*` is rendered on autocomplete? via `__all__`...
 - deprecate `have.js_returned` in favour of `have.script_returned`
 
-## 2.0.0rc8 (to be released on 03.03.2024)
+## 2.0.0rc8 (to be released on 04.03.2024)
+
+### Click with offsets
+
+As simple as that:
+
+```python
+from selene import browser, command
+
+...
+
+browser.element('#point1').click(xoffset=-5, yoffset=5)  # relative from center
+browser.element('#point1').click()  # still works as before (clicking at center)
+# with js too:
+browser.element('#point1').perform(command.js.click(xoffset=-5, yoffset=5))
+browser.element('#point1').perform(command.js.click())  # also works
+browser.element('#point1').perform(command.js.click)  # still works as before
+# or:
+browser.element('#point1').with_(click_by_js=True).click(xoffset=-5, yoffset=5)
+```
 
 ### Smarter command.select_all
 

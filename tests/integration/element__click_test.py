@@ -1,4 +1,6 @@
 import time
+
+from selene import have
 from tests.integration.helpers.givenpage import GivenPage
 
 
@@ -42,3 +44,18 @@ def test_click_waits_for_no_overlay(session_browser):
     time_diff = time.time() - before_call
     assert 0.25 < time_diff < 0.5
     assert "second" in browser.driver.current_url
+
+
+# TODO: cover yoffset too
+def test_command_js_click__with_xoffset(session_browser):
+    browser = session_browser.with_(timeout=0.5)
+    page = GivenPage(browser.driver)
+    page.opened_with_body(
+        '''
+        <input type="range" min="0.0" max="5.0" step="0.5" value="0">
+        '''
+    )
+
+    browser.element('input').click(xoffset=-10)
+
+    browser.element('input').should(have.value('2'))

@@ -517,19 +517,37 @@ class Element(WaitingEntity['Element']):
 
         return self
 
-    # TODO: add offset args with defaults, or add additional method, think on what is better
-    def click(self) -> Element:
-        """Just a normal click:)"""
+    # TODO: consider support of percentage in offsets (in command.js.click too)
+    def click(self, *, xoffset=0, yoffset=0) -> Element:
+        """Just a normal click with optional offset:)"""
 
         def raw_click(element: Element):
             element.locate().click()
 
+        def click_with_offset_actions(element: Element):
+            actions: ActionChains = ActionChains(self.config.driver)
+            webelement = (
+                element._actual_not_overlapped_webelement
+                if self.config.wait_for_no_overlap_found_by_js
+                else element.locate()
+            )
+            actions.move_to_element_with_offset(
+                webelement, xoffset, yoffset
+            ).click().perform()
+
         from selene.core import command
 
         self.wait.for_(
-            typing.cast(Command[Element], command.js.click)
+            command.js.click(xoffset=xoffset, yoffset=yoffset)
             if self.config.click_by_js
-            else Command('click', raw_click)
+            else (
+                Command('click', raw_click)
+                if (not xoffset and not yoffset)
+                else Command(
+                    f'click(xoffset={xoffset},yoffset={yoffset})',
+                    click_with_offset_actions,
+                )
+            )
         )
 
         return self
@@ -541,7 +559,7 @@ class Element(WaitingEntity['Element']):
             webelement = (
                 element._actual_not_overlapped_webelement
                 if self.config.wait_for_no_overlap_found_by_js
-                else element()
+                else element.locate()
             )
             actions.double_click(webelement).perform()
 

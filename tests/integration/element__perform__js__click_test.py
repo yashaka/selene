@@ -1,6 +1,6 @@
 import time
 
-from selene import command
+from selene import command, query, have
 from tests.integration.helpers.givenpage import GivenPage
 
 
@@ -86,3 +86,18 @@ def test_command_js_click__call__is_still_same_command(session_browser):
     time_diff = time.time() - before_call
     assert time_diff < 0.25
     assert "second" in browser.driver.current_url
+
+
+def x_test_command_js_click__with_offset(session_browser):
+    browser = session_browser.with_(timeout=0.5)
+    page = GivenPage(browser.driver)
+    page.opened_with_body(
+        '''
+        <input type="range" min="0.0" max="5.0" step="0.5" value="0">
+        '''
+    )
+
+    # TODO: why it does not click on slider? o_O
+    browser.element('input').perform(command.js.click(xoffset=-10))
+
+    browser.element('input').should(have.value('2'))
