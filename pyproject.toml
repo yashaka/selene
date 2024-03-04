@@ -54,7 +54,7 @@ typing-extensions = ">=4.9.0"
 [tool.poetry.dev-dependencies]
 black = "^24.2.0"
 pycodestyle = "*"
-pylint = "^2.7.2"
+pylint = "2.13.9"
 pytest = "*"
 pytest-cov = "*"
 mypy = "*"
