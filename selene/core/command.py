@@ -232,7 +232,37 @@ class js:  # pylint: disable=invalid-name
     click: Command[Element] = Command(
         'click',
         # TODO: should we process collections too? i.e. click through all elements?
-        lambda element: element.execute_script('element.click()'),
+        lambda element: element.execute_script(
+            '''
+            const offsetX = arguments[0] 
+            const offsetY = arguments[1]
+            const rect = element.getBoundingClientRect()
+
+            function mouseEvent() {
+              if (typeof (Event) === 'function') {
+                return new MouseEvent('click', {
+                  view: window,
+                  bubbles: true,
+                  cancelable: true,
+                  clientX: rect.left + rect.width / 2 + offsetX,
+                  clientY: rect.top + rect.height / 2 + offsetY
+                })
+              }
+              else {
+                const event = document.createEvent('MouseEvent')
+                event.initEvent('click', true, true)
+                event.type = 'click'
+                event.view = window
+                event.clientX = rect.left + rect.width / 2 + offsetX
+                event.clientY = rect.top + rect.height / 2 + offsetY
+                return event
+              }
+            }
+            element.dispatchEvent(mouseEvent())
+            ''',
+            0,
+            0,
+        ),
     )
 
     clear_local_storage: Command[Browser] = Command(
