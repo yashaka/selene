@@ -21,14 +21,12 @@
 # SOFTWARE.
 from __future__ import annotations
 import sys
-from typing import Union, Optional
+from typing import Union, Optional, overload
 
-import typing
 from selenium.webdriver import Keys
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 
-from selene.core._actions import _Actions
 from selene.core.entity import Element, Collection
 from selene.core._browser import Browser
 from selene.core.exceptions import _SeleneError
@@ -39,6 +37,9 @@ from selenium.webdriver.common.actions.action_builder import ActionBuilder
 from selenium.webdriver.common.actions.pointer_input import PointerInput
 
 
+# TODO: refactor to be of same style as __ClickWithOffset
+#       in order to make autocomplete work properly
+#       do it for save_screenshot and all other similar impls
 def save_screenshot(path: Optional[str] = None) -> Command[Browser]:
     command: Command[Browser] = Command(
         'save screenshot',
@@ -229,41 +230,119 @@ class js:  # pylint: disable=invalid-name
         lambda element: element.execute_script('element.scrollIntoView(true)'),
     )
 
-    click: Command[Element] = Command(
-        'click',
-        # TODO: should we process collections too? i.e. click through all elements?
-        lambda element: element.execute_script(
-            '''
-            const offsetX = arguments[0] 
-            const offsetY = arguments[1]
-            const rect = element.getBoundingClientRect()
+    # TODO: should we process collections too? i.e. click through all elements?
+    @staticmethod
+    def __click(self=None, /, *, xoffset=0, yoffset=0) -> Command[Element]:
+        def func(element: Element):
+            element.execute_script(
+                '''
+                const offsetX = arguments[0] 
+                const offsetY = arguments[1]
+                const rect = element.getBoundingClientRect()
 
-            function mouseEvent() {
-              if (typeof (Event) === 'function') {
-                return new MouseEvent('click', {
-                  view: window,
-                  bubbles: true,
-                  cancelable: true,
-                  clientX: rect.left + rect.width / 2 + offsetX,
-                  clientY: rect.top + rect.height / 2 + offsetY
-                })
-              }
-              else {
-                const event = document.createEvent('MouseEvent')
-                event.initEvent('click', true, true)
-                event.type = 'click'
-                event.view = window
-                event.clientX = rect.left + rect.width / 2 + offsetX
-                event.clientY = rect.top + rect.height / 2 + offsetY
-                return event
-              }
-            }
-            element.dispatchEvent(mouseEvent())
-            ''',
-            0,
-            0,
-        ),
-    )
+                function mouseEvent() {
+                  if (typeof (Event) === 'function') {
+                    return new MouseEvent('click', {
+                      view: window,
+                      bubbles: true,
+                      cancelable: true,
+                      clientX: rect.left + rect.width / 2 + offsetX,
+                      clientY: rect.top + rect.height / 2 + offsetY
+                    })
+                  }
+                  else {
+                    const event = document.createEvent('MouseEvent')
+                    event.initEvent('click', true, true)
+                    event.type = 'click'
+                    event.view = window
+                    event.clientX = rect.left + rect.width / 2 + offsetX
+                    event.clientY = rect.top + rect.height / 2 + offsetY
+                    return event
+                  }
+                }
+                element.dispatchEvent(mouseEvent())
+                ''',
+                xoffset,
+                yoffset,
+            )
+
+        command: Command[Element] = Command(
+            (
+                'click'
+                if (not xoffset and not yoffset)
+                else f'click(xoffset={xoffset},yoffset={yoffset})'
+            ),
+            func,
+        )
+
+        if isinstance(self, Element):
+            # somebody passed command as `.perform(command.js.click)`
+            # not as `.perform(command.js.click())`
+            element = self
+            command.__call__(element)
+
+        return command
+
+    class __ClickWithOffset(Command[Element]):
+        def __init__(self):
+            self._description = 'click'
+
+        @overload
+        def __call__(self, element: Element) -> None: ...
+
+        @overload
+        def __call__(self, *, xoffset=0, yoffset=0) -> Command[Element]: ...
+
+        def __call__(self, element: Element | None = None, *, xoffset=0, yoffset=0):
+            def func(element: Element):
+                element.execute_script(
+                    '''
+                    const offsetX = arguments[0] 
+                    const offsetY = arguments[1]
+                    const rect = element.getBoundingClientRect()
+    
+                    function mouseEvent() {
+                      if (typeof (Event) === 'function') {
+                        return new MouseEvent('click', {
+                          view: window,
+                          bubbles: true,
+                          cancelable: true,
+                          clientX: rect.left + rect.width / 2 + offsetX,
+                          clientY: rect.top + rect.height / 2 + offsetY
+                        })
+                      }
+                      else {
+                        const event = document.createEvent('MouseEvent')
+                        event.initEvent('click', true, true)
+                        event.type = 'click'
+                        event.view = window
+                        event.clientX = rect.left + rect.width / 2 + offsetX
+                        event.clientY = rect.top + rect.height / 2 + offsetY
+                        return event
+                      }
+                    }
+                    element.dispatchEvent(mouseEvent())
+                    ''',
+                    xoffset,
+                    yoffset,
+                )
+
+            if element is not None:
+                # somebody passed command as `.perform(command.js.click)`
+                # not as `.perform(command.js.click())`
+                func(element)
+                return None
+
+            return Command(
+                (
+                    self.__str__()
+                    if (not xoffset and not yoffset)
+                    else f'click(xoffset={xoffset},yoffset={yoffset})'
+                ),
+                func,
+            )
+
+    click = __ClickWithOffset()
 
     clear_local_storage: Command[Browser] = Command(
         'clear local storage',
