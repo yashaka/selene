@@ -232,11 +232,13 @@ class js:  # pylint: disable=invalid-name
 
     # TODO: should we process collections too? i.e. click through all elements?
     @staticmethod
-    def __click(self=None, /, *, xoffset=0, yoffset=0) -> Command[Element]:
+    def __click(
+        entity: Element | None = None, /, *, xoffset=0, yoffset=0
+    ) -> Command[Element]:
         def func(element: Element):
             element.execute_script(
                 '''
-                const offsetX = arguments[0] 
+                const offsetX = arguments[0]
                 const offsetY = arguments[1]
                 const rect = element.getBoundingClientRect()
 
@@ -275,10 +277,10 @@ class js:  # pylint: disable=invalid-name
             func,
         )
 
-        if isinstance(self, Element):
+        if isinstance(entity, Element):
             # somebody passed command as `.perform(command.js.click)`
             # not as `.perform(command.js.click())`
-            element = self
+            element = entity
             command.__call__(element)
 
         return command
@@ -297,10 +299,10 @@ class js:  # pylint: disable=invalid-name
             def func(element: Element):
                 element.execute_script(
                     '''
-                    const offsetX = arguments[0] 
+                    const offsetX = arguments[0]
                     const offsetY = arguments[1]
                     const rect = element.getBoundingClientRect()
-    
+
                     function mouseEvent() {
                       if (typeof (Event) === 'function') {
                         return new MouseEvent('click', {
