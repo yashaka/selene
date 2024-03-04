@@ -1,13 +1,13 @@
 [
   {
     "referrer": "Google",
-    "count": 452,
-    "uniques": 92
+    "count": 417,
+    "uniques": 88
   },
   {
     "referrer": "school.qa.guru",
-    "count": 154,
-    "uniques": 13
+    "count": 150,
+    "uniques": 12
   },
   {
     "referrer": "github.com",
@@ -26,8 +26,8 @@
   },
   {
     "referrer": "qaguruschool.getcourse.ru",
-    "count": 34,
-    "uniques": 3
+    "count": 30,
+    "uniques": 2
   },
   {
     "referrer": "yandex.ru",
