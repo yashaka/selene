@@ -230,11 +230,17 @@ class js:  # pylint: disable=invalid-name
         lambda element: element.execute_script('element.scrollIntoView(true)'),
     )
 
+    @staticmethod
+    @overload
+    def _click(element: Element | None) -> None: ...
+
+    @staticmethod
+    @overload
+    def _click(*, xoffset=0, yoffset=0) -> Command[Element]: ...
+
     # TODO: should we process collections too? i.e. click through all elements?
     @staticmethod
-    def __click(
-        entity: Element | None = None, /, *, xoffset=0, yoffset=0
-    ) -> Command[Element]:
+    def _click(element: Element | None = None, *, xoffset=0, yoffset=0):
         def func(element: Element):
             element.execute_script(
                 '''
@@ -268,7 +274,12 @@ class js:  # pylint: disable=invalid-name
                 yoffset,
             )
 
-        command: Command[Element] = Command(
+        if isinstance(element, Element):
+            # somebody passed command as `.perform(command.js.click)`
+            # not as `.perform(command.js.click())`
+            func(element)
+
+        return Command(
             (
                 'click'
                 if (not xoffset and not yoffset)
@@ -276,14 +287,6 @@ class js:  # pylint: disable=invalid-name
             ),
             func,
         )
-
-        if isinstance(entity, Element):
-            # somebody passed command as `.perform(command.js.click)`
-            # not as `.perform(command.js.click())`
-            element = entity
-            command.__call__(element)
-
-        return command
 
     class __ClickWithOffset(Command[Element]):
         def __init__(self):

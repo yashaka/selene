@@ -26,12 +26,14 @@ import warnings
 
 from abc import abstractmethod, ABC
 from typing import TypeVar, Union, Callable, Tuple, Iterable, Optional
+from typing_extensions import override
 
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.webelement import WebElement
 
+from selene import common
 from selene.common.fp import pipe
 
 from selene.core.configuration import Config
@@ -87,7 +89,7 @@ class WaitingEntity(Matchable[E], Configured):
     def wait(self) -> Wait[E]:
         return self.config.wait(typing.cast(E, self))  # type: ignore
 
-    def perform(self, command: Command[E]) -> E:
+    def perform(self, command: common._protocol.EntityCommand[E]) -> E:
         """Useful to call external commands.
 
         Commands might be predefined in Selene:
@@ -192,6 +194,35 @@ class Element(WaitingEntity['Element']):
         return self.locate()
 
     # --- WaitingEntity --- #
+
+    # @override
+    # def perform(self, command: common._protocol.EntityCommand[Element]) -> Element:
+    #     """Useful to call external commands.
+    #
+    #     Commands might be predefined in Selene:
+    #         element.perform(command.js.scroll_into_view)
+    #     or some custom defined by selene user:
+    #         element.perform(my_action.triple_click)
+    #
+    #     You might think that it will be useful
+    #     to use these methods also in Selene internally
+    #     in order to define built in commands e.g. in Element class, like:
+    #
+    #         def click(self):
+    #             return self.perform(Command('click', lambda element: element().click()))
+    #
+    #     instead of:
+    #
+    #         def click(self):
+    #             self.wait.for_(Command('click', lambda element: element().click()))
+    #             return self
+    #
+    #     But so far, we use the latter version - though, less concise, but more explicit,
+    #     making it more obvious that waiting is built in;)
+    #
+    #     """
+    #     self.wait.for_(command)
+    #     return self
 
     @property
     def wait(self) -> Wait[Element]:
