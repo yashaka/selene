@@ -1,18 +1,18 @@
 [
   {
     "referrer": "Google",
-    "count": 434,
-    "uniques": 91
+    "count": 388,
+    "uniques": 82
   },
   {
     "referrer": "school.qa.guru",
-    "count": 160,
-    "uniques": 13
+    "count": 152,
+    "uniques": 11
   },
   {
     "referrer": "github.com",
-    "count": 108,
-    "uniques": 36
+    "count": 103,
+    "uniques": 33
   },
   {
     "referrer": "yashaka.github.io",
@@ -21,8 +21,8 @@
   },
   {
     "referrer": "pypi.org",
-    "count": 60,
-    "uniques": 8
+    "count": 59,
+    "uniques": 7
   },
   {
     "referrer": "yandex.ru",
