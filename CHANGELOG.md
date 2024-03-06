@@ -99,7 +99,7 @@ TODOs:
 - can we force order of how `selene.*` is rendered on autocomplete? via `__all__`...
 - deprecate `have.js_returned` in favour of `have.script_returned`
 
-## 2.0.0rc8 (to be released on 04.03.2024)
+## 2.0.0rc8 (to be released on 06.03.2024)
 
 ### Click with offsets
 
@@ -147,6 +147,20 @@ browser.element('#text-field').type('reset')
 
 browser.element('#text-field').should(have.value('reset'))
 ```
+
+### __qualname__ support in context of rendering conditions in error messages
+
+Allows to simplify custom conditions implementation to something like:
+
+```python 
+class have:
+    @staticmethod
+    def attribute(entity):
+        if entity.attribute is None:
+            raise AssertionError('attribute is None')
+```
+
+Since the `have.attribute` staticmethod will already have `__qualname__` defined and equal to `'have.attribute'`, that will result in same rendering of the condition name in error messages on failed waiting (`entity.wait.for_(condition)`) or assertion (via `entity.should(condition)`).
 
 ## 2.0.0rc8 (released on 13.02.2024)
 
