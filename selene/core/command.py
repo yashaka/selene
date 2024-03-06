@@ -231,60 +231,6 @@ class js:  # pylint: disable=invalid-name
     )
 
     # TODO: should we process collections too? i.e. click through all elements?
-    @staticmethod
-    def __click(
-        entity: Element | None = None, /, *, xoffset=0, yoffset=0
-    ) -> Command[Element]:
-        def func(element: Element):
-            element.execute_script(
-                '''
-                const offsetX = arguments[0]
-                const offsetY = arguments[1]
-                const rect = element.getBoundingClientRect()
-
-                function mouseEvent() {
-                  if (typeof (Event) === 'function') {
-                    return new MouseEvent('click', {
-                      view: window,
-                      bubbles: true,
-                      cancelable: true,
-                      clientX: rect.left + rect.width / 2 + offsetX,
-                      clientY: rect.top + rect.height / 2 + offsetY
-                    })
-                  }
-                  else {
-                    const event = document.createEvent('MouseEvent')
-                    event.initEvent('click', true, true)
-                    event.type = 'click'
-                    event.view = window
-                    event.clientX = rect.left + rect.width / 2 + offsetX
-                    event.clientY = rect.top + rect.height / 2 + offsetY
-                    return event
-                  }
-                }
-                element.dispatchEvent(mouseEvent())
-                ''',
-                xoffset,
-                yoffset,
-            )
-
-        command: Command[Element] = Command(
-            (
-                'click'
-                if (not xoffset and not yoffset)
-                else f'click(xoffset={xoffset},yoffset={yoffset})'
-            ),
-            func,
-        )
-
-        if isinstance(entity, Element):
-            # somebody passed command as `.perform(command.js.click)`
-            # not as `.perform(command.js.click())`
-            element = entity
-            command.__call__(element)
-
-        return command
-
     class __ClickWithOffset(Command[Element]):
         def __init__(self):
             self._description = 'click'
