@@ -18,6 +18,7 @@ nav:
   # - Learn Advanced:
   #   - Stub Title 1: learn-advanced/automate-testing-guide.md
   - FAQ:
+    - How Selene compares to other frameworks: faq/comparison-with-other-frameworks-guide.md
     - How to use custom profile: faq/custom-user-profile-howto.md
   # - Use Cases:
   #   - Stub Title 1: use-cases/path-to-some-example.md
