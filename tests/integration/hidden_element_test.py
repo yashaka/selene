@@ -31,9 +31,7 @@ def test_should(session_browser):
         '''
     )
 
-    hidden_element = session_browser.element("#hidden")
-
-    hidden_element.should(be.in_dom).should(be.hidden)
+    session_browser.element("#hidden").should(be.in_dom).should(be.hidden)
 
 
 def test_action_on_element_found_from_hidden_element(session_browser):
@@ -48,8 +46,8 @@ def test_action_on_element_found_from_hidden_element(session_browser):
         <h2 id="second">Heading 2</h2>
         '''
     )
-    hidden_element = session_browser.element("#hidden")
 
-    hidden_element.element('./following-sibling::*/a[2]').click()
+    session_browser.element("#hidden").\
+        element('./following-sibling::*/a[2]').click()
 
     assert 'second' in session_browser.driver.current_url
