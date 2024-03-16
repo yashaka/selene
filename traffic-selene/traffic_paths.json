@@ -2,61 +2,61 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 365,
-    "uniques": 201
+    "count": 378,
+    "uniques": 208
   },
   {
     "path": "/yashaka/selene/blob/master/README.md",
     "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 100,
-    "uniques": 17
+    "count": 98,
+    "uniques": 19
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 51,
-    "uniques": 17
+    "count": 55,
+    "uniques": 19
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 49,
-    "uniques": 13
+    "count": 54,
+    "uniques": 15
   },
   {
     "path": "/yashaka/selene/releases",
     "title": "Releases · yashaka/selene · GitHub",
-    "count": 36,
+    "count": 37,
     "uniques": 19
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 27,
-    "uniques": 10
+    "count": 36,
+    "uniques": 13
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 26,
-    "uniques": 8
+    "count": 34,
+    "uniques": 9
   },
   {
     "path": "/yashaka/selene/tree/master/selene/core",
     "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 26,
-    "uniques": 6
+    "count": 30,
+    "uniques": 8
+  },
+  {
+    "path": "/yashaka/selene/blob/master/selene/support/conditions/have.py",
+    "title": "selene/selene/support/conditions/have.py at master · yashaka/selene · GitHub",
+    "count": 27,
+    "uniques": 5
   },
   {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
     "count": 25,
     "uniques": 6
-  },
-  {
-    "path": "/yashaka/selene/blob/master/selene/support/conditions/have.py",
-    "title": "selene/selene/support/conditions/have.py at master · yashaka/selene · GitHub",
-    "count": 25,
-    "uniques": 4
   }
 ]
