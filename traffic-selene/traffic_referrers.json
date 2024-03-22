@@ -1,13 +1,13 @@
 [
   {
     "referrer": "Google",
-    "count": 406,
-    "uniques": 105
+    "count": 414,
+    "uniques": 107
   },
   {
     "referrer": "github.com",
-    "count": 116,
-    "uniques": 24
+    "count": 134,
+    "uniques": 25
   },
   {
     "referrer": "qwiki.nixs.com",
@@ -26,7 +26,7 @@
   },
   {
     "referrer": "school.qa.guru",
-    "count": 40,
+    "count": 41,
     "uniques": 7
   },
   {
@@ -35,14 +35,14 @@
     "uniques": 4
   },
   {
-    "referrer": "qiita.com",
-    "count": 14,
-    "uniques": 5
-  },
-  {
     "referrer": "automated-testing.info",
     "count": 12,
     "uniques": 5
+  },
+  {
+    "referrer": "qiita.com",
+    "count": 12,
+    "uniques": 4
   },
   {
     "referrer": "yashaka.github.io",
