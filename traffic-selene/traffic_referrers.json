@@ -1,18 +1,18 @@
 [
   {
     "referrer": "Google",
-    "count": 439,
-    "uniques": 104
+    "count": 447,
+    "uniques": 97
   },
   {
     "referrer": "github.com",
-    "count": 160,
-    "uniques": 30
+    "count": 140,
+    "uniques": 28
   },
   {
     "referrer": "school.qa.guru",
-    "count": 94,
-    "uniques": 11
+    "count": 92,
+    "uniques": 10
   },
   {
     "referrer": "qwiki.nixs.com",
@@ -26,27 +26,27 @@
   },
   {
     "referrer": "yandex.ru",
-    "count": 33,
+    "count": 36,
     "uniques": 14
   },
   {
     "referrer": "confluence.atl.ring.com",
-    "count": 22,
-    "uniques": 3
+    "count": 20,
+    "uniques": 2
   },
   {
     "referrer": "autotest.how",
-    "count": 13,
+    "count": 14,
     "uniques": 2
   },
   {
     "referrer": "qiita.com",
-    "count": 12,
-    "uniques": 4
+    "count": 11,
+    "uniques": 3
   },
   {
     "referrer": "yashaka.github.io",
-    "count": 7,
-    "uniques": 4
+    "count": 9,
+    "uniques": 6
   }
 ]
