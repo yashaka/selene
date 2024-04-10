@@ -2,19 +2,25 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 239,
-    "uniques": 138
-  },
-  {
-    "path": "/yashaka/selene/tree/master/examples",
-    "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 54,
-    "uniques": 16
+    "count": 266,
+    "uniques": 148
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 34,
+    "count": 60,
+    "uniques": 10
+  },
+  {
+    "path": "/yashaka/selene/tree/master/examples",
+    "title": "selene/examples at master · yashaka/selene · GitHub",
+    "count": 57,
+    "uniques": 17
+  },
+  {
+    "path": "/yashaka/selene/tree/master/selene/core",
+    "title": "selene/selene/core at master · yashaka/selene · GitHub",
+    "count": 40,
     "uniques": 7
   },
   {
@@ -24,39 +30,33 @@
     "uniques": 11
   },
   {
-    "path": "/yashaka/selene/tree/master/selene/core",
-    "title": "selene/selene/core at master · yashaka/selene",
-    "count": 26,
-    "uniques": 5
-  },
-  {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 24,
-    "uniques": 11
-  },
-  {
-    "path": "/yashaka/selene/tree/master/examples/run_cross_platform",
-    "title": "selene/examples/run_cross_platform at master · yashaka/selene",
-    "count": 23,
-    "uniques": 3
+    "count": 27,
+    "uniques": 12
   },
   {
     "path": "/yashaka/selene/issues/519",
     "title": "path of screenshot and pagesource on failure – should be windows friendly · I...",
-    "count": 21,
+    "count": 22,
     "uniques": 12
   },
   {
     "path": "/yashaka/selene/blob/master/selene/core/_browser.py",
     "title": "selene/selene/core/_browser.py at master · yashaka/selene · GitHub",
-    "count": 20,
-    "uniques": 5
+    "count": 22,
+    "uniques": 7
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 18,
-    "uniques": 5
+    "count": 22,
+    "uniques": 6
+  },
+  {
+    "path": "/yashaka/selene/tree/master/examples/run_cross_platform",
+    "title": "selene/examples/run_cross_platform at master · yashaka/selene",
+    "count": 20,
+    "uniques": 2
   }
 ]
