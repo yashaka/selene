@@ -2,38 +2,38 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 255,
-    "uniques": 142
+    "count": 286,
+    "uniques": 154
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
-    "title": "selene/selene at master · yashaka/selene",
-    "count": 57,
-    "uniques": 11
+    "title": "selene/selene at master · yashaka/selene · GitHub",
+    "count": 84,
+    "uniques": 14
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 51,
+    "count": 55,
     "uniques": 15
   },
   {
     "path": "/yashaka/selene/tree/master/selene/core",
     "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 38,
-    "uniques": 7
+    "count": 49,
+    "uniques": 9
   },
   {
     "path": "/yashaka/selene/issues/519",
     "title": "path of screenshot and pagesource on failure – should be windows friendly · I...",
-    "count": 27,
-    "uniques": 12
+    "count": 37,
+    "uniques": 15
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 24,
-    "uniques": 9
+    "count": 34,
+    "uniques": 10
   },
   {
     "path": "/yashaka/selene/releases",
@@ -45,18 +45,18 @@
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
     "count": 22,
+    "uniques": 7
+  },
+  {
+    "path": "/yashaka/selene/blob/master/README.md",
+    "title": "selene/README.md at master · yashaka/selene · GitHub",
+    "count": 22,
     "uniques": 6
   },
   {
-    "path": "/yashaka/selene/blob/master/selene/core/_browser.py",
-    "title": "selene/selene/core/_browser.py at master · yashaka/selene · GitHub",
-    "count": 18,
-    "uniques": 5
-  },
-  {
-    "path": "/yashaka/selene/tree/master/examples/run_cross_platform",
-    "title": "selene/examples/run_cross_platform at master · yashaka/selene",
-    "count": 18,
-    "uniques": 2
+    "path": "/yashaka/selene/blob/4d7b027f04106e0295e826e982b4818c925cac10/selene/core/configuration.py",
+    "title": "selene/selene/core/configuration.py at 4d7b027f04106e0295e826e982b4818c925cac...",
+    "count": 22,
+    "uniques": 3
   }
 ]
