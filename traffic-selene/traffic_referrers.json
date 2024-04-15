@@ -1,23 +1,28 @@
 [
   {
     "referrer": "Google",
-    "count": 302,
-    "uniques": 92
+    "count": 358,
+    "uniques": 90
   },
   {
     "referrer": "school.qa.guru",
-    "count": 154,
-    "uniques": 6
+    "count": 158,
+    "uniques": 7
   },
   {
     "referrer": "github.com",
-    "count": 120,
-    "uniques": 29
+    "count": 99,
+    "uniques": 27
   },
   {
     "referrer": "yashaka.github.io",
     "count": 50,
     "uniques": 4
+  },
+  {
+    "referrer": "labs.codeday.org",
+    "count": 39,
+    "uniques": 2
   },
   {
     "referrer": "qaguruschool.getcourse.ru",
@@ -28,11 +33,6 @@
     "referrer": "mail.google.com",
     "count": 20,
     "uniques": 1
-  },
-  {
-    "referrer": "labs.codeday.org",
-    "count": 17,
-    "uniques": 2
   },
   {
     "referrer": "yandex.ru",
