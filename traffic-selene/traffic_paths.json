@@ -2,8 +2,8 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 288,
-    "uniques": 150
+    "count": 280,
+    "uniques": 148
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
@@ -14,8 +14,8 @@
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 57,
-    "uniques": 16
+    "count": 60,
+    "uniques": 17
   },
   {
     "path": "/yashaka/selene/tree/master/selene/core",
@@ -26,20 +26,14 @@
   {
     "path": "/yashaka/selene/issues/519",
     "title": "path of screenshot and pagesource on failure – should be windows friendly · I...",
-    "count": 44,
-    "uniques": 15
+    "count": 43,
+    "uniques": 14
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 38,
-    "uniques": 11
-  },
-  {
-    "path": "/yashaka/selene/releases",
-    "title": "Releases · yashaka/selene · GitHub",
-    "count": 24,
-    "uniques": 9
+    "count": 35,
+    "uniques": 10
   },
   {
     "path": "/yashaka/selene/blob/master/README.md",
@@ -58,5 +52,11 @@
     "title": "selene/tests at master · yashaka/selene · GitHub",
     "count": 20,
     "uniques": 8
+  },
+  {
+    "path": "/yashaka/selene/blob/master/selene/core/_browser.py",
+    "title": "selene/selene/core/_browser.py at master · yashaka/selene · GitHub",
+    "count": 20,
+    "uniques": 6
   }
 ]
