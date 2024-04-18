@@ -1,28 +1,28 @@
 [
   {
     "referrer": "Google",
-    "count": 334,
-    "uniques": 80
-  },
-  {
-    "referrer": "school.qa.guru",
-    "count": 129,
-    "uniques": 8
+    "count": 345,
+    "uniques": 75
   },
   {
     "referrer": "github.com",
-    "count": 102,
-    "uniques": 27
+    "count": 101,
+    "uniques": 26
+  },
+  {
+    "referrer": "school.qa.guru",
+    "count": 91,
+    "uniques": 7
+  },
+  {
+    "referrer": "labs.codeday.org",
+    "count": 76,
+    "uniques": 2
   },
   {
     "referrer": "yashaka.github.io",
     "count": 40,
     "uniques": 3
-  },
-  {
-    "referrer": "labs.codeday.org",
-    "count": 39,
-    "uniques": 2
   },
   {
     "referrer": "mail.google.com",
