@@ -1,22 +1,22 @@
 [
   {
     "referrer": "Google",
-    "count": 514,
-    "uniques": 87
+    "count": 508,
+    "uniques": 76
   },
   {
     "referrer": "github.com",
-    "count": 124,
+    "count": 116,
     "uniques": 23
   },
   {
     "referrer": "labs.codeday.org",
-    "count": 75,
-    "uniques": 2
+    "count": 78,
+    "uniques": 3
   },
   {
     "referrer": "school.qa.guru",
-    "count": 52,
+    "count": 40,
     "uniques": 4
   },
   {
@@ -25,14 +25,14 @@
     "uniques": 3
   },
   {
+    "referrer": "yandex.ru",
+    "count": 20,
+    "uniques": 8
+  },
+  {
     "referrer": "mail.google.com",
     "count": 20,
     "uniques": 1
-  },
-  {
-    "referrer": "yandex.ru",
-    "count": 18,
-    "uniques": 8
   },
   {
     "referrer": "docs.bw.vimpelcom.ru",
