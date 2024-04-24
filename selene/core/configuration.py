@@ -1392,12 +1392,13 @@ class Config:
 
     def _format_path_as_uri(self, path):
         """Converts a local file path to a URI that can be clicked in most editors and browsers."""
+        prefix = 'file://'
         if os.name == 'nt':  # Windows specific
-            # Replace backslashes with forward slashes and prepend with 'file:///'
-            return f"file:///{path.replace(os.sep, '/')}"
+            # Replace backslashes with forward slashes and prepend with 'file://'
+            return f"{prefix}{path.replace(os.sep, '/')}"
         else:
             # Unix-based paths
-            return f"file://{path}"
+            return f"{prefix}{path}"
 
     def _generate_filename(self, prefix='', suffix=''):
         path = self.reports_folder
