@@ -58,7 +58,7 @@ pylint = "2.13.9"
 pytest = "*"
 pytest-cov = "*"
 mypy = "*"
-pydantic = "^1.10.7"
+pydantic = "^1.10.13"
 python-dotenv = "0.21.1"
 Appium-Python-Client = "^2.9.0"
 
