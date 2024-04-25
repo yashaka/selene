@@ -1,28 +1,28 @@
 [
   {
     "referrer": "Google",
-    "count": 563,
-    "uniques": 81
+    "count": 592,
+    "uniques": 90
   },
   {
     "referrer": "github.com",
-    "count": 119,
+    "count": 132,
     "uniques": 24
   },
   {
     "referrer": "labs.codeday.org",
-    "count": 79,
+    "count": 71,
     "uniques": 3
   },
   {
     "referrer": "school.qa.guru",
-    "count": 46,
-    "uniques": 5
+    "count": 62,
+    "uniques": 6
   },
   {
     "referrer": "yandex.ru",
-    "count": 21,
-    "uniques": 7
+    "count": 22,
+    "uniques": 8
   },
   {
     "referrer": "nextgenerationautomation.com",
@@ -40,9 +40,9 @@
     "uniques": 1
   },
   {
-    "referrer": "qiita.com",
-    "count": 6,
-    "uniques": 4
+    "referrer": "automated-testing.info",
+    "count": 8,
+    "uniques": 3
   },
   {
     "referrer": "demo-my-kit.internal.eng.qops.net",
