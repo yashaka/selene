@@ -1,17 +1,17 @@
 [
   {
     "referrer": "Google",
-    "count": 616,
-    "uniques": 109
+    "count": 628,
+    "uniques": 116
   },
   {
     "referrer": "github.com",
-    "count": 178,
-    "uniques": 30
+    "count": 189,
+    "uniques": 33
   },
   {
     "referrer": "school.qa.guru",
-    "count": 62,
+    "count": 56,
     "uniques": 6
   },
   {
@@ -21,8 +21,8 @@
   },
   {
     "referrer": "yandex.ru",
-    "count": 23,
-    "uniques": 9
+    "count": 26,
+    "uniques": 8
   },
   {
     "referrer": "nextgenerationautomation.com",
@@ -35,17 +35,17 @@
     "uniques": 2
   },
   {
+    "referrer": "pypi.org",
+    "count": 7,
+    "uniques": 3
+  },
+  {
     "referrer": "demo-my-kit.internal.eng.qops.net",
     "count": 6,
     "uniques": 2
   },
   {
     "referrer": "ecosia.org",
-    "count": 4,
-    "uniques": 4
-  },
-  {
-    "referrer": "DuckDuckGo",
     "count": 4,
     "uniques": 4
   }
