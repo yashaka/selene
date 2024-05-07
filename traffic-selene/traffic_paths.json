@@ -2,20 +2,26 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 373,
-    "uniques": 176
+    "count": 344,
+    "uniques": 166
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 101,
-    "uniques": 27
+    "count": 114,
+    "uniques": 24
   },
   {
     "path": "/yashaka/selene/blob/master/README.md",
     "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 86,
-    "uniques": 13
+    "count": 73,
+    "uniques": 12
+  },
+  {
+    "path": "/yashaka/selene/tree/master/selene/core",
+    "title": "selene/selene/core at master · yashaka/selene · GitHub",
+    "count": 52,
+    "uniques": 6
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
@@ -30,33 +36,27 @@
     "uniques": 14
   },
   {
-    "path": "/yashaka/selene/tree/master/docs",
-    "title": "selene/README.md at master · yashaka/selene",
-    "count": 39,
-    "uniques": 7
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene/core",
-    "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 29,
-    "uniques": 7
+    "path": "/yashaka/selene/tree/master/selene/support",
+    "title": "selene/selene/support at master · yashaka/selene",
+    "count": 34,
+    "uniques": 5
   },
   {
     "path": "/yashaka/selene/tree/master/selene/common",
     "title": "selene/selene/common at master · yashaka/selene · GitHub",
-    "count": 26,
+    "count": 32,
     "uniques": 10
   },
   {
-    "path": "/yashaka/selene/commits/master",
-    "title": "Commits · yashaka/selene · GitHub",
-    "count": 26,
-    "uniques": 7
+    "path": "/yashaka/selene/tree/master/docs",
+    "title": "selene/README.md at master · yashaka/selene",
+    "count": 32,
+    "uniques": 6
   },
   {
-    "path": "/yashaka/selene/tree/master/selene/support",
-    "title": "selene/selene/support at master · yashaka/selene",
-    "count": 24,
-    "uniques": 8
+    "path": "/yashaka/selene/blob/master/selene/core/entity.py",
+    "title": "selene/selene/core/entity.py at master · yashaka/selene · GitHub",
+    "count": 32,
+    "uniques": 3
   }
 ]
