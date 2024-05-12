@@ -2,38 +2,50 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 339,
-    "uniques": 165
+    "count": 356,
+    "uniques": 174
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 82,
+    "count": 90,
     "uniques": 15
   },
   {
     "path": "/yashaka/selene/blob/master/README.md",
     "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 64,
-    "uniques": 12
-  },
-  {
-    "path": "/yashaka/selene/tree/master/tests",
-    "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 42,
-    "uniques": 14
+    "count": 68,
+    "uniques": 13
   },
   {
     "path": "/yashaka/selene/tree/master/selene/core",
     "title": "selene/selene/core at master · yashaka/selene",
-    "count": 39,
-    "uniques": 4
+    "count": 41,
+    "uniques": 5
+  },
+  {
+    "path": "/yashaka/selene/tree/master/tests",
+    "title": "selene/tests at master · yashaka/selene · GitHub",
+    "count": 40,
+    "uniques": 14
   },
   {
     "path": "/yashaka/selene/tree/master/selene/support",
     "title": "selene/selene/support at master · yashaka/selene",
+    "count": 34,
+    "uniques": 4
+  },
+  {
+    "path": "/yashaka/selene/tree/master/examples",
+    "title": "selene/examples at master · yashaka/selene · GitHub",
+    "count": 31,
+    "uniques": 11
+  },
+  {
+    "path": "/yashaka/selene/tree/master/selene/common",
+    "title": "selene/selene/common at master · yashaka/selene",
     "count": 30,
-    "uniques": 3
+    "uniques": 8
   },
   {
     "path": "/yashaka/selene/blob/master/selene/core/entity.py",
@@ -46,17 +58,5 @@
     "title": "selene/docs at master · yashaka/selene · GitHub",
     "count": 29,
     "uniques": 6
-  },
-  {
-    "path": "/yashaka/selene/tree/master/examples",
-    "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 27,
-    "uniques": 10
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene/common",
-    "title": "selene/selene/common at master · yashaka/selene",
-    "count": 24,
-    "uniques": 7
   }
 ]
