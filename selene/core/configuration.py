@@ -1390,6 +1390,16 @@ class Config:
         )
         return persistent.replace(self, **options)
 
+    def _format_path_as_uri(self, path):
+        """Converts a local file path to a URI that can be clicked in most editors and browsers."""
+        prefix = 'file://'
+        if os.name == 'nt':  # Windows specific
+            # Replace backslashes with forward slashes and prepend with 'file://'
+            return f"{prefix}{path.replace(os.sep, '/')}"
+        else:
+            # Unix-based paths
+            return f"{prefix}{path}"
+
     def _generate_filename(self, prefix='', suffix=''):
         path = self.reports_folder
         next_id = next(self._counter)
@@ -1409,10 +1419,11 @@ class Config:
         #       or refactor somehow to eliminate all times defining hook fns
         def save_and_log_screenshot(error: TimeoutException) -> Exception:
             path = self._save_screenshot_strategy(self)  # type: ignore
+            uri = self._format_path_as_uri(path)
             return TimeoutException(
                 error.msg
                 + f'''
-Screenshot: file://{path}'''
+Screenshot: {uri}'''
             )
 
         def save_and_log_page_source(error: TimeoutException) -> Exception:
@@ -1425,7 +1436,8 @@ Screenshot: file://{path}'''
             )
 
             path = self._save_page_source_strategy(self, filename)
-            return TimeoutException(error.msg + f'\nPageSource: file://{path}')
+            uri = self._format_path_as_uri(path)
+            return TimeoutException(error.msg + f'\nPageSource: {uri}')
 
         return fp.pipe(
             save_and_log_screenshot if self.save_screenshot_on_failure else None,
