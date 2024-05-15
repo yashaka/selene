@@ -99,6 +99,12 @@ TODOs:
 - can we force order of how `selene.*` is rendered on autocomplete? via `__all__`...
 - deprecate `have.js_returned` in favour of `have.script_returned`
 
+## 2.0.0rc10 (to be released on DD.05.2024)
+
+### Fix path of screenshot and pagesource for Windows
+
+Thanks to [Cameron Shimmin](https://github.com/cshimm) and Edale Miguel for PR [#525](https://github.com/yashaka/selene/pull/525)
+
 ## 2.0.0rc9 (to be released on 06.03.2024)
 
 ### Click with offsets
