@@ -1,23 +1,23 @@
 [
   {
     "referrer": "github.com",
-    "count": 383,
-    "uniques": 40
+    "count": 416,
+    "uniques": 44
   },
   {
     "referrer": "Google",
-    "count": 305,
-    "uniques": 85
+    "count": 320,
+    "uniques": 92
   },
   {
     "referrer": "school.qa.guru",
-    "count": 44,
-    "uniques": 7
+    "count": 46,
+    "uniques": 8
   },
   {
     "referrer": "yandex.ru",
-    "count": 41,
-    "uniques": 10
+    "count": 42,
+    "uniques": 11
   },
   {
     "referrer": "Bing",
@@ -26,8 +26,13 @@
   },
   {
     "referrer": "yashaka.github.io",
-    "count": 22,
+    "count": 23,
     "uniques": 3
+  },
+  {
+    "referrer": "ecosia.org",
+    "count": 16,
+    "uniques": 9
   },
   {
     "referrer": "qaguruschool.getcourse.ru",
@@ -35,18 +40,13 @@
     "uniques": 1
   },
   {
-    "referrer": "ecosia.org",
-    "count": 12,
-    "uniques": 5
+    "referrer": "DuckDuckGo",
+    "count": 8,
+    "uniques": 8
   },
   {
     "referrer": "automated-testing.info",
-    "count": 5,
-    "uniques": 2
-  },
-  {
-    "referrer": "softwarerecs.stackexchange.com",
-    "count": 5,
-    "uniques": 1
+    "count": 7,
+    "uniques": 3
   }
 ]
