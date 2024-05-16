@@ -31,6 +31,30 @@ Then an extended command is the one defined outside of the entity class
 and given named as `extended_command` then can be executed on entity
 via `entity.perform(extended_command)`.
 
+The idiomatic way to use extended commands is to import the whole module:
+
+```python
+from selene import browser, command  # ❗️over from ...command import drag_and_drop_to
+
+slider = browser.element('#ContinuousSlider+*')
+slider_thumb = slider.element('.MuiSlider-thumb')
+slider_volume_up = slider.element('[data-testid=VolumeUpIcon]')
+slider_thumb_input = slider_thumb.element('input')
+
+# GIVEN
+browser.open('https://mui.com/material-ui/react-slider/#ContinuousSlider')
+
+# WHEN
+slider_thumb.perform(command.drag_and_drop_to(slider_volume_up))  # ⬅️ used via module
+
+# THEN
+slider_thumb_input.should(have.value('100'))
+```
+
+Thus you don't need to remember all available extended commands,
+you just import the module and select the one you need
+from the list of suggestions among `command.*`.
+
 # Why do we need a separate module for extended commands?
 
 Extended commands are defined outside of the entity class,
