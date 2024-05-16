@@ -19,6 +19,239 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+"""
+# Module overview
+
+This module contains a set of extended commands that can be used in addition
+to the standard Selene commands. Given a Selene entity, 
+i.e. an object of type `Browser | Collection | Element`,
+a standard Selene command is any method of the entity (among `entity.*` methods)
+that performs an action on entity and returns the entity itself.
+Then an extended command is the one defined outside of the entity class
+and given named as `extended_command` then can be executed on entity
+via `entity.perform(extended_command)`.
+
+# Why do we need a separate module for extended commands?
+
+Extended commands are defined outside of the entity class,
+because they can hardly be implemented in most versatile way.
+Some of them will work only in a specific web application context,
+others will not work on a mobile device, etc.
+Thus, by separating extended commands from the standard ones,
+we emphasize for the end user of Selene – the importance
+of more conscious use of them.
+
+The list of extended commands in this module is far from exhaustive,
+and there is no goal to make it complete, because in many cases, the end user
+will need his own list of custom commands specific to his application context.
+But this list can be a good starting point for such custom commands.
+Taking the latter into account we try to keep implementation of the commands
+in this module – as simple as possible,
+so that the end user can easily understand them
+and use as examples to implement own custom commands.
+That's why we avoid following DRY principle here,
+and prefer pure selenium code
+over reusing already implemented in Selene helpers.
+
+# How to implement custom extended commands?
+
+In case you need your own set of custom commands for Selene,
+we recommend the following pattern.
+Given your project named as `my_tests_project`, in the root package
+of your project, at proper place, create your own module `command.py`:
+
+## Example: custom command without parameters
+
+```python
+# Full path can be: my_tests_project/extensions/selene/command.py
+
+# Next import is an important part of the “pattern”
+# It will allow to reuse all existing extended Selene commands. 
+# Thus you are extending Selene commands, without doubling efforts in usage.
+from selene.core.command import *  
+
+# Some imports below are not mandatory, 
+# because are already among `*` from the import above,
+# but we still mention them below for self-documentation purposes.
+
+# To customize commands representation in logs
+# by wrapping them into Command object:
+from selene.core.wait import Command
+                                     
+# For type hints:
+from selene import Element, Browser, Collection
+
+# Usually you build your custom commands on top of pure Selenium's ActionChains
+from selenium.webdriver import ActionChains, Keys
+
+# To define current platform:
+import sys
+
+
+# Here goes an actual custom command implementation...
+# We prefix command with underscore by marking it as "not for actual use",
+# because we want to build another version of this command,
+# with a more representative name (more on that later...)
+def _select_all_and_copy(
+        # by providing two entity types in type hints...
+        entity: Element | Browser,
+        # – we self-document the fact
+        #   that command will work on both Element and Browser
+    ):
+    '''Selects all text under the focus if called on browser
+    or all text in the element if called on element,
+    then copies it to the clipboard.
+    For both selecting and copying uses OS-based keys combination.
+    
+    If had been failed, then is logged to console with it's function name,
+    i.e. '_select_all_and_copy', for example:
+    
+        Timed out after 4s, while waiting for:
+        browser.element(('css selector', '#new-task'))._select_all_and_copy
+     
+    '''
+    
+    _COMMAND_KEY = Keys.COMMAND if sys.platform == 'darwin' else Keys.CONTROL
+
+    actions = ActionChains(entity.config.driver)
+
+    # select all
+    actions.key_down(_COMMAND_KEY)
+    if isinstance(entity, Element):
+        actions.send_keys_to_element(entity.locate(), 'a')
+    else:
+        actions.send_keys('a')
+    actions.key_up(_COMMAND_KEY)
+
+    # copy
+    actions.key_down(_COMMAND_KEY)
+    if isinstance(entity, Element):
+        actions.send_keys_to_element(entity.locate(), 'c')
+    else:
+        actions.send_keys('c')
+    actions.key_up(_COMMAND_KEY)
+
+    actions.perform()
+
+
+# Any function on entity that returns void – is already a valid command,
+# and can be used as follows:
+# >>> from my_tests_project.extensions.selene import command
+# >>> browser.element('#new-task').perform(command._select_all_and_copy)
+# Then if failed, it will be logged as:
+#     Timed out after 4s, while waiting for:
+#     browser.element(('css selector', '#new-task'))._select_all_and_copy
+# If we want a more representative name in logs, 
+# we can wrap such command-as-function into Command object:
+
+select_all_and_copy: Command[Element | Browser] = Command(
+    'send «select all» and «copy» keys shortcut',
+    _select_all_and_copy,
+)
+
+# Then we can use it as follows:
+# >>> from my_tests_project.extensions.selene import command
+# >>> browser.element('#new-task').perform(command.select_all_and_copy)
+# And if failed, it will be logged as:
+#     Timed out after 4s, while waiting for:
+#     browser.element(('css selector', '#new-task')).send «select all»
+#      and «copy» keys shortcut
+```
+
+## Tuning the usage of custom commands module
+
+Note, that since we used `from selene.core.command import *`
+when defining our custom commands module, we don't need in usage to import both –
+original selene module and our custom new one:
+
+```python
+from selene import browser, command as original
+from my_project_root.extensions.selene import command
+
+browser.open('https://todomvc-emberjs-app.autotest.how/')
+browser.element('#new-todo').type('foo').perform(command.select_all_and_copy)
+browser.element('#new-todo').perform(original.js.set_value('reset'))
+```
+
+It's completely enough here and everywhere in your project
+to use only your own module import:
+
+```python
+from selene import browser,
+from my_project_root.extensions.selene import command
+
+browser.open('https://todomvc-emberjs-app.autotest.how/')
+browser.element('#new-todo').type('foo').perform(command.select_all_and_copy)
+browser.element('#new-todo').perform(command.js.set_value('reset'))
+```
+
+When applying the “Quick fix” functionality of your IDE of choice
+to the `command` term in the code yet without import:
+
+```python
+from selene import browser,
+
+browser.open('https://todomvc-emberjs-app.autotest.how/')
+browser.element('#new-todo').type('foo').perform(command.select_all_and_copy)
+browser.element('#new-todo').perform(command.js.set_value('reset'))
+```
+
+You will get both suggestions, and, maybe with not quite handy sorting:
+
+```text
+                 Import from...
+command from selene
+command from my_project_root.extensions.selene
+```
+
+If you find uncomfortable to allways waste
+an additional time to “select the second one from the list”,
+you can name your module as `action.py`,
+then you'll probably get the top-sorted suggestion
+of `action from my_project_root.extensions.selene` import
+for the code like:
+
+```python
+from selene import browser,
+
+browser.open('https://todomvc-emberjs-app.autotest.how/')
+browser.element('#new-todo').type('foo').perform(action.select_all_and_copy)
+browser.element('#new-todo').perform(action.js.set_value('reset'))
+``` 
+
+Yet keeping the already defined naming in Selene – the “command” one –
+has its own benefits for the purpose of consistency
+and less amount of terminology. But for you to decide.
+You can find your own name that better suits your project context.
+
+## Example: custom command with parameter
+
+Sometimes your command needs an additional parameter.
+Then you have to implement the so called “command builder”, for example:
+
+```python
+def press_sequentially(keys: str):
+    def action(element: Element):
+        actions = ActionChains(element.config.driver)
+
+        for key in keys:
+            actions.send_keys_to_element(element.locate(), Keys.END + key)
+
+        actions.perform()
+
+    return Command(f'press sequentially: {keys}', action)
+    
+```
+
+Here the actual command is the `action` function
+defined inside the definition of the `press_sequentially` command builder, 
+and returned from it wrapped in a more “descriptive” `Command` object.
+
+For more example of how to build your own custom commands
+see the actual implementation of Selene's extended commands in this module.
+
+# The actual list of commands ↙️
+"""
 from __future__ import annotations
 import sys
 from typing import Union, Optional, overload
@@ -92,12 +325,106 @@ select_all: Command[Element | Browser] = Command(
 )
 
 
+def copy_and_paste(text: str):
+    """Copies text to clipboard programmatically and pastes it to the element
+    by pressing OS-based keys combination.
+
+    Requires pyperclip package to be installed.
+
+    Does not support mobile context. Not tested with desktop apps.
+    """
+
+    def action(entity: Element | Browser):
+        try:
+            import pyperclip  # type: ignore
+        except ImportError as error:
+            raise ImportError(
+                'pyperclip package is not installed, '
+                'run `pip install pyperclip`,'
+                'or add and install dependency '
+                'with your favorite dependency manager like poetry: '
+                '`poetry add pyperclip`'
+            ) from error
+
+        _COMMAND_KEY = (
+            Keys.COMMAND
+            if sys.platform == 'darwin'
+            else Keys.CONTROL
+        )
+
+        pyperclip.copy(text)
+
+        actions = ActionChains(entity.config.driver)
+        actions.key_down(_COMMAND_KEY)
+        if isinstance(entity, Element):
+            actions.send_keys_to_element(entity.locate(), 'v')
+        else:
+            actions.send_keys('v')
+        actions.key_up(_COMMAND_KEY)
+        actions.perform()
+
+    return Command(f'copy and paste: {text}»', action)
+
+
+def __copy(entity: Element | Browser):
+    _COMMAND_KEY = Keys.COMMAND if sys.platform == 'darwin' else Keys.CONTROL
+
+    actions = ActionChains(entity.config.driver)
+    actions.key_down(_COMMAND_KEY)
+    if isinstance(entity, Element):
+        actions.send_keys_to_element(entity.locate(), 'c')
+    else:
+        actions.send_keys('c')
+    actions.key_up(_COMMAND_KEY)
+    actions.perform()
+
+
+# TODO: define name dynamically based on platform
+copy: Command[Element | Browser] = Command(
+    'send «copy» keys shortcut as ctrl+c for win/linux or cmd+c for mac',
+    __copy,
+)
+
+
+def __paste(entity: Element | Browser):
+    _COMMAND_KEY = Keys.COMMAND if sys.platform == 'darwin' else Keys.CONTROL
+
+    actions = ActionChains(entity.config.driver)
+    actions.key_down(_COMMAND_KEY)
+    if isinstance(entity, Element):
+        actions.send_keys_to_element(entity.locate(), 'v')
+    else:
+        actions.send_keys('v')
+    actions.key_up(_COMMAND_KEY)
+    actions.perform()
+
+
+# TODO: define name dynamically based on platform
+paste: Command[Element | Browser] = Command(
+    'send «paste» keys shortcut as ctrl+v for win/linux or cmd+v for mac',
+    __paste,
+)
+
+
 # TODO: can we make it work for both mobile and web?
 #       should we selectively choose proper interaction.POINTER_TOUCH below?
-def _long_press(duration=1.0):
-    def func(element: Element):
-        located_element = element.locate()
-        driver = element.config.driver
+# TODO: consider renaming to touch_long_press
+#       or consider checking the mobile context and change impl dynamically
+#       see also: https://ux.stackexchange.com/questions/98410/terminology-long-press-or-touch-hold
+def long_press(duration=1.0):
+    """A mobile “long press” command, also known as “touch and hold”.
+
+    Args:
+        duration (float): duration of the hold between press and release in seconds
+
+    !!! warning
+
+        Designed for the mobile context only. Not tested for web.
+    """
+
+    def action(entity: Element):
+        located_element = entity.locate()
+        driver = entity.config.driver
         actions: ActionChains = ActionChains(driver)
 
         actions.w3c_actions = ActionBuilder(
@@ -111,7 +438,7 @@ def _long_press(duration=1.0):
         )
         actions.perform()
 
-    command = Command(f'long press with duration={duration}', func)
+    command = Command(f'long press with duration={duration}', action)
 
     if isinstance(duration, Element):
         # somebody passed command as `.perform(command.long_press)`
@@ -121,6 +448,35 @@ def _long_press(duration=1.0):
         command.__call__(element)
 
     return command
+
+
+# TODO: deprecate
+_long_press = long_press
+"""An outdated alias to the `long_press` command.
+"""
+
+
+def press_sequentially(text: str):
+    """Presses each key (letter) in text sequentially to the element.
+
+    The pure webelement.send_keys already does it, but this command simulates
+    more slow human-like typing by applying send_keys to each key
+    of the text passed with additional END key press before each next key
+    to ensure that each next key is typed at the end of the text.
+
+    Such weird simulation might help with some rare cases of "slow" text fields,
+    that extensively loads some other content on each key press,
+    for example the content of auto-suggestions, etc.
+    """
+    def action(element: Element):
+        actions = ActionChains(element.config.driver)
+
+        for key in text:
+            actions.send_keys_to_element(element.locate(), Keys.END + key)
+
+        actions.perform()
+
+    return Command(f'press sequentially: {text}', action)
 
 
 # TODO: consider
@@ -181,6 +537,15 @@ def drag_and_drop_by_offset(x: int, y: int) -> Command[Element]:
 
 
 class js:  # pylint: disable=invalid-name
+    """A container for JavaScript-based commands.
+
+    Examples:
+        >>> from selene import browser, command
+        >>> browser.element('#new-todo').perform(command.js.set_value('abc'))
+
+    !!! danger
+        Don't use them in mobile context! JavaScript doesn't work their.
+    """
     @staticmethod
     def set_value(value: Union[str, int]) -> Command[Element]:
         def func(element: Element):
@@ -380,9 +745,11 @@ class js:  # pylint: disable=invalid-name
         """
         Simulates drag and drop via JavaScript.
 
-        May not work everywhere. Among known cases:
-        * does not work on https://mui.com/material-ui/react-slider/#ContinuousSlider
-          where the normal drag and drop works fine.
+        !!! warning
+
+            May not work everywhere. Among known cases:
+            does not work on [Material UI React Continuous Slider](https://mui.com/material-ui/react-slider/#ContinuousSlider)
+            where the normal drag and drop works fine.
         """
 
         def func(source: Element):

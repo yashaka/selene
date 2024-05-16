@@ -61,6 +61,7 @@ mypy = "*"
 pydantic = "^1.10.7"
 python-dotenv = "0.21.1"
 Appium-Python-Client = "^2.9.0"
+pyperclip = "^1.8.2"
 
 [tool.poetry.group.docs]
 optional = true
@@ -214,14 +215,14 @@ skip-string-normalization = 1
     logging-format-style=['old']
     logging-modules=['logging']
 
-        [tool.pylint.'SPELLING']
+            [tool.pylint.'SPELLING']
     max-spelling-suggestions=4
     spelling-store-unknown-words=['no']
 
-        [tool.pylint.'MISCELLANEOUS']
+            [tool.pylint.'MISCELLANEOUS']
     notes=['FIXME,XXX']
 
-        [tool.pylint.'TYPECHECK']
+            [tool.pylint.'TYPECHECK']
     contextmanager-decorators=['contextlib.contextmanager']
     ignore-mixin-members=['yes']
     ignore-none=['yes']
@@ -231,7 +232,7 @@ skip-string-normalization = 1
     missing-member-hint-distance=1
     missing-member-max-choices=1
 
-        [tool.pylint.'VARIABLES']
+            [tool.pylint.'VARIABLES']
     allow-global-unused-variables=['yes']
     callbacks=['cb_,_cb']
     dummy-variables-rgx=['_+$|(_[a-zA-Z0-9_]*[a-zA-Z0-9]+?$)|dummy|^ignored_|^unused_']
@@ -239,7 +240,7 @@ skip-string-normalization = 1
     init-import=['no']
     redefining-builtins-modules=['six.moves,past.builtins,future.builtins,builtins,io']
 
-        [tool.pylint.'FORMAT']
+            [tool.pylint.'FORMAT']
     ignore-long-lines=['^\s*(# )?<?https?://\S+>?$']
     indent-after-paren=4
     indent-string='    '
@@ -248,13 +249,13 @@ skip-string-normalization = 1
     single-line-class-stmt=['no']
     single-line-if-stmt=['no']
 
-        [tool.pylint.'SIMILARITIES']
+            [tool.pylint.'SIMILARITIES']
     ignore-comments=['yes']
     ignore-docstrings=['yes']
     ignore-imports=['no']
     min-similarity-lines=4
 
-        [tool.pylint.'BASIC']
+            [tool.pylint.'BASIC']
     argument-naming-style=['snake_case']
     attr-naming-style=['snake_case']
     bad-names=['foo,bar,baz,toto,tutu,tata']
@@ -272,22 +273,22 @@ skip-string-normalization = 1
     property-classes=['abc.abstractproperty']
     variable-naming-style=['snake_case']
 
-        [tool.pylint.'STRING']
+            [tool.pylint.'STRING']
     check-quote-consistency=['no']
     check-str-concat-over-line-jumps=['no']
 
-        [tool.pylint.'IMPORTS']
+            [tool.pylint.'IMPORTS']
     allow-wildcard-with-all=['no']
     analyse-fallback-blocks=['no']
     deprecated-modules=['optparse,tkinter.tix']
     known-third-party=['enchant']
 
-        [tool.pylint.'CLASSES']
+            [tool.pylint.'CLASSES']
     defining-attr-methods=['__init__,__new__,setUp,__post_init__']
     valid-classmethod-first-arg=['cls']
     valid-metaclass-classmethod-first-arg=['cls']
 
-        [tool.pylint.'DESIGN']
+            [tool.pylint.'DESIGN']
     max-args=5
     max-attributes=7
     max-bool-expr=5
@@ -299,5 +300,5 @@ skip-string-normalization = 1
     max-statements=80
     min-public-methods=2
 
-        [tool.pylint.'EXCEPTIONS']
+            [tool.pylint.'EXCEPTIONS']
     overgeneral-exceptions=['BaseException,Exception']
