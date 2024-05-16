@@ -22,16 +22,16 @@
 """
 # Module overview
 
-This module contains a set of extended commands that can be used in addition
+This module contains a set of advanced commands that can be used in addition
 to the standard Selene commands. Given a Selene entity,
 i.e. an object of type `Browser | Collection | Element`,
 a standard Selene command is any method of the entity (among `entity.*` methods)
 that performs an action on entity and returns the entity itself.
-Then an extended command is the one defined outside of the entity class
-and given named as `extended_command` then can be executed on entity
-via `entity.perform(extended_command)`.
+Then an advanced command is the one defined outside of the entity class
+and given named as `advanced_command` then can be executed on entity
+via `entity.perform(advanced_command)`.
 
-The idiomatic way to use extended commands is to import the whole module:
+The idiomatic way to use advanced commands is to import the whole module:
 
 ```python
 from selene import browser, command  # ❗️over from ...command import drag_and_drop_to
@@ -51,21 +51,21 @@ slider_thumb.perform(command.drag_and_drop_to(slider_volume_up))  # ⬅️ used 
 slider_thumb_input.should(have.value('100'))
 ```
 
-Thus you don't need to remember all available extended commands,
+Thus you don't need to remember all available advanced commands,
 you just import the module and select the one you need
 from the list of suggestions among `command.*`.
 
-# Why do we need a separate module for extended commands?
+# Why do we need a separate module for advanced commands?
 
-Extended commands are defined outside of the entity class,
+advanced commands are defined outside of the entity class,
 because they can hardly be implemented in most versatile way.
 Some of them will work only in a specific web application context,
 others will not work on a mobile device, etc.
-Thus, by separating extended commands from the standard ones,
+Thus, by separating advanced commands from the standard ones,
 we emphasize for the end user of Selene – the importance
 of more conscious use of them.
 
-The list of extended commands in this module is far from exhaustive,
+The list of advanced commands in this module is far from exhaustive,
 and there is no goal to make it complete, because in many cases, the end user
 will need his own list of custom commands specific to his application context.
 But this list can be a good starting point for such custom commands.
@@ -77,7 +77,7 @@ That's why we avoid following DRY principle here,
 and prefer pure selenium code
 over reusing already implemented in Selene helpers.
 
-# How to implement custom extended commands?
+# How to implement custom advanced commands?
 
 In case you need your own set of custom commands for Selene,
 we recommend the following pattern.
@@ -90,7 +90,7 @@ of your project, at proper place, create your own module `command.py`:
 # Full path can be: my_tests_project/extensions/selene/command.py
 
 # Next import is an important part of the “pattern”
-# It will allow to reuse all existing extended Selene commands.
+# It will allow to reuse all existing advanced Selene commands.
 # Thus you are extending Selene commands, without doubling efforts in usage.
 from selene.core.command import *
 
@@ -272,7 +272,7 @@ defined inside the definition of the `press_sequentially` command builder,
 and returned from it wrapped in a more “descriptive” `Command` object.
 
 For more example of how to build your own custom commands
-see the actual implementation of Selene's extended commands in this module.
+see the actual implementation of Selene's advanced commands in this module.
 
 # The actual list of commands ↙️
 """
