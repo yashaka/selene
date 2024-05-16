@@ -1,13 +1,13 @@
 [
   {
     "referrer": "github.com",
-    "count": 387,
+    "count": 383,
     "uniques": 40
   },
   {
     "referrer": "Google",
-    "count": 357,
-    "uniques": 94
+    "count": 305,
+    "uniques": 85
   },
   {
     "referrer": "school.qa.guru",
@@ -16,13 +16,13 @@
   },
   {
     "referrer": "yandex.ru",
-    "count": 42,
-    "uniques": 11
+    "count": 41,
+    "uniques": 10
   },
   {
     "referrer": "Bing",
-    "count": 40,
-    "uniques": 4
+    "count": 39,
+    "uniques": 3
   },
   {
     "referrer": "yashaka.github.io",
@@ -41,8 +41,8 @@
   },
   {
     "referrer": "automated-testing.info",
-    "count": 10,
-    "uniques": 4
+    "count": 5,
+    "uniques": 2
   },
   {
     "referrer": "softwarerecs.stackexchange.com",
