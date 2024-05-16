@@ -23,7 +23,7 @@
 # Module overview
 
 This module contains a set of extended commands that can be used in addition
-to the standard Selene commands. Given a Selene entity, 
+to the standard Selene commands. Given a Selene entity,
 i.e. an object of type `Browser | Collection | Element`,
 a standard Selene command is any method of the entity (among `entity.*` methods)
 that performs an action on entity and returns the entity itself.
@@ -66,18 +66,18 @@ of your project, at proper place, create your own module `command.py`:
 # Full path can be: my_tests_project/extensions/selene/command.py
 
 # Next import is an important part of the “pattern”
-# It will allow to reuse all existing extended Selene commands. 
+# It will allow to reuse all existing extended Selene commands.
 # Thus you are extending Selene commands, without doubling efforts in usage.
-from selene.core.command import *  
+from selene.core.command import *
 
-# Some imports below are not mandatory, 
+# Some imports below are not mandatory,
 # because are already among `*` from the import above,
 # but we still mention them below for self-documentation purposes.
 
 # To customize commands representation in logs
 # by wrapping them into Command object:
 from selene.core.wait import Command
-                                     
+
 # For type hints:
 from selene import Element, Browser, Collection
 
@@ -102,15 +102,15 @@ def _select_all_and_copy(
     or all text in the element if called on element,
     then copies it to the clipboard.
     For both selecting and copying uses OS-based keys combination.
-    
+
     If had been failed, then is logged to console with it's function name,
     i.e. '_select_all_and_copy', for example:
-    
+
         Timed out after 4s, while waiting for:
         browser.element(('css selector', '#new-task'))._select_all_and_copy
-     
+
     '''
-    
+
     _COMMAND_KEY = Keys.COMMAND if sys.platform == 'darwin' else Keys.CONTROL
 
     actions = ActionChains(entity.config.driver)
@@ -141,7 +141,7 @@ def _select_all_and_copy(
 # Then if failed, it will be logged as:
 #     Timed out after 4s, while waiting for:
 #     browser.element(('css selector', '#new-task'))._select_all_and_copy
-# If we want a more representative name in logs, 
+# If we want a more representative name in logs,
 # we can wrap such command-as-function into Command object:
 
 select_all_and_copy: Command[Element | Browser] = Command(
@@ -217,7 +217,7 @@ from selene import browser,
 browser.open('https://todomvc-emberjs-app.autotest.how/')
 browser.element('#new-todo').type('foo').perform(action.select_all_and_copy)
 browser.element('#new-todo').perform(action.js.set_value('reset'))
-``` 
+```
 
 Yet keeping the already defined naming in Selene – the “command” one –
 has its own benefits for the purpose of consistency
@@ -240,11 +240,11 @@ def press_sequentially(keys: str):
         actions.perform()
 
     return Command(f'press sequentially: {keys}', action)
-    
+
 ```
 
 Here the actual command is the `action` function
-defined inside the definition of the `press_sequentially` command builder, 
+defined inside the definition of the `press_sequentially` command builder,
 and returned from it wrapped in a more “descriptive” `Command` object.
 
 For more example of how to build your own custom commands
@@ -346,11 +346,7 @@ def copy_and_paste(text: str):
                 '`poetry add pyperclip`'
             ) from error
 
-        _COMMAND_KEY = (
-            Keys.COMMAND
-            if sys.platform == 'darwin'
-            else Keys.CONTROL
-        )
+        _COMMAND_KEY = Keys.COMMAND if sys.platform == 'darwin' else Keys.CONTROL
 
         pyperclip.copy(text)
 
@@ -468,6 +464,7 @@ def press_sequentially(text: str):
     that extensively loads some other content on each key press,
     for example the content of auto-suggestions, etc.
     """
+
     def action(element: Element):
         actions = ActionChains(element.config.driver)
 
@@ -546,6 +543,7 @@ class js:  # pylint: disable=invalid-name
     !!! danger
         Don't use them in mobile context! JavaScript doesn't work their.
     """
+
     @staticmethod
     def set_value(value: Union[str, int]) -> Command[Element]:
         def func(element: Element):
