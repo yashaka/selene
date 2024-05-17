@@ -23,55 +23,45 @@
 from selene import command, have, query
 
 
-def test_actions_within_frame_context(session_browser):
+# TODO: consider implementing the following concept
+def x_test_actions_within_frame_context(session_browser):
     browser = session_browser.with_(timeout=1.0)
 
     # GIVEN even before opened browser
 
     toolbar = browser.element('.tox-toolbar__primary')
-    text_area_frame = browser.element('.tox-edit-area__iframe')
-    text_area_frame_context = query._frame_context(text_area_frame)  # THEN lazy;)
-    text_area = browser.element('#tinymce')
+    text_area = browser.element('.tox-edit-area__iframe').get(
+        query._frame_element('#tinymce')
+    )
+    '''
+    # Option B:
+    text_area = browser.element('.tox-edit-area__iframe')._frame_element('#tinymce')
+    # option C:
+    text_area = browser._frame('.tox-edit-area__iframe').element('#tinymce')
+    '''
 
     # WHEN
     browser.open('https://the-internet.herokuapp.com/iframe')
 
-    # AND
-    with text_area_frame_context:
-
-        # THEN
-        text_area.element('p').should(
-            have.js_property('innerHTML').value(
-                'Your content goes here.',
-            )
+    # THEN everything inside frame context
+    text_area.element('p').should(
+        have.js_property('innerHTML').value(
+            'Your content goes here.',
         )
-
-        # WHEN
-        text_area.perform(command.select_all)
-
-        # AND exiting context (switch to default)...
+    ).perform(command.select_all)
 
     # AND (outside frame context)
     toolbar.element('[title=Bold]').click()
 
-    # AND (coming back to frame context)
-    with text_area_frame_context:
+    # AND coming back inside frame context
+    text_area.element('p').should(
+        have.js_property('innerHTML').value('<strong>Your content goes here.</strong>')
+    )
 
-        # THEN
-        text_area.element('p').should(
-            have.js_property('innerHTML').value(
-                '<strong>Your content goes here.</strong>'
-            )
+    text_area.perform(command.select_all).type(
+        'New content',
+    ).element('p').should(
+        have.js_property('innerHTML').value(
+            '<strong>New content</strong>',
         )
-
-        # WHEN (just one more example)
-        text_area.perform(command.select_all).type(
-            'New content',
-        )
-
-        # THEN
-        text_area.element('p').should(
-            have.js_property('innerHTML').value(
-                '<strong>New content</strong>',
-            )
-        )
+    )

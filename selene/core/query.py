@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2015-2022 Iakiv Kramarenko
+# Copyright (c) 2015 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -19,21 +19,187 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+
+"""
+# Module overview
+
+This module contains a set of advanced functionality that can be used in addition
+to the standard Selene method like `entity.locate()`
+when you need to acquire some information from a Selene entity.
+Functions defined in this module are called "queries",
+because they get and return some information about the entity,
+unlike [advanced commands][selene.core.command--module-overview]
+that perform some actions and return the entity itself.
+Thus, an advanced queries are defined outside the entity class, here in this module,
+and given named as `advanced_query` then can be executed on entity
+via `entity.get(advanced_query)`.
+
+The idiomatic way to use advanced queries is to import the whole module:
+
+```python
+from selene import browser, have, query  # ❗️over from selene.core.query import text
+
+# GIVEN
+...
+current_price = browser.element('#cart-price').get(query.text)  # ⬅️ used via module
+
+# WHEN
+browser.all('.product').element_by(have.text('Apple')).element('#add-to-cart').click()
+
+# THEN
+browser.element('#cart-price').should(
+    have.exact_text(str(float(current_price) + 1.99))
+)
+```
+
+Thus, you don't need to remember all available queries,
+you just import the module and select the one you need
+from the list of suggestions among `query.*`.
+
+# Why do we need a separate module for queries, why not element.text?
+
+– Because the test in previous example
+that asserts final price based on original price – is not a perfect test.
+A good test case is a "case with strictly defined preconditions",
+where we know for sure what will happen, after what,
+and with exact expected results.
+Therefore, in the example above,
+we should know in-forward the final price of the cart,
+there is no need to "store original price" and then "calculate final".
+And here, in Selene, we follow the principle:
+"A good design is one that makes it easy to do the right thing
+and hard to do the wrong thing".
+
+That's why all "queries" were intentionally removed from entities
+and moved to the separate module,
+so that it's harder to use them on regular basis.
+As by default, we allways should try to implement "the perfect test"
+that implies we know in forward the exact state of the system on each test step.
+Then we don't need to "get from entity" and "store" intermediate results,
+like "current price", and once we do assertion,
+we already have expected conditions:
+
+```python
+from selene import browser, have  # ❗️ have.* are expected conditions;)
+
+...
+# THEN
+browser.element('#cart-price').should(have.exact_text('11.99'))
+```
+
+Expected conditions like `have.exact_text` or `be.visible`
+are better than using "assert + get query":
+
+```python
+from selene import browser
+
+...
+# THEN
+assert browser.element('#cart-price').text == '11.99'
+```
+
+– because such "simple assertion" does now support smart implicit waiting,
+that is crucial for stable and fast tests of modern web applications
+that are dynamic in nature.
+
+That's why there is no easy syntax like `element.text` in Selene.
+If you really need to get some information from the entity
+(sometimes you really do need it, in case of some limitations on the project, etc.),
+at least, you have to think twice to use available but less handy syntax in Selene –
+like `element.get(query.text)`.
+
+!!! tip
+
+    Yet you can always [extend Selene][how-to-extend-selene] entities
+    with your own queries built in.
+
+# Why and how to implement custom queries?
+
+The list of advanced queries in this module is far from exhaustive,
+and there is no goal to make it complete, because in many cases, the end user
+will need his own list of custom queries specific to his application context.
+But this list can be a good starting point for such custom queries.
+Taking the latter into account we try to keep implementation of the queries
+in this module – as simple as possible,
+so that the end user can easily understand them
+and use as examples to implement own custom queries.
+That's why we avoid following DRY principle here,
+and prefer pure selenium code
+over reusing already implemented in Selene helpers.
+
+The pattern to implement a custom query is
+[same as described for Selene custom commands][selene.core.command--how-to-implement-custom-advanced-commands].
+
+Here are just a simple example:
+
+```python
+# Full path can be: my_tests_project/extensions/selene/command.py
+
+from selene.core.query import *
+from selene.core.wait import Query
+from selene import Browser
+
+
+def __get_browser_logs(browser: Browser):
+    return browser.driver.get_log('browser')
+
+
+logs: Query[Browser, list] = Query('browser logs', __get_browser_logs)
+
+```
+
+– to be used as
+
+```python
+from selene import browser,
+from my_project_root.extensions.selene import query
+
+browser.open('https://todomvc-emberjs-app.autotest.how/')
+print(browser.get(query.logs))
+...
+```
+
+And here are a few implementation examples of already available queries in Selene:
+
+```python
+def attribute(name: str) -> Query[Element, str]:
+    def fn(element: Element):
+        return element.locate().get_attribute(name)
+
+    return Query(f'attribute {name}', fn)
+
+
+inner_html = attribute('innerHTML')
+text_content = attribute('textContent')
+value = attribute('value')
+
+tag: Query[Element, str] = Query('tag name', lambda element: element().tag_name)
+```
+
+– As you can see, it all comes simply to define a function or lambda on entity object
+and wrap it into Query😇.
+
+For more examples of how to build your own custom queries
+see the actual implementation of Selene's queries in this module.
+
+# The actual list of queries ↙️
+"""
+from __future__ import annotations
+
+import functools
 import typing
 from typing import List, Dict, Any, Union
 
 from selenium.webdriver.remote.webelement import WebElement
 
-from selene.common.helpers import to_by
 from selene.core.entity import Element, Collection
 from selene.core._browser import Browser
-from selene.core.locator import Locator
 from selene.core.wait import Query, Command
 
 
-def attribute(name: str) -> Query[Element, str | None]:
-    def fn(element: Element) -> str | None:
-        return element().get_attribute(name)
+def attribute(name: str) -> Query[Element, str]:
+    def fn(element: Element):
+        return element.locate().get_attribute(name)
 
     return Query(f'attribute {name}', fn)
 
@@ -128,67 +294,18 @@ def js_property(
     return Query(f'js property {name}', func)
 
 
-# --- Pseudo-queries --- #
-
-
 class _frame_context:
     """A context manager to work with frames (iframes).
     Has an additional decorator to adapt context manager to step-methods
-    when implementing a PageObject pattern.
-    Partially serves as entity similar to Element
-    allowing to find element or collection inside frame.
-    Experimental feature.
+    when implementing a PageObject pattern. Experimental feature.
 
     This is a "pseudo-query", i.e. it does not "get something" from entity.
     It's implemented as a query to be more readable in usage.
-
-    ## Laziness on query application
 
     On `get(query._frame_context)`
     it actually just wraps an element into context manager and so is lazy,
     i.e. you can store result of such query into a variable
     even before opening a browser and use it later.
-    Thus, unlike for other queries, there is no difference
-    between using the query directly as `query._frame_context(element)`
-    or via `get` method as `element.get(query._frame_context)`.
-
-    The "lazy result" of the query is also a "lazy search context"
-    similar to Element entity
-    – it allows to find elements or collections inside the frame
-    by using `self._element(selector)` or `self._all(selector)` methods.
-    This allows the easiest and most implicit way to work with frames in Selene
-    without bothering about switching to the frame and back:
-
-    ### Example: Using query result as "search context" with fully implicit frame management
-
-    ```python
-    from selene import browser, command, have, query
-    ...
-    iframe = browser.element('#editor-iframe').get(query._frame_context)
-    iframe._all('strong').should(have.size(0))
-    iframe._element('.textarea').type('Hello, World!').perform(command.select_all)
-    browser.element('#toolbar').element('#bold').click()
-    iframe._all('strong').should(have.size(1))
-    ```
-
-    !!! warning
-
-        But be aware that such syntax will force to switch to the frame and back
-        for each command executed on element or collection of elements
-        inside the frame. This might result in slower tests
-        if you have a lot of commands to be executed all together inside the frame.
-
-    !!! tip
-
-        We recommend to stay
-        [YAGNI](https://enterprisecraftsmanship.com/posts/yagni-revisited/)
-        and use this syntax by default, but when you notice performance drawbacks,
-        consider choosing an explicit way to work with frame context
-        as a context manager passed to `with` statement
-        or as a decorator `_within` applied to step-methods of PageObject
-        as described below.
-
-    ## Laziness ends on with statement
 
     On passing the "lazy result" of the query to `with` statement
     it actually transforms from "lazy query" into "actual command",
@@ -200,7 +317,7 @@ class _frame_context:
     without any additional implicit waiting.
     This behavior might change in the future, and some waiting might be added.
 
-    ## Example: Straightforward usage of the query (in with statement):
+    ## Example: Straightforward usage of the query
 
     ```python
     from selene import browser, query, command, have
@@ -224,7 +341,7 @@ class _frame_context:
         )
     ```
 
-    ## Example: Usage utilizing the lazy nature of the query (in with statement)
+    ## Example: Usage utilizing the lazy nature of the query:
 
     ```python
     from selene import browser, query, command, have
@@ -278,32 +395,13 @@ class _frame_context:
         )
     ```
 
-    ## Example: Nested with statements for nested frames
-
-    ```python
-    from selene import browser, have, query, be
-
-    # GIVEN even before opened browser
-    browser.open('https://the-internet.herokuapp.com/nested_frames')
-
-    # WHEN
-    with browser.element('[name=frame-top]').get(query._frame_context):
-        with browser.element('[name=frame-middle]').get(query._frame_context):
-            browser.element(
-                '#content',
-                # THEN
-            ).should(have.exact_text('MIDDLE'))
-        # AND
-        browser.element('[name=frame-right]').should(be.visible)
-    ```
-
     ## Example: Usage utilizing the [_within][selene.core.query._frame_context._within] decorator for PageObjects:
 
     See example at [_within][selene.core.query._frame_context._within] section.
     """
 
     def __init__(self, element: Element):
-        self._container = element
+        self.element = element
 
     def decorator(self, func):
         """A decorator to mark a function as a step within context manager
@@ -326,9 +424,9 @@ class _frame_context:
     _inner = decorator
     _within = decorator
     """An alias to [`decorator`][selene.core.query._frame_context.decorator]
-
+    
     Example of usage:
-
+    
     ```python
     from selene import browser, command, have, query
 
@@ -384,7 +482,7 @@ class _frame_context:
     """
 
     def __enter__(self):
-        self._container.perform(
+        self.element.perform(
             Command(
                 'switch to frame',
                 lambda entity: entity.config.driver.switch_to.frame(entity.locate()),
@@ -392,100 +490,10 @@ class _frame_context:
         )
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        driver = self._container.config.driver
-
-        # driver.switch_to.default_content()
-
-        # the following is kind of same but will work for nested frames too;)
-        driver.switch_to.parent_frame()
-
-    @property
-    def __as_wait_decorator(self):
-
-        # TODO: consider implementing utility function to compose decorator factories
-        #       won't it be overcomplicated and not KISS then?
-
-        def composed_wait_decorator(wait):
-            def decorator(for_):
-                original_wait_decorator = self._container.config._wait_decorator
-                context_wait_decorator = support._wait.with_(context=self)
-
-                for_decorator_after_context = context_wait_decorator(wait)
-                for_decorator_after_original = original_wait_decorator(wait)
-
-                # by applying context decorator first (i.e. closer to the function call)
-                # we actually make it second in the chain
-                for_after_context = for_decorator_after_context(for_)
-
-                # – because lastly applied decorator will contain the first code
-                # to be executed before the decorated function
-                for_after_context_then_original = for_decorator_after_original(
-                    for_after_context
-                )
-
-                # – so, given original decorator is a logging decorator
-                # first we log the command,
-                # and then we actually switch to context before running the command
-                # ! This is very important because switching context for us
-                # ! is a low level command, that's why it should be "logged as second"
-                # ! that in reports like allure will also be "nested" on a deeper level
-                return for_after_context_then_original
-
-            return decorator
-
-        return composed_wait_decorator
-
-    def _element(self, selector: str | typing.Tuple[str, str]) -> Element:
-        """Allows to search for a first element by selector inside the frame context
-        with implicit switching to the frame and back for each method execution.
-
-        Is lazy, i.e. does not switch to the frame immediately on calling this method,
-        and so can be stored in a variable and used later.
-
-        Args:
-            selector: css or xpath as string or classic selenium tuple-like locator,
-            e.g. `('css selector', '.some-class')` or `(By.CSS_SELECTOR, '.some-class')`
-        """
-        by = to_by(selector)
-
-        return Element(
-            Locator(
-                f'{self._container}: element({by})',
-                # f'{self._container} {{ element({by}) }}',  # TODO: maybe this?
-                lambda: self._container.config.driver.find_element(*by),
-            ),
-            self._container.config.with_(_wait_decorator=self.__as_wait_decorator),
-        )
-
-    def _all(self, selector: str | typing.Tuple[str, str]) -> Collection:
-        """Allows to search for all elements by selector inside the frame context
-        with implicit switching to the frame and back for each method execution.
-
-        Is lazy, i.e. does not switch to the frame immediately on calling this method,
-        and so can be stored in a variable and used later.
-
-        Args:
-            selector: css or xpath as string or classic selenium tuple-like locator,
-            e.g. `('css selector', '.some-class')` or `(By.CSS_SELECTOR, '.some-class')`
-        """
-        by = to_by(selector)
-
-        return Collection(
-            Locator(
-                f'{self._container}: all({by})',
-                lambda: self._container.config.driver.find_elements(*by),
-            ),
-            self._container.config.with_(_wait_decorator=self.__as_wait_decorator),
-        )
+        driver = self.element.config.driver
+        driver.switch_to.default_content()
 
 
-# The following is not needed once we now have switch_to.parent_frame()
-# in _frame_context itself
-# class _nested_frame_context(_frame_context):
-#     def __exit__(self, exc_type, exc_val, exc_tb):
-#         driver = self._container.config.driver
-#         driver.switch_to.parent_frame()
-#
 # --- Collection queries --- #
 
 # --- Browser queries --- #
