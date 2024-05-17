@@ -27,7 +27,7 @@ to the standard Selene commands. Given a Selene entity,
 i.e. an object of type `Browser | Collection | Element`,
 a standard Selene command is any method of the entity (among `entity.*` methods)
 that performs an action on entity and returns the entity itself.
-Then an advanced command is the one defined outside of the entity class
+Then an advanced command is the one defined outside the entity class
 and given named as `advanced_command` then can be executed on entity
 via `entity.perform(advanced_command)`.
 
@@ -64,6 +64,11 @@ others will not work on a mobile device, etc.
 Thus, by separating advanced commands from the standard ones,
 we emphasize for the end user of Selene – the importance
 of more conscious use of them.
+
+!!! tip
+
+    Yet you can always [extend Selene][how-to-extend-selene] entities
+    with your own commands built in.
 
 The list of advanced commands in this module is far from exhaustive,
 and there is no goal to make it complete, because in many cases, the end user
@@ -271,7 +276,7 @@ Here the actual command is the `action` function
 defined inside the definition of the `press_sequentially` command builder,
 and returned from it wrapped in a more “descriptive” `Command` object.
 
-For more example of how to build your own custom commands
+For more examples of how to build your own custom commands
 see the actual implementation of Selene's advanced commands in this module.
 
 # The actual list of commands ↙️

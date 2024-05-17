@@ -101,6 +101,32 @@ TODOs:
 
 ## 2.0.0rc10 (to be released on DD.05.2024)
 
+### A context manager and decorator to work with iFrames (Experimental)
+
+```python
+from selene import browser, query
+
+my_frame_context = browser.element('#my-iframe').get(query._frame_context)
+...
+with my_frame_context:
+    # here elements inside frame will be found
+    # and you can work with them;)
+    ...
+
+@my_frame_context._within
+def do_something(self):
+    # and here too ;)
+    ...
+
+# so now you can simply call it:
+do_something()
+...
+
+# Switch to default content happens automatically in both cases;)
+```
+
+See a bit more in documented ["FAQ: How to work with iFrames in Selene?"](https://yashaka.github.io/selene/faq/iframes-howto/) and much more in ["Reference: `query.*`](https://yashaka.github.io/selene/reference/query).
+
 ### More commands in command.py
 
 - `command.copy`
@@ -113,9 +139,9 @@ TODOs:
     actually the _long_press is now an outdated alias and probably will be duplicated in future releases
 - `command.press_sequentially(text: str)`
 
-### Document command.py on module level
+### Document command.py and query.py on module level
 
-Providing a brief overview of the module and how to extend it with custom commands.
+Providing a brief overview of the modules and how to define your own custom commands and queries. See official docs to check new articles in Reference.
 
 ### Fix path of screenshot and pagesource for Windows
 

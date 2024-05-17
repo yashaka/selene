@@ -18,12 +18,15 @@ nav:
   # - Learn Advanced:
   #   - Stub Title 1: learn-advanced/automate-testing-guide.md
   - FAQ:
+    - How to work with iFrames: faq/iframes-howto.md
     - How to use custom profile: faq/custom-user-profile-howto.md
+    - How to extend Selene [TBD]: faq/extending-selene-howto.md
   # - Use Cases:
   #   - Stub Title 1: use-cases/path-to-some-example.md
   - Reference:
     - Config: reference/configuration.md
     - command.*: reference/command.md
+    - query.*: reference/query.md
   - Contribution:
     - How to contribute: contribution/to-source-code-guide.md
     - Code conventions: contribution/code-conventions-guide.md

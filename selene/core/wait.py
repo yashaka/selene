@@ -53,11 +53,11 @@ Fn = Callable[[T], R]
 
 # TODO: consider moving outside of "wait" module... because there is no direct cohesion with it
 class Query(Generic[E, R]):
-    def __init__(self, description: str, fn: Callable[[E], R]):
+    def __init__(self, description: str, fn: Callable[[E], R | None]):
         self._description = description
         self._fn = fn
 
-    def __call__(self, entity: E) -> R:
+    def __call__(self, entity: E) -> R | None:
         return self._fn(entity)
 
     def __str__(self):
