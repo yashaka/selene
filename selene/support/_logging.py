@@ -1,3 +1,4 @@
+import functools
 from functools import reduce
 from typing import Tuple, ContextManager, Dict, Any, Iterable
 from typing_extensions import Protocol
@@ -87,7 +88,8 @@ def wait_with(
 
     def decorator_factory(wait):
         def decorator(for_):
-            def decorated(fn):
+            @functools.wraps(for_)
+            def wrapper(fn):
                 title = f'{wait.entity}: {fn}'
 
                 def translate(initial: str, item: Tuple[str, str]):
@@ -103,7 +105,7 @@ def wait_with(
                 with context(title=translated_title, params={}):
                     return for_(fn)
 
-            return decorated
+            return wrapper
 
         return decorator
 

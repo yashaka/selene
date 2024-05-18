@@ -101,16 +101,25 @@ TODOs:
 
 ## 2.0.0rc10 (to be released on DD.05.2024)
 
-### A context manager and decorator to work with iFrames (Experimental)
+### A context manager, decorator and search context to work with iFrames (Experimental)
 
 ```python
-from selene import browser, query
+from selene import browser, query, have
 
 my_frame_context = browser.element('#my-iframe').get(query._frame_context)
+# now simply:
+my_frame_context._element('#inside-iframe').click()
+my_frame_context._all('.items-inside-iframe').should(have.size(3))
+# – here switching to frame and back happens for each command implicitly
 ...
+# or
 with my_frame_context:
-    # here elements inside frame will be found
-    # and you can work with them;)
+    # here elements inside frame will be found when searching via browser
+    browser.element('#inside-iframe').click()
+    browser.all('.items-inside-iframe').should(have.size(3))
+    # this is the most speedy version,
+    # because switching to frame happens on entering the context
+    # and switching back to default content happens on exiting the context
     ...
 
 @my_frame_context._within
@@ -122,7 +131,7 @@ def do_something(self):
 do_something()
 ...
 
-# Switch to default content happens automatically in both cases;)
+# Switch to default content happens automatically, nevertheless;)
 ```
 
 See a bit more in documented ["FAQ: How to work with iFrames in Selene?"](https://yashaka.github.io/selene/faq/iframes-howto/) and much more in ["Reference: `query.*`](https://yashaka.github.io/selene/reference/query).

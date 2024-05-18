@@ -19,25 +19,75 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+import logging
 
-from selene import command, have, query
+import pytest
+
+from selene import command, have, query, support
+
+
+class StringHandler(logging.Handler):
+    terminator = '\n'
+
+    def __init__(self):
+        logging.Handler.__init__(self)
+        self.stream = ''
+
+    def emit(self, record):
+        try:
+            msg = self.format(record)
+            # issue 35046: merged two stream.writes into one.
+            self.stream += msg + self.terminator
+        except Exception:
+            self.handleError(record)
+
+
+log = logging.getLogger(__file__)
+log.setLevel(20)
+handler = StringHandler()
+formatter = logging.Formatter("%(message)s")
+handler.setFormatter(formatter)
+log.addHandler(handler)
+
+
+class LogToStringStreamContext:
+    def __init__(self, title, params):
+        self.title = title
+        self.params = params
+
+    def __enter__(self):
+        log.info('%s: STARTED', self.title)
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if exc_type is None:
+            log.info('%s: PASSED', self.title)
+        else:
+            log.info('%s: FAILED:\n\n%s\n%s', self.title, exc_type, exc_val)
 
 
 # TODO: consider implementing the following concept
-def x_test_actions_within_frame_context(session_browser):
-    browser = session_browser.with_(timeout=1.0)
+def test_actions_on_frame_element_with_logging(session_browser):
+    browser = session_browser.with_(
+        timeout=1.0,
+        _wait_decorator=support._logging.wait_with(context=LogToStringStreamContext),
+    )
 
     # GIVEN even before opened browser
 
     toolbar = browser.element('.tox-toolbar__primary')
-    text_area = browser.element('.tox-edit-area__iframe').get(
-        query._frame_element('#tinymce')
+    text_area_frame = browser.element('.tox-edit-area__iframe').get(
+        query._frame_context
     )
+    text_area = text_area_frame._element('#tinymce')
     '''
-    # Option B:
-    text_area = browser.element('.tox-edit-area__iframe')._frame_element('#tinymce')
-    # option C:
+    # TODO: consider Option B:
     text_area = browser._frame('.tox-edit-area__iframe').element('#tinymce')
+    # – maybe even:
+    #   (if we don't want to put something into browser that is not mobile relevant)
+    text_area = web.frame('.tox-edit-area__iframe').element('#tinymce')
+    # but isn't browser already a web?
+    # shouldn't we substitute browser with context?
+    # and then have browser or web for web context and mobile or app for mobile context?
     '''
 
     # WHEN
@@ -65,3 +115,85 @@ def x_test_actions_within_frame_context(session_browser):
             '<strong>New content</strong>',
         )
     )
+
+    # WHEN failed
+    try:
+        text_area.all('p').should(have.size(10))  # actual size is 1
+        pytest.fail('should have failed on size mismatch')
+    except AssertionError:
+        # THEN everything is logged:
+        assert (
+            # TODO: how to not log first two lines?
+            #       one way to use query._frame_context(element)
+            #       over element.get(query._frame_context)
+            #       more options?
+            "element('.tox-edit-area__iframe'): <class "
+            "'selene.core.query._frame_context'>: STARTED\n"
+            "element('.tox-edit-area__iframe'): <class "
+            "'selene.core.query._frame_context'>: PASSED\n"
+            ""
+            "element('.tox-edit-area__iframe'): element('#tinymce').element('p'): should "
+            "have js property 'innerHTML' with value 'Your content goes here.': STARTED\n"
+            "element('.tox-edit-area__iframe'): switch to frame: STARTED\n"
+            "element('.tox-edit-area__iframe'): switch to frame: PASSED\n"
+            "element('.tox-edit-area__iframe'): element('#tinymce').element('p'): should "
+            "have js property 'innerHTML' with value 'Your content goes here.': PASSED\n"
+            ""
+            "element('.tox-edit-area__iframe'): element('#tinymce').element('p'): send "
+            '«select all» keys shortcut as ctrl+a or cmd+a for mac: STARTED\n'
+            "element('.tox-edit-area__iframe'): switch to frame: STARTED\n"
+            "element('.tox-edit-area__iframe'): switch to frame: PASSED\n"
+            "element('.tox-edit-area__iframe'): element('#tinymce').element('p'): send "
+            '«select all» keys shortcut as ctrl+a or cmd+a for mac: PASSED\n'
+            ""
+            "element('.tox-toolbar__primary').element('[title=Bold]'): click: STARTED\n"
+            "element('.tox-toolbar__primary').element('[title=Bold]'): click: PASSED\n"
+            ""
+            "element('.tox-edit-area__iframe'): element('#tinymce').element('p'): should "
+            "have js property 'innerHTML' with value '<strong>Your content goes "
+            "here.</strong>': STARTED\n"
+            "element('.tox-edit-area__iframe'): switch to frame: STARTED\n"
+            "element('.tox-edit-area__iframe'): switch to frame: PASSED\n"
+            "element('.tox-edit-area__iframe'): element('#tinymce').element('p'): should "
+            "have js property 'innerHTML' with value '<strong>Your content goes "
+            "here.</strong>': PASSED\n"
+            ""
+            "element('.tox-edit-area__iframe'): element('#tinymce'): send «select all» "
+            'keys shortcut as ctrl+a or cmd+a for mac: STARTED\n'
+            "element('.tox-edit-area__iframe'): switch to frame: STARTED\n"
+            "element('.tox-edit-area__iframe'): switch to frame: PASSED\n"
+            "element('.tox-edit-area__iframe'): element('#tinymce'): send «select all» "
+            'keys shortcut as ctrl+a or cmd+a for mac: PASSED\n'
+            ""
+            "element('.tox-edit-area__iframe'): element('#tinymce'): type: New content: "
+            'STARTED\n'
+            "element('.tox-edit-area__iframe'): switch to frame: STARTED\n"
+            "element('.tox-edit-area__iframe'): switch to frame: PASSED\n"
+            "element('.tox-edit-area__iframe'): element('#tinymce'): type: New content: "
+            'PASSED\n'
+            ""
+            "element('.tox-edit-area__iframe'): element('#tinymce').element('p'): should "
+            "have js property 'innerHTML' with value '<strong>New content</strong>': "
+            'STARTED\n'
+            "element('.tox-edit-area__iframe'): switch to frame: STARTED\n"
+            "element('.tox-edit-area__iframe'): switch to frame: PASSED\n"
+            "element('.tox-edit-area__iframe'): element('#tinymce').element('p'): should "
+            "have js property 'innerHTML' with value '<strong>New content</strong>': "
+            'PASSED\n'
+            ""
+            "element('.tox-edit-area__iframe'): element('#tinymce').all('p'): should have "
+            'size 10: STARTED\n'
+            "element('.tox-edit-area__iframe'): switch to frame: STARTED\n"
+            "element('.tox-edit-area__iframe'): switch to frame: PASSED\n"
+            "element('.tox-edit-area__iframe'): element('#tinymce').all('p'): should have "
+            'size 10: FAILED:\n'
+            '\n'
+            "<class 'selene.core.exceptions.TimeoutException'>\n"
+            'Message: \n'
+            '\n'
+            'Timed out after 1.0s, while waiting for:\n'
+            "browser.element(('css selector', '.tox-edit-area__iframe')): element(('css "
+            "selector', '#tinymce')).all(('css selector', 'p')).has size 10\n"
+            '\n'
+            'Reason: AssertionError: actual size: 1\n'
+        ) in handler.stream

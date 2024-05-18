@@ -192,8 +192,11 @@ from typing import List, Dict, Any, Union
 
 from selenium.webdriver.remote.webelement import WebElement
 
+from selene import support
+from selene.common.helpers import to_by
 from selene.core.entity import Element, Collection
 from selene.core._browser import Browser
+from selene.core.locator import Locator
 from selene.core.wait import Query, Command
 
 
@@ -294,18 +297,67 @@ def js_property(
     return Query(f'js property {name}', func)
 
 
+# --- Pseudo-queries --- #
+
+
 class _frame_context:
     """A context manager to work with frames (iframes).
     Has an additional decorator to adapt context manager to step-methods
-    when implementing a PageObject pattern. Experimental feature.
+    when implementing a PageObject pattern.
+    Partially serves as entity similar to Element
+    allowing to find element or collection inside frame.
+    Experimental feature.
 
     This is a "pseudo-query", i.e. it does not "get something" from entity.
     It's implemented as a query to be more readable in usage.
+
+    ## Laziness on query application
 
     On `get(query._frame_context)`
     it actually just wraps an element into context manager and so is lazy,
     i.e. you can store result of such query into a variable
     even before opening a browser and use it later.
+    Thus, unlike for other queries, there is no difference
+    between using the query directly as `query._frame_context(element)`
+    or via `get` method as `element.get(query._frame_context)`.
+
+    The "lazy result" of the query is also a "lazy search context"
+    similar to Element entity
+    – it allows to find elements or collections inside the frame
+    by using `self._element(selector)` or `self._all(selector)` methods.
+    This allows the easiest and most implicit way to work with frames in Selene
+    without bothering about switching to the frame and back:
+
+    ### Example: Using query result as "search context" with fully implicit frame management
+
+    ```python
+    from selene import browser, command, have, query
+    ...
+    iframe = browser.element('#editor-iframe').get(query._frame_context)
+    iframe._all('strong').should(have.size(0))
+    iframe._element('.textarea').type('Hello, World!').perform(command.select_all)
+    browser.element('#toolbar').element('#bold').click()
+    iframe._all('strong').should(have.size(1))
+    ```
+
+    !!! warning
+
+        But be aware that such syntax will force to switch to the frame and back
+        for each command executed on element or collection of elements
+        inside the frame. This might result in slower tests
+        if you have a lot of commands to be executed all together inside the frame.
+
+    !!! tip
+
+        We recommend to stay
+        [YAGNI](https://enterprisecraftsmanship.com/posts/yagni-revisited/)
+        and use this syntax by default, but when you notice performance drawbacks,
+        consider choosing an explicit way to work with frame context
+        as a context manager passed to `with` statement
+        or as a decorator `_within` applied to step-methods of PageObject
+        as described below.
+
+    ## Laziness ends on with statement
 
     On passing the "lazy result" of the query to `with` statement
     it actually transforms from "lazy query" into "actual command",
@@ -317,7 +369,7 @@ class _frame_context:
     without any additional implicit waiting.
     This behavior might change in the future, and some waiting might be added.
 
-    ## Example: Straightforward usage of the query
+    ## Example: Straightforward usage of the query (in with statement):
 
     ```python
     from selene import browser, query, command, have
@@ -341,7 +393,7 @@ class _frame_context:
         )
     ```
 
-    ## Example: Usage utilizing the lazy nature of the query:
+    ## Example: Usage utilizing the lazy nature of the query (in with statement)
 
     ```python
     from selene import browser, query, command, have
@@ -401,7 +453,7 @@ class _frame_context:
     """
 
     def __init__(self, element: Element):
-        self.element = element
+        self._container = element
 
     def decorator(self, func):
         """A decorator to mark a function as a step within context manager
@@ -482,7 +534,7 @@ class _frame_context:
     """
 
     def __enter__(self):
-        self.element.perform(
+        self._container.perform(
             Command(
                 'switch to frame',
                 lambda entity: entity.config.driver.switch_to.frame(entity.locate()),
@@ -490,8 +542,87 @@ class _frame_context:
         )
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        driver = self.element.config.driver
+        driver = self._container.config.driver
         driver.switch_to.default_content()
+
+    @property
+    def __as_wait_decorator(self):
+
+        # TODO: consider implementing utility function to compose decorator factories
+        #       won't it be overcomplicated and not KISS then?
+
+        def composed_wait_decorator(wait):
+            def decorator(for_):
+                original_wait_decorator = self._container.config._wait_decorator
+                context_wait_decorator = support._wait.with_(context=self)
+
+                for_decorator_after_context = context_wait_decorator(wait)
+                for_decorator_after_original = original_wait_decorator(wait)
+
+                # by applying context decorator first (i.e. closer to the function call)
+                # we actually make it second in the chain
+                for_after_context = for_decorator_after_context(for_)
+
+                # – because lastly applied decorator will contain the first code
+                # to be executed before the decorated function
+                for_after_context_then_original = for_decorator_after_original(
+                    for_after_context
+                )
+
+                # – so, given original decorator is a logging decorator
+                # first we log the command,
+                # and then we actually switch to context before running the command
+                # ! This is very important because switching context for us
+                # ! is a low level command, that's why it should be "logged as second"
+                # ! that in reports like allure will also be "nested" on a deeper level
+                return for_after_context_then_original
+
+            return decorator
+
+        return composed_wait_decorator
+
+    def _element(self, selector: str | typing.Tuple[str, str]) -> Element:
+        """Allows to search for a first element by selector inside the frame context
+        with implicit switching to the frame and back for each method execution.
+
+        Is lazy, i.e. does not switch to the frame immediately on calling this method,
+        and so can be stored in a variable and used later.
+
+        Args:
+            selector: css or xpath as string or classic selenium tuple-like locator,
+            e.g. `('css selector', '.some-class')` or `(By.CSS_SELECTOR, '.some-class')`
+        """
+        by = to_by(selector)
+
+        return Element(
+            Locator(
+                f'{self._container}: element({by})',
+                # f'{self._container} {{ element({by}) }}',  # TODO: maybe this?
+                lambda: self._container.config.driver.find_element(*by),
+            ),
+            self._container.config.with_(_wait_decorator=self.__as_wait_decorator),
+        )
+
+    def _all(self, selector: str | typing.Tuple[str, str]) -> Collection:
+        """Allows to search for all elements by selector inside the frame context
+        with implicit switching to the frame and back for each method execution.
+
+        Is lazy, i.e. does not switch to the frame immediately on calling this method,
+        and so can be stored in a variable and used later.
+
+        Args:
+            selector: css or xpath as string or classic selenium tuple-like locator,
+            e.g. `('css selector', '.some-class')` or `(By.CSS_SELECTOR, '.some-class')`
+        """
+        by = to_by(selector)
+
+        return Collection(
+            Locator(
+                f'{self._container}: all({by})',
+                lambda: self._container.config.driver.find_elements(*by),
+            ),
+            self._container.config.with_(_wait_decorator=self.__as_wait_decorator),
+        )
 
 
 # --- Collection queries --- #
