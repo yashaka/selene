@@ -1,23 +1,23 @@
 [
   {
-    "referrer": "github.com",
-    "count": 341,
-    "uniques": 41
-  },
-  {
     "referrer": "Google",
-    "count": 319,
-    "uniques": 89
+    "count": 390,
+    "uniques": 95
   },
   {
-    "referrer": "school.qa.guru",
-    "count": 44,
-    "uniques": 7
+    "referrer": "github.com",
+    "count": 343,
+    "uniques": 42
   },
   {
     "referrer": "yandex.ru",
-    "count": 42,
-    "uniques": 12
+    "count": 83,
+    "uniques": 15
+  },
+  {
+    "referrer": "school.qa.guru",
+    "count": 46,
+    "uniques": 8
   },
   {
     "referrer": "Bing",
@@ -36,8 +36,8 @@
   },
   {
     "referrer": "DuckDuckGo",
-    "count": 16,
-    "uniques": 16
+    "count": 18,
+    "uniques": 18
   },
   {
     "referrer": "qaguruschool.getcourse.ru",
