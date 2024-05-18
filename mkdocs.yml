@@ -34,7 +34,7 @@ nav:
     - How to contribute to docs: contribution/to-documentation-guide.md
     - How to organize docs: contribution/how-to-organize-docs-guide.md
     - How to write docs: contribution/how-to-write-docs-guide.md
-  - Changelog: changelog.md
+  - Changelog: https://github.com/yashaka/selene/releases
   - License: license.md
 
 # Configuration
