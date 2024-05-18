@@ -424,9 +424,9 @@ class _frame_context:
     _inner = decorator
     _within = decorator
     """An alias to [`decorator`][selene.core.query._frame_context.decorator]
-    
+
     Example of usage:
-    
+
     ```python
     from selene import browser, command, have, query
 

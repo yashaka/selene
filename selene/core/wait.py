@@ -160,5 +160,5 @@ class Wait(Generic[E]):
     def command(self, description: str, fn: Callable[[E], None]) -> None:
         self.for_(Command(description, fn))
 
-    def query(self, description: str, fn: Callable[[E], R]) -> R:
+    def query(self, description: str, fn: Callable[[E], R]) -> Optional[R]:
         return self.for_(Query(description, fn))
