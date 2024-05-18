@@ -253,6 +253,25 @@ The performance may decrease because Selene under the hood has to switch to the 
 
 The performance is kept optimal because via `with` statement we can group actions – then switching to the frame will happen only once before group and once after, not wasting time to re-switch for each action in the group.
 
+Will also work for nested context:
+
+```python
+from selene import browser, have, query, be
+
+# GIVEN even before opened browser
+browser.open('https://the-internet.herokuapp.com/nested_frames')
+
+# WHEN
+with browser.element('[name=frame-top]').get(query._frame_context):
+    with browser.element('[name=frame-middle]').get(query._frame_context):
+        browser.element(
+            '#content',
+            # THEN
+        ).should(have.exact_text('MIDDLE'))
+    # AND
+    browser.element('[name=frame-right]').should(be.visible)
+```
+
 ### 3. It also has a handy [_within][selene.core.query._frame_context._within] decorator to tune PageObject steps to work with iframes
 
 === "_within decorator"

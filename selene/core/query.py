@@ -447,6 +447,25 @@ class _frame_context:
         )
     ```
 
+    ## Example: Nested with statements for nested frames
+
+    ```python
+    from selene import browser, have, query, be
+
+    # GIVEN even before opened browser
+    browser.open('https://the-internet.herokuapp.com/nested_frames')
+
+    # WHEN
+    with browser.element('[name=frame-top]').get(query._frame_context):
+        with browser.element('[name=frame-middle]').get(query._frame_context):
+            browser.element(
+                '#content',
+                # THEN
+            ).should(have.exact_text('MIDDLE'))
+        # AND
+        browser.element('[name=frame-right]').should(be.visible)
+    ```
+
     ## Example: Usage utilizing the [_within][selene.core.query._frame_context._within] decorator for PageObjects:
 
     See example at [_within][selene.core.query._frame_context._within] section.
@@ -543,7 +562,11 @@ class _frame_context:
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         driver = self._container.config.driver
-        driver.switch_to.default_content()
+
+        # driver.switch_to.default_content()
+
+        # the following is kind of same but will work for nested frames too;)
+        driver.switch_to.parent_frame()
 
     @property
     def __as_wait_decorator(self):
@@ -623,6 +646,14 @@ class _frame_context:
             ),
             self._container.config.with_(_wait_decorator=self.__as_wait_decorator),
         )
+
+
+# The following is not needed once we now have switch_to.parent_frame()
+# in _frame_context itself
+# class _nested_frame_context(_frame_context):
+#     def __exit__(self, exc_type, exc_val, exc_tb):
+#         driver = self._container.config.driver
+#         driver.switch_to.parent_frame()
 
 
 # --- Collection queries --- #

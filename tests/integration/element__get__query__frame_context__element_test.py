@@ -65,7 +65,6 @@ class LogToStringStreamContext:
             log.info('%s: FAILED:\n\n%s\n%s', self.title, exc_type, exc_val)
 
 
-# TODO: consider implementing the following concept
 def test_actions_on_frame_element_with_logging(session_browser):
     browser = session_browser.with_(
         timeout=1.0,
