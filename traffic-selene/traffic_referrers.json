@@ -6,17 +6,17 @@
   },
   {
     "referrer": "github.com",
-    "count": 181,
+    "count": 182,
     "uniques": 40
   },
   {
     "referrer": "yandex.ru",
-    "count": 82,
-    "uniques": 14
+    "count": 85,
+    "uniques": 15
   },
   {
     "referrer": "school.qa.guru",
-    "count": 42,
+    "count": 46,
     "uniques": 7
   },
   {
@@ -26,18 +26,18 @@
   },
   {
     "referrer": "ecosia.org",
-    "count": 23,
-    "uniques": 16
+    "count": 26,
+    "uniques": 19
+  },
+  {
+    "referrer": "DuckDuckGo",
+    "count": 24,
+    "uniques": 24
   },
   {
     "referrer": "yashaka.github.io",
     "count": 23,
     "uniques": 3
-  },
-  {
-    "referrer": "DuckDuckGo",
-    "count": 18,
-    "uniques": 18
   },
   {
     "referrer": "qaguruschool.getcourse.ru",
