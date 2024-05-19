@@ -14,7 +14,6 @@
             - "!browser_name"
             - "!_inject_screenshot_and_page_source_pre_hooks"
             - "!_generate_filename"
-            - "!wait"
 
 <!-- markdownlint-disable MD001 -->
 ### _save_screenshot_strategy

@@ -34,6 +34,7 @@ class _default_translations:
     ]
 
 
+# TODO: consider renaming context to context_manager or context_factory
 def wait_with(
     *,
     context: _ContextManagerFactory,

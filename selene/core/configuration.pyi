@@ -78,6 +78,7 @@ class Config:
     timeout: float = 4
     poll_during_waits: int = ...  # currently fake option
     _wait_decorator: Callable[[Wait[E]], Callable[[F], F]] = lambda w: lambda f: f
+    _disable_wait_decorator_on_get_query: bool = True
     reports_folder: Optional[str] = ...
     _counter: itertools.count = ...
     save_screenshot_on_failure: bool = True
@@ -131,6 +132,7 @@ class Config:
         timeout: float = 4,
         poll_during_waits: int = ...,  # currently fake option
         _wait_decorator: Callable[[Wait[E]], Callable[[F], F]] = lambda w: lambda f: f,
+        _disable_wait_decorator_on_get_query: bool = True,
         reports_folder: Optional[str] = ...,
         _counter: itertools.count = ...,
         save_screenshot_on_failure: bool = True,
@@ -183,6 +185,7 @@ class Config:
         timeout: float = 4,
         poll_during_waits: int = ...,  # currently fake option
         _wait_decorator: Callable[[Wait[E]], Callable[[F], F]] = lambda w: lambda f: f,
+        _disable_wait_decorator_on_get_query: bool = True,
         reports_folder: Optional[str] = ...,
         _counter: itertools.count = ...,
         save_screenshot_on_failure: bool = True,

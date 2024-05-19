@@ -154,7 +154,21 @@ In addition to that...
 
     Some examples above and below are formatted and aligned for easier comparison of the corresponding parts of code. The additional new lines are added so you can directly see the differences between the examples.
 
-The performance may decrease because Selene under the hood has to switch to the frame context and back for each element action. 
+The performance may decrease because Selene under the hood has to switch to the frame context and back for each element action.
+
+It may decrease even more if you use such syntax for nested frames in cases more complex (have more commands to execute) than the example below:
+
+```python
+from selene import browser, have, query
+
+browser.open('https://the-internet.herokuapp.com/nested_frames')
+
+browser.element('[name=frame-top]').get(query._frame_context)._element(
+    '[name=frame-middle]'
+).get(query._frame_context)._element('#content',).should(have.exact_text('MIDDLE'))
+```
+
+We recommend to not do premature optimization and start with this feature, and then switch to more optimal ways described below if you face significant performance drawbacks.
 
 ### 2. Or removes a bit of boilerplate keeping the performance most optimal
 

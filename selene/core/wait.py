@@ -76,14 +76,24 @@ class Wait(Generic[E]):
         entity: E,
         at_most: float,
         or_fail_with: Optional[Callable[[TimeoutException], Exception]] = None,
-        _decorator: Callable[
-            [Wait[E]], Callable[[Callable[..., R]], Callable[..., R]]
-        ] = lambda _: identity,
+        _decorator: (
+            Callable[[Wait[E]], Callable[[Callable[..., R]], Callable[..., R]]] | None
+        ) = None,
     ):
         self.entity = entity
         self._timeout = at_most
         self._hook_failure = or_fail_with or identity
-        self._decorator = _decorator
+        self._decorator = _decorator or (lambda wait: identity)
+
+    def with_(
+        self,
+        *,
+        decorator: (
+            Callable[[Wait[E]], Callable[[Callable[..., R]], Callable[..., R]]] | None
+        ),
+        # TODO: consider adding other options for consistency
+    ) -> Wait[E]:
+        return Wait(self.entity, self._timeout, self._hook_failure, decorator)
 
     @property
     def _entity(self):

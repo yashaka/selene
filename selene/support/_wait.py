@@ -4,6 +4,7 @@ from typing import ContextManager
 
 # TODO: consider adding examples to docstring
 # TODO: should we also accept a context_factory?
+# TODO: should we name it as decorated_with?
 def with_(
     *,
     context: ContextManager,
@@ -16,7 +17,7 @@ def with_(
         a normal context manager under each function to be waited for
     """
 
-    def decorator_factory(wait):
+    def decorator_factory(wait):  # noqa
         def decorator(for_):
             @functools.wraps(for_)
             def wrapper(fn):
@@ -28,3 +29,10 @@ def with_(
         return decorator
 
     return decorator_factory
+
+
+# TODO: consider adding alias to _logging.wait_with
+#       so that usage is
+#       support._wait.with_logging(context=allure_commons._allure.StepContext)
+#       instead of or in addition to
+#       support._logging.wait_with_(context=allure_commons._allure.StepContext)
