@@ -473,6 +473,7 @@ class _frame_context:
 
     def __init__(self, element: Element):
         self._container = element
+        self.__entered = False
 
     def decorator(self, func):
         """A decorator to mark a function as a step within context manager
@@ -553,26 +554,38 @@ class _frame_context:
     """
 
     def __enter__(self):
-        self._container.perform(
-            Command(
-                'switch to frame',
-                lambda entity: entity.config.driver.switch_to.frame(entity.locate()),
+        if not self.__entered:
+            self._container.wait.with_(
+                # resetting wait decorator to default
+                # in order to avoid automatic exit applied to each command
+                # including switching to the frame
+                # that (automatic exit) was added after self._element
+                # (this fixes breaking exiting from the frame in nested frame context)
+                decorator=None,
+            ).for_(
+                Command(
+                    'switch to frame',
+                    lambda entity: entity.config.driver.switch_to.frame(
+                        entity.locate()
+                    ),
+                )
             )
-        )
+        self.__entered = True
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        driver = self._container.config.driver
+        if self.__entered:
+            driver = self._container.config.driver
 
-        # driver.switch_to.default_content()
-
-        # the following is kind of same but will work for nested frames too;)
-        driver.switch_to.parent_frame()
+            # we intentionally use parent_frame() over default_content()
+            # to make it work for nested frames
+            # (in case of "root frames" parent_frame() should work as default_content())
+            driver.switch_to.parent_frame()
+            self.__entered = False
 
     @property
     def __as_wait_decorator(self):
-
-        # TODO: consider implementing utility function to compose decorator factories
-        #       won't it be overcomplicated and not KISS then?
+        if self._container.config._wait_decorator is None:
+            return support._wait.with_(context=self)
 
         def composed_wait_decorator(wait):
             def decorator(for_):
@@ -613,7 +626,24 @@ class _frame_context:
 
         Args:
             selector: css or xpath as string or classic selenium tuple-like locator,
-            e.g. `('css selector', '.some-class')` or `(By.CSS_SELECTOR, '.some-class')`
+                      e.g. `('css selector', '.some-class')`
+                      or `(By.CSS_SELECTOR, '.some-class')`
+
+        !!! warning
+            By adding implicit switching to the frame and back
+            for each command executed on entity, it makes the usage of such entity
+            slower in case of a lot of commands to be executed
+            all together inside the frame.
+
+            It becomes especially important in case of nested frames.
+            In such cases, if you use
+            `entity.get(query._frame_context)` over `query._frame_context(entity)`
+            then try to keep turned on the option:
+            [config._disable_wait_decorator_on_get_query][selene.core.configuration.Config._disable_wait_decorator_on_get_query]
+            That will help to avoid re-switching at least on `get` calls.
+
+            If you notice performance drawbacks, consider choosing an explicit way
+            to work with frame context as a context manager passed to `with` statement.
         """
         by = to_by(selector)
 
@@ -635,7 +665,12 @@ class _frame_context:
 
         Args:
             selector: css or xpath as string or classic selenium tuple-like locator,
-            e.g. `('css selector', '.some-class')` or `(By.CSS_SELECTOR, '.some-class')`
+                      e.g. `('css selector', '.some-class')`
+                      or `(By.CSS_SELECTOR, '.some-class')`
+
+        !!! warning
+            Same "potential performance drawbacks" warning is applied here
+            as for [_element][selene.core.query._frame_context._element] method.
         """
         by = to_by(selector)
 

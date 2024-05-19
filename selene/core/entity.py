@@ -117,8 +117,12 @@ class WaitingEntity(Matchable[E], Configured):
 
     # TODO: what about `entity[query.something]` syntax
     #       over or in addition to `entity.get(query.something)` ?
-    def get(self, query: Query[E, R]) -> R:
-        return self.wait.for_(query)
+    def get(self, query: Query[E, R]) -> R | None:
+        return (
+            self.wait.with_(decorator=None)
+            if self.config._disable_wait_decorator_on_get_query
+            else self.wait
+        ).for_(query)
 
     # --- Configured --- #
 

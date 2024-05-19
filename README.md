@@ -560,6 +560,7 @@ TBD
 [latest-recommended-version]: https://pypi.org/project/selene/2.0.0rc10/
 [brunch-ver-1]: https://github.com/yashaka/selene/tree/1.x
 [selene-stable]: https://pypi.org/project/selene/1.0.2/
+[python-38]: https://www.python.org/downloads/release/python-380/
 [python-310]: https://www.python.org/downloads/release/python-31016/
 [pyenv]: https://github.com/pyenv/pyenv
 [poetry]: https://python-poetry.org/

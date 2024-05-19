@@ -1197,6 +1197,21 @@ class Config:
         >>> )
     """
 
+    _disable_wait_decorator_on_get_query: bool = True
+    """A flag controlling whether to disable wait decorator on calls
+    like entity.get(query.*), turned on by default,
+    because queries usually serve as auxiliary methods
+    to get some intermediate information,
+    and not influence significantly the test flow,
+    that is usually reported and logged via wait decorator. Hence, by default,
+    we disable wait decoration for queries,
+    removing redundant noise from potential logging
+    and speeding up the test execution for some specific cases
+    like working with nested Frames
+    (for more see warning at
+    [query._frame_context._element][selene.core.query._frame_context._element]).
+    """
+
     # TODO: why we name it as hook_* why not handle_* ?
     #       what would be proper style?
     hook_wait_failure: Optional[Callable[[TimeoutException], Exception]] = None
@@ -1338,17 +1353,17 @@ class Config:
     def with_(self, **options_to_override) -> Config:
         """
 
-        Returns:
+        Returns (Config):
             A new config with overridden options that were specified as arguments.
 
-                All other config options will be shallow-copied
-                from the current config.
-                Those other options that are of immutable types,
-                like `int` - will be also copied by reference,
-                i.e. in a truly shallow way.
+            All other config options will be shallow-copied
+            from the current config.
+            Those other options that are of immutable types,
+            like `int` - will be also copied by reference,
+            i.e. in a truly shallow way.
 
         Parameters:
-            **options_to_override:
+            **options_to_override (Any):
                 options to override in the new config.
 
                 Technically "override" here means:

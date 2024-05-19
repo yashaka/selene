@@ -136,6 +136,10 @@ do_something()
 
 See a bit more in documented ["FAQ: How to work with iFrames in Selene?"](https://yashaka.github.io/selene/faq/iframes-howto/) and much more in ["Reference: `query.*`](https://yashaka.github.io/selene/reference/query).
 
+### config._disable_wait_decorator_on_get_query
+
+`True` by default, is needed for cleaner logging implemented via `config._wait_decorator` and more optimal performance for `.get(query._frame_context)` in case of nested frames.
+
 ### More commands in command.py
 
 - `command.copy`
@@ -151,6 +155,10 @@ See a bit more in documented ["FAQ: How to work with iFrames in Selene?"](https:
 ### Document command.py and query.py on module level
 
 Providing a brief overview of the modules and how to define your own custom commands and queries. See official docs to check new articles in Reference.
+
+### Removed deprecated methods from Autocomplete on browser.*
+
+Just "autocomplete" is disabled, methods still work;)
 
 ### Fix path of screenshot and pagesource for Windows
 
