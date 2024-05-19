@@ -169,6 +169,23 @@ See a bit more in documented ["FAQ: How to work with iFrames in Selene?"](https:
     actually the _long_press is now an outdated alias and probably will be duplicated in future releases
 - `command.press_sequentially(text: str)`
 
+### More collection queries in query.py
+
+- query.texts
+    - finally, you can get all texts of elements in collection
+        via
+        `browser.all('.item').get(query.texts)`
+        over
+        `[element.text for element in browser.all('.item')]`
+        but remember that in most cases you need something like ;)
+        `browser.all('.item').should(have.exact_texts('text1', 'text2'))`
+- query.attributes(name)
+- query.inner_htmls
+- query.outer_htmls
+- query.texts_content
+- query.values
+- query.tags
+
 ### Document command.py and query.py on module level
 
 Providing a brief overview of the modules and how to define your own custom commands and queries. See official docs to check new articles in Reference.
