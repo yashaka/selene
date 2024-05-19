@@ -67,7 +67,7 @@ class LogToStringStreamContext:
 
 def test_actions_on_frame_element_with_logging(session_browser):
     browser = session_browser.with_(
-        timeout=1.0,
+        timeout=0.5,
         _wait_decorator=support._logging.wait_with(context=LogToStringStreamContext),
     )
 
@@ -122,75 +122,45 @@ def test_actions_on_frame_element_with_logging(session_browser):
     except AssertionError:
         # THEN everything is logged:
         assert (
-            # TODO: how to not log first two lines?
-            #       one way to use query._frame_context(element)
-            #       over element.get(query._frame_context)
-            #       more options?
-            "element('.tox-edit-area__iframe'): <class "
-            "'selene.core.query._frame_context'>: STARTED\n"
-            "element('.tox-edit-area__iframe'): <class "
-            "'selene.core.query._frame_context'>: PASSED\n"
-            ""
             "element('.tox-edit-area__iframe'): element('#tinymce').element('p'): should "
             "have js property 'innerHTML' with value 'Your content goes here.': STARTED\n"
-            "element('.tox-edit-area__iframe'): switch to frame: STARTED\n"
-            "element('.tox-edit-area__iframe'): switch to frame: PASSED\n"
             "element('.tox-edit-area__iframe'): element('#tinymce').element('p'): should "
             "have js property 'innerHTML' with value 'Your content goes here.': PASSED\n"
-            ""
             "element('.tox-edit-area__iframe'): element('#tinymce').element('p'): send "
             '«select all» keys shortcut as ctrl+a or cmd+a for mac: STARTED\n'
-            "element('.tox-edit-area__iframe'): switch to frame: STARTED\n"
-            "element('.tox-edit-area__iframe'): switch to frame: PASSED\n"
             "element('.tox-edit-area__iframe'): element('#tinymce').element('p'): send "
             '«select all» keys shortcut as ctrl+a or cmd+a for mac: PASSED\n'
-            ""
             "element('.tox-toolbar__primary').element('[title=Bold]'): click: STARTED\n"
             "element('.tox-toolbar__primary').element('[title=Bold]'): click: PASSED\n"
-            ""
             "element('.tox-edit-area__iframe'): element('#tinymce').element('p'): should "
             "have js property 'innerHTML' with value '<strong>Your content goes "
             "here.</strong>': STARTED\n"
-            "element('.tox-edit-area__iframe'): switch to frame: STARTED\n"
-            "element('.tox-edit-area__iframe'): switch to frame: PASSED\n"
             "element('.tox-edit-area__iframe'): element('#tinymce').element('p'): should "
             "have js property 'innerHTML' with value '<strong>Your content goes "
             "here.</strong>': PASSED\n"
-            ""
             "element('.tox-edit-area__iframe'): element('#tinymce'): send «select all» "
             'keys shortcut as ctrl+a or cmd+a for mac: STARTED\n'
-            "element('.tox-edit-area__iframe'): switch to frame: STARTED\n"
-            "element('.tox-edit-area__iframe'): switch to frame: PASSED\n"
             "element('.tox-edit-area__iframe'): element('#tinymce'): send «select all» "
             'keys shortcut as ctrl+a or cmd+a for mac: PASSED\n'
-            ""
             "element('.tox-edit-area__iframe'): element('#tinymce'): type: New content: "
             'STARTED\n'
-            "element('.tox-edit-area__iframe'): switch to frame: STARTED\n"
-            "element('.tox-edit-area__iframe'): switch to frame: PASSED\n"
             "element('.tox-edit-area__iframe'): element('#tinymce'): type: New content: "
             'PASSED\n'
-            ""
             "element('.tox-edit-area__iframe'): element('#tinymce').element('p'): should "
             "have js property 'innerHTML' with value '<strong>New content</strong>': "
             'STARTED\n'
-            "element('.tox-edit-area__iframe'): switch to frame: STARTED\n"
-            "element('.tox-edit-area__iframe'): switch to frame: PASSED\n"
             "element('.tox-edit-area__iframe'): element('#tinymce').element('p'): should "
             "have js property 'innerHTML' with value '<strong>New content</strong>': "
             'PASSED\n'
-            ""
             "element('.tox-edit-area__iframe'): element('#tinymce').all('p'): should have "
             'size 10: STARTED\n'
-            "element('.tox-edit-area__iframe'): switch to frame: STARTED\n"
-            "element('.tox-edit-area__iframe'): switch to frame: PASSED\n"
             "element('.tox-edit-area__iframe'): element('#tinymce').all('p'): should have "
             'size 10: FAILED:\n'
             '\n'
             "<class 'selene.core.exceptions.TimeoutException'>\n"
             'Message: \n'
             '\n'
-            'Timed out after 1.0s, while waiting for:\n'
+            'Timed out after 0.5s, while waiting for:\n'
             "browser.element(('css selector', '.tox-edit-area__iframe')): element(('css "
             "selector', '#tinymce')).all(('css selector', 'p')).has size 10\n"
             '\n'
