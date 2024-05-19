@@ -26,7 +26,7 @@ from selene import command, have, query, be
 
 # TODO: break down into 2 tests
 def test_actions_on_nested_frames_element_via_with_statement(session_browser):
-    browser = session_browser.with_(timeout=1.0)
+    browser = session_browser.with_(timeout=0.5)
 
     # GIVEN even before opened browser
     browser.open('https://the-internet.herokuapp.com/nested_frames')
@@ -54,7 +54,7 @@ def test_actions_on_nested_frames_element_via_with_statement(session_browser):
         assert (
             'Message: \n'
             '\n'
-            'Timed out after 1.0s, while waiting for:\n'
+            'Timed out after 0.5s, while waiting for:\n'
             "browser.element(('css selector', '#content')).has exact text LEFT\n"
             '\n'
             'Reason: AssertionError: actual text: MIDDLE\n'
