@@ -228,6 +228,8 @@ text: Query[Element, str] = Query('text', lambda element: element().text)
 normalized text of element
 """
 
+# TODO: add texts collection condition
+
 # TODO: do we need condition for the following?
 location_once_scrolled_into_view: Query[Element, Dict[str, int]] = Query(
     'location once scrolled into view',
@@ -781,3 +783,38 @@ def page_source_saved(
         return query.__call__(browser)  # type: ignore
 
     return query
+
+
+class js:
+    shadow_root: Query[Element, Element] = Query(
+        'shadow root',
+        lambda element: Element(
+            Locator(
+                f'{element}: shadow root',
+                lambda: element.config.driver.execute_script(
+                    'return arguments[0].shadowRoot', element.locate()
+                ),
+            ),
+            element.config,
+        ),
+    )
+    """A lazy query that actually builds an Element entity
+    based on element's shadow root acquired via JavaScript.
+    """
+
+    shadow_roots: Query[Collection, Collection] = Query(
+        'shadow roots',
+        lambda collection: Collection(
+            Locator(
+                f'{collection}: shadow roots',
+                lambda: collection.config.driver.execute_script(
+                    'return [...arguments[0]].map(arg => arg.shadowRoot)',
+                    collection.locate(),
+                ),
+            ),
+            collection.config,
+        ),
+    )
+    """A lazy query that actually builds a Collection entity
+    based on elements' shadow roots acquired via JavaScript.
+    """

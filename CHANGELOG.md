@@ -101,6 +101,23 @@ TODOs:
 
 ## 2.0.0rc10 (to be released on DD.05.2024)
 
+### Shadow DOM support via query.js.shadow_root(s)
+
+As simple as:
+
+```python
+from selene import browser, query, have
+
+...
+
+browser.element('#element-with-shadow-dom').get(query.js.shadow_root).element(
+  '#shadowed-element'
+).click()
+browser.all('.item-with-shadow-dom').get(query.js.shadow_roots).should(have.size(3))
+```
+
+See one more example at [FAQ: How to work with Shadow DOM in Selene?](https://yashaka.github.io/selene/faq/shadow-dom-howto/)
+
 ### A context manager, decorator and search context to work with iFrames (Experimental)
 
 ```python
