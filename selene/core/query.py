@@ -173,7 +173,7 @@ inner_html = attribute('innerHTML')
 text_content = attribute('textContent')
 value = attribute('value')
 
-tag: Query[Element, str] = Query('tag name', lambda element: element().tag_name)
+tag: Query[Element, str] = Query('tag name', lambda element: element.locate().tag_name)
 ```
 
 – As you can see, it all comes simply to define a function or lambda on entity object
@@ -253,7 +253,7 @@ tags: Query[Collection, List[str]] = Query(
     lambda collection: [element.tag_name for element in collection.locate()],
 )
 
-text: Query[Element, str] = Query('text', lambda element: element().text)
+text: Query[Element, str] = Query('text', lambda element: element.locate().text)
 """
 normalized text of element
 """
@@ -269,17 +269,17 @@ list of normalized texts of all elements in collection
 # TODO: do we need condition for the following?
 location_once_scrolled_into_view: Query[Element, Dict[str, int]] = Query(
     'location once scrolled into view',
-    lambda element: element().location_once_scrolled_into_view,
+    lambda element: element.locate().location_once_scrolled_into_view,
 )
 
 # TODO: what to do now with have.size* ? o_O
 size: Query[Union[Element, Collection, Browser], Union[dict, int]] = Query(
     'size',
     lambda entity: (
-        entity().size
+        entity.locate().size
         if isinstance(entity, Element)
         else (
-            len(entity())
+            len(entity.locate())
             if isinstance(entity, Collection)
             else typing.cast(Browser, entity).driver.get_window_size()
         )
@@ -288,40 +288,44 @@ size: Query[Union[Element, Collection, Browser], Union[dict, int]] = Query(
 
 # TODO: do we need condition for the following?
 location: Query[Element, Dict[str, int]] = Query(
-    'location', lambda element: element().location
+    'location', lambda element: element.locate().location
 )
 
 # TODO: do we need condition for the following?
-rect: Query[Element, Dict[str, Any]] = Query('rect', lambda element: element().rect)
+rect: Query[Element, Dict[str, Any]] = Query(
+    'rect', lambda element: element.locate().rect
+)
 
 screenshot_as_base64: Query[Element, Any] = Query(
-    'screenshot as base64', lambda element: element().screenshot_as_base64
+    'screenshot as base64', lambda element: element.locate().screenshot_as_base64
 )
 
 screenshot_as_png: Query[Element, Any] = Query(
-    'screenshot as png', lambda element: element().screenshot_as_png
+    'screenshot as png', lambda element: element.locate().screenshot_as_png
 )
 
 
 def screenshot(filename: str) -> Query[Element, bool]:
     def func(element: Element) -> bool:
-        return element().screenshot(filename)
+        return element.locate().screenshot(filename)
 
     return Query(f'screenshot {filename}', func)
 
 
 # not needed, because interfere with "parent element" meaning and usually can be workaround via element.config.driver
 # parent: Query[Element, Any] = \
-#     Query('parent', lambda element: element().parent)
+#     Query('parent', lambda element: element.locate().parent)
 # TODO: but should we add it with another name?
 
 
-internal_id: Query[Element, Any] = Query('internal id', lambda element: element().id)
+internal_id: Query[Element, Any] = Query(
+    'internal id', lambda element: element.locate().id
+)
 
 
 def css_property(name: str) -> Query[Element, str]:
     def fn(element: Element) -> str:
-        return element().value_of_css_property(name)
+        return element.locate().value_of_css_property(name)
 
     return Query(f'css property {name}', fn)
 
@@ -330,7 +334,7 @@ def js_property(
     name: str,
 ) -> Query[Element, Union[str, bool, WebElement, dict]]:
     def func(element: Element) -> Union[str, bool, WebElement, dict]:
-        return element().get_property(name)
+        return element.locate().get_property(name)
 
     return Query(f'js property {name}', func)
 
