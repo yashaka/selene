@@ -1,23 +1,23 @@
 [
   {
     "referrer": "Google",
-    "count": 367,
-    "uniques": 83
+    "count": 356,
+    "uniques": 75
   },
   {
     "referrer": "github.com",
-    "count": 173,
+    "count": 198,
     "uniques": 34
   },
   {
     "referrer": "yandex.ru",
-    "count": 85,
-    "uniques": 15
+    "count": 82,
+    "uniques": 16
   },
   {
     "referrer": "school.qa.guru",
-    "count": 46,
-    "uniques": 7
+    "count": 44,
+    "uniques": 6
   },
   {
     "referrer": "Bing",
@@ -25,14 +25,14 @@
     "uniques": 2
   },
   {
-    "referrer": "ecosia.org",
-    "count": 22,
-    "uniques": 15
+    "referrer": "DuckDuckGo",
+    "count": 32,
+    "uniques": 32
   },
   {
-    "referrer": "DuckDuckGo",
-    "count": 20,
-    "uniques": 20
+    "referrer": "ecosia.org",
+    "count": 22,
+    "uniques": 21
   },
   {
     "referrer": "qaguruschool.getcourse.ru",
