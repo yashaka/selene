@@ -1,23 +1,23 @@
 [
   {
     "referrer": "Google",
-    "count": 338,
-    "uniques": 81
+    "count": 363,
+    "uniques": 89
   },
   {
     "referrer": "github.com",
-    "count": 185,
-    "uniques": 35
-  },
-  {
-    "referrer": "yandex.ru",
-    "count": 84,
-    "uniques": 18
+    "count": 200,
+    "uniques": 37
   },
   {
     "referrer": "school.qa.guru",
-    "count": 48,
-    "uniques": 7
+    "count": 102,
+    "uniques": 11
+  },
+  {
+    "referrer": "yandex.ru",
+    "count": 86,
+    "uniques": 19
   },
   {
     "referrer": "Bing",
