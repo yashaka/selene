@@ -19,6 +19,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+from __future__ import annotations
 import warnings
 from typing import Any, Union, Iterable, Optional
 
@@ -140,8 +141,24 @@ def texts(*partial_values: Union[str, Iterable[str]]) -> Condition[Collection]:
     return match.collection_has_texts(*partial_values)
 
 
-def exact_texts(*values: Union[str, Iterable[str]]) -> Condition[Collection]:
+def exact_texts(*values: str | int | float | Iterable[str]):
     return match.collection_has_exact_texts(*values)
+
+
+def _exact_texts_like(*values: str | int | float | Iterable):
+    return match._exact_texts_like(*values)
+
+
+def _text_patterns_like(*values: str | int | float | Iterable):
+    return match._text_patterns_like(*values)
+
+
+def _text_patterns(*values: str | int | float | Iterable):
+    return match._text_patterns(*values)
+
+
+def _texts_like(*values: str | int | float | Iterable):
+    return match._texts_like(*values)
 
 
 def url(exact_value: str) -> Condition[Browser]:

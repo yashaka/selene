@@ -49,7 +49,7 @@ Changelog = "https://github.com/yashaka/selene/releases"
 python = "^3.8"
 selenium = ">=4.12.0"
 future = "*"
-typing-extensions = ">=4.9.0"
+typing-extensions = ">=4.11.0"
 
 [tool.poetry.dev-dependencies]
 black = "^24.2.0"

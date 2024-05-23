@@ -53,6 +53,10 @@ def is_less_than_or_equal(expected):
     return lambda actual: actual <= expected
 
 
+def matches(pattern):
+    return lambda actual: re.match(pattern, str(actual))
+
+
 def includes_ignoring_case(expected):
     return lambda actual: str(expected).lower() in str(actual).lower()
 

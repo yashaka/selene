@@ -147,7 +147,15 @@ class Condition(Generic[E]):
 
         return cls(description, fn)
 
-    def __init__(self, description: str, fn: Lambda[E, None]):
+    # TODO: should we make the description type as Callable[[Condition], str]
+    # instead of Callable[[], str]...
+    # to be able to pass condition itself...
+    # when we pass in child classes we pass self.__str__
+    # that doesn't need to receive self, it already has it
+    # but what if we want to pass some crazy lambda for description from outside
+    # to kind of providing a "description self-based strategy" for condition?
+    # maybe at least we can define it as varagrs? like Callable[..., str]
+    def __init__(self, description: str | Callable[[], str], fn: Lambda[E, None]):
         self._description = description
         self._fn = fn
 
@@ -177,7 +185,7 @@ class Condition(Generic[E]):
         # TODO: consider changing has to have on the fly for CollectionConditions
         # TODO: or changing in collection locator rendering `all` to `collection`
         # TODO: or changing in match.* names from collection_has_* to all_have_*
-        return self._description
+        return self._description() if callable(self._description) else self._description
 
     def and_(self, condition: Condition[E]) -> Condition[E]:
         return Condition.by_and(self, condition)

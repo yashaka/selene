@@ -19,8 +19,9 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+from __future__ import annotations
 import warnings
-from typing import Any
+from typing import Any, Iterable
 
 from selene.core import match as _match
 
@@ -225,8 +226,24 @@ def texts(*partial_values: str) -> Condition[Collection]:
     return _match.collection_has_texts(*partial_values).not_
 
 
-def exact_texts(*values: str) -> Condition[Collection]:
+def exact_texts(*values: str | int | float | Iterable[str]):
     return _match.collection_has_exact_texts(*values).not_
+
+
+def _exact_texts_like(*values: str | int | float | Iterable):
+    return _match._exact_texts_like(*values).not_
+
+
+def _text_patterns_like(*values: str | int | float | Iterable):
+    return _match._text_patterns_like(*values).not_
+
+
+def _text_patterns(*values: str | int | float | Iterable):
+    return _match._text_patterns(*values).not_
+
+
+def _texts_like(*values: str | int | float | Iterable):
+    return _match._texts_like(*values).not_
 
 
 def url(exact_value: str) -> Condition[Browser]:

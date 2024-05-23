@@ -53,10 +53,15 @@ def test_should_have_texts_exception(session_browser):
         '''
     )
 
-    with pytest.raises(TimeoutException) as error:
+    try:
         browser.all('li').should(have.texts('Alex'))
-    assert "has texts ('Alex',)" in error.value.msg
-    assert "AssertionError: actual visible_texts: ['Alex', 'Yakov']" in error.value.msg
+        pytest.fail('should have failed on texts mismatch')
+    except AssertionError as error:
+        assert (
+            "browser.all(('css selector', 'li')).has texts ('Alex',)\n"
+            '\n'
+            "Reason: AssertionError: actual actual_visible_texts: ['Alex', 'Yakov']\n"
+        ) in str(error)
 
 
 def test_should_have_no_texts(session_browser):

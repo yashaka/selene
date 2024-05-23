@@ -99,7 +99,109 @@ TODOs:
 - can we force order of how `selene.*` is rendered on autocomplete? via `__all__`...
 - deprecate `have.js_returned` in favour of `have.script_returned`
 
-## 2.0.0rc10 (to be released on DD.05.2024)
+## 2.0.0rc10: «copy&paste, frames, shadow & texts_like» (to be released on DD.05.2024)
+
+### texts like conditions now accepts int and floats as text item
+
+`.have.exact_texts(1, 2.0, '3')` is now possible, and will be treated as `['1', '2.0', '3']`
+
+### list globs, text wildcards and regex support in texts_like conditions
+
+List of conditions added (still marked as experimental with `_` prefix):
+
+- `have._exact_texts_like(*exact_texts_or_list_globs: Union[str, int, float])`
+- `have._exact_texts_like(*exact_texts_or_list_globs: Union[str, int, float]).where(**globs_to_override)`
+- `have._texts_like(*contained_texts_or_list_globs: Union[str, int, float])`
+- `have._texts_like(*contained_texts_or_list_globs: Union[str, int, float]).where(**glob_to_override)`
+- `have._texts_like(*regex_patterns_or_list_globs: Union[str, int, float]).with_regex`
+  - is an alias to `have._text_patterns_like`
+- `have._text_patterns(*regex_patterns).with_regex`
+  - like `have.texts` but with regex patterns as expected, i.e. no list globs support
+- `have._texts_like(*texts_with_wildcards_or_list_globs: Union[str, int, float]).with_wildcards`
+- `have._texts_like(*texts_with_wildcards_or_list_globs: Union[str, int, float]).where_wildcards(**to_override)`
+- corresponding `have.no.*` versions of same conditions
+
+Where:
+
+- default list globs are:
+  - `[...]` matches **zero or one** item of any text in the list
+  - `...` matches **exactly one** item of any text in the list
+  - `(...,)` matches one **or more** items of any text in the list
+  - `[(...,)]` matches **zero** or more items of any text in the list
+- all globs can be mixed in the same list of expected items in any order
+- regex patterns can't use `^` (start of text) and `$` (end of text)
+    because they are implicit, and if added explicitly will break the match
+- supported wildcards can be overridden and defaults are:
+  - `*` matches **zero or more** of any characters in a text item
+  - `?` matches **exactly one** of any character in a text item
+
+Warning:
+
+- Actual implementation does not compare each list item separately, it merges all expected items into one regex pattern and matches it with merged text of all visible elements collection texts, and so it may be tricky to analyze the error message in case of failure. To keep life simpler, try to reduce the usage of such conditions to the simplest cases, preferring wildcards to regex patterns, trying even to avoid wildcards if possible, in the perfect end, sticking just to `exact_texts_like` or `texts_like` conditions with only one explicitly (for readability) customized list glob, choosing `...` as the simplest glob placeholder, for example: `browser.all('li').should(have._exact_texts_like(1, 2, 'Three', ...).where(one_or_more=...))` to assert actual texts `<li>1</li><li>2</li><li>Three</li><li>4</li><li>5</li>` in the list.
+
+Examples of usage:
+
+```python
+from selene import browser, have
+...
+# GivenPage(browser.driver).opened_with_body(
+#     '''
+#     <ul>Hello:
+#         <li>1) One!!!</li>
+#         <li>2) Two!!!</li>
+#         <li>3) Three!!!</li>
+#         <li>4) Four!!!</li>
+#         <li>5) Five!!!</li>
+#     </ul>
+#     '''
+# )
+
+browser.all('li').should(have._exact_texts_like(
+    '1) One!!!', '2) Two!!!', ..., ..., ...  # = exactly one
+))
+browser.all('li').should(have._texts_like(
+    '\d\) One!+', '\d.*', ..., ..., ...
+).with_regex)
+browser.all('li').should(have._texts_like(
+    '?) One*', '?) Two*', ..., ..., ...
+).with_wildcards)
+browser.all('li').should(have._texts_like(
+    '_) One**', '_) Two*', ..., ..., ...
+).where_wildcards(zero_or_more='**', exactly_one='_'))
+browser.all('li').should(have._texts_like(
+    'One', 'Two', ..., ..., ...  # matches each text by contains
+))  # kind of "with implicit * wildcards" in the beginning and the end of each text
+
+
+browser.all('li').should(have._texts_like(
+    ..., ..., ..., 'Four', 'Five'
+))
+browser.all('li').should(have._texts_like(
+    'One', ..., ..., 'Four', 'Five'
+))
+
+browser.all('li').should(have._texts_like(
+    'One', 'Two', (..., )  # = one or more
+))
+browser.all('li').should(have._texts_like(
+    [(..., )], 'One', 'Two', [(..., )]  # = ZERO or more ;)
+))
+browser.all('li').should(have._texts_like(
+    [...,], 'One', 'Two', 'Three', 'Four', [...]  # = zero or ONE ;)
+))
+
+# If you don't need so much "globs"...
+# (here goes, actually, the 💡RECOMMENDED💡 way to use it in most cases...
+# to keep things simpler for easier support and more explicit for readability)
+# – you can use the simplest glob item with explicitly customized meaning:
+browser.all('li').should(have._exact_texts_like(
+    'One', 'Two', ...      # = one OR MORE
+).where(one_or_more=...))  # – because the ... meaning was overridden
+# Same works for other conditions that end with `_like`
+browser.all('li').should(have._exact_texts_like(
+    '1) One!!!', '2) Two!!!', ...
+).where(one_or_more=...))
+```
 
 ### Shadow DOM support via query.js.shadow_root(s)
 
