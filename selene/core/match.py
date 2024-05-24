@@ -105,6 +105,14 @@ def element_has_exact_text(expected: str) -> Condition[Element]:
     return element_has_text(expected, 'has exact text', predicate.equals)
 
 
+def text_pattern(expected: str) -> Condition[Element]:
+    return ElementCondition.raise_if_not_actual(
+        f'has text matching {expected}',
+        query.text,
+        predicate.matches(expected),
+    )
+
+
 def element_has_js_property(name: str):
     # TODO: should we keep simpler but less obvious name - *_has_property ?
     def property_value(element: Element):
@@ -398,7 +406,7 @@ def collection_has_texts(*expected: Union[str, Iterable[str]]) -> Condition[Coll
 
     return CollectionCondition.raise_if_not_actual(
         f'has texts {expected_}',
-        actual_visible_texts,
+        Query('visible texts', actual_visible_texts),
         predicate.equals_by_contains_to_list(expected_),
     )
 
@@ -816,6 +824,11 @@ class _text_patterns_like(_exact_texts_like):
 
 
 # TODO: add an alias from texts(*expected).with_regex to text_patterns_like
+#       hm, but then it would be natural
+#       if we disable implicit ^ and $ for each item text
+#       and so we make it inconsistent with the behavior of *_like versions
+#       then probably we should explicitly document that we are not going
+#       to add such type of condition at all
 class _text_patterns(_text_patterns_like):
     """Condition to match visible texts of all elements in a collection
     with supported item placeholders to include/exclude items from match
@@ -836,7 +849,7 @@ class _text_patterns(_text_patterns_like):
         _name='text patterns',
     ):  # noqa
         super().__init__(
-            *expected,
+            *helpers.flatten(expected),  # TODO: document
             _process_patterns=_process_patterns,
             _negated=_negated,
             _name_prefix=_name_prefix,
@@ -844,6 +857,11 @@ class _text_patterns(_text_patterns_like):
         )
         # disable globs (doing after __init__ to override defaults)
         self._globs = ()
+
+    # TODO: consider refactoring so this attribute is not even inherited
+    def where(self):
+        """Just a placeholder. This attribute is not supported for this condition"""
+        raise AttributeError('.where(**) is not supported on text_patterns condition')
 
     # TODO: can and should we disable here the .where method?
     #       shouldn't we just simply implement it in a straightforward style

@@ -105,35 +105,89 @@ TODOs:
 
 `.have.exact_texts(1, 2.0, '3')` is now possible, and will be treated as `['1', '2.0', '3']`
 
-### list globs, text wildcards and regex support in texts_like conditions
+### regex support for element conditions that assert element text
 
-List of conditions added (still marked as experimental with `_` prefix):
+List of element conditions added:
 
-- `have._exact_texts_like(*exact_texts_or_list_globs: Union[str, int, float])`
-- `have._exact_texts_like(*exact_texts_or_list_globs: Union[str, int, float]).where(**globs_to_override)`
-- `have._texts_like(*contained_texts_or_list_globs: Union[str, int, float])`
-- `have._texts_like(*contained_texts_or_list_globs: Union[str, int, float]).where(**glob_to_override)`
-- `have._texts_like(*regex_patterns_or_list_globs: Union[str, int, float]).with_regex`
+- `have.text_matching(regex_pattern: str | int | float)`
+  - = `match.text_pattern(regex_pattern: str | int | float)`
+
+Examples of usage:
+
+```python
+from selene import browser, have
+
+...
+# GivenPage(browser.driver).opened_with_body(
+#     '''
+#     <ul>Hello:
+#         <li>1) One!!!</li>
+#         <li>2) Two...</li>
+#         <li>3) Three???</li>
+#     </ul>
+#     '''
+# )
+
+# in addition to:
+browser.all('li').first.should(have.text('One'))
+# this would be an alternative to previous match, but via regex:
+browser.all('li').first.should(have.text_matching(r'.*One.*'))
+# with more powerful features:
+browser.all('li').first.should(have.text_matching(r'\d\) One(.)\1\1'))
+# ^ and $ can be used but don't add much value, cause work same as previous
+browser.all('li').first.should(have.text_matching(r'^\d\) One(.)\1\1$'))
+
+# there is also a similar collection condition that
+# matches each pattern to each element text in the collection
+# in the corresponding order:
+browser.all('li').should(have.texts_matching(
+  r'\d\) One!+', r'.*', r'.*'
+))
+# that is also equivalent to:
+browser.all('li').should(have._texts_like(
+  r'\d\) One(.)\1\1', ..., ...
+).with_regex)
+# or even:
+browser.all('li').should(have._texts_like(
+  r'\d\) One(.)\1\1', (...,)  # = one or more
+).with_regex)
+# And with smart approach you can mix to achieve more with less:
+browser.all('li')[:3].should(have.text_matching(
+  r'\d\) \w+(.)\1\1'
+).each)
+```
+
+### list globs, text wildcards and regex support in texts_like collection conditions
+
+List of collection conditions added (still marked as experimental with `_` prefix):
+
+- `have._exact_texts_like(*texts_or_item_placeholders: str | int | float)`
+- `have._exact_texts_like(*texts_or_item_placeholders: str | int | float).where(**placeholders_to_override)`
+- `have._texts_like(*contained_texts_or_item_placeholders: str | int | float)`
+- `have._texts_like(*contained_texts_or_item_placeholders: str | int | float).where(**placeholders_to_override)`
+- `have._texts_like(*regex_patterns_or_item_placeholders: str | int | float).with_regex`
   - is an alias to `have._text_patterns_like`
-- `have._text_patterns(*regex_patterns).with_regex`
+- `have._text_patterns(*regex_patterns)`
   - like `have.texts` but with regex patterns as expected, i.e. no list globs support
-- `have._texts_like(*texts_with_wildcards_or_list_globs: Union[str, int, float]).with_wildcards`
-- `have._texts_like(*texts_with_wildcards_or_list_globs: Union[str, int, float]).where_wildcards(**to_override)`
+- `have._texts_like(*texts_with_wildcards_or_item_placeholders: Union[str, int, float]).with_wildcards`
+- `have._texts_like(*texts_with_wildcards_or_item_placeholders: Union[str, int, float]).where_wildcards(**to_override)`
 - corresponding `have.no.*` versions of same conditions
 
 Where:
 
-- default list globs are:
+- default list glob placeholders are:
   - `[...]` matches **zero or one** item of any text in the list
   - `...` matches **exactly one** item of any text in the list
   - `(...,)` matches one **or more** items of any text in the list
   - `[(...,)]` matches **zero** or more items of any text in the list
-- all globs can be mixed in the same list of expected items in any order
+- all globbing placeholders can be mixed in the same list of expected items in any order
 - regex patterns can't use `^` (start of text) and `$` (end of text)
     because they are implicit, and if added explicitly will break the match
 - supported wildcards can be overridden and defaults are:
   - `*` matches **zero or more** of any characters in a text item
   - `?` matches **exactly one** of any character in a text item
+- expected list items flattening is not supported like in `have.texts` and `have.exact_texts`
+    because `[]` are used in list globs. So, you can't use nested lists or tuples to format the expected list of items. 
 
 Warning:
 
@@ -160,7 +214,7 @@ browser.all('li').should(have._exact_texts_like(
     '1) One!!!', '2) Two!!!', ..., ..., ...  # = exactly one
 ))
 browser.all('li').should(have._texts_like(
-    '\d\) One!+', '\d.*', ..., ..., ...
+    r'\d\) One!+', r'\d.*', ..., ..., ...
 ).with_regex)
 browser.all('li').should(have._texts_like(
     '?) One*', '?) Two*', ..., ..., ...
@@ -295,6 +349,19 @@ Providing a brief overview of the modules and how to define your own custom comm
 ### Removed deprecated methods from Autocomplete on browser.*
 
 Just "autocomplete" is disabled, methods still work;)
+
+### Fix misleading absence of waiting in slicing behavior
+
+Now this will fail:
+
+```python
+from selene import browser, have
+...
+browser.all('.non-existing')[:1].should(have.text('something').each)
+```
+– and that's good, because we are identifying the expected number of elements in a slice.
+
+But before it would pass, that contradicted with other "get element by index" behavior:D
 
 ### Fix path of screenshot and pagesource for Windows
 

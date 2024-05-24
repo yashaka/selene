@@ -653,7 +653,7 @@ class Collection(WaitingEntity['Collection'], Iterable[Element]):
 
     @property
     def cached(self) -> Collection:
-        webelements = self()
+        webelements = self.locate()
         return Collection(Locator(f'{self}.cached', lambda: webelements), self.config)
 
     def __iter__(self):
@@ -670,6 +670,8 @@ class Collection(WaitingEntity['Collection'], Iterable[Element]):
         return self.get(query.size)
 
     # TODO: add config.index_collection_from_1, disabled by default
+    # TODO: consider additional number param, that counts from 1
+    #       if provided instead of index
     def element(self, index: int) -> Element:
         def find() -> WebElement:
             webelements = self.locate()
@@ -720,7 +722,20 @@ class Collection(WaitingEntity['Collection'], Iterable[Element]):
         step: int = 1,
     ) -> Collection:
         def find() -> typing.Sequence[WebElement]:
-            webelements = self()
+            webelements = self.locate()
+            length = len(webelements)
+            if start is not None and start != 0 and start >= length:
+                raise AssertionError(
+                    f'not enough elements to slice collection '
+                    f'from START on index={start}, '
+                    f'actual elements collection length is {length}'
+                )
+            if stop is not None and stop != -1 and length < stop:
+                raise AssertionError(
+                    'not enough elements to slice collection '
+                    f'from {start or "START"} to STOP at index={stop}, '
+                    f'actual elements collection length is {length}'
+                )
 
             # TODO: assert length according to provided start, stop...
 
@@ -758,7 +773,7 @@ class Collection(WaitingEntity['Collection'], Iterable[Element]):
         condition = (
             condition
             if isinstance(condition, Condition)
-            else Condition(str(condition), condition)
+            else Condition(str(condition), condition)  # TODO: check here for fn name
         )
 
         return Collection(

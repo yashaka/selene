@@ -62,6 +62,10 @@ def text(partial_value) -> Condition[Element]:
     return _match.element_has_text(partial_value).not_
 
 
+def text_matching(regex_pattern) -> Condition[Element]:
+    return _match.text_pattern(regex_pattern).not_
+
+
 def attribute(name: str, *args, **kwargs):
     if args or 'value' in kwargs:
         warnings.warn(
@@ -230,20 +234,22 @@ def exact_texts(*values: str | int | float | Iterable[str]):
     return _match.collection_has_exact_texts(*values).not_
 
 
-def _exact_texts_like(*values: str | int | float | Iterable):
-    return _match._exact_texts_like(*values).not_
+def _exact_texts_like(*texts_or_item_placeholders: str | int | float | Iterable):
+    return _match._exact_texts_like(*texts_or_item_placeholders).not_
 
 
-def _text_patterns_like(*values: str | int | float | Iterable):
-    return _match._text_patterns_like(*values).not_
+def _text_patterns_like(
+    *regex_patterns_or_item_placeholders: str | int | float | Iterable,
+):
+    return _match._text_patterns_like(*regex_patterns_or_item_placeholders).not_
 
 
-def _text_patterns(*values: str | int | float | Iterable):
-    return _match._text_patterns(*values).not_
+def _texts_matching(*regex_patterns: str | int | float | Iterable):
+    return _match._text_patterns(*regex_patterns).not_
 
 
-def _texts_like(*values: str | int | float | Iterable):
-    return _match._texts_like(*values).not_
+def _texts_like(*contained_texts_or_item_placeholders: str | int | float | Iterable):
+    return _match._texts_like(*contained_texts_or_item_placeholders).not_
 
 
 def url(exact_value: str) -> Condition[Browser]:

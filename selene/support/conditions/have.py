@@ -32,13 +32,17 @@ from selene.support.conditions import not_ as _not_
 no = _not_
 
 
-def exact_text(value) -> Condition[Element]:
+def exact_text(value: str) -> Condition[Element]:
     return match.element_has_exact_text(value)
 
 
 # TODO: consider accepting int
-def text(partial_value) -> Condition[Element]:
+def text(partial_value: str) -> Condition[Element]:
     return match.element_has_text(partial_value)
+
+
+def text_matching(regex_pattern: str) -> Condition[Element]:
+    return match.text_pattern(regex_pattern)
 
 
 # TODO: should we use here js.property style (and below for js.returned(...))
@@ -137,7 +141,7 @@ def size_greater_than_or_equal(number: int) -> Condition[Collection]:
 
 
 # TODO: consider accepting ints
-def texts(*partial_values: Union[str, Iterable[str]]) -> Condition[Collection]:
+def texts(*partial_values: str | Iterable[str]) -> Condition[Collection]:
     return match.collection_has_texts(*partial_values)
 
 
@@ -145,20 +149,119 @@ def exact_texts(*values: str | int | float | Iterable[str]):
     return match.collection_has_exact_texts(*values)
 
 
-def _exact_texts_like(*values: str | int | float | Iterable):
-    return match._exact_texts_like(*values)
+def _exact_texts_like(*texts_or_item_placeholders: str | int | float | Iterable):
+    """List-globbing version of
+    [have.exact_texts(*texts)][selene.support.conditions.have.exact_texts]
+    allowing to use item placeholders instead of text items.
+
+    Default list globbing placeholders are:
+
+    - `[...]` matches **zero or one** item of any text in the list
+    - `...` matches **exactly one** item of any text in the list
+    - `(...,)` matches one **or more** items of any text in the list
+    - `[(...,)]` matches **zero** or more items of any text in the list
+
+    Placeholders can be overridden in the following manner:
+    `have._texts_like(*text_items_or_placeholders).where(**placeholders_to_override)`
+
+    Nested lists with text items for better formatting of expected texts –
+    are not supported, unlike in `have.exact_texts(*items)`,
+    because list literals are used as placeholders for list globbing."""
+    return match._exact_texts_like(*texts_or_item_placeholders)
 
 
-def _text_patterns_like(*values: str | int | float | Iterable):
-    return match._text_patterns_like(*values)
+# could be named as texts_matching_like
+# but seems like "matching like" confuses too much...
+# yet, we want to keep _like suffix
+# as identifier of "globbing" nature of the list match
+def _text_patterns_like(
+    *regex_patterns_or_item_placeholders: str | int | float | Iterable,
+):
+    """List-globbing version of
+    [have.texts_matching(*regex_patterns)][selene.support.conditions.have.texts_matching]
+    allowing to use item placeholders instead of text items.
+
+    Default list globbing placeholders are:
+
+    - `[...]` matches **zero or one** item of any text in the list
+    - `...` matches **exactly one** item of any text in the list
+    - `(...,)` matches one **or more** items of any text in the list
+    - `[(...,)]` matches **zero** or more items of any text in the list
+
+    Placeholders can be overridden in the following manner:
+    `have._texts_like(*text_items_or_placeholders).where(**placeholders_to_override)`
+
+    !!! warning
+
+        Nested lists with text items for better formatting of expected texts –
+        are not supported,
+        unlike in [`have.texts(*texts)`][selene.support.conditions.have.texts],
+        because list literals are used as placeholders for list globbing.
+
+    !!! warning
+
+        Unlike in [`have.texts_matching(*regex_patterns)`][selene.support.conditions.have.texts_matching],
+        regex patterns for this condition
+        can't use `^` (start of text) and `$` (end of text),
+        because they are implicit as a result of merging for globbing implementation,
+        and if added explicitly will break the match.
+    """
+    return match._text_patterns_like(*regex_patterns_or_item_placeholders)
 
 
-def _text_patterns(*values: str | int | float | Iterable):
-    return match._text_patterns(*values)
+def texts_matching(*regex_patterns: str | int | float | Iterable):
+    """Regex version of [have.texts(*partial_values)][selene.support.conditions.have.texts]
+    allowing to use regex patterns instead of text items matched by contains.
+    """
+    return match._text_patterns(*regex_patterns)
 
 
-def _texts_like(*values: str | int | float | Iterable):
-    return match._texts_like(*values)
+def _texts_like(*contained_texts_or_item_placeholders: str | int | float | Iterable):
+    """List-globbing version of [have.texts(*partial_values)][selene.support.conditions.have.texts]
+    allowing to use item placeholders instead of text items.
+
+    Default list globbing placeholders are:
+
+    - `[...]` matches **zero or one** item of any text in the list
+    - `...` matches **exactly one** item of any text in the list
+    - `(...,)` matches one **or more** items of any text in the list
+    - `[(...,)]` matches **zero** or more items of any text in the list
+
+    Placeholders can be overridden in the following manner:
+    `have._texts_like(*text_items_or_placeholders).where(**placeholders_to_override)`
+
+    !!! warning
+
+        Nested lists with text items for better formatting of expected texts –
+        are not supported, unlike in
+        [`have.texts(*texts)`][selene.support.conditions.have.texts],
+        because list literals are used as placeholders for list globbing.
+
+    Text items are matched by contains, but can be matched by regex patterns
+    if modified via `.with_regex` property making the actual signature be equivalent to
+    `have._texts_like(*regex_patterns_or_item_placeholders).with_regex`.
+    Actually calling `.with_regex` just forward implementation to
+    [have._text_patterns_like(*regex_patterns_or_item_placeholders)][selene.support.conditions.have._text_patterns_like].
+
+    !!! warning
+
+        Unlike in [`have.texts_matching(*regex_patterns)`][selene.support.conditions.have.texts_matching],
+        Regex patterns can't use `^` (start of text) and `$` (end of text)
+        because they are implicit, and if added explicitly will break the match.
+
+    If modified via `.with_wildcards`
+    then switch regex to wildcards-based pattern matching,
+    making the actual signature be equivalent to:
+    `have._texts_like(*texts_with_wildcards_or_item_placeholders).with_wildcards`
+    or
+    `have._texts_like(*texts_with_wildcards_or_item_placeholders).where_wildcards(**to_override)`
+
+    Supported wildcards can be overridden and defaults are:
+
+    - `*` matches **zero or more** of any characters in a text item
+    - `?` matches **exactly one** of any character in a text item
+    """
+    return match._texts_like(*contained_texts_or_item_placeholders)
 
 
 def url(exact_value: str) -> Condition[Browser]:

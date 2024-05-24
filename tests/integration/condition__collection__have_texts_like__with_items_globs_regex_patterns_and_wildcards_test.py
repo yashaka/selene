@@ -123,7 +123,7 @@ def test_text_patterns_like__mixed__with_regex_patterns_support(
     )
     # with alias
     browser.all('li').should(
-        have._text_patterns(
+        have.texts_matching(
             r'.*?O.e.*?',
             r'2\) Two\.\.\.',
             r'.*?Thr.+.*?',
@@ -219,7 +219,7 @@ def test_text_patternss_like__mixed__with_regex_patterns_support__error_messages
     # without "_like" version will lack support of ellipsis globs as items placeholders
     try:
         browser.all('li').should(
-            have._text_patterns(
+            have.texts_matching(
                 r'^.*?O.e.*?$',  # fails on syntax: '^' and '$' should be implicit
                 r'2\) Two\.\.\.',
                 r'.*?Thr.+.*?',
@@ -238,7 +238,7 @@ def test_text_patternss_like__mixed__with_regex_patterns_support__error_messages
 
     try:
         browser.all('li').should(
-            have._text_patterns(
+            have.texts_matching(
                 r'.*?O.e.*?',
                 r'2\) Two\.\.\.',
                 r'.*?Thr.+.*?',

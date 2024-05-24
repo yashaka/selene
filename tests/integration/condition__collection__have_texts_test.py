@@ -60,7 +60,7 @@ def test_should_have_texts_exception(session_browser):
         assert (
             "browser.all(('css selector', 'li')).has texts ('Alex',)\n"
             '\n'
-            "Reason: AssertionError: actual actual_visible_texts: ['Alex', 'Yakov']\n"
+            "Reason: AssertionError: actual visible texts: ['Alex', 'Yakov']\n"
         ) in str(error)
 
 
