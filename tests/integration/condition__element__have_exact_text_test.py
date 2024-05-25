@@ -23,12 +23,18 @@ from selene import have
 from tests.integration.helpers.givenpage import GivenPage
 
 
+# TODO: consider breaking it down into separate tests
+
+
 def test_unicode_text_with_trailing_and_leading_spaces(session_browser):
     GivenPage(session_browser.driver).opened_with_body(
         '''
         <ul>Привет:
            <li>  Саше \n </li>
            <li>Яше</li>
+           <li>и еще ...</li>
+           <li>100</li>
+           <li>приветов всем остальним</li>
         </ul>
         '''
     )
@@ -36,3 +42,4 @@ def test_unicode_text_with_trailing_and_leading_spaces(session_browser):
     element = session_browser.element('li')
 
     element.should(have.exact_text('Саше')).should(have.text('Са'))
+    session_browser.all('li')[-2].should(have.exact_text(100)).should(have.text(100))

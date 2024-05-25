@@ -101,9 +101,28 @@ TODOs:
 
 ## 2.0.0rc10: «copy&paste, frames, shadow & texts_like» (to be released on DD.05.2024)
 
-### texts like conditions now accepts int and floats as text item
+### TODO: have.js_property -> have.property ?
+
+
+### TODO: re.IGNORECASE in have.text_matching and have.texts_matching, etc.
+
+...
+
+### Text related conditions now accepts int and floats as text item
 
 `.have.exact_texts(1, 2.0, '3')` is now possible, and will be treated as `['1', '2.0', '3']`
+
+Full list of conditions updated:
+
+- `have.texts`
+- `have.exact_texts`
+- `have.text`
+- `have.exact_text`
+- `have.value`
+- `have.value_containing`
+- `have.attribute(name).*` (all `*`)
+- `have.js_property(name).*` (all `*`)
+- `have.no.*` versions of same conditions
 
 ### regex support for element conditions that assert element text
 

@@ -27,13 +27,21 @@ def is_truthy(something):
     return bool(something) if not something == '' else True
 
 
-def equals_ignoring_case(expected):
+def str_equals_ignoring_case(expected):
     return lambda actual: str(expected).lower() == str(actual).lower()
 
 
-def equals(expected, ignore_case=False):
+def equals(expected, ignore_case=False):  # TODO: remove ignore_case from here
     return lambda actual: (
-        expected == actual if not ignore_case else equals_ignoring_case(expected)
+        expected == actual if not ignore_case else str_equals_ignoring_case(expected)
+    )
+
+
+def str_equals(expected, ignore_case=False):
+    return lambda actual: (
+        str(expected) == str(actual)
+        if not ignore_case
+        else str_equals_ignoring_case(expected)
     )
 
 
@@ -57,7 +65,7 @@ def matches(pattern):
     return lambda actual: re.match(pattern, str(actual))
 
 
-def includes_ignoring_case(expected):
+def str_includes_ignoring_case(expected):
     return lambda actual: str(expected).lower() in str(actual).lower()
 
 
@@ -67,7 +75,21 @@ def includes(expected, ignore_case=False):
             return (
                 expected in actual
                 if not ignore_case
-                else includes_ignoring_case(expected)
+                else str_includes_ignoring_case(expected)
+            )
+        except TypeError:
+            return False
+
+    return fn
+
+
+def str_includes(expected, ignore_case=False):
+    def fn(actual):
+        try:
+            return (
+                str(expected) in actual  # TODO: should we wrap actual with str()?
+                if not ignore_case
+                else str_includes_ignoring_case(expected)
             )
         except TypeError:
             return False
@@ -83,7 +105,7 @@ def includes_word(expected, ignore_case=False):
     return lambda actual: (
         expected in re.split(r'\s+', actual)
         if not ignore_case
-        else includes_ignoring_case(expected)
+        else str_includes_ignoring_case(expected)
     )
 
 
@@ -113,4 +135,6 @@ list_compare_by = lambda f: lambda expected: lambda actual: (
 
 
 equals_to_list = list_compare_by(equals)
+str_equals_to_list = list_compare_by(str_equals)
 equals_by_contains_to_list = list_compare_by(includes)
+str_equals_by_contains_to_list = list_compare_by(str_includes)

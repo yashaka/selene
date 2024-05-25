@@ -53,16 +53,15 @@ blank: Condition[Element] = _match.element_is_blank.not_
 # --- have.* conditions --- #
 
 
-def exact_text(value) -> Condition[Element]:
+def exact_text(value: str | int | float) -> Condition[Element]:
     return _match.element_has_exact_text(value).not_
 
 
-# TODO: consider accepting int
-def text(partial_value) -> Condition[Element]:
+def text(partial_value: str | int | float) -> Condition[Element]:
     return _match.element_has_text(partial_value).not_
 
 
-def text_matching(regex_pattern) -> Condition[Element]:
+def text_matching(regex_pattern: str) -> Condition[Element]:
     return _match.text_pattern(regex_pattern).not_
 
 
@@ -82,16 +81,20 @@ def attribute(name: str, *args, **kwargs):
     original = _match.element_has_attribute(name)
     negated = original.not_
 
-    def value(self, expected: str, ignore_case=False) -> Condition[Element]:
+    def value(
+        self, expected: str | int | float, ignore_case=False
+    ) -> Condition[Element]:
         return original.value(expected, ignore_case).not_
 
-    def value_containing(self, expected: str, ignore_case=False) -> Condition[Element]:
+    def value_containing(
+        self, expected: str | int | float, ignore_case=False
+    ) -> Condition[Element]:
         return original.value_containing(expected, ignore_case).not_
 
-    def values(self, *expected: str) -> Condition[Collection]:
+    def values(self, *expected: str | int | float) -> Condition[Collection]:
         return original.values(*expected).not_
 
-    def values_containing(self, *expected: str) -> Condition[Collection]:
+    def values_containing(self, *expected: str | int | float) -> Condition[Collection]:
         return original.values_containing(*expected).not_
 
     negated.value = value
@@ -118,16 +121,20 @@ def js_property(name: str, *args, **kwargs):
     original = _match.element_has_js_property(name)
     negated = original.not_
 
-    def value(self, expected: str) -> Condition[Element]:
+    def value(self, expected: str | int | float) -> Condition[Element]:
         return original.value(expected).not_
 
-    def value_containing(self, expected: str) -> Condition[Element]:
+    def value_containing(self, expected: str | int | float) -> Condition[Element]:
         return original.value_containing(expected).not_
 
-    def values(self, *expected: str) -> Condition[Collection]:
+    def values(
+        self, *expected: str | int | float | Iterable[str]
+    ) -> Condition[Collection]:
         return original.values(*expected).not_
 
-    def values_containing(self, *expected: str) -> Condition[Collection]:
+    def values_containing(
+        self, *expected: str | int | float | Iterable[str]
+    ) -> Condition[Collection]:
         return original.values_containing(*expected).not_
 
     negated.value = value
@@ -174,15 +181,15 @@ def css_property(name: str, *args, **kwargs):
     return negated
 
 
-def value(text) -> Condition[Element]:
+def value(text: str | int | float) -> Condition[Element]:
     return _match.element_has_value(text).not_
 
 
-def value_containing(partial_text) -> Condition[Element]:
+def value_containing(partial_text: str | int | float) -> Condition[Element]:
     return _match.element_has_value_containing(partial_text).not_
 
 
-def css_class(name) -> Condition[Element]:
+def css_class(name: str) -> Condition[Element]:
     return _match.element_has_css_class(name).not_
 
 
@@ -225,8 +232,7 @@ def size_greater_than_or_equal(number: int) -> Condition[Collection]:
     return _match.collection_has_size_greater_than_or_equal(number).not_
 
 
-# TODO: consider accepting ints
-def texts(*partial_values: str) -> Condition[Collection]:
+def texts(*partial_values: str | int | float | Iterable[str]) -> Condition[Collection]:
     return _match.collection_has_texts(*partial_values).not_
 
 
@@ -298,3 +304,7 @@ def js_returned_true(script_to_return_bool: str) -> Condition[Browser]:
 
 def js_returned(expected: Any, script: str, *args) -> Condition[Browser]:
     return _match.browser_has_js_returned(expected, script, *args).not_
+
+
+def script_returned(expected: Any, script: str, *args) -> Condition[Browser]:
+    return _match.browser_has_script_returned(expected, script, *args).not_

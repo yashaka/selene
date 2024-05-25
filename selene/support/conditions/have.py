@@ -32,12 +32,12 @@ from selene.support.conditions import not_ as _not_
 no = _not_
 
 
-def exact_text(value: str) -> Condition[Element]:
+def exact_text(value: str | int | float) -> Condition[Element]:
     return match.element_has_exact_text(value)
 
 
 # TODO: consider accepting int
-def text(partial_value: str) -> Condition[Element]:
+def text(partial_value: str | int | float) -> Condition[Element]:
     return match.element_has_text(partial_value)
 
 
@@ -79,20 +79,20 @@ def attribute(name: str, value: Optional[str] = None):
     return match.element_has_attribute(name)
 
 
-def value(text) -> Condition[Element]:
+def value(text: str | int | float) -> Condition[Element]:
     return match.element_has_value(text)
 
 
-def values(*texts: Union[str, Iterable[str]]) -> Condition[Collection]:
+def values(*texts: str | int | float | Iterable[str]) -> Condition[Collection]:
     return match.collection_has_values(*texts)
 
 
-def value_containing(partial_text) -> Condition[Element]:
+def value_containing(partial_text: str | int | float) -> Condition[Element]:
     return match.element_has_value_containing(partial_text)
 
 
 def values_containing(
-    *partial_texts: Union[str, Iterable[str]]
+    *partial_texts: str | int | float | Iterable[str],
 ) -> Condition[Collection]:
     return match.collection_has_values_containing(*partial_texts)
 
@@ -141,7 +141,7 @@ def size_greater_than_or_equal(number: int) -> Condition[Collection]:
 
 
 # TODO: consider accepting ints
-def texts(*partial_values: str | Iterable[str]) -> Condition[Collection]:
+def texts(*partial_values: str | int | float | Iterable[str]) -> Condition[Collection]:
     return match.collection_has_texts(*partial_values)
 
 
