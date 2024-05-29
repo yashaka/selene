@@ -19,6 +19,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+import re
 
 import pytest
 from selene import have
@@ -27,6 +28,7 @@ from tests.integration.helpers.givenpage import GivenPage
 
 # TODO: review tests: clean up, add more cases if needed, break down into smaller tests,
 #       find better names for tests
+#       maybe some duplicates are ok, cause serves for comparison purposes
 
 
 def test_text_patterns_like__mixed__with_regex_patterns_support(
@@ -625,4 +627,185 @@ def test_texts_like__mixed__where_custom_wildcards_patterns_support__with_errors
     except AssertionError as error:
         assert (
             "browser.all(('css selector', 'li')).have no texts with wildcards like:\n"
+        ) in str(error)
+
+
+def test_texts_matching__regex_pattern__error__on_invalid_regex(session_browser):
+    browser = session_browser.with_(timeout=0.1)
+    GivenPage(browser.driver).opened_with_body(
+        '''
+        <ul>Hello:
+          <li>1) One!!!</li>
+          <li>2) Two...</li>
+          <li>3) Three???</li>
+        </ul>
+        '''
+    )
+
+    try:
+        browser.all('li').should(have._texts_like(r'*One.*', ..., ...).with_regex)
+        pytest.fail('expected invalid regex error')
+    except AssertionError as error:
+        assert (
+            'Timed out after 0.1s, while waiting for:\n'
+            "browser.all(('css selector', 'li')).have text patterns like:\n"
+            '    *One.*, ..., ...\n'
+            '\n'
+            'Reason: AssertionError:  RegexError: nothing to repeat at position 1\n'
+            'actual visible texts:\n'
+            '    1) One!!!, 2) Two..., 3) Three???\n'
+            '\n'
+            'Pattern used for matching:\n'
+            '    ^*One.*‚[^‚]+‚[^‚]+‚$\n'
+            'Actual text used to match:\n'
+            '    1) One!!!‚2) Two...‚3) Three???‚\n'
+        ) in str(error)
+
+
+def test_texts_matching__regex_pattern__ignore_case_error__on_invalid_regex(
+    session_browser,
+):
+    browser = session_browser.with_(timeout=0.1)
+    GivenPage(browser.driver).opened_with_body(
+        '''
+        <ul>Hello:
+          <li>1) One!!!</li>
+          <li>2) Two...</li>
+          <li>3) Three???</li>
+        </ul>
+        '''
+    )
+
+    try:
+        browser.all('li').should(
+            have._texts_like(r'*one.*', ..., ...).with_regex.ignore_case.not_
+        )
+        pytest.fail('expected invalid regex error')
+    except AssertionError as error:
+        assert (
+            "browser.all(('css selector', 'li')).have no text patterns like (flags: "
+            're.IGNORECASE):\n'
+            '    *one.*, ..., ...\n'
+            '\n'
+            'Reason: AssertionError:  RegexError: nothing to repeat at position 1\n'
+            'actual visible texts:\n'
+            '    1) One!!!, 2) Two..., 3) Three???\n'
+            '\n'
+            'Pattern used for matching:\n'
+            '    ^*one.*‚[^‚]+‚[^‚]+‚$\n'
+            'Actual text used to match:\n'
+            '    1) One!!!‚2) Two...‚3) Three???‚\n'
+        ) in str(error)
+
+
+def test_texts_like__including_ignorecase__passed_compared_to_failed(
+    session_browser,
+):
+    browser = session_browser.with_(timeout=0.1)
+    GivenPage(browser.driver).opened_with_body(
+        '''
+        <ul>Hello:
+          <li>1) One!!!</li>
+          <li>2) Two...</li>
+          <li>3) Three???</li>
+        </ul>
+        '''
+    )
+
+    # have.texts_like
+    browser.all('li').should(have._texts_like('One', ..., ...))
+    try:
+        browser.all('li').should(have._texts_like('one', ..., ...))
+        pytest.fail('expected text mismatch')
+    except AssertionError as error:
+        assert (
+            "browser.all(('css selector', 'li')).have texts like:\n"
+            '    one, ..., ...\n'
+            '\n'
+            'Reason: AssertionError: actual visible texts:\n'
+            '    1) One!!!, 2) Two..., 3) Three???\n'
+            '\n'
+            'Pattern used for matching:\n'
+            '    ^.*?one.*?‚[^‚]+‚[^‚]+‚$\n'
+            'Actual text used to match:\n'
+            '    1) One!!!‚2) Two...‚3) Three???‚\n'
+        ) in str(error)
+    # - inverted
+    browser.all('li').should(have.no._texts_like('one', ..., ...))
+    browser.all('li').should(have._texts_like('one', ..., ...).not_)
+    try:
+        browser.all('li').should(have.no._texts_like('One', ..., ...))
+        pytest.fail('expected mismatch')
+    except AssertionError as error:
+        assert (
+            "browser.all(('css selector', 'li')).have no texts like:\n"
+            '    One, ..., ...\n'
+            '\n'
+            'Reason: AssertionError: actual visible texts:\n'
+            '    1) One!!!, 2) Two..., 3) Three???\n'
+            '\n'
+            'Pattern used for matching:\n'
+            '    ^.*?One.*?‚[^‚]+‚[^‚]+‚$\n'
+            'Actual text used to match:\n'
+            '    1) One!!!‚2) Two...‚3) Three???‚\n'
+        ) in str(error)
+    # have._texts_like (ignore_case)
+    browser.all('li').should(match._texts_like('one', ..., ..., _flags=re.IGNORECASE))
+    browser.all('li').should(have._texts_like('one', ..., ...).ignore_case)
+    try:
+        browser.all('li').should(have._texts_like('one.', ..., ...).ignore_case)
+        pytest.fail('expected text mismatch')
+    except AssertionError as error:
+        assert (
+            "browser.all(('css selector', 'li')).have texts like (flags: "
+            're.IGNORECASE):\n'
+            '    one., ..., ...\n'
+            '\n'
+            'Reason: AssertionError: actual visible texts:\n'
+            '    1) One!!!, 2) Two..., 3) Three???\n'
+            '\n'
+            'Pattern used for matching:\n'
+            '    ^.*?one\\..*?‚[^‚]+‚[^‚]+‚$\n'
+            'Actual text used to match:\n'
+            '    1) One!!!‚2) Two...‚3) Three???‚\n'
+        ) in str(error)
+    # - inverted
+    # - - with no before
+    browser.all('li').should(have.no._texts_like('one.', ..., ...).ignore_case)
+    try:
+        browser.all('li').should(have.no._texts_like('one', ..., ...).ignore_case)
+        pytest.fail('expected mismatch')
+    except AssertionError as error:
+        assert (
+            "browser.all(('css selector', 'li')).have no texts like (flags: "
+            're.IGNORECASE):\n'
+            '    one, ..., ...\n'
+            '\n'
+            'Reason: AssertionError: actual visible texts:\n'
+            '    1) One!!!, 2) Two..., 3) Three???\n'
+            '\n'
+            'Pattern used for matching:\n'
+            '    ^.*?one.*?‚[^‚]+‚[^‚]+‚$\n'
+            'Actual text used to match:\n'
+            '    1) One!!!‚2) Two...‚3) Three???‚\n'
+        ) in str(error)
+    # - - with not after, in the end
+    #     (in the middle works but without Autocomplete & not recommended)
+    browser.all('li').should(have._texts_like('one.', ..., ...).ignore_case.not_)
+    try:
+        browser.all('li').should(have._texts_like('one', ..., ...).ignore_case.not_)
+        pytest.fail('expected mismatch')
+    except AssertionError as error:
+        assert (
+            "browser.all(('css selector', 'li')).have no texts like (flags: "
+            're.IGNORECASE):\n'
+            '    one, ..., ...\n'
+            '\n'
+            'Reason: AssertionError: actual visible texts:\n'
+            '    1) One!!!, 2) Two..., 3) Three???\n'
+            '\n'
+            'Pattern used for matching:\n'
+            '    ^.*?one.*?‚[^‚]+‚[^‚]+‚$\n'
+            'Actual text used to match:\n'
+            '    1) One!!!‚2) Two...‚3) Three???‚\n'
         ) in str(error)

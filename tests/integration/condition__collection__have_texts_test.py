@@ -58,7 +58,7 @@ def test_should_have_texts_exception(session_browser):
         pytest.fail('should have failed on texts mismatch')
     except AssertionError as error:
         assert (
-            "browser.all(('css selector', 'li')).has texts ('Alex',)\n"
+            "browser.all(('css selector', 'li')).have texts ('Alex',)\n"
             '\n'
             "Reason: AssertionError: actual visible texts: ['Alex', 'Yakov']\n"
         ) in str(error)
@@ -95,8 +95,11 @@ def test_should_have_no_texts_exception(session_browser):
     with pytest.raises(TimeoutException) as error:
         browser.all('li').should(have.no.texts('Alex', 'Yakov'))
     # TODO: why do we have `has` below, should not it be `have`?
-    assert "has no (texts ('Alex', 'Yakov'))" in error.value.msg
-    assert "ConditionNotMatchedError: condition not matched" in error.value.msg
+    assert "have no (texts ('Alex', 'Yakov'))" in error.value.msg
+    assert (
+        "Reason: AssertionError: actual visible texts: ['Alex', 'Yakov']\n"
+        in error.value.msg
+    )
     # TODO: should not we see here actual texts in log too?
 
 
@@ -178,6 +181,6 @@ def test_should_have_no_text_exception(session_browser):
     assert "each has no (text Alex)" in error.value.msg
     assert (
         "AssertionError: Not matched elements among all with indexes from 0 to 1:\n"
-        "browser.all(('css selector', 'li')).cached[0]: condition not matched\n"
-        "browser.all(('css selector', 'li')).cached[1]: condition not matched"
+        "browser.all(('css selector', 'li')).cached[0]: actual text: Alex\n"
+        "browser.all(('css selector', 'li')).cached[1]: actual text: Alex"
     ) in error.value.msg

@@ -62,20 +62,22 @@ def test_on_collection(session_browser):
     except TimeoutException as error:
         assert (
             "browser.all(('css selector', 'li')). each has no (text Ron)\n"
-            "\n"
-            "Reason: AssertionError: "
-            "Not matched elements among all with indexes from 0 to 2:\n"
-            "browser.all(('css selector', 'li')).cached[1]: condition not matched"
+            '\n'
+            'Reason: AssertionError: Not matched elements among all with indexes from 0 '
+            'to 2:\n'
+            "browser.all(('css selector', 'li')).cached[1]: actual text: Ron from "
+            'Hogwarts\n'
         ) in str(error)
     try:
         elements.should(have.no.text('Ron').each)
     except TimeoutException as error:
         assert (
             "browser.all(('css selector', 'li')). each has no (text Ron)\n"
-            "\n"
-            "Reason: AssertionError: "
-            "Not matched elements among all with indexes from 0 to 2:\n"
-            "browser.all(('css selector', 'li')).cached[1]: condition not matched"
+            '\n'
+            'Reason: AssertionError: Not matched elements among all with indexes from 0 '
+            'to 2:\n'
+            "browser.all(('css selector', 'li')).cached[1]: actual text: Ron from "
+            'Hogwarts\n'
         ) in str(error)
 
 

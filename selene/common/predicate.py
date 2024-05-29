@@ -37,8 +37,22 @@ def equals(expected, ignore_case=False):  # TODO: remove ignore_case from here
     )
 
 
-def str_equals(expected, ignore_case=False):
+def equals_with(ignore_case=False):  # TODO: remove ignore_case from here
+    return lambda expected: lambda actual: (
+        expected == actual if not ignore_case else str_equals_ignoring_case(expected)
+    )
+
+
+def str_equals(expected, ignore_case=False):  # TODO: remove ignore_case from here
     return lambda actual: (
+        str(expected) == str(actual)
+        if not ignore_case
+        else str_equals_ignoring_case(expected)
+    )
+
+
+def str_equals_with(ignore_case=False):
+    return lambda expected: lambda actual: (
         str(expected) == str(actual)
         if not ignore_case
         else str_equals_ignoring_case(expected)
@@ -61,8 +75,8 @@ def is_less_than_or_equal(expected):
     return lambda actual: actual <= expected
 
 
-def matches(pattern):
-    return lambda actual: re.match(pattern, str(actual))
+def matches(pattern, _flags=0):
+    return lambda actual: re.match(pattern, str(actual), _flags)
 
 
 def str_includes_ignoring_case(expected):
@@ -87,12 +101,29 @@ def str_includes(expected, ignore_case=False):
     def fn(actual):
         try:
             return (
-                str(expected) in actual  # TODO: should we wrap actual with str()?
+                str(expected) in actual
                 if not ignore_case
                 else str_includes_ignoring_case(expected)
             )
         except TypeError:
             return False
+
+    return fn
+
+
+def str_includes_with(ignore_case=False):
+    def fn(expected):
+        def fn(actual):
+            try:
+                return (
+                    str(expected) in actual
+                    if not ignore_case
+                    else str_includes_ignoring_case(expected)
+                )
+            except TypeError:
+                return False
+
+        return fn
 
     return fn
 

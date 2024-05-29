@@ -29,7 +29,7 @@ A generic TypeVar to identify a Function Type, i.e. a function
 but to be imported and used as fp.T so you can guess from full name,
 that it is "function type", i.e. a function ;)
 '''
-F = TypeVar('F')
+F = TypeVar('F')  # should we bound it as `bound=Callable[..., Any]`
 '''
 A generic TypeVar to identify a Function Type, i.e. a function
 can be imported and used as F directly, no need of `fp.F` version...,

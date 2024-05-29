@@ -99,12 +99,26 @@ TODOs:
 - can we force order of how `selene.*` is rendered on autocomplete? via `__all__`...
 - deprecate `have.js_returned` in favour of `have.script_returned`
 
+### TODO: implement multi entity conditions
+
 ## 2.0.0rc10: «copy&paste, frames, shadow & texts_like» (to be released on DD.05.2024)
 
-### TODO: have.js_property -> have.property ?
+### TODO: should we help users do not shoot their legs when using browser.all(selector) in for loops? #534 
+
+### TODO: not_ as callable object?
+
+### TODO: rename all conditions inside match.py so match can be fully used instead be + have #530 
+
+### TODO: have.js_property -> have.property ? #538
+
+### TODO: ensure sub-classed condition == condition.not_.not_
 
 
-### TODO: re.IGNORECASE in have.text_matching and have.texts_matching, etc.
+### TODO: ENSURE ALL Condition.as_not USAGES ARE NOW CORRECT
+
+...
+
+### TODO: deprecate and/or rename condition.not_ to condition.negated or condition.inverted
 
 ...
 
@@ -276,6 +290,42 @@ browser.all('li').should(have._exact_texts_like(
 ).where(one_or_more=...))
 ```
 
+### Text related now supports ignore_case (including regex conditions)
+
+```python
+from selene import browser, have
+import re
+
+# GivenPage(browser.driver).opened_with_body(
+#     '''
+#     <ul>Hello:
+#       <li>1) One!!!</li>
+#       <li>2) Two...</li>
+#       <li>3) Three???</li>
+#     </ul>
+#     '''
+# )
+
+...
+
+browser.all('li').first.should(have.exact_text('1) one!!!').ignore_case)
+browser.all('li').first.should(have.text('one').ignore_case)
+browser.all('li').first.should(have.text_matching(r'.*one.*').ignore_case)
+...
+# list globbing conditions also support ignore_case
+browser.all('li').should(
+    have._text_patterns_like(r'.*one.*', r'.*two.*', ...).ignore_case
+)
+# other regex flags are also supported
+browser.all('li').should(
+    have._text_patterns_like(r'.*one.*', r'.*two.*', ...).where_flags(re.IGNORECASE|re.DOTALL)
+)
+browser.all('li').first.should(have.text_matching(r'.*one.*').where_flags(re.IGNORECASE|re.DOTALL))
+
+```
+
+Same for attribute related conditions like `have.value` and `have.attribute(name).value*` will be a part of [#537](https://github.com/yashaka/selene/issues/537)
+
 ### Shadow DOM support via query.js.shadow_root(s)
 
 As simple as:
@@ -385,6 +435,12 @@ But before it would pass, that contradicted with other "get element by index" be
 ### Fix path of screenshot and pagesource for Windows
 
 Thanks to [Cameron Shimmin](https://github.com/cshimm) and Edale Miguel for PR [#525](https://github.com/yashaka/selene/pull/525)
+
+### Deprecations
+
+- `condition.call(entity)` in favor of `condition(entity)` or `condition.__call__(entity)`
+    - there is also an experimental `condition._match`, that is actually aliased by `condition.__call__`
+- `ConditionNotMatchedError` in favor of `ConditionMismatch`
 
 ## 2.0.0rc9 (to be released on 06.03.2024)
 

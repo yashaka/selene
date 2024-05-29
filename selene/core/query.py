@@ -188,16 +188,26 @@ from __future__ import annotations
 
 import functools
 import typing
-from typing import List, Dict, Any, Union
+
+from typing_extensions import (
+    List,
+    Dict,
+    Any,
+    Union,
+    TypeVar,
+)
 
 from selenium.webdriver.remote.webelement import WebElement
 
 from selene import support
+from selene.common._typing_functions import Query, Command
 from selene.common.helpers import to_by
 from selene.core.entity import Element, Collection
 from selene.core._browser import Browser
 from selene.core.locator import Locator
-from selene.core.wait import Query, Command
+
+
+# TODO: should not we separate Query type from actual queries implementations?
 
 
 def attribute(name: str) -> Query[Element, str]:
@@ -254,15 +264,18 @@ tags: Query[Collection, List[str]] = Query(
 )
 
 text: Query[Element, str] = Query('text', lambda element: element.locate().text)
-"""
-normalized text of element
-"""
+"""normalized text of element"""
 texts: Query[Collection, List[str]] = Query(
     'texts', lambda collection: [element.text for element in collection.locate()]
 )
-"""
-list of normalized texts of all elements in collection
-"""
+"""list of normalized texts of all elements in collection"""
+visible_texts: Query[Collection, List[str]] = Query(
+    'visible texts',
+    lambda collection: [
+        element.text for element in collection.locate() if element.is_displayed()
+    ],
+)
+"""list of normalized texts of all visible elements in collection"""
 
 # TODO: add texts collection condition
 

@@ -35,7 +35,8 @@ from selenium.webdriver.remote.webelement import WebElement
 from selene.common.fp import pipe
 
 from selene.core.configuration import Config
-from selene.core.wait import Wait, Command, Query
+from selene.core.wait import Wait
+from selene.common._typing_functions import Query, Command
 from selene.core.condition import Condition
 from selene.core.locator import Locator
 

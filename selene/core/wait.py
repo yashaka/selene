@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2015-2022 Iakiv Kramarenko
+# Copyright (c) 2015 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -24,13 +24,12 @@ from __future__ import annotations
 
 import time
 import warnings
-from abc import abstractmethod, ABC
-from typing import Generic, Callable, TypeVar, Optional
+from typing_extensions import Generic, Callable, TypeVar, Optional
 
-from selene.common import fp
 from selene.core.exceptions import TimeoutException
 
 from selene.common.fp import identity
+from selene.common._typing_functions import Query, Command
 
 T = TypeVar('T')
 R = TypeVar('R')
@@ -38,34 +37,6 @@ E = TypeVar('E')
 '''
 A generic TypeVar to identify an Entity Type, i.e. something to wait on
 '''
-
-# TODO: not sure, if we need all these Lambda, Proc, Query, Command in python
-# TODO: they was added just to quickly port selenidejs waiting mechanism
-# TODO: let's consider removing them... or moving them e.g. to fp
-
-Lambda = Callable[[T], R]
-Proc = Callable[[T], None]
-Predicate = Callable[[T], bool]
-
-
-Fn = Callable[[T], R]
-
-
-# TODO: consider moving outside of "wait" module... because there is no direct cohesion with it
-class Query(Generic[E, R]):
-    def __init__(self, description: str, fn: Callable[[E], R | None]):
-        self._description = description
-        self._fn = fn
-
-    def __call__(self, entity: E) -> R | None:
-        return self._fn(entity)
-
-    def __str__(self):
-        return self._description
-
-
-class Command(Generic[E], Query[E, None]):
-    pass
 
 
 # TODO: provide sexy fluent implementation via builder, i.e. Wait.the(element).atMost(3).orFailWith(hook)

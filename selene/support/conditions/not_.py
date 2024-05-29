@@ -23,6 +23,8 @@ from __future__ import annotations
 import warnings
 from typing import Any, Iterable
 
+from typing_extensions import cast
+
 from selene.core import match as _match
 
 # --- be.* conditions --- #
@@ -53,16 +55,16 @@ blank: Condition[Element] = _match.element_is_blank.not_
 # --- have.* conditions --- #
 
 
-def exact_text(value: str | int | float) -> Condition[Element]:
-    return _match.element_has_exact_text(value).not_
+def exact_text(value: str | int | float) -> _match._ElementHasText:
+    return _match.exact_text(value).not_
 
 
-def text(partial_value: str | int | float) -> Condition[Element]:
-    return _match.element_has_text(partial_value).not_
+def text(partial_value: str | int | float) -> _match._ElementHasText:
+    return _match.text(partial_value).not_
 
 
-def text_matching(regex_pattern: str) -> Condition[Element]:
-    return _match.text_pattern(regex_pattern).not_
+def text_matching(regex_pattern: str):
+    return cast(_match.text_pattern, _match.text_pattern(regex_pattern).not_)
 
 
 def attribute(name: str, *args, **kwargs):
@@ -232,30 +234,39 @@ def size_greater_than_or_equal(number: int) -> Condition[Collection]:
     return _match.collection_has_size_greater_than_or_equal(number).not_
 
 
-def texts(*partial_values: str | int | float | Iterable[str]) -> Condition[Collection]:
-    return _match.collection_has_texts(*partial_values).not_
+def texts(*partial_values: str | int | float | Iterable[str]):
+    return cast(_match._CollectionHasTexts, _match.texts(*partial_values).not_)
 
 
 def exact_texts(*values: str | int | float | Iterable[str]):
-    return _match.collection_has_exact_texts(*values).not_
+    return cast(_match._CollectionHasTexts, _match.exact_texts(*values).not_)
 
 
 def _exact_texts_like(*texts_or_item_placeholders: str | int | float | Iterable):
-    return _match._exact_texts_like(*texts_or_item_placeholders).not_
+    return cast(
+        _match._exact_texts_like,
+        _match._exact_texts_like(*texts_or_item_placeholders).not_,
+    )
 
 
 def _text_patterns_like(
     *regex_patterns_or_item_placeholders: str | int | float | Iterable,
 ):
-    return _match._text_patterns_like(*regex_patterns_or_item_placeholders).not_
+    return cast(
+        _match._text_patterns_like,
+        _match._text_patterns_like(*regex_patterns_or_item_placeholders).not_,
+    )
 
 
 def _texts_matching(*regex_patterns: str | int | float | Iterable):
-    return _match._text_patterns(*regex_patterns).not_
+    return cast(_match._text_patterns, _match._text_patterns(*regex_patterns).not_)
 
 
 def _texts_like(*contained_texts_or_item_placeholders: str | int | float | Iterable):
-    return _match._texts_like(*contained_texts_or_item_placeholders).not_
+    return cast(
+        _match._texts_like,
+        _match._texts_like(*contained_texts_or_item_placeholders).not_,
+    )
 
 
 def url(exact_value: str) -> Condition[Browser]:

@@ -47,7 +47,7 @@ from typing_extensions import (
 
 from selene.common import predicate, helpers
 from selene.core import query
-from selene.core.condition import Condition
+from selene.core.condition import Condition, _ConditionRaisingIfNotActual
 from selene.core.conditions import (
     ElementCondition,
     CollectionCondition,
@@ -55,7 +55,7 @@ from selene.core.conditions import (
 )
 from selene.core.entity import Collection, Element
 from selene.core._browser import Browser
-from selene.core.wait import Query
+from selene.common._typing_functions import Query
 
 # TODO: consider moving to selene.match.element.is_visible, etc...
 element_is_visible: Condition[Element] = ElementCondition.raise_if_not(
@@ -89,28 +89,130 @@ element_is_focused: Condition[Element] = ElementCondition.raise_if_not(
 )
 
 
-def element_has_text(
-    expected: str | int | float,
-    _describing_matched_to='has text',
-    _compared_by_predicate_to=predicate.includes,
-) -> Condition[Element]:
-    return ElementCondition.raise_if_not_actual(
-        _describing_matched_to + ' ' + str(expected),
-        query.text,
-        _compared_by_predicate_to(str(expected)),
-    )
+class _ElementHasText(_ConditionRaisingIfNotActual[Element]):
+
+    def __init__(
+        self,
+        expected: str | int | float,
+        _describing_matched_to='has text',
+        _compared_by_predicate_to=predicate.includes,
+        _ignore_case=False,
+        _inverted=False,
+    ):
+        self.__expected = expected
+        self.__describe_matched_to = _describing_matched_to
+        self.__compared_by_predicate_to = _compared_by_predicate_to
+        self.__ignore_case = _ignore_case
+        self.__inverted = _inverted
+
+        # # actually happened to be not needed, both _ params and even closures of self
+        # def describe(_):  # actually we don't need here passing self through describe
+        #     return (
+        #         f'{_describing_matched_to}'
+        #         f'{" ignoring case: "if _ignore_case else ""} {expected}'
+        #     )
+        #
+        # def compare(_):  # here we also don't need it, closure's self is enough
+        #     return lambda actual: (
+        #         _compared_by_predicate_to(str(expected).lower())(str(actual).lower())
+        #         if _ignore_case
+        #         else _compared_by_predicate_to(str(expected))(str(actual))
+        #     )
+
+        super().__init__(
+            (
+                f'{_describing_matched_to}'
+                f'{" ignoring case:" if _ignore_case else ""} {expected}'
+            ),
+            query.text,
+            lambda actual: (
+                _compared_by_predicate_to(str(expected).lower())(str(actual).lower())
+                if _ignore_case
+                else _compared_by_predicate_to(str(expected))(str(actual))
+            ),
+            _inverted,
+        )
+
+    # returning Conditioin[Element] to not allow .ignore_case.ignore_case usage:)
+    @property
+    def ignore_case(self) -> Condition[Element]:
+        return self.__class__(
+            self.__expected,
+            self.__describe_matched_to,
+            self.__compared_by_predicate_to,
+            _ignore_case=True,
+            _inverted=self.__inverted,
+        )
+
+    @override
+    @property
+    def not_(self):
+        return self.__class__(
+            self.__expected,
+            self.__describe_matched_to,
+            self.__compared_by_predicate_to,
+            self.__ignore_case,
+            _inverted=not self.__inverted,
+        )
 
 
-def element_has_exact_text(expected: str | int | float) -> Condition[Element]:
-    return element_has_text(expected, 'has exact text', predicate.equals)
+def text(expected: str | int | float, _ignore_case=False):
+    return _ElementHasText(expected, 'has text', predicate.includes, _ignore_case)
 
 
-def text_pattern(expected: str) -> Condition[Element]:
-    return ElementCondition.raise_if_not_actual(
-        f'has text matching {expected}',
-        query.text,
-        predicate.matches(expected),
-    )
+def exact_text(expected: str | int | float, _ignore_case=False):
+    return _ElementHasText(expected, 'has exact text', predicate.equals, _ignore_case)
+
+
+class text_pattern(_ConditionRaisingIfNotActual[Element]):
+
+    def __init__(self, expected: str, _flags=0, _inverted=False):
+        self.__expected = expected
+        self.__flags = _flags
+        self.__inverted = _inverted
+
+        # initial version:
+        super().__init__(
+            f'has text matching{f" (with flags {_flags}):" if _flags else ""}'
+            f' {expected}',
+            query.text,
+            predicate.matches(expected, _flags),
+            _inverted,
+        )
+
+        # def match(actual: str) -> bool:
+        #     return re.match(expected, actual, _flags)
+        #
+        # super().__init__(
+        #     f'has text matching{f" (with flags {_flags}):" if _flags else ""}'
+        #     f' {expected}',
+        #     query.text,
+        #     match,
+        # )
+
+    @override
+    @property
+    def not_(self):
+        return self.__class__(
+            self.__expected,
+            self.__flags,
+            not self.__inverted,
+        )
+
+    @property
+    def ignore_case(self):
+        return self.where_flags(re.IGNORECASE)
+
+    # TODO: should we shorten name just to flags? i.e.
+    #       `.should(have.text_matching(r'.*one.*').flags(re.IGNORECASE))`
+    #       over
+    #       `.should(have.text_matching(r'.*one.*').where_flags(re.IGNORECASE))`
+    def where_flags(self, flags: re.RegexFlag, /) -> Condition[Element]:
+        return self.__class__(
+            self.__expected,
+            self.__flags | flags,
+            self.__inverted,
+        )
 
 
 def element_has_js_property(name: str):
@@ -165,7 +267,9 @@ def element_has_js_property(name: str):
                 predicate.str_equals_by_contains_to_list(expected_),
             )
 
-    return ConditionWithValues(str(raw_property_condition), raw_property_condition.call)
+    return ConditionWithValues(
+        str(raw_property_condition), raw_property_condition.__call__
+    )
 
 
 def element_has_css_property(name: str):
@@ -214,7 +318,9 @@ def element_has_css_property(name: str):
                 predicate.equals_by_contains_to_list(expected_),
             )
 
-    return ConditionWithValues(str(raw_property_condition), raw_property_condition.call)
+    return ConditionWithValues(
+        str(raw_property_condition), raw_property_condition.__call__
+    )
 
 
 def element_has_attribute(name: str):
@@ -281,7 +387,7 @@ def element_has_attribute(name: str):
             )
 
     return ConditionWithValues(
-        str(raw_attribute_condition), raw_attribute_condition.call
+        str(raw_attribute_condition), raw_attribute_condition.__call__
     )
 
 
@@ -321,9 +427,7 @@ def element_has_css_class(expected: str) -> Condition[Element]:
     )
 
 
-element_is_blank: Condition[Element] = element_has_exact_text('').and_(
-    element_has_value('')
-)
+element_is_blank: Condition[Element] = exact_text('').and_(element_has_value(''))
 
 
 def element_has_tag(
@@ -404,124 +508,90 @@ def collection_has_size_less_than_or_equal(
     )
 
 
-# TODO: make it configurable whether assert only visible texts or not
-def collection_has_texts(
-    *expected: str | int | float | Iterable[str],
-) -> Condition[Collection]:
-    expected_ = helpers.flatten(expected)
+class _CollectionHasTexts(_ConditionRaisingIfNotActual[Collection]):
 
-    def actual_visible_texts(collection: Collection) -> List[str]:
-        return [
-            webelement.text for webelement in collection() if webelement.is_displayed()
-        ]
+    def __init__(
+        self,
+        *expected: str | int | float | Iterable[str],
+        _describing_matched_to='have texts',
+        _compared_by_predicate_to=predicate.equals_by_contains_to_list,
+        _ignore_case=False,
+        _inverted=False,
+    ):
+        self.__expected = expected
+        self.__describe_matched_to = _describing_matched_to
+        self.__compared_by_predicate_to = _compared_by_predicate_to
+        self.__ignore_case = _ignore_case
+        self.__inverted = _inverted
 
-    return CollectionCondition.raise_if_not_actual(
-        f'has texts {expected_}',
-        Query('visible texts', actual_visible_texts),
-        predicate.str_equals_by_contains_to_list(expected_),
-    )
+        # TODO: should we store flattened version in self?
+        #       how should we render nested expected in error?
+        #       should we transform actual to same un-flattened structure as expected?
+        #       (when rendering, of course)
 
+        def compare(actual: Iterable) -> bool:
+            expected_flattened = helpers.flatten(expected)
+            str_lower = lambda some: str(some).lower()
+            return (
+                _compared_by_predicate_to(map(str_lower, expected_flattened))(
+                    map(str_lower, actual)
+                )
+                if _ignore_case
+                else _compared_by_predicate_to(map(str, expected_flattened))(
+                    map(str, actual)
+                )
+            )
 
-def collection_has_exact_texts(
-    *expected: str | int | float | Iterable[str],
-):
-    if ... in expected:  # TODO: count other cases
-        raise ValueError(
-            '... is not allowed in exact_texts for "globbing"'
-            'use _exact_texts_like condition instead'
+        super().__init__(  # type: ignore
+            (
+                f'{_describing_matched_to}'
+                f'{" ignoring case:" if _ignore_case else ""} {expected}'
+            ),
+            query.visible_texts,
+            compare,
+            _inverted,
         )
 
-    actual_visible_texts: Query[Collection, List[str]] = Query(
-        'visible texts',
-        lambda collection: [
-            webelement.text for webelement in collection() if webelement.is_displayed()
-        ],
+    # returning Condition[Collection] to not allow .ignore_case.ignore_case usage:)
+    @property
+    def ignore_case(self) -> Condition[Collection]:
+        return self.__class__(
+            *self.__expected,
+            _describing_matched_to=self.__describe_matched_to,
+            _compared_by_predicate_to=self.__compared_by_predicate_to,
+            _ignore_case=True,
+            _inverted=self.__inverted,
+        )
+
+    @override
+    @property
+    def not_(self):
+        return self.__class__(
+            *self.__expected,
+            _describing_matched_to=self.__describe_matched_to,
+            _compared_by_predicate_to=self.__compared_by_predicate_to,
+            _ignore_case=self.__ignore_case,
+            _inverted=not self.__inverted,
+        )
+
+
+# TODO: make it configurable whether assert only visible texts or not
+def texts(*expected: str | int | float | Iterable[str], _ignore_case=False):
+    return _CollectionHasTexts(
+        *expected,
+        _describing_matched_to='have texts',
+        _compared_by_predicate_to=predicate.equals_by_contains_to_list,
+        _ignore_case=_ignore_case,
     )
 
-    # flatten expected values
-    expected_ = helpers.flatten(expected)
-    return CollectionCondition.raise_if_not_actual(
-        # TODO: should we use just expected here ↙ ?
-        f'has exact texts {expected_}',
-        actual_visible_texts,
-        predicate.str_equals_to_list(expected_),
+
+def exact_texts(*expected: str | int | float | Iterable[str], _ignore_case=False):
+    return _CollectionHasTexts(
+        *expected,
+        _describing_matched_to='have exact texts',
+        _compared_by_predicate_to=predicate.equals_to_list,
+        _ignore_case=_ignore_case,
     )
-
-
-# TODO: consider implementing a mixture of exact_texts and exact_texts_like
-#       with syntax: exact_texts(1, 2, 3, 4) + exact_texts.like(1, ..., 4)
-# def __exact_texts(
-#     *expected: str | int | float | Iterable[str],
-# ):
-#     if ... in expected:  # TODO count other cases
-#         raise ValueError(
-#             '... is not allowed in exact_texts for "globbing"'
-#             'use exact_texts._like condition instead'
-#         )
-#
-#     actual_visible_texts: Query[Collection, List[str]] = Query(
-#         'visible texts',
-#         lambda collection: [
-#             webelement.text for webelement in collection() if webelement.is_displayed()
-#         ],
-#     )
-#
-#     def build_raw_exact_texts(expected):
-#         # flatten expected values and convert numbers to strings
-#         expected_flattened_stringified = [
-#             str(item) for item in helpers.flatten(expected)
-#         ]
-#         return CollectionCondition.raise_if_not_actual(
-#             # TODO: should we use just expected here ↙ ?
-#             f'has exact texts {expected_flattened_stringified}',
-#             actual_visible_texts,
-#             predicate.equals_to_list(expected_flattened_stringified),
-#         )
-#
-#     class CollectionHasExactTextsWithGlobbing(CollectionCondition):
-#
-#         def _like(
-#             self, *expected: str | int | float | Iterable
-#         ) -> Condition[Collection]:
-#             if ... not in expected:  # TODO: adapt to different types of blobs
-#                 return build_raw_exact_texts(expected)
-#
-#             expected_pattern = re.sub(
-#                 r'Ellipsis(,|\\])',
-#                 r'.+?\1',
-#                 (
-#                     r'^'
-#                     + re.escape(
-#                         str(
-#                             [
-#                                 (str(item) if item is not ... else item)
-#                                 for item in expected
-#                             ]
-#                         )
-#                     )
-#                     + r'$'
-#                 ),
-#             )
-#
-#             actual_visible_text: Query[Collection, str] = Query(
-#                 'visible texts',
-#                 lambda collection: str(actual_visible_texts(collection)),
-#             )
-#
-#             return CollectionCondition.raise_if_not_actual(
-#                 re.sub(
-#                     r"'\.\.\.'([,\]])",
-#                     r"...\1",
-#                     f'has exact texts like {[value if value is not ... else r"..." for value in expected]}',
-#                 ),
-#                 actual_visible_text,
-#                 predicate.matches(expected_pattern),
-#             )
-#
-#     return CollectionHasExactTextsWithGlobbing(
-#         str(build_raw_exact_texts(expected)),
-#         build_raw_exact_texts(expected).call,
-#     )
 
 
 class _exact_texts_like(CollectionCondition):
@@ -574,49 +644,53 @@ class _exact_texts_like(CollectionCondition):
     def __init__(
         self,
         *expected: str | int | float | Iterable,
-        _negated=False,
+        _inverted=False,
         _globs: Tuple[Tuple[Any, str], ...] = (),
         _name_prefix: str = 'have',
         _name: str = 'exact texts like',
+        _flags=0,
     ):  # noqa
         if self._MATCHING_SEPARATOR.__len__() != 1:
             raise ValueError('MATCHING_SEPARATOR should be a one character string')
         super().__init__(self.__str__, self.__call__)
         self._expected = expected
-        self._negated = _negated
+        self._inverted = _inverted
         self._globs = _globs if _globs else _exact_texts_like._DEFAULT_GLOBS
         self._name_prefix = _name_prefix
         self._name = _name
+        self._flags = _flags
         # actually disabling any patterns, processing as a normal string
-        self._process_patterns: Callable[[AnyStr], AnyStr] = (
-            re.escape
-        )  # HARDCODED by intent
+        self._process_patterns: Callable[[str], str] = re.escape  # HARDCODED by intent
+        # should we use above Callable[[AnyStr], AnyStr]
 
-    # @overload
-    # def where(self, *globs: Tuple[Any, str]) -> _exact_texts_like: ...
-    # """
-    # Original idea was to give a possibility to customize globs in the most free way
-    # by specifying both markers and patterns,
-    # but it happened that implementation of matching logic is over-complicated
-    # and tightly coupled with chosen patterns...
-    # Thus, we removed this possibility for now, and the only way to customize globs
-    # is to define markers per corresponding predefined pattern.
-    # """
-    # @overload
-    # def where(
-    #     self,
-    #     *,
-    #     exactly_one: Any = None,
-    #     zero_or_one: Any = None,
-    #     one_or_more: Any = None,
-    #     zero_or_more: Any = None,
-    # ) -> _exact_texts_like: ...
-    # def where(self, *globs: Tuple[Any, str], **kwargs) -> _exact_texts_like:
-    #     kwargs = cast(
-    #         Dict[_exact_texts_like._PredefinedPatternType, Any],
-    #         kwargs,
-    #     )
-    #     ... # here was actual original implementation
+    # on subclassing this class, in case of new params to init
+    # you have to ensure that such new params are counted in overriden not_
+    @override
+    @property
+    def not_(self):
+        return self.__class__(
+            *self._expected,
+            _inverted=not self._inverted,
+            _globs=self._globs,
+            _name_prefix=self._name_prefix,
+            _name=self._name,
+            _flags=self._flags,
+        )
+
+    # we should not allow any other flags except re.IGNORECASE
+    # and even the latter should be set kind of "implicitly"...
+    # because playing with flags here might brake the globs matching
+    # TODO: or not?
+    @property
+    def ignore_case(self) -> Condition[Collection]:
+        return self.__class__(
+            *self._expected,
+            _inverted=self._inverted,
+            _globs=self._globs,
+            _name_prefix=self._name_prefix,
+            _name=self._name,
+            _flags=self._flags | re.IGNORECASE,
+        )
 
     def where(
         self,
@@ -638,11 +712,14 @@ class _exact_texts_like(CollectionCondition):
         #       consider refactoring to using dict for globs management
         return self.__class__(
             *self._expected,
-            _negated=self._negated,
+            _inverted=self._inverted,
             _globs=tuple(
                 (glob_marker, self._PredefinedGlobPatterns[glob_pattern_type])
                 for glob_pattern_type, glob_marker in kwargs.items()
             ),
+            _name_prefix=self._name_prefix,
+            _name=self._name,
+            _flags=self._flags,
         )
 
     @property
@@ -670,7 +747,7 @@ class _exact_texts_like(CollectionCondition):
         actual_to_match = (
             # seems like not needed anymore, once we refactored from join to reduce
             # in order to be able to add '?' for zero_like in the end...
-            # see more exaplanation below...
+            # see more explanation below...
             #
             # (
             #     # zero_like globs in the START needs an extra separator
@@ -707,9 +784,7 @@ class _exact_texts_like(CollectionCondition):
             if glob_marker == marker
         )
         with_added_empty_string_marker = lambda item: (
-            str(item)
-            if item is not ''
-            else _exact_texts_like._MATCHING_EMPTY_STRING_MARKER
+            str(item) if item != '' else _exact_texts_like._MATCHING_EMPTY_STRING_MARKER
         )
         MATCHING_SEPARATOR = re.escape(_exact_texts_like._MATCHING_SEPARATOR)
         expected_pattern = (
@@ -746,24 +821,46 @@ class _exact_texts_like(CollectionCondition):
             + r'$'
         )
 
-        if not self._match(expected_pattern, actual_to_match):
+        answer = None
+        regex_invalid_error: re.error | None = None
+        try:
+            answer = self._match(expected_pattern, actual_to_match)
+        except re.error as error:
+            # going to re-raise it below as AssertionError on `not answer`
+            regex_invalid_error = error
+        if not answer:
             # TODO: implement pattern_explained
             #       probably after refactoring from tuple to dict as globs storage
             # pattern_explained = [
             #     next(...) if item in self._glob_markers else item
             #     for item in self._expected
             # ]
-            raise AssertionError(
+            message = (
                 f'actual visible texts:\n    {actual_to_render}\n'
                 '\n'
                 # f'Pattern explained:\n    {pattern_explained}\n'
                 f'Pattern used for matching:\n    {expected_pattern}\n'
+                # TODO: consider renaming to Actual merged text for match
                 f'Actual text used to match:\n    {actual_to_match}'
+            )
+            raise AssertionError(
+                (f' RegexError: {regex_invalid_error}\n' if regex_invalid_error else '')
+                + message
             )
 
     def __str__(self):
+        # TODO: consider adding self._name_suffix to contain "like"
+        #       so we can format message like
+        #       .have texts (flags: re.IGNORECASE) like:
+        #       over
+        #       .have texts like (flags: re.IGNORECASE):
+        # TODO: after previous, we can implement shortcut "ignoring case"
+        #       for " (flags: re.IGNORECASE)"
         return (
-            f'{self._name_prefix} {"no " if self._negated else ""}{self._name}:\n    '
+            f'{self._name_prefix} {"no " if self._inverted else ""}{self._name}'
+            + (f' (flags: {self._flags})' if self._flags else '')
+            + ':'
+            + '\n    '
             + _exact_texts_like._RENDERING_SEPARATOR.join(
                 (
                     str(item)
@@ -782,18 +879,9 @@ class _exact_texts_like(CollectionCondition):
             )
         )
 
-    # on subclassing this class, in case of new params to init
-    # you have to ensure that such new params are counted in overriden not_
-    @override
-    @property
-    def not_(self) -> Self:
-        return self.__class__(
-            *self._expected, _negated=not self._negated, _globs=self._globs
-        )
-
     def _match(self, pattern, actual):
-        answer = re.match(pattern, actual)
-        return not answer if self._negated else answer
+        answer = re.match(pattern, actual, self._flags)
+        return not answer if self._inverted else answer
 
     # TODO: will other methods like or_, and_ – do work? o_O
 
@@ -816,22 +904,55 @@ class _text_patterns_like(_exact_texts_like):
         # by default nothing is processed,
         # i.e. items will be considered as regex patterns
         # with behavior similar to implicit ^ and $ for each item text
-        _process_patterns: Callable[[AnyStr], AnyStr] = lambda item: item,
-        _negated=False,
+        _process_patterns: Callable[[str], str] = lambda item: item,
+        _inverted=False,
         _name_prefix='have',
         _name='text patterns like',
         # even though we don't customize globs in this class
         # the child classes can, so at least we have to pass through globs
         _globs=(),
+        _flags=0,
     ):  # noqa
         super().__init__(
             *expected,
-            _negated=_negated,
+            _inverted=_inverted,
             _globs=_globs,
             _name_prefix=_name_prefix,
             _name=_name,
+            _flags=_flags,
         )
-        self._process_patterns = _process_patterns  # type: ignore
+        self._process_patterns = _process_patterns
+
+    # Have to override because of added _process_patterns to pass through
+    @override
+    @property
+    def not_(self):
+        return self.__class__(
+            *self._expected,
+            _process_patterns=self._process_patterns,  # <- override for this
+            _inverted=not self._inverted,  # <- while this is main change in this prop
+            _globs=self._globs,
+            _name_prefix=self._name_prefix,
+            _name=self._name,
+            _flags=self._flags,
+        )
+
+    def where_flags(self, flags: re.RegexFlag, /) -> Condition[Collection]:
+        return self.__class__(
+            *self._expected,
+            _process_patterns=self._process_patterns,
+            _inverted=self._inverted,
+            _globs=self._globs,  # not mandatory for this class, but just in case
+            _name_prefix=self._name_prefix,
+            _name=self._name,
+            _flags=self._flags | flags,
+        )
+
+    # Have to override because parrent does not path through _process_patterns
+    @override
+    @property
+    def ignore_case(self) -> Condition[Collection]:
+        return self.where_flags(re.IGNORECASE)
 
 
 # TODO: add an alias from texts(*expected).with_regex to text_patterns_like
@@ -853,18 +974,20 @@ class _text_patterns(_text_patterns_like):
         # by default nothing is processed,
         # i.e. items will be considered as regex patterns
         # with behavior similar to implicit ^ and $ for each item text
-        _process_patterns: Callable[[AnyStr], AnyStr] = lambda item: item,
-        _negated=False,
+        _process_patterns: Callable[[str], str] = lambda item: item,
+        _inverted=False,
         _globs=(),  # just to match interface (will be actually skipped)
         _name_prefix='have',
         _name='text patterns',
+        _flags=0,
     ):  # noqa
         super().__init__(
             *helpers.flatten(expected),  # TODO: document
             _process_patterns=_process_patterns,
-            _negated=_negated,
+            _inverted=_inverted,
             _name_prefix=_name_prefix,
             _name=_name,
+            _flags=_flags,
         )
         # disable globs (doing after __init__ to override defaults)
         self._globs = ()
@@ -880,7 +1003,7 @@ class _text_patterns(_text_patterns_like):
     #       then ^ and $ will be explicit instead of implicit as for now
 
 
-class _texts_like(_text_patterns_like):
+class _texts_like(_exact_texts_like):
     """Condition to match visible texts of all elements in a collection
     with supported item globs (placeholders to include/exclude items from match,
     like in [_exact_texts_like][selene.match._exact_texts_like] condition)
@@ -893,21 +1016,51 @@ class _texts_like(_text_patterns_like):
     def __init__(
         self,
         *expected: str | int | float | Iterable,
-        _negated=False,
+        # match text by contains by default:
+        _process_patterns: Callable[[str], str] = lambda item: r'.*?'
+        + re.escape(item)
+        + r'.*?',
+        _inverted=False,
         _globs=(),
         _name_prefix='have',
         _name='texts like',
+        _flags=0,
     ):
-        def match_text_by_contains(item: str) -> str:
-            return r'.*?' + re.escape(item) + r'.*?'
-
         super().__init__(
             *expected,
-            _process_patterns=match_text_by_contains,
-            _negated=_negated,
+            _inverted=_inverted,
             _globs=_globs,  # just in case – passing through
             _name_prefix=_name_prefix,
             _name=_name,
+            _flags=_flags,
+        )
+
+        self._process_patterns = _process_patterns
+
+    @override
+    @property
+    def not_(self):
+        return self.__class__(
+            *self._expected,
+            _process_patterns=self._process_patterns,  # <- override for this
+            _inverted=not self._inverted,  # <- while this is main feature in this prop
+            _globs=self._globs,
+            _name_prefix=self._name_prefix,
+            _name=self._name,
+            _flags=self._flags,
+        )
+
+    @override
+    @property
+    def ignore_case(self) -> Self:
+        return self.__class__(
+            *self._expected,
+            _process_patterns=self._process_patterns,  # <- override for this
+            _inverted=self._inverted,
+            _globs=self._globs,
+            _name_prefix=self._name_prefix,
+            _name=self._name,
+            _flags=self._flags | re.IGNORECASE,
         )
 
     @property
@@ -916,8 +1069,9 @@ class _texts_like(_text_patterns_like):
         : switches to regex matching mode for all items in the expected list"""
         return _text_patterns_like(
             *self._expected,
-            _negated=self._negated,
+            _inverted=self._inverted,
             _globs=self._globs,
+            _flags=self._flags,
         )
 
     @property
@@ -930,21 +1084,8 @@ class _texts_like(_text_patterns_like):
             """
             TODO: support more wildcards: [abc], [a-z], [!abc], [!a-z]
             """
-
-            # return re.escape(item).replace(r'\*', r'.*?').replace(r'\?', r'.')
-            # return re.sub(
-            #     re.escape(zero_or_more_chars),
-            #     '.*?',
-            #     re.sub(re.escape(exactly_one_char), '.', re.escape(item)),
-            # )
             if zero_or_more_chars is None and exactly_one_char is None:
                 return self._process_patterns(item)
-
-            # return (
-            #     re.escape(item)
-            #     .replace(re.escape(zero_or_more_chars), r'.*?')
-            #     .replace(re.escape(exactly_one_char), r'.')
-            # )
 
             wildcards_with_pattern = filter(
                 lambda pair: pair[0] != '',
@@ -964,20 +1105,27 @@ class _texts_like(_text_patterns_like):
         return _text_patterns_like(
             *self._expected,
             _process_patterns=process_wildcards,
-            _negated=self._negated,
+            _inverted=self._inverted,
             _globs=self._globs,
             _name='texts with wildcards like',
+            _flags=self._flags,
         )
 
-
-# # refactored to class
-# def _texts_like(
-#     *expected: str | int | float | Iterable,
-# ):
-#     def match_text_by_contains(item: str) -> str:
-#         return r'.*?' + re.escape(item) + r'.*?'
-#
-#     return _text_patterns_like(*expected, _process_wildcards=match_text_by_contains)
+    # # TODO: without this override it will fail with "nothing to repeat" when:
+    # #       have._texts_like(r'*two*', r'*one*', ...)
+    # #         .where_wildcards(zero_or_more_chars='*')
+    # #         .ignore_case.not_
+    # #       why?
+    # @property
+    # def ignore_case(self):
+    #     return _texts_like(
+    #         *self._expected,
+    #         _process_patterns=self._process_patterns,
+    #         _inverted=self._inverted,
+    #         _name_prefix=self._name_prefix,
+    #         _name=self._name,
+    #         _flags=self._flags | re.IGNORECASE,
+    #     )
 
 
 # TODO: consider refactoring the code like below by moving outside fns like url, title, etc...

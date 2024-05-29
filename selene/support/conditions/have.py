@@ -32,16 +32,16 @@ from selene.support.conditions import not_ as _not_
 no = _not_
 
 
-def exact_text(value: str | int | float) -> Condition[Element]:
-    return match.element_has_exact_text(value)
+def exact_text(value: str | int | float):
+    return match.exact_text(value)
 
 
 # TODO: consider accepting int
-def text(partial_value: str | int | float) -> Condition[Element]:
-    return match.element_has_text(partial_value)
+def text(partial_value: str | int | float):
+    return match.text(partial_value)
 
 
-def text_matching(regex_pattern: str) -> Condition[Element]:
+def text_matching(regex_pattern: str):
     return match.text_pattern(regex_pattern)
 
 
@@ -141,12 +141,12 @@ def size_greater_than_or_equal(number: int) -> Condition[Collection]:
 
 
 # TODO: consider accepting ints
-def texts(*partial_values: str | int | float | Iterable[str]) -> Condition[Collection]:
-    return match.collection_has_texts(*partial_values)
+def texts(*partial_values: str | int | float | Iterable[str]):
+    return match.texts(*partial_values)
 
 
 def exact_texts(*values: str | int | float | Iterable[str]):
-    return match.collection_has_exact_texts(*values)
+    return match.exact_texts(*values)
 
 
 def _exact_texts_like(*texts_or_item_placeholders: str | int | float | Iterable):

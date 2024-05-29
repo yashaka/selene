@@ -32,7 +32,7 @@ from selenium.webdriver.common.action_chains import AnyDevice
 from selene.core.entity import Element
 from selene.core.configuration import Config
 from selene.core.exceptions import _SeleneError
-from selene.core.wait import Command, Query
+from selene.common._typing_functions import Query, Command
 
 
 @overload

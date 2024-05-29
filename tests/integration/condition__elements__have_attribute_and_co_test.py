@@ -64,7 +64,7 @@ def test_have_attribute__condition_variations(session_browser):
             "browser.all(('css selector', '.name')).has no (attribute 'value' with values "
             "containing '(20, 2)')\n"
             '\n'
-            'Reason: ConditionNotMatchedError: condition not matched\n'
+            'Reason: ConditionMismatch: condition not matched\n'
         ) in str(error)
 
     names.should(have.attribute('id').value('name').each.not_)

@@ -27,7 +27,8 @@ from selenium.webdriver.common.service import Service
 from selenium.webdriver.remote.webdriver import WebDriver
 
 from selene.common.fp import F
-from selene.core.wait import Wait, E
+from selene.core.wait import Wait
+from selene.common._typing_functions import E
 
 class _DriverStrategiesExecutor:
     def __init__(self, config: Config): ...

@@ -19,6 +19,8 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+import re
+
 import pytest
 
 from selene import have
@@ -43,10 +45,17 @@ def test_fails_on_timeout_during_waiting_for_exact_url(session_browser):
 
     GivenPage(browser.driver).opened_empty()
 
-    with pytest.raises(TimeoutException) as error:
-        browser.should(have.url('xttp:/'))
-    assert "has url 'xttp:/'" in error.value.msg
-    assert 'AssertionError: actual url:' in error.value.msg
+    try:
+        browser.should(have.url('empty'))
+        pytest.fail('on condition mismatch')
+    except AssertionError as error:
+        assert re.findall(
+            (
+                re.escape("browser.has url 'empty'\n\n")
+                + r'Reason: ConditionMismatch: actual url: .*empty\.html'
+            ),
+            str(error),
+        )
 
 
 def test_fails_on_timeout_during_waiting_for_part_of_url(session_browser):
@@ -54,7 +63,14 @@ def test_fails_on_timeout_during_waiting_for_part_of_url(session_browser):
 
     GivenPage(browser.driver).opened_empty()
 
-    with pytest.raises(TimeoutException) as error:
+    try:
         browser.should(have.url_containing('xttp:/'))
-    assert "has url containing 'xttp:/'" in error.value.msg
-    assert 'AssertionError: actual url:' in error.value.msg
+        pytest.fail('on condition mismatch')
+    except AssertionError as error:
+        assert re.findall(
+            (
+                re.escape("browser.has url containing 'xttp:/'\n\n")
+                + r'Reason: ConditionMismatch: actual url: .*empty\.html'
+            ),
+            str(error),
+        )

@@ -27,10 +27,11 @@ import inspect
 import itertools
 import os
 import time
-import typing
 import warnings
-from typing import Callable, Optional, Any
+import typing_extensions as typing
+from typing_extensions import Callable, Optional, Any, TypeVar
 
+from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.options import BaseOptions
 from selenium.webdriver.common.service import Service
 
@@ -40,9 +41,10 @@ from selene.common.fp import F
 from selene.common.helpers import on_error_return_false
 
 from selene.core.exceptions import TimeoutException
-from selenium.webdriver.remote.webdriver import WebDriver
 
-from selene.core.wait import Wait, E
+from selene.core.wait import Wait
+
+E = TypeVar('E')
 
 
 # TODO: consider moving to support.*

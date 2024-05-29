@@ -65,7 +65,7 @@ def test_have_property__condition_variations(session_browser):
             "browser.all(('css selector', '.name')).has no (js property 'value' with values "
             "containing '(20, 2)')\n"
             '\n'
-            'Reason: ConditionNotMatchedError: condition not matched\n'
+            'Reason: ConditionMismatch: condition not matched\n'
         ) in str(error)
 
     exercises.first.should(have.js_property('value').value(20))

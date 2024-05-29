@@ -16,7 +16,8 @@ from selene.core.condition import Condition as Condition
 from selene.core.configuration import Config as Config
 from selene.core.exceptions import TimeoutException as TimeoutException
 from selene.core.locator import Locator as Locator
-from selene.core.wait import Command as Command, Query as Query, Wait as Wait
+from selene.core.wait import Wait as Wait
+from selene.common._typing_functions import Query as Query, Command as Command
 from selene.support.webdriver import WebHelper as WebHelper
 from selenium.webdriver.remote.switch_to import SwitchTo as SwitchTo
 from selenium.webdriver.remote.webdriver import WebDriver as WebDriver

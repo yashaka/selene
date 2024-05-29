@@ -19,7 +19,20 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+from __future__ import annotations
+
+import functools
+import warnings
 from typing import Union, Callable
+
+from typing_extensions import Any, override, overload, TypeVar
+
+from selene.common._typing_functions import Query
+
+R = TypeVar('R')
+E = TypeVar('E')
+
+# from selene.core.wait import E, R, Query
 
 
 class TimeoutException(AssertionError):
@@ -32,9 +45,123 @@ class TimeoutException(AssertionError):
 
 
 # TODO: should we extend it from SeleneError and make lazy in same way?
-class ConditionNotMatchedError(AssertionError):
+#       probably not just from SeleneError,
+#       cause not all SeleneErrors are assertion errors
+class ConditionMismatch(AssertionError):
+    """
+    Examples of application
+
+    ```python
+    # GIVEN
+    class predicate:
+        @staticmethod
+        def is_positive(x) -> bool:
+            return x > 0
+
+    def is_positive(x) -> bool:
+        return x > 0
+
+    def decremented(x) -> int:
+        return x - 1
+
+    # THEN
+    ConditionMismatch.to_raise_if_not_actual(predicate.is_positive)(1)
+    ConditionMismatch.to_raise_if_not_actual(is_positive)(1)
+    ConditionMismatch.to_raise_if_not(predicate.is_positive)(1)  # ❤️
+    ConditionMismatch.to_raise_if_not(is_positive)(1)  # ❤️
+
+    ConditionMismatch.to_raise_if_not_actual(Query('is positive', lambda x: x > 0))(1)
+    ConditionMismatch.to_raise_if_not(Query('is positive', lambda x: x > 0))(1)  # ❤️
+
+    ConditionMismatch.to_raise_if_not(Query('is positive', lambda x: x > 0), decremented)(1)  # ❤️
+    ConditionMismatch.to_raise_if_not(is_positive, decremented)(1)  # ❤️
+    ConditionMismatch.to_raise_if_not(decremented, is_positive)(1)
+    ConditionMismatch.to_raise_if_not_actual(decremented, is_positive)(1)  # ❤
+    ```
+    """
+
+    @classmethod
+    @overload
+    def _to_raise_if_not(cls, test: Callable[[E], bool]): ...
+
+    @classmethod
+    @overload
+    def _to_raise_if_not(cls, test: Callable[[R], bool], actual: Callable[[E], R]): ...
+
+    # TODO: should we name test param as predicate?
+    @classmethod
+    def _to_raise_if_not(
+        cls,
+        # TODO: test may sound like assertion, not predicate... rename?
+        test: Callable[[E | R], bool],
+        actual: Callable[[E], E | R] | None = None,
+        # TODO: should we add inverted here?
+    ):
+        @functools.wraps(test)
+        def wrapped(entity: E) -> None:
+            actual_description = (
+                f' {name}' if (name := Query.full_name_for(actual)) else ''
+            )
+            actual_to_test = actual(entity) if actual else entity
+            if not test(actual_to_test):
+                # TODO: should we render expected too? (based on predicate name)
+                raise (
+                    cls(f'actual{actual_description}: {actual_to_test}')
+                    if actual
+                    else cls(f'{Query.full_name_for(test) or "condition"} not matched')
+                    # TODO: decide on
+                    #       cls(f'{Query.full_name_for(predicate) or "condition"} not matched')
+                    #       vs
+                    #       else cls('condition not matched')
+                )
+
+        return wrapped
+
+    @classmethod
+    def _to_raise_if_not_actual(
+        cls,
+        query: Callable[[E], R],
+        test: Callable[[R], bool],
+    ):
+        return cls._to_raise_if_not(test, query)
+
+    # @classmethod
+    # def to_raise_if_not(
+    #     cls,
+    #     predicate: Callable[[Any], bool],
+    #     _named: str | None = None,
+    #     _message: str | None = None,
+    # ):
+    #     @functools.wraps(predicate)
+    #     def wrapped(x):
+    #         nonlocal predicate
+    #         if not predicate(x):
+    #             raise cls(
+    #                 _message
+    #                 if _message
+    #                 else f"{_named if _named else predicate} not matched"
+    #             )
+    #
+    #     return wrapped
+
     def __init__(self, message='condition not matched'):
         super().__init__(message)
+
+
+class ConditionNotMatchedError(ConditionMismatch):
+    def __init__(self, message='condition not matched'):
+        warnings.warn(
+            'ConditionNotMatchedError is deprecated, use ConditionMismatch instead',
+            DeprecationWarning,
+        )
+        super().__init__(message)
+
+    def __init_subclass__(cls, **kwargs):
+        warnings.warn(
+            'ConditionNotMatchedError is deprecated, use ConditionMismatch instead',
+            DeprecationWarning,
+        )
+        super().__init_subclass__(**kwargs)
 
 
 # TODO: should we name it *Error or *Exception?

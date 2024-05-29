@@ -292,7 +292,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selene.core.entity import Element, Collection
 from selene.core._browser import Browser
 from selene.core.exceptions import _SeleneError
-from selene.core.wait import Command
+from selene.common._typing_functions import Command
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.actions import interaction
 from selenium.webdriver.common.actions.action_builder import ActionBuilder

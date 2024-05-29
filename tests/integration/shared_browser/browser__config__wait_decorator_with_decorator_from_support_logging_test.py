@@ -98,7 +98,7 @@ all('#todo-list>li'): should have texts ('a', 'b', 'c'): FAILED:
 Message:\u0020
 
 Timed out after 0.3s, while waiting for:
-browser.all(('css selector', '#todo-list>li')).has texts ('a', 'b', 'c')
+browser.all(('css selector', '#todo-list>li')).have texts ('a', 'b', 'c')
 
 Reason: AssertionError: actual visible texts: ['a', 'c']\n
             '''.strip()

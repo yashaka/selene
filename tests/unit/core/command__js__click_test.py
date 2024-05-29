@@ -1,5 +1,5 @@
 from selene import command, Element
-from selene.core.wait import Command
+from selene.common._typing_functions import Command
 import inspect
 
 
