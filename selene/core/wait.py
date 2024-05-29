@@ -110,13 +110,7 @@ class Wait(Generic[E]):
                         timeout = self._timeout
                         entity = self.entity
 
-                        # if it's a normal function, it should have __qualname__,
-                        # then use it, otherwise use str(fn)
-                        fn_name = getattr(
-                            fn,
-                            '__qualname__',
-                            getattr(fn, '__str__', lambda: str(fn))(),
-                        )
+                        fn_name = Query.full_name_for(fn) or str(fn)
 
                         failure = TimeoutException(
                             f'\n'
