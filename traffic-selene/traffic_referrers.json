@@ -1,13 +1,13 @@
 [
   {
     "referrer": "Google",
-    "count": 340,
-    "uniques": 93
+    "count": 312,
+    "uniques": 85
   },
   {
     "referrer": "github.com",
-    "count": 108,
-    "uniques": 27
+    "count": 102,
+    "uniques": 24
   },
   {
     "referrer": "school.qa.guru",
@@ -16,18 +16,18 @@
   },
   {
     "referrer": "yandex.ru",
-    "count": 58,
-    "uniques": 17
+    "count": 57,
+    "uniques": 16
   },
   {
     "referrer": "DuckDuckGo",
-    "count": 36,
-    "uniques": 35
+    "count": 28,
+    "uniques": 27
   },
   {
     "referrer": "ecosia.org",
-    "count": 20,
-    "uniques": 20
+    "count": 13,
+    "uniques": 13
   },
   {
     "referrer": "coze.com",
