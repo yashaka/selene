@@ -2,20 +2,20 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 239,
-    "uniques": 158
+    "count": 232,
+    "uniques": 153
+  },
+  {
+    "path": "/yashaka/selene/blob/master/README.md",
+    "title": "selene/README.md at master · yashaka/selene · GitHub",
+    "count": 53,
+    "uniques": 8
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
     "count": 53,
     "uniques": 7
-  },
-  {
-    "path": "/yashaka/selene/blob/master/README.md",
-    "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 51,
-    "uniques": 8
   },
   {
     "path": "/yashaka/selene/tree/master/selene/core",
@@ -26,20 +26,14 @@
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 32,
-    "uniques": 10
+    "count": 36,
+    "uniques": 11
   },
   {
     "path": "/yashaka/selene/releases",
     "title": "Releases · yashaka/selene · GitHub",
-    "count": 25,
-    "uniques": 9
-  },
-  {
-    "path": "/yashaka/selene/tree/master/tests",
-    "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 23,
-    "uniques": 5
+    "count": 34,
+    "uniques": 10
   },
   {
     "path": "/yashaka/selene/tree/master",
@@ -48,15 +42,21 @@
     "uniques": 8
   },
   {
+    "path": "/yashaka/selene/tree/master/tests",
+    "title": "selene/tests at master · yashaka/selene · GitHub",
+    "count": 19,
+    "uniques": 5
+  },
+  {
     "path": "/yashaka/selene/blob/master/examples/run_cross_platform/tests/acceptance_test.py",
     "title": "selene/examples/run_cross_platform/tests/acceptance_test.py at master · yasha...",
     "count": 15,
     "uniques": 6
   },
   {
-    "path": "/yashaka/selene/tree/master/tests/acceptance",
-    "title": "selene/tests/acceptance at master · yashaka/selene",
-    "count": 11,
-    "uniques": 2
+    "path": "/yashaka/selene/pulls",
+    "title": "Pull requests · yashaka/selene · GitHub",
+    "count": 14,
+    "uniques": 8
   }
 ]
