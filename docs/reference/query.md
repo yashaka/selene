@@ -1,5 +1,7 @@
 #
 
+{% include-markdown 'warn-from-next-release.md' %}
+
 ::: selene.core.query
     options:
         show_root_toc_entry: false

@@ -28,6 +28,7 @@ nav:
     - Config: reference/configuration.md
     - command.*: reference/command.md
     - query.*: reference/query.md
+    - Expected Conditions: reference/condition.md
   - Contribution:
     - How to contribute: contribution/to-source-code-guide.md
     - Code conventions: contribution/code-conventions-guide.md
@@ -72,6 +73,7 @@ theme:
     - content.action.view
 
 extra:
+  version: 2.0.0rc10
   social:
     - icon: material/web
       link: https://autotest.how/sdet-start-ru
@@ -93,7 +95,9 @@ extra:
 # Plugins
 plugins:
   - search
+  - macros
   - autorefs
+  - include-markdown
   - mkdocstrings:
       handlers:
         python:

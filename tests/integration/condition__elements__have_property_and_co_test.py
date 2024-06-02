@@ -61,11 +61,10 @@ def test_have_property__condition_variations(session_browser):
         pytest.fail('should fail on values mismatch')
     except AssertionError as error:
         assert (
-            'Timed out after 0.1s, while waiting for:\n'
-            "browser.all(('css selector', '.name')).has no (js property 'value' with values "
-            "containing '(20, 2)')\n"
+            "browser.all(('css selector', '.name')).has no (js property 'value' with "
+            "values containing '(20, 2)')\n"
             '\n'
-            'Reason: ConditionMismatch: condition not matched\n'
+            "Reason: ConditionMismatch: actual property values: ['John 20th', 'Doe 2nd']\n"
         ) in str(error)
 
     exercises.first.should(have.js_property('value').value(20))

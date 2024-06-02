@@ -76,7 +76,7 @@ element_is_disabled: Condition[Element] = ElementCondition.as_not(element_is_ena
 element_is_clickable: Condition[Element] = element_is_visible.and_(element_is_enabled)
 
 element_is_present: Condition[Element] = ElementCondition.raise_if_not(
-    'is present in DOM', lambda element: element() is not None
+    'is present in DOM', lambda element: element.locate() is not None
 )
 
 element_is_absent: Condition[Element] = ElementCondition.as_not(element_is_present)
@@ -268,7 +268,7 @@ def element_has_js_property(name: str):
             )
 
     return ConditionWithValues(
-        str(raw_property_condition), raw_property_condition.__call__
+        str(raw_property_condition), test=raw_property_condition.__call__
     )
 
 
@@ -319,7 +319,7 @@ def element_has_css_property(name: str):
             )
 
     return ConditionWithValues(
-        str(raw_property_condition), raw_property_condition.__call__
+        str(raw_property_condition), test=raw_property_condition.__call__
     )
 
 
@@ -387,7 +387,7 @@ def element_has_attribute(name: str):
             )
 
     return ConditionWithValues(
-        str(raw_attribute_condition), raw_attribute_condition.__call__
+        str(raw_attribute_condition), test=raw_attribute_condition.__call__
     )
 
 
@@ -652,7 +652,7 @@ class _exact_texts_like(CollectionCondition):
     ):  # noqa
         if self._MATCHING_SEPARATOR.__len__() != 1:
             raise ValueError('MATCHING_SEPARATOR should be a one character string')
-        super().__init__(self.__str__, self.__call__)
+        super().__init__(self.__str__, test=self.__call__)
         self._expected = expected
         self._inverted = _inverted
         self._globs = _globs if _globs else _exact_texts_like._DEFAULT_GLOBS
@@ -824,7 +824,7 @@ class _exact_texts_like(CollectionCondition):
         answer = None
         regex_invalid_error: re.error | None = None
         try:
-            answer = self._match(expected_pattern, actual_to_match)
+            answer = self._test(expected_pattern, actual_to_match)
         except re.error as error:
             # going to re-raise it below as AssertionError on `not answer`
             regex_invalid_error = error
@@ -879,7 +879,7 @@ class _exact_texts_like(CollectionCondition):
             )
         )
 
-    def _match(self, pattern, actual):
+    def _test(self, pattern, actual):
         answer = re.match(pattern, actual, self._flags)
         return not answer if self._inverted else answer
 

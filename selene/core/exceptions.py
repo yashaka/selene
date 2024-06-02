@@ -23,16 +23,10 @@ from __future__ import annotations
 
 import functools
 import warnings
-from typing import Union, Callable
 
-from typing_extensions import Any, override, overload, TypeVar
+from typing_extensions import overload, Union, Callable, Optional
 
-from selene.common._typing_functions import Query
-
-R = TypeVar('R')
-E = TypeVar('E')
-
-# from selene.core.wait import E, R, Query
+from selene.common._typing_functions import Query, E, R
 
 
 class TimeoutException(AssertionError):
@@ -48,8 +42,13 @@ class TimeoutException(AssertionError):
 #       probably not just from SeleneError,
 #       cause not all SeleneErrors are assertion errors
 class ConditionMismatch(AssertionError):
-    """
-    Examples of application
+    """An error to through during assertion if the asserting condition is not matched.
+
+    Contains a bunch of factory methods to transform regular predicates
+    (functions that returns True/False) into condition functions
+    that raise this error (ConditionMismatch) where predicate would return false.
+
+    Examples of usage of factory methods:
 
     ```python
     # GIVEN
@@ -64,51 +63,111 @@ class ConditionMismatch(AssertionError):
     def decremented(x) -> int:
         return x - 1
 
-    # THEN
-    ConditionMismatch.to_raise_if_not_actual(predicate.is_positive)(1)
-    ConditionMismatch.to_raise_if_not_actual(is_positive)(1)
-    ConditionMismatch.to_raise_if_not(predicate.is_positive)(1)  # ❤️
-    ConditionMismatch.to_raise_if_not(is_positive)(1)  # ❤️
+    # THEN (all will pass without error)
+    ConditionMismatch.to_raise_if_not(predicate.is_positive)(1)
+    ConditionMismatch.to_raise_if_not(is_positive)(1)
+    ConditionMismatch.to_raise_if(predicate.is_positive)(0)
+    ConditionMismatch.to_raise_if(is_positive)(0)
 
-    ConditionMismatch.to_raise_if_not_actual(Query('is positive', lambda x: x > 0))(1)
-    ConditionMismatch.to_raise_if_not(Query('is positive', lambda x: x > 0))(1)  # ❤️
+    ConditionMismatch.to_raise_if_not(Query('is positive', lambda x: x > 0))(1)
+    ConditionMismatch.to_raise_if(Query('is positive', lambda x: x > 0))(0)
 
-    ConditionMismatch.to_raise_if_not(Query('is positive', lambda x: x > 0), decremented)(1)  # ❤️
-    ConditionMismatch.to_raise_if_not(is_positive, decremented)(1)  # ❤️
-    ConditionMismatch.to_raise_if_not(decremented, is_positive)(1)
-    ConditionMismatch.to_raise_if_not_actual(decremented, is_positive)(1)  # ❤
+    ConditionMismatch.to_raise_if_not(
+        Query('is positive', lambda x: x > 0),
+        Query('decremented', lambda x: x - 1),
+    )(2)
+    ConditionMismatch.to_raise_if_not(
+        Query('is positive', lambda x: x > 0),
+        decremented,
+    )(2)
+    ConditionMismatch.to_raise_if_not(is_positive, decremented)(2)
+    ConditionMismatch.to_raise_if(is_positive, decremented)(1)
+    ConditionMismatch.to_raise_if_not(actual=decremented, by=is_positive)(2)
+    ConditionMismatch.to_raise_if(actual=decremented, by=is_positive)(1)
+
+    ConditionMismatch.to_raise_if_not_actual(decremented, predicate.is_positive)(2)
+    ConditionMismatch.to_raise_if_actual(decremented, predicate.is_positive)(1)
+    ConditionMismatch.to_raise_if_not_actual(decremented, predicate.is_positive)(2)
+    ConditionMismatch.to_raise_if_actual(decremented, is_positive)(1)
+
+    ConditionMismatch.to_raise_if_not_actual(
+        Query('decremented', lambda x: x - 1),
+        Query('is positive', lambda x: x > 0)
+    )(2)
+    # ...
     ```
     """
 
-    @classmethod
-    @overload
-    def _to_raise_if_not(cls, test: Callable[[E], bool]): ...
+    def __init__(self, message='condition not matched'):
+        super().__init__(message)
 
     @classmethod
     @overload
-    def _to_raise_if_not(cls, test: Callable[[R], bool], actual: Callable[[E], R]): ...
+    def _to_raise_if_not(
+        cls,
+        by: Callable[[E], bool],
+        *,
+        _inverted: bool = False,
+    ): ...
+
+    @classmethod
+    @overload
+    def _to_raise_if_not(
+        cls,
+        by: Callable[[R], bool],
+        actual: Callable[[E], R] | None = None,
+        *,
+        _inverted: bool = False,
+    ): ...
 
     # TODO: should we name test param as predicate?
     @classmethod
     def _to_raise_if_not(
         cls,
-        # TODO: test may sound like assertion, not predicate... rename?
-        test: Callable[[E | R], bool],
-        actual: Callable[[E], E | R] | None = None,
-        # TODO: should we add inverted here?
+        by: Callable[[E | R], bool],
+        actual: Optional[Callable[[E], E | R]] = None,
+        *,
+        _inverted: Optional[bool] = False,
     ):
-        @functools.wraps(test)
+        @functools.wraps(by)
         def wrapped(entity: E) -> None:
             actual_description = (
-                f' {name}' if (name := Query.full_name_for(actual)) else ''
+                f' {name}' if (name := Query.full_description_for(actual)) else ''
             )
             actual_to_test = actual(entity) if actual else entity
-            if not test(actual_to_test):
+            answer = None
+            try:
+                answer = by(actual_to_test)
+            # TODO: should we move Exception processing out of this helper?
+            #       should it be somewhere in Condition?
+            #       cause now it's not a Mismatch anymore, it's a failure
+            #       – no, we should not, we should keep it here,
+            #         because this is needed for the inverted case
+            except Exception as reason:
+                # answer is still None
+                if not _inverted:
+                    raise reason
+                pass
+
+            if answer if _inverted else not answer:
                 # TODO: should we render expected too? (based on predicate name)
+                #       we want need it for our conditions,
+                #       cause wait.py logs it in the message
+                #       but ... ?
                 raise (
                     cls(f'actual{actual_description}: {actual_to_test}')
                     if actual
-                    else cls(f'{Query.full_name_for(test) or "condition"} not matched')
+                    else cls(
+                        (
+                            (
+                                (f'not ({name})' if _inverted else name)
+                                if (name := Query.full_description_for(by))
+                                else ''
+                            )
+                            or "condition"
+                        )
+                        + ' not matched'
+                    )
                     # TODO: decide on
                     #       cls(f'{Query.full_name_for(predicate) or "condition"} not matched')
                     #       vs
@@ -118,34 +177,28 @@ class ConditionMismatch(AssertionError):
         return wrapped
 
     @classmethod
+    def _to_raise_if(
+        cls,
+        by: Callable[[E | R], bool],
+        actual: Callable[[E], R] | None = None,
+    ):
+        return cls._to_raise_if_not(by, actual, _inverted=True)
+
+    @classmethod
     def _to_raise_if_not_actual(
         cls,
         query: Callable[[E], R],
-        test: Callable[[R], bool],
+        by: Callable[[R], bool],
     ):
-        return cls._to_raise_if_not(test, query)
+        return cls._to_raise_if_not(by, query)
 
-    # @classmethod
-    # def to_raise_if_not(
-    #     cls,
-    #     predicate: Callable[[Any], bool],
-    #     _named: str | None = None,
-    #     _message: str | None = None,
-    # ):
-    #     @functools.wraps(predicate)
-    #     def wrapped(x):
-    #         nonlocal predicate
-    #         if not predicate(x):
-    #             raise cls(
-    #                 _message
-    #                 if _message
-    #                 else f"{_named if _named else predicate} not matched"
-    #             )
-    #
-    #     return wrapped
-
-    def __init__(self, message='condition not matched'):
-        super().__init__(message)
+    @classmethod
+    def _to_raise_if_actual(
+        cls,
+        query: Callable[[E], R],
+        by: Callable[[R], bool],
+    ):
+        return cls._to_raise_if(by, query)
 
 
 class ConditionNotMatchedError(ConditionMismatch):

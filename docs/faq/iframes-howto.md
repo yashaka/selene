@@ -1,5 +1,7 @@
 # How to work with iframes in Selene?
 
+{% include-markdown 'warn-from-next-release.md' %}
+
 You allways can work with iframes same way [as you do in pure Selenium](https://www.selenium.dev/documentation/webdriver/interactions/frames), by using `browser.driver.switch_to.*` commands:
 
 ```python

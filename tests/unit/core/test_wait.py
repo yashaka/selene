@@ -1,4 +1,7 @@
 from __future__ import annotations
+
+import pytest
+
 from selene.core.wait import Wait
 
 
@@ -38,14 +41,12 @@ def test_simple_waiting_entity_lifecycle__when_fn_is_static_fn():
 
     # THEN
     except AssertionError as error:
-        assert 'Timed out after 0.5s, while waiting for:' in str(error)
         assert (
-            'Entity(None)'
-            f'.{test_simple_waiting_entity_lifecycle__when_fn_is_static_fn.__name__}'
-            '.<locals>'
-            '.have.attribute'
+            'Timed out after 0.5s, while waiting for:\n'
+            'Entity(None).have.attribute\n'
+            '\n'
+            'Reason: AssertionError: attribute is None\n'
         ) in str(error)
-        assert 'Reason: AssertionError: attribute is None' in str(error)
 
     # WHEN
     have.attribute.__qualname__ = 'has attribute defined'
@@ -67,10 +68,12 @@ def test_simple_waiting_entity_lifecycle__when_fn_is_static_fn():
 
     # THEN __qualname__ still overrides __str__ in error message
     except AssertionError as error:
-        assert 'Timed out after 0.5s, while waiting for:' in str(error)
-        assert 'Entity(None).has defined attribute' not in str(error)  # <- THEN
-        assert 'Entity(None).has attribute defined' in str(error)  # <- THEN
-        assert 'Reason: AssertionError: attribute is None' in str(error)
+        assert (
+            'Timed out after 0.5s, while waiting for:\n'
+            'Entity(None).has defined attribute\n'  # <- THEN
+            '\n'
+            'Reason: AssertionError: attribute is None\n'
+        ) in str(error)
 
 
 def test_simple_waiting_entity_lifecycle__when_fn_is_callable():
@@ -109,18 +112,17 @@ def test_simple_waiting_entity_lifecycle__when_fn_is_callable():
 
     # THEN
     except AssertionError as error:
-        assert 'Timed out after 0.5s, while waiting for:' in str(error)
         assert (
-            'Entity(None)'
-            f'.<tests.unit.core.test_wait'
-            f'.{test_simple_waiting_entity_lifecycle__when_fn_is_callable.__name__}'
-            '.<locals>'
-            '.HaveAttribute object at'
+            'Message: \n'
+            '\n'
+            'Timed out after 0.5s, while waiting for:\n'
+            'Entity(None).HaveAttribute\n'
+            '\n'
+            'Reason: AssertionError: attribute is None\n'
         ) in str(error)
-        assert 'Reason: AssertionError: attribute is None' in str(error)
 
     # WHEN
-    have_attribute.__str__ = lambda: 'has defined attribute'
+    have_attribute.__class__.__str__ = lambda self: 'has defined attribute'
     # AND
     try:
         changed_result.wait.for_(have_attribute)
@@ -132,13 +134,27 @@ def test_simple_waiting_entity_lifecycle__when_fn_is_callable():
         assert 'Reason: AssertionError: attribute is None' in str(error)
 
     # WHEN
-    have_attribute.__qualname__ = 'has attribute defined'
+    have_attribute.__class__.__str__ = object.__str__
+    have_attribute.__str__ = lambda: 'has DEFINED attribute'
     # AND
     try:
         changed_result.wait.for_(have_attribute)
 
-    # THEN new __qualname__ overrides __str__()
+    # THEN __str__() in error message
     except AssertionError as error:
         assert 'Timed out after 0.5s, while waiting for:' in str(error)
-        assert 'Entity(None).has attribute defined' in str(error)  # <- THEN
+        assert 'Entity(None).has DEFINED attribute' in str(error)  # <- THEN
         assert 'Reason: AssertionError: attribute is None' in str(error)
+
+    # # Seems like not relevant anymore ↙️
+    # # WHEN
+    # have_attribute.__qualname__ = 'has attribute defined'
+    # # AND
+    # try:
+    #     changed_result.wait.for_(have_attribute)
+    #
+    # # THEN new __qualname__ overrides __str__()
+    # except AssertionError as error:
+    #     assert 'Timed out after 0.5s, while waiting for:' in str(error)
+    #     assert 'Entity(None).has attribute defined' in str(error)  # <- THEN
+    #     assert 'Reason: AssertionError: attribute is None' in str(error)

@@ -91,6 +91,7 @@ class Wait(Generic[E]):
         return self._hook_failure
 
     # TODO: consider renaming to `def to(...)`, though will sound awkward when wait.to(condition)
+    # TODO: do we need a second description/named param?
     def for_(self, fn: Callable[[E], R]) -> R:
         def logic(fn: Callable[[E], R]) -> R:
             finish_time = time.time() + self._timeout
@@ -110,6 +111,8 @@ class Wait(Generic[E]):
                         timeout = self._timeout
                         entity = self.entity
 
+                        # TODO: consider using Query.full_description_for(fn)
+                        # TODO: consider customizing what to use on __init__
                         fn_name = Query.full_name_for(fn) or str(fn)
 
                         failure = TimeoutException(

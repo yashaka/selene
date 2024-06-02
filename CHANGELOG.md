@@ -101,6 +101,12 @@ TODOs:
 
 ### TODO: implement multi entity conditions
 
+### TODO: doc «How to extend Selene» – from my_project_tests.extensions.selene import browser, have
+
+### TODO: what about such style of filtering: balanced[balanced > 1]
+
+### TODO: consider making description in Condition optional, and support tuple queries
+
 ## 2.0.0rc10: «copy&paste, frames, shadow & texts_like» (to be released on DD.05.2024)
 
 ### TODO: should we help users do not shoot their legs when using browser.all(selector) in for loops? #534 
@@ -113,14 +119,18 @@ TODOs:
 
 ### TODO: ensure sub-classed condition == condition.not_.not_
 
+### TODO: clean docstrings for Condition and ConditionMismatch
 
 ### TODO: ENSURE ALL Condition.as_not USAGES ARE NOW CORRECT
 
 ...
 
-### TODO: deprecate and/or rename condition.not_ to condition.negated or condition.inverted
+
+### TODO: ENSURE composed conditions work as expected (or/and, etc.)
 
 ...
+
+### TODO: decide on Match fate (alias or subclass, or subclass + match* 2 in 1)
 
 ### Text related conditions now accepts int and floats as text item
 
@@ -441,6 +451,10 @@ Thanks to [Cameron Shimmin](https://github.com/cshimm) and Edale Miguel for PR [
 - `condition.call(entity)` in favor of `condition(entity)` or `condition.__call__(entity)`
     - there is also an experimental `condition._match`, that is actually aliased by `condition.__call__`
 - `ConditionNotMatchedError` in favor of `ConditionMismatch`
+
+### Refactorings
+
+- moved `Query` & Co from `core/wait.py` to `common/_typing_functioins.py`
 
 ## 2.0.0rc9 (to be released on 06.03.2024)
 

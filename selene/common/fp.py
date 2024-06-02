@@ -20,6 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 import functools
+import inspect
 from typing import TypeVar, Callable, Any, Tuple, Optional
 
 # T = TypeVar('T', bound=Callable[..., Any])
@@ -83,6 +84,38 @@ def thread(arg, *functions):
     return pipe(*functions)(arg)
 
 
+def thread_first(arg, *iterable_of_fn_or_tuple):
+    return (
+        functools.reduce(
+            lambda acc, fn_or_tuple: (
+                fn_or_tuple(acc)
+                if callable(fn_or_tuple)
+                else fn_or_tuple[0](acc, *fn_or_tuple[1:])
+            ),
+            iterable_of_fn_or_tuple,
+            arg,
+        )
+        if iterable_of_fn_or_tuple
+        else arg
+    )
+
+
+def thread_last(arg, *iterable_of_fn_or_tuple):
+    return (
+        functools.reduce(
+            lambda acc, fn_or_tuple: (
+                fn_or_tuple(acc)
+                if callable(fn_or_tuple)
+                else fn_or_tuple[0](*fn_or_tuple[1:], acc)
+            ),
+            iterable_of_fn_or_tuple,
+            arg,
+        )
+        if iterable_of_fn_or_tuple
+        else arg
+    )
+
+
 def do(function: Callable[[T], Any]) -> Callable[[T], T]:
     def func(arg: T) -> T:
         function(arg)
@@ -100,3 +133,8 @@ def write_silently(
             return file, string
     except OSError:
         return None
+
+
+def map_with(fn: Callable):
+    """Curried version of map function."""
+    return lambda *iterables: map(fn, *iterables)

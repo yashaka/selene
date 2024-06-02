@@ -1,5 +1,7 @@
 # How to work with Shadow DOM in Selene?
 
+{% include-markdown 'warn-from-next-release.md' %}
+
 – By using advanced [query.js.shadow_root][selene.core.query.js.shadow_root] and [query.js.shadow_roots][selene.core.query.js.shadow_roots] queries, as simply as:
 
 ```python
