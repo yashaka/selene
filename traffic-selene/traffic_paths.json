@@ -2,38 +2,32 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 229,
-    "uniques": 150
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene",
-    "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 55,
-    "uniques": 8
+    "count": 205,
+    "uniques": 136
   },
   {
     "path": "/yashaka/selene/blob/master/README.md",
     "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 47,
+    "count": 45,
     "uniques": 7
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene/core",
-    "title": "selene/selene/core at master · yashaka/selene · GitHub",
-    "count": 41,
-    "uniques": 4
   },
   {
     "path": "/yashaka/selene/releases",
     "title": "Releases · yashaka/selene · GitHub",
-    "count": 38,
+    "count": 32,
     "uniques": 11
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 34,
+    "count": 32,
     "uniques": 10
+  },
+  {
+    "path": "/yashaka/selene/tree/master/selene",
+    "title": "selene/selene at master · yashaka/selene · GitHub",
+    "count": 20,
+    "uniques": 5
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
@@ -42,21 +36,27 @@
     "uniques": 5
   },
   {
-    "path": "/yashaka/selene/tree/master",
-    "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 18,
-    "uniques": 7
-  },
-  {
     "path": "/yashaka/selene/pulls",
     "title": "Pull requests · yashaka/selene · GitHub",
     "count": 14,
     "uniques": 7
   },
   {
+    "path": "/yashaka/selene/tree/master/selene/core",
+    "title": "selene/selene/core at master · yashaka/selene · GitHub",
+    "count": 12,
+    "uniques": 2
+  },
+  {
+    "path": "/yashaka/selene/tree/master",
+    "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
+    "count": 8,
+    "uniques": 5
+  },
+  {
     "path": "/yashaka/selene/blob/master/examples/run_cross_platform/tests/acceptance_test.py",
     "title": "selene/examples/run_cross_platform/tests/acceptance_test.py at master · yasha...",
-    "count": 10,
-    "uniques": 5
+    "count": 8,
+    "uniques": 4
   }
 ]

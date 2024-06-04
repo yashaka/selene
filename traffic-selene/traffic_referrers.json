@@ -1,28 +1,28 @@
 [
   {
     "referrer": "Google",
-    "count": 374,
-    "uniques": 98
+    "count": 322,
+    "uniques": 90
   },
   {
     "referrer": "github.com",
-    "count": 75,
-    "uniques": 18
+    "count": 64,
+    "uniques": 17
   },
   {
     "referrer": "school.qa.guru",
-    "count": 72,
-    "uniques": 10
+    "count": 64,
+    "uniques": 8
   },
   {
     "referrer": "yandex.ru",
-    "count": 41,
-    "uniques": 9
+    "count": 40,
+    "uniques": 8
   },
   {
     "referrer": "ecosia.org",
-    "count": 31,
-    "uniques": 10
+    "count": 30,
+    "uniques": 9
   },
   {
     "referrer": "coze.com",
@@ -31,8 +31,8 @@
   },
   {
     "referrer": "DuckDuckGo",
-    "count": 14,
-    "uniques": 13
+    "count": 12,
+    "uniques": 11
   },
   {
     "referrer": "pypi.org",
@@ -46,7 +46,7 @@
   },
   {
     "referrer": "yashaka.github.io",
-    "count": 4,
-    "uniques": 3
+    "count": 3,
+    "uniques": 2
   }
 ]
