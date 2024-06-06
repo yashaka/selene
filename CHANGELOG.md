@@ -97,7 +97,6 @@ TODOs:
 - add safari support (trim space on text in case of safari)
 - example of basic auth and auth via cookies (https://github.com/autotests-cloud/example_project/blob/master/src/test/java/cloud/autotests/tests/demowebshop/LoginTests.java)
 - can we force order of how `selene.*` is rendered on autocomplete? via `__all__`...
-- deprecate `have.js_returned` in favour of `have.script_returned`
 
 ### TODO: implement multi entity conditions
 
@@ -107,30 +106,34 @@ TODOs:
 
 ### TODO: consider making description in Condition optional, and support tuple queries
 
-## 2.0.0rc10: «copy&paste, frames, shadow & texts_like» (to be released on DD.05.2024)
+### TODO: have.js_property -> have.property ? #538
 
-### TODO: should we help users do not shoot their legs when using browser.all(selector) in for loops? #534 
+### TODO: document subclass based custom conditions
+
+## 2.0.0rc10: «copy&paste, frames, shadow & texts_like» (to be released on DD.05.2024)
 
 ### TODO: not_ as callable object?
 
+### TODO: should we help users do not shoot their legs when using browser.all(selector) in for loops? #534 
+
 ### TODO: rename all conditions inside match.py so match can be fully used instead be + have #530 
-
-### TODO: have.js_property -> have.property ? #538
-
-### TODO: ensure sub-classed condition == condition.not_.not_
-
-### TODO: clean docstrings for Condition and ConditionMismatch
 
 ### TODO: ENSURE ALL Condition.as_not USAGES ARE NOW CORRECT
 
 ...
 
-
 ### TODO: ENSURE composed conditions work as expected (or/and, etc.)
 
 ...
+### TODO: should we raise InvalidCompare on _inverted too?
 
-### TODO: decide on Match fate (alias or subclass, or subclass + match* 2 in 1)
+seems like currently we do raise, but cover with tests
+
+### TODO: decide on Match fate (subclass OR subclass + match* 2 in 1)
+
+#### TODO: do we need positional actual and by args for Match?
+
+### TODO: falsify WebDriverException when thrown inside by predicate?
 
 ### Text related conditions now accepts int and floats as text item
 

@@ -23,8 +23,9 @@ from __future__ import annotations
 
 import functools
 import warnings
+from typing import Iterable
 
-from typing_extensions import overload, Union, Callable, Optional
+from typing_extensions import overload, Union, Callable, Optional, Tuple, Type
 
 from selene.common._typing_functions import Query, E, R
 
@@ -47,6 +48,10 @@ class ConditionMismatch(AssertionError):
     Contains a bunch of factory methods to transform regular predicates
     (functions that returns True/False) into condition functions
     that raise this error (ConditionMismatch) where predicate would return false.
+
+    Is handy for building custom expected conditions for explicit waits and assertions.
+    See a practical examples of application in
+    [Expected Conditions][expected-conditions] guide.
 
     Examples of usage of factory methods:
 
@@ -128,14 +133,27 @@ class ConditionMismatch(AssertionError):
         actual: Optional[Callable[[E], E | R]] = None,
         *,
         _inverted: Optional[bool] = False,
+        _falsy_exceptions: Iterable[Type[Exception]] = (),
     ):
         @functools.wraps(by)
         def wrapped(entity: E) -> None:
             actual_description = (
                 f' {name}' if (name := Query.full_description_for(actual)) else ''
             )
-            actual_to_test = actual(entity) if actual else entity
+            # TODO: should we catch errors on actual?
+            #       for e.g. to consider them as False indicator
+            actual_to_test = None
+            # error_on_actual = None
+            try:
+                actual_to_test = actual(entity) if actual else entity
+            except Exception as reason:
+                # error_on_actual = reason
+                if _inverted:
+                    return
+                raise reason
+
             answer = None
+            error_on_predicate = None
             try:
                 answer = by(actual_to_test)
             # TODO: should we move Exception processing out of this helper?
@@ -144,20 +162,15 @@ class ConditionMismatch(AssertionError):
             #       – no, we should not, we should keep it here,
             #         because this is needed for the inverted case
             except Exception as reason:
+                error_on_predicate = reason
                 # answer is still None
-                if not _inverted:
-                    raise reason
                 pass
 
-            if answer if _inverted else not answer:
-                # TODO: should we render expected too? (based on predicate name)
-                #       we want need it for our conditions,
-                #       cause wait.py logs it in the message
-                #       but ... ?
-                raise (
-                    cls(f'actual{actual_description}: {actual_to_test}')
+            def describe_not_match():
+                return (
+                    f'actual{actual_description}: {actual_to_test}'
                     if actual
-                    else cls(
+                    else (
                         (
                             (
                                 (f'not ({name})' if _inverted else name)
@@ -173,6 +186,30 @@ class ConditionMismatch(AssertionError):
                     #       vs
                     #       else cls('condition not matched')
                 )
+
+            # TODO: should we raise InvalidCompare on _inverted too?
+            #       should we make it configurable?
+            # if not _inverted and error_on_predicate:
+            if error_on_predicate and type(error_on_predicate) not in _falsy_exceptions:
+                # TODO: consider making it customizable
+                # remove stacktrace if available:
+                stacktrace = getattr(error_on_predicate, 'stacktrace', None)
+                error_on_predicate_str = (
+                    str(error_on_predicate)
+                    if not stacktrace
+                    else (''.join(str(error_on_predicate).split(stacktrace)))
+                )
+                raise cls(
+                    'InvalidCompareError: '
+                    f'{error_on_predicate_str}:\n{describe_not_match()}'
+                )
+
+            if answer if _inverted else not answer:
+                # TODO: should we render expected too? (based on predicate name)
+                #       we want need it for our conditions,
+                #       cause wait.py logs it in the message
+                #       but ... ?
+                raise cls(describe_not_match())
 
         return wrapped
 

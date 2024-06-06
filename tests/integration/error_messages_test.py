@@ -99,7 +99,7 @@ def test_element_search_fails_with_message_when_explicitly_waits_for_condition(
         'Timed out after 0.1s, while waiting for:',
         "browser.element(('css selector', '#element')).has exact text Hello wor",
         '',
-        'Reason: AssertionError: actual text: Hello world!',
+        'Reason: ConditionMismatch: actual text: Hello world!',
         'Screenshot: *.png',
         'PageSource: *.html',
     ]
@@ -263,5 +263,5 @@ def test_element_search_fails_with_message_when_explicitly_waits_for_not_conditi
             "browser.element(('css selector', '#element')).has no (exact text Hello "
             'world!)\n'
             '\n'
-            'Reason: AssertionError: actual text: Hello world!\n'
+            'Reason: ConditionMismatch: actual text: Hello world!\n'
         ) in str(error)

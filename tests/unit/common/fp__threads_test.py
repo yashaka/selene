@@ -23,9 +23,9 @@ def test_thread_last__demo_with_common_str_fns():
         ['_have.special_number_', 10],
         map_with(str),
         ''.join,
-        (re.sub, r'(^_+|_+$)', ''),
-        (re.sub, r'_+', ' '),
-        (re.sub, r'(\w)\.(\w)', r'\1 \2'),
+        (re.sub, '(^_+|_+$)', ''),
+        (re.sub, '_+', ' '),
+        (re.sub, '(\\w)\\.(\\w)', '\\1 \\2'),
         str.split,
     )
 

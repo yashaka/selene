@@ -47,7 +47,7 @@ from typing_extensions import (
 
 from selene.common import predicate, helpers
 from selene.core import query
-from selene.core.condition import Condition, _ConditionRaisingIfNotActual
+from selene.core.condition import Condition, Match
 from selene.core.conditions import (
     ElementCondition,
     CollectionCondition,
@@ -56,6 +56,7 @@ from selene.core.conditions import (
 from selene.core.entity import Collection, Element
 from selene.core._browser import Browser
 from selene.common._typing_functions import Query
+
 
 # TODO: consider moving to selene.match.element.is_visible, etc...
 element_is_visible: Condition[Element] = ElementCondition.raise_if_not(
@@ -75,11 +76,13 @@ element_is_disabled: Condition[Element] = ElementCondition.as_not(element_is_ena
 
 element_is_clickable: Condition[Element] = element_is_visible.and_(element_is_enabled)
 
-element_is_present: Condition[Element] = ElementCondition.raise_if_not(
-    'is present in DOM', lambda element: element.locate() is not None
+present: Condition[Element] = Match(
+    'is present in DOM',
+    actual=lambda element: element.locate(),
+    by=lambda webelement: webelement is not None,
 )
 
-element_is_absent: Condition[Element] = ElementCondition.as_not(element_is_present)
+element_is_absent: Condition[Element] = ElementCondition.as_not(present)
 
 # TODO: how will it work for mobile?
 element_is_focused: Condition[Element] = ElementCondition.raise_if_not(
@@ -89,7 +92,7 @@ element_is_focused: Condition[Element] = ElementCondition.raise_if_not(
 )
 
 
-class _ElementHasText(_ConditionRaisingIfNotActual[Element]):
+class _ElementHasText(Condition[Element]):
 
     def __init__(
         self,
@@ -124,13 +127,13 @@ class _ElementHasText(_ConditionRaisingIfNotActual[Element]):
                 f'{_describing_matched_to}'
                 f'{" ignoring case:" if _ignore_case else ""} {expected}'
             ),
-            query.text,
-            lambda actual: (
+            actual=query.text,
+            by=lambda actual: (
                 _compared_by_predicate_to(str(expected).lower())(str(actual).lower())
                 if _ignore_case
                 else _compared_by_predicate_to(str(expected))(str(actual))
             ),
-            _inverted,
+            _inverted=_inverted,
         )
 
     # returning Conditioin[Element] to not allow .ignore_case.ignore_case usage:)
@@ -144,59 +147,32 @@ class _ElementHasText(_ConditionRaisingIfNotActual[Element]):
             _inverted=self.__inverted,
         )
 
-    @override
-    @property
-    def not_(self):
-        return self.__class__(
-            self.__expected,
-            self.__describe_matched_to,
-            self.__compared_by_predicate_to,
-            self.__ignore_case,
-            _inverted=not self.__inverted,
-        )
+
+def text(expected: str | int | float, _ignore_case=False, _inverted=False):
+    return _ElementHasText(
+        expected, 'has text', predicate.includes, _ignore_case, _inverted=_inverted
+    )
 
 
-def text(expected: str | int | float, _ignore_case=False):
-    return _ElementHasText(expected, 'has text', predicate.includes, _ignore_case)
+def exact_text(expected: str | int | float, _ignore_case=False, _inverted=False):
+    return _ElementHasText(
+        expected, 'has exact text', predicate.equals, _ignore_case, _inverted=_inverted
+    )
 
 
-def exact_text(expected: str | int | float, _ignore_case=False):
-    return _ElementHasText(expected, 'has exact text', predicate.equals, _ignore_case)
-
-
-class text_pattern(_ConditionRaisingIfNotActual[Element]):
+class text_pattern(Condition[Element]):
 
     def __init__(self, expected: str, _flags=0, _inverted=False):
         self.__expected = expected
         self.__flags = _flags
         self.__inverted = _inverted
 
-        # initial version:
         super().__init__(
             f'has text matching{f" (with flags {_flags}):" if _flags else ""}'
             f' {expected}',
-            query.text,
-            predicate.matches(expected, _flags),
-            _inverted,
-        )
-
-        # def match(actual: str) -> bool:
-        #     return re.match(expected, actual, _flags)
-        #
-        # super().__init__(
-        #     f'has text matching{f" (with flags {_flags}):" if _flags else ""}'
-        #     f' {expected}',
-        #     query.text,
-        #     match,
-        # )
-
-    @override
-    @property
-    def not_(self):
-        return self.__class__(
-            self.__expected,
-            self.__flags,
-            not self.__inverted,
+            actual=query.text,
+            by=predicate.matches(expected, _flags),
+            _inverted=_inverted,
         )
 
     @property
@@ -508,7 +484,7 @@ def collection_has_size_less_than_or_equal(
     )
 
 
-class _CollectionHasTexts(_ConditionRaisingIfNotActual[Collection]):
+class _CollectionHasTexts(Condition[Collection]):
 
     def __init__(
         self,
@@ -543,13 +519,13 @@ class _CollectionHasTexts(_ConditionRaisingIfNotActual[Collection]):
             )
 
         super().__init__(  # type: ignore
-            (
+            description=(
                 f'{_describing_matched_to}'
                 f'{" ignoring case:" if _ignore_case else ""} {expected}'
             ),
-            query.visible_texts,
-            compare,
-            _inverted,
+            actual=query.visible_texts,
+            by=compare,
+            _inverted=_inverted,
         )
 
     # returning Condition[Collection] to not allow .ignore_case.ignore_case usage:)
@@ -563,38 +539,36 @@ class _CollectionHasTexts(_ConditionRaisingIfNotActual[Collection]):
             _inverted=self.__inverted,
         )
 
-    @override
-    @property
-    def not_(self):
-        return self.__class__(
-            *self.__expected,
-            _describing_matched_to=self.__describe_matched_to,
-            _compared_by_predicate_to=self.__compared_by_predicate_to,
-            _ignore_case=self.__ignore_case,
-            _inverted=not self.__inverted,
-        )
-
 
 # TODO: make it configurable whether assert only visible texts or not
-def texts(*expected: str | int | float | Iterable[str], _ignore_case=False):
+def texts(
+    *expected: str | int | float | Iterable[str], _ignore_case=False, _inverted=False
+):
     return _CollectionHasTexts(
         *expected,
         _describing_matched_to='have texts',
         _compared_by_predicate_to=predicate.equals_by_contains_to_list,
         _ignore_case=_ignore_case,
+        _inverted=_inverted,
     )
 
 
-def exact_texts(*expected: str | int | float | Iterable[str], _ignore_case=False):
+def exact_texts(
+    *expected: str | int | float | Iterable[str], _ignore_case=False, _inverted=False
+):
     return _CollectionHasTexts(
         *expected,
         _describing_matched_to='have exact texts',
         _compared_by_predicate_to=predicate.equals_to_list,
         _ignore_case=_ignore_case,
+        _inverted=_inverted,
     )
 
 
-class _exact_texts_like(CollectionCondition):
+# TODO: refactor to be more like element_has_text,
+#       i.e. reusing core logic of Condition,
+#       not overriding it
+class _exact_texts_like(Condition[Collection]):
     """Condition to match visible texts of all elements in a collection
     with supported list globs for items (item placeholders
     to include/exclude items from match).
@@ -665,6 +639,9 @@ class _exact_texts_like(CollectionCondition):
 
     # on subclassing this class, in case of new params to init
     # you have to ensure that such new params are counted in overriden not_
+    # – actually this is not True anymore, you can skip overriding not_
+    #   if you did not change the core test logic...
+    #   But we did change it here... Seems like :D
     @override
     @property
     def not_(self):
@@ -823,19 +800,21 @@ class _exact_texts_like(CollectionCondition):
 
         answer = None
         regex_invalid_error: re.error | None = None
+
         try:
-            answer = self._test(expected_pattern, actual_to_match)
+            answer = re.match(expected_pattern, actual_to_match, self._flags)
         except re.error as error:
             # going to re-raise it below as AssertionError on `not answer`
             regex_invalid_error = error
-        if not answer:
+
+        def describe_not_match():
             # TODO: implement pattern_explained
             #       probably after refactoring from tuple to dict as globs storage
             # pattern_explained = [
             #     next(...) if item in self._glob_markers else item
             #     for item in self._expected
             # ]
-            message = (
+            return (
                 f'actual visible texts:\n    {actual_to_render}\n'
                 '\n'
                 # f'Pattern explained:\n    {pattern_explained}\n'
@@ -843,9 +822,17 @@ class _exact_texts_like(CollectionCondition):
                 # TODO: consider renaming to Actual merged text for match
                 f'Actual text used to match:\n    {actual_to_match}'
             )
+
+        if regex_invalid_error:
             raise AssertionError(
                 (f' RegexError: {regex_invalid_error}\n' if regex_invalid_error else '')
-                + message
+                + describe_not_match()
+            )
+
+        if answer if self._inverted else not answer:
+            raise AssertionError(
+                (f' RegexError: {regex_invalid_error}\n' if regex_invalid_error else '')
+                + describe_not_match()
             )
 
     def __str__(self):
@@ -878,10 +865,6 @@ class _exact_texts_like(CollectionCondition):
                 for item in self._expected
             )
         )
-
-    def _test(self, pattern, actual):
-        answer = re.match(pattern, actual, self._flags)
-        return not answer if self._inverted else answer
 
     # TODO: will other methods like or_, and_ – do work? o_O
 

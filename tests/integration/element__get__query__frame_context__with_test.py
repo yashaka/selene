@@ -34,7 +34,7 @@ def test_actions_within_frame_context(session_browser):
     text_area = browser.element('#tinymce')
 
     # WHEN
-    browser.open('https://the-internet.herokuapp.com/iframe')
+    browser.open('https://www.tiny.cloud/docs/tinymce/latest/cloud-quick-start/')
 
     # AND
     with text_area_frame_context:
@@ -42,7 +42,7 @@ def test_actions_within_frame_context(session_browser):
         # THEN
         text_area.element('p').should(
             have.js_property('innerHTML').value(
-                'Your content goes here.',
+                'Hello, World!',
             )
         )
 
@@ -52,16 +52,14 @@ def test_actions_within_frame_context(session_browser):
         # AND exiting context (switch to default)...
 
     # AND (outside frame context)
-    toolbar.element('[title=Bold]').click()
+    toolbar.element('[aria-label=Bold]').click()
 
     # AND (coming back to frame context)
     with text_area_frame_context:
 
         # THEN
         text_area.element('p').should(
-            have.js_property('innerHTML').value(
-                '<strong>Your content goes here.</strong>'
-            )
+            have.js_property('innerHTML').value('<strong>Hello, World!</strong>')
         )
 
         # WHEN (just one more example)

@@ -29,9 +29,9 @@ visible = match.element_is_visible
 hidden = match.element_is_hidden
 selected = match.element_is_selected
 
-present = match.element_is_present
-in_dom = match.element_is_present  # TODO: do we need both present and in_dom?
-existing = match.element_is_present  # TODO: consider deprecating
+present = match.present
+in_dom = match.present  # TODO: do we need both present and in_dom?
+existing = match.present  # TODO: consider deprecating
 
 absent = match.element_is_absent
 

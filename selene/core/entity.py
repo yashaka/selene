@@ -153,11 +153,11 @@ class Element(WaitingEntity['Element']):
     ) -> Callable[[TimeoutException], Exception]:
         def log_webelement_outer_html(error: TimeoutException) -> Exception:
             from selene.core import query
-            from selene.core.match import element_is_present
+            from selene.core.match import present
 
             cached = element.cached
 
-            if cached.matching(element_is_present):
+            if cached.matching(present):
                 return TimeoutException(
                     f'{error.msg}\n'
                     f'Actual webelement: {query.outer_html(element)}'  # type: ignore

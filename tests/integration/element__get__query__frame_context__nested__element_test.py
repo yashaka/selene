@@ -62,7 +62,7 @@ def test_actions_on_nested_frames_element_via_search_context_via_get(
             "selector', '[name=frame-middle]')): element(('css selector', "
             "'#content')).has exact text LEFT\n"
             '\n'
-            'Reason: AssertionError: actual text: MIDDLE\n'
+            'Reason: ConditionMismatch: actual text: MIDDLE\n'
         ) in str(error)
 
 
@@ -112,5 +112,5 @@ def test_actions_on_nested_frames_element_via_search_context__via_direct_applica
             "selector', '[name=frame-middle]')): element(('css selector', "
             "'#content')).has exact text LEFT\n"
             '\n'
-            'Reason: AssertionError: actual text: MIDDLE\n'
+            'Reason: ConditionMismatch: actual text: MIDDLE\n'
         ) in str(error)

@@ -29,6 +29,7 @@ nav:
     - command.*: reference/command.md
     - query.*: reference/query.md
     - Expected Conditions: reference/condition.md
+    - Selene Exceptions: reference/exceptions.md
   - Contribution:
     - How to contribute: contribution/to-source-code-guide.md
     - Code conventions: contribution/code-conventions-guide.md

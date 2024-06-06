@@ -57,5 +57,5 @@ def test_actions_on_nested_frames_element_via_with_statement(session_browser):
             'Timed out after 0.5s, while waiting for:\n'
             "browser.element(('css selector', '#content')).has exact text LEFT\n"
             '\n'
-            'Reason: AssertionError: actual text: MIDDLE\n'
+            'Reason: ConditionMismatch: actual text: MIDDLE\n'
         ) in str(error)

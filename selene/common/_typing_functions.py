@@ -56,6 +56,9 @@ class Query(Generic[E, R]):
 
     @staticmethod
     def full_name_for(callable_: Optional[Callable]) -> str | None:
+        if callable_ is None:
+            return None
+
         if isinstance(callable_, Query):
             return str(callable_)
 

@@ -101,6 +101,22 @@ def thread_first(arg, *iterable_of_fn_or_tuple):
 
 
 def thread_last(arg, *iterable_of_fn_or_tuple):
+    """Thread the first argument through a sequence of functions
+    or tuples of functions with arguments in order to get rid of nested calls.
+    Examples:
+        >>> from selene.common.fp import thread_last, map_with
+        >>> import re
+        >>> result = thread_last(
+        >>>     ['_have.special_number_', 10],
+        >>>     map_with(str),
+        >>>     ''.join,
+        >>>     (re.sub, r'(^_+|_+$)', ''),
+        >>>     (re.sub, r'_+', ' '),
+        >>>     (re.sub, r'(\w)\.(\w)', r'\1 \2'),
+        >>>     str.split,
+        >>> )
+        >>> assert result == ['have', 'special', 'number', '10']
+    """
     return (
         functools.reduce(
             lambda acc, fn_or_tuple: (

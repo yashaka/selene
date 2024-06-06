@@ -33,11 +33,11 @@ class WYSIWYG:
     text_area = browser.element('#tinymce')
 
     def open(self):
-        browser.open('https://the-internet.herokuapp.com/iframe')
+        browser.open('https://www.tiny.cloud/docs/tinymce/latest/cloud-quick-start/')
         return self
 
     def set_bold(self):
-        self.toolbar.element('[title=Bold]').click()
+        self.toolbar.element('[aria-label=Bold]').click()
         return self
 
     @text_area_frame._within
@@ -60,9 +60,9 @@ def test_page_object_steps_within_frame_context():
     wysiwyg = WYSIWYG().open()
 
     wysiwyg.should_have_text_html(
-        '<p>Your content goes here.</p>',
+        '<p>Hello, World!</p>',
     ).select_all_text().set_bold().should_have_text_html(
-        '<p><strong>Your content goes here.</strong></p>',
+        '<p><strong>Hello, World!</strong></p>',
     )
 
     wysiwyg.reset_to('New content').should_have_text_html(

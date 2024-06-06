@@ -4,11 +4,11 @@ from selene.core.condition import Condition, Match
 import pytest
 
 from selene.core.exceptions import ConditionMismatch
-from selene.common._typing_functions import E, Query
+from selene.common._typing_functions import Query
 
 
 def test_match__of_constructed_via__init__with_test_fn():
-    positive = Match(
+    positive = Condition(
         'positive',
         ConditionMismatch._to_raise_if_not(Query('is positive', lambda x: x > 0)),
     )
@@ -185,12 +185,11 @@ def test_not_match__of_constructed_via_factory__raise_if_not_actual():
         assert 'actual self: 1' == str(error)
 
 
-# TODO: should the feature be implemented?
-def x_test_not_match__of_constructed_via_factory__raise_if_not_actual():
+def test_not_match__of_constructed_via_Condition__init__with__predicate_and_query():
     positive = Condition(
         'is positive',
-        ConditionMismatch._to_raise_if_not(lambda actual: actual > 0),
-        _query=Query('self', lambda it: it),  # 💡
+        actual=Query('self', lambda it: it),
+        by=lambda actual: actual > 0,
     )
 
     positive.not_._test(0)
@@ -200,12 +199,59 @@ def x_test_not_match__of_constructed_via_factory__raise_if_not_actual():
         positive.not_._test(1)
         pytest.fail('on mismatch')
     except AssertionError as error:
-        assert 'actual self: 0' == str(error)  # 💡
+        assert 'actual self: 1' == str(error)
+
+
+def test_not_match__of_constructed_via_Match__init__with__predicate_and_query():
+    positive = Match(
+        'is positive',
+        actual=Query('self', lambda it: it),
+        by=lambda actual: actual > 0,
+    )
+
+    positive.not_._test(0)
+    assert 'is not (positive)' == str(positive.not_)
+
+    try:
+        positive.not_._test(1)
+        pytest.fail('on mismatch')
+    except AssertionError as error:
+        assert 'actual self: 1' == str(error)
 
 
 def test_not_not_match__of_constructed_via_factory__raise_if_not_actual():
     positive = Condition.raise_if_not_actual(
         'is positive', Query('self', lambda it: it), lambda actual: actual > 0
+    )
+
+    positive.not_.not_._test(1)
+    assert 'is positive' == str(positive.not_.not_)
+
+    try:
+        positive.not_.not_._test(0)
+        pytest.fail('on mismatch')
+    except AssertionError as error:
+        assert 'actual self: 0' == str(error)
+
+
+def test_not_not_match__of_constructed_via_Condition__init__():
+    positive = Condition(
+        'is positive', actual=Query('self', lambda it: it), by=lambda actual: actual > 0
+    )
+
+    positive.not_.not_._test(1)
+    assert 'is positive' == str(positive.not_.not_)
+
+    try:
+        positive.not_.not_._test(0)
+        pytest.fail('on mismatch')
+    except AssertionError as error:
+        assert 'actual self: 0' == str(error)
+
+
+def test_not_not_match__of_constructed_via_Match__init__():
+    positive = Match(
+        'is positive', actual=Query('self', lambda it: it), by=lambda actual: actual > 0
     )
 
     positive.not_.not_._test(1)
@@ -246,3 +292,8 @@ def test_as_not_match__of_constructed_via_factory__raise_if_not_actual():
         pytest.fail('on mismatch')
     except AssertionError as error:
         assert 'actual self: 1' == str(error)
+
+
+# TODO: add InvalidCompareError tests (positive and negative)
+
+# TODO: cover subclass based conditions

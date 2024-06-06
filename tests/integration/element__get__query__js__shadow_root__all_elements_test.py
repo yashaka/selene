@@ -60,6 +60,6 @@ def test_actions_on_shadow_roots_of_all_elements(session_browser):
             "selector', '[name=my-text]')).have exact texts ('My WRONG text', 'My WRONG "
             "text')\n"
             '\n'
-            "Reason: AssertionError: actual visible texts: ['My default text', 'My "
+            "Reason: ConditionMismatch: actual visible texts: ['My default text', 'My "
             "default text']\n"
         ) in str(error)

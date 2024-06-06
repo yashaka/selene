@@ -60,7 +60,7 @@ def test_should_have_texts_exception(session_browser):
         assert (
             "browser.all(('css selector', 'li')).have texts ('Alex',)\n"
             '\n'
-            "Reason: AssertionError: actual visible texts: ['Alex', 'Yakov']\n"
+            "Reason: ConditionMismatch: actual visible texts: ['Alex', 'Yakov']\n"
         ) in str(error)
 
 
@@ -97,7 +97,7 @@ def test_should_have_no_texts_exception(session_browser):
     # TODO: why do we have `has` below, should not it be `have`?
     assert "have no (texts ('Alex', 'Yakov'))" in error.value.msg
     assert (
-        "Reason: AssertionError: actual visible texts: ['Alex', 'Yakov']\n"
+        "Reason: ConditionMismatch: actual visible texts: ['Alex', 'Yakov']\n"
         in error.value.msg
     )
     # TODO: should not we see here actual texts in log too?

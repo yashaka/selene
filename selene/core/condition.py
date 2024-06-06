@@ -801,9 +801,7 @@ class Condition(Generic[E]):
         test: Lambda[E, None] | None = None,
         *,
         actual: Lambda[E, R] | None = None,
-        by: (
-            Predicate[R] | None
-        ) = None,  # TODO: consider renaming to by (same for ConditionMismatch)
+        by: Predicate[R] | None = None,
         _inverted=False,
     ):
         # can be already stored
@@ -868,16 +866,36 @@ class Condition(Generic[E]):
     #       have.text('foo').not_.ignore_case
     #       but we can reduce incorrect usage just by limiting to -> Condition[E]
     #       – is it enough?
+    # TODO: decide on actual returned class object...
+    #       if we return self.__class__(...), we can technically access new custom
+    #       methods in subclasses – condition.not_.HERE
+    #       But then we have to override each time the .not_ prop in subclasses
+    #       because its impl is based on __init__ and each subclass,
+    #       usually, has its own init...
+    #       If we return Condition[E](...), we can skip overriding .not_ in subclasses,
+    #       but then we can't access new custom methods in subclasses
+    #       – condition.not_.HERE
+    #       What would be the best for us?
+    #       probably an argument for return Condition[E](...) is that
+    #       other a bit similar to .not_ methods – or_, and_, each – they can't return
+    #       return self.__class__(...) because it does not make sens at all
+    #       to call new custom methods of subclasses for the result...
+    #       actually calling something after .not_ will also confuse in a lot
+    #       of scenarios like in condition.not_.ignore_case – what do we negate here?
+    #       – condition? or ignore_case? so seems like best choice
+    #       is to return Condition[E](...) here...
+    #       But then we also have to ensure, that in not_.* conditions,
+    #       we can't use .not_ but have to use _inverted=True) instead
     @property
     def not_(self) -> Condition[E]:
         return (
-            self.__class__(
+            Condition(
                 self.__description,
                 test=self.__test,
                 _inverted=not self.__inverted,
             )
             if not self.__by
-            else self.__class__(
+            else Condition(
                 self.__description,
                 actual=self.__actual,
                 by=self.__by,
@@ -917,15 +935,17 @@ class Condition(Generic[E]):
     #       though naturally it does not feel like "assertion"...
     #       more like "predicate" returning bool (True/False), not raising exception
     def _test(self, entity: E) -> None:
-        return (
-            self.__test(entity) if not self.__inverted else self.__test_inverted(entity)
-        )
+        # currently refactored to be alias to __call__ to be in more compliance
+        # with some subclasses implementations, that override __call__
+        return self.__call__(entity)
 
     def _matching(self, entity: E) -> bool:
         return self.predicate(entity)
 
     def __call__(self, entity: E) -> None:
-        return self._test(entity)
+        return (
+            self.__test(entity) if not self.__inverted else self.__test_inverted(entity)
+        )
 
     def call(self, entity: E) -> None:
         warnings.warn(
@@ -971,7 +991,7 @@ class Condition(Generic[E]):
 #       and __init__ overriding Condition to accept just predicate & co?
 #       TODO: check how autocomplete will work,
 #             will it autocomplete after ma... – just match or match()?
-class Match(Condition):
+class Match(Condition[E]):
     """A subclass-based alias to [Condition][selene.core.condition.Condition]
     class for better readability on straightforward usage of conditions
     built inline with optional custom description...
@@ -1193,7 +1213,7 @@ class Match(Condition):
     # To reuse all existing have.* conditions, thus, extending them:
     from selene.support.conditions.have import *
 
-    normalized_value = Match('normalized value', query.value, has_no_pattern(r'(\s)\1+'))
+    normalized_value = Match('normalized value', query.value, by=has_no_pattern(r'(\s)\1+'))
     ```
 
     Have fun! ;)
@@ -1201,75 +1221,172 @@ class Match(Condition):
 
     # TODO: provide examples of error messages
 
+    # TODO: Decide on the *__x methods below
+    #       that are actually kind of disabled for now
+    @overload
+    def __init__x(self, by: Predicate[R]): ...
 
-# TODO: Should we merge this class with Condition?
-#       see `x_test_not_match__of_constructed_via_factory__raise_if_not_actual` test
-class _ConditionRaisingIfNotActual(Condition[E]):
+    @overload
+    def __init__x(self, description: str, by: Predicate[R]): ...
+
+    @overload
+    def __init__x(self, description: str, actual: Lambda[E, R], by: Predicate[R]): ...
+
+    @overload
+    def __init__x(self, *, description: Callable[[], str], by: Predicate[R]): ...
+
+    @overload
+    def __init__x(
+        self, *, description: Callable[[], str], actual: Lambda[E, R], by: Predicate[R]
+    ): ...
+
+    @overload
+    def __init__x(self, actual: Lambda[E, R], by: Predicate[R]): ...
+
+    # TODO: do we really need such complicated impl in order
+    #       to allow passing actual and by as positional arguments?
+    def __init__x(self, *args, **kwargs):
+        """
+        Valid signatures in usage:
+
+        ```python
+        # Basic:
+        Match(by=lambda x: x > 0)
+        Match(actual=lambda x: x - 1, by=lambda x: x > 0)
+        Match('has positive decrement', lambda x: x - 1, by=lambda x: x > 0)
+        Match('has positive decrement', actual=lambda x: x - 1, by=lambda x: x > 0)
+        Match(actual=lambda x: x - 1, by=lambda x: x > 0)
+
+        # Extended
+        Match(lambda x: x > 0)
+        Match(lambda actual: actual - 1, lambda res: res > 0)
+        Match('has positive decrement', lambda actual: actual - 1, lambda res: res > 0)
+        Match(
+            description=lambda: 'has positive decrement',
+            actual=lambda actual: actual - 1,
+            by=lambda res: res > 0,
+        )
+        Match(
+            description=lambda: 'has positive decrement',
+            by=lambda res: res > 0,
+        )
+        ```
+        """
+        if not args and kwargs:
+            super().__init__(**kwargs)
+            return
+        if args and isinstance(args[0], str):
+            description = args[0]
+            left_args = args[1:]
+            if not left_args and not kwargs.get('by', None):
+                raise ValueError(
+                    'lacks by predicate as positional argument or keyword argument'
+                )
+            if not left_args:
+                super().__init__(
+                    description, actual=kwargs.get('actual', None), by=kwargs['by']
+                )
+                return
+            if left_args and len(left_args) == 1:
+                super().__init__(description, by=left_args[0])
+                return
+            if left_args and len(left_args) == 2:
+                super().__init__(description, actual=left_args[0], by=left_args[1])
+                return
+            raise ValueError('too much of positional arguments')
+        if args and callable(args[0]):
+            if len(args) + len(kwargs) == 3:
+                raise ValueError(
+                    'callable description can not be passed as positional argument'
+                )
+            if len(args) + len(kwargs) == 2:
+                actual = args[0]
+                by = args[1] if not kwargs else kwargs['by']
+            else:
+                actual = None
+                by = args[0]
+            if not (by_description := Query.full_description_for(by)):
+                raise ValueError(
+                    'either provide description or ensure that at least by predicate'
+                    'has __qualname__ (defined as regular named function)'
+                    'or custom __str__ implementation '
+                    '(like lambda wrapped in Query object)'
+                )
+            description = (
+                (str(actual_desc) + ' ')
+                if (actual_desc := Query.full_description_for(actual)) is not None
+                else ''
+            ) + str(
+                by_description
+            )  # noqa
+            super().__init__(description, actual=actual, by=by)
+            return
+
+        raise ValueError('invalid arguments to Match initializer')
+
     def __init__(
         self,
-        # TODO: do we really need Self passed to callable below?
-        #       in case we provide describing fn in subclass's init
-        #       we definitely has access to self via closure...
-        #       so the only need for Self here is to be able
-        #       to pass it outside of class definition
-        #       i.e. when building new condition directly calling
-        #       this class init
-        description: str,
-        query: Lambda[E, R],
-        predicate: Predicate[R],
-        _inverted: bool = False,
+        description: str | Callable[[], str] | None = None,
+        actual: Lambda[E, R] | None = None,
+        *,
+        by: Predicate[R],
+        _inverted=False,
     ):
-        def match(entity: E) -> None:
-            query_to_str = str(query)
-            result = (
-                query.__name__ if query_to_str.startswith('<function') else query_to_str
+        """
+        The only valid signatures in usage:
+
+        ```python
+        Match(by=lambda x: x > 0)
+        Match(actual=lambda x: x - 1, by=lambda x: x > 0)
+        Match('has positive decrement', lambda x: x - 1, by=lambda x: x > 0)
+        Match('has positive decrement', actual=lambda x: x - 1, by=lambda x: x > 0)
+        Match(actual=lambda x: x - 1, by=lambda x: x > 0)
+        ```
+        """
+        if not description and not (by_description := Query.full_description_for(by)):
+            raise ValueError(
+                'either provide description or ensure that at least by predicate'
+                'has __qualname__ (defined as regular named function)'
+                'or custom __str__ implementation '
+                '(like lambda wrapped in Query object)'
             )
-            actual = query(entity)
-
-            answer = None
-            error_on_predicate = None
-            try:
-                answer = predicate(actual)
-            except Exception as error:
-                error_on_predicate = error
-
-            describe_not_match = lambda: f'actual {result}: {actual}'
-
-            if error_on_predicate:  # regardless of inverted or not
-                raise AssertionError(
-                    f'InvalidCompareError: {error_on_predicate}:\n'
-                    + describe_not_match()
-                )
-
-            if answer if _inverted else not answer:  # now taking inverted into account
-                raise AssertionError(describe_not_match())
-
-        if _inverted:
-            condition_words = description.split(' ')
-            is_or_have = condition_words[0]
-            name = ' '.join(condition_words[1:])
-            no_or_not = 'not' if is_or_have == 'is' else 'no'
-            description = f'{is_or_have} {no_or_not} ({name})'
-
-        self.__description = description
-        self.__query = query
-        self.__predicate = predicate
-        self.__inverted = _inverted
-
+        description = description or (
+            (
+                (str(actual_desc) + ' ')
+                if (actual_desc := Query.full_description_for(actual)) is not None
+                else ''
+            )
+            + str(by_description)  # noqa
+        )
         super().__init__(
-            description,
-            test=match,
+            description=description,
+            actual=actual,
+            by=by,
+            _inverted=_inverted,
         )
 
-    @override
-    @property
-    def not_(self):
-        return _ConditionRaisingIfNotActual(
-            self.__description,
-            self.__query,
-            self.__predicate,
-            _inverted=not self.__inverted,
-        )
+
+# TODO: clean this temp examples
+# is_positive: Match[int] = Match(by=lambda x: x > 0)
+# has_positive_decrement: Match[int] = Match(actual=lambda x: x - 1, by=lambda x: x > 0)
+# has_positive_decrement_: Match[int] = Match(
+#     'has positive decrement', lambda x: x - 1, by=lambda x: x > 0
+# )
+# has_positive_decrement__: Match[int] = Match(actual=lambda x: x - 1, by=lambda x: x > 0)
+
+
+# Match(lambda x: x > 0)
+# Match(lambda actual: actual - 1, lambda res: res > 0)
+# Match('has positive decrement', lambda actual: actual - 1, lambda res: res > 0)
+# Match(
+#     description=lambda: 'has positive decrement',
+#     actual=lambda actual: actual - 1,
+#     by=lambda res: res > 0,
+# )
+# Match(
+#     description=lambda: 'has positive decrement',
+#     by=lambda res: res > 0,
+# )
 
 
 def not_(condition_to_be_inverted: Condition):

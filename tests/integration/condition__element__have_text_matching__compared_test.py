@@ -64,6 +64,7 @@ def test_text_matching__regex_pattern__compared(
     # matches each pattern to each element text in the collection
     # in the corresponding order:
     browser.all('li').should(have.texts_matching(r'\d\) One!+', r'.*', r'.*'))
+    browser.all('li').should(have.texts_matching(r'\d\) One!+', r'.*', r'.*').not_.not_)
     # that is also equivalent to:
     browser.all('li').should(have._texts_like(r'\d\) One(.)\1\1', ..., ...).with_regex)
     # or even:
@@ -97,7 +98,7 @@ def test_text_matching__regex_pattern__error_message(
             "browser.all(('css selector', 'li'))[0].has text matching \\d\\) "
             'ONE(.)\\1\\1\n'
             '\n'
-            'Reason: AssertionError: actual text: 1) One!!!\n'
+            'Reason: ConditionMismatch: actual text: 1) One!!!\n'
             'Screenshot: '
         ) in str(error)
 
@@ -109,7 +110,7 @@ def test_text_matching__regex_pattern__error_message(
             "browser.all(('css selector', 'li'))[0].has no (text matching \\d\\) "
             'One(.)\\1\\1)\n'
             '\n'
-            'Reason: AssertionError: actual text: 1) One!!!\n'
+            'Reason: ConditionMismatch: actual text: 1) One!!!\n'
         ) in str(error)
 
 
@@ -134,6 +135,10 @@ def test_text_matching__regex_pattern__ignore_case__compared(session_browser):
     browser.all('li').first.should(match.text('one', _ignore_case=True))
     browser.all('li').first.should(have.text('one').ignore_case)
     browser.all('li').first.should(match.text_pattern(r'.*one.*', _flags=re.IGNORECASE))
+    browser.all('li').first.should(match.text_pattern(r'.*one.*').not_)
+    browser.all('li').first.should(
+        match.text_pattern(r'.*one.*', _flags=re.IGNORECASE).not_.not_
+    )
     browser.all('li').first.should(have.text_matching(r'.*one.*').ignore_case)
     browser.all('li').first.should(
         have.text_matching(r'.*one.*').where_flags(re.IGNORECASE)
@@ -269,6 +274,27 @@ def test_text_matching__regex_pattern__ignore_case__compared(session_browser):
         )
     )
 
+    try:
+        browser.all('li').should(
+            have._texts_like(r'*One*', r'*Two*', ...)
+            .where_wildcards(zero_or_more_chars='*')
+            .not_
+        )
+        pytest.fail('expected texts match')
+    except AssertionError as error:
+        assert (
+            "browser.all(('css selector', 'li')).have no texts with wildcards like:\n"
+            '    *One*, *Two*, ...\n'
+            '\n'
+            'Reason: AssertionError: actual visible texts:\n'
+            '    1) One!!!, 2) Two..., 3) Three???\n'
+            '\n'
+            'Pattern used for matching:\n'
+            '    ^.*?One.*?‚.*?Two.*?‚[^‚]+‚$\n'
+            'Actual text used to match:\n'
+            '    1) One!!!‚2) Two...‚3) Three???‚\n'
+        ) in str(error)
+
 
 def test_text_matching__regex_pattern__error__on_invalid_regex__with_ignorecase(
     session_browser,
@@ -292,12 +318,13 @@ def test_text_matching__regex_pattern__error__on_invalid_regex__with_ignorecase(
             "browser.all(('css selector', 'li'))[0].has text matching (with flags "
             're.IGNORECASE): *one*\n'
             '\n'
-            'Reason: AssertionError: InvalidCompareError: nothing to repeat at position '
+            'Reason: ConditionMismatch: InvalidCompareError: nothing to repeat at position '
             '0:\n'
             'actual text: 1) One!!!\n'
             'Screenshot: '
         ) in str(error)
 
+    # TODO: decide on expected behavior
     try:
         browser.all('li').first.should(have.text_matching(r'*one*').ignore_case.not_)
         pytest.fail('expected invalid regex error')
@@ -306,7 +333,7 @@ def test_text_matching__regex_pattern__error__on_invalid_regex__with_ignorecase(
             "browser.all(('css selector', 'li'))[0].has no (text matching (with flags "
             're.IGNORECASE): *one*)\n'
             '\n'
-            'Reason: AssertionError: InvalidCompareError: nothing to repeat at position '
+            'Reason: ConditionMismatch: InvalidCompareError: nothing to repeat at position '
             '0:\n'
             'actual text: 1) One!!!\n'
             'Screenshot: '
@@ -320,7 +347,7 @@ def test_text_matching__regex_pattern__error__on_invalid_regex__with_ignorecase(
             "browser.all(('css selector', 'li'))[0].has no (text matching (with flags "
             're.IGNORECASE): *one*)\n'
             '\n'
-            'Reason: AssertionError: InvalidCompareError: nothing to repeat at position '
+            'Reason: ConditionMismatch: InvalidCompareError: nothing to repeat at position '
             '0:\n'
             'actual text: 1) One!!!\n'
             'Screenshot: '

@@ -60,5 +60,5 @@ def test_actions_on_shadow_root_element(session_browser):
             "browser.all(('css selector', 'my-paragraph'))[0]: shadow root.element(('css "
             "selector', '[name=my-text]')).has exact text My WRONG text\n"
             '\n'
-            'Reason: AssertionError: actual text: My default text\n'
+            'Reason: ConditionMismatch: actual text: My default text\n'
         ) in str(error)

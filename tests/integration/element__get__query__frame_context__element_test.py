@@ -90,21 +90,21 @@ def test_actions_on_frame_element_with_logging(session_browser):
     '''
 
     # WHEN
-    browser.open('https://the-internet.herokuapp.com/iframe')
+    browser.open('https://www.tiny.cloud/docs/tinymce/latest/cloud-quick-start/')
 
     # THEN everything inside frame context
     text_area.element('p').should(
         have.js_property('innerHTML').value(
-            'Your content goes here.',
+            'Hello, World!',
         )
     ).perform(command.select_all)
 
     # AND (outside frame context)
-    toolbar.element('[title=Bold]').click()
+    toolbar.element('[aria-label=Bold]').click()
 
     # AND coming back inside frame context
     text_area.element('p').should(
-        have.js_property('innerHTML').value('<strong>Your content goes here.</strong>')
+        have.js_property('innerHTML').value('<strong>Hello, World!</strong>')
     )
 
     text_area.perform(command.select_all).type(
@@ -123,21 +123,19 @@ def test_actions_on_frame_element_with_logging(session_browser):
         # THEN everything is logged:
         assert (
             "element('.tox-edit-area__iframe'): element('#tinymce').element('p'): should "
-            "have js property 'innerHTML' with value 'Your content goes here.': STARTED\n"
+            "have js property 'innerHTML' with value 'Hello, World!': STARTED\n"
             "element('.tox-edit-area__iframe'): element('#tinymce').element('p'): should "
-            "have js property 'innerHTML' with value 'Your content goes here.': PASSED\n"
+            "have js property 'innerHTML' with value 'Hello, World!': PASSED\n"
             "element('.tox-edit-area__iframe'): element('#tinymce').element('p'): send "
             '«select all» keys shortcut as ctrl+a or cmd+a for mac: STARTED\n'
             "element('.tox-edit-area__iframe'): element('#tinymce').element('p'): send "
             '«select all» keys shortcut as ctrl+a or cmd+a for mac: PASSED\n'
-            "element('.tox-toolbar__primary').element('[title=Bold]'): click: STARTED\n"
-            "element('.tox-toolbar__primary').element('[title=Bold]'): click: PASSED\n"
+            "element('.tox-toolbar__primary').element('[aria-label=Bold]'): click: STARTED\n"
+            "element('.tox-toolbar__primary').element('[aria-label=Bold]'): click: PASSED\n"
             "element('.tox-edit-area__iframe'): element('#tinymce').element('p'): should "
-            "have js property 'innerHTML' with value '<strong>Your content goes "
-            "here.</strong>': STARTED\n"
+            "have js property 'innerHTML' with value '<strong>Hello, World!</strong>': STARTED\n"
             "element('.tox-edit-area__iframe'): element('#tinymce').element('p'): should "
-            "have js property 'innerHTML' with value '<strong>Your content goes "
-            "here.</strong>': PASSED\n"
+            "have js property 'innerHTML' with value '<strong>Hello, World!</strong>': PASSED\n"
             "element('.tox-edit-area__iframe'): element('#tinymce'): send «select all» "
             'keys shortcut as ctrl+a or cmd+a for mac: STARTED\n'
             "element('.tox-edit-area__iframe'): element('#tinymce'): send «select all» "
@@ -164,5 +162,5 @@ def test_actions_on_frame_element_with_logging(session_browser):
             "browser.element(('css selector', '.tox-edit-area__iframe')): element(('css "
             "selector', '#tinymce')).all(('css selector', 'p')).has size 10\n"
             '\n'
-            'Reason: AssertionError: actual size: 1\n'
+            'Reason: ConditionMismatch: actual size: 1\n'
         ) in handler.stream

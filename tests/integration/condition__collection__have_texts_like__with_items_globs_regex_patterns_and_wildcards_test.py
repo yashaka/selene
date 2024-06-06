@@ -769,6 +769,28 @@ def test_texts_like__including_ignorecase__passed_compared_to_failed(
             'Actual text used to match:\n'
             '    1) One!!!‚2) Two...‚3) Three???‚\n'
         ) in str(error)
+    # - double inversion == no inversion
+    browser.all('li').should(
+        match._texts_like('one', ..., ..., _flags=re.IGNORECASE).not_.not_
+    )
+    browser.all('li').should(have.no._texts_like('one', ..., ...).ignore_case.not_)
+    try:
+        browser.all('li').should(have.no._texts_like('one.', ..., ...).ignore_case.not_)
+        pytest.fail('expected text mismatch')
+    except AssertionError as error:
+        assert (
+            "browser.all(('css selector', 'li')).have texts like (flags: "
+            're.IGNORECASE):\n'
+            '    one., ..., ...\n'
+            '\n'
+            'Reason: AssertionError: actual visible texts:\n'
+            '    1) One!!!, 2) Two..., 3) Three???\n'
+            '\n'
+            'Pattern used for matching:\n'
+            '    ^.*?one\\..*?‚[^‚]+‚[^‚]+‚$\n'
+            'Actual text used to match:\n'
+            '    1) One!!!‚2) Two...‚3) Three???‚\n'
+        ) in str(error)
     # - inverted
     # - - with no before
     browser.all('li').should(have.no._texts_like('one.', ..., ...).ignore_case)
