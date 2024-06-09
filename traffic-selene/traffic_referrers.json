@@ -1,18 +1,18 @@
 [
   {
     "referrer": "Google",
-    "count": 411,
-    "uniques": 87
+    "count": 426,
+    "uniques": 91
   },
   {
     "referrer": "github.com",
     "count": 89,
-    "uniques": 23
+    "uniques": 24
   },
   {
     "referrer": "yandex.ru",
     "count": 87,
-    "uniques": 14
+    "uniques": 16
   },
   {
     "referrer": "memotut.com",
@@ -21,8 +21,8 @@
   },
   {
     "referrer": "automated-testing.info",
-    "count": 38,
-    "uniques": 8
+    "count": 40,
+    "uniques": 9
   },
   {
     "referrer": "ecosia.org",
@@ -46,7 +46,7 @@
   },
   {
     "referrer": "pypi.org",
-    "count": 9,
-    "uniques": 4
+    "count": 10,
+    "uniques": 5
   }
 ]
