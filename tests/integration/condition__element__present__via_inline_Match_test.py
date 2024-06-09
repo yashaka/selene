@@ -79,7 +79,7 @@ def test_should_be_present__via_inline_Match__passed_and_failed(session_browser)
             '\n'
             'Reason: ConditionMismatch: Message: no such element: Unable to locate '
             'element: {"method":"css selector","selector":"#absent"}\n'
-            '  (Session info: chrome='  # '125.0.6422.142); For documentation on this error, '
+            '  (Session info:'  # ' chrome=125.0.6422.142); For documentation on this error, '
             # 'please visit: '
             # 'https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception\n'
         ) in str(error)
@@ -201,7 +201,7 @@ def test_should_be_present__via_inline_Match__passed_and_failed(session_browser)
             '\n'
             'Reason: ConditionMismatch: Message: no such element: Unable to locate '
             'element: {"method":"css selector","selector":"#absent"}\n'
-            '  (Session info: chrome='  # '125.0.6422.142); For documentation on this error, '
+            '  (Session info:'  # ' chrome=125.0.6422.142); For documentation on this error, '
             # 'please visit: '
             # 'https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception\n'
             # ':\n'
