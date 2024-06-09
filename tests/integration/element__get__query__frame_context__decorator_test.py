@@ -34,6 +34,7 @@ class WYSIWYG:
 
     def open(self):
         browser.open('https://www.tiny.cloud/docs/tinymce/latest/cloud-quick-start/')
+        browser.element('#live-demo_tab_run_default').click()
         return self
 
     def set_bold(self):
