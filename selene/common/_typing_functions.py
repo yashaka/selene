@@ -21,11 +21,18 @@
 # SOFTWARE.
 from __future__ import annotations
 
-import functools
 import inspect
 import re
 
-from typing_extensions import TypeVar, Callable, Generic, Optional, overload
+from typing_extensions import (
+    TypeVar,
+    Callable,
+    Generic,
+    Optional,
+    overload,
+    Type,
+    Iterable,
+)
 
 from selene.common.fp import thread_last
 
@@ -108,25 +115,40 @@ class Query(Generic[E, R]):
 
     @staticmethod
     @overload
-    def _inverted(predicate: Predicate[E]) -> Predicate[E]: ...
+    def _inverted(
+        predicate: Predicate[E],
+        _truthy_exceptions: Iterable[Type[Exception]] = (),
+    ) -> Predicate[E]: ...
 
     @staticmethod
     @overload
-    def _inverted(predicate: Query[E, bool]) -> Query[E, bool]: ...
+    def _inverted(
+        predicate: Query[E, bool],
+        _truthy_exceptions: Iterable[Type[Exception]] = (),
+    ) -> Query[E, bool]: ...
 
     @staticmethod
     def _inverted(
-        predicate: Predicate[E] | Query[E, bool]
+        predicate: Predicate[E] | Query[E, bool],
+        _truthy_exceptions: Iterable[Type[Exception]] = (),
     ) -> Predicate[E] | Query[E, bool]:
         # TODO: ensure it works correctly:) e.g. unit test it
+
+        def not_predicate(entity: E) -> bool:
+            try:
+                return not predicate(entity)
+            except Exception as reason:
+                if any(
+                    isinstance(reason, exception) for exception in _truthy_exceptions
+                ):
+                    return True
+                raise reason
+
         if isinstance(predicate, Query):
             return Query(
                 f'not {predicate}',
-                lambda entity: not predicate(entity),
+                not_predicate,
             )
-
-        def not_predicate(entity: E) -> bool:
-            return not predicate(entity)
 
         not_predicate.__module__ = predicate.__module__
         not_predicate.__annotations__ = predicate.__annotations__

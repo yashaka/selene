@@ -35,6 +35,7 @@ def test_actions_within_frame_context(session_browser):
 
     # WHEN
     browser.open('https://www.tiny.cloud/docs/tinymce/latest/cloud-quick-start/')
+    browser.element('#live-demo_tab_run_default').click()
 
     # AND
     with text_area_frame_context:

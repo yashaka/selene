@@ -35,8 +35,9 @@ from selene.core._browser import Browser
 # TODO: consider refactoring to class for better extendability
 #       when creating custom conditions
 
-visible: Condition[Element] = _match.element_is_visible.not_
-hidden: Condition[Element] = _match.element_is_hidden.not_
+visible: Condition[Element] = _match.visible.not_
+hidden: Condition[Element] = _match.hidden.not_
+hidden_in_dom: Condition[Element] = _match.hidden_in_dom.not_
 
 present: Condition[Element] = _match.present.not_
 in_dom: Condition[Element] = _match.present.not_
@@ -44,7 +45,7 @@ in_dom: Condition[Element] = _match.present.not_
 # TODO: consider deprecating existing
 existing: Condition[Element] = _match.present.not_
 
-absent: Condition[Element] = _match.element_is_absent.not_
+absent: Condition[Element] = _match.absent.not_
 
 enabled: Condition[Element] = _match.element_is_enabled.not_
 disabled: Condition[Element] = _match.element_is_disabled.not_

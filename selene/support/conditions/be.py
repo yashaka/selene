@@ -25,15 +25,16 @@ from selene.support.conditions import not_ as _not_
 
 not_ = _not_
 
-visible = match.element_is_visible
-hidden = match.element_is_hidden
+visible = match.visible
+hidden = match.hidden
+hidden_in_dom = match.hidden_in_dom
 selected = match.element_is_selected
 
 present = match.present
 in_dom = match.present  # TODO: do we need both present and in_dom?
 existing = match.present  # TODO: consider deprecating
 
-absent = match.element_is_absent
+absent = match.absent
 
 enabled = match.element_is_enabled
 disabled = match.element_is_disabled

@@ -113,6 +113,7 @@ class ConditionMismatch(AssertionError):
         by: Callable[[E], bool],
         *,
         _inverted: bool = False,
+        _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
     ): ...
 
     @classmethod
@@ -123,6 +124,7 @@ class ConditionMismatch(AssertionError):
         actual: Callable[[E], R] | None = None,
         *,
         _inverted: bool = False,
+        _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
     ): ...
 
     # TODO: should we name test param as predicate?
@@ -133,42 +135,18 @@ class ConditionMismatch(AssertionError):
         actual: Optional[Callable[[E], E | R]] = None,
         *,
         _inverted: Optional[bool] = False,
-        _falsy_exceptions: Iterable[Type[Exception]] = (),
+        # TODO: should we rename it to _exceptions_as_truthy_on_inverted?
+        #       or just document this in docstring?
+        _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
     ):
         @functools.wraps(by)
         def wrapped(entity: E) -> None:
-            actual_description = (
-                f' {name}' if (name := Query.full_description_for(actual)) else ''
-            )
-            # TODO: should we catch errors on actual?
-            #       for e.g. to consider them as False indicator
-            actual_to_test = None
-            # error_on_actual = None
-            try:
-                actual_to_test = actual(entity) if actual else entity
-            except Exception as reason:
-                # error_on_actual = reason
-                if _inverted:
-                    return
-                raise reason
-
-            answer = None
-            error_on_predicate = None
-            try:
-                answer = by(actual_to_test)
-            # TODO: should we move Exception processing out of this helper?
-            #       should it be somewhere in Condition?
-            #       cause now it's not a Mismatch anymore, it's a failure
-            #       – no, we should not, we should keep it here,
-            #         because this is needed for the inverted case
-            except Exception as reason:
-                error_on_predicate = reason
-                # answer is still None
-                pass
-
-            def describe_not_match():
+            def describe_not_match(actual_value):
+                actual_description = (
+                    f' {name}' if (name := Query.full_description_for(actual)) else ''
+                )
                 return (
-                    f'actual{actual_description}: {actual_to_test}'
+                    f'actual{actual_description}: {actual_value}'
                     if actual
                     else (
                         (
@@ -180,6 +158,10 @@ class ConditionMismatch(AssertionError):
                             or "condition"
                         )
                         + ' not matched'
+                        # TODO: should we consider eliminating errors like:
+                        #       'Reason: ConditionMismatch: condition not matched\n'
+                        #       to:
+                        #       'Reason: ConditionMismatch\n'
                     )
                     # TODO: decide on
                     #       cls(f'{Query.full_name_for(predicate) or "condition"} not matched')
@@ -187,29 +169,59 @@ class ConditionMismatch(AssertionError):
                     #       else cls('condition not matched')
                 )
 
-            # TODO: should we raise InvalidCompare on _inverted too?
-            #       should we make it configurable?
-            # if not _inverted and error_on_predicate:
-            if error_on_predicate and type(error_on_predicate) not in _falsy_exceptions:
+            def describe_error(error):
                 # TODO: consider making it customizable
                 # remove stacktrace if available:
-                stacktrace = getattr(error_on_predicate, 'stacktrace', None)
-                error_on_predicate_str = (
-                    str(error_on_predicate)
+                stacktrace = getattr(error, 'stacktrace', None)
+                return (
+                    str(error)
                     if not stacktrace
-                    else (''.join(str(error_on_predicate).split(stacktrace)))
+                    else (
+                        ''.join(
+                            str(error).split('\n'.join(['Stacktrace:', *stacktrace]))
+                        )
+                    )
                 )
+
+            # TODO: should we catch errors on actual?
+            #       for e.g. to consider them as False indicator
+            actual_to_test = None
+            try:
+                actual_to_test = actual(entity) if actual else entity
+            except Exception as reason:
+                if _inverted and any(
+                    isinstance(reason, exception) for exception in _falsy_exceptions
+                ):
+                    return
+                # TODO: do we even need this prefix?
+                # raise cls(f'Unable to get actual to match:\n{describe_error(reason)}')
+                raise cls(describe_error(reason)) from reason
+
+            answer = None
+            try:
+                answer = by(actual_to_test)
+            # TODO: should we move Exception processing out of this helper?
+            #       should it be somewhere in Condition?
+            #       cause now it's not a Mismatch anymore, it's a failure
+            #       – no, we should not, we should keep it here,
+            #         because this is needed for the inverted case
+            except Exception as reason:
+                if _inverted and any(
+                    isinstance(reason, exception) for exception in _falsy_exceptions
+                ):
+                    return
+                # answer is still None
                 raise cls(
-                    'InvalidCompareError: '
-                    f'{error_on_predicate_str}:\n{describe_not_match()}'
-                )
+                    f'{describe_error(reason)}:'
+                    f'\n{describe_not_match(actual_to_test)}'
+                ) from reason
 
             if answer if _inverted else not answer:
                 # TODO: should we render expected too? (based on predicate name)
                 #       we want need it for our conditions,
                 #       cause wait.py logs it in the message
                 #       but ... ?
-                raise cls(describe_not_match())
+                raise cls(describe_not_match(actual_to_test))
 
         return wrapped
 
@@ -218,8 +230,11 @@ class ConditionMismatch(AssertionError):
         cls,
         by: Callable[[E | R], bool],
         actual: Callable[[E], R] | None = None,
+        _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
     ):
-        return cls._to_raise_if_not(by, actual, _inverted=True)
+        return cls._to_raise_if_not(
+            by, actual, _inverted=True, _falsy_exceptions=_falsy_exceptions
+        )
 
     @classmethod
     def _to_raise_if_not_actual(
@@ -234,8 +249,9 @@ class ConditionMismatch(AssertionError):
         cls,
         query: Callable[[E], R],
         by: Callable[[R], bool],
+        _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
     ):
-        return cls._to_raise_if(by, query)
+        return cls._to_raise_if(by, query, _falsy_exceptions=_falsy_exceptions)
 
 
 class ConditionNotMatchedError(ConditionMismatch):

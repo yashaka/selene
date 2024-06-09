@@ -431,10 +431,12 @@ allowing to build such "re-composable" conditions.
 """
 from __future__ import annotations
 
+import functools
 import sys
 import typing
 import warnings
 
+from selenium.common import WebDriverException
 from typing_extensions import (
     List,
     TypeVar,
@@ -726,6 +728,11 @@ class Condition(Generic[E]):
     ) -> Condition[E]:
         # TODO: how will it work composed conditions?
 
+        # TODO: should we bother? – about "negated inversion via Condition.as_not"
+        #       will "swallow" the reason of failure...
+        #       because we invert the predicate or test itself, ignoring exceptions
+        #       so then when we "recover original exception failure" on negation
+        #       we can just recover it to "false" not to "raise reason error"
         if description:
             return (
                 cls(
@@ -736,11 +743,23 @@ class Condition(Generic[E]):
                     # thus, no need to mark condition for further inversion:
                     _inverted=False,
                 )
-                if not condition.__by
+                if condition.__by is None
                 else cls(
                     description,
-                    actual=condition.__actual,
-                    by=Query._inverted(condition.__by),
+                    # # We have to skip the actual here (re-building it into by below),
+                    # # because can't "truthify" its Exceptions when raised on inverted
+                    # # TODO: or can we?
+                    # actual=condition.__actual,
+                    by=Query._inverted(
+                        functools.wraps(condition.__by)(
+                            lambda entity: condition.__by(  # type: ignore
+                                condition.__actual(entity)
+                                if condition.__actual
+                                else entity
+                            )
+                        ),
+                        _truthy_exceptions=(AssertionError, WebDriverException),
+                    ),
                     _inverted=False,
                 )
             )
@@ -826,9 +845,15 @@ class Condition(Generic[E]):
                 ConditionMismatch._to_raise_if_actual(
                     self.__actual,
                     self.__by,
+                    # TODO: should we DI? – remove this tight coupling to WebDriverException?
+                    #       here and elsewhere
+                    _falsy_exceptions=(AssertionError, WebDriverException),
                 )
                 if self.__actual
-                else ConditionMismatch._to_raise_if(self.__by)
+                else ConditionMismatch._to_raise_if(
+                    self.__by,
+                    _falsy_exceptions=(AssertionError, WebDriverException),
+                )
             )
             return
 
@@ -854,7 +879,7 @@ class Condition(Generic[E]):
             return
 
         raise ValueError(
-            'either test or by with optional actual should be provided, ' 'not nothing'
+            'either test or by with optional actual should be provided, not nothing'
         )
 
     # TODO: rethink not_ naming...
@@ -913,6 +938,8 @@ class Condition(Generic[E]):
     def __describe_inverted(self) -> str:
         condition_words = self.__describe().split(' ')
         is_or_have = condition_words[0]
+        if is_or_have not in ('is', 'has', 'have'):
+            return f'not ({self.__describe()})'
         name = ' '.join(condition_words[1:])
         no_or_not = 'not' if is_or_have == 'is' else 'no'
         return f'{is_or_have} {no_or_not} ({name})'
@@ -1312,11 +1339,8 @@ class Match(Condition[E]):
                     'or custom __str__ implementation '
                     '(like lambda wrapped in Query object)'
                 )
-            description = (
-                (str(actual_desc) + ' ')
-                if (actual_desc := Query.full_description_for(actual)) is not None
-                else ''
-            ) + str(
+            actual_desc = Query.full_description_for(actual)
+            description = ((str(actual_desc) + ' ') if actual_desc else '') + str(
                 by_description
             )  # noqa
             super().__init__(description, actual=actual, by=by)
@@ -1324,12 +1348,48 @@ class Match(Condition[E]):
 
         raise ValueError('invalid arguments to Match initializer')
 
+    @overload
+    def __init__(
+        self,
+        description: str | Callable[[], str],
+        actual: Lambda[E, R],
+        *,
+        by: Predicate[R],
+        _inverted=False,
+    ): ...
+
+    @overload
+    def __init__(
+        self,
+        description: str | Callable[[], str],
+        *,
+        by: Predicate[E],
+        _inverted=False,
+    ): ...
+
+    @overload
+    def __init__(
+        self,
+        *,
+        actual: Lambda[E, R],
+        by: Predicate[R],
+        _inverted=False,
+    ): ...
+
+    @overload
+    def __init__(
+        self,
+        *,
+        by: Predicate[E],
+        _inverted=False,
+    ): ...
+
     def __init__(
         self,
         description: str | Callable[[], str] | None = None,
         actual: Lambda[E, R] | None = None,
         *,
-        by: Predicate[R],
+        by: Predicate[E] | Predicate[R],
         _inverted=False,
     ):
         """
@@ -1345,20 +1405,18 @@ class Match(Condition[E]):
         """
         if not description and not (by_description := Query.full_description_for(by)):
             raise ValueError(
-                'either provide description or ensure that at least by predicate'
-                'has __qualname__ (defined as regular named function)'
+                'either provide description or ensure that at least by predicate '
+                'has __qualname__ (defined as regular named function) '
                 'or custom __str__ implementation '
                 '(like lambda wrapped in Query object)'
             )
+        actual_desc = Query.full_description_for(actual)
         description = description or (
-            (
-                (str(actual_desc) + ' ')
-                if (actual_desc := Query.full_description_for(actual)) is not None
-                else ''
-            )
+            ((str(actual_desc) + ' ') if actual_desc else '')
             + str(by_description)  # noqa
         )
-        super().__init__(
+        # TODO: fix "cannot infer type of argument 1 of __init__" or ignore
+        super().__init__(  # type: ignore
             description=description,
             actual=actual,
             by=by,

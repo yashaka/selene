@@ -110,17 +110,23 @@ TODOs:
 
 ### TODO: document subclass based custom conditions
 
-## 2.0.0rc10: «copy&paste, frames, shadow & texts_like» (to be released on DD.05.2024)
+### TODO: should we help users do not shoot their legs when using browser.all(selector) in for loops? #534 
 
 ### TODO: not_ as callable object?
 
-### TODO: should we help users do not shoot their legs when using browser.all(selector) in for loops? #534 
+## 2.0.0rc10: «copy&paste, frames, shadow & texts_like» (to be released on DD.05.2024)
+
+### TODO: finalize pylint update to 3.2.2. (clean all warnings, especially for pyproject.toml)
 
 ### TODO: rename all conditions inside match.py so match can be fully used instead be + have #530 
 
 ### TODO: ENSURE ALL Condition.as_not USAGES ARE NOW CORRECT
 
 ...
+
+#### TODO: finalize error messages tests for present, visible, hidden
+
+#### TODO: decide on present vs present_in_dom (same for absent)
 
 ### TODO: ENSURE composed conditions work as expected (or/and, etc.)
 

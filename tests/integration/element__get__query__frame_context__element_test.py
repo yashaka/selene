@@ -91,6 +91,7 @@ def test_actions_on_frame_element_with_logging(session_browser):
 
     # WHEN
     browser.open('https://www.tiny.cloud/docs/tinymce/latest/cloud-quick-start/')
+    browser.element('#live-demo_tab_run_default').click()
 
     # THEN everything inside frame context
     text_area.element('p').should(

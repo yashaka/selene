@@ -55,18 +55,28 @@ from selene.core.conditions import (
 )
 from selene.core.entity import Collection, Element
 from selene.core._browser import Browser
-from selene.common._typing_functions import Query
 
-
-# TODO: consider moving to selene.match.element.is_visible, etc...
-element_is_visible: Condition[Element] = ElementCondition.raise_if_not(
-    'is visible', lambda element: element().is_displayed()
+# TODO: consider renaming to present_in_dom
+present: Condition[Element] = Match(
+    'is present in DOM',
+    actual=lambda element: element.locate(),
+    by=lambda webelement: webelement is not None,
 )
 
+# TODO: consider renaming to absent_in_dom
+absent: Condition[Element] = Condition.as_not(present, 'is absent in DOM')
 
-element_is_hidden: Condition[Element] = ElementCondition.as_not(
-    element_is_visible, 'is hidden'
+
+visible: Condition[Element] = Match(
+    'is visible',
+    actual=lambda element: element.locate(),
+    by=lambda actual: actual.is_displayed(),
 )
+
+hidden: Condition[Element] = Condition.as_not(visible, 'is hidden')
+
+hidden_in_dom: Condition[Element] = present.and_(visible.not_)
+
 
 element_is_enabled: Condition[Element] = ElementCondition.raise_if_not(
     'is enabled', lambda element: element().is_enabled()
@@ -74,15 +84,7 @@ element_is_enabled: Condition[Element] = ElementCondition.raise_if_not(
 
 element_is_disabled: Condition[Element] = ElementCondition.as_not(element_is_enabled)
 
-element_is_clickable: Condition[Element] = element_is_visible.and_(element_is_enabled)
-
-present: Condition[Element] = Match(
-    'is present in DOM',
-    actual=lambda element: element.locate(),
-    by=lambda webelement: webelement is not None,
-)
-
-element_is_absent: Condition[Element] = ElementCondition.as_not(present)
+element_is_clickable: Condition[Element] = visible.and_(element_is_enabled)
 
 # TODO: how will it work for mobile?
 element_is_focused: Condition[Element] = ElementCondition.raise_if_not(
@@ -166,6 +168,11 @@ class text_pattern(Condition[Element]):
         self.__expected = expected
         self.__flags = _flags
         self.__inverted = _inverted
+        # TODO: on invalid pattern error will be:
+        #       'Reason: ConditionMismatch: nothing to repeat at position 0'
+        #       how to improve it? leaving more hints that this is "regex invalid error"
+        #       probably, we can re-raise re.error inside predicate.matches
+        #       with additional explanation
 
         super().__init__(
             f'has text matching{f" (with flags {_flags}):" if _flags else ""}'

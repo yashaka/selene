@@ -291,7 +291,8 @@ def test_as_not_match__of_constructed_via_factory__raise_if_not_actual():
         # THEN
         pytest.fail('on mismatch')
     except AssertionError as error:
-        assert 'actual self: 1' == str(error)
+        # assert 'actual self: 1' == str(error)  # TODO: can we achieve this?
+        assert 'condition not matched' == str(error)
 
 
 # TODO: add InvalidCompareError tests (positive and negative)

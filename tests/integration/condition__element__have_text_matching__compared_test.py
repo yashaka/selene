@@ -318,7 +318,7 @@ def test_text_matching__regex_pattern__error__on_invalid_regex__with_ignorecase(
             "browser.all(('css selector', 'li'))[0].has text matching (with flags "
             're.IGNORECASE): *one*\n'
             '\n'
-            'Reason: ConditionMismatch: InvalidCompareError: nothing to repeat at position '
+            'Reason: ConditionMismatch: nothing to repeat at position '
             '0:\n'
             'actual text: 1) One!!!\n'
             'Screenshot: '
@@ -333,7 +333,7 @@ def test_text_matching__regex_pattern__error__on_invalid_regex__with_ignorecase(
             "browser.all(('css selector', 'li'))[0].has no (text matching (with flags "
             're.IGNORECASE): *one*)\n'
             '\n'
-            'Reason: ConditionMismatch: InvalidCompareError: nothing to repeat at position '
+            'Reason: ConditionMismatch: nothing to repeat at position '
             '0:\n'
             'actual text: 1) One!!!\n'
             'Screenshot: '
@@ -347,7 +347,7 @@ def test_text_matching__regex_pattern__error__on_invalid_regex__with_ignorecase(
             "browser.all(('css selector', 'li'))[0].has no (text matching (with flags "
             're.IGNORECASE): *one*)\n'
             '\n'
-            'Reason: ConditionMismatch: InvalidCompareError: nothing to repeat at position '
+            'Reason: ConditionMismatch: nothing to repeat at position '
             '0:\n'
             'actual text: 1) One!!!\n'
             'Screenshot: '
