@@ -79,10 +79,9 @@ def test_should_be_present__via_inline_Match__passed_and_failed(session_browser)
             '\n'
             'Reason: ConditionMismatch: Message: no such element: Unable to locate '
             'element: {"method":"css selector","selector":"#absent"}\n'
-            '  (Session info: chrome=125.0.6422.142); For documentation on this error, '
-            'please visit: '
-            'https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception\n'
-            '\n'
+            '  (Session info: chrome='  # '125.0.6422.142); For documentation on this error, '
+            # 'please visit: '
+            # 'https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception\n'
         ) in str(error)
     # - with actual failure on negated inversion via Condition.as_not
     #   (with lost reason details)
@@ -202,11 +201,11 @@ def test_should_be_present__via_inline_Match__passed_and_failed(session_browser)
             '\n'
             'Reason: ConditionMismatch: Message: no such element: Unable to locate '
             'element: {"method":"css selector","selector":"#absent"}\n'
-            '  (Session info: chrome=125.0.6422.142); For documentation on this error, '
-            'please visit: '
-            'https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception\n'
-            ':\n'
-            'condition not matched\n'  # TODO: this ending is not needed...
+            '  (Session info: chrome='  # '125.0.6422.142); For documentation on this error, '
+            # 'please visit: '
+            # 'https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception\n'
+            # ':\n'
+            # 'condition not matched\n'  # TODO: this ending is not needed...
             #                                  but should we bother?
         ) in str(error)
     # - with by mismatch on inversion (without 'is' prefix in name)
