@@ -114,9 +114,10 @@ TODOs:
 
 ### TODO: not_ as callable object?
 
+
 ## 2.0.0rc10: «copy&paste, frames, shadow & texts_like» (to be released on DD.05.2024)
 
-### TODO: finalize pylint update to 3.2.2. (clean all warnings, especially for pyproject.toml)
+### TODO: add `<` before driver.switch_to.* tab in iframe faq doc
 
 ### TODO: rename all conditions inside match.py so match can be fully used instead be + have #530 
 
@@ -125,8 +126,6 @@ TODOs:
 ...
 
 #### TODO: finalize error messages tests for present, visible, hidden
-
-#### TODO: decide on present vs present_in_dom (same for absent)
 
 ### TODO: ENSURE composed conditions work as expected (or/and, etc.)
 
@@ -138,8 +137,6 @@ seems like currently we do raise, but cover with tests
 ### TODO: decide on Match fate (subclass OR subclass + match* 2 in 1)
 
 #### TODO: do we need positional actual and by args for Match?
-
-### TODO: falsify WebDriverException when thrown inside by predicate?
 
 ### Deprecated conditions
 
