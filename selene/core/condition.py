@@ -1012,12 +1012,63 @@ class Condition(Generic[E]):
 #       to accept only description (maybe optional) + predicates with optional actual
 #       i.e. not accepting test param at all...
 #       as, finally, the test param is more unhandy in straightforward inline usage
+#       – So far, YES, it seemed like a good idea to get rid of test param in Match
+#       narrowing the usage for the end user to the most convenient one...
+#       Hm... but what about redefining conditions based on existing ones?
+#       Imagine:
+#       $('#save').should(Match('«Save document» is shown', test=be.visible))
+#       Such case is rare, and looks like not optimal, because there are better
+#       ways to document failures of business steps like this... But maybe...
+#       we should at least leave such option...
+#       And now we can't pass test to Match... (because of redefined __init__)
+#       By the way, something like this would be still possible:
+#       $('#save').should(Match('«Save document» is shown', by=query.is_displayed))
+#       though, we have no query.is_* so far... should we have?
+#       yet... it looks tempting to be able to reuse existing conditions
+#       and re-describe them with Match... currently this would be possible only
+#       with Condition:
+#       $('#save').should(Condition('«Save document» is shown', test=be.visible))
+#       maybe this will be important in scenarios like:
+#       $('#save').should(Match('clickable', test=be.visible.and_(be.enabled)))
+#       or even more relevant not-inline version:
+#       clickable = Match('clickable', test=be.visible.and_(be.enabled))
+#       though in such case it looks Ok to use Condition class
+#       clickable = Condition('clickable', test=be.visible.and_(be.enabled))
+#       this will work too right now:
+#       clickable = Condition('clickable', be.visible.and_(be.enabled))
+#       hm... why not then accept only by in Match (not test), but allow
+#       automatic conversion from condition to its predicate
+#       when the Condition instance is passed instead of predicate...
+#       clickable = Match('clickable', by=be.visible.and_(be.enabled))
+#       and then will work too:
+#       clickable = Match('clickable', be.visible.and_(be.enabled))
+#       hm... looks like a solution...
+#       but won't it be overcomplicated in context of understanding?
+#       hm... maybe this is really a good idea, because by=condition correlate
+#       with all.by(condition)... so it's kind of consistent to expect
+#       that condition can be passed in place of by...
+#       hm... but won't it be confusing to pass "only predicate" in place of by
+#       in the Condition class? o_O
+#       It really looks like pretty confusing:D
 # TODO: just a crazy idea... why then import both Match and/or match.*
 #       why not to make match be a class over module –
 #       a class with static methods and attributes as predefined conditions
 #       and __init__ overriding Condition to accept just predicate & co?
 #       TODO: check how autocomplete will work,
 #             will it autocomplete after ma... – just match or match()?
+#       – Hm, the idea looks very tempting... but we should separate
+#       "the most optimal usage" from the one that can tend to be not optimal...
+#       If we give an easy way for the end user to to define inline conditions
+#       with lambdas - the user may end with doing just that...
+#       while in most scenarios it would be better to define custom conditions
+#       in a separate Module... Hence, we can complicate it a bit for the user
+#       by forcing him to use an additional import of Match
+#       to use inline conditions... Hm...
+#       But use probably will use be, have, not match... So importing match
+#       is already an "another import"... hm...
+#       Other thing... is that if we make match a class, then for consistency
+#       it would be better to do the same for command.* and query.*...
+#       Isn't it too much?
 class Match(Condition[E]):
     """A subclass-based alias to [Condition][selene.core.condition.Condition]
     class for better readability on straightforward usage of conditions
