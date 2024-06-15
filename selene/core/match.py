@@ -56,15 +56,47 @@ from selene.core.conditions import (
 from selene.core.entity import Collection, Element
 from selene.core._browser import Browser
 
-# TODO: consider renaming to present_in_dom
-present: Condition[Element] = Match(
+present_in_dom: Condition[Element] = Match(
     'is present in DOM',
     actual=lambda element: element.locate(),
     by=lambda webelement: webelement is not None,
 )
 
-# TODO: consider renaming to absent_in_dom
+absent_in_dom: Condition[Element] = Condition.as_not(present_in_dom, 'is absent in DOM')
+
+
+def __deprecated_is_present(element: Element) -> bool:
+    warnings.warn(
+        'be.present is deprecated, use be.present_in_dom instead',
+        DeprecationWarning,
+    )
+    return element.locate() is not None
+
+
+present: Condition[Element] = Match(
+    'is present in DOM',
+    by=__deprecated_is_present,  # noqa
+)
+"""Deprecated 'is present' condition. Use present_in_dom instead. """
+
+
 absent: Condition[Element] = Condition.as_not(present, 'is absent in DOM')
+"""Deprecated 'is absent' condition. Use absent_in_dom instead."""
+
+
+def __deprecated_is_existing(element: Element) -> bool:
+    warnings.warn(
+        'be.existing is deprecated, use be.present_in_dom instead',
+        DeprecationWarning,
+    )
+    return element.locate() is not None
+
+
+existing: Condition[Element] = Match(
+    'is present in DOM',
+    by=__deprecated_is_existing,  # noqa
+)
+"""Deprecated 'is existing' condition. Use present_in_dom instead."""
 
 
 visible: Condition[Element] = Match(
@@ -75,7 +107,7 @@ visible: Condition[Element] = Match(
 
 hidden: Condition[Element] = Condition.as_not(visible, 'is hidden')
 
-hidden_in_dom: Condition[Element] = present.and_(visible.not_)
+hidden_in_dom: Condition[Element] = present_in_dom.and_(visible.not_)
 
 
 element_is_enabled: Condition[Element] = ElementCondition.raise_if_not(

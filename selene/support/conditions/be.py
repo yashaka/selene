@@ -19,22 +19,19 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
 from selene.core import match
 from selene.support.conditions import not_ as _not_
 
 not_ = _not_
 
-visible = match.visible
-hidden = match.hidden
+present_in_dom = match.present_in_dom
+in_dom = match.present_in_dom  # TODO: do we need both present_in_dom and in_dom?
+absent_in_dom = match.absent_in_dom
 hidden_in_dom = match.hidden_in_dom
+hidden = match.hidden
+visible = match.visible
+
 selected = match.element_is_selected
-
-present = match.present
-in_dom = match.present  # TODO: do we need both present and in_dom?
-existing = match.present  # TODO: consider deprecating
-
-absent = match.absent
 
 enabled = match.element_is_enabled
 disabled = match.element_is_disabled
@@ -47,3 +44,19 @@ blank = match.element_is_blank
 # --- Deprecated --- #
 
 empty = match.collection_is_empty
+
+
+present = match.present
+"""Deprecated 'is present' condition. Use
+[present_in_dom][selene.support.conditions.be.present_in_dom] instead.
+"""
+
+absent = match.absent
+"""Deprecated 'is absent' condition. Use
+[absent_in_dom][selene.support.conditions.not_.absent_in_dom] instead.
+"""
+
+existing = match.existing
+"""Deprecated 'is existing' condition. Use
+[present_in_dom][selene.support.conditions.be.present_in_dom] instead.
+"""

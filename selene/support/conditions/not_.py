@@ -23,11 +23,9 @@ from __future__ import annotations
 import warnings
 from typing import Any, Iterable
 
-from typing_extensions import cast
-
 from selene.core import match as _match
 
-# --- be.* conditions --- #
+# --- be.not_.* conditions --- #
 from selene.core.condition import Condition
 from selene.core.entity import Element, Collection
 from selene.core._browser import Browser
@@ -39,18 +37,26 @@ visible: Condition[Element] = _match.visible.not_
 hidden: Condition[Element] = _match.hidden.not_
 hidden_in_dom: Condition[Element] = _match.hidden_in_dom.not_
 
-present: Condition[Element] = _match.present.not_
-in_dom: Condition[Element] = _match.present.not_
-# TODO: do we need both present and in_dom?
-# TODO: consider deprecating existing
-existing: Condition[Element] = _match.present.not_
+present_in_dom: Condition[Element] = _match.present_in_dom.not_
+absent_in_dom: Condition[Element] = _match.absent_in_dom.not_
+in_dom: Condition[Element] = _match.present_in_dom.not_
 
-absent: Condition[Element] = _match.absent.not_
 
 enabled: Condition[Element] = _match.element_is_enabled.not_
 disabled: Condition[Element] = _match.element_is_disabled.not_
 
 blank: Condition[Element] = _match.element_is_blank.not_
+
+# --- be.not_.* DEPRECATED conditions --- #
+
+present: Condition[Element] = _match.present_in_dom.not_
+"""Deprecated 'is not present' condition. Use not_.present_in_dom instead."""
+
+existing: Condition[Element] = _match.present_in_dom.not_
+"""Deprecated 'is not existing' condition. Use not_.present_in_dom instead."""
+
+absent: Condition[Element] = _match.absent_in_dom.not_
+"""Deprecated 'is not absent' condition. Use not_.absent_in_dom instead."""
 
 
 # --- have.* conditions --- #

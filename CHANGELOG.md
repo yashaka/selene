@@ -141,6 +141,17 @@ seems like currently we do raise, but cover with tests
 
 ### TODO: falsify WebDriverException when thrown inside by predicate?
 
+### Deprecated conditions
+
+- `be.present` in favor of `be.present_in_dom`
+- `be.not_.present` in favor of `be.not_.present_in_dom`
+- `be.absent` in favor of `be.absent_in_dom`
+- `be.not_.absent` in favor of `be.not_.absent_in_dom`
+
+### Added be.hidden_in_dom in addition to be.hidden
+
+Consider `be.hidden` as "hidden somewhere, maybe in DOM with "display:none", or even on frontend/backend, i.e. totally absent from the page". Then `be.hidden_in_dom` is stricter, and means "hidden in DOM, i.e. available in the page DOM, but not visible".
+
 ### Text related conditions now accepts int and floats as text item
 
 `.have.exact_texts(1, 2.0, '3')` is now possible, and will be treated as `['1', '2.0', '3']`
