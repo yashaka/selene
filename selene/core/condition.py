@@ -804,6 +804,10 @@ class Condition(Generic[E]):
         _inverted=False,
     ): ...
 
+    # todo: CONSIDER: accepting tuple of three as description
+    #       where three are (prefix, core, suffix),
+    #       where each can be substituted with ... (Ellipsis)
+    #       signifying that the "default" should be used
     # TODO: should we make the description type as Callable[[Condition], str]
     #       instead of Callable[[], str]...
     #       to be able to pass condition itself...
@@ -1435,6 +1439,8 @@ class Match(Condition[E]):
         _inverted=False,
     ): ...
 
+    # TODO: should we rename description to name? won't it confuse with __name__?
+    #       probably not, will be actually consistent with __name__...
     def __init__(
         self,
         description: str | Callable[[], str] | None = None,

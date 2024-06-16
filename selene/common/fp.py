@@ -80,8 +80,29 @@ def pipe(*functions) -> Optional[Callable[[Any], Any]]:
     )
 
 
+# TODO: support "detailed history of prev calls on failures"
+# TODO: support tuple form of functions
+# TODO: support ... as arg placeholder in tuple form of functions
+#       or consider another custom object placeholder
+#       Also consider numeric object placeholders,
+#       like ~ fp.ARG1, fp.ARG2, etc. OR fp.ARG(1), fp.ARG(2), etc.
+#       so if prev function returns iterable of results
+#       they could be passed at corresponding positions
+#       Also consider "spread object" placeholder (~ fp.SPREAD, or fp.ARG(...))
+#       hm, actually ... can work as spread too...
+#       hm, no, it can't... because if prev result was a list,
+#       we have to know whether pass it in a spread form or as a single arg...
 def thread(arg, *functions):
     return pipe(*functions)(arg)
+
+
+# TODO: consider a separate function, similar to partial,
+#       but with a placeholder for an argument(s)...
+#       so we can write something like
+#       map_with = partial_like(map, fn, ...)
+#       where map_with is a function that accepts one arg (fn)
+#       and returns a function of one arg,
+#       that once passed will be placed as a last arg to map
 
 
 def thread_first(arg, *iterable_of_fn_or_tuple):

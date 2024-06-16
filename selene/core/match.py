@@ -98,12 +98,44 @@ existing: Condition[Element] = Match(
 )
 """Deprecated 'is existing' condition. Use present_in_dom instead."""
 
-
 visible: Condition[Element] = Match(
+    'is visible',
+    by=lambda element: element.locate().is_displayed(),
+)
+
+# todo: remove once decide on the best implementation
+__visible_with_actual: Condition[Element] = Match(
     'is visible',
     actual=lambda element: element.locate(),
     by=lambda actual: actual.is_displayed(),
+    # TODO: consider adding describe_actual
+    # describe_actual=lambda actual: (actual and actual.get_attribute('outerHTML')),
 )
+"""Alternative and disabled via protection prefix version of visible condition,
+that will result in errors with unclear actual, something like:
+    actual: <selenium.webdriver.remote.webelement.WebElement
+    (session="...", element="...")>
+But if we add support of describe_actual parameter to Match, we can provide error like:
+    actual: <button id="hidden" style="display: none">Press me</button>
+"""
+
+# todo: remove once decide on the best implementation
+__visible_with_actual_as_tuple: Condition[Element] = Match(
+    'is visible',
+    actual=lambda element: (
+        webelement := element.locate(),
+        webelement.get_attribute('outerHTML'),
+    ),
+    by=lambda actual: actual[0].is_displayed(),
+)
+"""Alternative and disabled via protection prefix version of visible condition,
+that will result in good error like:
+    actual: (<selenium.webdriver.remote.webelement.WebElement
+    (session="...", element="...")>,
+    '<button id="hidden" style="display: none">Press me</button>')
+
+– but is slower, because of two calls to webdriver on actual
+"""
 
 hidden: Condition[Element] = Condition.as_not(visible, 'is hidden')
 

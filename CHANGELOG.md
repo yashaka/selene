@@ -117,6 +117,8 @@ TODOs:
 
 ## 2.0.0rc10: «copy&paste, frames, shadow & texts_like» (to be released on DD.05.2024)
 
+### TODO: ensure no warnings
+
 ### TODO: add `<` before driver.switch_to.* tab in iframe faq doc
 
 ### TODO: rename all conditions inside match.py so match can be fully used instead be + have #530 
@@ -125,14 +127,18 @@ TODOs:
 
 ...
 
-#### TODO: finalize error messages tests for present, visible, hidden
-
 ### TODO: ENSURE composed conditions work as expected (or/and, etc.)
 
 ...
 ### TODO: should we raise InvalidCompare on _inverted too?
 
 seems like currently we do raise, but cover with tests
+
+### TODO: Consider renaming description to name for Condition, Match, Query, Command, etc.
+
+### TODO: decide on describe_actual for Match & Condition
+
+#### TODO: finalize corresponding error messages tests for present, visible, hidden
 
 ### TODO: decide on Match fate (subclass OR subclass + match* 2 in 1)
 
