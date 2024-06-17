@@ -2,14 +2,14 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 303,
-    "uniques": 174
+    "count": 275,
+    "uniques": 153
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 73,
-    "uniques": 16
+    "count": 71,
+    "uniques": 15
   },
   {
     "path": "/yashaka/selene/blob/master/README.md",
@@ -24,28 +24,16 @@
     "uniques": 15
   },
   {
-    "path": "/yashaka/selene/issues/538",
-    "title": "consider renaming have.js_property to have.property · Issue #538 · yashaka/se...",
-    "count": 50,
-    "uniques": 34
-  },
-  {
     "path": "/yashaka/selene/tree/master/docs",
     "title": "selene/docs at master · yashaka/selene · GitHub",
-    "count": 41,
-    "uniques": 10
+    "count": 37,
+    "uniques": 8
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 39,
-    "uniques": 15
-  },
-  {
-    "path": "/yashaka/selene/tree/master/tests",
-    "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 34,
-    "uniques": 9
+    "count": 36,
+    "uniques": 12
   },
   {
     "path": "/yashaka/selene/tree/master/selene/core",
@@ -54,9 +42,21 @@
     "uniques": 8
   },
   {
+    "path": "/yashaka/selene/tree/master/tests",
+    "title": "selene/tests at master · yashaka/selene · GitHub",
+    "count": 29,
+    "uniques": 8
+  },
+  {
     "path": "/yashaka/selene/releases",
     "title": "Releases · yashaka/selene",
-    "count": 29,
-    "uniques": 12
+    "count": 23,
+    "uniques": 10
+  },
+  {
+    "path": "/yashaka/selene/tree/master/selene/api",
+    "title": "selene/selene/api at master · yashaka/selene · GitHub",
+    "count": 23,
+    "uniques": 5
   }
 ]
