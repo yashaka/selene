@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 from selene import browser, command, have, query
+from tests import const
 
 
 def teardown_function():
@@ -33,8 +34,7 @@ class WYSIWYG:
     text_area = browser.element('#tinymce')
 
     def open(self):
-        browser.open('https://www.tiny.cloud/docs/tinymce/latest/cloud-quick-start/')
-        browser.element('#live-demo_tab_run_default').click()
+        browser.open(const.TINYMCE_URL)
         return self
 
     def set_bold(self):
