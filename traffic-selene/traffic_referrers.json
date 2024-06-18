@@ -1,23 +1,23 @@
 [
   {
     "referrer": "Google",
-    "count": 411,
-    "uniques": 90
+    "count": 353,
+    "uniques": 80
   },
   {
     "referrer": "github.com",
-    "count": 275,
-    "uniques": 29
+    "count": 268,
+    "uniques": 27
   },
   {
     "referrer": "automated-testing.info",
-    "count": 59,
-    "uniques": 10
+    "count": 57,
+    "uniques": 9
   },
   {
     "referrer": "yandex.ru",
-    "count": 53,
-    "uniques": 17
+    "count": 52,
+    "uniques": 16
   },
   {
     "referrer": "memotut.com",
@@ -26,12 +26,12 @@
   },
   {
     "referrer": "school.qa.guru",
-    "count": 33,
-    "uniques": 5
+    "count": 24,
+    "uniques": 4
   },
   {
     "referrer": "DuckDuckGo",
-    "count": 22,
+    "count": 21,
     "uniques": 21
   },
   {
@@ -40,13 +40,13 @@
     "uniques": 2
   },
   {
-    "referrer": "yashaka.github.io",
-    "count": 13,
-    "uniques": 8
-  },
-  {
     "referrer": "ya.ru",
     "count": 12,
     "uniques": 2
+  },
+  {
+    "referrer": "yashaka.github.io",
+    "count": 9,
+    "uniques": 6
   }
 ]
