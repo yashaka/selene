@@ -45,6 +45,10 @@ in_dom: Condition[Element] = _match.present_in_dom.not_
 enabled: Condition[Element] = _match.enabled.not_
 disabled: Condition[Element] = _match.disabled.not_
 
+selected: Condition[Element] = _match.selected.not_
+
+# focused: Condition[Element] = _match.focused.not_
+
 blank: Condition[Element] = _match.element_is_blank.not_
 
 # --- be.not_.* DEPRECATED conditions --- #

@@ -57,6 +57,7 @@ from selene.core.conditions import (
 from selene.core.entity import Collection, Element
 from selene.core._browser import Browser
 
+
 present_in_dom: Condition[Element] = Match(
     'is present in DOM',
     actual=lambda element: element.locate(),
@@ -164,14 +165,16 @@ selected: Condition[Element] = Match(
 )
 
 
-# TODO: how will it work for mobile? – it will not work:)
-element_is_focused: Condition[Element] = Match(
-    'is focused',
-    by=lambda element: (
-        element.locate()
-        == element.config.driver.execute_script('return document.activeElement')
-    ),
-)
+class js:
+    # todo: how will it work for mobile? – it will not work:)
+    #       do we even need it? – inside js class? or maybe be multiplatform?
+    _active_element: Condition[Element] = Match(
+        'has focus',
+        by=lambda element: (
+            element.locate()
+            == element.config.driver.execute_script('return document.activeElement')
+        ),
+    )
 
 
 class _ElementHasText(Condition[Element]):
@@ -517,7 +520,7 @@ def _is_collection_empty(collection: Collection) -> bool:
 
 
 collection_is_empty: Condition[Collection] = CollectionCondition.raise_if_not(
-    'is empty', _is_collection_empty
+    'is empty', _is_collection_empty  # noqa
 )
 
 
