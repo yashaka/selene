@@ -20,6 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 import pytest
+from selenium.common import NoSuchElementException
 
 from selene import be, have
 from selene.core import match
@@ -50,6 +51,8 @@ def test_should_be_present__via_inline_Match__passed_and_failed(session_browser)
             'present',
             actual=lambda element: element.locate(),
             by=lambda actual: actual is not None,
+            # todo: cover cases without _falsy_exceptions (here and below)
+            _falsy_exceptions=(NoSuchElementException,),
         ).not_
     )
     # - with actual failure as True on inversion via Condition.as_not
@@ -59,6 +62,7 @@ def test_should_be_present__via_inline_Match__passed_and_failed(session_browser)
                 'present',
                 actual=lambda element: element.locate(),
                 by=lambda actual: actual is not None,
+                _falsy_exceptions=(NoSuchElementException,),
             ),
             'absent',
         )
@@ -186,7 +190,11 @@ def test_should_be_present__via_inline_Match__passed_and_failed(session_browser)
         ) in str(error)
     # - with by failure as True on inversion
     absent.should(
-        Match('present', by=lambda element: element.locate() is not None).not_
+        Match(
+            'present',
+            by=lambda element: element.locate() is not None,
+            _falsy_exceptions=(NoSuchElementException,),
+        ).not_
     )
     # - with by failure
     try:

@@ -26,7 +26,8 @@ def x_test_drops_file_to_self(session_browser):
     # TODO: implement
 
 
-def test_drops_file_to_self_in_react_mui(session_browser):
+# todo: find an alternative web page to test this
+def x_test_drops_file_to_self_in_react_mui(session_browser):
     browser = session_browser
     browser.open('https://app.qa.guru/automation-practice-form/')
     browser.element('[data-testid=ClearIcon]').click()

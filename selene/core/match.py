@@ -25,6 +25,7 @@ import re
 import warnings
 from functools import reduce
 
+from selenium.common import WebDriverException, NoSuchElementException
 from typing_extensions import (
     List,
     Any,
@@ -60,6 +61,7 @@ present_in_dom: Condition[Element] = Match(
     'is present in DOM',
     actual=lambda element: element.locate(),
     by=lambda webelement: webelement is not None,
+    _falsy_exceptions=(NoSuchElementException,),
 )
 
 absent_in_dom: Condition[Element] = Condition.as_not(present_in_dom, 'is absent in DOM')
@@ -76,6 +78,7 @@ def __deprecated_is_present(element: Element) -> bool:
 present: Condition[Element] = Match(
     'is present in DOM',
     by=__deprecated_is_present,  # noqa
+    _falsy_exceptions=(NoSuchElementException,),
 )
 """Deprecated 'is present' condition. Use present_in_dom instead. """
 
@@ -95,12 +98,14 @@ def __deprecated_is_existing(element: Element) -> bool:
 existing: Condition[Element] = Match(
     'is present in DOM',
     by=__deprecated_is_existing,  # noqa
+    _falsy_exceptions=(NoSuchElementException,),
 )
 """Deprecated 'is existing' condition. Use present_in_dom instead."""
 
 visible: Condition[Element] = Match(
     'is visible',
     by=lambda element: element.locate().is_displayed(),
+    _falsy_exceptions=(NoSuchElementException,),
 )
 
 # todo: remove once decide on the best implementation
@@ -142,19 +147,30 @@ hidden: Condition[Element] = Condition.as_not(visible, 'is hidden')
 hidden_in_dom: Condition[Element] = present_in_dom.and_(visible.not_)
 
 
-element_is_enabled: Condition[Element] = ElementCondition.raise_if_not(
-    'is enabled', lambda element: element().is_enabled()
+enabled: Condition[Element] = Match(
+    'is enabled',
+    by=lambda element: element.locate().is_enabled(),
 )
 
-element_is_disabled: Condition[Element] = ElementCondition.as_not(element_is_enabled)
+# disabled: Condition[Element] = Condition.as_not(enabled, 'disabled')
+disabled: Condition[Element] = enabled.not_
 
-element_is_clickable: Condition[Element] = visible.and_(element_is_enabled)
+clickable: Condition[Element] = visible.and_(enabled)
 
-# TODO: how will it work for mobile?
-element_is_focused: Condition[Element] = ElementCondition.raise_if_not(
+
+selected: Condition[Element] = Match(
+    'is selected',
+    by=lambda element: element.locate().is_selected(),
+)
+
+
+# TODO: how will it work for mobile? – it will not work:)
+element_is_focused: Condition[Element] = Match(
     'is focused',
-    lambda element: element()
-    == element.config.driver.execute_script('return document.activeElement'),
+    by=lambda element: (
+        element.locate()
+        == element.config.driver.execute_script('return document.activeElement')
+    ),
 )
 
 
@@ -436,11 +452,6 @@ def element_has_attribute(name: str):
     return ConditionWithValues(
         str(raw_attribute_condition), test=raw_attribute_condition.__call__
     )
-
-
-element_is_selected: Condition[Element] = ElementCondition.raise_if_not(
-    'is selected', lambda element: element().is_selected()
-)
 
 
 def element_has_value(expected: str | int | float) -> Condition[Element]:

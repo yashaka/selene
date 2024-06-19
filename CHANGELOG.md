@@ -144,6 +144,8 @@ seems like currently we do raise, but cover with tests
 
 #### TODO: do we need positional actual and by args for Match?
 
+### TODO: decide on _falsy_exceptions name
+
 ### Deprecated conditions
 
 - `be.present` in favor of `be.present_in_dom`

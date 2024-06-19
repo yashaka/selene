@@ -449,6 +449,7 @@ from typing_extensions import (
     cast,
     overload,
     Union,
+    Type,
 )
 
 from selene.core.exceptions import ConditionMismatch
@@ -783,6 +784,7 @@ class Condition(Generic[E]):
         test: Lambda[E, None],
         *,
         _inverted=False,
+        _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
     ): ...
 
     # @overload
@@ -799,9 +801,20 @@ class Condition(Generic[E]):
         self,
         description: str | Callable[[], str],
         *,
-        actual: Lambda[E, R] | None = None,
+        actual: Lambda[E, R],
         by: Predicate[R],
         _inverted=False,
+        _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
+    ): ...
+
+    @overload
+    def __init__(
+        self,
+        description: str | Callable[[], str],
+        *,
+        by: Predicate[E],
+        _inverted=False,
+        _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
     ): ...
 
     # todo: CONSIDER: accepting tuple of three as description
@@ -826,11 +839,33 @@ class Condition(Generic[E]):
         actual: Lambda[E, R] | None = None,
         by: Predicate[R] | None = None,
         _inverted=False,
+        # TODO: better name for _falsy_exceptions?
+        #       falsy means that it will become true on inverted
+        #       i.e. such exceptions if inverted, will be considered as "truthy"
+        #       the problem with such name is that if _inverted=False
+        #       then any exception is a False in context of condition behavior,
+        #       that simply throw an error as Falsy behavior
+        #       maybe then better name would be:
+        #       _truthy_exceptions_on_inverted = (AssertionError,)
+        #       or
+        #       _pass_on_inverted_when = (AssertionError,)
+        #       or
+        #       _pass_on_inverted_when = (AssertionError,)
+        #       hm... but maybe, we actually would want to keep _falsy_exceptions
+        #       but make it more generous... i.e. not throwing ConditionMismatch
+        #       on any error that is not "falsy"... Make the logic the following:
+        #       if error is in _falsy_exceptions, then raise ConditionMismatch
+        #       (or pass on inverted)
+        #       else just pass the error through... This will give an opportunity
+        #       to decide whether to ignore some non-condition-mismatch errors
+        #       inside wait.for_ ...
+        _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
     ):
         # can be already stored
         self.__description = description
         self.__inverted = _inverted
-        self.__by: Predicate[R] | None = None
+        self.__falsy_exceptions = _falsy_exceptions
+        self.__by = None
 
         if by:  # i.e. condition is based on predicate (fn returning True/False)
             if test:
@@ -851,12 +886,12 @@ class Condition(Generic[E]):
                     self.__by,
                     # TODO: should we DI? – remove this tight coupling to WebDriverException?
                     #       here and elsewhere
-                    _falsy_exceptions=(AssertionError, WebDriverException),
+                    _falsy_exceptions=_falsy_exceptions,
                 )
                 if self.__actual
                 else ConditionMismatch._to_raise_if(
                     self.__by,
-                    _falsy_exceptions=(AssertionError, WebDriverException),
+                    _falsy_exceptions=_falsy_exceptions,
                 )
             )
             return
@@ -922,13 +957,17 @@ class Condition(Generic[E]):
                 self.__description,
                 test=self.__test,
                 _inverted=not self.__inverted,
+                _falsy_exceptions=self.__falsy_exceptions,
             )
             if not self.__by
-            else Condition(
-                self.__description,
-                actual=self.__actual,
-                by=self.__by,
-                _inverted=not self.__inverted,
+            else (
+                Condition(
+                    self.__description,
+                    actual=self.__actual,  # type: ignore
+                    by=self.__by,
+                    _inverted=not self.__inverted,
+                    _falsy_exceptions=self.__falsy_exceptions,
+                )
             )
         )
 
@@ -1054,6 +1093,7 @@ class Condition(Generic[E]):
 #       hm... but won't it be confusing to pass "only predicate" in place of by
 #       in the Condition class? o_O
 #       It really looks like pretty confusing:D
+#       NOTE: if implemented, take into account _falsy_exceptions...
 # TODO: just a crazy idea... why then import both Match and/or match.*
 #       why not to make match be a class over module –
 #       a class with static methods and attributes as predefined conditions
@@ -1411,6 +1451,7 @@ class Match(Condition[E]):
         *,
         by: Predicate[R],
         _inverted=False,
+        _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
     ): ...
 
     @overload
@@ -1420,6 +1461,7 @@ class Match(Condition[E]):
         *,
         by: Predicate[E],
         _inverted=False,
+        _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
     ): ...
 
     @overload
@@ -1429,6 +1471,7 @@ class Match(Condition[E]):
         actual: Lambda[E, R],
         by: Predicate[R],
         _inverted=False,
+        _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
     ): ...
 
     @overload
@@ -1437,6 +1480,7 @@ class Match(Condition[E]):
         *,
         by: Predicate[E],
         _inverted=False,
+        _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
     ): ...
 
     # TODO: should we rename description to name? won't it confuse with __name__?
@@ -1448,6 +1492,7 @@ class Match(Condition[E]):
         *,
         by: Predicate[E] | Predicate[R],
         _inverted=False,
+        _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
     ):
         """
         The only valid signatures in usage:
@@ -1475,9 +1520,10 @@ class Match(Condition[E]):
         # TODO: fix "cannot infer type of argument 1 of __init__" or ignore
         super().__init__(  # type: ignore
             description=description,
-            actual=actual,
+            actual=actual,  # type: ignore
             by=by,
             _inverted=_inverted,
+            _falsy_exceptions=_falsy_exceptions,
         )
 
 

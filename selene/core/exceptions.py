@@ -170,7 +170,9 @@ class ConditionMismatch(AssertionError):
                 )
 
             def describe_error(error):
-                # TODO: consider making it customizable
+                # TODO: should not we remove/add stacktrace somewhere in Wait? not here?
+                #       or do it only for _falsy_exceptions?
+                # todo: consider making it customizable
                 # remove stacktrace if available:
                 stacktrace = getattr(error, 'stacktrace', None)
                 return (
@@ -183,8 +185,6 @@ class ConditionMismatch(AssertionError):
                     )
                 )
 
-            # TODO: should we catch errors on actual?
-            #       for e.g. to consider them as False indicator
             actual_to_test = None
             try:
                 actual_to_test = actual(entity) if actual else entity
@@ -193,14 +193,16 @@ class ConditionMismatch(AssertionError):
                     isinstance(reason, exception) for exception in _falsy_exceptions
                 ):
                     return
-                # TODO: do we even need this prefix?
+                # todo: do we even need this prefix?
                 # raise cls(f'Unable to get actual to match:\n{describe_error(reason)}')
+                # TODO: should we wrap as ConditionMismatch only those errors that are in _false_exceptions?
+                #       seems like yes...
                 raise cls(describe_error(reason)) from reason
 
             answer = None
             try:
                 answer = by(actual_to_test)
-            # TODO: should we move Exception processing out of this helper?
+            # todo: should we move Exception processing out of this helper?
             #       should it be somewhere in Condition?
             #       cause now it's not a Mismatch anymore, it's a failure
             #       – no, we should not, we should keep it here,

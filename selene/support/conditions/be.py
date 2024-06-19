@@ -31,12 +31,12 @@ hidden_in_dom = match.hidden_in_dom
 hidden = match.hidden
 visible = match.visible
 
-selected = match.element_is_selected
+selected = match.selected
 
-enabled = match.element_is_enabled
-disabled = match.element_is_disabled
+enabled = match.enabled
+disabled = match.disabled
 
-clickable = match.element_is_clickable
+clickable = match.clickable
 
 blank = match.element_is_blank
 

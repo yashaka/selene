@@ -7,6 +7,7 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.firefox.service import Service as FirefoxService
 
 from selene import Config, Browser, support
+from tests import const
 from tests.helpers import headless_chrome_options
 
 
@@ -31,7 +32,7 @@ def chrome_driver(request):
 @pytest.fixture(scope='function')
 def a_remote_browser():
     options = webdriver.ChromeOptions()
-    options.browser_version = '100.0'
+    options.browser_version = '125.0'
     options.set_capability(
         'selenoid:options',
         {
@@ -47,7 +48,7 @@ def a_remote_browser():
             driver_options=options,
             driver_remote_url=(
                 f'https://{project_config["LOGIN"]}:{project_config["PASSWORD"]}@'
-                f'selenoid.autotests.cloud/wd/hub'
+                f'{const.SELENOID_HOST}/wd/hub'
             ),
         )
     )
@@ -68,7 +69,7 @@ def the_module_remote_browser():
         )
 
     options = webdriver.ChromeOptions()
-    options.browser_version = '100.0'
+    options.browser_version = '125.0'
     options.set_capability(
         'selenoid:options',
         {
@@ -86,7 +87,7 @@ def the_module_remote_browser():
             driver_remote_url=(
                 f'https://{ProjectConfig.selenoid_login}:'
                 f'{ProjectConfig.selenoid_password}@'
-                f'selenoid.autotests.cloud/wd/hub'
+                f'{const.SELENOID_HOST}/wd/hub'
             ),
         )
     )

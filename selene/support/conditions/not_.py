@@ -42,8 +42,8 @@ absent_in_dom: Condition[Element] = _match.absent_in_dom.not_
 in_dom: Condition[Element] = _match.present_in_dom.not_
 
 
-enabled: Condition[Element] = _match.element_is_enabled.not_
-disabled: Condition[Element] = _match.element_is_disabled.not_
+enabled: Condition[Element] = _match.enabled.not_
+disabled: Condition[Element] = _match.disabled.not_
 
 blank: Condition[Element] = _match.element_is_blank.not_
 
