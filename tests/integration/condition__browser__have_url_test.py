@@ -30,19 +30,20 @@ from tests.integration.helpers.givenpage import GivenPage
 
 def test_have_url(session_browser):
     GivenPage(session_browser.driver).opened_empty()
+    
     session_browser.should(have.url(session_browser.driver.current_url))
     session_browser.should(have.no.url(session_browser.driver.current_url[:-1]))
 
 
 def test_have_url_containing(session_browser):
     GivenPage(session_browser.driver).opened_empty()
+    
     session_browser.should(have.url_containing('empty.html'))
     session_browser.should(have.no.url_containing('start_page.xhtml'))
 
 
 def test_fails_on_timeout_during_waiting_for_exact_url(session_browser):
     browser = session_browser.with_(timeout=0.1)
-
     GivenPage(browser.driver).opened_empty()
 
     try:
@@ -60,7 +61,6 @@ def test_fails_on_timeout_during_waiting_for_exact_url(session_browser):
 
 def test_fails_on_timeout_during_waiting_for_part_of_url(session_browser):
     browser = session_browser.with_(timeout=0.1)
-
     GivenPage(browser.driver).opened_empty()
 
     try:
