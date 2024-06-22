@@ -1,13 +1,13 @@
 [
   {
     "referrer": "Google",
-    "count": 332,
-    "uniques": 87
+    "count": 429,
+    "uniques": 95
   },
   {
     "referrer": "github.com",
-    "count": 187,
-    "uniques": 21
+    "count": 192,
+    "uniques": 23
   },
   {
     "referrer": "DuckDuckGo",
@@ -21,8 +21,8 @@
   },
   {
     "referrer": "pypi.org",
-    "count": 18,
-    "uniques": 2
+    "count": 19,
+    "uniques": 3
   },
   {
     "referrer": "yashaka.github.io",
