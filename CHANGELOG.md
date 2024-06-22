@@ -114,6 +114,13 @@ TODOs:
 
 ### TODO: not_ as callable object?
 
+### TODO: should we raise InvalidCompare on _inverted too?
+
+seems like currently we do raise, but cover with tests
+
+### TODO: conditions can read options from config? commands/queries can read them?
+
+especially relevant for have.texts to turn on/off ignoring invisible elements
 
 ## 2.0.0rc10: «copy&paste, frames, shadow & texts_like» (to be released on DD.05.2024)
 
@@ -130,9 +137,6 @@ TODOs:
 ### TODO: ENSURE composed conditions work as expected (or/and, etc.)
 
 ...
-### TODO: should we raise InvalidCompare on _inverted too?
-
-seems like currently we do raise, but cover with tests
 
 ### TODO: Consider renaming description to name for Condition, Match, Query, Command, etc.
 
@@ -143,8 +147,6 @@ seems like currently we do raise, but cover with tests
 ### TODO: decide on Match fate (subclass OR subclass + match* 2 in 1)
 
 #### TODO: do we need positional actual and by args for Match?
-
-### TODO: decide on _falsy_exceptions name
 
 ### Deprecated conditions
 

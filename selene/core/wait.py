@@ -50,6 +50,12 @@ class Wait(Generic[E]):
         _decorator: (
             Callable[[Wait[E]], Callable[[Callable[..., R]], Callable[..., R]]] | None
         ) = None,
+        # TODO: should not we add here ignore_exceptions?
+        #       (called as _falsy_exceptions in Condition init)
+        #       and then tune it depending on context,
+        #       e.g. in should we need to ignore only ConditionMismatch errors
+        #       in commands we probably need to ignore a low more of WebDriverExceptions
+        #       and so on...
     ):
         self.entity = entity
         self._timeout = at_most

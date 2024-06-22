@@ -135,8 +135,10 @@ class ConditionMismatch(AssertionError):
         actual: Optional[Callable[[E], E | R]] = None,
         *,
         _inverted: Optional[bool] = False,
-        # TODO: should we rename it to _exceptions_as_truthy_on_inverted?
+        # todo: should we rename it to _exceptions_as_truthy_on_inverted?
         #       or just document this in docstring?
+        #       – seems like no, because now falsy are always falsy:)
+        #       as we started to differentiate raising falsy from raising non-falsy
         _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
     ):
         @functools.wraps(by)
@@ -189,15 +191,16 @@ class ConditionMismatch(AssertionError):
             try:
                 actual_to_test = actual(entity) if actual else entity
             except Exception as reason:
-                if _inverted and any(
+                is_falsy = any(
                     isinstance(reason, exception) for exception in _falsy_exceptions
-                ):
+                )
+                if _inverted and is_falsy:
                     return
-                # todo: do we even need this prefix?
-                # raise cls(f'Unable to get actual to match:\n{describe_error(reason)}')
-                # TODO: should we wrap as ConditionMismatch only those errors that are in _false_exceptions?
-                #       seems like yes...
-                raise cls(describe_error(reason)) from reason
+                # only _falsy_exceptions can be considered as "condition mismatch"
+                # others should signify the "total comparison is invalid in this case" failure
+                # todo: should we rebuild reason if it's not is_falsy
+                #       by applying describe_error like we did further below?
+                raise (cls(describe_error(reason)) if is_falsy else reason) from reason
 
             answer = None
             try:
@@ -208,12 +211,15 @@ class ConditionMismatch(AssertionError):
             #       – no, we should not, we should keep it here,
             #         because this is needed for the inverted case
             except Exception as reason:
-                if _inverted and any(
+                is_falsy = any(
                     isinstance(reason, exception) for exception in _falsy_exceptions
-                ):
+                )
+                if _inverted and is_falsy:
                     return
                 # answer is still None
-                raise cls(
+                raise (cls if is_falsy else reason.__class__)(
+                    # todo: should we still remove stacktrace from reason
+                    #       if it's not is_falsy?
                     f'{describe_error(reason)}:'
                     f'\n{describe_not_match(actual_to_test)}'
                 ) from reason

@@ -839,26 +839,6 @@ class Condition(Generic[E]):
         actual: Lambda[E, R] | None = None,
         by: Predicate[R] | None = None,
         _inverted=False,
-        # TODO: better name for _falsy_exceptions?
-        #       falsy means that it will become true on inverted
-        #       i.e. such exceptions if inverted, will be considered as "truthy"
-        #       the problem with such name is that if _inverted=False
-        #       then any exception is a False in context of condition behavior,
-        #       that simply throw an error as Falsy behavior
-        #       maybe then better name would be:
-        #       _truthy_exceptions_on_inverted = (AssertionError,)
-        #       or
-        #       _pass_on_inverted_when = (AssertionError,)
-        #       or
-        #       _pass_on_inverted_when = (AssertionError,)
-        #       hm... but maybe, we actually would want to keep _falsy_exceptions
-        #       but make it more generous... i.e. not throwing ConditionMismatch
-        #       on any error that is not "falsy"... Make the logic the following:
-        #       if error is in _falsy_exceptions, then raise ConditionMismatch
-        #       (or pass on inverted)
-        #       else just pass the error through... This will give an opportunity
-        #       to decide whether to ignore some non-condition-mismatch errors
-        #       inside wait.for_ ...
         _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
     ):
         # can be already stored
@@ -876,9 +856,16 @@ class Condition(Generic[E]):
             self.__actual = actual
             self.__by = by
             self.__test = (
-                ConditionMismatch._to_raise_if_not(self.__by, self.__actual)
+                ConditionMismatch._to_raise_if_not(
+                    self.__by,
+                    self.__actual,
+                    _falsy_exceptions=_falsy_exceptions,
+                )
                 if self.__actual
-                else ConditionMismatch._to_raise_if_not(self.__by)
+                else ConditionMismatch._to_raise_if_not(
+                    self.__by,
+                    _falsy_exceptions=_falsy_exceptions,
+                )
             )
             self.__test_inverted = (
                 ConditionMismatch._to_raise_if_actual(
@@ -910,8 +897,14 @@ class Condition(Generic[E]):
                     test(
                         entity
                     )  # called via test, not self.__test to make mypy happy :)
-                except Exception:  # TODO: should we check only AssertionError here?
-                    return
+                # todo: ensure covered with tests (we might not have the ones)
+                except Exception as reason:
+                    is_falsy = any(
+                        isinstance(reason, exception) for exception in _falsy_exceptions
+                    )
+                    if is_falsy:
+                        return
+                    raise reason
                 raise ConditionMismatch()
 
             self.__test_inverted = as_inverted

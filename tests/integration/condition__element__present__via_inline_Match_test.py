@@ -74,6 +74,7 @@ def test_should_be_present__via_inline_Match__passed_and_failed(session_browser)
                 'present',
                 actual=lambda element: element.locate(),
                 by=lambda actual: actual is not None,
+                _falsy_exceptions=(NoSuchElementException,),
             )
         )
         pytest.fail('expected failure')
@@ -119,6 +120,7 @@ def test_should_be_present__via_inline_Match__passed_and_failed(session_browser)
                         query=lambda element: element.locate(),
                         by=lambda actual: actual is not None,
                     ),
+                    _falsy_exceptions=(NoSuchElementException,),
                 ),
                 'absent',
             ).not_
@@ -198,7 +200,13 @@ def test_should_be_present__via_inline_Match__passed_and_failed(session_browser)
     )
     # - with by failure
     try:
-        absent.should(Match('present', by=lambda element: element.locate() is not None))
+        absent.should(
+            Match(
+                'present',
+                by=lambda element: element.locate() is not None,
+                _falsy_exceptions=(NoSuchElementException,),
+            )
+        )
         pytest.fail('expected failure')
     except AssertionError as error:
         assert (

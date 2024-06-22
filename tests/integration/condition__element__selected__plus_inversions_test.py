@@ -92,7 +92,7 @@ def test_should_be_selected__passed_and_failed(session_browser):
         assert (
             "browser.element(('css selector', '#absent')).is selected\n"
             '\n'
-            'Reason: ConditionMismatch: Message: no such element: Unable to locate '
+            'Reason: NoSuchElementException: Message: no such element: Unable to locate '
             'element: {"method":"css selector","selector":"#absent"}\n'
             '  (Session info:'  # ' chrome=126.0.6478.62); For documentation on this error, '
             # 'please visit: '
@@ -157,7 +157,7 @@ def test_should_be_not_selected__passed_and_failed(
         assert (
             "browser.element(('css selector', '#absent')).is not (selected)\n"
             '\n'
-            'Reason: ConditionMismatch: Message: no such element: Unable to locate '
+            'Reason: NoSuchElementException: Message: no such element: Unable to locate '
             'element: {"method":"css selector","selector":"#absent"}\n'
             '  (Session info:'  # ' chrome=126.0.6478.62); For documentation on this error, '
             # 'please visit: '

@@ -83,7 +83,7 @@ def test_should_be_enabled__passed_and_failed(session_browser):
             'Timed out after 0.1s, while waiting for:\n'
             "browser.element(('css selector', '#absent')).is enabled\n"
             '\n'
-            'Reason: ConditionMismatch: Message: no such element: Unable to locate '
+            'Reason: NoSuchElementException: Message: no such element: Unable to locate '
             'element: {"method":"css selector","selector":"#absent"}\n'
             '  (Session info:'  # ' chrome=126.0.6478.62); For documentation on this error, '
             # 'please visit: '
@@ -148,7 +148,7 @@ def test_should_be_not_enabled__passed_and_failed(
             'Timed out after 0.1s, while waiting for:\n'
             "browser.element(('css selector', '#absent')).is not (enabled)\n"
             '\n'
-            'Reason: ConditionMismatch: Message: no such element: Unable to locate '
+            'Reason: NoSuchElementException: Message: no such element: Unable to locate '
             'element: {"method":"css selector","selector":"#absent"}\n'
             '  (Session info:'  # ' chrome=126.0.6478.62); For documentation on this error, '
             # 'please visit: '
@@ -213,7 +213,7 @@ def test_should_be_disabled__passed_and_failed(
             'Timed out after 0.1s, while waiting for:\n'
             "browser.element(('css selector', '#absent')).is not (enabled)\n"
             '\n'
-            'Reason: ConditionMismatch: Message: no such element: Unable to locate '
+            'Reason: NoSuchElementException: Message: no such element: Unable to locate '
             'element: {"method":"css selector","selector":"#absent"}\n'
             '  (Session info:'  # ' chrome=126.0.6478.62); For documentation on this error, '
             # 'please visit: '
@@ -276,7 +276,7 @@ def test_should_be_not_disabled__passed_and_failed(session_browser):
             'Timed out after 0.1s, while waiting for:\n'
             "browser.element(('css selector', '#absent')).is enabled\n"
             '\n'
-            'Reason: ConditionMismatch: Message: no such element: Unable to locate '
+            'Reason: NoSuchElementException: Message: no such element: Unable to locate '
             'element: {"method":"css selector","selector":"#absent"}\n'
             '  (Session info:'  # ' chrome=126.0.6478.62); For documentation on this error, '
             # 'please visit: '
