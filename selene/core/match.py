@@ -193,24 +193,12 @@ class _ElementHasText(Condition[Element]):
         self.__ignore_case = _ignore_case
         self.__inverted = _inverted
 
-        # # actually happened to be not needed, both _ params and even closures of self
-        # def describe(_):  # actually we don't need here passing self through describe
-        #     return (
-        #         f'{_describing_matched_to}'
-        #         f'{" ignoring case: "if _ignore_case else ""} {expected}'
-        #     )
-        #
-        # def compare(_):  # here we also don't need it, closure's self is enough
-        #     return lambda actual: (
-        #         _compared_by_predicate_to(str(expected).lower())(str(actual).lower())
-        #         if _ignore_case
-        #         else _compared_by_predicate_to(str(expected))(str(actual))
-        #     )
-
         super().__init__(
             (
                 f'{_describing_matched_to}'
                 f'{" ignoring case:" if _ignore_case else ""} {expected}'
+                # todo: refactor to and change tests correspondingly:
+                # f'{" ignoring case:" if _ignore_case else ":"} {expected}'
             ),
             actual=query.text,
             by=lambda actual: (

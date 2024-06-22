@@ -25,6 +25,9 @@ from typing import Any, Iterable
 
 from selene.core import match as _match
 
+# TODO:  consider breaking into be_not.* and have_no.*
+#        then, it can be implemented inside be.* and have.* (if utilizing classes)
+
 # --- be.not_.* conditions --- #
 from selene.core.condition import Condition
 from selene.core.entity import Element, Collection

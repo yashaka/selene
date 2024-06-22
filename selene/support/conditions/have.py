@@ -36,7 +36,6 @@ def exact_text(value: str | int | float):
     return match.exact_text(value)
 
 
-# TODO: consider accepting int
 def text(partial_value: str | int | float):
     return match.text(partial_value)
 
