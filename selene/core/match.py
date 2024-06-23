@@ -116,6 +116,7 @@ __visible_with_actual: Condition[Element] = Match(
     by=lambda actual: actual.is_displayed(),
     # TODO: consider adding describe_actual
     # describe_actual=lambda actual: (actual and actual.get_attribute('outerHTML')),
+    # TODO: but implementation should count mobile case...
 )
 """Alternative and disabled via protection prefix version of visible condition,
 that will result in errors with unclear actual, something like:
@@ -686,6 +687,14 @@ class _exact_texts_like(Condition[Collection]):
         ([...], _PredefinedGlobPatterns['zero_or_one']),
         ((...,), _PredefinedGlobPatterns['one_or_more']),
         ([(...,)], _PredefinedGlobPatterns['zero_or_more']),
+    )
+
+    # TODO: consider this set of list globs as a default
+    __X_DEFAULT_GLOBS: Tuple[Tuple[Any, str], ...] = (
+        ({...}, _PredefinedGlobPatterns['exactly_one']),
+        ([{...}], _PredefinedGlobPatterns['zero_or_one']),
+        (..., _PredefinedGlobPatterns['one_or_more']),
+        ([...], _PredefinedGlobPatterns['zero_or_more']),
     )
 
     def __init__(

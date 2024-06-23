@@ -26,7 +26,7 @@ from selene import have
 from selene.core import match
 from tests.integration.helpers.givenpage import GivenPage
 
-# TODO: review tests: clean up, add more cases if needed, break down into smaller tests,
+# todo: review tests: clean up, add more cases if needed, break down into smaller tests,
 #       find better names for tests
 #       add more tests for re.DOTALL flag
 

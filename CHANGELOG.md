@@ -124,6 +124,8 @@ especially relevant for have.texts to turn on/off ignoring invisible elements
 
 ## 2.0.0rc10: «copy&paste, frames, shadow & texts_like» (to be released on DD.05.2024)
 
+### TODO: decide on ... vs (...,) as one_or_more
+
 ### TODO: ensure no warnings
 
 ### TODO: add `<` before driver.switch_to.* tab in iframe faq doc
