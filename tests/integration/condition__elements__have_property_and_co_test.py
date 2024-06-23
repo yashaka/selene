@@ -61,7 +61,7 @@ def test_have_property__condition_variations(session_browser):
         pytest.fail('should fail on values mismatch')
     except AssertionError as error:
         assert (
-            "browser.all(('css selector', '.name')).has no (property 'value' with "
+            "browser.all(('css selector', '.name')).has no (native property 'value' with "
             "values containing '(20, 2)')\n"
             '\n'
             "Reason: ConditionMismatch: actual property values: ['John 20th', 'Doe 2nd']\n"
