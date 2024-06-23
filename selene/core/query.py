@@ -188,6 +188,7 @@ from __future__ import annotations
 
 import functools
 import typing
+import warnings
 
 from typing_extensions import (
     List,
@@ -343,13 +344,20 @@ def css_property(name: str) -> Query[Element, str]:
     return Query(f'css property {name}', fn)
 
 
-def js_property(
+def native_property(
     name: str,
 ) -> Query[Element, Union[str, bool, WebElement, dict]]:
     def func(element: Element) -> Union[str, bool, WebElement, dict]:
         return element.locate().get_property(name)
 
-    return Query(f'js property {name}', func)
+    return Query(f'native property {name}', func)
+
+
+def js_property(
+    name: str,
+) -> Query[Element, Union[str, bool, WebElement, dict]]:
+    warnings.warn('deprecated: use query.native_property instead', DeprecationWarning)
+    return native_property(name)
 
 
 # --- Pseudo-queries --- #

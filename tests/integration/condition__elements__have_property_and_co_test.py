@@ -51,21 +51,21 @@ def test_have_property__condition_variations(session_browser):
     exercises.first.type('20')
     exercises.second.type('30')
 
-    # the following passes too, cause js prop exists, are we ok with that?
+    # todo: the following passes too, cause js prop exists, are we ok with that?
     browser.element('ul').should(have.attribute('id'))
 
-    exercises.should(have.js_property('value').values(20, 30))
-    names.should(have.js_property('value').values_containing(20, 2))
+    exercises.should(have.property_('value').values(20, 30))
+    names.should(have.property_('value').values_containing(20, 2))
     try:
-        names.should(have.js_property('value').values_containing(20, 2).not_)
+        names.should(have.property_('value').values_containing(20, 2).not_)
         pytest.fail('should fail on values mismatch')
     except AssertionError as error:
         assert (
-            "browser.all(('css selector', '.name')).has no (js property 'value' with "
+            "browser.all(('css selector', '.name')).has no (property 'value' with "
             "values containing '(20, 2)')\n"
             '\n'
             "Reason: ConditionMismatch: actual property values: ['John 20th', 'Doe 2nd']\n"
         ) in str(error)
 
-    exercises.first.should(have.js_property('value').value(20))
-    exercises.first.should(have.js_property('value').value_containing(2))
+    exercises.first.should(have.property_('value').value(20))
+    exercises.first.should(have.property_('value').value_containing(2))

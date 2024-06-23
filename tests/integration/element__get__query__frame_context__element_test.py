@@ -95,7 +95,7 @@ def test_actions_on_frame_element_with_logging(session_browser):
 
     # THEN everything inside frame context
     text_area.element('p').should(
-        have.js_property('innerHTML').value(
+        have.property_('innerHTML').value(
             'Hello, World!',
         )
     ).perform(command.select_all)
@@ -105,13 +105,13 @@ def test_actions_on_frame_element_with_logging(session_browser):
 
     # AND coming back inside frame context
     text_area.element('p').should(
-        have.js_property('innerHTML').value('<strong>Hello, World!</strong>')
+        have.property_('innerHTML').value('<strong>Hello, World!</strong>')
     )
 
     text_area.perform(command.select_all).type(
         'New content',
     ).element('p').should(
-        have.js_property('innerHTML').value(
+        have.property_('innerHTML').value(
             '<strong>New content</strong>',
         )
     )
@@ -124,9 +124,9 @@ def test_actions_on_frame_element_with_logging(session_browser):
         # THEN everything is logged:
         assert (
             "element('.tox-edit-area__iframe'): element('#tinymce').element('p'): should "
-            "have js property 'innerHTML' with value 'Hello, World!': STARTED\n"
+            "have native property 'innerHTML' with value 'Hello, World!': STARTED\n"
             "element('.tox-edit-area__iframe'): element('#tinymce').element('p'): should "
-            "have js property 'innerHTML' with value 'Hello, World!': PASSED\n"
+            "have native property 'innerHTML' with value 'Hello, World!': PASSED\n"
             "element('.tox-edit-area__iframe'): element('#tinymce').element('p'): send "
             '«select all» keys shortcut as ctrl+a or cmd+a for mac: STARTED\n'
             "element('.tox-edit-area__iframe'): element('#tinymce').element('p'): send "
@@ -134,9 +134,9 @@ def test_actions_on_frame_element_with_logging(session_browser):
             "element('.tox-toolbar__primary').element('[aria-label=Bold]'): click: STARTED\n"
             "element('.tox-toolbar__primary').element('[aria-label=Bold]'): click: PASSED\n"
             "element('.tox-edit-area__iframe'): element('#tinymce').element('p'): should "
-            "have js property 'innerHTML' with value '<strong>Hello, World!</strong>': STARTED\n"
+            "have native property 'innerHTML' with value '<strong>Hello, World!</strong>': STARTED\n"
             "element('.tox-edit-area__iframe'): element('#tinymce').element('p'): should "
-            "have js property 'innerHTML' with value '<strong>Hello, World!</strong>': PASSED\n"
+            "have native property 'innerHTML' with value '<strong>Hello, World!</strong>': PASSED\n"
             "element('.tox-edit-area__iframe'): element('#tinymce'): send «select all» "
             'keys shortcut as ctrl+a or cmd+a for mac: STARTED\n'
             "element('.tox-edit-area__iframe'): element('#tinymce'): send «select all» "
@@ -146,10 +146,10 @@ def test_actions_on_frame_element_with_logging(session_browser):
             "element('.tox-edit-area__iframe'): element('#tinymce'): type: New content: "
             'PASSED\n'
             "element('.tox-edit-area__iframe'): element('#tinymce').element('p'): should "
-            "have js property 'innerHTML' with value '<strong>New content</strong>': "
+            "have native property 'innerHTML' with value '<strong>New content</strong>': "
             'STARTED\n'
             "element('.tox-edit-area__iframe'): element('#tinymce').element('p'): should "
-            "have js property 'innerHTML' with value '<strong>New content</strong>': "
+            "have native property 'innerHTML' with value '<strong>New content</strong>': "
             'PASSED\n'
             "element('.tox-edit-area__iframe'): element('#tinymce').all('p'): should have "
             'size 10: STARTED\n'

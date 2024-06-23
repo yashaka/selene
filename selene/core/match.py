@@ -240,11 +240,6 @@ class text_pattern(Condition[Element]):
         self.__expected = expected
         self.__flags = _flags
         self.__inverted = _inverted
-        # TODO: on invalid pattern error will be:
-        #       'Reason: ConditionMismatch: nothing to repeat at position 0'
-        #       how to improve it? leaving more hints that this is "regex invalid error"
-        #       probably, we can re-raise re.error inside predicate.matches
-        #       with additional explanation
 
         super().__init__(
             f'has text matching{f" (with flags {_flags}):" if _flags else ""}'
@@ -258,10 +253,12 @@ class text_pattern(Condition[Element]):
     def ignore_case(self):
         return self.where_flags(re.IGNORECASE)
 
-    # TODO: should we shorten name just to flags? i.e.
+    # todo: should we shorten name just to flags? (or add alias) i.e.
     #       `.should(have.text_matching(r'.*one.*').flags(re.IGNORECASE))`
     #       over
     #       `.should(have.text_matching(r'.*one.*').where_flags(re.IGNORECASE))`
+    #       currently it's named with where_ prefix for consistency with
+    #       texts_like & co conditions
     def where_flags(self, flags: re.RegexFlag, /) -> Condition[Element]:
         return self.__class__(
             self.__expected,
@@ -270,11 +267,7 @@ class text_pattern(Condition[Element]):
         )
 
 
-def element_has_js_property(name: str):
-    # TODO: will this even work for mobile? o_O
-    #       if .get_property is valid for mobile
-    #       then we should rename it for sure here...
-    # TODO: should we keep simpler but less obvious name - *_has_property ?
+def native_property(name: str):
     def property_value(element: Element):
         return element.locate().get_property(name)
 
@@ -282,20 +275,20 @@ def element_has_js_property(name: str):
         return [element.get_property(name) for element in collection()]
 
     raw_property_condition = ElementCondition.raise_if_not_actual(
-        'has js property ' + name, property_value, predicate.is_truthy
+        'has native property ' + name, property_value, predicate.is_truthy
     )
 
-    class ConditionWithValues(ElementCondition):
+    class PropertyWithValues(ElementCondition):
         def value(self, expected: str | int | float) -> Condition[Element]:
             return ElementCondition.raise_if_not_actual(
-                f"has js property '{name}' with value '{expected}'",
+                f"has native property '{name}' with value '{expected}'",
                 property_value,
                 predicate.str_equals(expected),
             )
 
         def value_containing(self, expected: str | int | float) -> Condition[Element]:
             return ElementCondition.raise_if_not_actual(
-                f"has js property '{name}' with value containing '{expected}'",
+                f"has native property '{name}' with value containing '{expected}'",
                 property_value,
                 predicate.str_includes(expected),
             )
@@ -306,7 +299,7 @@ def element_has_js_property(name: str):
             expected_ = helpers.flatten(expected)
 
             return CollectionCondition.raise_if_not_actual(
-                f"has js property '{name}' with values '{expected_}'",
+                f"has native property '{name}' with values '{expected_}'",
                 property_values,
                 predicate.str_equals_to_list(expected_),
             )
@@ -317,12 +310,12 @@ def element_has_js_property(name: str):
             expected_ = helpers.flatten(expected)
 
             return CollectionCondition.raise_if_not_actual(
-                f"has js property '{name}' with values containing '{expected_}'",
+                f"has native property '{name}' with values containing '{expected_}'",
                 property_values,
                 predicate.str_equals_by_contains_to_list(expected_),
             )
 
-    return ConditionWithValues(
+    return PropertyWithValues(
         str(raw_property_condition), test=raw_property_condition.__call__
     )
 

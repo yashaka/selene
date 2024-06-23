@@ -122,19 +122,24 @@ def attribute(name: str, *args, **kwargs):
 
 
 def js_property(name: str, *args, **kwargs):
+    warnings.warn('deprecated; use have.no.property instead', DeprecationWarning)
+    return property_(name, *args, **kwargs)
+
+
+def property_(name: str, *args, **kwargs):
     if args or 'value' in kwargs:
         warnings.warn(
             'passing second argument is deprecated; '
-            'use have.js_property(foo).value(bar) instead',
+            'use have.property(foo).value(bar) instead',
             DeprecationWarning,
         )
         return (
-            _match.element_has_js_property(name)
+            _match.native_property(name)
             .value(args[0] if args else kwargs['value'])
             .not_
         )
 
-    original = _match.element_has_js_property(name)
+    original = _match.native_property(name)
     negated = original.not_
 
     def value(self, expected: str | int | float) -> Condition[Element]:

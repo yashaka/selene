@@ -7,8 +7,6 @@ You allways can work with iframes same way [as you do in pure Selenium](https://
 ```python
 from selene import browser, command, have
 
-
-
 # GIVEN
 iframe = browser.element('#editor-iframe')
 # WHEN
@@ -27,7 +25,7 @@ browser.driver.switch_to.frame(iframe_webelement)
 # AND ...
 browser.all('strong').should(have.size(1))
 browser.element('.textarea').should(
-    have.js_property('innerHTML').value(
+    have.property_('innerHTML').value(
         '<p><strong>Hello, world!</strong></p>'
     )
 )

@@ -43,7 +43,7 @@ class WYSIWYG:
 
     @text_area_frame._within
     def should_have_text_html(self, text_html):
-        self.text_area.should(have.js_property('innerHTML').value(text_html))
+        self.text_area.should(have.property_('innerHTML').value(text_html))
         return self
 
     @text_area_frame._within

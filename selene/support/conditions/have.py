@@ -44,16 +44,24 @@ def text_matching(regex_pattern: str):
     return match.text_pattern(regex_pattern)
 
 
-# TODO: should we use here js.property style (and below for js.returned(...))
+# TODO: should we rename it to native_property or simply prop?
+#       as we did for match.native_property and query.native_property?
+def property_(name: str):  # named with _ suffix for no conflicts with built in
+    return match.native_property(name)
+
+
 def js_property(name: str, value: Optional[str] = None):
+    warnings.warn(
+        'have.js_property is deprecated; use have.property instead', DeprecationWarning
+    )
     if value:
         warnings.warn(
-            'passing second argument is deprecated; use have.js_property(foo).value(bar) instead',
+            'passing second argument is deprecated; use have.property(foo).value(bar) instead',
             DeprecationWarning,
         )
-        return match.element_has_js_property(name).value(value)
+        return match.native_property(name).value(value)
 
-    return match.element_has_js_property(name)
+    return match.native_property(name)
 
 
 def css_property(name: str, value: Optional[str] = None):

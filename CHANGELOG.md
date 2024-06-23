@@ -156,6 +156,9 @@ especially relevant for have.texts to turn on/off ignoring invisible elements
 - `be.not_.present` in favor of `be.not_.present_in_dom`
 - `be.absent` in favor of `be.absent_in_dom`
 - `be.not_.absent` in favor of `be.not_.absent_in_dom`
+- `have.no.js_property` in favor of `have.no.property_`
+- `have.js_property` in favor of `have.property_` or `match.native_property`
+  - same for `query.js_property` in favor of `query.native_property`
 
 ### Added be.hidden_in_dom in addition to be.hidden
 
