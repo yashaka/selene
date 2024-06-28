@@ -1,23 +1,28 @@
 [
   {
     "referrer": "Google",
-    "count": 351,
-    "uniques": 92
+    "count": 380,
+    "uniques": 86
   },
   {
     "referrer": "github.com",
-    "count": 95,
-    "uniques": 21
+    "count": 77,
+    "uniques": 17
   },
   {
     "referrer": "school.qa.guru",
-    "count": 59,
-    "uniques": 10
+    "count": 57,
+    "uniques": 9
   },
   {
     "referrer": "DuckDuckGo",
     "count": 28,
     "uniques": 27
+  },
+  {
+    "referrer": "ecosia.org",
+    "count": 16,
+    "uniques": 11
   },
   {
     "referrer": "yashaka.github.io",
@@ -30,14 +35,9 @@
     "uniques": 3
   },
   {
-    "referrer": "ecosia.org",
-    "count": 10,
-    "uniques": 10
-  },
-  {
     "referrer": "yandex.ru",
-    "count": 5,
-    "uniques": 5
+    "count": 4,
+    "uniques": 4
   },
   {
     "referrer": "qiita.com",
