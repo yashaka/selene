@@ -1,13 +1,13 @@
 [
   {
     "referrer": "Google",
-    "count": 325,
-    "uniques": 83
+    "count": 328,
+    "uniques": 85
   },
   {
     "referrer": "github.com",
-    "count": 105,
-    "uniques": 24
+    "count": 98,
+    "uniques": 23
   },
   {
     "referrer": "school.qa.guru",
@@ -20,6 +20,11 @@
     "uniques": 2
   },
   {
+    "referrer": "yandex.ru",
+    "count": 18,
+    "uniques": 8
+  },
+  {
     "referrer": "perplexity.ai",
     "count": 14,
     "uniques": 1
@@ -28,11 +33,6 @@
     "referrer": "DuckDuckGo",
     "count": 12,
     "uniques": 12
-  },
-  {
-    "referrer": "yandex.ru",
-    "count": 10,
-    "uniques": 6
   },
   {
     "referrer": "readthedocs.org",
@@ -45,8 +45,8 @@
     "uniques": 4
   },
   {
-    "referrer": "yashaka.github.io",
+    "referrer": "automated-testing.info",
     "count": 8,
-    "uniques": 4
+    "uniques": 2
   }
 ]
