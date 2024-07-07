@@ -58,7 +58,7 @@ def test_should_have_texts_exception(session_browser):
         pytest.fail('should have failed on texts mismatch')
     except AssertionError as error:
         assert (
-            "browser.all(('css selector', 'li')).have texts ('Alex',)\n"
+            "browser.all(('css selector', 'li')).have texts ['Alex']\n"
             '\n'
             "Reason: ConditionMismatch: actual visible texts: ['Alex', 'Yakov']\n"
         ) in str(error)
@@ -95,7 +95,7 @@ def test_should_have_no_texts_exception(session_browser):
     with pytest.raises(TimeoutException) as error:
         browser.all('li').should(have.no.texts('Alex', 'Yakov'))
     # TODO: why do we have `has` below, should not it be `have`?
-    assert "have no (texts ('Alex', 'Yakov'))" in error.value.msg
+    assert "have no (texts ['Alex', 'Yakov'])" in error.value.msg
     assert (
         "Reason: ConditionMismatch: actual visible texts: ['Alex', 'Yakov']\n"
         in error.value.msg
@@ -144,7 +144,7 @@ def test_should_have_text_exception(session_browser):
 
     with pytest.raises(TimeoutException) as error:
         browser.all('li').should(have.text('Yakov').each)
-    assert "each has text Yakov" in error.value.msg
+    assert "each has text 'Yakov'" in error.value.msg
     assert (
         "AssertionError: Not matched elements among all with indexes from 0 to 1:\n"
         "browser.all(('css selector', 'li')).cached[0]: actual text: Alex\n"
@@ -178,7 +178,7 @@ def test_should_have_no_text_exception(session_browser):
 
     with pytest.raises(TimeoutException) as error:
         browser.all('li').should(have.no.text('Alex').each)
-    assert "each has no (text Alex)" in error.value.msg
+    assert "each has no (text 'Alex')" in error.value.msg
     assert (
         "AssertionError: Not matched elements among all with indexes from 0 to 1:\n"
         "browser.all(('css selector', 'li')).cached[0]: actual text: Alex\n"

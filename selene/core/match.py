@@ -25,28 +25,24 @@ import re
 import warnings
 from functools import reduce
 
-from selenium.common import WebDriverException, NoSuchElementException
+from selenium.common import NoSuchElementException
+from selenium.webdriver.common.by import By
+from selenium.webdriver.remote.webelement import WebElement
 from typing_extensions import (
     List,
     Any,
     Union,
     Iterable,
     Tuple,
-    Unpack,
-    TypedDict,
-    overload,
-    NotRequired,
-    cast,
     Literal,
     Dict,
     override,
     Callable,
-    AnyStr,
-    TypeVar,
     Self,
+    Type,
 )
 
-from selene.common import predicate, helpers
+from selene.common import predicate, helpers, appium_tools
 from selene.core import query
 from selene.core.condition import Condition, Match
 from selene.core.conditions import (
@@ -58,13 +54,134 @@ from selene.core.entity import Collection, Element
 from selene.core._browser import Browser
 
 
+# GENERAL CONDITION BUILDERS ------------------------------------------------- #
+
+
+class _ElementHasSomethingSupportingIgnoreCase(Match[Element]):
+    def __init__(
+        self,
+        description,
+        /,
+        expected,
+        actual,
+        by,
+        _ignore_case=False,
+        _inverted=False,
+        _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
+    ):
+        self.__description = description
+        self.__actual = actual
+        self.__expected = expected
+        self.__by = by
+        self.__ignore_case = _ignore_case
+        self.__inverted = _inverted
+        self.__falsy_exceptions = _falsy_exceptions
+
+        super().__init__(
+            description=(
+                f'{description}{" ignoring case:" if _ignore_case else ""} \'{expected}\''
+                # todo: refactor to and change tests correspondingly:
+                # f'{" ignoring case:" if _ignore_case else ":"} «{expected}»'
+            ),
+            actual=actual,
+            by=lambda actual: (
+                by(str(expected).lower())(str(actual).lower())
+                if _ignore_case
+                else by(str(expected))(str(actual))
+            ),
+            _inverted=_inverted,
+            _falsy_exceptions=_falsy_exceptions,
+        )
+
+    @property
+    def ignore_case(self) -> Condition[Element]:
+        return self.__class__(
+            self.__description,
+            self.__expected,
+            self.__actual,
+            self.__by,
+            _ignore_case=True,
+            _inverted=self.__inverted,
+            _falsy_exceptions=self.__falsy_exceptions,
+        )
+
+
+class _CollectionHasSomethingSupportingIgnoreCase(Match[Collection]):
+    def __init__(
+        self,
+        description,
+        /,
+        *expected: str | int | float | Iterable[str],
+        actual,
+        by,
+        _ignore_case=False,
+        _inverted=False,
+        _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
+    ):
+        self.__description = description
+        self.__actual = actual
+        self.__expected = expected
+        self.__by = by
+        self.__ignore_case = _ignore_case
+        self.__inverted = _inverted
+        self.__falsy_exceptions = _falsy_exceptions
+
+        # TODO: should we store flattened version in self?
+        #       how should we render nested expected in error?
+        #       should we transform actual to same un-flattened structure as expected?
+        #       (when rendering, of course)
+
+        def compare(actual: Iterable) -> bool:
+            expected_flattened = helpers.flatten(expected)
+            str_lower = lambda some: str(some).lower()
+            return (
+                by(map(str_lower, expected_flattened))(map(str_lower, actual))
+                if _ignore_case
+                else by(map(str, expected_flattened))(map(str, actual))
+            )
+
+        super().__init__(
+            description=(
+                f'{description}{" ignoring case:" if _ignore_case else ""}'
+                f' {list(expected)}'
+                # todo: refactor to and change tests correspondingly:
+                # f'{" ignoring case:" if _ignore_case else ":"} {expected}'
+            ),
+            actual=actual,
+            by=compare,
+            _inverted=_inverted,
+            _falsy_exceptions=_falsy_exceptions,
+        )
+
+    @property
+    def ignore_case(self) -> Condition[Collection]:
+        return self.__class__(
+            self.__description,
+            *self.__expected,
+            actual=self.__actual,
+            by=self.__by,
+            _ignore_case=True,
+            _inverted=self.__inverted,
+            _falsy_exceptions=self.__falsy_exceptions,
+        )
+
+
+# CONDITIONS ----------------------------------------------------------------- #
+
 present_in_dom: Condition[Element] = Match(
     'is present in DOM',
     actual=lambda element: element.locate(),
     by=lambda webelement: webelement is not None,
+    _describe_actual_result=lambda webelement: (
+        f'actual html element: {webelement.get_attribute("outerHTML")}'
+        if not appium_tools._is_mobile_element(webelement)
+        else str(webelement)  # todo: find out what best to log for mobile
+    ),
     _falsy_exceptions=(NoSuchElementException,),
 )
 
+# todo: consider refactoring so it would be similar to present_in_dom
+#       in context of details in error message, by utilizing _describe_actual_result
 absent_in_dom: Condition[Element] = Condition.as_not(present_in_dom, 'is absent in DOM')
 
 
@@ -105,35 +222,27 @@ existing: Condition[Element] = Match(
 
 visible: Condition[Element] = Match(
     'is visible',
-    by=lambda element: element.locate().is_displayed(),
+    actual=lambda element: element.locate(),
+    by=lambda actual: actual.is_displayed(),
+    _describe_actual_result=lambda actual: (
+        f'actual html element: {actual.get_attribute("outerHTML")}'
+        if not appium_tools._is_mobile_element(actual)
+        else str(actual)  # todo: find out what best to log for mobile
+    ),
     _falsy_exceptions=(NoSuchElementException,),
 )
 
 # todo: remove once decide on the best implementation
-__visible_with_actual: Condition[Element] = Match(
-    'is visible',
-    actual=lambda element: element.locate(),
-    by=lambda actual: actual.is_displayed(),
-    # TODO: consider adding describe_actual
-    # describe_actual=lambda actual: (actual and actual.get_attribute('outerHTML')),
-    # TODO: but implementation should count mobile case...
-)
-"""Alternative and disabled via protection prefix version of visible condition,
-that will result in errors with unclear actual, something like:
-    actual: <selenium.webdriver.remote.webelement.WebElement
-    (session="...", element="...")>
-But if we add support of describe_actual parameter to Match, we can provide error like:
-    actual: <button id="hidden" style="display: none">Press me</button>
-"""
-
-# todo: remove once decide on the best implementation
+#       and at least documented in docs this version
 __visible_with_actual_as_tuple: Condition[Element] = Match(
     'is visible',
     actual=lambda element: (
         webelement := element.locate(),
         webelement.get_attribute('outerHTML'),
     ),
-    by=lambda actual: actual[0].is_displayed(),
+    by=lambda actual_element_and_outer_html: (
+        actual_element_and_outer_html[0].is_displayed()
+    ),
 )
 """Alternative and disabled via protection prefix version of visible condition,
 that will result in good error like:
@@ -178,7 +287,11 @@ class js:
     )
 
 
-class _ElementHasText(Condition[Element]):
+# todo: consider removing once moved to docs
+class __x_ElementHasText(Condition[Element]):
+    """Just an example of a custom condition builder
+    based on inheritance from Condition[Element]
+    """
 
     def __init__(
         self,
@@ -222,15 +335,37 @@ class _ElementHasText(Condition[Element]):
         )
 
 
-def text(expected: str | int | float, _ignore_case=False, _inverted=False):
-    return _ElementHasText(
+def __x_text(expected: str | int | float, _ignore_case=False, _inverted=False):
+    return __x_ElementHasText(
         expected, 'has text', predicate.includes, _ignore_case, _inverted=_inverted
     )
 
 
-def exact_text(expected: str | int | float, _ignore_case=False, _inverted=False):
-    return _ElementHasText(
+def __x_exact_text(expected: str | int | float, _ignore_case=False, _inverted=False):
+    return __x_ElementHasText(
         expected, 'has exact text', predicate.equals, _ignore_case, _inverted=_inverted
+    )
+
+
+def text(expected: str | int | float, _ignore_case=False, _inverted=False):
+    return _ElementHasSomethingSupportingIgnoreCase(
+        'has text',
+        expected,
+        actual=query.text,
+        by=predicate.includes,
+        _ignore_case=_ignore_case,
+        _inverted=_inverted,
+    )
+
+
+def exact_text(expected: str | int | float, _ignore_case=False, _inverted=False):
+    return _ElementHasSomethingSupportingIgnoreCase(
+        'has exact text',
+        expected,
+        actual=query.text,
+        by=predicate.equals,
+        _ignore_case=_ignore_case,
+        _inverted=_inverted,
     )
 
 
@@ -371,128 +506,211 @@ def element_has_css_property(name: str):
     )
 
 
-def element_has_attribute(name: str):
-    def attribute_value(element: Element):
-        return element.locate().get_attribute(name)
+class attribute(Condition[Element]):
 
-    def attribute_values(collection: Collection):
-        return [element.get_attribute(name) for element in collection()]
+    def __init__(self, name: str, _inverted=False):
+        self.__expected = name
+        # self.__ignore_case = _ignore_case
+        self.__inverted = _inverted
 
-    raw_attribute_condition = ElementCondition.raise_if_not_actual(
-        'has attribute ' + name, attribute_value, predicate.is_truthy
-    )
+        super().__init__(
+            f"has attribute '{name}'",
+            actual=query.attribute(name),
+            by=predicate.is_truthy,  # todo: should it be more like .is_not_none?
+            _inverted=_inverted,
+        )
 
-    # TODO: is it OK to have some collection conditions inside a thing named element_has_attribute ? o_O
-    class ConditionWithValues(ElementCondition):
-        def value(
-            self, expected: str | int | float, ignore_case=False
-        ) -> Condition[Element]:
-            if ignore_case:
-                warnings.warn(
-                    'ignore_case syntax is experimental and might change in future',
-                    FutureWarning,
-                )
-            return ElementCondition.raise_if_not_actual(
-                f"has attribute '{name}' with value '{expected}'",
-                attribute_value,
-                predicate.str_equals(expected, ignore_case),
-            )
+    def value(self, expected):
+        return _ElementHasSomethingSupportingIgnoreCase(
+            f"has attribute '{self.__expected}' with value",
+            expected=expected,
+            actual=query.attribute(self.__expected),
+            by=predicate.equals,
+            _inverted=self.__inverted,
+        )
 
-        def value_containing(
-            self, expected: str | int | float, ignore_case=False
-        ) -> Condition[Element]:
-            if ignore_case:
-                warnings.warn(
-                    'ignore_case syntax is experimental and might change in future',
-                    FutureWarning,
-                )
-            return ElementCondition.raise_if_not_actual(
-                f"has attribute '{name}' with value containing '{expected}'",
-                attribute_value,
-                predicate.str_includes(expected, ignore_case),
-            )
+    def value_containing(self, expected):
+        return _ElementHasSomethingSupportingIgnoreCase(
+            f"has attribute '{self.__expected}' with value containing",
+            expected=expected,
+            actual=query.attribute(self.__expected),
+            by=predicate.includes,
+            _inverted=self.__inverted,
+        )
 
-        def values(
-            self, *expected: str | int | float | Iterable[str]
-        ) -> Condition[Collection]:
-            expected_ = helpers.flatten(expected)
+    def values(self, *expected: str | int | float | Iterable[str]):
+        return _CollectionHasSomethingSupportingIgnoreCase(
+            f"has attribute '{self.__expected}' with values",
+            *expected,
+            actual=query.attributes(self.__expected),
+            by=predicate.str_equals_to_list,
+            _inverted=self.__inverted,
+        )
 
-            return CollectionCondition.raise_if_not_actual(
-                f"has attribute '{name}' with values '{expected_}'",
-                attribute_values,
-                predicate.str_equals_to_list(expected_),
-            )
-
-        def values_containing(
-            self, *expected: str | int | float | Iterable[str]
-        ) -> Condition[Collection]:
-            expected_ = helpers.flatten(expected)
-
-            return CollectionCondition.raise_if_not_actual(
-                f"has attribute '{name}' with values containing '{expected_}'",
-                attribute_values,
-                predicate.str_equals_by_contains_to_list(expected_),
-            )
-
-    return ConditionWithValues(
-        str(raw_attribute_condition), test=raw_attribute_condition.__call__
-    )
+    def values_containing(self, *expected: str | int | float | Iterable[str]):
+        return _CollectionHasSomethingSupportingIgnoreCase(
+            f"has attribute '{self.__expected}' with values containing",
+            *expected,
+            actual=query.attributes(self.__expected),
+            by=predicate.str_equals_by_contains_to_list,
+            _inverted=self.__inverted,
+        )
 
 
-def element_has_value(expected: str | int | float) -> Condition[Element]:
-    return element_has_attribute('value').value(expected)
+def value(expected: str | int | float, _inverted=False):
+    return attribute('value', _inverted).value(expected)
 
 
-def element_has_value_containing(expected: str | int | float) -> Condition[Element]:
-    return element_has_attribute('value').value_containing(expected)
+def value_containing(expected: str | int | float, _inverted=False):
+    return attribute('value', _inverted).value_containing(expected)
 
 
-def collection_has_values(
-    *expected: str | int | float | Iterable[str],
-) -> Condition[Collection]:
-    return element_has_attribute('value').values(*expected)
+def values(*expected: str | int | float | Iterable[str], _inverted=False):
+    return attribute('value', _inverted).values(*expected)
 
 
-def collection_has_values_containing(
-    *expected: str | int | float | Iterable[str],
-) -> Condition[Collection]:
-    return element_has_attribute('value').values_containing(*expected)
+def values_containing(*expected: str | int | float | Iterable[str], _inverted=False):
+    return attribute('value', _inverted).values_containing(*expected)
 
 
-def element_has_css_class(expected: str) -> Condition[Element]:
+def css_class(name: str, _inverted=False):
     def class_attribute_value(element: Element):
         return element.locate().get_attribute('class')
 
-    return ElementCondition.raise_if_not_actual(
-        f"has css class '{expected}'",
-        class_attribute_value,
-        predicate.includes_word(expected),
+    return _ElementHasSomethingSupportingIgnoreCase(
+        f"has css class",
+        expected=name,
+        actual=class_attribute_value,
+        by=predicate.includes_word,
+        _inverted=_inverted,
     )
 
 
-element_is_blank: Condition[Element] = exact_text('').and_(element_has_value(''))
+# it can't be implemented as exact_text('').and_(value(''))
+# because value of <li ...>...</li> is '0'! o_O
+blank: Condition[Element] = Match(
+    'is blank',
+    actual=lambda element: (
+        ('value', webelement.get_attribute('value'))
+        if (webelement := element.locate()) and webelement.tag_name == 'input'
+        else ('text', webelement.text)
+    ),
+    by=lambda actual_desc_and_result: not actual_desc_and_result[1],
+    # todo: document in docs the following: specifically in this case,
+    #       providing _describe_actual_result is not like that important
+    #       because if skipped the actual rendering would be just
+    #       'actual: (text|value, ...)' instead of 'actual text|value: ...'
+    #       that is not much less informative...
+    #       once documented, I would consider removing this customization...
+    _describe_actual_result=lambda actual_desc_and_result: (
+        f'actual {actual_desc_and_result[0]}: {actual_desc_and_result[1]}'
+    ),
+)
+"""Asserts that element is blank,
+i.e. has empty value if is an <input> element or empty text otherwise.
+
+Is similar to the experimental 4-in-1 [_empty][selene.core.match._empty] condition,
+works only for singular elements: if they are a value-based elements
+(like inputs and textarea) then it checks for empty value,
+if they are text-based elements then it checks for empty text content.
+
+The `_empty` condition works same but if applied to collection
+then will assert that it has size 0. And when applied to "form" element,
+then will check for all form "value-like" inputs to be empty.
+Hence, the `blank` condition is more precise, while `empty` is more general.
+Because of its generality, the `empty` condition can be easier to remember,
+but can lead to some kind of confusion when applied to both element
+and collection in same test.
+"""
 
 
-def element_has_tag(
+# probably we don't need such over-complication of creating 2 conditions in 1
+# but let's leave it so far, just as an example of potentially possible impl.
+def tag(
     expected: str,
-    describing_matched_to='has tag',
-    compared_by_predicate_to=predicate.equals,
+    _name='has tag',
+    _by=predicate.equals,
 ) -> Condition[Element]:
-    return ElementCondition.raise_if_not_actual(
-        f'{describing_matched_to} + {expected}',
-        query.tag,
-        compared_by_predicate_to(expected),
-    )
+    return Match(f'{_name} {expected}', actual=query.tag, by=_by(expected))
 
 
-def element_has_tag_containing(expected: str) -> Condition[Element]:
-    return element_has_tag(expected, 'has tag containing', predicate.includes)
+def tag_containing(expected: str) -> Condition[Element]:
+    return tag(expected, _name='has tag containing', _by=predicate.includes)
 
 
-# TODO: should not we make empty to work on both elements and collections?
-#   to assert have.size(0) on collections
-#   to assert have.value('').and(have.exact_text('')) on element
-def _is_collection_empty(collection: Collection) -> bool:
+# todo: find the best way to type it... as Condition[Locatable] or smth like that...
+#       maybe even like as Condition[Callable]
+def __size_or_value_or_text(entity: Callable):
+    snapshot = entity()
+
+    if hasattr(snapshot, '__len__'):
+        return 'size', len(snapshot)
+
+    if isinstance(snapshot, WebElement):
+        return (
+            # TODO: what about input of type=color? it's empty value is '#000000'
+            ('value', snapshot.get_attribute('value'))
+            if (tag_name := snapshot.tag_name) == 'input'
+            else (
+                (
+                    'values of all form inputs, textareas and selects',
+                    ''.join(
+                        (element_with_value.get_attribute('value') or '')
+                        for element_with_value in snapshot.find_elements(
+                            By.CSS_SELECTOR,
+                            'textarea,'
+                            'input'
+                            ':not([type=button])'
+                            ':not([type=submit])'
+                            ':not([type=reset])'
+                            ':not([type=hidden])'
+                            ':not([type=range])'  # todo: should we count range as empty on 0 value?
+                            # ':not([type=image])'  # todo: value will be allwasy '', but should we count src?
+                            ':not([type=color])'  # todo: should we count color as empty on #000000 value?
+                            ':not([type=checkbox]:not(:checked))'
+                            ':not([type=radio]:not(:checked))'
+                            ','
+                            'input[type=checkbox]:checked,'
+                            'input[type=radio]:checked,'
+                            'select',
+                            # todo: what if some file input will not have input field but path set?
+                        )
+                    ),
+                )
+                if tag_name == 'form'
+                # todo: should we count values as texts too?
+                #       cause textarea value will be counted by default, but other inputs - not
+                #       though it will be counted only if predefined between tags...
+                # todo: another weird: textarea with text in html, even after reset to "" in UI
+                #       will still return text hardcoded in html... should we count this somehow?
+                else ('text', snapshot.text)
+            )
+        )
+
+    if hasattr(snapshot, 'value'):
+        return 'value', snapshot.value
+
+    if hasattr(snapshot, 'text'):
+        return 'text', snapshot.text
+
+    return 'str', str(snapshot)
+
+
+_empty: Condition[Callable] = Match(
+    'is empty',
+    __size_or_value_or_text,  # noqa
+    by=lambda actual_desc_and_result: not actual_desc_and_result[1],
+    _describe_actual_result=lambda actual_desc_and_result: (
+        f'actual {actual_desc_and_result[0]}: {actual_desc_and_result[1]}'
+    ),
+)
+"""Experimental 4-in-1 "is form or input or element or collection empty" condition,
+that is an alternative to old and deprecated the [empty][selene.core.match.empty]
+collection condition.
+"""  # todo: document all details of implementation
+
+
+def __is_empty(collection: Collection):
     warnings.warn(
         'match.collection_is_empty or be.empty is deprecated; '
         'use more explicit and obvious have.size(0) instead',
@@ -501,9 +719,14 @@ def _is_collection_empty(collection: Collection) -> bool:
     return len(collection()) == 0
 
 
-collection_is_empty: Condition[Collection] = CollectionCondition.raise_if_not(
-    'is empty', _is_collection_empty  # noqa
+empty: Condition[Collection] = Match(
+    'is empty',
+    __is_empty,  # noqa
+    by=predicate.is_truthy,
 )
+"""Deprecated 'is empty' collection condition.
+Use [size(0)][selene.core.match.size] instead.
+"""
 
 
 def collection_has_size(
@@ -541,6 +764,7 @@ def collection_has_size_less_than(expected: int) -> Condition[Collection]:
     return collection_has_size(expected, 'has size less than', predicate.is_less_than)
 
 
+# todo: consider .should(have.size(10).or_less) ;)
 def collection_has_size_less_than_or_equal(
     expected: int,
 ) -> Condition[Collection]:
@@ -611,10 +835,11 @@ class _CollectionHasTexts(Condition[Collection]):
 def texts(
     *expected: str | int | float | Iterable[str], _ignore_case=False, _inverted=False
 ):
-    return _CollectionHasTexts(
+    return _CollectionHasSomethingSupportingIgnoreCase(
+        f"have texts",
         *expected,
-        _describing_matched_to='have texts',
-        _compared_by_predicate_to=predicate.equals_by_contains_to_list,
+        actual=query.visible_texts,
+        by=predicate.equals_by_contains_to_list,
         _ignore_case=_ignore_case,
         _inverted=_inverted,
     )
@@ -623,10 +848,11 @@ def texts(
 def exact_texts(
     *expected: str | int | float | Iterable[str], _ignore_case=False, _inverted=False
 ):
-    return _CollectionHasTexts(
+    return _CollectionHasSomethingSupportingIgnoreCase(
+        f"have exact texts",
         *expected,
-        _describing_matched_to='have exact texts',
-        _compared_by_predicate_to=predicate.equals_to_list,
+        actual=query.visible_texts,
+        by=predicate.equals_to_list,
         _ignore_case=_ignore_case,
         _inverted=_inverted,
     )

@@ -52,7 +52,7 @@ selected: Condition[Element] = _match.selected.not_
 
 # focused: Condition[Element] = _match.focused.not_
 
-blank: Condition[Element] = _match.element_is_blank.not_
+blank: Condition[Element] = _match.blank.not_
 
 # --- be.not_.* DEPRECATED conditions --- #
 
@@ -88,37 +88,11 @@ def attribute(name: str, *args, **kwargs):
             'use have.attribute(foo).value(bar) instead',
             DeprecationWarning,
         )
-        return (
-            _match.element_has_attribute(name)
-            .value(args[0] if args else kwargs['value'])
-            .not_
+        return _match.attribute(name, _inverted=True).value(
+            args[0] if args else kwargs['value']
         )
 
-    original = _match.element_has_attribute(name)
-    negated = original.not_
-
-    def value(
-        self, expected: str | int | float, ignore_case=False
-    ) -> Condition[Element]:
-        return original.value(expected, ignore_case).not_
-
-    def value_containing(
-        self, expected: str | int | float, ignore_case=False
-    ) -> Condition[Element]:
-        return original.value_containing(expected, ignore_case).not_
-
-    def values(self, *expected: str | int | float) -> Condition[Collection]:
-        return original.values(*expected).not_
-
-    def values_containing(self, *expected: str | int | float) -> Condition[Collection]:
-        return original.values_containing(*expected).not_
-
-    negated.value = value
-    negated.value_containing = value_containing
-    negated.values = values
-    negated.values_containing = values_containing
-
-    return negated
+    return _match.attribute(name, _inverted=True)
 
 
 def js_property(name: str, *args, **kwargs):
@@ -202,27 +176,37 @@ def css_property(name: str, *args, **kwargs):
     return negated
 
 
-def value(text: str | int | float) -> Condition[Element]:
-    return _match.element_has_value(text).not_
+def value(text: str | int | float):
+    return _match.value(text, _inverted=True)
 
 
 def value_containing(partial_text: str | int | float) -> Condition[Element]:
-    return _match.element_has_value_containing(partial_text).not_
+    return _match.value_containing(partial_text, _inverted=True)
 
 
-def css_class(name: str) -> Condition[Element]:
-    return _match.element_has_css_class(name).not_
+def css_class(name: str):
+    return _match.css_class(name, _inverted=True)
 
 
 def tag(name: str) -> Condition[Element]:
-    return _match.element_has_tag(name).not_
+    return _match.tag(name).not_
 
 
 def tag_containing(name: str) -> Condition[Element]:
-    return _match.element_has_tag_containing(name).not_
+    return _match.tag_containing(name).not_
 
 
 # *** SeleneCollection conditions ***
+
+
+def values(*texts: str | int | float | Iterable[str]) -> Condition[Collection]:
+    return _match.values(*texts, _inverted=True)
+
+
+def values_containing(
+    *partial_texts: str | int | float | Iterable[str],
+) -> Condition[Collection]:
+    return _match.values_containing(*partial_texts, _inverted=True)
 
 
 def size(number: int) -> Condition[Collection]:
@@ -331,3 +315,13 @@ def js_returned(expected: Any, script: str, *args) -> Condition[Browser]:
 
 def script_returned(expected: Any, script: str, *args) -> Condition[Browser]:
     return _match.browser_has_script_returned(expected, script, *args).not_
+
+
+_empty = _match._empty.not_
+
+
+# --- be.* DEPRECATED conditions --- #
+empty = _match.empty.not_
+"""Deprecated 'is not empty' condition. Use
+[size(0)][selene.support.conditions.have.size] instead.
+"""

@@ -83,10 +83,9 @@ def test_should_be_hidden__passed_and_failed__compared_to_be_visible(session_bro
         assert (
             "browser.element(('css selector', '#hidden')).is not (present in DOM)\n"
             '\n'
-            'Reason: ConditionMismatch: actual: '
-            '<selenium.webdriver.remote.webelement.WebElement '
-            '(session='  # '"ac89fc2bc06d3524caaba592c7075eff", '
-            # 'element="f.1252E8A34F76BC81CF07D439B7DBFF6E.d.ABCFA422CE62624352BE6330D21B8F4B.e.2")>\n'
+            'Reason: ConditionMismatch: actual html element: <button id="hidden" '
+            'style="display: none">Press me</button>\n'
+            'Screenshot: '
         ) in str(error)
     # - visible fails
     try:
@@ -96,10 +95,8 @@ def test_should_be_hidden__passed_and_failed__compared_to_be_visible(session_bro
         assert (
             "browser.element(('css selector', '#visible')).is not (present in DOM)\n"
             '\n'
-            'Reason: ConditionMismatch: actual: '
-            '<selenium.webdriver.remote.webelement.WebElement '
-            '(session='  # '"ac89fc2bc06d3524caaba592c7075eff", '
-            # 'element="f.1252E8A34F76BC81CF07D439B7DBFF6E.d.ABCFA422CE62624352BE6330D21B8F4B.e.2")>\n'
+            'Reason: ConditionMismatch: actual html element: <button id="visible" '
+            'style="display: block">Press me</button>\n'
         ) in str(error)
 
     # absent in dom?
@@ -174,7 +171,8 @@ def test_should_be_hidden__passed_and_failed__compared_to_be_visible(session_bro
             "browser.element(('css selector', '#visible')).is present in DOM and is not "
             '(visible)\n'
             '\n'
-            'Reason: ConditionMismatch: condition not matched'
+            'Reason: ConditionMismatch: actual html element: <button id="visible" '
+            'style="display: block">Press me</button>\n'
         ) in str(error)
 
     # not hidden in dom?
@@ -305,7 +303,8 @@ def test_visible__passed_and_failed__compared_to_inline_Match(
         assert (
             "browser.element(('css selector', '#hidden')).is visible\n"
             '\n'
-            'Reason: ConditionMismatch: condition not matched\n'
+            'Reason: ConditionMismatch: actual html element: <button id="hidden" '
+            'style="display: none">Press me</button>\n'
         ) in str(error)
     # - absent fails
     try:
@@ -349,7 +348,7 @@ def test_not_visible__passed_and_failed(
     # - absent passes
     absent.should(be.not_.visible)
     absent.should(be.not_.visible.not_.not_)
-    # - visible fails # todo: CONSIDER: logging webelement info, like outerHTML
+    # - visible fails
     try:
         visible.should(be.not_.visible)
         pytest.fail('expect mismatch')
@@ -357,7 +356,8 @@ def test_not_visible__passed_and_failed(
         assert (
             "browser.element(('css selector', '#visible')).is not (visible)\n"
             '\n'
-            'Reason: ConditionMismatch: condition not matched\n'
+            'Reason: ConditionMismatch: actual html element: <button id="visible" '
+            'style="display: block">Press me</button>\n'
         ) in str(error)
 
 

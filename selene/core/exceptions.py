@@ -101,7 +101,7 @@ class ConditionMismatch(AssertionError):
     )(2)
     # ...
     ```
-    """
+    """  # todo: document _describe_actual_result examples
 
     def __init__(self, message='condition not matched'):
         super().__init__(message)
@@ -123,6 +123,7 @@ class ConditionMismatch(AssertionError):
         by: Callable[[R], bool],
         actual: Callable[[E], R] | None = None,
         *,
+        _describe_actual_result: Callable[[E | R], str] | None = None,
         _inverted: bool = False,
         _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
     ): ...
@@ -134,6 +135,12 @@ class ConditionMismatch(AssertionError):
         by: Callable[[E | R], bool],
         actual: Optional[Callable[[E], E | R]] = None,
         *,
+        # we can't name it:
+        # - as `describe` because it will not be clear what are we going to describe
+        #   is it a description of the result of the whole comparison? or what?
+        # - as `describe_actual` because it will not be clear:
+        #   do we describe actual as a query? or as a result of the query being called?
+        _describe_actual_result: Callable[[E | R], str] | None = None,
         _inverted: Optional[bool] = False,
         # todo: should we rename it to _exceptions_as_truthy_on_inverted?
         #       or just document this in docstring?
@@ -144,11 +151,19 @@ class ConditionMismatch(AssertionError):
         @functools.wraps(by)
         def wrapped(entity: E) -> None:
             def describe_not_match(actual_value):
-                actual_description = (
-                    f' {name}' if (name := Query.full_description_for(actual)) else ''
+                describe_actual_result = _describe_actual_result or (
+                    lambda value: (
+                        f'actual'
+                        + (
+                            f' {actual_name}'
+                            if (actual_name := Query.full_description_for(actual))
+                            else ''
+                        )
+                        + f': {value}'
+                    )
                 )
                 return (
-                    f'actual{actual_description}: {actual_value}'
+                    describe_actual_result(actual_value)
                     if actual
                     else (
                         (
@@ -238,10 +253,16 @@ class ConditionMismatch(AssertionError):
         cls,
         by: Callable[[E | R], bool],
         actual: Callable[[E], R] | None = None,
+        *,
+        _describe_actual_result: Callable[[R], str] | None = None,
         _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
     ):
         return cls._to_raise_if_not(
-            by, actual, _inverted=True, _falsy_exceptions=_falsy_exceptions
+            by,
+            actual,
+            _describe_actual_result=_describe_actual_result,
+            _inverted=True,
+            _falsy_exceptions=_falsy_exceptions,
         )
 
     @classmethod
@@ -249,17 +270,28 @@ class ConditionMismatch(AssertionError):
         cls,
         query: Callable[[E], R],
         by: Callable[[R], bool],
+        *,
+        _describe_actual_result: Callable[[R], str] | None = None,
     ):
-        return cls._to_raise_if_not(by, query)
+        return cls._to_raise_if_not(
+            by, query, _describe_actual_result=_describe_actual_result
+        )
 
     @classmethod
     def _to_raise_if_actual(
         cls,
         query: Callable[[E], R],
         by: Callable[[R], bool],
+        *,
+        _describe_actual_result: Callable[[R], str] | None = None,
         _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
     ):
-        return cls._to_raise_if(by, query, _falsy_exceptions=_falsy_exceptions)
+        return cls._to_raise_if(
+            by,
+            query,
+            _describe_actual_result=_describe_actual_result,
+            _falsy_exceptions=_falsy_exceptions,
+        )
 
 
 class ConditionNotMatchedError(ConditionMismatch):

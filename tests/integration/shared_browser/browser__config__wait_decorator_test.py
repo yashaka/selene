@@ -88,8 +88,8 @@ def test_logging_via__wait_decorator(quit_shared_browser_afterwards):
 [SE] - [3] - step: browser.element(('css selector', '#new-todo')) > type: c: ENDED
 [SE] - [3] - step: browser.element(('css selector', '#new-todo')) > press keys: ('\ue007',): STARTED
 [SE] - [3] - step: browser.element(('css selector', '#new-todo')) > press keys: ('\ue007',): ENDED
-[SE] - [4] - step: browser.all(('css selector', '#todo-list>li')) > have texts ('ab', 'b', 'c', 'd'): STARTED
-[SE] - [4] - step: browser.all(('css selector', '#todo-list>li')) > have texts ('ab', 'b', 'c', 'd'): FAILED: Message:
+[SE] - [4] - step: browser.all(('css selector', '#todo-list>li')) > have texts ['ab', 'b', 'c', 'd']: STARTED
+[SE] - [4] - step: browser.all(('css selector', '#todo-list>li')) > have texts ['ab', 'b', 'c', 'd']: FAILED: Message:
             '''.strip()
             in handler.stream
         )

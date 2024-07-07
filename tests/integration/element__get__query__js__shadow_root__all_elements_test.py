@@ -57,8 +57,8 @@ def test_actions_on_shadow_roots_of_all_elements(session_browser):
             '\n'
             'Timed out after 0.5s, while waiting for:\n'
             "browser.all(('css selector', 'my-paragraph')): shadow roots.all(('css "
-            "selector', '[name=my-text]')).have exact texts ('My WRONG text', 'My WRONG "
-            "text')\n"
+            "selector', '[name=my-text]')).have exact texts ['My WRONG text', 'My WRONG "
+            "text']\n"
             '\n'
             "Reason: ConditionMismatch: actual visible texts: ['My default text', 'My "
             "default text']\n"

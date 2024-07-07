@@ -97,7 +97,7 @@ def test_element_search_fails_with_message_when_explicitly_waits_for_condition(
 
     assert exception_message(ex) == [
         'Timed out after 0.1s, while waiting for:',
-        "browser.element(('css selector', '#element')).has exact text Hello wor",
+        "browser.element(('css selector', '#element')).has exact text 'Hello wor'",
         '',
         'Reason: ConditionMismatch: actual text: Hello world!',
         'Screenshot: *.png',
@@ -260,8 +260,8 @@ def test_element_search_fails_with_message_when_explicitly_waits_for_not_conditi
     except AssertionError as error:
 
         assert (
-            "browser.element(('css selector', '#element')).has no (exact text Hello "
-            'world!)\n'
+            "browser.element(('css selector', '#element')).has no (exact text 'Hello "
+            'world!\')\n'
             '\n'
             'Reason: ConditionMismatch: actual text: Hello world!\n'
         ) in str(error)

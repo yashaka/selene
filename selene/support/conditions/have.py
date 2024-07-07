@@ -81,39 +81,39 @@ def attribute(name: str, value: Optional[str] = None):
             'passing second argument is deprecated; use have.attribute(foo).value(bar) instead',
             DeprecationWarning,
         )
-        return match.element_has_attribute(name).value(value)
+        return match.attribute(name).value(value)
 
-    return match.element_has_attribute(name)
+    return match.attribute(name)
 
 
 def value(text: str | int | float) -> Condition[Element]:
-    return match.element_has_value(text)
+    return match.value(text)
 
 
 def values(*texts: str | int | float | Iterable[str]) -> Condition[Collection]:
-    return match.collection_has_values(*texts)
+    return match.values(*texts)
 
 
 def value_containing(partial_text: str | int | float) -> Condition[Element]:
-    return match.element_has_value_containing(partial_text)
+    return match.value_containing(partial_text)
 
 
 def values_containing(
     *partial_texts: str | int | float | Iterable[str],
 ) -> Condition[Collection]:
-    return match.collection_has_values_containing(*partial_texts)
+    return match.values_containing(*partial_texts)
 
 
-def css_class(name) -> Condition[Element]:
-    return match.element_has_css_class(name)
+def css_class(name):
+    return match.css_class(name)
 
 
 def tag(name: str) -> Condition[Element]:
-    return match.element_has_tag(name)
+    return match.tag(name)
 
 
 def tag_containing(name: str) -> Condition[Element]:
-    return match.element_has_tag_containing(name)
+    return match.tag_containing(name)
 
 
 # *** SeleneCollection conditions ***

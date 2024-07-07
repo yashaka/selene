@@ -26,7 +26,7 @@ from selene.core import match
 from tests.integration.helpers.givenpage import GivenPage
 
 
-# TODO: consider breaking it down into separate tests
+# todo: consider breaking it down into separate tests
 
 
 def test_should_have_exact_text__passed_and_failed__with_text_to_trim(session_browser):
@@ -59,7 +59,7 @@ def test_should_have_exact_text__passed_and_failed__with_text_to_trim(session_br
         pytest.fail('expect mismatch')
     except AssertionError as error:
         assert (
-            "browser.element(('css selector', '#visible')).has exact text One\n"
+            "browser.element(('css selector', '#visible')).has exact text 'One'\n"
             '\n'
             'Reason: ConditionMismatch: actual text: One !!!\n'
             'Screenshot: '
@@ -81,7 +81,7 @@ def test_should_have_exact_text__passed_and_failed__with_text_to_trim(session_br
         pytest.fail('expect mismatch')
     except AssertionError as error:
         assert (
-            "browser.element(('css selector', '#hidden')).has exact text One !!!\n"
+            "browser.element(('css selector', '#hidden')).has exact text 'One !!!'\n"
             '\n'
             'Reason: ConditionMismatch: actual text: \n'
             'Screenshot: '  # ...
@@ -92,7 +92,7 @@ def test_should_have_exact_text__passed_and_failed__with_text_to_trim(session_br
         pytest.fail('expect failure')
     except AssertionError as error:
         assert (
-            "browser.element(('css selector', '#absent')).has exact text \n"
+            "browser.element(('css selector', '#absent')).has exact text ''\n"
             '\n'
             'Reason: NoSuchElementException: no such element: Unable to locate element: '
             '{"method":"css selector","selector":"#absent"}\n'
@@ -107,7 +107,7 @@ def test_should_have_exact_text__passed_and_failed__with_text_to_trim(session_br
         pytest.fail('expect failure')
     except AssertionError as error:
         assert (
-            "browser.element(('css selector', '#absent')).has exact text \n"
+            "browser.element(('css selector', '#absent')).has exact text ''\n"
             '\n'
             'Reason: NoSuchElementException: no such element: Unable to locate element: '
             '{"method":"css selector","selector":"#absent"}\n'
@@ -153,7 +153,7 @@ def test_should_have_no_exact_text__passed_and_failed__with_text_to_trim(
         pytest.fail('expect mismatch')
     except AssertionError as error:
         assert (
-            "browser.element(('css selector', '#visible')).has no (exact text One !!!)\n"
+            "browser.element(('css selector', '#visible')).has no (exact text 'One !!!')\n"
             '\n'
             'Reason: ConditionMismatch: actual text: One !!!\n'
             'Screenshot: '  # ...
@@ -164,7 +164,7 @@ def test_should_have_no_exact_text__passed_and_failed__with_text_to_trim(
         pytest.fail('expect mismatch')
     except AssertionError as error:
         assert (
-            "browser.element(('css selector', '#visible-empty')).has no (exact text )\n"
+            "browser.element(('css selector', '#visible-empty')).has no (exact text '')\n"
             '\n'
             'Reason: ConditionMismatch: actual text: \n'
             'Screenshot: '  # ...
@@ -179,7 +179,7 @@ def test_should_have_no_exact_text__passed_and_failed__with_text_to_trim(
         pytest.fail('expect mismatch')
     except AssertionError as error:
         assert (
-            "browser.element(('css selector', '#hidden')).has no (exact text )\n"
+            "browser.element(('css selector', '#hidden')).has no (exact text '')\n"
             '\n'
             'Reason: ConditionMismatch: actual text: \n'
             'Screenshot: '  # ...
@@ -190,7 +190,7 @@ def test_should_have_no_exact_text__passed_and_failed__with_text_to_trim(
         pytest.fail('expect mismatch')
     except AssertionError as error:
         assert (
-            "browser.element(('css selector', '#hidden-empty')).has no (exact text )\n"
+            "browser.element(('css selector', '#hidden-empty')).has no (exact text '')\n"
             '\n'
             'Reason: ConditionMismatch: actual text: \n'
             'Screenshot: '  # ...
@@ -205,7 +205,7 @@ def test_should_have_no_exact_text__passed_and_failed__with_text_to_trim(
         pytest.fail('expect failure')
     except AssertionError as error:
         assert (
-            "browser.element(('css selector', '#absent')).has no (exact text )\n"
+            "browser.element(('css selector', '#absent')).has no (exact text '')\n"
             '\n'
             'Reason: NoSuchElementException: no such element: Unable to locate element: '
             '{"method":"css selector","selector":"#absent"}\n'
@@ -220,7 +220,7 @@ def test_should_have_no_exact_text__passed_and_failed__with_text_to_trim(
         pytest.fail('expect failure')
     except AssertionError as error:
         assert (
-            "browser.element(('css selector', '#absent')).has no (exact text )\n"
+            "browser.element(('css selector', '#absent')).has no (exact text '')\n"
             '\n'
             'Reason: NoSuchElementException: no such element: Unable to locate element: '
             '{"method":"css selector","selector":"#absent"}\n'
@@ -235,7 +235,7 @@ def test_should_have_no_exact_text__passed_and_failed__with_text_to_trim(
         pytest.fail('expect failure')
     except AssertionError as error:
         assert (
-            "browser.element(('css selector', '#absent')).has no (exact text One !!!)\n"
+            "browser.element(('css selector', '#absent')).has no (exact text 'One !!!')\n"
             '\n'
             'Reason: NoSuchElementException: no such element: Unable to locate element: '
             '{"method":"css selector","selector":"#absent"}\n'

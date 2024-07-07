@@ -23,6 +23,7 @@
 import re
 
 
+# todo: should it be more like .is_not_none?
 def is_truthy(something):
     return bool(something) if not something == '' else True
 

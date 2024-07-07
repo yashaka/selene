@@ -38,12 +38,18 @@ disabled = match.disabled
 
 clickable = match.clickable
 
-blank = match.element_is_blank
+blank = match.blank
+
+
+_empty = match._empty
 
 
 # --- Deprecated --- #
 
-empty = match.collection_is_empty
+empty = match.empty
+"""Deprecated 'is empty' condition. Use
+[size(0)][selene.support.conditions.have.size] instead.
+"""
 
 
 present = match.present

@@ -628,6 +628,9 @@ class Element(WaitingEntity['Element']):
         return self.all(css_or_xpath_or_by)
 
 
+# TODO: consider renaming or at list aliased to AllElements
+#       for better consistency with browser.all(selector)
+#       and maybe even aliased by All for nicer POM support via descriptors
 class Collection(WaitingEntity['Collection'], Iterable[Element]):
     def __init__(self, locator: Locator[typing.Sequence[WebElement]], config: Config):
         self._locator = locator

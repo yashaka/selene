@@ -122,33 +122,37 @@ seems like currently we do raise, but cover with tests
 
 especially relevant for have.texts to turn on/off ignoring invisible elements
 
+### TODO: add `<` before driver.switch_to.* tab in iframe faq doc
+
+### TODO: All and AllElements aliases to Collection (maybe even deprecate Collection)
+
+```python
+# TODO: consider renaming or at list aliased to AllElements
+#       for better consistency with browser.all(selector)
+#       and maybe even aliased by All for nicer POM support via descriptors
+class Collection(WaitingEntity['Collection'], Iterable[Element]):
+```
+
+#### TODO: also check if have.size will be still consistent fully... maybe have.count?
+
 ## 2.0.0rc10: «copy&paste, frames, shadow & texts_like» (to be released on DD.05.2024)
 
 ### TODO: decide on ... vs (...,) as one_or_more
 
 ### TODO: ensure no warnings
 
-### TODO: add `<` before driver.switch_to.* tab in iframe faq doc
-
 ### TODO: rename all conditions inside match.py so match can be fully used instead be + have #530 
-
-### TODO: ENSURE ALL Condition.as_not USAGES ARE NOW CORRECT
-
-...
-
-### TODO: ENSURE composed conditions work as expected (or/and, etc.)
-
-...
 
 ### TODO: Consider renaming description to name for Condition, Match, Query, Command, etc.
 
-### TODO: decide on describe_actual for Match & Condition
+### TODO: check if there are no type errors on passing be._empty to should
 
-#### TODO: finalize corresponding error messages tests for present, visible, hidden
+### TODO: decide on Match `__init__` fate: allow by as positional or not?
 
-### TODO: decide on Match fate (subclass OR subclass + match* 2 in 1)
+- probably not for now (let's come back after 2.0)... actual already can be passed as positional...
+  - passing by as positional would not add so much benefits...
 
-#### TODO: do we need positional actual and by args for Match?
+### Consider making configurable the "filtering collection for visibility" like in texts type of conditions
 
 ### Deprecated conditions
 
@@ -163,6 +167,18 @@ especially relevant for have.texts to turn on/off ignoring invisible elements
 ### Added be.hidden_in_dom in addition to be.hidden
 
 Consider `be.hidden` as "hidden somewhere, maybe in DOM with "display:none", or even on frontend/backend, i.e. totally absent from the page". Then `be.hidden_in_dom` is stricter, and means "hidden in DOM, i.e. available in the page DOM, but not visible".
+
+### Added experimental 4-in-1 be._empty over deprecated collection-condition be.empty
+
+`be._empty` is similar to `be.blank`... But `be.blank` works only for singular elements: if they are a value-based elements (like inputs and textarea) then it checks for empty value, if they are text-based elements then it checks for empty text content.
+
+The `be._empty` condition works same but if applied to collection
+then will assert that it has size 0. Additionally, when applied to "form" element,
+then it will check for all form "value-like" inputs to be empty.
+
+Hence, the `blank` condition is more precise, while `empty` is more general. Because of its generality, the `empty` condition can be easier to remember, but can lead to some kind of confusion when applied to both element and collection in same test. Also, its behavior can be less predictable from the user perspective when applied to form with textarea, that is both "value-like" and "text-based" element. That's why it is still marked as experimental. 
+
+Please, consider using `be._empty` to test it in your context and provide a feedback under [#544](https://github.com/yashaka/selene/issues/544), so we can decide on its fate – keep it or not.
 
 ### Text related conditions now accepts int and floats as text item
 

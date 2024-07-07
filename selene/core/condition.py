@@ -803,6 +803,7 @@ class Condition(Generic[E]):
         *,
         actual: Lambda[E, R],
         by: Predicate[R],
+        _describe_actual_result: Lambda[R, str] | None = None,
         _inverted=False,
         _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
     ): ...
@@ -838,6 +839,7 @@ class Condition(Generic[E]):
         *,
         actual: Lambda[E, R] | None = None,
         by: Predicate[R] | None = None,
+        _describe_actual_result: Lambda[R, str] | None = None,
         _inverted=False,
         _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
     ):
@@ -854,11 +856,13 @@ class Condition(Generic[E]):
                     'not both'
                 )
             self.__actual = actual
+            self.__describe_actual_result = _describe_actual_result
             self.__by = by
             self.__test = (
                 ConditionMismatch._to_raise_if_not(
                     self.__by,
                     self.__actual,
+                    _describe_actual_result=self.__describe_actual_result,
                     _falsy_exceptions=_falsy_exceptions,
                 )
                 if self.__actual
@@ -871,8 +875,7 @@ class Condition(Generic[E]):
                 ConditionMismatch._to_raise_if_actual(
                     self.__actual,
                     self.__by,
-                    # TODO: should we DI? – remove this tight coupling to WebDriverException?
-                    #       here and elsewhere
+                    _describe_actual_result=self.__describe_actual_result,
                     _falsy_exceptions=_falsy_exceptions,
                 )
                 if self.__actual
@@ -958,6 +961,7 @@ class Condition(Generic[E]):
                     self.__description,
                     actual=self.__actual,  # type: ignore
                     by=self.__by,
+                    _describe_actual_result=self.__describe_actual_result,
                     _inverted=not self.__inverted,
                     _falsy_exceptions=self.__falsy_exceptions,
                 )
@@ -985,7 +989,7 @@ class Condition(Generic[E]):
     def __str__(self):
         return self.__describe() if not self.__inverted else self.__describe_inverted()
 
-    # TODO: we already have entity.matching for Callable[[E], bool]
+    # todo: we already have entity.matching for Callable[[E], bool]
     #       is it a good idea to use same term for Callable[[E], None] raising error?
     #       but is match vs matchING distinction clear enough?
     #       like "Match it!" says "execute the order!"
@@ -993,10 +997,39 @@ class Condition(Generic[E]):
     #       should we then add one more method to distinguish them? self.matching?
     #       or self.is_matched? (but this will contradict with entity.matching)
     #       still, self.match contradicts with pattern.match(string) that does not raise
-    # TODO: would a `test` be a better name?
+    # todo: would a `test` be a better name?
     #       kind of test term relates to testing in context of assertions...
     #       though naturally it does not feel like "assertion"...
     #       more like "predicate" returning bool (True/False), not raising exception
+    # TODO: given named as test (or match, etc.)... what if we allow users to do asserts in Selene
+    #       that are kind of "classic assertions", i.e. without waiting built in...
+    #       then it may look something like this:
+    #       > from selene import browser
+    #       > from selene.core import match as assert_
+    #       > ...
+    #       > browser.element('input').clear()
+    #       > assert_.blank.test(browser.element('input'))
+    #       > # OR:
+    #       > assert_.blank.match(browser.element('input'))
+    #       > # OR:
+    #       > assert_.blank.matches(browser.element('input'))
+    #       > # OR:
+    #       > assert_.blank.matching(browser.element('input'))
+    #       > # OR:
+    #       > assert_.blank(browser.element('input'))  #->❤️
+    #       hm... what about simply:
+    #       > from selene import browser
+    #       > from selene.core import match
+    #       > ...
+    #       > browser.element('input').clear()
+    #       > match.blank(browser.element('input'))    #->❤️
+    #       this looks also ok:
+    #       > from selene import browser
+    #       > from selene.core import match as expect
+    #       > ...
+    #       > browser.element('input').clear()
+    #       > expect.blank(browser.element('input'))   #->❤️
+    #       TODO: at least, we have to document  – the #->❤️-marked recipes...
     def _test(self, entity: E) -> None:
         # currently refactored to be alias to __call__ to be in more compliance
         # with some subclasses implementations, that override __call__
@@ -1360,6 +1393,8 @@ class Match(Condition[E]):
 
     # TODO: do we really need such complicated impl in order
     #       to allow passing actual and by as positional arguments?
+    #       also, take into account that currently the _describe_actual_result
+    #       is not counted in the impl below
     def __init__x(self, *args, **kwargs):
         """
         Valid signatures in usage:
@@ -1443,6 +1478,7 @@ class Match(Condition[E]):
         actual: Lambda[E, R],
         *,
         by: Predicate[R],
+        _describe_actual_result: Lambda[R, str] | None = None,
         _inverted=False,
         _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
     ): ...
@@ -1463,6 +1499,7 @@ class Match(Condition[E]):
         *,
         actual: Lambda[E, R],
         by: Predicate[R],
+        _describe_actual_result: Lambda[R, str] | None = None,
         _inverted=False,
         _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
     ): ...
@@ -1484,11 +1521,12 @@ class Match(Condition[E]):
         actual: Lambda[E, R] | None = None,
         *,
         by: Predicate[E] | Predicate[R],
+        _describe_actual_result: Lambda[R, str] | None = None,
         _inverted=False,
         _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
     ):
         """
-        The only valid signatures in usage:
+        The only valid and stable signatures in usage:
 
         ```python
         Match(by=lambda x: x > 0)
@@ -1497,6 +1535,12 @@ class Match(Condition[E]):
         Match('has positive decrement', actual=lambda x: x - 1, by=lambda x: x > 0)
         Match(actual=lambda x: x - 1, by=lambda x: x > 0)
         ```
+
+        In addition to the examples above you can optionally add named
+        `_describe_actual_result` argument whenever you pass the `actual` argument.
+        You also can optionally provide _inverted and _falsy_exceptions arguments.
+        But keep in mind that they are marked with `_` prefix to indicate their
+        private and potentially "experimental" use, that can change in future versions.
         """
         if not description and not (by_description := Query.full_description_for(by)):
             raise ValueError(
@@ -1515,6 +1559,7 @@ class Match(Condition[E]):
             description=description,
             actual=actual,  # type: ignore
             by=by,
+            _describe_actual_result=_describe_actual_result,
             _inverted=_inverted,
             _falsy_exceptions=_falsy_exceptions,
         )

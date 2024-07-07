@@ -73,8 +73,8 @@ def test_logging_via__wait_decorator(quit_shared_browser_afterwards):
             '''
 element('#new-todo'): should be enabled and be visible: STARTED
 element('#new-todo'): should be enabled and be visible: PASSED
-element('#new-todo'): should have exact text  and have attribute 'value' with value '': STARTED
-element('#new-todo'): should have exact text  and have attribute 'value' with value '': PASSED
+element('#new-todo'): should be blank: STARTED
+element('#new-todo'): should be blank: PASSED
 element('#new-todo'): type: a: STARTED
 element('#new-todo'): type: a: PASSED
 element('#new-todo'): press keys: ENTER: STARTED
@@ -83,22 +83,24 @@ element('#new-todo'): type: b: STARTED
 element('#new-todo'): type: b: PASSED
 element('#new-todo'): press keys: TAB: STARTED
 element('#new-todo'): press keys: TAB: PASSED
-element('#new-todo'): should have no (exact text  and have attribute 'value' with value '') and have attribute 'value' with value 'b': STARTED
-element('#new-todo'): should have no (exact text  and have attribute 'value' with value '') and have attribute 'value' with value 'b': PASSED
+element('#new-todo'): should be not (blank) '''
+            '''and have attribute 'value' with value 'b': STARTED
+element('#new-todo'): should be not (blank) '''
+            '''and have attribute 'value' with value 'b': PASSED
 element('#new-todo'): press keys: BACKSPACE: STARTED
 element('#new-todo'): press keys: BACKSPACE: PASSED
 element('#new-todo'): type: c: STARTED
 element('#new-todo'): type: c: PASSED
 element('#new-todo'): press keys: ENTER: STARTED
 element('#new-todo'): press keys: ENTER: PASSED
-all('#todo-list>li'): should have texts ('a', 'b', 'c'): STARTED
-all('#todo-list>li'): should have texts ('a', 'b', 'c'): FAILED:
+all('#todo-list>li'): should have texts ['a', 'b', 'c']: STARTED
+all('#todo-list>li'): should have texts ['a', 'b', 'c']: FAILED:
 
 <class 'selene.core.exceptions.TimeoutException'>
 Message:\u0020
 
 Timed out after 0.3s, while waiting for:
-browser.all(('css selector', '#todo-list>li')).have texts ('a', 'b', 'c')
+browser.all(('css selector', '#todo-list>li')).have texts ['a', 'b', 'c']
 
 Reason: ConditionMismatch: actual visible texts: ['a', 'c']\n
             '''.strip()

@@ -327,8 +327,8 @@ def test_should_be_clickable__passed_and_failed(session_browser):
         assert (
             "browser.element(('css selector', '#hidden')).is visible and is enabled\n"
             '\n'
-            'Reason: ConditionMismatch: condition not matched\n'
-            'Screenshot: '
+            'Reason: ConditionMismatch: actual html element: <button id="hidden" '
+            'style="display: none">Press me</button>\n'
         ) in str(error)
     # - hidden & disabled fails with mismatch
     try:
@@ -339,7 +339,8 @@ def test_should_be_clickable__passed_and_failed(session_browser):
             "browser.element(('css selector', '#hidden-disabled')).is visible and is "
             'enabled\n'
             '\n'
-            'Reason: ConditionMismatch: condition not matched\n'
+            'Reason: ConditionMismatch: actual html element: <button id="hidden-disabled" '
+            'disabled="" style="display: none">Press me</button>\n'
         ) in str(error)
     # - absent fails with failure
     try:

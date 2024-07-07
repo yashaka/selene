@@ -47,7 +47,7 @@ def test_on_collection(session_browser):
         elements.should(have.text('Ron').each)
     except TimeoutException as error:
         assert (
-            "browser.all(('css selector', 'li')). each has text Ron\n"
+            "browser.all(('css selector', 'li')). each has text 'Ron'\n"
             "\n"
             "Reason: AssertionError: "
             "Not matched elements among all with indexes from 0 to 2:\n"
@@ -61,7 +61,7 @@ def test_on_collection(session_browser):
         elements.should(have.text('Ron').not_.each)
     except TimeoutException as error:
         assert (
-            "browser.all(('css selector', 'li')). each has no (text Ron)\n"
+            "browser.all(('css selector', 'li')). each has no (text 'Ron')\n"
             '\n'
             'Reason: AssertionError: Not matched elements among all with indexes from 0 '
             'to 2:\n'
@@ -72,7 +72,7 @@ def test_on_collection(session_browser):
         elements.should(have.no.text('Ron').each)
     except TimeoutException as error:
         assert (
-            "browser.all(('css selector', 'li')). each has no (text Ron)\n"
+            "browser.all(('css selector', 'li')). each has no (text 'Ron')\n"
             '\n'
             'Reason: AssertionError: Not matched elements among all with indexes from 0 '
             'to 2:\n'
@@ -109,7 +109,7 @@ def test_on_collection_with_expected_size(session_browser):
         pytest.fail("should have failed on size mismatch")
     except TimeoutException as error:
         assert (
-            "browser.all(('css selector', 'p'))[:3]. each has text from Hogwarts\n"
+            "browser.all(('css selector', 'p'))[:3]. each has text 'from Hogwarts'\n"
             '\n'
             'Reason: AssertionError: not enough elements to slice collection from START '
             'to STOP at index=3, actual elements collection length is 0\n'
@@ -123,7 +123,7 @@ def test_on_collection_with_expected_size(session_browser):
         pytest.fail("should have failed on size mismatch")
     except TimeoutException as error:
         assert (
-            "browser.all(('css selector', 'li'))[3:]. each has text from Hogwarts\n"
+            "browser.all(('css selector', 'li'))[3:]. each has text 'from Hogwarts'\n"
             '\n'
             'Reason: AssertionError: not enough elements to slice collection from START '
             'on index=3, actual elements collection length is 3\n'
