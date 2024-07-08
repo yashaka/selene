@@ -1,18 +1,13 @@
 [
   {
     "referrer": "Google",
-    "count": 325,
-    "uniques": 88
+    "count": 320,
+    "uniques": 83
   },
   {
     "referrer": "github.com",
     "count": 73,
     "uniques": 18
-  },
-  {
-    "referrer": "school.qa.guru",
-    "count": 48,
-    "uniques": 5
   },
   {
     "referrer": "ya.ru",
@@ -43,6 +38,11 @@
     "referrer": "readthedocs.org",
     "count": 10,
     "uniques": 1
+  },
+  {
+    "referrer": "school.qa.guru",
+    "count": 9,
+    "uniques": 3
   },
   {
     "referrer": "ecosia.org",
