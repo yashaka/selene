@@ -51,7 +51,7 @@ Fn = Callable[[T], R]
 
 
 class Query(Generic[E, R]):
-    def __init__(self, description: str, fn: Callable[[E], R | None]):
+    def __init__(self, description: str, /, fn: Callable[[E], R | None]):
         self._description = description
         self._fn = fn
 

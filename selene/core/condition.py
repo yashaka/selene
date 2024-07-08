@@ -525,7 +525,7 @@ class Condition(Generic[E]):
 
     ```python
     has_positive_number = Condition(
-        'has positive number'
+        'has positive number',
         ConditionMismatch._to_raise_if_not_actual(
             lambda entity: entity.number,
             lambda number: number > 0,
@@ -567,7 +567,7 @@ class Condition(Generic[E]):
 
     ```python
     has_positive_number = Condition(
-        'has positive number'
+        'has positive number',
         actual=lambda entity: entity.number,
         by=lambda number: number > 0,
     )
@@ -595,7 +595,7 @@ class Condition(Generic[E]):
 
     ```python
     has_positive_number = Condition(
-        'has positive number'
+        'has positive number',
         ConditionMismatch._to_raise_if_not_actual(
             lambda entity: entity.number,
             lambda number: number > 0,
@@ -609,7 +609,7 @@ class Condition(Generic[E]):
 
     ```python
     has_positive_number = Condition(
-        description='has positive number'
+        'has positive number',
         test=ConditionMismatch._to_raise_if_not_actual(
             lambda entity: entity.number,
             lambda number: number > 0,
@@ -631,10 +631,10 @@ class Condition(Generic[E]):
 
     ```python
     has_positive_number = Condition(
-        description='has positive number'
-        test=ConditionMismatch._to_raise_if_not_actual(
-            lambda entity: entity.number,
-            lambda number: number > 0,
+        'has positive number',
+        test=ConditionMismatch._to_raise_if_not(
+            actual=lambda entity: entity.number,
+            by=lambda number: number > 0,
         )
     )
     ```
@@ -643,7 +643,7 @@ class Condition(Generic[E]):
 
     ```python
     has_positive_number = Condition(
-        'has positive number'
+        'has positive number',
         actual=lambda entity: entity.number,
         by=lambda number: number > 0,
     )
@@ -653,7 +653,7 @@ class Condition(Generic[E]):
 
     ```python
     has_positive_number = Condition(
-        'has positive number'
+        'has positive number',
         by=lambda entity: entity.number > 0,
     )
     ```
@@ -781,6 +781,7 @@ class Condition(Generic[E]):
     def __init__(
         self,
         description: str | Callable[[], str],
+        /,
         test: Lambda[E, None],
         *,
         _inverted=False,
@@ -800,6 +801,7 @@ class Condition(Generic[E]):
     def __init__(
         self,
         description: str | Callable[[], str],
+        /,
         *,
         actual: Lambda[E, R],
         by: Predicate[R],
@@ -812,6 +814,7 @@ class Condition(Generic[E]):
     def __init__(
         self,
         description: str | Callable[[], str],
+        /,
         *,
         by: Predicate[E],
         _inverted=False,
@@ -834,7 +837,9 @@ class Condition(Generic[E]):
     #       where first is name for query and second is query fn
     def __init__(
         self,
+        # TODO: consider removing Callable[[], str] as supported type for description
         description: str | Callable[[], str],
+        /,
         test: Lambda[E, None] | None = None,
         *,
         actual: Lambda[E, R] | None = None,
@@ -1391,9 +1396,19 @@ class Match(Condition[E]):
     @overload
     def __init__x(self, actual: Lambda[E, R], by: Predicate[R]): ...
 
-    # TODO: do we really need such complicated impl in order
+    # todo: do we really need such complicated impl in order
     #       to allow passing actual and by as positional arguments?
-    #       also, take into account that currently the _describe_actual_result
+    #       probably not for now (let's come back after 2.0)...
+    #       actual already can be passed as positional in some cases...
+    #       and by is pretty concise as it is...
+    #       so seems like passing by as positional would not add so much benefits...
+    #       though passing actual as positional in some cases (where not it is mandatory)
+    #       can make it cleaner... like in:
+    #       Match(lambda x: x - 1, by=lambda result: result > 0)
+    #       # vs
+    #       Match(actual=lambda x: x - 1, by=lambda actual: actual > 0)
+    #       yet, the latter is not so bad... even has its benefits...
+    # todo: also, take into account that currently the _describe_actual_result
     #       is not counted in the impl below
     def __init__x(self, *args, **kwargs):
         """
@@ -1475,6 +1490,7 @@ class Match(Condition[E]):
     def __init__(
         self,
         description: str | Callable[[], str],
+        /,
         actual: Lambda[E, R],
         *,
         by: Predicate[R],
@@ -1487,6 +1503,7 @@ class Match(Condition[E]):
     def __init__(
         self,
         description: str | Callable[[], str],
+        /,
         *,
         by: Predicate[E],
         _inverted=False,
@@ -1556,7 +1573,7 @@ class Match(Condition[E]):
         )
         # TODO: fix "cannot infer type of argument 1 of __init__" or ignore
         super().__init__(  # type: ignore
-            description=description,
+            description,
             actual=actual,  # type: ignore
             by=by,
             _describe_actual_result=_describe_actual_result,
@@ -1577,13 +1594,13 @@ class Match(Condition[E]):
 # Match(lambda x: x > 0)
 # Match(lambda actual: actual - 1, lambda res: res > 0)
 # Match('has positive decrement', lambda actual: actual - 1, lambda res: res > 0)
+Match(
+    lambda: 'has positive decrement',
+    actual=lambda actual: actual - 1,
+    by=lambda res: res > 0,
+)
 # Match(
-#     description=lambda: 'has positive decrement',
-#     actual=lambda actual: actual - 1,
-#     by=lambda res: res > 0,
-# )
-# Match(
-#     description=lambda: 'has positive decrement',
+#     lambda: 'has positive decrement',
 #     by=lambda res: res > 0,
 # )
 

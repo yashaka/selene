@@ -153,7 +153,7 @@ class ConditionMismatch(AssertionError):
             def describe_not_match(actual_value):
                 describe_actual_result = _describe_actual_result or (
                     lambda value: (
-                        f'actual'
+                        'actual'
                         + (
                             f' {actual_name}'
                             if (actual_name := Query.full_description_for(actual))

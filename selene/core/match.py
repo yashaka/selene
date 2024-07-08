@@ -78,7 +78,7 @@ class _ElementHasSomethingSupportingIgnoreCase(Match[Element]):
         self.__falsy_exceptions = _falsy_exceptions
 
         super().__init__(
-            description=(
+            (
                 f'{description}{" ignoring case:" if _ignore_case else ""} \'{expected}\''
                 # todo: refactor to and change tests correspondingly:
                 # f'{" ignoring case:" if _ignore_case else ":"} «{expected}»'
@@ -141,7 +141,7 @@ class _CollectionHasSomethingSupportingIgnoreCase(Match[Collection]):
             )
 
         super().__init__(
-            description=(
+            (
                 f'{description}{" ignoring case:" if _ignore_case else ""}'
                 f' {list(expected)}'
                 # todo: refactor to and change tests correspondingly:
@@ -349,7 +349,7 @@ def __x_exact_text(expected: str | int | float, _ignore_case=False, _inverted=Fa
 
 def text(expected: str | int | float, _ignore_case=False, _inverted=False):
     return _ElementHasSomethingSupportingIgnoreCase(
-        'has text',
+        'has text',  # TODO: is it here name or description? probably it's even a "name prefix"
         expected,
         actual=query.text,
         by=predicate.includes,
@@ -578,7 +578,7 @@ def css_class(name: str, _inverted=False):
         return element.locate().get_attribute('class')
 
     return _ElementHasSomethingSupportingIgnoreCase(
-        f"has css class",
+        'has css class',
         expected=name,
         actual=class_attribute_value,
         by=predicate.includes_word,
@@ -775,68 +775,12 @@ def collection_has_size_less_than_or_equal(
     )
 
 
-class _CollectionHasTexts(Condition[Collection]):
-
-    def __init__(
-        self,
-        *expected: str | int | float | Iterable[str],
-        _describing_matched_to='have texts',
-        _compared_by_predicate_to=predicate.equals_by_contains_to_list,
-        _ignore_case=False,
-        _inverted=False,
-    ):
-        self.__expected = expected
-        self.__describe_matched_to = _describing_matched_to
-        self.__compared_by_predicate_to = _compared_by_predicate_to
-        self.__ignore_case = _ignore_case
-        self.__inverted = _inverted
-
-        # TODO: should we store flattened version in self?
-        #       how should we render nested expected in error?
-        #       should we transform actual to same un-flattened structure as expected?
-        #       (when rendering, of course)
-
-        def compare(actual: Iterable) -> bool:
-            expected_flattened = helpers.flatten(expected)
-            str_lower = lambda some: str(some).lower()
-            return (
-                _compared_by_predicate_to(map(str_lower, expected_flattened))(
-                    map(str_lower, actual)
-                )
-                if _ignore_case
-                else _compared_by_predicate_to(map(str, expected_flattened))(
-                    map(str, actual)
-                )
-            )
-
-        super().__init__(  # type: ignore
-            description=(
-                f'{_describing_matched_to}'
-                f'{" ignoring case:" if _ignore_case else ""} {expected}'
-            ),
-            actual=query.visible_texts,
-            by=compare,
-            _inverted=_inverted,
-        )
-
-    # returning Condition[Collection] to not allow .ignore_case.ignore_case usage:)
-    @property
-    def ignore_case(self) -> Condition[Collection]:
-        return self.__class__(
-            *self.__expected,
-            _describing_matched_to=self.__describe_matched_to,
-            _compared_by_predicate_to=self.__compared_by_predicate_to,
-            _ignore_case=True,
-            _inverted=self.__inverted,
-        )
-
-
 # TODO: make it configurable whether assert only visible texts or not
 def texts(
     *expected: str | int | float | Iterable[str], _ignore_case=False, _inverted=False
 ):
     return _CollectionHasSomethingSupportingIgnoreCase(
-        f"have texts",
+        'have texts',
         *expected,
         actual=query.visible_texts,
         by=predicate.equals_by_contains_to_list,
@@ -849,7 +793,7 @@ def exact_texts(
     *expected: str | int | float | Iterable[str], _ignore_case=False, _inverted=False
 ):
     return _CollectionHasSomethingSupportingIgnoreCase(
-        f"have exact texts",
+        'have exact texts',
         *expected,
         actual=query.visible_texts,
         by=predicate.equals_to_list,
