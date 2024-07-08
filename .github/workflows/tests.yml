@@ -92,22 +92,8 @@ jobs:
           cp -r skip-covered Artifacts/skip-covered
         if: env.GIT_DIFF
 
-      # can be improved by flags/options
-#      - name: Code Coverage
-#        uses: codecov/codecov-action@v3
-#        with:
-#          file: ./coverage.xml # optional
-#          name: selene-codecov # optional
-#          fail_ci_if_error: true # optional (default = false)
-#          verbose: true
-#        if: env.GIT_DIFF
-
-#      # can be organized better
-#      - name: Upload pytest test results
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: Code coverage
-#          path: |
-#            Artifacts
-#            coverage.xml
-#        if: env.GIT_DIFF
+      - name: Code Coverage
+        uses: codecov/codecov-action@v4.2.0
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        if: env.GIT_DIFF
