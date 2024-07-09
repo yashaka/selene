@@ -60,7 +60,7 @@ from selene.core._browser import Browser
 class _ElementHasSomethingSupportingIgnoreCase(Match[Element]):
     def __init__(
         self,
-        description,
+        name,
         /,
         expected,
         actual,
@@ -69,7 +69,7 @@ class _ElementHasSomethingSupportingIgnoreCase(Match[Element]):
         _inverted=False,
         _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
     ):
-        self.__description = description
+        self.__name = name
         self.__actual = actual
         self.__expected = expected
         self.__by = by
@@ -79,7 +79,7 @@ class _ElementHasSomethingSupportingIgnoreCase(Match[Element]):
 
         super().__init__(
             (
-                f'{description}{" ignoring case:" if _ignore_case else ""} \'{expected}\''
+                f'{name}{" ignoring case:" if _ignore_case else ""} \'{expected}\''
                 # todo: refactor to and change tests correspondingly:
                 # f'{" ignoring case:" if _ignore_case else ":"} «{expected}»'
             ),
@@ -96,7 +96,7 @@ class _ElementHasSomethingSupportingIgnoreCase(Match[Element]):
     @property
     def ignore_case(self) -> Condition[Element]:
         return self.__class__(
-            self.__description,
+            self.__name,
             self.__expected,
             self.__actual,
             self.__by,
@@ -109,7 +109,7 @@ class _ElementHasSomethingSupportingIgnoreCase(Match[Element]):
 class _CollectionHasSomethingSupportingIgnoreCase(Match[Collection]):
     def __init__(
         self,
-        description,
+        name,
         /,
         *expected: str | int | float | Iterable[str],
         actual,
@@ -118,7 +118,7 @@ class _CollectionHasSomethingSupportingIgnoreCase(Match[Collection]):
         _inverted=False,
         _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
     ):
-        self.__description = description
+        self.__name = name
         self.__actual = actual
         self.__expected = expected
         self.__by = by
@@ -142,7 +142,7 @@ class _CollectionHasSomethingSupportingIgnoreCase(Match[Collection]):
 
         super().__init__(
             (
-                f'{description}{" ignoring case:" if _ignore_case else ""}'
+                f'{name}{" ignoring case:" if _ignore_case else ""}'
                 f' {list(expected)}'
                 # todo: refactor to and change tests correspondingly:
                 # f'{" ignoring case:" if _ignore_case else ":"} {expected}'
@@ -156,7 +156,7 @@ class _CollectionHasSomethingSupportingIgnoreCase(Match[Collection]):
     @property
     def ignore_case(self) -> Condition[Collection]:
         return self.__class__(
-            self.__description,
+            self.__name,
             *self.__expected,
             actual=self.__actual,
             by=self.__by,

@@ -51,15 +51,15 @@ Fn = Callable[[T], R]
 
 
 class Query(Generic[E, R]):
-    def __init__(self, description: str, /, fn: Callable[[E], R | None]):
-        self._description = description
+    def __init__(self, name: str, /, fn: Callable[[E], R | None]):
+        self._name = name
         self._fn = fn
 
     def __call__(self, entity: E) -> R | None:
         return self._fn(entity)
 
     def __str__(self):
-        return self._description
+        return self._name
 
     @staticmethod
     def full_name_for(callable_: Optional[Callable]) -> str | None:
@@ -96,6 +96,7 @@ class Query(Generic[E, R]):
 
         return None
 
+    # todo: would not human_readable_name_for be a better name for this helper?
     @staticmethod
     def full_description_for(callable_: Optional[Callable]) -> str | None:
         full_name = Query.full_name_for(callable_)

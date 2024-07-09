@@ -302,7 +302,7 @@ has_positive_number = ConditionMismatch._to_raise_if_not(
 ```
 
 Then error would be less informative, because lambda is anonymous –
-there is no way to build a description for it:
+there is no way to build a name for it:
 
 ```text
 Timed out after 1.0s, while waiting for:
@@ -310,7 +310,7 @@ Timed out after 1.0s, while waiting for:
 Reason:  ConditionMismatch: actual: 0
 ```
 
-To fix this, we can provide a description for the lambda
+To fix this, we can provide a name for the lambda
 by wrapping it into Query:
 
 ```python
@@ -357,7 +357,7 @@ has_positive_number = ConditionMismatch._to_raise_if_not(
 ```
 
 And now we know how to benefit from more descriptive error messages
-by providing descriptions for our lambdas as follows:
+by providing names for our lambdas as follows:
 
 ```python
 has_positive_number = ConditionMismatch._to_raise_if_not(
@@ -552,17 +552,17 @@ class Condition(Generic[E]):
     ### Specifics of the Condition-object-based definition
 
     - It is simply a wrapping functional condition (PASS|FAIL-function-based)
-        into a Condition object with custom description.
+        into a Condition object with custom name.
         Thus, we can use all variations of defining functional conditions
         to define object-oriented ones.
-    - Because we provided a custom description
+    - Because we provided a custom name
         (`'has positive number'` in the case above), it's not mandatory
         to wrap lambdas into Query objects to achieve readable error messages,
         unlike we had to do for functional conditions.
 
-    ### Customizing description of inverted conditions
+    ### Customizing name of inverted conditions
 
-    The description of the `has_negative_number_or_zero` will be automatically
+    The name of the `has_negative_number_or_zero` will be automatically
     constructed as `'has not (positive number)'`. In case you want custom:
 
     ```python
@@ -588,7 +588,7 @@ class Condition(Generic[E]):
 
     ### Alternative signatures for Condition class initializer
 
-    Condition class initializer has more than two params (description and functional condition)
+    Condition class initializer has more than two params (name and functional condition)
     and different variations of valid signatures to use...
 
     Recall the initial example:
@@ -662,7 +662,7 @@ class Condition(Generic[E]):
 
         Remember, that it's not mandatory to wrap lambdas into Query objects
         here to achieve readable error messages,
-        because we already provided a custom description.
+        because we already provided a custom name.
 
     #### Relation to Match subclass
 
@@ -670,7 +670,7 @@ class Condition(Generic[E]):
     than passing mandatory `test`,
     and the `Condition` term is too low level for your case, consider using the
     [`Match`][selene.core.condition.Match] subclass of the `Condition` class
-    that accepts only `actual` and `by` with optional `description` parameters,
+    that accepts only `actual` and `by` with optional `name` parameters,
     and fits better with a `should` method of Selene entities – compare:
     `entity.should(Match(...))` to `entity.should(Condition(...))`😉.
     """
@@ -724,21 +724,25 @@ class Condition(Generic[E]):
         return typing.cast(Condition[Iterable[E]], cls(f' each {condition}', test=func))
 
     @classmethod
-    def as_not(  # TODO: ENSURE ALL USAGES ARE NOW CORRECT
-        cls, condition: Condition[E], description: Optional[str] = None
+    def as_not(
+        cls,
+        condition: Condition[E],
+        name: Optional[str] = None,
+        /,
+        # todo: consider adding additional description param for backwards compatibility
     ) -> Condition[E]:
-        # TODO: how will it work composed conditions?
+        # todo: how will it work composed conditions?
 
-        # TODO: should we bother? – about "negated inversion via Condition.as_not"
+        # todo: should we bother? – about "negated inversion via Condition.as_not"
         #       will "swallow" the reason of failure...
         #       because we invert the predicate or test itself, ignoring exceptions
         #       so then when we "recover original exception failure" on negation
         #       we can just recover it to "false" not to "raise reason error"
-        if description:
+        if name:
             return (
                 cls(
-                    # now we provide the new description that counts inversion
-                    description,
+                    # now we provide the new name that counts inversion
+                    name,
                     # specifying already an inverted fn
                     test=condition.__test_inverted,
                     # thus, no need to mark condition for further inversion:
@@ -746,7 +750,7 @@ class Condition(Generic[E]):
                 )
                 if condition.__by is None
                 else cls(
-                    description,
+                    name,
                     # # We have to skip the actual here (re-building it into by below),
                     # # because can't "truthify" its Exceptions when raised on inverted
                     # # TODO: or can we?
@@ -767,6 +771,10 @@ class Condition(Generic[E]):
         else:
             return condition.not_
 
+    # todo: should we rename this description to name too?
+    #       currently it was left as it is for backwards compatibility
+    #       but we also can provide keyword arg for b.c.
+    #       yet naming first positionally param as name
     @classmethod
     def raise_if_not(cls, description: str, predicate: Predicate[E]) -> Condition[E]:
         return cls(description, by=predicate)
@@ -780,7 +788,7 @@ class Condition(Generic[E]):
     @overload
     def __init__(
         self,
-        description: str | Callable[[], str],
+        name: str | Callable[[], str],
         /,
         test: Lambda[E, None],
         *,
@@ -791,7 +799,7 @@ class Condition(Generic[E]):
     # @overload
     # def __init__(
     #     self,
-    #     description: str | Callable[[], str],
+    #     name: str | Callable[[], str],
     #     *,
     #     by: Tuple[Lambda[E, R], Predicate[R]],
     #     _inverted=False,
@@ -800,7 +808,7 @@ class Condition(Generic[E]):
     @overload
     def __init__(
         self,
-        description: str | Callable[[], str],
+        name: str | Callable[[], str],
         /,
         *,
         actual: Lambda[E, R],
@@ -813,7 +821,7 @@ class Condition(Generic[E]):
     @overload
     def __init__(
         self,
-        description: str | Callable[[], str],
+        name: str | Callable[[], str],
         /,
         *,
         by: Predicate[E],
@@ -821,24 +829,24 @@ class Condition(Generic[E]):
         _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
     ): ...
 
-    # todo: CONSIDER: accepting tuple of three as description
+    # todo: CONSIDER: accepting tuple of three as name
     #       where three are (prefix, core, suffix),
     #       where each can be substituted with ... (Ellipsis)
     #       signifying that the "default" should be used
-    # TODO: should we make the description type as Callable[[Condition], str]
+    # TODO: should we make the name type as Callable[[Condition], str]
     #       instead of Callable[[], str]...
     #       to be able to pass condition itself...
     #       when we pass in child classes we pass self.__str__
     #       that doesn't need to receive self, it already has it
-    #       but what if we want to pass some crazy lambda for description from outside
-    #       to kind of providing a "description self-based strategy" for condition?
+    #       but what if we want to pass some crazy lambda for name from outside
+    #       to kind of providing a "name self-based strategy" for condition?
     #       maybe at least we can define it as varagrs? like Callable[..., str]
     # TODO: consider accepting actual and by as Tuples
     #       where first is name for query and second is query fn
     def __init__(
         self,
-        # TODO: consider removing Callable[[], str] as supported type for description
-        description: str | Callable[[], str],
+        # TODO: consider removing Callable[[], str] as supported type for name
+        name: str | Callable[[], str],
         /,
         test: Lambda[E, None] | None = None,
         *,
@@ -849,7 +857,7 @@ class Condition(Generic[E]):
         _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
     ):
         # can be already stored
-        self.__description = description
+        self.__name = name
         self.__inverted = _inverted
         self.__falsy_exceptions = _falsy_exceptions
         self.__by = None
@@ -955,7 +963,7 @@ class Condition(Generic[E]):
     def not_(self) -> Condition[E]:
         return (
             Condition(
-                self.__description,
+                self.__name,
                 test=self.__test,
                 _inverted=not self.__inverted,
                 _falsy_exceptions=self.__falsy_exceptions,
@@ -963,7 +971,7 @@ class Condition(Generic[E]):
             if not self.__by
             else (
                 Condition(
-                    self.__description,
+                    self.__name,
                     actual=self.__actual,  # type: ignore
                     by=self.__by,
                     _describe_actual_result=self.__describe_actual_result,
@@ -974,11 +982,7 @@ class Condition(Generic[E]):
         )
 
     def __describe(self) -> str:
-        return (
-            self.__description
-            if not callable(self.__description)
-            else self.__description()
-        )
+        return self.__name if not callable(self.__name) else self.__name()
 
     def __describe_inverted(self) -> str:
         condition_words = self.__describe().split(' ')
@@ -1083,7 +1087,7 @@ class Condition(Generic[E]):
 
 
 # TODO: should Match be not just alias but a subclass overriding __init__
-#       to accept only description (maybe optional) + predicates with optional actual
+#       to accept only name (maybe optional) + predicates with optional actual
 #       i.e. not accepting test param at all...
 #       as, finally, the test param is more unhandy in straightforward inline usage
 #       – So far, YES, it seemed like a good idea to get rid of test param in Match
@@ -1147,7 +1151,7 @@ class Condition(Generic[E]):
 class Match(Condition[E]):
     """A subclass-based alias to [Condition][selene.core.condition.Condition]
     class for better readability on straightforward usage of conditions
-    built inline with optional custom description...
+    built inline with optional custom name...
 
     ### Demo examples
 
@@ -1162,7 +1166,7 @@ class Match(Condition[E]):
     ```
 
     Example of inline definition with reusing existing queries and predicates
-    and autogenerated description:
+    and autogenerated name:
 
     ```python
     from selene import browser, query
@@ -1200,9 +1204,9 @@ class Match(Condition[E]):
     - accepts only the alternative to `test` params:
         the `by` predicate and the optional `actual` query
         to transform an entity before passing to the predicate for match.
-    - accepts description as the first positional param, but can be skipped
-        if you are OK with automatically generated description based on
-        `by` and `actual` arguments names or descriptions.
+    - accepts name as the first positional param, but can be skipped
+        if you are OK with automatically generated name based on
+        `by` and `actual` arguments names.
 
     ### Better fit for straightforward inline usage
 
@@ -1223,13 +1227,13 @@ class Match(Condition[E]):
     !!! note
 
         In the example above, it is especially important
-        to pass the `'normalized value'` description explicitly,
+        to pass the `'normalized value'` name explicitly,
         because we pass the lambda function in place
         of the `by` predicate argument, and Selene can't autogenerate
-        the description for condition based on "anonymous" lambda function.
-        The description can be autogenerated only from: regular named function,
+        the name for condition based on "anonymous" lambda function.
+        The name can be autogenerated only from: regular named function,
         a callable object with custom `__str__` implementation
-        (like `Query(description, fn)` object).
+        (like `Query(name, fn)` object).
 
     ### Reusing Selene's predefined queries
 
@@ -1259,10 +1263,10 @@ class Match(Condition[E]):
     ))
     ```
 
-    ### Optionality of description
+    ### Optionality of name
 
-    Or with default description, autogenerated based on passed query
-    description:
+    Or with default name, autogenerated based on passed query
+    name:
 
     ```python
     from selene import browser, query
@@ -1282,7 +1286,7 @@ class Match(Condition[E]):
     is_normalized = Query('is normalized', lambda value: not re.find_all(r'(\s)\1+', value))
 
     # or even...
-    # (in case of regular named function the 'is normalized' description
+    # (in case of regular named function the 'is normalized' name
     # will be generated from function name):
 
     def is_normalized(value):
@@ -1327,11 +1331,11 @@ class Match(Condition[E]):
         return lambda actual: not re.find_all(regex, actual)
     ```
 
-    ### When custom description over autogenerated
+    ### When custom name over autogenerated
 
-    But now the autogenerated description
+    But now the autogenerated name
     (that you will see in error messages on fail) – may be too low level.
-    Thus, you might want to provide more high level custom description:
+    Thus, you might want to provide more high level custom name:
 
     ```python
     from selene import browser, query
@@ -1380,17 +1384,17 @@ class Match(Condition[E]):
     def __init__x(self, by: Predicate[R]): ...
 
     @overload
-    def __init__x(self, description: str, by: Predicate[R]): ...
+    def __init__x(self, name: str, by: Predicate[R]): ...
 
     @overload
-    def __init__x(self, description: str, actual: Lambda[E, R], by: Predicate[R]): ...
+    def __init__x(self, name: str, actual: Lambda[E, R], by: Predicate[R]): ...
 
     @overload
-    def __init__x(self, *, description: Callable[[], str], by: Predicate[R]): ...
+    def __init__x(self, *, name: Callable[[], str], by: Predicate[R]): ...
 
     @overload
     def __init__x(
-        self, *, description: Callable[[], str], actual: Lambda[E, R], by: Predicate[R]
+        self, *, name: Callable[[], str], actual: Lambda[E, R], by: Predicate[R]
     ): ...
 
     @overload
@@ -1427,12 +1431,12 @@ class Match(Condition[E]):
         Match(lambda actual: actual - 1, lambda res: res > 0)
         Match('has positive decrement', lambda actual: actual - 1, lambda res: res > 0)
         Match(
-            description=lambda: 'has positive decrement',
+            name=lambda: 'has positive decrement',
             actual=lambda actual: actual - 1,
             by=lambda res: res > 0,
         )
         Match(
-            description=lambda: 'has positive decrement',
+            name=lambda: 'has positive decrement',
             by=lambda res: res > 0,
         )
         ```
@@ -1441,7 +1445,7 @@ class Match(Condition[E]):
             super().__init__(**kwargs)
             return
         if args and isinstance(args[0], str):
-            description = args[0]
+            name = args[0]
             left_args = args[1:]
             if not left_args and not kwargs.get('by', None):
                 raise ValueError(
@@ -1449,20 +1453,20 @@ class Match(Condition[E]):
                 )
             if not left_args:
                 super().__init__(
-                    description, actual=kwargs.get('actual', None), by=kwargs['by']
+                    name, actual=kwargs.get('actual', None), by=kwargs['by']
                 )
                 return
             if left_args and len(left_args) == 1:
-                super().__init__(description, by=left_args[0])
+                super().__init__(name, by=left_args[0])
                 return
             if left_args and len(left_args) == 2:
-                super().__init__(description, actual=left_args[0], by=left_args[1])
+                super().__init__(name, actual=left_args[0], by=left_args[1])
                 return
             raise ValueError('too much of positional arguments')
         if args and callable(args[0]):
             if len(args) + len(kwargs) == 3:
                 raise ValueError(
-                    'callable description can not be passed as positional argument'
+                    'callable name can not be passed as positional argument'
                 )
             if len(args) + len(kwargs) == 2:
                 actual = args[0]
@@ -1470,18 +1474,18 @@ class Match(Condition[E]):
             else:
                 actual = None
                 by = args[0]
-            if not (by_description := Query.full_description_for(by)):
+            if not (by_name := Query.full_description_for(by)):
                 raise ValueError(
-                    'either provide description or ensure that at least by predicate'
+                    'either provide name or ensure that at least by predicate'
                     'has __qualname__ (defined as regular named function)'
                     'or custom __str__ implementation '
                     '(like lambda wrapped in Query object)'
                 )
             actual_desc = Query.full_description_for(actual)
-            description = ((str(actual_desc) + ' ') if actual_desc else '') + str(
-                by_description
+            name = ((str(actual_desc) + ' ') if actual_desc else '') + str(
+                by_name
             )  # noqa
-            super().__init__(description, actual=actual, by=by)
+            super().__init__(name, actual=actual, by=by)
             return
 
         raise ValueError('invalid arguments to Match initializer')
@@ -1489,7 +1493,7 @@ class Match(Condition[E]):
     @overload
     def __init__(
         self,
-        description: str | Callable[[], str],
+        name: str | Callable[[], str],
         /,
         actual: Lambda[E, R],
         *,
@@ -1502,7 +1506,7 @@ class Match(Condition[E]):
     @overload
     def __init__(
         self,
-        description: str | Callable[[], str],
+        name: str | Callable[[], str],
         /,
         *,
         by: Predicate[E],
@@ -1530,11 +1534,9 @@ class Match(Condition[E]):
         _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
     ): ...
 
-    # TODO: should we rename description to name? won't it confuse with __name__?
-    #       probably not, will be actually consistent with __name__...
     def __init__(
         self,
-        description: str | Callable[[], str] | None = None,
+        name: str | Callable[[], str] | None = None,
         actual: Lambda[E, R] | None = None,
         *,
         by: Predicate[E] | Predicate[R],
@@ -1559,21 +1561,20 @@ class Match(Condition[E]):
         But keep in mind that they are marked with `_` prefix to indicate their
         private and potentially "experimental" use, that can change in future versions.
         """
-        if not description and not (by_description := Query.full_description_for(by)):
+        if not name and not (by_name := Query.full_description_for(by)):
             raise ValueError(
-                'either provide description or ensure that at least by predicate '
+                'either provide a name or ensure that at least by predicate '
                 'has __qualname__ (defined as regular named function) '
                 'or custom __str__ implementation '
                 '(like lambda wrapped in Query object)'
             )
-        actual_desc = Query.full_description_for(actual)
-        description = description or (
-            ((str(actual_desc) + ' ') if actual_desc else '')
-            + str(by_description)  # noqa
+        actual_name = Query.full_description_for(actual)
+        name = name or (
+            ((str(actual_name) + ' ') if actual_name else '') + str(by_name)  # noqa
         )
         # TODO: fix "cannot infer type of argument 1 of __init__" or ignore
         super().__init__(  # type: ignore
-            description,
+            name,
             actual=actual,  # type: ignore
             by=by,
             _describe_actual_result=_describe_actual_result,

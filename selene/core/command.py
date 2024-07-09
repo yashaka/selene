@@ -625,7 +625,7 @@ class js:  # pylint: disable=invalid-name
     # TODO: should we process collections too? i.e. click through all elements?
     class __ClickWithOffset(Command[Element]):
         def __init__(self):
-            self._description = 'click'
+            self._name = 'click'
 
         @overload
         def __call__(self, element: Element) -> None: ...

@@ -197,8 +197,6 @@ Then we have to consider rething condition.__call__ aliases... And corresponding
 
 ### TODO: rename all conditions inside match.py so match can be fully used instead be + have #530 
 
-### TODO: Consider renaming description to name for Condition, Match, Query, Command, etc.
-
 ### TODO: check if there are no type errors on passing be._empty to should
 
 ### Consider making configurable the "filtering collection for visibility" like in texts type of conditions
@@ -552,6 +550,9 @@ Thanks to [Cameron Shimmin](https://github.com/cshimm) and Edale Miguel for PR [
 ### Refactorings
 
 - moved `Query` & Co from `core/wait.py` to `common/_typing_functioins.py`
+- renamed first arg of Condition, Query, Command from `description` to `name`
+  - and made it positional only for now
+  - If this significantly breaks your code, please, let us know, so we can consider adding some type of backwards compatibility
 
 ## 2.0.0rc9 (to be released on 06.03.2024)
 

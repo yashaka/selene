@@ -141,8 +141,8 @@ class Wait(Generic[E]):
             return False
 
     # TODO: do we really need these aliases?
-    def command(self, description: str, fn: Callable[[E], None]) -> None:
-        self.for_(Command(description, fn))
+    def command(self, name: str, fn: Callable[[E], None]) -> None:
+        self.for_(Command(name, fn))
 
-    def query(self, description: str, fn: Callable[[E], R]) -> Optional[R]:
-        return self.for_(Query(description, fn))
+    def query(self, name: str, fn: Callable[[E], R]) -> Optional[R]:
+        return self.for_(Query(name, fn))
