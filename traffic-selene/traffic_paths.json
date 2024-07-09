@@ -2,14 +2,14 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 231,
-    "uniques": 149
+    "count": 201,
+    "uniques": 132
   },
   {
     "path": "/yashaka/selene/blob/master/README.md",
     "title": "selene/README.md at master · yashaka/selene · GitHub",
-    "count": 44,
-    "uniques": 15
+    "count": 42,
+    "uniques": 14
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
@@ -20,14 +20,14 @@
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 39,
-    "uniques": 15
+    "count": 34,
+    "uniques": 14
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 29,
-    "uniques": 9
+    "count": 27,
+    "uniques": 8
   },
   {
     "path": "/yashaka/selene/tree/master/docs",
@@ -54,8 +54,8 @@
     "uniques": 5
   },
   {
-    "path": "/yashaka/selene/blob/master/examples/run_local_in_chrome_with_options_for_headless/test_todomvc.py",
-    "title": "selene/examples/run_local_in_chrome_with_options_for_headless/test_todomvc.py...",
+    "path": "/yashaka/selene/tree/master/tests/acceptance",
+    "title": "selene/tests/acceptance at master · yashaka/selene",
     "count": 14,
     "uniques": 3
   }
