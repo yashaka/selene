@@ -209,32 +209,32 @@ def values_containing(
     return _match.values_containing(*partial_texts, _inverted=True)
 
 
-def size(number: int) -> Condition[Collection]:
-    return _match.collection_has_size(number).not_
+def size(number: int | dict):
+    return _match.size(number, _inverted=True)
 
 
-def size_less_than(number: int) -> Condition[Collection]:
-    return _match.collection_has_size_less_than(number).not_
+def size_less_than(number: int):
+    return _match.size_less_than(number).not_
 
 
-def size_less_than_or_equal(number: int) -> Condition[Collection]:
-    return _match.collection_has_size_less_than_or_equal(number).not_
+def size_less_than_or_equal(number: int):
+    return _match.size_less_than_or_equal(number).not_
 
 
-def size_greater_than(number: int) -> Condition[Collection]:
-    return _match.collection_has_size_greater_than(number).not_
+def size_greater_than(number: int):
+    return _match.size_greater_than(number).not_
 
 
-def size_at_least(number: int) -> Condition[Collection]:
+def size_at_least(number: int):
     warnings.warn(
         'might be deprecated; use have.size_greater_than_or_equal instead',
         PendingDeprecationWarning,
     )
-    return _match.collection_has_size_greater_than_or_equal(number).not_
+    return _match.size_greater_than_or_equal(number, _inverted=True)
 
 
-def size_greater_than_or_equal(number: int) -> Condition[Collection]:
-    return _match.collection_has_size_greater_than_or_equal(number).not_
+def size_greater_than_or_equal(number: int):
+    return _match.size_greater_than_or_equal(number, _inverted=True)
 
 
 def texts(*partial_values: str | int | float | Iterable[str]):

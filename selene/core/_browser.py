@@ -50,6 +50,7 @@ class Browser(WaitingEntity['Browser']):
     def __str__(self):
         return 'browser'
 
+    # todo: consider not just building driver but also adjust its size according to config
     @property
     def driver(self) -> WebDriver:
         return self.config.driver

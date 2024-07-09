@@ -32,10 +32,8 @@ def str_equals_ignoring_case(expected):
     return lambda actual: str(expected).lower() == str(actual).lower()
 
 
-def equals(expected, ignore_case=False):  # TODO: remove ignore_case from here
-    return lambda actual: (
-        expected == actual if not ignore_case else str_equals_ignoring_case(expected)
-    )
+def equals(expected):
+    return lambda actual: (expected == actual)
 
 
 def equals_with(ignore_case=False):  # TODO: remove ignore_case from here

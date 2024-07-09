@@ -21,11 +21,11 @@
 # SOFTWARE.
 from __future__ import annotations
 
-import typing
+import typing_extensions as typing
 import warnings
 
 from abc import abstractmethod, ABC
-from typing import TypeVar, Union, Callable, Tuple, Iterable, Optional
+from typing_extensions import TypeVar, Union, Callable, Tuple, Iterable, Optional, Self
 
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver import ActionChains

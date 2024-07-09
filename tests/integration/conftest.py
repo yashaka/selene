@@ -114,12 +114,17 @@ def session_browser(chrome_driver):
 
 @pytest.fixture(scope='function')
 def function_browser(request):
-    if request.config.getoption('--headless', True):
-        chrome_driver = webdriver.Chrome(
-            options=headless_chrome_options(),
-            service=ChromeService(),
+    browser = Browser(
+        Config(
+            driver_options=(
+                headless_chrome_options()
+                if request.config.getoption('--headless')
+                else None
+            ),
+            driver_service=ChromeService(),
         )
-    else:
-        chrome_driver = webdriver.Chrome(service=ChromeService())
-    yield Browser(Config(driver=chrome_driver))
-    chrome_driver.quit()
+    )
+
+    yield browser
+
+    browser.driver.quit()

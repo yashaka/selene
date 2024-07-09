@@ -267,7 +267,13 @@ tags: Query[Collection, List[str]] = Query(
 text: Query[Element, str] = Query('text', lambda element: element.locate().text)
 """normalized text of element"""
 texts: Query[Collection, List[str]] = Query(
-    'texts', lambda collection: [element.text for element in collection.locate()]
+    'texts',
+    lambda collection: (
+        [element.text for element in collection.locate()]
+        # [element.text for element in collection.locate() if element.is_displayed()]
+        # if collection.config._filter_all_elements_for_visibility
+        # else [element.text for element in collection.locate()]
+    ),
 )
 """list of normalized texts of all elements in collection"""
 visible_texts: Query[Collection, List[str]] = Query(
@@ -287,15 +293,19 @@ location_once_scrolled_into_view: Query[Element, Dict[str, int]] = Query(
 )
 
 # TODO: what to do now with have.size* ? o_O
-size: Query[Union[Element, Collection, Browser], Union[dict, int]] = Query(
+size: Query[Element | Collection | Browser, dict | int] = Query(
     'size',
     lambda entity: (
-        entity.locate().size
-        if isinstance(entity, Element)
+        entity.driver.get_window_size()
+        if isinstance(entity, Browser)
         else (
-            len(entity.locate())
-            if isinstance(entity, Collection)
-            else typing.cast(Browser, entity).driver.get_window_size()
+            entity.locate().size
+            if isinstance(entity, Element)
+            else (
+                len(entity.locate())
+                if isinstance(entity, Collection)
+                else typing.cast(Browser, entity).driver.get_window_size()
+            )
         )
     ),
 )

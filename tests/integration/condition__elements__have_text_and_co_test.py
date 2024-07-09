@@ -66,7 +66,7 @@ def test_have_text__condition_variations(session_browser):
             'Timed out after 0.1s, while waiting for:\n'
             "browser.all(('css selector', '.name')).have no (texts [20, 2])\n"
             '\n'
-            "Reason: ConditionMismatch: actual visible texts: ['John 20th', 'Doe 2nd']\n"
+            "Reason: ConditionMismatch: actual: ['John 20th', 'Doe 2nd']\n"
         ) in str(error)
 
 
@@ -225,7 +225,7 @@ def test_texts__including_ignorecase__passed_compared_to_failed(
             "browser.all(('css selector', 'li')).have texts ['one', "
             "'two', 'three']\n"
             '\n'
-            "Reason: ConditionMismatch: actual visible texts: ['1) One!!!', '2) Two...', '3) "
+            "Reason: ConditionMismatch: actual: ['1) One!!!', '2) Two...', '3) "
             "Three???']\n"
         ) in str(error)
     # - inverted
@@ -239,7 +239,7 @@ def test_texts__including_ignorecase__passed_compared_to_failed(
             "browser.all(('css selector', 'li')).have no (texts ['One', "
             "'Two', 'Three'])\n"
             '\n'
-            "Reason: ConditionMismatch: actual visible texts: ['1) One!!!', '2) Two...', '3) "
+            "Reason: ConditionMismatch: actual: ['1) One!!!', '2) Two...', '3) "
             "Three???']\n"
         ) in str(error)
     # have.texts (ignore_case)
@@ -253,7 +253,7 @@ def test_texts__including_ignorecase__passed_compared_to_failed(
             "browser.all(('css selector', 'li')).have texts ignoring case: ['one.', "
             "'two.', 'three.']\n"
             '\n'
-            "Reason: ConditionMismatch: actual visible texts: ['1) One!!!', '2) Two...', '3) "
+            "Reason: ConditionMismatch: actual: ['1) One!!!', '2) Two...', '3) "
             "Three???']\n"
         ) in str(error)
     # - inverted
@@ -267,7 +267,7 @@ def test_texts__including_ignorecase__passed_compared_to_failed(
             "browser.all(('css selector', 'li')).have no (texts ignoring case: ['one', "
             "'two', 'three'])\n"
             '\n'
-            "Reason: ConditionMismatch: actual visible texts: ['1) One!!!', '2) Two...', '3) "
+            "Reason: ConditionMismatch: actual: ['1) One!!!', '2) Two...', '3) "
             "Three???']\n"
         ) in str(error)
     # - - with not after, in the end
@@ -281,7 +281,7 @@ def test_texts__including_ignorecase__passed_compared_to_failed(
             "browser.all(('css selector', 'li')).have no (texts ignoring case: ['one', "
             "'two', 'three'])\n"
             '\n'
-            "Reason: ConditionMismatch: actual visible texts: ['1) One!!!', '2) Two...', '3) "
+            "Reason: ConditionMismatch: actual: ['1) One!!!', '2) Two...', '3) "
             "Three???']\n"
         ) in str(error)
 
@@ -310,7 +310,7 @@ def test_exact_texts__including_ignorecase__passed_compared_to_failed(
             "browser.all(('css selector', 'li')).have exact texts ['One', 'Two', "
             "'Three']\n"
             '\n'
-            "Reason: ConditionMismatch: actual visible texts: ['1) One!!!', '2) Two...', '3) "
+            "Reason: ConditionMismatch: actual: ['1) One!!!', '2) Two...', '3) "
             "Three???']\n"
         ) in str(error)
     # - inverted
@@ -326,7 +326,7 @@ def test_exact_texts__including_ignorecase__passed_compared_to_failed(
             "browser.all(('css selector', 'li')).have no (exact texts ['1) One!!!', '2) "
             "Two...', '3) Three???'])\n"
             '\n'
-            "Reason: ConditionMismatch: actual visible texts: ['1) One!!!', '2) Two...', '3) "
+            "Reason: ConditionMismatch: actual: ['1) One!!!', '2) Two...', '3) "
             "Three???']\n"
         ) in str(error)
     # have.texts (ignore_case)
@@ -344,7 +344,7 @@ def test_exact_texts__including_ignorecase__passed_compared_to_failed(
             "browser.all(('css selector', 'li')).have exact texts ignoring case: ['one.', "
             "'two.', 'three.']\n"
             '\n'
-            "Reason: ConditionMismatch: actual visible texts: ['1) One!!!', '2) Two...', '3) "
+            "Reason: ConditionMismatch: actual: ['1) One!!!', '2) Two...', '3) "
             "Three???']\n"
         ) in str(error)
     # - inverted
@@ -360,7 +360,7 @@ def test_exact_texts__including_ignorecase__passed_compared_to_failed(
             "browser.all(('css selector', 'li')).have no (exact texts ignoring case: ['1) "
             "one!!!', '2) two...', '3) three???'])\n"
             '\n'
-            "Reason: ConditionMismatch: actual visible texts: ['1) One!!!', '2) Two...', '3) "
+            "Reason: ConditionMismatch: actual: ['1) One!!!', '2) Two...', '3) "
             "Three???']\n"
         ) in str(error)
     # - - with not after, in the end
@@ -378,6 +378,6 @@ def test_exact_texts__including_ignorecase__passed_compared_to_failed(
             "browser.all(('css selector', 'li')).have no (exact texts ignoring case: ['1) "
             "one!!!', '2) two...', '3) three???'])\n"
             '\n'
-            "Reason: ConditionMismatch: actual visible texts: ['1) One!!!', '2) Two...', '3) "
+            "Reason: ConditionMismatch: actual: ['1) One!!!', '2) Two...', '3) "
             "Three???']\n"
         ) in str(error)

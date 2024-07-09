@@ -101,6 +101,7 @@ class Browser(WaitingEntity['Browser']):
         type_by_js: bool = False,
         click_by_js: bool = False,
         wait_for_no_overlap_found_by_js: bool = False,
+        _match_only_visible_elements_texts: bool = True,
         # Etc.
         _build_wait_strategy: Callable[[Config], Callable[[E], Wait[E]]] = ...,
     ) -> Browser: ...

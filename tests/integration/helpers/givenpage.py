@@ -19,7 +19,11 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+from __future__ import annotations
 
+from selenium.webdriver.remote.webdriver import WebDriver
+
+from selene import Browser
 from tests import resources
 from tests.helpers import convert_sec_to_ms
 
@@ -31,8 +35,17 @@ class LoadingHtmlPage:
         self._body = body
         self._timeout = timeout
 
-    def load_in(self, driver):
-        driver.get(EMPTY_PAGE_URL)
+    def load_in(self, driver_or_browser: WebDriver | Browser):
+        driver = (
+            driver_or_browser.driver
+            if isinstance(driver_or_browser, Browser)
+            else driver_or_browser
+        )
+        (
+            driver_or_browser.open(EMPTY_PAGE_URL)
+            if isinstance(driver_or_browser, Browser)
+            else driver.get(EMPTY_PAGE_URL)
+        )
         return LoadedHtmlPage(driver).render_body(self._body, self._timeout)
 
 
@@ -69,20 +82,28 @@ class LoadedHtmlPage:
 
 
 class GivenPage:
-    def __init__(self, driver):
-        self._driver = driver
+    def __init__(self, driver_or_browser: WebDriver | Browser):
+        self._driver_or_browser = driver_or_browser
+
+    @property
+    def _driver(self):
+        return (
+            self._driver_or_browser.driver
+            if isinstance(self._driver_or_browser, Browser)
+            else self._driver_or_browser
+        )
 
     def load_body_with_timeout(self, body, timeout):
         return LoadedHtmlPage(self._driver).render_body_with_timeout(body, timeout)
 
     def opened_with_body_with_timeout(self, body, timeout):
-        return LoadingHtmlPage(timeout, body).load_in(self._driver)
+        return LoadingHtmlPage(timeout, body).load_in(self._driver_or_browser)
 
     def opened_with_body(self, body):
         return self.opened_with_body_with_timeout(body, 0)
 
     def opened_empty(self):
-        return LoadingHtmlPage().load_in(self._driver)
+        return LoadingHtmlPage().load_in(self._driver_or_browser)
 
     def load_body(self, body):
         return LoadedHtmlPage(self._driver).render_body(body)

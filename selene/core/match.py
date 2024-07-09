@@ -729,60 +729,101 @@ Use [size(0)][selene.core.match.size] instead.
 """
 
 
-def collection_has_size(
-    expected: int,
-    describing_matched_to='has size',
-    compared_by_predicate_to=predicate.equals,
-) -> Condition[Collection]:
-    def size(collection: Collection) -> int:
-        return len(collection())
+class size(Match[Union[Collection, Browser, Element]]):
 
-    return CollectionCondition.raise_if_not_actual(
-        f'{describing_matched_to} {expected}',
-        size,
-        compared_by_predicate_to(expected),
-    )
+    def __init__(
+        self,
+        expected: int | dict,
+        _name='has size',  # TODO: fix to have for Collection, has otherwise
+        _by=predicate.equals,
+        _inverted=False,
+    ):
+        self.__expected = expected
+        self.__name = f'{_name} {expected}'
+        self.__by = _by
+        self.__inverted = _inverted
+
+        super().__init__(
+            self.__name,
+            actual=query.size,
+            by=_by(expected),
+            _inverted=_inverted,
+        )
+
+    # # there is no much sense to apply or_less & co to Browser or Element sizes
+    # @property
+    # def or_less(self) -> Condition[Collection | Browser | Element]:
+    #     return self.__class__(
+    #         self.__expected,
+    #         f'{self.__name} or less',
+    #         predicate.is_less_than_or_equal,
+    #         _inverted=self.__inverted,
+    #     )
+    @property
+    def or_less(self) -> Condition[Collection]:
+        return Match(
+            f'{self.__name} or less',
+            query.size,
+            by=predicate.is_less_than_or_equal(self.__expected),
+            _inverted=self.__inverted,
+        )
+
+    @property
+    def or_more(self) -> Condition[Collection]:
+        return Match(
+            f'{self.__name} or more',
+            query.size,
+            by=predicate.is_greater_than_or_equal(self.__expected),
+            _inverted=self.__inverted,
+        )
+
+    @property
+    def _more_than(self) -> Condition[Collection]:
+        return Match(
+            f'has size more than {self.__expected}',
+            query.size,
+            by=predicate.is_greater_than(self.__expected),
+            _inverted=self.__inverted,
+        )
+
+    @property
+    def _less_than(self) -> Condition[Collection]:
+        return Match(
+            f'has size less than {self.__expected}',
+            query.size,
+            by=predicate.is_less_than(self.__expected),
+            _inverted=self.__inverted,
+        )
 
 
-def collection_has_size_greater_than(expected: int) -> Condition[Collection]:
-    return collection_has_size(
-        expected, 'has size greater than', predicate.is_greater_than
-    )
+def size_greater_than(expected: int, _inverted=False):
+    return size(expected, _inverted=_inverted)._more_than
 
 
-def collection_has_size_greater_than_or_equal(
-    expected: int,
-) -> Condition[Collection]:
-    return collection_has_size(
-        expected,
-        'has size greater than or equal',
-        predicate.is_greater_than_or_equal,
-    )
+def size_greater_than_or_equal(expected: int, _inverted=False):
+    return size(expected, _inverted=_inverted).or_more
 
 
-def collection_has_size_less_than(expected: int) -> Condition[Collection]:
-    return collection_has_size(expected, 'has size less than', predicate.is_less_than)
+def size_less_than(expected: int, _inverted=False):
+    return size(expected, _inverted=_inverted)._less_than
 
 
-# todo: consider .should(have.size(10).or_less) ;)
-def collection_has_size_less_than_or_equal(
-    expected: int,
-) -> Condition[Collection]:
-    return collection_has_size(
-        expected,
-        'has size less than or equal',
-        predicate.is_less_than_or_equal,
-    )
+def size_less_than_or_equal(expected: int, _inverted=False):
+    return size(expected, _inverted=_inverted).or_less
 
 
-# TODO: make it configurable whether assert only visible texts or not
 def texts(
     *expected: str | int | float | Iterable[str], _ignore_case=False, _inverted=False
 ):
+    # todo: consider counting _match_only_visible_elements_texts in name
     return _CollectionHasSomethingSupportingIgnoreCase(
         'have texts',
         *expected,
-        actual=query.visible_texts,
+        actual=lambda collection: (
+            query.visible_texts(collection)
+            if collection.config._match_only_visible_elements_texts
+            else query.texts(collection)
+        ),
         by=predicate.equals_by_contains_to_list,
         _ignore_case=_ignore_case,
         _inverted=_inverted,
@@ -792,17 +833,22 @@ def texts(
 def exact_texts(
     *expected: str | int | float | Iterable[str], _ignore_case=False, _inverted=False
 ):
+    # todo: consider counting _match_only_visible_elements_texts in name
     return _CollectionHasSomethingSupportingIgnoreCase(
         'have exact texts',
         *expected,
-        actual=query.visible_texts,
+        actual=lambda collection: (
+            query.visible_texts(collection)
+            if collection.config._match_only_visible_elements_texts
+            else query.texts(collection)
+        ),
         by=predicate.equals_to_list,
         _ignore_case=_ignore_case,
         _inverted=_inverted,
     )
 
 
-# TODO: refactor to be more like element_has_text,
+# todo: refactor to be more like element_has_text,
 #       i.e. reusing core logic of Condition,
 #       not overriding it
 class _exact_texts_like(Condition[Collection]):
@@ -950,11 +996,15 @@ class _exact_texts_like(Condition[Collection]):
 
     def __call__(self, entity: Collection):
 
-        visible_texts = [
-            webelement.text
-            for webelement in entity.locate()
-            if webelement.is_displayed()
-        ]
+        actual_texts = (
+            [
+                webelement.text
+                for webelement in entity.locate()
+                if webelement.is_displayed()
+            ]
+            if entity.config._match_only_visible_elements_texts
+            else [webelement.text for webelement in entity.locate()]
+        )
         # TODO: should we just check for * in pattern here and further for zero_like?
         # TODO: consider moving to self
         zero_like = lambda item_marker: item_marker in [
@@ -981,7 +1031,7 @@ class _exact_texts_like(Condition[Collection]):
             # +
             _exact_texts_like._MATCHING_SEPARATOR.join(
                 text if text != '' else _exact_texts_like._MATCHING_EMPTY_STRING_MARKER
-                for text in visible_texts
+                for text in actual_texts
             )
             # zero_like globs in the END needed an extra separator ...
             # + (
@@ -998,7 +1048,7 @@ class _exact_texts_like(Condition[Collection]):
             # we just add here the same separator for all cases in the end:
             + _exact_texts_like._MATCHING_SEPARATOR
         )
-        actual_to_render = _exact_texts_like._RENDERING_SEPARATOR.join(visible_texts)
+        actual_to_render = _exact_texts_like._RENDERING_SEPARATOR.join(actual_texts)
 
         glob_pattern_by = lambda marker: next(  # noqa
             glob_pattern

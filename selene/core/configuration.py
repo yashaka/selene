@@ -642,8 +642,7 @@ class Config:
     build_driver_strategy: Callable[[Config], WebDriver] = (
         _build_local_driver_by_name_or_remote_by_url_and_options
     )
-    """
-    A factory to build a driver instance based on this config instance.
+    """A factory to build a driver instance based on this config instance.
     The driver built with this factory will be available via `config.driver`.
     Hence, you can't use `config.driver` directly inside this factory,
     because it may lead to recursion.
@@ -671,8 +670,7 @@ class Config:
     ] = lambda config, get_driver: atexit.register(
         lambda: config._teardown_driver_strategy(config)(get_driver())
     )
-    """
-    Defines when drier will be teardown.
+    """Defines when drier will be teardown.
     Is supposed to use config._teardown_driver_strategy under the hood.
 
     By default, it's registered as an atexit handler.
@@ -688,8 +686,7 @@ class Config:
             else None
         )
     )
-    """
-    Defines how driver will be teardown.
+    """Defines how driver will be teardown.
 
     By default it quits the driver if it's alive and not asked to be held at exit
     via `config.hold_driver_at_exit`.
@@ -700,8 +697,8 @@ class Config:
     _is_driver_set_strategy: Callable[[Optional[WebDriver]], bool] = lambda driver: (
         driver is not ... and driver is not None
     )
-    """
-    Defines how to check if driver is set, and so defines how to "unset" or "reset" it.
+    """Defines how to check if driver is set, and so defines how to "unset"
+    or "reset" it.
     """
 
     # TODO: should we make it private so far?
@@ -711,16 +708,14 @@ class Config:
         if hasattr(driver, 'service')
         else on_error_return_false(lambda: driver.window_handles is not None)
     )
-    """
-    Defines the logic of checking driver for being alive.
+    """Defines the logic of checking driver for being alive.
 
     Is supposed to be used in context of triggering automatic driver rebuild,
     depending on context.
     """
 
     driver_options: Optional[BaseOptions] = None
-    """
-    Individual browser options to be used on building a driver.
+    """Individual browser options to be used on building a driver.
 
     Examples:
         Can be used instead of `config.driver_name` to tell Selene
@@ -745,8 +740,7 @@ class Config:
     """
 
     driver_service: Optional[Service] = None
-    """
-    Service instance for managing the starting and stopping of the driver.
+    """Service instance for managing the starting and stopping of the driver.
     Might be useful, for example, for customizing driver executable path,
     if you want to use a custom driver executable instead of the one,
     downloaded by Selenium Manager automatically.
@@ -758,8 +752,7 @@ class Config:
     # in context of the majority of use cases when we just need to pass a URL:
     # for appium and remote cases
     driver_remote_url: Optional[str] = None
-    """
-    A URL to be used as remote server address to instantiate a RemoteConnection
+    """A URL to be used as remote server address to instantiate a RemoteConnection
     to be used by RemoteWebDriver to connect to the remote server.
 
     Also known as `command_executor`,
@@ -773,8 +766,7 @@ class Config:
     # TODO: consider setting to None or ... by default,
     #       and pick up by factory any installed browser in a system
     driver_name: Optional[str] = None
-    """
-    A desired name of the driver to build by `config.build_driver_strategy`.
+    """A desired name of the driver to build by `config.build_driver_strategy`.
 
     If not set (i.e. set to None, that is a current default value),
     the 'chrome' driver will be used by default.
@@ -807,8 +799,7 @@ class Config:
 
     # TODO: finalize the name of this option and consider making public
     _override_driver_with_all_driver_like_options: bool = True
-    """
-    Controls whether driver will be deep copied
+    """Controls whether driver will be deep copied
     with `config.driver_name`, `config.driver_remote_url`,
     and so for any other `config.*driver*` option.
     when customizing config via `config.with_(**options_to_override)`.
@@ -881,8 +872,7 @@ class Config:
     # """Controls whether driver will be automatically quit at reset of config.driver"""
 
     hold_driver_at_exit: bool = False
-    """
-    Controls whether driver will be automatically quit at process exit or not.
+    """Controls whether driver will be automatically quit at process exit or not.
 
     Will not take much effect on Chrome
     for 4.5.0 < selenium versions <= 4.8.3 < ?.?.?,
@@ -919,8 +909,8 @@ class Config:
         [Config],
         Callable[[Optional[str]], None],
     ] = _maybe_reset_driver_then_tune_window_and_get_with_base_url
-    """
-    Defines how to get url with driver depending on other options, like config.base_url.
+    """Defines how to get url with driver depending on other options,
+    like config.base_url.
 
     Is used inside `browser.open(relative_or_absolute_url)`,
     and defines its behavior correspondingly.
@@ -934,8 +924,7 @@ class Config:
     #       But shouldn't we use a goal-oriented term, not impl-oriented?
     #       The goal is actually to rebuild driver on get url!
     _reset_not_alive_driver_on_get_url: bool = True
-    """
-    Controls whether driver should be automatically reset and, thus,
+    """Controls whether driver should be automatically reset and, thus,
     forced to be rebuilt, if it was noticed as not alive (e.g. after quit or crash)
     on next call to `config.driver.get(url)`
     (via `config._driver_get_url_strategy`).
@@ -948,8 +937,7 @@ class Config:
     """
 
     rebuild_not_alive_driver: bool = False
-    """
-    Controls whether driver should be automatically rebuilt
+    """Controls whether driver should be automatically rebuilt
     when on next call to config.driver
     it was noticed as not alive (e.g. after quit or crash).
 
@@ -995,8 +983,7 @@ class Config:
     #       or DriverLifeCycleDescriptor?
     #       or is it ok to have similar names? We still have a Descriptor suffix...
     driver: WebDriver = _ManagedDriverDescriptor(default=...)  # type: ignore
-    """
-    A driver instance with lifecycle managed by this config special options
+    """A driver instance with lifecycle managed by this config special options
     depending on their values and customization of this attribute.
 
     Once driver-definition-related options are set
@@ -1044,15 +1031,12 @@ class Config:
     """
 
     timeout: float = 4
-    """
-    A default timeout for all Selene waiting that happens under the hood
+    """A default timeout for all Selene waiting that happens under the hood
     of the majority of Selene commands and assertions.
     """
 
     poll_during_waits: int = 100
-    """
-    A fake option, not currently used in Selene waiting:)
-    """
+    """A fake option, not currently used in Selene waiting:)"""
 
     # --- Web-specific options ---
     # TODO: should we pass here None?
@@ -1061,8 +1045,7 @@ class Config:
     #       and use it as app capability for mobile?
     #       if not set in driver_options...
     base_url: str = ''
-    """
-    A base url to be used when opening a page with relative url.
+    """A base url to be used when opening a page with relative url.
 
     Examples:
         Instead of duplicating the same base url in all your tests:
@@ -1090,8 +1073,7 @@ class Config:
     #       should we rename it to get_base_url_when_relative_url_is_missed?
     #       should we use driver term in the name?
     _get_base_url_on_open_with_no_args: bool = False
-    """
-    A flag to indicate whether to use `config.base_url`
+    """A flag to indicate whether to use `config.base_url`
     when opening a page with `browser.open()` command without arguments.
 
     If you call `browser.open()` without arguments,
@@ -1107,16 +1089,15 @@ class Config:
     https://github.com/yashaka/selene/blob/master/examples/run_cross_platform
     """
     window_width: Optional[int] = None
-    """
-    If set, will be used to set the window width on next call to `browser.open(url)`.
+    """If set, will be used to set the window width on next call to `browser.open(url)`.
     """
     window_height: Optional[int] = None
-    """
-    If set, will be used to set the window height on next call to `browser.open(url)`.
+    """If set, will be used to set the window height on next call
+    to `browser.open(url)`.
     """
     log_outer_html_on_failure: bool = False
-    """
-    If set to True, will log outer html of the element on failure of any Selene command.
+    """If set to True, will log outer html of the element on failure
+    of any Selene command.
 
     Is disabled by default, because:
 
@@ -1124,20 +1105,17 @@ class Config:
     - will not work on mobile app tests because under the hood - uses JavaScript
     """
     set_value_by_js: bool = False
-    """
-    A flag to indicate whether to use JavaScript to set value of an element
+    """A flag to indicate whether to use JavaScript to set value of an element
     on `element.set_value(value)` for purposes of speeding up the test execution,
     or as a workaround when default selenium-based implementation does not work.
     """
     type_by_js: bool = False
-    """
-    A flag to indicate whether to use JavaScript to type text to an element
+    """A flag to indicate whether to use JavaScript to type text to an element
     on `element.type(text)` for purposes of speeding up the test execution,
     or as a workaround when default selenium-based implementation does not work.
     """
     click_by_js: bool = False
-    """
-    A flag to indicate whether to use JavaScript to click on element
+    """A flag to indicate whether to use JavaScript to click on element
     via `element.click()`, usually, as a workaround,
     when default selenium-based implementation does not work.
     """
@@ -1145,8 +1123,7 @@ class Config:
     #       should we add also (or instead?)
     #       config.is_element_interactable_strategy?
     wait_for_no_overlap_found_by_js: bool = False
-    """
-    A flag to indicate whether to use JavaScript to detect overlapping elements
+    """A flag to indicate whether to use JavaScript to detect overlapping elements
     and wait for them to disappear, when calling commands like `element.type(text)`.
     It is needed because Selenium does not support overlapping elements detection
     on any command except `click`. Hence, when you call `click` on an element,
@@ -1160,6 +1137,14 @@ class Config:
     Hence, if you want to wait in such cases, turn on this option.
     Just keep in mind, that it will work only for web tests, not mobile.
     """
+    # TODO: should not we explicitly provide a context in name?
+    #       because now it looks like the filter will be added always
+    #       even here: browser.all('.item').locate()
+    _match_only_visible_elements_texts: bool = True
+    """A flag to indicate whether to filter out all elements for visibility
+    on applying Selene conditions
+    (usually in Selene assertions vis `should` method calls).
+    """  # todo: document example
 
     # TODO: better name? now technically it's not a decorator but decorator_builder...
     # or decorator_factory...
@@ -1173,8 +1158,7 @@ class Config:
     # TODO: What about config.wait_decorator_strategy?
     #       or even config.build_wait_decorator_strategy?
     _wait_decorator: Callable[[Wait[E]], Callable[[F], F]] = lambda w: lambda f: f
-    """
-    Is used when performing any element command and assertion (i.e. should)
+    """Is used when performing any element command and assertion (i.e. should)
     Hence, can be used to log corresponding commands with waits,
     and integrate with something like allure reporting;)
 
@@ -1217,8 +1201,7 @@ class Config:
     # TODO: why we name it as hook_* why not handle_* ?
     #       what would be proper style?
     hook_wait_failure: Optional[Callable[[TimeoutException], Exception]] = None
-    """
-    A handler for all exceptions, thrown on failed waiting for timeout.
+    """A handler for all exceptions, thrown on failed waiting for timeout.
     Should process the original exception and rethrow it or the modified one.
     """
 
@@ -1228,24 +1211,18 @@ class Config:
         'screenshots',
         str(round(time.time() * 1000)),
     )
-    """
-    A folder to save screenshots and page sources on failure.
-    """
+    """A folder to save screenshots and page sources on failure."""
     save_screenshot_on_failure: bool = True
-    """
-    A flag to indicate whether to save screenshot on failure or not.
+    """A flag to indicate whether to save screenshot on failure or not.
     If saved, will be also logged to the console on failure.
     """
     save_page_source_on_failure: bool = True
-    """
-    A flag to indicate whether to save page source on failure or not.
+    """A flag to indicate whether to save page source on failure or not.
     If saved, will be also logged to the console on failure.
     """
     # TODO: consider making public
     _counter: itertools.count = itertools.count(start=int(round(time.time() * 1000)))
-    """
-    A counter, currently used for incrementing screenshot and page source names
-    """
+    """A counter, currently used for incrementing screenshot and page source names"""
     last_screenshot: Optional[str] = None
     last_page_source: Optional[str] = None
     # TODO: is a _strategy suffix a good naming convention in this context?
@@ -1292,8 +1269,7 @@ class Config:
             #  think on how we can resolve this...
         )
     )
-    """
-    Defines a strategy for saving a screenshot.
+    """Defines a strategy for saving a screenshot.
 
     The default strategy saves a screenshot to a file,
     and stores the path to `config.last_screenshot`.
@@ -1342,8 +1318,7 @@ class Config:
             #  think on how we can resolve this...
         )
     )
-    """
-    Defines a strategy for saving a page source on failure.
+    """Defines a strategy for saving a page source on failure.
 
     The default strategy saves a page_source to a file,
     and stores the path to `config.last_page_source`.
@@ -1475,8 +1450,7 @@ Screenshot: {uri}'''
             _decorator=config._wait_decorator,
         )
     )
-    """
-    A strategy for building a Wait object based on other config options
+    """A strategy for building a Wait object based on other config options
     like `config.timeout`, `config.hook_wait_failure`, `config._wait_decorator`, etc.
     """
 

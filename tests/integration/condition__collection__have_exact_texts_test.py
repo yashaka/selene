@@ -96,6 +96,4 @@ def test_should_have_exact_texts_exception(session_browser):
     with pytest.raises(TimeoutException) as error:
         browser.all('li').should(have.exact_texts('Alex'))
     assert ".have exact texts ['Alex']" in error.value.msg
-    assert (
-        "ConditionMismatch: actual visible texts: ['Alex', 'Yakov']" in error.value.msg
-    )
+    assert "ConditionMismatch: actual: ['Alex', 'Yakov']" in error.value.msg

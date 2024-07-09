@@ -199,7 +199,11 @@ Then we have to consider rething condition.__call__ aliases... And corresponding
 
 ### TODO: check if there are no type errors on passing be._empty to should
 
-### Consider making configurable the "filtering collection for visibility" like in texts type of conditions
+### Consider making configurable the "filtering collection for visibility" in size condition
+
+### Consider changing name type from str | Callable[[], str] to str | Callable[[E], str],
+
+### Ensure type errors on element.should(collection_condition), etc.
 
 ### Deprecated conditions
 
@@ -496,7 +500,7 @@ See a bit more in documented ["FAQ: How to work with iFrames in Selene?"](https:
     in order to copy to clipboard before pasting
     via simulating `ctrl+v` or `cmd+v` shortcut pressed.
 - `command.long_press(duration=0.1)` alias to `command._long_press(duration=0.1)`
-    actually the _long_press is now an outdated alias and probably will be duplicated in future releases
+    actually the _long_press is now an outdated alias and probably will be deprecated in future releases
 - `command.press_sequentially(text: str)`
 
 ### More collection queries in query.py
@@ -515,6 +519,23 @@ See a bit more in documented ["FAQ: How to work with iFrames in Selene?"](https:
 - query.texts_content
 - query.values
 - query.tags
+
+### More conditions & aliases
+
+- collection conditions
+  - `have.size(int).or_more` as alias to `have.size_greater_than_or_equal(int)`
+  - `have.size(int).or_less` as alias to `have.size_less_than_or_equal(int)`
+- element conditions
+  - `have.size(dict_of_element_size)` 
+- browser conditions
+  - `have.size(dict_of_browser_size)` 
+
+#### Additional Config options relating conditions behavior
+
+- config._match_only_visible_elements_texts
+  - `True` by default
+    - does not change current behavior – conditions like have.texts will still filter out invisible elements by default, as it was before
+    - but now you can turn this behavior off by setting the option to `False`
 
 ### Document command.py and query.py on module level
 

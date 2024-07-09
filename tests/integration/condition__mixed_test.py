@@ -63,6 +63,34 @@ def test_should_match_different_things(session_browser):
 
     # THEN
 
+    # have texts & co + filtering for visibility via config?
+
+    ss('li#hidden,li#visible').should(match.texts('One'))
+    ss('li#hidden,li#visible').should(match._text_patterns(r'[Oo]ne.+'))
+    ss('li#hidden,li#visible').should(match._text_patterns_like(r'[Oo]ne.+', [...]))
+    ss('li#hidden,li#visible').should(match._texts_like('One', [...]))
+    ss('li#hidden,li#visible').should(match.exact_texts('One !!!'))
+    ss('li#hidden,li#visible').should(match._exact_texts_like('One !!!', [...]))
+
+    ss('li#hidden,li#visible').with_(_match_only_visible_elements_texts=False).should(
+        match.texts('', 'One')
+    )
+    ss('li#hidden,li#visible').with_(_match_only_visible_elements_texts=False).should(
+        match._text_patterns('', r'[Oo]ne.+')
+    )
+    ss('li#hidden,li#visible').with_(_match_only_visible_elements_texts=False).should(
+        match._text_patterns_like('', r'[Oo]ne.+', [...])
+    )
+    ss('li#hidden,li#visible').with_(_match_only_visible_elements_texts=False).should(
+        match._texts_like('', 'One', [...])
+    )
+    ss('li#hidden,li#visible').with_(_match_only_visible_elements_texts=False).should(
+        match.exact_texts('', 'One !!!')
+    )
+    ss('li#hidden,li#visible').with_(_match_only_visible_elements_texts=False).should(
+        match._exact_texts_like('', 'One !!!', [...])
+    )
+
     # have tag?
     # - visible passes
     s('li#visible').should(match.tag('li'))
@@ -102,6 +130,173 @@ def test_should_match_different_things(session_browser):
     # have no tag containing?
     s('li#visible').should(have.no.tag_containing('in'))
     s('input#visible').should(have.no.tag_containing('l'))
+
+
+def test_should_have_size__applied_to_collection__passed_and_failed(
+    session_browser,
+):
+    s = lambda selector: session_browser.with_(timeout=0.1).element(selector)
+    ss = lambda selector: session_browser.with_(timeout=0.1).all(selector)
+    GivenPage(session_browser.driver).opened_with_body(
+        '''
+        <ul>
+        <!--<li id="absent"></li>-->
+        <li id="hidden-empty" style="display: none"></li>
+        <li id="hidden" style="display: none"> One  !!!
+        </li>
+        <li id="visible-empty" style="display: block"></li>
+        <li id="visible" style="display: block"> One  !!!
+        </li>
+        </ul>
+        <!--<input id="absent"></li>-->
+        <form id="form-no-text-with-values">
+            <div id="empty-inputs">
+                <input id="hidden-empty" style="display: none">
+                <input id="visible-empty" style="display: block" value="">
+            </div>
+            <div id="non-empty-inputs">
+                <input id="hidden" style="display: none" value=" One  !!!">
+                <input id="visible" style="display: block" value=" One  !!!">
+            </div>
+        </form>
+        <form id="form-with-text-with-values">
+            <div id="empty-inputs">
+                <input id="hidden-empty-2" style="display: none">
+                <label>Visible empty:</label>
+                <input id="visible-empty-2" style="display: block" value="">
+            </div>
+            <div id="non-empty-inputs">
+                <input id="hidden-2" style="display: none" value=" One  !!!">
+                <label>Visible:</label>
+                <input id="visible-2" style="display: block" value=" One  !!!">
+            </div>
+        </form>
+        <!--etc...-->
+        <ul>Hey:
+           <li><label>First Name:</label> <input type="text" class="name" id="firstname" value="John 20th"></li>
+           <li><label>Last Name:</label> <input type="text" class="name" id="lastname" value="Doe 2nd"></li>
+        </ul>
+        <ul>Your training today:
+           <li><label>Pull up:</label><input type="text" class='exercise' id="pullup" value="20"></li>
+           <li><label>Push up:</label><input type="text" class='exercise' id="pushup" value="30"></li>
+        </ul>
+        '''
+    )
+
+    # have size?
+    ss('li').should(match.size(8))
+
+    ss('li').should(have.no.size(9))
+    ss('li').should(have.size(8))
+    ss('li').should(have.no.size(7))
+
+    # have size or less?
+    ss('li').should(have.size(9).or_less)
+    ss('li').should(have.size(8).or_less)
+    try:
+        ss('li').should(have.size(7).or_less)
+        pytest.fail('expect mismatch')
+    except AssertionError as error:
+        assert (
+            "browser.all(('css selector', 'li')).has size 7 or less\n"
+            '\n'
+            'Reason: ConditionMismatch: actual size: 8\n'
+        ) in str(error)
+    ss('li').should(have.no.size(7).or_less)
+    try:
+        ss('li').should(have.no.size(8).or_less)
+        pytest.fail('expect mismatch')
+    except AssertionError as error:
+        assert (
+            "browser.all(('css selector', 'li')).has no (size 8 or less)\n"
+            '\n'
+            'Reason: ConditionMismatch: actual size: 8\n'
+        ) in str(error)
+    ss('li').should(have.no.size_less_than_or_equal(7))
+
+    # todo: add a few failed cases below...
+
+    # have size or more?
+    ss('li').should(have.size(7).or_more)
+    ss('li').should(have.size(8).or_more)
+    ss('li').should(have.no.size(9).or_more)
+    ss('li').should(have.no.size_greater_than_or_equal(9))
+
+    # have size more than
+    ss('li').should(have.no.size(8)._more_than)
+    ss('li').should(have.no.size_greater_than(8))
+    ss('li').should(have.size_greater_than(7))
+    ss('li').should(have.size_greater_than(0))
+
+    # have size less than
+    ss('li').should(have.size_less_than(9))
+    ss('li').should(have.no.size(8)._less_than)
+    ss('li').should(have.no.size_less_than(8))
+    ss('li').should(have.no.size_less_than(0))
+
+
+def test_should_have_size__applied_to_element_or_browser__passed_and_failed(
+    function_browser,
+):
+    browser = function_browser.with_(timeout=0.1, window_width=720, window_height=480)
+    s = lambda selector: browser.element(selector)
+    ss = lambda selector: browser.all(selector)
+    GivenPage(browser).opened_with_body(
+        '''
+        <ul>
+        <form id="form-no-text-with-values">
+            <div id="empty-inputs">
+                <input id="hidden-empty" style="display: none">
+                <input id="visible-empty" style="display: block" value="">
+            </div>
+            <div id="non-empty-inputs">
+                <input id="hidden" style="display: none" value=" One  !!!">
+                <input id="visible" style="display: block" value=" One  !!!">
+            </div>
+        </form>
+        '''
+    )
+
+    # browser have size?
+    browser.should(have.size({'height': 480, 'width': 720}))
+    try:
+        browser.should(have.size({'height': 481, 'width': 720}))
+        pytest.fail('expect mismatch')
+    except AssertionError as error:
+        assert (
+            "browser.has size {'height': 481, 'width': 720}\n"
+            '\n'
+            "Reason: ConditionMismatch: actual size: {'width': 720, 'height': 480}\n"
+        ) in str(error)
+    browser.should(have.no.size({'height': 481, 'width': 720}))
+
+    # element have size?
+    s('input#hidden-empty').should(have.size({'height': 22, 'width': 147}))
+    s('input#visible-empty').should(have.size({'height': 22, 'width': 147}))
+    try:
+        s('input#visible-empty').should(have.size({'height': 21, 'width': 147}))
+        pytest.fail('expect mismatch')
+    except AssertionError as error:
+        assert (
+            "browser.element(('css selector', 'input#visible-empty')).has size "
+            "{'height': 21, 'width': 147}\n"
+            '\n'
+            "Reason: ConditionMismatch: actual size: {'height': 22, 'width': 147}\n"
+            'Screenshot: '
+        ) in str(error)
+    s('input#visible-empty').should(have.no.size({'height': 21, 'width': 147}))
+    s('input#visible-empty').should(have.no.size({'height': 22, 'width': 146}))
+    try:
+        s('input#visible-empty').should(have.no.size({'height': 22, 'width': 147}))
+        pytest.fail('expect mismatch')
+    except AssertionError as error:
+        assert (
+            "browser.element(('css selector', 'input#visible-empty')).has no (size "
+            "{'height': 22, 'width': 147})\n"
+            '\n'
+            "Reason: ConditionMismatch: actual size: {'height': 22, 'width': 147}\n"
+            'Screenshot: '
+        ) in str(error)
 
 
 def test_should_be_emtpy__applied_to_non_form__passed_and_failed__compared(
