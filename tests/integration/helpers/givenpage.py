@@ -41,11 +41,10 @@ class LoadingHtmlPage:
             if isinstance(driver_or_browser, Browser)
             else driver_or_browser
         )
-        (
+        if isinstance(driver_or_browser, Browser):
             driver_or_browser.open(EMPTY_PAGE_URL)
-            if isinstance(driver_or_browser, Browser)
-            else driver.get(EMPTY_PAGE_URL)
-        )
+        else:
+            driver.get(EMPTY_PAGE_URL)
         return LoadedHtmlPage(driver).render_body(self._body, self._timeout)
 
 
