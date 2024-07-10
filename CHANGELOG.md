@@ -118,10 +118,6 @@ TODOs:
 
 seems like currently we do raise, but cover with tests
 
-### TODO: conditions can read options from config? commands/queries can read them?
-
-especially relevant for have.texts to turn on/off ignoring invisible elements
-
 ### TODO: add `<` before driver.switch_to.* tab in iframe faq doc
 
 ### TODO: All and AllElements aliases to Collection (maybe even deprecate Collection)
@@ -189,21 +185,26 @@ Then we have to consider rething condition.__call__ aliases... And corresponding
 
 `Test` might be also a good candidate over `Match` ... But `Test` does not correlate in `entity.should(Test(actual=..., by=...))
 
-### TODO: consider removing Callable[[], str] as supported type for description in Condition
+### TODO: Ensure type errors on element.should(collection_condition), etc.
+### TODO: check if there are no type errors on passing be._empty to should
 
 ### TODO: decide on ... vs (...,) as one_or_more
 
 ### TODO: ensure no warnings
 
-### TODO: rename all conditions inside match.py so match can be fully used instead be + have #530 
+### TODO: Consider passing Condition instance as by in Match
 
-### TODO: check if there are no type errors on passing be._empty to should
+like in `clickable = Match('clickable', by=be.visible.and_(be.enabled))`
 
-### Consider making configurable the "filtering collection for visibility" in size condition
+### TODO: Consider privatizing Condition actual and by params
 
-### Consider changing name type from str | Callable[[], str] to str | Callable[[E], str],
+should we even refactor out them from Condition and move to Match only?
 
-### Ensure type errors on element.should(collection_condition), etc.
+### TODO: rename all conditions inside match.py so match can be fully used instead be + have #530
+
+### TODO: Consider making configurable the "filtering collection for visibility" in size condition
+
+### TODO: Consider changing name type from str | Callable[[], str] to str | Callable[[E], str],
 
 ### Deprecated conditions
 

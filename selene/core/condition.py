@@ -1092,7 +1092,7 @@ class Condition(Generic[E]):
 #       as, finally, the test param is more unhandy in straightforward inline usage
 #       – So far, YES, it seemed like a good idea to get rid of test param in Match
 #       narrowing the usage for the end user to the most convenient one...
-#       Hm... but what about redefining conditions based on existing ones?
+# TODO: Hm... but what about redefining conditions based on existing ones?
 #       Imagine:
 #       $('#save').should(Match('«Save document» is shown', test=be.visible))
 #       Such case is rare, and looks like not optimal, because there are better
@@ -1572,7 +1572,7 @@ class Match(Condition[E]):
         name = name or (
             ((str(actual_name) + ' ') if actual_name else '') + str(by_name)  # noqa
         )
-        # TODO: fix "cannot infer type of argument 1 of __init__" or ignore
+        # todo: fix "cannot infer type of argument 1 of __init__" or ignore
         super().__init__(  # type: ignore
             name,
             actual=actual,  # type: ignore
@@ -1595,11 +1595,11 @@ class Match(Condition[E]):
 # Match(lambda x: x > 0)
 # Match(lambda actual: actual - 1, lambda res: res > 0)
 # Match('has positive decrement', lambda actual: actual - 1, lambda res: res > 0)
-Match(
-    lambda: 'has positive decrement',
-    actual=lambda actual: actual - 1,
-    by=lambda res: res > 0,
-)
+# Match(
+#     lambda: 'has positive decrement',
+#     actual=lambda actual: actual - 1,
+#     by=lambda res: res > 0,
+# )
 # Match(
 #     lambda: 'has positive decrement',
 #     by=lambda res: res > 0,
