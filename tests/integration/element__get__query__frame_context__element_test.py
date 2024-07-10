@@ -163,5 +163,5 @@ def test_actions_on_frame_element_with_logging(session_browser):
             "browser.element(('css selector', '.tox-edit-area__iframe')): element(('css "
             "selector', '#tinymce')).all(('css selector', 'p')).has size 10\n"
             '\n'
-            'Reason: ConditionMismatch: actual size: 1\n'
+            'Reason: ConditionMismatch: actual: 1\n'
         ) in handler.stream

@@ -238,7 +238,7 @@ def test_should_have_size__applied_to_browser__passed_and_failed(
         assert (
             "browser.has size {'height': 481, 'width': 720}\n"
             '\n'
-            "Reason: ConditionMismatch: actual size: {'width': 720, 'height': 480}\n"
+            "Reason: ConditionMismatch: actual: {'width': 720, 'height': 480}\n"
         ) in str(error)
     browser.should(have.no.size({'height': 481, 'width': 720}))
 
@@ -361,7 +361,7 @@ def test_should_be_emtpy__applied_to_non_form__passed_and_failed__compared(
         assert (
             "browser.all(('css selector', '#hidden')).has size 0\n"
             '\n'
-            'Reason: ConditionMismatch: actual size: 2\n'
+            'Reason: ConditionMismatch: actual: 2\n'
         ) in str(error)
     try:
         ss('#hidden').should(be._empty)
@@ -418,7 +418,7 @@ def test_should_be_emtpy__applied_to_non_form__passed_and_failed__compared(
         assert (
             "browser.all(('css selector', '.absent')).has no (size 0)\n"
             '\n'
-            'Reason: ConditionMismatch: actual size: 0\n'
+            'Reason: ConditionMismatch: actual: 0\n'
         ) in str(error)
     ss('.absent').should(be._empty)
     try:
