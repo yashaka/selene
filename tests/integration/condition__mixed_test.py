@@ -235,7 +235,7 @@ def test_should_have_size__applied_to_collection__passed_and_failed(
     ss('li').should(have.no.size_less_than(0))
 
 
-def test_should_have_size__applied_to_element_or_browser__passed_and_failed(
+def test_should_have_size__applied_to_browser__passed_and_failed(
     function_browser,
 ):
     browser = function_browser.with_(timeout=0.1, window_width=720, window_height=480)
@@ -269,6 +269,30 @@ def test_should_have_size__applied_to_element_or_browser__passed_and_failed(
             "Reason: ConditionMismatch: actual size: {'width': 720, 'height': 480}\n"
         ) in str(error)
     browser.should(have.no.size({'height': 481, 'width': 720}))
+
+
+# todo: make it pass both locally and on CI (on CI the field has different size, why?)
+def test_should_have_size__applied_to_element__passed_and_failed(
+    session_browser,
+):
+    browser = session_browser.with_(timeout=0.1)
+    s = lambda selector: browser.element(selector)
+    ss = lambda selector: browser.all(selector)
+    GivenPage(browser).opened_with_body(
+        '''
+        <ul>
+        <form id="form-no-text-with-values">
+            <div id="empty-inputs">
+                <input id="hidden-empty" style="display: none">
+                <input id="visible-empty" style="display: block" value="">
+            </div>
+            <div id="non-empty-inputs">
+                <input id="hidden" style="display: none" value=" One  !!!">
+                <input id="visible" style="display: block" value=" One  !!!">
+            </div>
+        </form>
+        '''
+    )
 
     # element have size?
     s('input#hidden-empty').should(have.size({'height': 22, 'width': 147}))
