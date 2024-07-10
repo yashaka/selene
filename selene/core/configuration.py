@@ -1142,8 +1142,15 @@ class Config:
     #       even here: browser.all('.item').locate()
     _match_only_visible_elements_texts: bool = True
     """A flag to indicate whether to filter out all elements for visibility
-    on applying Selene conditions
+    on applying Selene conditions that match elements collection texts
     (usually in Selene assertions vis `should` method calls).
+    """  # todo: document example
+    _match_only_visible_elements_size: bool = False
+    """A flag to indicate whether to filter out all elements for visibility
+    on applying Selene conditions that match elements collection size
+    (usually in Selene assertions vis `should` method calls).
+
+    It is set to False by default for backward compatibility reasons.
     """  # todo: document example
 
     # TODO: better name? now technically it's not a decorator but decorator_builder...

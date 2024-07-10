@@ -86,6 +86,7 @@ class Element(WaitingEntity['Element']):
         click_by_js: bool = False,
         wait_for_no_overlap_found_by_js: bool = False,
         _match_only_visible_elements_texts: bool = True,
+        _match_only_visible_elements_size: bool = False,
         # Etc.
         _build_wait_strategy: Callable[[Config], Callable[[E], Wait[E]]] = ...,
     ) -> Element: ...
@@ -149,6 +150,7 @@ class Collection(WaitingEntity['Collection'], Iterable[Element]):
         click_by_js: bool = False,
         wait_for_no_overlap_found_by_js: bool = False,
         _match_only_visible_elements_texts: bool = True,
+        _match_only_visible_elements_size: bool = False,
         # Etc.
         _build_wait_strategy: Callable[[Config], Callable[[E], Wait[E]]] = ...,
     ) -> Collection: ...

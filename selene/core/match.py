@@ -734,7 +734,9 @@ class size(Match[Union[Collection, Browser, Element]]):
     def __init__(
         self,
         expected: int | dict,
-        _name='has size',  # TODO: fix to have for Collection, has otherwise
+        _name='has size',  # TODO: fix to `have` for Collection, has otherwise
+        #                          should we also tune actual rendering based on
+        #                          config._match_only_visible_elements_size?
         _by=predicate.equals,
         _inverted=False,
     ):
@@ -745,7 +747,12 @@ class size(Match[Union[Collection, Browser, Element]]):
 
         super().__init__(
             self.__name,
-            actual=query.size,
+            actual=lambda entity: (
+                len([element for element in entity.locate() if element.is_displayed()])
+                if isinstance(entity, Collection)
+                and entity.config._match_only_visible_elements_size
+                else query.size(entity)
+            ),
             by=_by(expected),
             _inverted=_inverted,
         )

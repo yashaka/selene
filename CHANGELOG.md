@@ -190,6 +190,8 @@ Then we have to consider rething condition.__call__ aliases... And corresponding
 
 ### TODO: decide on ... vs (...,) as one_or_more
 
+consider customizing them via config
+
 ### TODO: ensure no warnings
 
 ### TODO: Consider passing Condition instance as by in Match
@@ -201,8 +203,6 @@ like in `clickable = Match('clickable', by=be.visible.and_(be.enabled))`
 should we even refactor out them from Condition and move to Match only?
 
 ### TODO: rename all conditions inside match.py so match can be fully used instead be + have #530
-
-### TODO: Consider making configurable the "filtering collection for visibility" in size condition
 
 ### TODO: Consider changing name type from str | Callable[[], str] to str | Callable[[E], str],
 
@@ -537,6 +537,14 @@ See a bit more in documented ["FAQ: How to work with iFrames in Selene?"](https:
   - `True` by default
     - does not change current behavior – conditions like have.texts will still filter out invisible elements by default, as it was before
     - but now you can turn this behavior off by setting the option to `False`
+- config._match_only_visible_elements_size
+  - `False` by default (for backward compatibility)
+
+Yet, marked as experimental... Because of some questions like:
+- better names?
+- should we make them also work on queries? not just on conditions?
+- should there be one option to rule them all? even not just in conditions of queries?
+- etc.
 
 ### Document command.py and query.py on module level
 
