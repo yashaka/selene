@@ -40,6 +40,8 @@ from typing_extensions import (
     Callable,
     Self,
     Type,
+    cast,
+    Optional,
 )
 
 from selene.common import predicate, helpers, appium_tools
@@ -734,14 +736,16 @@ class size(Match[Union[Collection, Browser, Element]]):
     def __init__(
         self,
         expected: int | dict,
-        _name='has size',  # TODO: fix to `have` for Collection, has otherwise
-        #                          should we also tune actual rendering based on
-        #                          config._match_only_visible_elements_size?
+        _name=lambda entity: (
+            'have size' if isinstance(entity, Collection) else 'has size'
+        ),
+        # TODO: should we also tune actual rendering based on
+        #       config._match_only_visible_elements_size?
         _by=predicate.equals,
         _inverted=False,
     ):
         self.__expected = expected
-        self.__name = f'{_name} {expected}'
+        self.__name = lambda entity: f'{_name(entity)} {expected}'
         self.__by = _by
         self.__inverted = _inverted
 
@@ -768,8 +772,9 @@ class size(Match[Union[Collection, Browser, Element]]):
     #     )
     @property
     def or_less(self) -> Condition[Collection]:
+        name = cast(Callable[[Optional[Collection]], str], self.__name)
         return Match(
-            f'{self.__name} or less',
+            lambda entity: f'{name(entity)} or less',
             query.size,
             by=predicate.is_less_than_or_equal(self.__expected),
             _inverted=self.__inverted,
@@ -777,8 +782,9 @@ class size(Match[Union[Collection, Browser, Element]]):
 
     @property
     def or_more(self) -> Condition[Collection]:
+        name = cast(Callable[[Optional[Collection]], str], self.__name)
         return Match(
-            f'{self.__name} or more',
+            lambda entity: f'{name(entity)} or more',
             query.size,
             by=predicate.is_greater_than_or_equal(self.__expected),
             _inverted=self.__inverted,
@@ -787,7 +793,10 @@ class size(Match[Union[Collection, Browser, Element]]):
     @property
     def _more_than(self) -> Condition[Collection]:
         return Match(
-            f'has size more than {self.__expected}',
+            lambda entity: (
+                ('have' if isinstance(entity, Collection) else 'has')
+                + f' size more than {self.__expected}'
+            ),
             query.size,
             by=predicate.is_greater_than(self.__expected),
             _inverted=self.__inverted,
@@ -796,7 +805,10 @@ class size(Match[Union[Collection, Browser, Element]]):
     @property
     def _less_than(self) -> Condition[Collection]:
         return Match(
-            f'has size less than {self.__expected}',
+            lambda entity: (
+                ('have' if isinstance(entity, Collection) else 'has')
+                + f' size less than {self.__expected}'
+            ),
             query.size,
             by=predicate.is_less_than(self.__expected),
             _inverted=self.__inverted,
@@ -924,7 +936,7 @@ class _exact_texts_like(Condition[Collection]):
     ):  # noqa
         if self._MATCHING_SEPARATOR.__len__() != 1:
             raise ValueError('MATCHING_SEPARATOR should be a one character string')
-        super().__init__(self.__str__, test=self.__call__)
+        super().__init__(lambda _: self.__str__(), test=self.__call__)
         self._expected = expected
         self._inverted = _inverted
         self._globs = _globs if _globs else _exact_texts_like._DEFAULT_GLOBS

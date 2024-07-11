@@ -32,6 +32,8 @@ from typing_extensions import (
     overload,
     Type,
     Iterable,
+    Protocol,
+    runtime_checkable,
 )
 
 from selene.common.fp import thread_last
@@ -50,8 +52,18 @@ Predicate = Callable[[T], bool]
 Fn = Callable[[T], R]
 
 
+@runtime_checkable
+class _SupportsNameForEntity(Protocol):
+    def _name_for(self, entity: E | None) -> str: ...
+
+
 class Query(Generic[E, R]):
-    def __init__(self, name: str, /, fn: Callable[[E], R | None]):
+    def __init__(
+        self,
+        name: str | Callable[[E | None], str],
+        /,
+        fn: Callable[[E], R | None],
+    ):
         self._name = name
         self._fn = fn
 
@@ -59,15 +71,21 @@ class Query(Generic[E, R]):
         return self._fn(entity)
 
     def __str__(self):
-        return self._name
+        return self._name if not callable(self._name) else self._name(None)
+
+    def _name_for(self, entity: E) -> str:
+        return self._name(entity) if callable(self._name) else self._name
 
     @staticmethod
-    def full_name_for(callable_: Optional[Callable]) -> str | None:
+    def full_name_for(
+        callable_: Optional[Callable],
+        _entity: E | None = None,
+    ) -> str | None:
         if callable_ is None:
             return None
 
-        if isinstance(callable_, Query):
-            return str(callable_)
+        if isinstance(callable_, _SupportsNameForEntity):
+            return callable_._name_for(_entity)
 
         # callable_ has its own __str__ implementation in its class
         if type(callable_).__str__ != object.__str__:
@@ -98,8 +116,11 @@ class Query(Generic[E, R]):
 
     # todo: would not human_readable_name_for be a better name for this helper?
     @staticmethod
-    def full_description_for(callable_: Optional[Callable]) -> str | None:
-        full_name = Query.full_name_for(callable_)
+    def full_description_for(
+        callable_: Optional[Callable],
+        _entity: E | None = None,
+    ) -> str | None:
+        full_name = Query.full_name_for(callable_, _entity)
         return (
             thread_last(
                 full_name,

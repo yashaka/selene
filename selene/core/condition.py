@@ -788,7 +788,7 @@ class Condition(Generic[E]):
     @overload
     def __init__(
         self,
-        name: str | Callable[[], str],
+        name: str | Callable[[E | None], str],
         /,
         test: Lambda[E, None],
         *,
@@ -799,7 +799,7 @@ class Condition(Generic[E]):
     # @overload
     # def __init__(
     #     self,
-    #     name: str | Callable[[], str],
+    #     name: str | Callable[[E | None], str],
     #     *,
     #     by: Tuple[Lambda[E, R], Predicate[R]],
     #     _inverted=False,
@@ -808,7 +808,7 @@ class Condition(Generic[E]):
     @overload
     def __init__(
         self,
-        name: str | Callable[[], str],
+        name: str | Callable[[E | None], str],
         /,
         *,
         actual: Lambda[E, R],
@@ -821,7 +821,7 @@ class Condition(Generic[E]):
     @overload
     def __init__(
         self,
-        name: str | Callable[[], str],
+        name: str | Callable[[E | None], str],
         /,
         *,
         by: Predicate[E],
@@ -845,8 +845,7 @@ class Condition(Generic[E]):
     #       where first is name for query and second is query fn
     def __init__(
         self,
-        # TODO: consider removing Callable[[], str] as supported type for name
-        name: str | Callable[[], str],
+        name: str | Callable[[E | None], str],  # TODO: consider Callable[[...], str]
         /,
         test: Lambda[E, None] | None = None,
         *,
@@ -981,22 +980,48 @@ class Condition(Generic[E]):
             )
         )
 
-    def __describe(self) -> str:
-        return self.__name if not callable(self.__name) else self.__name()
+    def __describe(self, _entity: E | None = None) -> str:
+        return self.__name if not callable(self.__name) else self.__name(_entity)
 
-    def __describe_inverted(self) -> str:
-        condition_words = self.__describe().split(' ')
+    def __describe_inverted(self, _entity: E | None = None) -> str:
+        condition_words = self.__describe(_entity).split(' ')
         is_or_have = condition_words[0]
         if is_or_have not in ('is', 'has', 'have'):
-            return f'not ({self.__describe()})'
+            return f'not ({self.__describe(_entity)})'
         name = ' '.join(condition_words[1:])
         no_or_not = 'not' if is_or_have == 'is' else 'no'
         return f'{is_or_have} {no_or_not} ({name})'
 
     # TODO: consider changing has to have on the fly for CollectionConditions
-    # TODO: or changing in collection locator rendering `all` to `collection`
+    # todo: or changing in collection locator rendering `all` to `collection`
     def __str__(self):
-        return self.__describe() if not self.__inverted else self.__describe_inverted()
+        # return self.__describe() if not self.__inverted else self.__describe_inverted()
+        return self._name_for()
+
+    # todo: finalize method name (see _typing_functions._SupportsNameForEntity protocol)
+    #       should even be a method? or just a property with callable?
+    #       hm, probably yes, it should be a method to eliminate branching on usage
+    #       while on init we can accept param that can be str or callable
+    #       but when coming to final action - it should be always a method call
+    #       though, we still can implement it as a property returning callable
+    #       but kind of... what for? seems like for no any benefit...
+    #       ok... let's think on naming... is the following good? –
+    #       condition.describe(entity) - ?
+    #       in fact condition does not describe entity, it's more an entity describing condition
+    #       ok, other options:
+    #       - condition.described_by(entity)
+    #       - condition.describe_for(entity)
+    #       - condition.description_for(entity)  # + descriptive! emphasize that it is human readable
+    #       - condition.name_for(entity)  # + concise! correlate with name param on init
+    #       - condition.repr_for(entity)  # + correlate with __repr__ over __str__; + concise; - weird shortcut
+    #       - condition.for(entity)  # - looks like a builder
+    #         # to remember entity so condition can be .__call__() later without passing entity
+    def _name_for(self, _entity: E | None = None):
+        return (
+            self.__describe(_entity)
+            if not self.__inverted
+            else self.__describe_inverted(_entity)
+        )
 
     # todo: we already have entity.matching for Callable[[E], bool]
     #       is it a good idea to use same term for Callable[[E], None] raising error?
@@ -1493,7 +1518,7 @@ class Match(Condition[E]):
     @overload
     def __init__(
         self,
-        name: str | Callable[[], str],
+        name: str | Callable[[E | None], str],
         /,
         actual: Lambda[E, R],
         *,
@@ -1506,7 +1531,7 @@ class Match(Condition[E]):
     @overload
     def __init__(
         self,
-        name: str | Callable[[], str],
+        name: str | Callable[[E | None], str],
         /,
         *,
         by: Predicate[E],
@@ -1536,7 +1561,7 @@ class Match(Condition[E]):
 
     def __init__(
         self,
-        name: str | Callable[[], str] | None = None,
+        name: str | Callable[[E | None], str] | None = None,
         actual: Lambda[E, R] | None = None,
         *,
         by: Predicate[E] | Predicate[R],

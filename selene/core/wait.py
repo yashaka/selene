@@ -119,7 +119,7 @@ class Wait(Generic[E]):
 
                         # TODO: consider using Query.full_description_for(fn)
                         # TODO: consider customizing what to use on __init__
-                        fn_name = Query.full_name_for(fn) or str(fn)
+                        fn_name = Query.full_name_for(fn, entity) or str(fn)
 
                         failure = TimeoutException(
                             f'\n'

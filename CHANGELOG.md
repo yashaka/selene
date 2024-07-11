@@ -131,6 +131,12 @@ class Collection(WaitingEntity['Collection'], Iterable[Element]):
 
 #### TODO: also check if have.size will be still consistent fully... maybe have.count?
 
+### TODO: review Query._name impl. and processing
+
+taking into account its callable based on Entity nature, and "name" vs "description" terminology
+
+consider `str | Callable[[...], str]` vs `str | Callable[[...], str]` as type for name
+
 ## 2.0.0rc10: «copy&paste, frames, shadow & texts_like» (to be released on DD.05.2024)
 
 ### TODO: consider renaming Condition `test` arg to `match` for consistency with Match
@@ -203,8 +209,6 @@ like in `clickable = Match('clickable', by=be.visible.and_(be.enabled))`
 should we even refactor out them from Condition and move to Match only?
 
 ### TODO: rename all conditions inside match.py so match can be fully used instead be + have #530
-
-### TODO: Consider changing name type from str | Callable[[], str] to str | Callable[[E], str],
 
 ### Deprecated conditions
 
