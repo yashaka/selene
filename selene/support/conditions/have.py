@@ -271,12 +271,12 @@ def _texts_like(*contained_texts_or_item_placeholders: str | int | float | Itera
     return match._texts_like(*contained_texts_or_item_placeholders)
 
 
-def url(exact_value: str) -> Condition[Browser]:
-    return match.browser_has_url(exact_value)
+def url(exact_value: str):
+    return match.url(exact_value)
 
 
-def url_containing(partial_value: str) -> Condition[Browser]:
-    return match.browser_has_url_containing(partial_value)
+def url_containing(partial_value: str):
+    return match.url_containing(partial_value)
 
 
 def title(exact_value: str) -> Condition[Browser]:

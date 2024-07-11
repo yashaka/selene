@@ -24,7 +24,6 @@ import re
 import pytest
 
 from selene import have
-from selene.core.exceptions import TimeoutException
 from tests.integration.helpers.givenpage import GivenPage
 
 

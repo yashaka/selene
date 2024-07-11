@@ -739,8 +739,9 @@ class size(Match[Union[Collection, Browser, Element]]):
         _name=lambda entity: (
             'have size' if isinstance(entity, Collection) else 'has size'
         ),
-        # TODO: should we also tune actual rendering based on
+        # todo: should we also tune actual rendering based on
         #       config._match_only_visible_elements_size?
+        #       ... maybe utilizing _describe_actual_result?
         _by=predicate.equals,
         _inverted=False,
     ):
@@ -1252,7 +1253,7 @@ class _text_patterns_like(_exact_texts_like):
         return self.where_flags(re.IGNORECASE)
 
 
-# TODO: add an alias from texts(*expected).with_regex to text_patterns_like
+# todo: add an alias from texts(*expected).with_regex to text_patterns_like
 #       hm, but then it would be natural
 #       if we disable implicit ^ and $ for each item text
 #       and so we make it inconsistent with the behavior of *_like versions
@@ -1425,25 +1426,13 @@ class _texts_like(_exact_texts_like):
     #     )
 
 
-# TODO: consider refactoring the code like below by moving outside fns like url, title, etc...
-# TODO: probably we will do that nevertheless when reusing "commands&queries" inside element class definitions
-def browser_has_url(
-    expected: str,
-    describing_matched_to='has url',
-    compared_by_predicate_to=predicate.equals,
-) -> Condition[Browser]:
-    def url(browser: Browser) -> str:
-        return browser.driver.current_url
-
-    return BrowserCondition.raise_if_not_actual(
-        f"{describing_matched_to} '{expected}'",
-        url,
-        compared_by_predicate_to(expected),
-    )
+# TODO: should we make it supporting ignorecase?
+def url(expected: str, _name='has url', _by=predicate.equals) -> Condition[Browser]:
+    return Match(f"{_name} '{expected}'", query.url, by=_by(expected))
 
 
-def browser_has_url_containing(expected: str) -> Condition[Browser]:
-    return browser_has_url(expected, 'has url containing', predicate.includes)
+def url_containing(expected: str) -> Condition[Browser]:
+    return url(expected, 'has url containing', predicate.includes)
 
 
 def browser_has_title(

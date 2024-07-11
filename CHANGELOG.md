@@ -210,6 +210,10 @@ should we even refactor out them from Condition and move to Match only?
 
 ### TODO: rename all conditions inside match.py so match can be fully used instead be + have #530
 
+### TODO: should we support ignorecase on asserting urls too? 
+
+### TODO: should we make ingorecase optionally default for all conditions supporting it?
+
 ### Deprecated conditions
 
 - `be.present` in favor of `be.present_in_dom`
