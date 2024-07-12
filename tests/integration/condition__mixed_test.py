@@ -433,7 +433,6 @@ def test_should_be_emtpy__applied_to_non_form__passed_and_failed__compared(
             '\n'
             'Reason: ConditionMismatch: actual: 0\n'
         ) in str(error)
-    pytest.exit('passed')
     ss('.absent').should(be._empty)
     try:
         ss('.absent').should(be.not_._empty)
