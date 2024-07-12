@@ -210,9 +210,7 @@ should we even refactor out them from Condition and move to Match only?
 
 ### TODO: rename all conditions inside match.py so match can be fully used instead be + have #530
 
-### TODO: should we support ignorecase on asserting urls too? 
-
-### TODO: should we make ingorecase optionally default for all conditions supporting it?
+### TODO: should we make ignorecase optionally default for all conditions supporting it?
 
 ### Deprecated conditions
 
@@ -538,6 +536,8 @@ See a bit more in documented ["FAQ: How to work with iFrames in Selene?"](https:
   - `have.size(dict_of_element_size)` 
 - browser conditions
   - `have.size(dict_of_browser_size)` 
+  - `have.url(string).ignore_case`
+  - `have.url_containing(string).ignore_case`
 
 #### Additional Config options relating conditions behavior
 

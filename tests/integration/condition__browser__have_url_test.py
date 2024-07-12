@@ -39,6 +39,27 @@ def test_have_url_containing(session_browser):
     session_browser.should(have.no.url_containing('start_page.xhtml'))
 
 
+def test_have_url_containing__ignore_case(session_browser):
+    browser = session_browser.with_(timeout=0.1)
+    GivenPage(browser.driver).opened_empty()
+    browser.should(have.url_containing('EMPTY.html').ignore_case)
+    try:
+        browser.should(have.no.url_containing('EMPTY.html').ignore_case)
+        pytest.fail('expect mismatch')
+    except AssertionError as error:
+        assert re.findall(
+            re.escape(
+                "browser.has no (url containing ignoring case: 'EMPTY.html')\n"
+                '\n'
+                'Reason: ConditionMismatch: actual url: '
+            )
+            + r'file:.*empty\.html\n',
+            str(error),
+        )
+    browser.should(have.no.url_containing('start_page.xhtml'))
+    browser.should(have.no.url_containing('start_page.xhtml').ignore_case)
+
+
 def test_fails_on_timeout_during_waiting_for_exact_url(session_browser):
     browser = session_browser.with_(timeout=0.1)
 

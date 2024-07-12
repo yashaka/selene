@@ -46,7 +46,7 @@ from typing_extensions import (
 
 from selene.common import predicate, helpers, appium_tools
 from selene.core import query
-from selene.core.condition import Condition, Match
+from selene.core.condition import Condition, Match, E
 from selene.core.conditions import (
     ElementCondition,
     CollectionCondition,
@@ -59,7 +59,7 @@ from selene.core._browser import Browser
 # GENERAL CONDITION BUILDERS ------------------------------------------------- #
 
 
-class _ElementHasSomethingSupportingIgnoreCase(Match[Element]):
+class _EntityHasSomethingSupportingIgnoreCase(Match[E]):
     def __init__(
         self,
         name,
@@ -96,7 +96,7 @@ class _ElementHasSomethingSupportingIgnoreCase(Match[Element]):
         )
 
     @property
-    def ignore_case(self) -> Condition[Element]:
+    def ignore_case(self) -> Condition[E]:
         return self.__class__(
             self.__name,
             self.__expected,
@@ -108,7 +108,7 @@ class _ElementHasSomethingSupportingIgnoreCase(Match[Element]):
         )
 
 
-class _CollectionHasSomethingSupportingIgnoreCase(Match[Collection]):
+class _CollectionHasSomeThingsSupportingIgnoreCase(Match[Collection]):
     def __init__(
         self,
         name,
@@ -350,7 +350,7 @@ def __x_exact_text(expected: str | int | float, _ignore_case=False, _inverted=Fa
 
 
 def text(expected: str | int | float, _ignore_case=False, _inverted=False):
-    return _ElementHasSomethingSupportingIgnoreCase(
+    return _EntityHasSomethingSupportingIgnoreCase(
         'has text',  # TODO: is it here name or description? probably it's even a "name prefix"
         expected,
         actual=query.text,
@@ -361,7 +361,7 @@ def text(expected: str | int | float, _ignore_case=False, _inverted=False):
 
 
 def exact_text(expected: str | int | float, _ignore_case=False, _inverted=False):
-    return _ElementHasSomethingSupportingIgnoreCase(
+    return _EntityHasSomethingSupportingIgnoreCase(
         'has exact text',
         expected,
         actual=query.text,
@@ -523,7 +523,7 @@ class attribute(Condition[Element]):
         )
 
     def value(self, expected):
-        return _ElementHasSomethingSupportingIgnoreCase(
+        return _EntityHasSomethingSupportingIgnoreCase(
             f"has attribute '{self.__expected}' with value",
             expected=expected,
             actual=query.attribute(self.__expected),
@@ -532,7 +532,7 @@ class attribute(Condition[Element]):
         )
 
     def value_containing(self, expected):
-        return _ElementHasSomethingSupportingIgnoreCase(
+        return _EntityHasSomethingSupportingIgnoreCase(
             f"has attribute '{self.__expected}' with value containing",
             expected=expected,
             actual=query.attribute(self.__expected),
@@ -541,7 +541,7 @@ class attribute(Condition[Element]):
         )
 
     def values(self, *expected: str | int | float | Iterable[str]):
-        return _CollectionHasSomethingSupportingIgnoreCase(
+        return _CollectionHasSomeThingsSupportingIgnoreCase(
             f"has attribute '{self.__expected}' with values",
             *expected,
             actual=query.attributes(self.__expected),
@@ -550,7 +550,7 @@ class attribute(Condition[Element]):
         )
 
     def values_containing(self, *expected: str | int | float | Iterable[str]):
-        return _CollectionHasSomethingSupportingIgnoreCase(
+        return _CollectionHasSomeThingsSupportingIgnoreCase(
             f"has attribute '{self.__expected}' with values containing",
             *expected,
             actual=query.attributes(self.__expected),
@@ -579,7 +579,7 @@ def css_class(name: str, _inverted=False):
     def class_attribute_value(element: Element):
         return element.locate().get_attribute('class')
 
-    return _ElementHasSomethingSupportingIgnoreCase(
+    return _EntityHasSomethingSupportingIgnoreCase(
         'has css class',
         expected=name,
         actual=class_attribute_value,
@@ -836,7 +836,7 @@ def texts(
     *expected: str | int | float | Iterable[str], _ignore_case=False, _inverted=False
 ):
     # todo: consider counting _match_only_visible_elements_texts in name
-    return _CollectionHasSomethingSupportingIgnoreCase(
+    return _CollectionHasSomeThingsSupportingIgnoreCase(
         'have texts',
         *expected,
         actual=lambda collection: (
@@ -854,7 +854,7 @@ def exact_texts(
     *expected: str | int | float | Iterable[str], _ignore_case=False, _inverted=False
 ):
     # todo: consider counting _match_only_visible_elements_texts in name
-    return _CollectionHasSomethingSupportingIgnoreCase(
+    return _CollectionHasSomeThingsSupportingIgnoreCase(
         'have exact texts',
         *expected,
         actual=lambda collection: (
@@ -1426,13 +1426,16 @@ class _texts_like(_exact_texts_like):
     #     )
 
 
-# TODO: should we make it supporting ignorecase?
-def url(expected: str, _name='has url', _by=predicate.equals) -> Condition[Browser]:
-    return Match(f"{_name} '{expected}'", query.url, by=_by(expected))
+def url(
+    expected: str, _name='has url', _by=predicate.equals, _inverted=False
+) -> _EntityHasSomethingSupportingIgnoreCase[Browser]:
+    return _EntityHasSomethingSupportingIgnoreCase(
+        _name, expected, actual=query.url, by=_by, _inverted=_inverted
+    )
 
 
-def url_containing(expected: str) -> Condition[Browser]:
-    return url(expected, 'has url containing', predicate.includes)
+def url_containing(expected: str, _inverted=False):
+    return url(expected, 'has url containing', predicate.includes, _inverted=_inverted)
 
 
 def browser_has_title(
