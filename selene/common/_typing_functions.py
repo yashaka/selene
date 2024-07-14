@@ -77,7 +77,7 @@ class Query(Generic[E, R]):
         return self._name(entity) if callable(self._name) else self._name
 
     @staticmethod
-    def full_name_for(
+    def _full_name_for(
         callable_: Optional[Callable],
         _entity: E | None = None,
     ) -> str | None:
@@ -116,11 +116,11 @@ class Query(Generic[E, R]):
 
     # todo: would not human_readable_name_for be a better name for this helper?
     @staticmethod
-    def full_description_for(
+    def _full_description_for(
         callable_: Optional[Callable],
         _entity: E | None = None,
     ) -> str | None:
-        full_name = Query.full_name_for(callable_, _entity)
+        full_name = Query._full_name_for(callable_, _entity)
         return (
             thread_last(
                 full_name,
@@ -133,6 +133,21 @@ class Query(Generic[E, R]):
             )
             if full_name
             else None
+        )
+
+    @staticmethod
+    def _full_description_or(
+        alternative: str,
+        /,
+        *,
+        for_: Optional[Callable],
+        _with_prefix: str = '',
+        _entity: E | None = None,
+    ) -> str:
+        return (
+            _with_prefix + desc
+            if (desc := Query._full_description_for(for_, _entity))
+            else alternative
         )
 
     @staticmethod

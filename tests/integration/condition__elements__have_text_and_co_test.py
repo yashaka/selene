@@ -201,7 +201,7 @@ def test_exact_text__including_ignorecase__passed_compared_to_failed(
         ) in str(error)
 
 
-def test_texts__including_ignorecase__passed_compared_to_failed(
+def test_texts__including_ignorecase__passed_and_failed__compared_to_texts_like(
     session_browser,
 ):
     browser = session_browser.with_(timeout=0.1)
@@ -242,9 +242,13 @@ def test_texts__including_ignorecase__passed_compared_to_failed(
             "Reason: ConditionMismatch: actual: ['1) One!!!', '2) Two...', '3) "
             "Three???']\n"
         ) in str(error)
-    # have.texts (ignore_case)
+    # have.texts (ignore_case) compared to have.texts_like (ignore_case)
     browser.all('li').should(match.texts('one', 'two', 'three', _ignore_case=True))
     browser.all('li').should(have.texts('one', 'two', 'three').ignore_case)
+    browser.all('li').with_(_ignore_case=True).should(have.texts('one', 'two', 'three'))
+    browser.all('li').with_(_ignore_case=True).should(
+        have._texts_like('one', 'two', ...)
+    )
     try:
         browser.all('li').should(have.texts('one.', 'two.', 'three.').ignore_case)
         pytest.fail('expected text mismatch')
@@ -256,9 +260,65 @@ def test_texts__including_ignorecase__passed_compared_to_failed(
             "Reason: ConditionMismatch: actual: ['1) One!!!', '2) Two...', '3) "
             "Three???']\n"
         ) in str(error)
+    try:
+        browser.all('li').with_(_ignore_case=True).should(
+            have.texts('one.', 'two.', 'three.')
+        )
+        pytest.fail('expected text mismatch')
+    except AssertionError as error:
+        assert (
+            "browser.all(('css selector', 'li')).have texts ignoring case: ['one.', "
+            "'two.', 'three.']\n"
+            '\n'
+            "Reason: ConditionMismatch: actual: ['1) One!!!', '2) Two...', '3) "
+            "Three???']\n"
+        ) in str(error)
+    try:
+        browser.all('li').with_(_ignore_case=True).should(
+            have._texts_like('one.', 'two.', ...)
+        )
+        pytest.fail('expected text mismatch')
+    except AssertionError as error:
+        assert (
+            "browser.all(('css selector', 'li')).have texts like (flags: re.IGNORECASE):\n"
+            '    one., two., ...\n'
+            '\n'
+            'Reason: AssertionError: actual visible texts:\n'
+            '    1) One!!!, 2) Two..., 3) Three???\n'
+            '\n'
+            'Pattern used for matching:\n'
+            '    ^.*?one\\..*?‚.*?two\\..*?‚[^‚]+‚$\n'
+            'Actual text used to match:\n'
+            '    1) One!!!‚2) Two...‚3) Three???‚\n'
+        ) in str(error)
+    try:
+        browser.all('li').with_(
+            _ignore_case=True,
+            _match_only_visible_elements_texts=False,
+        ).should(have._texts_like('one.', 'two.', ...))
+        pytest.fail('expected text mismatch')
+    except AssertionError as error:
+        assert (
+            "browser.all(('css selector', 'li')).have texts like (flags: re.IGNORECASE):\n"
+            '    one., two., ...\n'
+            '\n'
+            'Reason: AssertionError: actual texts:\n'
+            '    1) One!!!, 2) Two..., 3) Three???\n'
+            '\n'
+            'Pattern used for matching:\n'
+            '    ^.*?one\\..*?‚.*?two\\..*?‚[^‚]+‚$\n'
+            'Actual text used to match:\n'
+            '    1) One!!!‚2) Two...‚3) Three???‚\n'
+        ) in str(error)
     # - inverted
     # - - with no before
     browser.all('li').should(have.no.texts('one.', 'two.', 'three.').ignore_case)
+    browser.all('li').with_(_ignore_case=True).should(
+        have.no.texts('one.', 'two.', 'three.')
+    )
+    browser.all('li').with_(_ignore_case=True).should(
+        have.no._texts_like('one.', 'two.', ...)
+    )
     try:
         browser.all('li').should(have.no.texts('one', 'two', 'three').ignore_case)
         pytest.fail('expected mismatch')
@@ -269,6 +329,58 @@ def test_texts__including_ignorecase__passed_compared_to_failed(
             '\n'
             "Reason: ConditionMismatch: actual: ['1) One!!!', '2) Two...', '3) "
             "Three???']\n"
+        ) in str(error)
+    try:
+        browser.all('li').with_(_ignore_case=True).should(
+            have.no.texts('one', 'two', 'three')
+        )
+        pytest.fail('expected mismatch')
+    except AssertionError as error:
+        assert (
+            "browser.all(('css selector', 'li')).have no (texts ignoring case: ['one', "
+            "'two', 'three'])\n"
+            '\n'
+            "Reason: ConditionMismatch: actual: ['1) One!!!', '2) Two...', '3) "
+            "Three???']\n"
+        ) in str(error)
+    try:
+        browser.all('li').with_(_ignore_case=True).should(
+            have.no._texts_like('one', 'two', ...)
+        )
+        pytest.fail('expected mismatch')
+    except AssertionError as error:
+        assert (
+            "browser.all(('css selector', 'li')).have no texts like (flags: "
+            're.IGNORECASE):\n'
+            '    one, two, ...\n'
+            '\n'
+            'Reason: AssertionError: actual visible texts:\n'
+            '    1) One!!!, 2) Two..., 3) Three???\n'
+            '\n'
+            'Pattern used for matching:\n'
+            '    ^.*?one.*?‚.*?two.*?‚[^‚]+‚$\n'
+            'Actual text used to match:\n'
+            '    1) One!!!‚2) Two...‚3) Three???‚\n'
+        ) in str(error)
+    try:
+        browser.all('li').with_(
+            _ignore_case=True,
+            _match_only_visible_elements_texts=False,
+        ).should(have.no._texts_like('one', 'two', ...))
+        pytest.fail('expected mismatch')
+    except AssertionError as error:
+        assert (
+            "browser.all(('css selector', 'li')).have no texts like (flags: "
+            're.IGNORECASE):\n'
+            '    one, two, ...\n'
+            '\n'
+            'Reason: AssertionError: actual texts:\n'
+            '    1) One!!!, 2) Two..., 3) Three???\n'
+            '\n'
+            'Pattern used for matching:\n'
+            '    ^.*?one.*?‚.*?two.*?‚[^‚]+‚$\n'
+            'Actual text used to match:\n'
+            '    1) One!!!‚2) Two...‚3) Three???‚\n'
         ) in str(error)
     # - - with not after, in the end
     #     (in the middle works but without Autocomplete & not recommended)

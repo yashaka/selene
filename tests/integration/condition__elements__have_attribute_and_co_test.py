@@ -216,3 +216,37 @@ def test_have_attribute__condition_variations(session_browser):
     exercises.first.should(have.value_containing(2))
     exercises.should(have.values(20, 30))
     exercises.should(have.values_containing(2, 3))
+
+    # - ignore_case
+    names.first.should(have.value('john 20TH').ignore_case)
+    names.first.with_(_ignore_case=True).should(have.value('john 20TH'))
+    names.first.should(have.value_containing('john').ignore_case)
+    names.first.with_(_ignore_case=True).should(have.value_containing('john'))
+
+    names.should(have.values('john 20TH', 'doe 2ND').ignore_case)
+    names.with_(_ignore_case=True).should(have.values('john 20TH', 'doe 2ND'))
+    names.should(have.values_containing('john', 'doe').ignore_case)
+    names.with_(_ignore_case=True).should(have.values_containing('john', 'doe'))
+
+    try:
+        names.first.with_(_ignore_case=True).should(have.no.value('john 20TH'))
+        pytest.fail('should fail on mismatch')
+    except AssertionError as error:
+        assert (
+            "browser.all(('css selector', '.name'))[0].has no (attribute 'value' with "
+            "value ignoring case: 'john 20TH')\n"
+            '\n'
+            'Reason: ConditionMismatch: actual attribute value: John 20th\n'
+        ) in str(error)
+
+    try:
+        names.with_(_ignore_case=True).should(have.no.values_containing('john', 'doe'))
+        pytest.fail('should fail on mismatch')
+    except AssertionError as error:
+        assert (
+            "browser.all(('css selector', '.name')).has no (attribute 'value' with values "
+            "containing ignoring case: ['john', 'doe'])\n"
+            '\n'
+            "Reason: ConditionMismatch: actual value attributes: ['John 20th', 'Doe "
+            "2nd']\n"
+        ) in str(error)

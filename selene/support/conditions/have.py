@@ -40,6 +40,14 @@ def text(partial_value: str | int | float):
     return match.text(partial_value)
 
 
+# todo: why not exact_text_matching o_O?
+#       is match.exact_text still ok, when it's match not have?
+#       let's compare:
+#       > element.should(have.exact_text('full of partial!'))   # 👍🏻
+#       > element.should(have.text('partial'))                  # hm, seems like 👍🏻
+#       > element.should(have.text_matching('partial').not_)    # hm, seems like 👍🏻
+#       > element.should(have.text_matching('.*partial.*'))     # 👍🏻
+#       – seems like no need in exact_ prefix...
 def text_matching(regex_pattern: str):
     return match.text_pattern(regex_pattern)
 
@@ -86,21 +94,19 @@ def attribute(name: str, value: Optional[str] = None):
     return match.attribute(name)
 
 
-def value(text: str | int | float) -> Condition[Element]:
+def value(text: str | int | float):
     return match.value(text)
 
 
-def values(*texts: str | int | float | Iterable[str]) -> Condition[Collection]:
+def values(*texts: str | int | float | Iterable[str]):
     return match.values(*texts)
 
 
-def value_containing(partial_text: str | int | float) -> Condition[Element]:
+def value_containing(partial_text: str | int | float):
     return match.value_containing(partial_text)
 
 
-def values_containing(
-    *partial_texts: str | int | float | Iterable[str],
-) -> Condition[Collection]:
+def values_containing(*partial_texts: str | int | float | Iterable[str]):
     return match.values_containing(*partial_texts)
 
 
@@ -108,11 +114,11 @@ def css_class(name):
     return match.css_class(name)
 
 
-def tag(name: str) -> Condition[Element]:
+def tag(name: str):
     return match.tag(name)
 
 
-def tag_containing(name: str) -> Condition[Element]:
+def tag_containing(name: str):
     return match.tag_containing(name)
 
 

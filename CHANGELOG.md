@@ -210,7 +210,9 @@ should we even refactor out them from Condition and move to Match only?
 
 ### TODO: rename all conditions inside match.py so match can be fully used instead be + have #530
 
-### TODO: should we make ignorecase optionally default for all conditions supporting it?
+### TODO: Rename condition__collection__get*_test.py tests
+
+### TODO: is text + exact_text naming still relevant for match.* case over have.*?
 
 ### Deprecated conditions
 
@@ -440,7 +442,17 @@ browser.all('li').first.should(have.text_matching(r'.*one.*').where_flags(re.IGN
 
 ```
 
-Same for attribute related conditions like `have.value` and `have.attribute(name).value*` will be a part of [#537](https://github.com/yashaka/selene/issues/537)
+Same can be achieved via `_ignore_case` config option (yet marked as experimental):
+
+```python
+from selene import browser, have
+...
+browser.all('li').first.with_(_ignore_case=True).should(have.exact_text('1) one!!!'))
+
+# and so on for other conditions that support ignore_case as property...
+...
+
+```
 
 ### Shadow DOM support via query.js.shadow_root(s)
 

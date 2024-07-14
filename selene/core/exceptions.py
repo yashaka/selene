@@ -153,11 +153,8 @@ class ConditionMismatch(AssertionError):
             def describe_not_match(actual_value):
                 describe_actual_result = _describe_actual_result or (
                     lambda value: (
-                        'actual'
-                        + (
-                            f' {actual_name}'
-                            if (actual_name := Query.full_description_for(actual))
-                            else ''
+                        Query._full_description_or(
+                            'actual', for_=actual, _with_prefix='actual '
                         )
                         + f': {value}'
                     )
@@ -169,7 +166,7 @@ class ConditionMismatch(AssertionError):
                         (
                             (
                                 (f'not ({name})' if _inverted else name)
-                                if (name := Query.full_description_for(by))
+                                if (name := Query._full_description_for(by))
                                 else ''
                             )
                             or "condition"

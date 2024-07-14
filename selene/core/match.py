@@ -42,21 +42,24 @@ from typing_extensions import (
     Type,
     cast,
     Optional,
+    TypeVar,
 )
 
 from selene.common import predicate, helpers, appium_tools
+from selene.common._typing_functions import Query
 from selene.core import query
-from selene.core.condition import Condition, Match, E
+from selene.core.condition import Condition, Match
 from selene.core.conditions import (
     ElementCondition,
     CollectionCondition,
     BrowserCondition,
 )
-from selene.core.entity import Collection, Element
+from selene.core.entity import Collection, Element, Configured
 from selene.core._browser import Browser
 
 
 # GENERAL CONDITION BUILDERS ------------------------------------------------- #
+E = TypeVar('E', bound=Configured)
 
 
 class _EntityHasSomethingSupportingIgnoreCase(Match[E]):
@@ -80,16 +83,33 @@ class _EntityHasSomethingSupportingIgnoreCase(Match[E]):
         self.__falsy_exceptions = _falsy_exceptions
 
         super().__init__(
-            (
-                f'{name}{" ignoring case:" if _ignore_case else ""} \'{expected}\''
+            lambda maybe_entity: (
+                name
+                + (
+                    ' ignoring case:'
+                    if (maybe_entity is not None and maybe_entity.config._ignore_case)
+                    or _ignore_case
+                    else ''
+                )
+                + f' \'{expected}\''
                 # todo: refactor to and change tests correspondingly:
                 # f'{" ignoring case:" if _ignore_case else ":"} «{expected}»'
             ),
-            actual=actual,
-            by=lambda actual: (
+            actual=lambda entity: (entity, actual(entity)),
+            by=lambda entity_and_actual: (
                 by(str(expected).lower())(str(actual).lower())
-                if _ignore_case
+                if (
+                    entity_and_actual[0],
+                    actual := entity_and_actual[1],
+                )[0].config._ignore_case
+                or _ignore_case
                 else by(str(expected))(str(actual))
+            ),
+            _describe_actual_result=lambda entity_and_actual: (
+                Query._full_description_or(
+                    'actual', for_=actual, _with_prefix='actual '
+                )
+                + f': {entity_and_actual[1]}'
             ),
             _inverted=_inverted,
             _falsy_exceptions=_falsy_exceptions,
@@ -128,29 +148,40 @@ class _CollectionHasSomeThingsSupportingIgnoreCase(Match[Collection]):
         self.__inverted = _inverted
         self.__falsy_exceptions = _falsy_exceptions
 
-        # TODO: should we store flattened version in self?
+        # todo: should we store flattened version in self?
         #       how should we render nested expected in error?
         #       should we transform actual to same un-flattened structure as expected?
         #       (when rendering, of course)
 
-        def compare(actual: Iterable) -> bool:
+        def compare(entity_and_actual: Tuple[Collection, Iterable]) -> bool:
+            entity, actual = entity_and_actual
             expected_flattened = helpers.flatten(expected)
             str_lower = lambda some: str(some).lower()
             return (
                 by(map(str_lower, expected_flattened))(map(str_lower, actual))
-                if _ignore_case
+                if entity.config._ignore_case or _ignore_case
                 else by(map(str, expected_flattened))(map(str, actual))
             )
 
         super().__init__(
-            (
-                f'{name}{" ignoring case:" if _ignore_case else ""}'
-                f' {list(expected)}'
-                # todo: refactor to and change tests correspondingly:
-                # f'{" ignoring case:" if _ignore_case else ":"} {expected}'
+            lambda maybe_entity: (
+                name
+                + (
+                    ' ignoring case:'
+                    if (maybe_entity is not None and maybe_entity.config._ignore_case)
+                    or _ignore_case
+                    else ''
+                )
+                + f' {list(expected)}'
             ),
-            actual=actual,
+            actual=lambda entity: (entity, actual(entity)),
             by=compare,
+            _describe_actual_result=lambda entity_and_actual: (
+                Query._full_description_or(
+                    'actual', for_=actual, _with_prefix='actual '
+                )
+                + f': {entity_and_actual[1]}'
+            ),
             _inverted=_inverted,
             _falsy_exceptions=_falsy_exceptions,
         )
@@ -360,6 +391,17 @@ def text(expected: str | int | float, _ignore_case=False, _inverted=False):
     )
 
 
+# TODO: is text + exact_text naming still relevant for match.* case over have.*?
+#       let's compare examples:
+#       > element.should(have.exact_text('full of partial!'))   # 👍🏻
+#       > element.should(have.text('partial'))                  # 👍🏻
+#       > element.should(match.exact_text('full of partial!'))  # 👍🏻
+#       > element.should(match.text('partial'))                 # 🤨
+#       > element.should(match.text_containing('partial'))      # 🤔
+#       > element.should(match.partial_text('partial'))         # 👍🏻
+#       > match.text('partial')(element)                        # 🤨
+#       > match.text_containing('partial')(element)             # ??
+#       > match.partial_text('partial')(element)                # 👍🏻
 def exact_text(expected: str | int | float, _ignore_case=False, _inverted=False):
     return _EntityHasSomethingSupportingIgnoreCase(
         'has exact text',
@@ -379,10 +421,35 @@ class text_pattern(Condition[Element]):
         self.__inverted = _inverted
 
         super().__init__(
-            f'has text matching{f" (with flags {_flags}):" if _flags else ""}'
-            f' {expected}',
-            actual=query.text,
-            by=predicate.matches(expected, _flags),
+            lambda maybe_entity: (
+                f'has text matching'
+                + (
+                    f' (with flags {flags}):'
+                    if (
+                        flags := (
+                            _flags | re.IGNORECASE
+                            if maybe_entity is not None
+                            and maybe_entity.config._ignore_case
+                            else _flags
+                        )
+                    )
+                    else ''
+                )
+                + f' {expected}'
+            ),
+            actual=lambda entity: (entity, query.text(entity)),
+            by=lambda entity_and_actual: predicate.matches(
+                expected,
+                (
+                    _flags | re.IGNORECASE
+                    if entity_and_actual[0] is not None
+                    and entity_and_actual[0].config._ignore_case
+                    else _flags
+                ),
+            )(entity_and_actual[1]),
+            _describe_actual_result=lambda entity_and_actual: (
+                f'actual text: {entity_and_actual[1]}'
+            ),
             _inverted=_inverted,
         )
 
@@ -510,6 +577,7 @@ def element_has_css_property(name: str):
 
 class attribute(Condition[Element]):
 
+    # todo: the raw attribute condition does not support ignore_case, should it?
     def __init__(self, name: str, _inverted=False):
         self.__expected = name
         # self.__ignore_case = _ignore_case
@@ -736,8 +804,8 @@ class size(Match[Union[Collection, Browser, Element]]):
     def __init__(
         self,
         expected: int | dict,
-        _name=lambda entity: (
-            'have size' if isinstance(entity, Collection) else 'has size'
+        _name=lambda maybe_entity: (
+            'have size' if isinstance(maybe_entity, Collection) else 'has size'
         ),
         # todo: should we also tune actual rendering based on
         #       config._match_only_visible_elements_size?
@@ -746,7 +814,7 @@ class size(Match[Union[Collection, Browser, Element]]):
         _inverted=False,
     ):
         self.__expected = expected
-        self.__name = lambda entity: f'{_name(entity)} {expected}'
+        self.__name = lambda maybe_entity: f'{_name(maybe_entity)} {expected}'
         self.__by = _by
         self.__inverted = _inverted
 
@@ -1117,7 +1185,15 @@ class _exact_texts_like(Condition[Collection]):
         regex_invalid_error: re.error | None = None
 
         try:
-            answer = re.match(expected_pattern, actual_to_match, self._flags)
+            answer = re.match(
+                expected_pattern,
+                actual_to_match,
+                (
+                    self._flags | re.IGNORECASE
+                    if entity.config._ignore_case
+                    else self._flags
+                ),
+            )
         except re.error as error:
             # going to re-raise it below as AssertionError on `not answer`
             regex_invalid_error = error
@@ -1130,12 +1206,18 @@ class _exact_texts_like(Condition[Collection]):
             #     for item in self._expected
             # ]
             return (
-                f'actual visible texts:\n    {actual_to_render}\n'
-                '\n'
+                f'actual '
+                + (
+                    'visible '
+                    if entity.config._match_only_visible_elements_texts
+                    else ''
+                )
+                + f'texts:\n    {actual_to_render}\n'
+                + '\n'
                 # f'Pattern explained:\n    {pattern_explained}\n'
-                f'Pattern used for matching:\n    {expected_pattern}\n'
+                + f'Pattern used for matching:\n    {expected_pattern}\n'
                 # TODO: consider renaming to Actual merged text for match
-                f'Actual text used to match:\n    {actual_to_match}'
+                + f'Actual text used to match:\n    {actual_to_match}'
             )
 
         if regex_invalid_error:
@@ -1159,6 +1241,8 @@ class _exact_texts_like(Condition[Collection]):
         # TODO: after previous, we can implement shortcut "ignoring case"
         #       for " (flags: re.IGNORECASE)"
         return (
+            # todo: consider wrapping negated part into () like in other conditions
+            # todo: consider square brackets arround list of texts like in other conditions
             f'{self._name_prefix} {"no " if self._inverted else ""}{self._name}'
             + (f' (flags: {self._flags})' if self._flags else '')
             + ':'
@@ -1179,6 +1263,13 @@ class _exact_texts_like(Condition[Collection]):
                 )
                 for item in self._expected
             )
+        )
+
+    def _name_for(self, entity: Collection | None = None) -> str:
+        return (
+            self.ignore_case.__str__()
+            if entity is not None and entity.config._ignore_case
+            else self.__str__()
         )
 
     # TODO: will other methods like or_, and_ – do work? o_O
@@ -1291,7 +1382,8 @@ class _text_patterns(_text_patterns_like):
         self._globs = ()
 
     # TODO: consider refactoring so this attribute is not even inherited
-    def where(self):
+    @override
+    def where(self, **kwargs):
         """Just a placeholder. This attribute is not supported for this condition"""
         raise AttributeError('.where(**) is not supported on text_patterns condition')
 

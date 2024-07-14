@@ -129,7 +129,6 @@ def test_text_matching__regex_pattern__ignore_case__compared(session_browser):
     browser.all('li').first.should(have.no.text_matching(r'.*one.*'))
     browser.all('li').first.should(match.exact_text('1) one!!!').not_)  # TODO: o_O
     browser.all('li').first.should(have.no.exact_text('1) one!!!'))
-    # browser.all('li').first.should(have.no.exact_text('1) one!!!').ignore_case)  # TODO: check this fail with error
     browser.all('li').first.should(match.exact_text('1) one!!!', _ignore_case=True))
     browser.all('li').first.should(have.exact_text('1) one!!!').ignore_case)
     browser.all('li').first.should(match.text('one', _ignore_case=True))
@@ -152,15 +151,10 @@ def test_text_matching__regex_pattern__ignore_case__compared(session_browser):
     browser.all('li').should(
         have.texts_matching(r'.*one.*', r'.*two.*', '.*three.*').ignore_case
     )
-    # # TODO: implement
-    # browser.all('li').should(have.texts('one', 'two', 'three').ignore_case)
-    # browser.all('li').should(
-    #     have.exact_texts('1) One!!!', '2) Two...', '3) Three???').ignore_case
-    # )
     browser.all('li').should(
         match._text_patterns_like(r'.*one.*', r'.*two.*', ..., _flags=re.IGNORECASE)
     )
-    # do we even neet a prefix here? like where_? why not just .flage(...) ?
+    # do we even neet a prefix here? like where_? why not just .flags(...) ?
     browser.all('li').should(
         have._text_patterns_like(r'.*one.*', r'.*two.*', ...).where_flags(re.IGNORECASE)
     )
@@ -296,6 +290,79 @@ def test_text_matching__regex_pattern__ignore_case__compared(session_browser):
         ) in str(error)
 
 
+def test_text_matching__regex_pattern__error__on_mismatch__with_ignorecase(
+    session_browser,
+):
+    browser = session_browser.with_(timeout=0.1)
+    GivenPage(browser.driver).opened_with_body(
+        '''
+        <ul>Hello:
+          <li>1) One!!!</li>
+          <li>2) Two...</li>
+          <li>3) Three???</li>
+        </ul>
+        '''
+    )
+
+    browser.all('li').first.should(have.text_matching(r'.*one.*').ignore_case)
+    browser.all('li').first.with_(_ignore_case=True).should(
+        have.text_matching(r'.*one.*')
+    )
+    browser.all('li').with_(_ignore_case=True).first.should(
+        have.text_matching(r'.*one.*')
+    )
+    browser.with_(_ignore_case=True).all('li').first.should(
+        have.text_matching(r'.*one.*')
+    )
+
+    try:
+        browser.all('li').first.should(have.text_matching(r'one').ignore_case)
+        pytest.fail('expected mismatch')
+    except AssertionError as error:
+        assert (
+            "browser.all(('css selector', 'li'))[0].has text matching (with flags "
+            're.IGNORECASE): one\n'
+            '\n'
+            'Reason: ConditionMismatch: actual text: 1) One!!!\n'
+        ) in str(error)
+    try:
+        browser.all('li').first.with_(_ignore_case=True).should(
+            have.text_matching(r'one')
+        )
+        pytest.fail('expected mismatch')
+    except AssertionError as error:
+        assert (
+            "browser.all(('css selector', 'li'))[0].has text matching (with flags "
+            're.IGNORECASE): one\n'
+            '\n'
+            'Reason: ConditionMismatch: actual text: 1) One!!!\n'
+        ) in str(error)
+
+    try:
+        browser.all('li').first.should(have.no.text_matching(r'.*one.*').ignore_case)
+        pytest.fail('expected mismatch')
+    except AssertionError as error:
+        assert (
+            "browser.all(('css selector', 'li'))[0].has no (text matching (with flags "
+            're.IGNORECASE): .*one.*)\n'
+            '\n'
+            'Reason: ConditionMismatch: actual text: 1) One!!!\n'
+        ) in str(error)
+
+    try:
+        browser.all('li').first.with_(_ignore_case=True).should(
+            have.no.text_matching(r'.*one.*')
+        )
+        pytest.fail('expected mismatch')
+    except AssertionError as error:
+        assert (
+            "browser.all(('css selector', 'li'))[0].has no (text matching (with flags "
+            're.IGNORECASE): .*one.*)\n'
+            '\n'
+            'Reason: ConditionMismatch: actual text: 1) One!!!\n'
+        ) in str(error)
+
+
 def test_text_matching__regex_pattern__error__on_invalid_regex__with_ignorecase(
     session_browser,
 ):
@@ -312,6 +379,22 @@ def test_text_matching__regex_pattern__error__on_invalid_regex__with_ignorecase(
 
     try:
         browser.all('li').first.should(have.text_matching(r'*one*').ignore_case)
+        pytest.fail('expected invalid regex error')
+    except AssertionError as error:
+        assert (
+            "browser.all(('css selector', 'li'))[0].has text matching (with flags "
+            're.IGNORECASE): *one*\n'
+            '\n'
+            'Reason: error: nothing to repeat at position '
+            '0:\n'
+            'actual text: 1) One!!!\n'
+            'Screenshot: '
+        ) in str(error)
+
+    try:
+        browser.all('li').first.with_(_ignore_case=True).should(
+            have.text_matching(r'*one*')
+        )
         pytest.fail('expected invalid regex error')
     except AssertionError as error:
         assert (
@@ -341,6 +424,22 @@ def test_text_matching__regex_pattern__error__on_invalid_regex__with_ignorecase(
 
     try:
         browser.all('li').first.should(have.no.text_matching(r'*one*').ignore_case)
+        pytest.fail('expected invalid regex error')
+    except AssertionError as error:
+        assert (
+            "browser.all(('css selector', 'li'))[0].has no (text matching (with flags "
+            're.IGNORECASE): *one*)\n'
+            '\n'
+            'Reason: error: nothing to repeat at position '
+            '0:\n'
+            'actual text: 1) One!!!\n'
+            'Screenshot: '
+        ) in str(error)
+
+    try:
+        browser.all('li').first.with_(_ignore_case=True).should(
+            have.no.text_matching(r'*one*')
+        )
         pytest.fail('expected invalid regex error')
     except AssertionError as error:
         assert (

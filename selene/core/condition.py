@@ -1016,11 +1016,11 @@ class Condition(Generic[E]):
     #       - condition.repr_for(entity)  # + correlate with __repr__ over __str__; + concise; - weird shortcut
     #       - condition.for(entity)  # - looks like a builder
     #         # to remember entity so condition can be .__call__() later without passing entity
-    def _name_for(self, _entity: E | None = None):
+    def _name_for(self, entity: E | None = None) -> str:
         return (
-            self.__describe(_entity)
+            self.__describe(entity)
             if not self.__inverted
-            else self.__describe_inverted(_entity)
+            else self.__describe_inverted(entity)
         )
 
     # todo: we already have entity.matching for Callable[[E], bool]
@@ -1064,6 +1064,19 @@ class Condition(Generic[E]):
     #       > browser.element('input').clear()
     #       > expect.blank(browser.element('input'))   #->❤️
     #       TODO: at least, we have to document  – the #->❤️-marked recipes...
+    #       hm... but what if condition has param:
+    #       > expect.value('foo')(browser.element('input'))
+    #       – now it looks less natural
+    #       let's compare other options:
+    #       > expect.value('foo').test(browser.element('input'))
+    #       > expect.value('foo').match(browser.element('input'))
+    #       > assert_.value('foo').test(browser.element('input'))
+    #       > assert_.value('foo').match(browser.element('input'))
+    #       > match.value('foo').match(browser.element('input'))
+    #       > match.value('foo').test(browser.element('input'))
+    #       what if we add on property returning just self?
+    #       or as an method alias to __call__()
+    #       > match.value('foo').on(browser.element('input'))
     def _test(self, entity: E) -> None:
         # currently refactored to be alias to __call__ to be in more compliance
         # with some subclasses implementations, that override __call__
@@ -1499,14 +1512,14 @@ class Match(Condition[E]):
             else:
                 actual = None
                 by = args[0]
-            if not (by_name := Query.full_description_for(by)):
+            if not (by_name := Query._full_description_for(by)):
                 raise ValueError(
                     'either provide name or ensure that at least by predicate'
                     'has __qualname__ (defined as regular named function)'
                     'or custom __str__ implementation '
                     '(like lambda wrapped in Query object)'
                 )
-            actual_desc = Query.full_description_for(actual)
+            actual_desc = Query._full_description_for(actual)
             name = ((str(actual_desc) + ' ') if actual_desc else '') + str(
                 by_name
             )  # noqa
@@ -1586,14 +1599,14 @@ class Match(Condition[E]):
         But keep in mind that they are marked with `_` prefix to indicate their
         private and potentially "experimental" use, that can change in future versions.
         """
-        if not name and not (by_name := Query.full_description_for(by)):
+        if not name and not (by_name := Query._full_description_for(by)):
             raise ValueError(
                 'either provide a name or ensure that at least by predicate '
                 'has __qualname__ (defined as regular named function) '
                 'or custom __str__ implementation '
                 '(like lambda wrapped in Query object)'
             )
-        actual_name = Query.full_description_for(actual)
+        actual_name = Query._full_description_for(actual)
         name = name or (
             ((str(actual_name) + ' ') if actual_name else '') + str(by_name)  # noqa
         )

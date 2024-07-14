@@ -1152,6 +1152,14 @@ class Config:
 
     It is set to False by default for backward compatibility reasons.
     """  # todo: document example
+    # todo: decide on naming: ignore_case vs match_ignoring_case?
+    #       ignore_case conciser but
+    #       - not consistent with other match_* options
+    #       - does not explicitly tell that relates only to matching
+    #         * but... it should be kind of obvious that can be used only in context of matching
+    #         * and actually it's consistent with have.*.ignore_case conditions
+    # todo: consider documenting the major list of conditions that are affected by this option
+    _ignore_case: bool = False
 
     # TODO: better name? now technically it's not a decorator but decorator_builder...
     # or decorator_factory...

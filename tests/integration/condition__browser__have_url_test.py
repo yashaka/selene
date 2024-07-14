@@ -44,18 +44,45 @@ def test_have_url_containing__ignore_case(session_browser):
     GivenPage(browser.driver).opened_empty()
     browser.should(have.url_containing('EMPTY.html').ignore_case)
     try:
+        browser.should(have.url_containing('NONEMPTY.html').ignore_case)
+        pytest.fail('expect mismatch')
+    except AssertionError as error:
+        assert (
+            "browser.has url containing ignoring case: 'NONEMPTY.html'\n"
+            '\n'
+            'Reason: ConditionMismatch: actual url: '
+        ) in str(error)
+        assert re.findall(r'file:.*empty\.html\n', str(error))
+    try:
+        browser.with_(_ignore_case=True).should(have.url_containing('NONEMPTY.html'))
+        pytest.fail('expect mismatch')
+    except AssertionError as error:
+        assert (
+            "browser.has url containing ignoring case: 'NONEMPTY.html'\n"
+            '\n'
+            'Reason: ConditionMismatch: actual url: '
+        ) in str(error)
+        assert re.findall(r'file:.*empty\.html\n', str(error))
+    try:
         browser.should(have.no.url_containing('EMPTY.html').ignore_case)
         pytest.fail('expect mismatch')
     except AssertionError as error:
-        assert re.findall(
-            re.escape(
-                "browser.has no (url containing ignoring case: 'EMPTY.html')\n"
-                '\n'
-                'Reason: ConditionMismatch: actual url: '
-            )
-            + r'file:.*empty\.html\n',
-            str(error),
-        )
+        assert (
+            "browser.has no (url containing ignoring case: 'EMPTY.html')\n"
+            '\n'
+            'Reason: ConditionMismatch: actual url: '
+        ) in str(error)
+        assert re.findall(r'file:.*empty\.html\n', str(error))
+    try:
+        browser.with_(_ignore_case=True).should(have.no.url_containing('EMPTY.html'))
+        pytest.fail('expect mismatch')
+    except AssertionError as error:
+        assert (
+            "browser.has no (url containing ignoring case: 'EMPTY.html')\n"
+            '\n'
+            'Reason: ConditionMismatch: actual url: '
+        ) in str(error)
+        assert re.findall(r'file:.*empty\.html\n', str(error))
     browser.should(have.no.url_containing('start_page.xhtml'))
     browser.should(have.no.url_containing('start_page.xhtml').ignore_case)
 
