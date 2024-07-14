@@ -210,8 +210,6 @@ should we even refactor out them from Condition and move to Match only?
 
 ### TODO: rename all conditions inside match.py so match can be fully used instead be + have #530
 
-### TODO: Rename condition__collection__get*_test.py tests
-
 ### TODO: is text + exact_text naming still relevant for match.* case over have.*?
 
 ### Deprecated conditions
