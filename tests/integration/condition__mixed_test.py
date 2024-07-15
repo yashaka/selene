@@ -741,11 +741,13 @@ def test_should_have_tabs_number__applied_to_browser__passed_and_failed(
             'Screenshot: cannot be saved because of: NoSuchWindowException: no such '
             'window: target window already closed\n'
             'from unknown error: web view not found\n'
-            '  (Session info: chrome=126.0.6478.127)\n'
+            '  (Session info: '  # 'chrome=126.0.6478.127)\n'
+        ) in str(error)
+        assert (
             'PageSource: cannot be saved because of: NoSuchWindowException: no such '
             'window: target window already closed\n'
             'from unknown error: web view not found\n'
-            '  (Session info: chrome=126.0.6478.127)\n'
+            '  (Session info: '  # 'chrome=126.0.6478.127)\n'
         ) in str(error)
 
     # have size or less?
