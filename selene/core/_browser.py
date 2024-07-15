@@ -206,7 +206,6 @@ class Browser(WaitingEntity['Browser']):
         )
         return self.config.last_screenshot  # type: ignore
 
-    # TODO: consider moving this to browser command.save_page_source(filename)
     def save_page_source(self, file: Optional[str] = None) -> Optional[str]:
         warnings.warn(
             'browser.save_page_source is deprecated, '

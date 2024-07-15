@@ -770,6 +770,9 @@ url: Query[Browser, str] = Query('url', lambda browser: browser.driver.current_u
 
 title: Query[Browser, str] = Query('title', lambda browser: browser.driver.title)
 
+# todo: should we use more low level name? actually... the 'window_handles' one?
+#       or should we just provide an alias to query.tabs as query.window_handles?
+#       to provide both option for the end user to choose depending on context?
 tabs: Query[Browser, List[str]] = Query(
     'tabs', lambda browser: browser.driver.window_handles
 )

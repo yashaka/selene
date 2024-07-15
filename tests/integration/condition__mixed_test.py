@@ -131,6 +131,15 @@ def test_should_match_different_things(session_browser):
     s('li#visible').should(have.no.tag_containing('in'))
     s('input#visible').should(have.no.tag_containing('l'))
 
+    # have title?
+    session_browser.should(have.title('Selene Test Page'))
+    session_browser.should(have.no.title('Test'))
+    # have title containing?
+    session_browser.should(have.title_containing('Test'))
+    session_browser.should(have.no.title_containing('test'))
+    session_browser.should(have.title_containing('test').ignore_case)
+    session_browser.with_(_ignore_case=True).should(have.title_containing('test'))
+
 
 def test_should_have_size__applied_to_collection__passed_and_failed(
     session_browser,
@@ -667,3 +676,120 @@ def test_should_be_emtpy__applied_to_form__passed_and_failed(
             'selects: \n'
             'Screenshot: '
         ) in str(error)
+
+
+def test_should_have_tabs_number__applied_to_browser__passed_and_failed(
+    function_browser,
+):
+    browser = function_browser.with_(timeout=0.1, window_width=720, window_height=480)
+    s = lambda selector: browser.element(selector)
+    ss = lambda selector: browser.all(selector)
+    GivenPage(browser).opened_empty()  # 1
+    browser.driver.switch_to.new_window('tab')  # +1
+    browser.driver.switch_to.new_window('window')  # +1
+    browser.driver.switch_to.new_window('tab')  # +1
+    # THEN
+    # => expect 4 tabs total
+
+    # have tabs_number?
+    # todo: should we think on implementing somthing like:
+    # browser.with_(_match_only_visible_window_tabs_number=True).should(
+    #     match.tabs_number(2)
+    # )
+
+    browser.should(match.tabs_number(4))
+
+    browser.should(have.no.tabs_number(5))
+    browser.should(have.tabs_number(4))
+    browser.should(have.no.tabs_number(3))
+
+    try:
+        browser.should(have.tabs_number(3))
+        pytest.fail('expect mismatch')
+    except AssertionError as error:
+        assert (
+            'browser.has tabs number 3\n'
+            '\n'
+            'Reason: ConditionMismatch: actual tabs number: 4\n'
+            'Screenshot: '
+            'file:'  # '///Users/yashaka/.selene/screenshots/1721056397813/1721056397813.png\n'
+            # 'PageSource: '
+            # 'file:///Users/yashaka/.selene/screenshots/1721056397813/1721056397813.html\n'
+        ) in str(error)
+
+    # WHEN
+    browser.driver.switch_to.new_window('tab')  # +1
+    browser.driver.close()  # -1
+
+    # THEN
+    # => still expect 4 tabs total
+
+    browser.should(match.tabs_number(4))
+
+    browser.should(have.no.tabs_number(5))
+    browser.should(have.tabs_number(4))
+    browser.should(have.no.tabs_number(3))
+
+    try:
+        browser.should(have.tabs_number(3))
+        pytest.fail('expect mismatch')
+    except AssertionError as error:
+        assert (
+            'browser.has tabs number 3\n'
+            '\n'
+            'Reason: ConditionMismatch: actual tabs number: 4\n'
+            'Screenshot: cannot be saved because of: NoSuchWindowException: no such '
+            'window: target window already closed\n'
+            'from unknown error: web view not found\n'
+            '  (Session info: chrome=126.0.6478.127)\n'
+            'PageSource: cannot be saved because of: NoSuchWindowException: no such '
+            'window: target window already closed\n'
+            'from unknown error: web view not found\n'
+            '  (Session info: chrome=126.0.6478.127)\n'
+        ) in str(error)
+
+    # have size or less?
+    browser.should(have.tabs_number(5).or_less)
+    browser.should(have.tabs_number(4).or_less)
+    try:
+        browser.should(have.tabs_number(3).or_less)
+        pytest.fail('expect mismatch')
+    except AssertionError as error:
+        assert (
+            "browser.has tabs number 3 or less\n"
+            '\n'
+            'Reason: ConditionMismatch: actual tabs number: 4\n'
+        ) in str(error)
+    browser.should(have.no.tabs_number(3).or_less)
+    try:
+        browser.should(have.no.tabs_number(4).or_less)
+        pytest.fail('expect mismatch')
+    except AssertionError as error:
+        assert (  # TODO: fix it because now inversion does not come into action... in context of describing...
+            "browser.has no (tabs number 4 or less)\n"
+            '\n'
+            'Reason: ConditionMismatch: actual tabs number: 4\n'
+        ) in str(
+            error
+        )
+    browser.should(have.no.tabs_number_less_than_or_equal(3))
+
+    # todo: add a few failed cases below...
+
+    # have size or more?
+    browser.should(have.tabs_number(3).or_more)
+    browser.should(have.tabs_number(4).or_more)
+    browser.should(have.no.tabs_number(5).or_more)
+    browser.should(have.no.tabs_number_greater_than_or_equal(5))
+
+    # have size more than
+    browser.should(have.no.tabs_number(4)._more_than)
+    browser.should(have.no.tabs_number_greater_than(4))
+    browser.should(have.tabs_number_greater_than(3))
+    browser.should(have.tabs_number_greater_than(0))
+
+    # have size less than
+    browser.should(have.tabs_number_less_than(5))
+    browser.should(have.no.tabs_number(4)._less_than)
+    browser.should(have.no.tabs_number_less_than(4))
+    browser.should(have.no.tabs_number_less_than(0))

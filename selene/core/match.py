@@ -115,6 +115,9 @@ class _EntityHasSomethingSupportingIgnoreCase(Match[E]):
             _falsy_exceptions=_falsy_exceptions,
         )
 
+    # TODO: should we add property pattern or with_regex (compare with *_like conditions)
+    #       similar to ignore_case, that adds regex support to condition?
+
     @property
     def ignore_case(self) -> Condition[E]:
         return self.__class__(
@@ -1551,70 +1554,92 @@ def url_containing(expected: str, _inverted=False):
     return url(expected, 'has url containing', predicate.includes, _inverted=_inverted)
 
 
-def browser_has_title(
-    expected: str,
-    describing_matched_to='has title',
-    compared_by_predicate_to=predicate.equals,
-) -> Condition[Browser]:
-    def title(browser: Browser) -> str:
-        return browser.driver.title
-
-    return BrowserCondition.raise_if_not_actual(
-        f"{describing_matched_to} '{expected}'",
-        title,
-        compared_by_predicate_to(expected),
+def title(
+    expected: str, _name='has title', _by=predicate.equals, _inverted=False
+) -> _EntityHasSomethingSupportingIgnoreCase[Browser]:
+    return _EntityHasSomethingSupportingIgnoreCase(
+        _name, expected, actual=query.title, by=_by, _inverted=_inverted
     )
 
 
-def browser_has_title_containing(expected: str) -> Condition[Browser]:
-    return browser_has_title(expected, 'has title containing', predicate.includes)
-
-
-def browser_has_tabs_number(
-    expected: int,
-    describing_matched_to='has tabs number',
-    compared_by_predicate_to=predicate.equals,
-) -> Condition[Browser]:
-    def tabs_number(browser: Browser) -> int:
-        return len(browser.driver.window_handles)
-
-    return BrowserCondition.raise_if_not_actual(
-        f'{describing_matched_to} {expected}',
-        tabs_number,
-        compared_by_predicate_to(expected),
+def title_containing(expected: str, _inverted=False):
+    return title(
+        expected, 'has title containing', predicate.includes, _inverted=_inverted
     )
 
 
-def browser_has_tabs_number_greater_than(expected: int) -> Condition[Browser]:
-    return browser_has_tabs_number(
-        expected, 'has tabs number greater than', predicate.is_greater_than
-    )
+class tabs_number(Match[Browser]):
+
+    def __init__(
+        self,
+        expected: int | dict,
+        _name='has tabs number',
+        _by=predicate.equals,
+        _inverted=False,
+    ):
+        self.__expected = expected
+        self.__name = f'{_name} {expected}'
+        self.__by = _by
+        self.__inverted = _inverted
+
+        super().__init__(
+            self.__name,
+            actual=query.tabs_number,
+            by=_by(expected),
+            _inverted=_inverted,
+        )
+
+    @property
+    def or_less(self) -> Condition[Browser]:
+        return Match(
+            f'{self.__name} or less',
+            query.tabs_number,
+            by=predicate.is_less_than_or_equal(self.__expected),
+            _inverted=self.__inverted,
+        )
+
+    @property
+    def or_more(self) -> Condition[Browser]:
+        return Match(
+            f'{self.__name} or more',
+            query.tabs_number,
+            by=predicate.is_greater_than_or_equal(self.__expected),
+            _inverted=self.__inverted,
+        )
+
+    @property
+    def _more_than(self) -> Condition[Browser]:
+        return Match(
+            f'has tabs number more than {self.__expected}',
+            query.tabs_number,
+            by=predicate.is_greater_than(self.__expected),
+            _inverted=self.__inverted,
+        )
+
+    @property
+    def _less_than(self) -> Condition[Browser]:
+        return Match(
+            f'has tabs number less than {self.__expected}',
+            query.tabs_number,
+            by=predicate.is_less_than(self.__expected),
+            _inverted=self.__inverted,
+        )
 
 
-def browser_has_tabs_number_greater_than_or_equal(
-    expected: int,
-) -> Condition[Browser]:
-    return browser_has_tabs_number(
-        expected,
-        'has tabs number greater than or equal',
-        predicate.is_greater_than_or_equal,
-    )
+def tabs_number_greater_than(expected: int, _inverted=False):
+    return tabs_number(expected, _inverted=_inverted)._more_than
 
 
-def browser_has_tabs_number_less_than(expected: int) -> Condition[Browser]:
-    return browser_has_tabs_number(
-        expected, 'has tabs number less than', predicate.is_less_than
-    )
+def tabs_number_greater_than_or_equal(expected: int, _inverted=False):
+    return tabs_number(expected, _inverted=_inverted).or_more
 
 
-def browser_has_tabs_number_less_than_or_equal(
-    expected: int,
-) -> Condition[Browser]:
-    return browser_has_tabs_number(
-        expected,
-        'has tabs number less than or equal',
-        predicate.is_less_than_or_equal,
-    )
+def tabs_number_less_than(expected: int, _inverted=False):
+    return tabs_number(expected, _inverted=_inverted)._less_than
+
+
+def tabs_number_less_than_or_equal(expected: int, _inverted=False):
+    return tabs_number(expected, _inverted=_inverted).or_less
 
 
 def browser_has_js_returned(expected: Any, script: str, *args) -> Condition[Browser]:

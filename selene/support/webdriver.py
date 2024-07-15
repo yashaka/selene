@@ -27,6 +27,7 @@ from selenium.webdriver.remote.webdriver import WebDriver
 from selene.common.helpers import on_error_return_false
 
 
+# TODO: consider privatizing
 class WebHelper:
     # TODO: should we make it private? like call it _Help (or think on better name)
     # what about this style for example: ExtendedWebdriver(driver).is_alive() ?

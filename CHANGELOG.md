@@ -139,6 +139,8 @@ consider `str | Callable[[...], str]` vs `str | Callable[[...], str]` as type fo
 
 ## 2.0.0rc10: «copy&paste, frames, shadow & texts_like» (to be released on DD.05.2024)
 
+### TODO: consider regex support via .pattern prop (similar to .ignore_case) (#537)
+
 ### TODO: consider renaming Condition `test` arg to `match` for consistency with Match
 
 Compare current:
@@ -209,6 +211,8 @@ like in `clickable = Match('clickable', by=be.visible.and_(be.enabled))`
 should we even refactor out them from Condition and move to Match only?
 
 ### TODO: rename all conditions inside match.py so match can be fully used instead be + have #530
+
+### TODO: consider implementing either_res_or just for demo... 
 
 ### Deprecated conditions
 

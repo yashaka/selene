@@ -29,6 +29,7 @@ import os
 import time
 import warnings
 import typing_extensions as typing
+from selenium.common import WebDriverException
 from typing_extensions import Callable, Optional, Any, TypeVar
 
 from selenium.webdriver.remote.webdriver import WebDriver
@@ -1397,6 +1398,7 @@ class Config:
         )
         return persistent.replace(self, **options)
 
+    # TODO: should we make it and similar – true private over protected?
     def _format_path_as_uri(self, path):
         """Converts a local file path to a URI that can be clicked in most editors and browsers."""
         prefix = 'file://'
@@ -1425,26 +1427,63 @@ class Config:
         # TODO: consider moving hooks to class methods accepting config as argument
         #       or refactor somehow to eliminate all times defining hook fns
         def save_and_log_screenshot(error: TimeoutException) -> Exception:
-            path = self._save_screenshot_strategy(self)  # type: ignore
-            uri = self._format_path_as_uri(path)
+            path = None
+            failure_reason: WebDriverException | None = None
+            try:
+                # todo: consider changing _save_screenshot_strategy to be Either-like
+                # TODO: consider refactoring to be Either-monad-like
+                #       so we can eliminate try..except clauses
+                #       > path, maybe_failure = either_res_or(
+                #       >   WebDriverException
+                #       >   self._save_screenshot_strategy,
+                #       >   self,
+                #       > )
+                path = self._save_screenshot_strategy(self)  # type: ignore
+            except WebDriverException as reason:
+                failure_reason = reason
             return TimeoutException(
                 error.msg
-                + f'''
-Screenshot: {uri}'''
+                # todo: should we just skip logging screenshot at all when failure?
+                + '\nScreenshot: '
+                + (
+                    self._format_path_as_uri(path)
+                    if path and not failure_reason
+                    else 'cannot be saved because of: {name}: {message}'.format(
+                        name=failure_reason.__class__.__name__,
+                        message=getattr(failure_reason, "msg", str(failure_reason)),
+                    )
+                )
             )
 
         def save_and_log_page_source(error: TimeoutException) -> Exception:
             filename = (
-                # TODO: this dependency to last_page_source might lead to code,
+                # TODO: this dependency to last_screenshot might lead to code,
                 #       when wrong last_page_source name is taken
                 self.last_screenshot.replace('.png', '.html')
                 if self.last_screenshot
                 else self._generate_filename(suffix='.html')
             )
 
-            path = self._save_page_source_strategy(self, filename)
-            uri = self._format_path_as_uri(path)
-            return TimeoutException(error.msg + f'\nPageSource: {uri}')
+            path = None
+            failure_reason: WebDriverException | None = None
+            try:
+                # TODO: consider refactoring to be Either-monad-like
+                #       so we can eliminate try..except clauses
+                path = self._save_page_source_strategy(self, filename)
+            except WebDriverException as reason:
+                failure_reason = reason
+            return TimeoutException(
+                error.msg
+                + '\nPageSource: '
+                + (
+                    self._format_path_as_uri(path)
+                    if path and not failure_reason
+                    else 'cannot be saved because of: {name}: {message}'.format(
+                        name=failure_reason.__class__.__name__,
+                        message=getattr(failure_reason, "msg", str(failure_reason)),
+                    )
+                )
+            )
 
         return fp.pipe(
             save_and_log_screenshot if self.save_screenshot_on_failure else None,

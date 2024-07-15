@@ -273,32 +273,32 @@ def url_containing(partial_value: str):
     return _match.url_containing(partial_value, _inverted=True)
 
 
-def title(exact_value: str) -> Condition[Browser]:
-    return _match.browser_has_title(exact_value).not_
+def title(exact_value: str):
+    return _match.title(exact_value, _inverted=True)
 
 
-def title_containing(partial_value: str) -> Condition[Browser]:
-    return _match.browser_has_title_containing(partial_value).not_
+def title_containing(partial_value: str):
+    return _match.title_containing(partial_value, _inverted=True)
 
 
-def tabs_number(value: int) -> Condition[Browser]:
-    return _match.browser_has_tabs_number(value).not_
+def tabs_number(value: int):
+    return _match.tabs_number(value, _inverted=True)
 
 
-def tabs_number_less_than(value: int) -> Condition[Browser]:
-    return _match.browser_has_tabs_number_less_than(value).not_
+def tabs_number_less_than(value: int):
+    return _match.tabs_number_less_than(value, _inverted=True)
 
 
-def tabs_number_less_than_or_equal(value: int) -> Condition[Browser]:
-    return _match.browser_has_tabs_number_less_than_or_equal(value).not_
+def tabs_number_less_than_or_equal(value: int):
+    return _match.tabs_number_less_than_or_equal(value, _inverted=True)
 
 
-def tabs_number_greater_than(value: int) -> Condition[Browser]:
-    return _match.browser_has_tabs_number_greater_than(value).not_
+def tabs_number_greater_than(value: int):
+    return _match.tabs_number_greater_than(value, _inverted=True)
 
 
-def tabs_number_greater_than_or_equal(value: int) -> Condition[Browser]:
-    return _match.browser_has_tabs_number_greater_than_or_equal(value).not_
+def tabs_number_greater_than_or_equal(value: int):
+    return _match.tabs_number_greater_than_or_equal(value, _inverted=True)
 
 
 def js_returned_true(script_to_return_bool: str) -> Condition[Browser]:
