@@ -74,7 +74,7 @@ def exact_text(value: str | int | float):
 
 
 def text(partial_value: str | int | float):
-    return _match.text(partial_value, _inverted=True)
+    return _match.text_containing(partial_value, _inverted=True)
 
 
 def text_matching(regex_pattern: str):

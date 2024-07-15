@@ -380,7 +380,39 @@ def __x_exact_text(expected: str | int | float, _ignore_case=False, _inverted=Fa
     )
 
 
-def text(expected: str | int | float, _ignore_case=False, _inverted=False):
+# todo: is text + exact_text naming still relevant for match.* case over have.*?
+#       let's compare examples:
+#       > element.should(have.exact_text('full of partial!'))   # 👍🏻
+#       > element.should(have.text('partial'))                  # 👍🏻
+#       > element.should(match.exact_text('full of partial!'))  # 👍🏻
+#       > element.should(match.text('part'))                    # 🤨
+#       > element.should(match.text_containing('part'))         # 🤔
+#       > element.should(match.partial_text('part'))            # 👍🏻
+#       > match.text('part')(element)                           # 🤨
+#       > match.text_containing('part')(element)                # ??
+#       > match.partial_text('part')(element)                   # 👍🏻
+#       let's see other conditions
+#       > element.should(have.value('full of partial!'))        # 👍🏻
+#       > element.should(have.value_containing('part'))         # 👍🏻
+#       > element.should(match.value('full of partial!'))       # 👍🏻
+#       > element.should(match.value_containing('part'))        # 👍🏻
+#       > element.should(match.partial_value('part'))           # 👍🏻?
+#       > browser.should(match.url_containing('part'))          # 👍🏻
+#       > browser.should(match.partial_url('part'))             # 👍🏻?
+#       > match.url_containing('part')(browser)                 # 👍🏻
+#       > match.partial_url('part')(browser)                    # 👍🏻?
+#       Hm... There is something weird in "match.partial_*('part')" ...
+#       it's conciser but less consistent with have.*_containing
+#       and maybe it's subjective, but partial_ phrasing sounds
+#       less natural for me... from human-language perspective
+#       Hence, let's keep things simple and consistent.
+#       match.text is really a problem. Not others.
+#       So let's rename only it and rename only to the most consistent
+#       with other versions... i.e. to text_containing
+#       Let's not do anything else. For example,
+#       we could rename match.exact_text to match.text, but again,
+#       let's keep consistency with have.* as much as possible
+def text_containing(expected: str | int | float, _ignore_case=False, _inverted=False):
     return _EntityHasSomethingSupportingIgnoreCase(
         'has text',  # TODO: is it here name or description? probably it's even a "name prefix"
         expected,
@@ -391,17 +423,6 @@ def text(expected: str | int | float, _ignore_case=False, _inverted=False):
     )
 
 
-# TODO: is text + exact_text naming still relevant for match.* case over have.*?
-#       let's compare examples:
-#       > element.should(have.exact_text('full of partial!'))   # 👍🏻
-#       > element.should(have.text('partial'))                  # 👍🏻
-#       > element.should(match.exact_text('full of partial!'))  # 👍🏻
-#       > element.should(match.text('partial'))                 # 🤨
-#       > element.should(match.text_containing('partial'))      # 🤔
-#       > element.should(match.partial_text('partial'))         # 👍🏻
-#       > match.text('partial')(element)                        # 🤨
-#       > match.text_containing('partial')(element)             # ??
-#       > match.partial_text('partial')(element)                # 👍🏻
 def exact_text(expected: str | int | float, _ignore_case=False, _inverted=False):
     return _EntityHasSomethingSupportingIgnoreCase(
         'has exact text',

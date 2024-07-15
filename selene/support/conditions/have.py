@@ -37,7 +37,7 @@ def exact_text(value: str | int | float):
 
 
 def text(partial_value: str | int | float):
-    return match.text(partial_value)
+    return match.text_containing(partial_value)
 
 
 # todo: why not exact_text_matching o_O?

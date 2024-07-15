@@ -130,9 +130,13 @@ def test_text_matching__regex_pattern__ignore_case__compared(session_browser):
     browser.all('li').first.should(match.exact_text('1) one!!!').not_)  # TODO: o_O
     browser.all('li').first.should(have.no.exact_text('1) one!!!'))
     browser.all('li').first.should(match.exact_text('1) one!!!', _ignore_case=True))
+    browser.all('li').first.with_(_ignore_case=True).should(
+        match.exact_text('1) one!!!')
+    )
     browser.all('li').first.should(have.exact_text('1) one!!!').ignore_case)
-    browser.all('li').first.should(match.text('one', _ignore_case=True))
+    browser.all('li').first.should(match.text_containing('one', _ignore_case=True))
     browser.all('li').first.should(have.text('one').ignore_case)
+    browser.all('li').first.with_(_ignore_case=True).should(have.text('one'))
     browser.all('li').first.should(match.text_pattern(r'.*one.*', _flags=re.IGNORECASE))
     browser.all('li').first.should(match.text_pattern(r'.*one.*').not_)
     browser.all('li').first.should(
