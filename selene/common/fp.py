@@ -70,7 +70,8 @@ def identity(it: R) -> R:
 E = TypeVar('E', bound=Exception)
 
 
-class AbsentResult(_NoneObject): ...
+class AbsentResult(_NoneObject):
+    pass
 
 
 # todo: would the ... instead AbsentResult(str(fn)) be enough?
