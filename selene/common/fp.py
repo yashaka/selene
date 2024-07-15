@@ -20,8 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 import functools
-import inspect
-from typing import TypeVar, Callable, Any, Tuple, Optional
+from typing_extensions import TypeVar, Callable, Any, Tuple, Optional
 
 # T = TypeVar('T', bound=Callable[..., Any])
 T = TypeVar('T')
@@ -61,6 +60,23 @@ _DecoratorWithOptionalParameters = Callable[[Optional[F], ...], F]
 
 def identity(it: T) -> T:
     return it
+
+
+# todo: what about decorator? like:
+#       > res, maybe_failure = _either(res=func, or_=Exception)(*args, **kwargs)
+#       over
+#       > res, maybe_failure = _either_res_or(Exception, func, *args, **kwargs)
+# todo: support exception_type as tuple of exception types
+# todo: make generic-aware version of this function,
+#       that knows the type of failure
+#       that knows the type of fn res
+def _either_res_or(
+    exception_type, fn: Callable, /, *args, **kwargs
+) -> Tuple[Any, Optional[Exception]]:
+    try:
+        return fn(*args, **kwargs), None
+    except exception_type as failure:
+        return ..., failure
 
 
 def pipe(*functions) -> Optional[Callable[[Any], Any]]:

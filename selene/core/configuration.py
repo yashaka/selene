@@ -1427,30 +1427,21 @@ class Config:
         # TODO: consider moving hooks to class methods accepting config as argument
         #       or refactor somehow to eliminate all times defining hook fns
         def save_and_log_screenshot(error: TimeoutException) -> Exception:
-            path = None
-            failure_reason: WebDriverException | None = None
-            try:
-                # todo: consider changing _save_screenshot_strategy to be Either-like
-                # TODO: consider refactoring to be Either-monad-like
-                #       so we can eliminate try..except clauses
-                #       > path, maybe_failure = either_res_or(
-                #       >   WebDriverException
-                #       >   self._save_screenshot_strategy,
-                #       >   self,
-                #       > )
-                path = self._save_screenshot_strategy(self)  # type: ignore
-            except WebDriverException as reason:
-                failure_reason = reason
+            # todo: consider changing _save_screenshot_strategy to be Either-like
+            #       > path, maybe_failure = self._save_screenshot_strategy(self)
+            path, maybe_failure = fp._either_res_or(
+                WebDriverException, self._save_screenshot_strategy, self
+            )
             return TimeoutException(
                 error.msg
                 # todo: should we just skip logging screenshot at all when failure?
                 + '\nScreenshot: '
                 + (
                     self._format_path_as_uri(path)
-                    if path and not failure_reason
+                    if path and not maybe_failure
                     else 'cannot be saved because of: {name}: {message}'.format(
-                        name=failure_reason.__class__.__name__,
-                        message=getattr(failure_reason, "msg", str(failure_reason)),
+                        name=maybe_failure.__class__.__name__,
+                        message=getattr(maybe_failure, "msg", str(maybe_failure)),
                     )
                 )
             )
@@ -1464,23 +1455,18 @@ class Config:
                 else self._generate_filename(suffix='.html')
             )
 
-            path = None
-            failure_reason: WebDriverException | None = None
-            try:
-                # TODO: consider refactoring to be Either-monad-like
-                #       so we can eliminate try..except clauses
-                path = self._save_page_source_strategy(self, filename)
-            except WebDriverException as reason:
-                failure_reason = reason
+            path, maybe_failure = fp._either_res_or(
+                WebDriverException, self._save_screenshot_strategy, self
+            )
             return TimeoutException(
                 error.msg
                 + '\nPageSource: '
                 + (
                     self._format_path_as_uri(path)
-                    if path and not failure_reason
+                    if path and not maybe_failure
                     else 'cannot be saved because of: {name}: {message}'.format(
-                        name=failure_reason.__class__.__name__,
-                        message=getattr(failure_reason, "msg", str(failure_reason)),
+                        name=maybe_failure.__class__.__name__,
+                        message=getattr(maybe_failure, "msg", str(maybe_failure)),
                     )
                 )
             )

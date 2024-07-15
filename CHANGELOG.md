@@ -212,8 +212,6 @@ should we even refactor out them from Condition and move to Match only?
 
 ### TODO: rename all conditions inside match.py so match can be fully used instead be + have #530
 
-### TODO: consider implementing either_res_or just for demo... 
-
 ### Deprecated conditions
 
 - `be.present` in favor of `be.present_in_dom`
