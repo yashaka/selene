@@ -28,7 +28,7 @@ class _NoneObject:
 
     def __getattr__(self, item):
         raise AttributeError(
-            "'NoneObject' for «'%s'» has no attribute '%s'" % (self.description, item)
+            f"'{self.__class__.__name__}' for «'{self.description}'» has no attribute '{item}'"
         )
 
     def __bool__(self):

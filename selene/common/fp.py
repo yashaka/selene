@@ -19,21 +19,26 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+from __future__ import annotations
 import functools
-from typing_extensions import TypeVar, Callable, Any, Tuple, Optional
+from typing_extensions import TypeVar, Callable, Any, Tuple, Optional, cast, Type
+
+from selene.common.none_object import _NoneObject
 
 # T = TypeVar('T', bound=Callable[..., Any])
 T = TypeVar('T')
-'''
-A generic TypeVar to identify a Function Type, i.e. a function
+'''A generic TypeVar to identify a Function Type, i.e. a function
 but to be imported and used as fp.T so you can guess from full name,
 that it is "function type", i.e. a function ;)
 '''
 F = TypeVar('F')  # should we bound it as `bound=Callable[..., Any]`
-'''
-A generic TypeVar to identify a Function Type, i.e. a function
+'''A generic TypeVar to identify a Function Type, i.e. a function
 can be imported and used as F directly, no need of `fp.F` version...,
 you still can guess a shortcut F = Function)
+'''
+
+R = TypeVar('R')
+'''A generic TypeVar to identify a Result Type, i.e. a type of result of a function
 '''
 
 _Decorator = Callable[[F], F]
@@ -58,25 +63,35 @@ _DecoratorWithOptionalParameters = Callable[[Optional[F], ...], F]
 '''
 
 
-def identity(it: T) -> T:
+def identity(it: R) -> R:
     return it
 
 
-# todo: what about decorator? like:
-#       > res, maybe_failure = _either(res=func, or_=Exception)(*args, **kwargs)
-#       over
-#       > res, maybe_failure = _either_res_or(Exception, func, *args, **kwargs)
-# todo: support exception_type as tuple of exception types
-# todo: make generic-aware version of this function,
-#       that knows the type of failure
-#       that knows the type of fn res
+E = TypeVar('E', bound=Exception)
+
+
+class AbsentResult(_NoneObject): ...
+
+
+# todo: would the ... instead AbsentResult(str(fn)) be enough?
+# todo: consider supporting exception_type as tuple of exception types
+#       or should we create another helper for that?
 def _either_res_or(
-    exception_type, fn: Callable, /, *args, **kwargs
-) -> Tuple[Any, Optional[Exception]]:
+    exception_type: Type[E], fn: Callable[..., R], /, *args, **kwargs
+) -> Tuple[R, Optional[E]]:
     try:
         return fn(*args, **kwargs), None
     except exception_type as failure:
-        return ..., failure
+        return cast(R, AbsentResult(str(fn))), failure
+
+
+# todo: can we make the callable params generic too? (instead current ... as placeholder)
+def _either(
+    res: Callable[..., R], /, *, or_: Type[E]
+) -> Callable[..., Tuple[R, Optional[E]]]:
+    return functools.wraps(res)(
+        lambda *args, **kwargs: _either_res_or(or_, res, *args, **kwargs)
+    )
 
 
 def pipe(*functions) -> Optional[Callable[[Any], Any]]:

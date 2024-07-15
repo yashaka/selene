@@ -1244,6 +1244,7 @@ class Config:
     # TODO: is a _strategy suffix a good naming convention in this context?
     #       maybe yes, because we yet accept config in it...
     #       so we expect it to be a Strategy of some bigger Context
+    # TODO: why the return type is Any? shouldn't it be a string of path?
     _save_screenshot_strategy: Callable[[Config, Optional[str]], Any] = (
         lambda config, path=None: fp.thread(  # type: ignore
             path,
@@ -1429,16 +1430,21 @@ class Config:
         def save_and_log_screenshot(error: TimeoutException) -> Exception:
             # todo: consider changing _save_screenshot_strategy to be Either-like
             #       > path, maybe_failure = self._save_screenshot_strategy(self)
-            path, maybe_failure = fp._either_res_or(
-                WebDriverException, self._save_screenshot_strategy, self
-            )
+            #       but then the f.thread that is used in its impl
+            #       should become monad-friendly,
+            #       with some kind of .map/.bind under the hood
+            #       and propagating error to the end if happened
+            path, maybe_failure = fp._either(
+                self._save_screenshot_strategy, or_=WebDriverException
+            )(self)
             return TimeoutException(
                 error.msg
                 # todo: should we just skip logging screenshot at all when failure?
+                #       here and below for page_source
                 + '\nScreenshot: '
                 + (
                     self._format_path_as_uri(path)
-                    if path and not maybe_failure
+                    if not maybe_failure
                     else 'cannot be saved because of: {name}: {message}'.format(
                         name=maybe_failure.__class__.__name__,
                         message=getattr(maybe_failure, "msg", str(maybe_failure)),
@@ -1455,9 +1461,9 @@ class Config:
                 else self._generate_filename(suffix='.html')
             )
 
-            path, maybe_failure = fp._either_res_or(
-                WebDriverException, self._save_screenshot_strategy, self
-            )
+            path, maybe_failure = fp._either(
+                self._save_page_source_strategy, or_=WebDriverException
+            )(self, filename)
             return TimeoutException(
                 error.msg
                 + '\nPageSource: '
