@@ -74,22 +74,28 @@ class AbsentResult(_NoneObject):
     pass
 
 
-# todo: would the ... instead AbsentResult(str(fn)) be enough?
+# todo: Should we also subclass Exception? in what order?
+class AbsentError(_NoneObject):
+    pass
+
+
+# todo: should we log actual error type in AbsentError description?
+# todo: would the ... instead AbsentResult(str(fn)) or AbsentError be enough?
 # todo: consider supporting exception_type as tuple of exception types
 #       or should we create another helper for that?
 def _either_res_or(
     exception_type: Type[E], fn: Callable[..., R], /, *args, **kwargs
-) -> Tuple[R, Optional[E]]:
+) -> Tuple[Optional[R], E]:
     try:
-        return fn(*args, **kwargs), None
+        return fn(*args, **kwargs), cast(E, AbsentError(str(fn)))
     except exception_type as failure:
-        return cast(R, AbsentResult(str(fn))), failure
+        return None, failure
 
 
 # todo: can we make the callable params generic too? (instead current ... as placeholder)
 def _either(
     res: Callable[..., R], /, *, or_: Type[E]
-) -> Callable[..., Tuple[R, Optional[E]]]:
+) -> Callable[..., Tuple[Optional[R], E]]:
     return functools.wraps(res)(
         lambda *args, **kwargs: _either_res_or(or_, res, *args, **kwargs)
     )
