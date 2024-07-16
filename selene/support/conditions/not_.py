@@ -314,7 +314,7 @@ def js_returned(expected: Any, script: str, *args) -> Condition[Browser]:
 
 
 def script_returned(expected: Any, script: str, *args) -> Condition[Browser]:
-    return _match.browser_has_script_returned(expected, script, *args).not_
+    return _match.script_returned(expected, script, *args).not_
 
 
 _empty = _match._empty.not_

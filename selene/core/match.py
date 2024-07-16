@@ -1649,17 +1649,35 @@ def browser_has_js_returned(expected: Any, script: str, *args) -> Condition[Brow
         DeprecationWarning,
     )
 
-    return browser_has_script_returned(expected, script, *args)
+    return script_returned(expected, script, *args)
 
 
-def browser_has_script_returned(
-    expected: Any, script: str, *args
-) -> Condition[Browser]:  # TODO: should it work on element too? on collection?
+# todo: consider other naming like script_result, etc.
+#       let's compare...
+#       > browser.should(have.script_returned(True, 'return document.isConnected()'))
+#       > browser.should(have.script_result(True, 'return document.isConnected()'))
+#       > browser.should(have.result(True, 'return document.isConnected()'))
+#       > browser.should(have.script('return document.isConnected()', returned=True))
+#       > browser.should(have.script('return document.isConnected()', result=True))
+#       > browser.should(match.script_returned(True, 'return document.isConnected()'))
+#       > browser.should(match.script_result(True, 'return document.isConnected()'))
+#       > browser.should(match.result(True, 'return document.isConnected()'))
+#       > browser.should(match.script('return document.isConnected()', result=True))
+#       > browser.should(match.script('return document.isConnected()', equals=True))
+#       > browser.should(match.script('return document.isConnected()', returns=True))
+#       > browser.should(match.result(True, 'return document.isConnected()'))
+#       > browser.should(match.result(True, script='return document.isConnected()'))
+# todo: consider passing predicate as a parameter, so it can be compared not just by equals
+#       maybe make it class based with predefined predicates
+# todo: consider making it work on element too; collection?
+#       probably the decision depends on finalisation of element.execute_script signature
+def script_returned(expected: Any, script: str, *args) -> Condition[Browser]:
+    # todo: consider moving to query module
     def script_result(browser: Browser):
         return browser.driver.execute_script(script, *args)
 
-    return BrowserCondition.raise_if_not_actual(
-        f'has the ```{script}``` script returned {expected}',
+    return Match(
+        f'has the ```{script}``` script returned: {expected}',
         script_result,
-        predicate.equals(expected),
+        by=predicate.equals(expected),
     )

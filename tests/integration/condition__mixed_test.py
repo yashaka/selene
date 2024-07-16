@@ -31,9 +31,10 @@ from tests import const
 
 
 def test_should_match_different_things(session_browser):
-    s = lambda selector: session_browser.with_(timeout=0.1).element(selector)
-    ss = lambda selector: session_browser.with_(timeout=0.1).all(selector)
-    GivenPage(session_browser.driver).opened_with_body(
+    browser = session_browser.with_(timeout=0.1)
+    s = lambda selector: browser.element(selector)
+    ss = lambda selector: browser.all(selector)
+    GivenPage(browser).opened_with_body(
         '''
         <ul>
         <!--<li id="absent"></li>-->
@@ -132,13 +133,57 @@ def test_should_match_different_things(session_browser):
     s('input#visible').should(have.no.tag_containing('l'))
 
     # have title?
-    session_browser.should(have.title('Selene Test Page'))
-    session_browser.should(have.no.title('Test'))
+    browser.should(have.title('Selene Test Page'))
+    browser.should(have.no.title('Test'))
     # have title containing?
-    session_browser.should(have.title_containing('Test'))
-    session_browser.should(have.no.title_containing('test'))
-    session_browser.should(have.title_containing('test').ignore_case)
-    session_browser.with_(_ignore_case=True).should(have.title_containing('test'))
+    browser.should(have.title_containing('Test'))
+    browser.should(have.no.title_containing('test'))
+    browser.should(have.title_containing('test').ignore_case)
+    browser.with_(_ignore_case=True).should(have.title_containing('test'))
+
+    # have script returned?
+    browser.should(
+        have.script_returned(42, 'return arguments[0] * arguments[1]', 21, 2)
+    )
+    browser.should(match.script_returned(42, 'return 42'))
+    browser.should(have.script_returned(42, 'return 42'))
+    browser.should(have.script_returned(None, '42'))
+    browser.should(have.no.script_returned(42, '42'))
+    browser.should(
+        have.script_returned(
+            ' One  !!!', 'return arguments[0].value', s('input#visible').locate()
+        )
+    )
+    try:
+        browser.should(
+            have.script_returned(
+                'One', 'return arguments[0].value', s('input#visible').locate()
+            )
+        )
+        pytest.fail('expect mismatch')
+    except AssertionError as error:
+        assert (
+            # todo: should it be:
+            # 'browser.script```return arguments[0].value``` has returned: One\n'
+            'browser.has the ```return arguments[0].value``` script returned: One\n'
+            '\n'
+            'Reason: ConditionMismatch: actual script result:  One  !!!\n'
+            'Screenshot: '
+        ) in str(error)
+    try:
+        browser.should(
+            have.no.script_returned(
+                ' One  !!!', 'return arguments[0].value', s('input#visible').locate()
+            )
+        )
+        pytest.fail('expect mismatch')
+    except AssertionError as error:
+        assert (
+            'browser.has no (the ```return arguments[0].value``` script returned:  One  '
+            '!!!)\n'
+            '\n'
+            'Reason: ConditionMismatch: actual script result:  One  !!!\n'
+        ) in str(error)
 
 
 def test_should_have_size__applied_to_collection__passed_and_failed(

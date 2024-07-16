@@ -313,22 +313,22 @@ def tabs_number_greater_than_or_equal(value: int):
     return match.tabs_number_greater_than_or_equal(value)
 
 
-def js_returned_true(script_to_return_bool: str) -> Condition[Browser]:
+def js_returned_true(script_to_return_bool: str):
     warnings.warn(
         'deprecated; use have.script_returned(True, ...) instead',
         DeprecationWarning,
     )
-    return match.browser_has_script_returned(True, script_to_return_bool)
+    return match.script_returned(True, script_to_return_bool)
 
 
-def js_returned(expected: Any, script: str, *args) -> Condition[Browser]:
+def js_returned(expected: Any, script: str, *args):
     warnings.warn(
         'deprecated because js does not work for mobile; '
         'use have.script_returned(True, ...) instead',
         DeprecationWarning,
     )
-    return match.browser_has_script_returned(expected, script, *args)
+    return match.script_returned(expected, script, *args)
 
 
-def script_returned(expected: Any, script: str, *args) -> Condition[Browser]:
-    return match.browser_has_script_returned(expected, script, *args)
+def script_returned(expected: Any, script: str, *args):
+    return match.script_returned(expected, script, *args)
