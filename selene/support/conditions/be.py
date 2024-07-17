@@ -20,9 +20,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 from selene.core import match
-from selene.support.conditions import not_ as _not_
+from selene.support.conditions import not_ as __not
 
-not_ = _not_
+not_ = __not
 
 present_in_dom = match.present_in_dom
 in_dom = match.present_in_dom  # TODO: do we need both present_in_dom and in_dom?

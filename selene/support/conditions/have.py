@@ -27,9 +27,9 @@ from selene.core import match
 from selene.core.condition import Condition
 from selene.core.entity import Element, Collection
 from selene.core._browser import Browser
-from selene.support.conditions import not_ as _not_
+from selene.support.conditions import not_ as __not
 
-no = _not_
+no = __not
 
 
 def exact_text(value: str | int | float):
