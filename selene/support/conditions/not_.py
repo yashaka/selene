@@ -113,31 +113,7 @@ def property_(name: str, *args, **kwargs):
             .not_
         )
 
-    original = _match.native_property(name)
-    negated = original.not_
-
-    def value(self, expected: str | int | float) -> Condition[Element]:
-        return original.value(expected).not_
-
-    def value_containing(self, expected: str | int | float) -> Condition[Element]:
-        return original.value_containing(expected).not_
-
-    def values(
-        self, *expected: str | int | float | Iterable[str]
-    ) -> Condition[Collection]:
-        return original.values(*expected).not_
-
-    def values_containing(
-        self, *expected: str | int | float | Iterable[str]
-    ) -> Condition[Collection]:
-        return original.values_containing(*expected).not_
-
-    negated.value = value
-    negated.value_containing = value_containing
-    negated.values = values
-    negated.values_containing = values_containing
-
-    return negated
+    return _match.native_property(name, _inverted=True)
 
 
 def css_property(name: str, *args, **kwargs):
@@ -148,39 +124,17 @@ def css_property(name: str, *args, **kwargs):
             DeprecationWarning,
         )
         return (
-            _match.element_has_css_property(name)
-            .value(args[0] if args else kwargs['value'])
-            .not_
+            _match.css_property(name).value(args[0] if args else kwargs['value']).not_
         )
 
-    original = _match.element_has_css_property(name)
-    negated = original.not_
-
-    def value(self, expected: str) -> Condition[Element]:
-        return original.value(expected).not_
-
-    def value_containing(self, expected: str) -> Condition[Element]:
-        return original.value_containing(expected).not_
-
-    def values(self, *expected: str) -> Condition[Collection]:
-        return original.values(*expected).not_
-
-    def values_containing(self, *expected: str) -> Condition[Collection]:
-        return original.values_containing(*expected).not_
-
-    negated.value = value
-    negated.value_containing = value_containing
-    negated.values = values
-    negated.values_containing = values_containing
-
-    return negated
+    return _match.css_property(name, _inverted=True)
 
 
 def value(text: str | int | float):
     return _match.value(text, _inverted=True)
 
 
-def value_containing(partial_text: str | int | float) -> Condition[Element]:
+def value_containing(partial_text: str | int | float):
     return _match.value_containing(partial_text, _inverted=True)
 
 
@@ -199,13 +153,11 @@ def tag_containing(name: str) -> Condition[Element]:
 # *** SeleneCollection conditions ***
 
 
-def values(*texts: str | int | float | Iterable[str]) -> Condition[Collection]:
+def values(*texts: str | int | float | Iterable[str]):
     return _match.values(*texts, _inverted=True)
 
 
-def values_containing(
-    *partial_texts: str | int | float | Iterable[str],
-) -> Condition[Collection]:
+def values_containing(*partial_texts: str | int | float | Iterable[str]):
     return _match.values_containing(*partial_texts, _inverted=True)
 
 
@@ -303,14 +255,18 @@ def tabs_number_greater_than_or_equal(value: int):
 
 def js_returned_true(script_to_return_bool: str) -> Condition[Browser]:
     warnings.warn(
-        'might be deprecated; use have.js_returned(True, ...) instead',
+        'deprecated; use have.script_returned(True, ...) instead',
         PendingDeprecationWarning,
     )
-    return _match.browser_has_js_returned(True, script_to_return_bool).not_
+    return _match.script_returned(True, script_to_return_bool).not_
 
 
 def js_returned(expected: Any, script: str, *args) -> Condition[Browser]:
-    return _match.browser_has_js_returned(expected, script, *args).not_
+    warnings.warn(
+        'deprecated; use have.script_returned(...) instead',
+        PendingDeprecationWarning,
+    )
+    return _match.script_returned(expected, script, *args).not_
 
 
 def script_returned(expected: Any, script: str, *args) -> Condition[Browser]:

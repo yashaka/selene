@@ -78,9 +78,9 @@ def css_property(name: str, value: Optional[str] = None):
             'passing second argument is deprecated; use have.css_property(foo).value(bar) instead',
             DeprecationWarning,
         )
-        return match.element_has_css_property(name).value(value)
+        return match.css_property(name).value(value)
 
-    return match.element_has_css_property(name)
+    return match.css_property(name)
 
 
 def attribute(name: str, value: Optional[str] = None):

@@ -354,6 +354,20 @@ def css_property(name: str) -> Query[Element, str]:
     return Query(f'css property {name}', fn)
 
 
+def css_properties(name: str) -> Query[Collection, List[str]]:
+    """A query that gets the values of the css properties of all elements
+    in the collection
+
+    Args:
+        name (str): name of the attribute
+    """
+
+    def fn(collection: Collection):
+        return [element.value_of_css_property(name) for element in collection.locate()]
+
+    return Query(f'{name} css properties', fn)
+
+
 def native_property(
     name: str,
 ) -> Query[Element, Union[str, bool, WebElement, dict]]:
@@ -361,6 +375,20 @@ def native_property(
         return element.locate().get_property(name)
 
     return Query(f'native property {name}', func)
+
+
+def native_properties(name: str) -> Query[Collection, List[str]]:
+    """A query that gets the values of the native properties of all elements
+    in the collection
+
+    Args:
+        name (str): name of the attribute
+    """
+
+    def fn(collection: Collection):
+        return [element.get_property(name) for element in collection.locate()]
+
+    return Query(f'{name} native properties', fn)
 
 
 def js_property(

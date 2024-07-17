@@ -62,9 +62,9 @@ def test_have_property__condition_variations(session_browser):
     except AssertionError as error:
         assert (
             "browser.all(('css selector', '.name')).has no (native property 'value' with "
-            "values containing '(20, 2)')\n"
+            "values containing [20, 2])\n"
             '\n'
-            "Reason: ConditionMismatch: actual property values: ['John 20th', 'Doe 2nd']\n"
+            "Reason: ConditionMismatch: actual value native properties: ['John 20th', 'Doe 2nd']\n"
         ) in str(error)
 
     exercises.first.should(have.property_('value').value(20))

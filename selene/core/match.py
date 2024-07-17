@@ -507,176 +507,116 @@ class text_pattern(Condition[Element]):
         )
 
 
-def native_property(name: str):
-    def property_value(element: Element):
-        return element.locate().get_property(name)
-
-    def property_values(collection: Collection):
-        return [element.get_property(name) for element in collection()]
-
-    raw_property_condition = ElementCondition.raise_if_not_actual(
-        'has native property ' + name, property_value, predicate.is_truthy
-    )
-
-    class PropertyWithValues(ElementCondition):
-        def value(self, expected: str | int | float) -> Condition[Element]:
-            return ElementCondition.raise_if_not_actual(
-                f"has native property '{name}' with value '{expected}'",
-                property_value,
-                predicate.str_equals(expected),
-            )
-
-        def value_containing(self, expected: str | int | float) -> Condition[Element]:
-            return ElementCondition.raise_if_not_actual(
-                f"has native property '{name}' with value containing '{expected}'",
-                property_value,
-                predicate.str_includes(expected),
-            )
-
-        def values(
-            self, *expected: str | int | float | Iterable[str]
-        ) -> Condition[Collection]:
-            expected_ = helpers.flatten(expected)
-
-            return CollectionCondition.raise_if_not_actual(
-                f"has native property '{name}' with values '{expected_}'",
-                property_values,
-                predicate.str_equals_to_list(expected_),
-            )
-
-        def values_containing(
-            self, *expected: str | int | float | Iterable[str]
-        ) -> Condition[Collection]:
-            expected_ = helpers.flatten(expected)
-
-            return CollectionCondition.raise_if_not_actual(
-                f"has native property '{name}' with values containing '{expected_}'",
-                property_values,
-                predicate.str_equals_by_contains_to_list(expected_),
-            )
-
-    return PropertyWithValues(
-        str(raw_property_condition), test=raw_property_condition.__call__
-    )
-
-
-def element_has_css_property(name: str):
-    def property_value(element: Element) -> str:
-        return element().value_of_css_property(name)
-
-    def property_values(collection: Collection) -> List[str]:
-        return [element.value_of_css_property(name) for element in collection()]
-
-    raw_property_condition = ElementCondition.raise_if_not_actual(
-        'has css property ' + name, property_value, predicate.is_truthy
-    )
-
-    class ConditionWithValues(ElementCondition):
-        def value(self, expected: str) -> Condition[Element]:
-            return ElementCondition.raise_if_not_actual(
-                f"has css property '{name}' with value '{expected}'",
-                property_value,
-                predicate.equals(expected),
-            )
-
-        def value_containing(self, expected: str) -> Condition[Element]:
-            return ElementCondition.raise_if_not_actual(
-                f"has css property '{name}' with value containing '{expected}'",
-                property_value,
-                predicate.includes(expected),
-            )
-
-        def values(self, *expected: Union[str, Iterable[str]]) -> Condition[Collection]:
-            expected_ = helpers.flatten(expected)
-
-            return CollectionCondition.raise_if_not_actual(
-                f"has css property '{name}' with values '{expected_}'",
-                property_values,
-                predicate.equals_to_list(expected_),
-            )
-
-        def values_containing(
-            self, *expected: Union[str, Iterable[str]]
-        ) -> Condition[Collection]:
-            expected_ = helpers.flatten(expected)
-
-            return CollectionCondition.raise_if_not_actual(
-                f"has css property '{name}' with values containing '{expected_}'",
-                property_values,
-                predicate.equals_by_contains_to_list(expected_),
-            )
-
-    return ConditionWithValues(
-        str(raw_property_condition), test=raw_property_condition.__call__
-    )
-
-
-class attribute(Condition[Element]):
+class _ElementDescriptor(Condition[Element]):
 
     # todo: the raw attribute condition does not support ignore_case, should it?
-    def __init__(self, name: str, _inverted=False):
+    def __init__(
+        self,
+        name: str,
+        *,
+        _inverted=False,
+        _type_name='attribute',
+        _type_element_query=query.attribute,
+        # we could eliminate this param,
+        # because collection query can be got from element query
+        # but let's keep the impl a bit simpler for now
+        _type_collection_query=query.attributes,
+    ):
         self.__expected = name
         # self.__ignore_case = _ignore_case
         self.__inverted = _inverted
+        self.__type_name = _type_name
+        self.__type_element_query = _type_element_query
+        self.__type_collection_query = _type_collection_query
 
         super().__init__(
-            f"has attribute '{name}'",
-            actual=query.attribute(name),
+            f"has {_type_name} '{name}'",
+            actual=_type_element_query(name),
             by=predicate.is_truthy,  # todo: should it be more like .is_not_none?
             _inverted=_inverted,
         )
 
     def value(self, expected):
         return _EntityHasSomethingSupportingIgnoreCase(
-            f"has attribute '{self.__expected}' with value",
+            f"has {self.__type_name} '{self.__expected}' with value",
             expected=expected,
-            actual=query.attribute(self.__expected),
+            actual=self.__type_element_query(self.__expected),
             by=predicate.equals,
             _inverted=self.__inverted,
         )
 
     def value_containing(self, expected):
         return _EntityHasSomethingSupportingIgnoreCase(
-            f"has attribute '{self.__expected}' with value containing",
+            f"has {self.__type_name} '{self.__expected}' with value containing",
             expected=expected,
-            actual=query.attribute(self.__expected),
+            actual=self.__type_element_query(self.__expected),
             by=predicate.includes,
             _inverted=self.__inverted,
         )
 
     def values(self, *expected: str | int | float | Iterable[str]):
         return _CollectionHasSomeThingsSupportingIgnoreCase(
-            f"has attribute '{self.__expected}' with values",
+            f"has {self.__type_name} '{self.__expected}' with values",
             *expected,
-            actual=query.attributes(self.__expected),
+            actual=self.__type_collection_query(self.__expected),
             by=predicate.str_equals_to_list,
             _inverted=self.__inverted,
         )
 
     def values_containing(self, *expected: str | int | float | Iterable[str]):
         return _CollectionHasSomeThingsSupportingIgnoreCase(
-            f"has attribute '{self.__expected}' with values containing",
+            f"has {self.__type_name} '{self.__expected}' with values containing",
             *expected,
-            actual=query.attributes(self.__expected),
+            actual=self.__type_collection_query(self.__expected),
             by=predicate.str_equals_by_contains_to_list,
             _inverted=self.__inverted,
         )
 
 
+def attribute(name: str, _inverted=False):
+    return _ElementDescriptor(
+        name,
+        _inverted=_inverted,
+        _type_name='attribute',
+        _type_element_query=query.attribute,
+        _type_collection_query=query.attributes,
+    )
+
+
+def native_property(name: str, _inverted=False):
+    return _ElementDescriptor(
+        name,
+        _inverted=_inverted,
+        _type_name='native property',
+        _type_element_query=query.native_property,
+        _type_collection_query=query.native_properties,
+    )
+
+
+def css_property(name: str, _inverted=False):
+    return _ElementDescriptor(
+        name,
+        _inverted=_inverted,
+        _type_name='css property',
+        _type_element_query=query.css_property,
+        _type_collection_query=query.css_properties,
+    )
+
+
 def value(expected: str | int | float, _inverted=False):
-    return attribute('value', _inverted).value(expected)
+    return attribute('value', _inverted=_inverted).value(expected)
 
 
 def value_containing(expected: str | int | float, _inverted=False):
-    return attribute('value', _inverted).value_containing(expected)
+    return attribute('value', _inverted=_inverted).value_containing(expected)
 
 
 def values(*expected: str | int | float | Iterable[str], _inverted=False):
-    return attribute('value', _inverted).values(*expected)
+    return attribute('value', _inverted=_inverted).values(*expected)
 
 
 def values_containing(*expected: str | int | float | Iterable[str], _inverted=False):
-    return attribute('value', _inverted).values_containing(*expected)
+    return attribute('value', _inverted=_inverted).values_containing(*expected)
 
 
 def css_class(name: str, _inverted=False):
@@ -854,6 +794,7 @@ class size(Match[Union[Collection, Browser, Element]]):
         self.__by = _by
         self.__inverted = _inverted
 
+        # todo: should we raise AttributeError if dict as expected is passed to Collection?
         super().__init__(
             self.__name,
             actual=lambda entity: (

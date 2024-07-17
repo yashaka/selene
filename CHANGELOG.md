@@ -194,6 +194,9 @@ Then we have to consider rething condition.__call__ aliases... And corresponding
 `Test` might be also a good candidate over `Match` ... But `Test` does not correlate in `entity.should(Test(actual=..., by=...))
 
 ### TODO: Ensure type errors on element.should(collection_condition), etc.
+
+check vscode pylance, mypy, jetbrains qodana...
+
 ### TODO: check if there are no type errors on passing be._empty to should
 
 ### TODO: decide on ... vs (...,) as one_or_more
@@ -209,8 +212,6 @@ like in `clickable = Match('clickable', by=be.visible.and_(be.enabled))`
 ### TODO: Consider privatizing Condition actual and by params
 
 should we even refactor out them from Condition and move to Match only?
-
-### TODO: rename all conditions inside match.py so match can be fully used instead be + have #530
 
 ### Deprecated conditions
 

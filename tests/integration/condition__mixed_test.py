@@ -141,6 +141,29 @@ def test_should_match_different_things(session_browser):
     browser.should(have.title_containing('test').ignore_case)
     browser.with_(_ignore_case=True).should(have.title_containing('test'))
 
+    # have css_property?
+    s('li#visible').should(have.css_property('display').value('block'))
+    s('li#visible').should(have.css_property('display').value_containing('blo'))
+    s('li#hidden').should(have.css_property('display').value('none'))
+    s('li#hidden').should(have.css_property('display').value_containing('no'))
+    s('li#hidden').should(have.no.css_property('display').value_containing('NO'))
+    s('li#hidden').should(
+        have.css_property('display').value_containing('NO').ignore_case
+    )
+    try:
+        s('li#hidden').should(have.css_property('display').value_containing('NO'))
+        pytest.fail('expect mismatch')
+    except AssertionError as error:
+        assert (
+            "browser.element(('css selector', 'li#hidden')).has css property 'display' "
+            "with value containing 'NO'\n"
+            '\n'
+            'Reason: ConditionMismatch: actual css property display: none\n'
+        ) in str(error)
+    ss('li[style]').should(
+        have.css_property('display').values('none', 'none', 'block', 'block')
+    )
+
     # have script returned?
     browser.should(
         have.script_returned(42, 'return arguments[0] * arguments[1]', 21, 2)
