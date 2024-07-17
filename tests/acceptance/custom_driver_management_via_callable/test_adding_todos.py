@@ -20,7 +20,8 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from typing import Optional
+from __future__ import annotations
+from typing_extensions import Optional, cast
 
 from selenium.webdriver.remote.webdriver import WebDriver
 
@@ -32,8 +33,8 @@ from tests import resources
 
 
 class Settings:
-    driver: Optional[WebDriver] = None
     reset_driver: bool = False
+    driver: Optional[WebDriver] = None
 
 
 @pytest.fixture(scope='module')
@@ -70,7 +71,7 @@ def web():
         ):
             Settings.driver = create_chrome()
 
-        return Settings.driver
+        return cast(WebDriver, Settings.driver)
 
     browser = Browser(Config(driver=customly_managed_driver))
 

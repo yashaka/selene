@@ -833,7 +833,7 @@ class Condition(Generic[E]):
     #       where three are (prefix, core, suffix),
     #       where each can be substituted with ... (Ellipsis)
     #       signifying that the "default" should be used
-    # TODO: should we make the name type as Callable[[Condition], str]
+    # todo: should we make the name type as Callable[[Condition], str]
     #       instead of Callable[[], str]...
     #       to be able to pass condition itself...
     #       when we pass in child classes we pass self.__str__
@@ -841,12 +841,13 @@ class Condition(Generic[E]):
     #       but what if we want to pass some crazy lambda for name from outside
     #       to kind of providing a "name self-based strategy" for condition?
     #       maybe at least we can define it as varagrs? like Callable[..., str]
-    # TODO: consider accepting actual and by as Tuples
+    #       – we don't need it anymore, case we made it based on entity ;)
+    # todo: consider accepting actual and by as Tuples
     #       where first is name for query and second is query fn
     def __init__(
         self,
         name: str | Callable[[E | None], str],  # TODO: consider Callable[[...], str]
-        /,
+        /,  # TODO: what if we move it after test? :) and not bother about naming:)
         test: Lambda[E, None] | None = None,
         *,
         actual: Lambda[E, R] | None = None,

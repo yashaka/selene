@@ -19,9 +19,6 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
-from future.utils import iteritems
-
 from selene import browser, be, have, Element
 
 
@@ -78,7 +75,7 @@ class Fields:  # TODO: rename to Fields?
         opts = {} if not opts else opts
         list_of_opts = [merge(opts, opts_as_kwargs)] + list(other_opts)
         for options in list_of_opts:
-            for field, value in iteritems(options):
+            for field, value in options.items():
                 getattr(self._element, field).set_value(value)
         return self
 

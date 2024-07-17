@@ -193,7 +193,7 @@ Then we have to consider rething condition.__call__ aliases... And corresponding
 
 `Test` might be also a good candidate over `Match` ... But `Test` does not correlate in `entity.should(Test(actual=..., by=...))
 
-### TODO: Ensure type errors on element.should(collection_condition), etc.
+### TODO: Ensure no type errors on element.should(collection_condition), etc.
 
 check vscode pylance, mypy, jetbrains qodana...
 
