@@ -62,16 +62,16 @@ def test_js_drags_source_and_drops_it_to_target(session_browser):
         command.js.drag_and_drop_to(browser.element('#target2'))
     )
 
-    browser.element('#target1').element('#draggable').should(be.not_.present)
-    browser.element('#target2').element('#draggable').should(be.present)
+    browser.element('#target1').element('#draggable').should(be.not_.present_in_dom)
+    browser.element('#target2').element('#draggable').should(be.present_in_dom)
 
     # WHEN
     browser.element('#draggable').perform(
         command.js.drag_and_drop_to(browser.element('#target1'))
     )
 
-    browser.element('#target1').element('#draggable').should(be.present)
-    browser.element('#target2').element('#draggable').should(be.not_.present)
+    browser.element('#target1').element('#draggable').should(be.present_in_dom)
+    browser.element('#target2').element('#draggable').should(be.not_.present_in_dom)
 
 
 class ReactContinuousSlider:

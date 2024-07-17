@@ -33,7 +33,9 @@ def x_test_ecosia():
 
 def test_duckduckgo():
     browser.open('https://www.duckduckgo.org/')
-    browser.element(by.name('q')).type('github yashaka selene python').press_enter()
+    browser.element(by.name('q')).type(
+        'github yashaka selene python User-oriented'
+    ).press_enter()
 
     browser.all('[data-testid=result]').first.element(
         '[data-testid=result-title-a]'

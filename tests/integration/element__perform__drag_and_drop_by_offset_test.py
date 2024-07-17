@@ -60,14 +60,14 @@ def test_drags_source_by_offset_and_drops_it_to_target(session_browser):
     # WHEN
     browser.element('#draggable').perform(command.drag_and_drop_by_offset(x=150, y=0))
 
-    browser.element('#target1').element('#draggable').should(be.not_.present)
-    browser.element('#target2').element('#draggable').should(be.present)
+    browser.element('#target1').element('#draggable').should(be.not_.present_in_dom)
+    browser.element('#target2').element('#draggable').should(be.present_in_dom)
 
     # WHEN
     browser.element('#draggable').perform(command.drag_and_drop_by_offset(x=-150, y=0))
 
-    browser.element('#target1').element('#draggable').should(be.present)
-    browser.element('#target2').element('#draggable').should(be.not_.present)
+    browser.element('#target1').element('#draggable').should(be.present_in_dom)
+    browser.element('#target2').element('#draggable').should(be.not_.present_in_dom)
 
 
 class ReactContinuousSlider:

@@ -24,6 +24,7 @@ from __future__ import annotations
 import re
 import warnings
 from functools import reduce
+from selene.common import fp
 
 from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
@@ -240,7 +241,14 @@ def __deprecated_is_present(element: Element) -> bool:
 
 present: Condition[Element] = Match(
     'is present in DOM',
-    by=__deprecated_is_present,  # noqa
+    by=lambda element: fp.thread(
+        element,
+        fp.with_warn(
+            'be.present is deprecated, use be.present_in_dom instead',
+            DeprecationWarning,
+        ),
+        lambda element: element.locate() is not None,  # noqa
+    ),
     _falsy_exceptions=(
         AssertionError,
         NoSuchElementException,

@@ -67,16 +67,16 @@ def test_browser_actions_drags_source_and_drops_it_to_target_with_implicit_waiti
         browser.element('#draggable'), browser.element('#target2')
     ).perform()
 
-    browser.element('#target1').element('#draggable').should(be.not_.present)
-    browser.element('#target2').element('#draggable').should(be.present)
+    browser.element('#target1').element('#draggable').should(be.not_.present_in_dom)
+    browser.element('#target2').element('#draggable').should(be.present_in_dom)
 
     # WHEN
     browser._actions.click_and_hold(browser.element('#draggable')).release(
         browser.element('#target1')
     ).perform()
 
-    browser.element('#target1').element('#draggable').should(be.present)
-    browser.element('#target2').element('#draggable').should(be.not_.present)
+    browser.element('#target1').element('#draggable').should(be.present_in_dom)
+    browser.element('#target2').element('#draggable').should(be.not_.present_in_dom)
 
 
 def test_browser_actions_fails_to_wait_for_drag_and_drop_before_perform(

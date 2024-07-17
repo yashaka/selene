@@ -21,6 +21,8 @@
 # SOFTWARE.
 from __future__ import annotations
 import functools
+import warnings
+
 from typing_extensions import TypeVar, Callable, Any, Tuple, Optional, cast, Type
 
 from selene.common.none_object import _NoneObject
@@ -194,6 +196,14 @@ def thread_last(arg, *iterable_of_fn_or_tuple):
 def do(function: Callable[[T], Any]) -> Callable[[T], T]:
     def func(arg: T) -> T:
         function(arg)
+        return arg
+
+    return func
+
+
+def with_warn(*args, **kwargs):
+    def func(arg: T) -> T:
+        warnings.warn(*args, **kwargs)
         return arg
 
     return func

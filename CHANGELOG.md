@@ -203,8 +203,6 @@ check vscode pylance, mypy, jetbrains qodana...
 
 consider customizing them via config
 
-### TODO: ensure no warnings
-
 ### TODO: Consider passing Condition instance as by in Match
 
 like in `clickable = Match('clickable', by=be.visible.and_(be.enabled))`
