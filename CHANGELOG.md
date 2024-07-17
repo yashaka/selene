@@ -441,12 +441,12 @@ browser.all('li').first.should(have.text_matching(r'.*one.*').where_flags(re.IGN
 
 ```
 
-Same can be achieved via `_ignore_case` config option (yet marked as experimental):
+Same can be achieved via `_match_ignoring_case` config option (yet marked as experimental):
 
 ```python
 from selene import browser, have
 ...
-browser.all('li').first.with_(_ignore_case=True).should(have.exact_text('1) one!!!'))
+browser.all('li').first.with_(_match_ignoring_case=True).should(have.exact_text('1) one!!!'))
 
 # and so on for other conditions that support ignore_case as property...
 ...

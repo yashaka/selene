@@ -87,7 +87,10 @@ class _EntityHasSomethingSupportingIgnoreCase(Match[E]):
                 name
                 + (
                     ' ignoring case:'
-                    if (maybe_entity is not None and maybe_entity.config._ignore_case)
+                    if (
+                        maybe_entity is not None
+                        and maybe_entity.config._match_ignoring_case
+                    )
                     or _ignore_case
                     else ''
                 )
@@ -101,7 +104,7 @@ class _EntityHasSomethingSupportingIgnoreCase(Match[E]):
                 if (
                     entity_and_actual[0],
                     actual := entity_and_actual[1],
-                )[0].config._ignore_case
+                )[0].config._match_ignoring_case
                 or _ignore_case
                 else by(str(expected))(str(actual))
             ),
@@ -162,7 +165,7 @@ class _CollectionHasSomeThingsSupportingIgnoreCase(Match[Collection]):
             str_lower = lambda some: str(some).lower()
             return (
                 by(map(str_lower, expected_flattened))(map(str_lower, actual))
-                if entity.config._ignore_case or _ignore_case
+                if entity.config._match_ignoring_case or _ignore_case
                 else by(map(str, expected_flattened))(map(str, actual))
             )
 
@@ -171,7 +174,10 @@ class _CollectionHasSomeThingsSupportingIgnoreCase(Match[Collection]):
                 name
                 + (
                     ' ignoring case:'
-                    if (maybe_entity is not None and maybe_entity.config._ignore_case)
+                    if (
+                        maybe_entity is not None
+                        and maybe_entity.config._match_ignoring_case
+                    )
                     or _ignore_case
                     else ''
                 )
@@ -458,14 +464,14 @@ class text_pattern(Condition[Element]):
 
         super().__init__(
             lambda maybe_entity: (
-                f'has text matching'
+                'has text matching'
                 + (
                     f' (with flags {flags}):'
                     if (
                         flags := (
                             _flags | re.IGNORECASE
                             if maybe_entity is not None
-                            and maybe_entity.config._ignore_case
+                            and maybe_entity.config._match_ignoring_case
                             else _flags
                         )
                     )
@@ -479,7 +485,7 @@ class text_pattern(Condition[Element]):
                 (
                     _flags | re.IGNORECASE
                     if entity_and_actual[0] is not None
-                    and entity_and_actual[0].config._ignore_case
+                    and entity_and_actual[0].config._match_ignoring_case
                     else _flags
                 ),
             )(entity_and_actual[1]),
@@ -1167,7 +1173,7 @@ class _exact_texts_like(Condition[Collection]):
                 actual_to_match,
                 (
                     self._flags | re.IGNORECASE
-                    if entity.config._ignore_case
+                    if entity.config._match_ignoring_case
                     else self._flags
                 ),
             )
@@ -1183,7 +1189,7 @@ class _exact_texts_like(Condition[Collection]):
             #     for item in self._expected
             # ]
             return (
-                f'actual '
+                'actual '
                 + (
                     'visible '
                     if entity.config._match_only_visible_elements_texts
@@ -1245,7 +1251,7 @@ class _exact_texts_like(Condition[Collection]):
     def _name_for(self, entity: Collection | None = None) -> str:
         return (
             self.ignore_case.__str__()
-            if entity is not None and entity.config._ignore_case
+            if entity is not None and entity.config._match_ignoring_case
             else self.__str__()
         )
 

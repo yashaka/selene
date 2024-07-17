@@ -139,7 +139,7 @@ def test_should_match_different_things(session_browser):
     browser.should(have.title_containing('Test'))
     browser.should(have.no.title_containing('test'))
     browser.should(have.title_containing('test').ignore_case)
-    browser.with_(_ignore_case=True).should(have.title_containing('test'))
+    browser.with_(_match_ignoring_case=True).should(have.title_containing('test'))
 
     # have css_property?
     s('li#visible').should(have.css_property('display').value('block'))

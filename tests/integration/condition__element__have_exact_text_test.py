@@ -144,7 +144,7 @@ def test_should_have_exact_text__passed_and_failed__with_text_to_trim__ignore_ca
     s('#visible').should(have.exact_text('ONE !!!').ignore_case)
     s('#visible').should(have.exact_text('ONE !!!').ignore_case.not_.not_)
     s('#visible').should(have.no.exact_text('ONE !!!').ignore_case.not_)
-    s('#visible').with_(_ignore_case=True).should(have.exact_text('ONE !!!'))
+    s('#visible').with_(_match_ignoring_case=True).should(have.exact_text('ONE !!!'))
     # - visible and incorrect expected (partial) fails
     try:
         s('#visible').should(have.exact_text('ONE').ignore_case)
@@ -157,7 +157,7 @@ def test_should_have_exact_text__passed_and_failed__with_text_to_trim__ignore_ca
             'Reason: ConditionMismatch: actual text: One !!!\n'
         ) in str(error)
     try:
-        s('#visible').with_(_ignore_case=True).should(have.exact_text('ONE'))
+        s('#visible').with_(_match_ignoring_case=True).should(have.exact_text('ONE'))
         pytest.fail('expect mismatch')
     except AssertionError as error:
         assert (
@@ -170,17 +170,17 @@ def test_should_have_exact_text__passed_and_failed__with_text_to_trim__ignore_ca
     s('#visible-empty').should(have.exact_text('').ignore_case)
     s('#visible-empty').should(have.exact_text('').ignore_case.not_.not_)
 
-    s('#visible-empty').with_(_ignore_case=True).should(have.exact_text(''))
+    s('#visible-empty').with_(_match_ignoring_case=True).should(have.exact_text(''))
     # - visible & non-textable (like input) with always '' expected passes
     '''
     # let's just skip it:)
     '''
     # - hidden and with always '' expected passes
     s('#hidden').should(have.exact_text('').ignore_case)
-    s('#hidden').with_(_ignore_case=True).should(have.exact_text(''))
+    s('#hidden').with_(_match_ignoring_case=True).should(have.exact_text(''))
     # - hidden & empty with always '' expected passes
     s('#hidden-empty').should(have.exact_text('').ignore_case)
-    s('#hidden-empty').with_(_ignore_case=True).should(have.exact_text(''))
+    s('#hidden-empty').with_(_match_ignoring_case=True).should(have.exact_text(''))
     # - hidden and incorrect expected of actual exact text fails
     '''
     # let's just skip it:)
@@ -198,7 +198,7 @@ def test_should_have_exact_text__passed_and_failed__with_text_to_trim__ignore_ca
             '{"method":"css selector","selector":"#absent"}\n'
         ) in str(error)
     try:
-        s('#absent').with_(_ignore_case=True).should(have.exact_text(''))
+        s('#absent').with_(_match_ignoring_case=True).should(have.exact_text(''))
         pytest.fail('expect failure')
     except AssertionError as error:
         assert (
@@ -221,7 +221,9 @@ def test_should_have_exact_text__passed_and_failed__with_text_to_trim__ignore_ca
             '{"method":"css selector","selector":"#absent"}\n'
         ) in str(error)
     try:
-        s('#absent').with_(_ignore_case=True).should(have.exact_text('').not_.not_)
+        s('#absent').with_(_match_ignoring_case=True).should(
+            have.exact_text('').not_.not_
+        )
         pytest.fail('expect failure')
     except AssertionError as error:
         assert (
@@ -386,18 +388,24 @@ def test_should_have_no_exact_text__passed_and_failed__with_text_to_trim__ignore
     s('#visible').should(match.exact_text(' ONE  !!!\n').ignore_case.not_)
     s('#visible').should(have.no.exact_text(' ONE  !!!\n').ignore_case)
     s('#visible').should(have.no.exact_text(' ONE  !!!\n').ignore_case.not_.not_)
-    s('#visible').with_(_ignore_case=True).should(match.exact_text(' ONE  !!!\n').not_)
-    s('#visible').with_(_ignore_case=True).should(have.no.exact_text(' ONE  !!!\n'))
-    s('#visible').with_(_ignore_case=True).should(
+    s('#visible').with_(_match_ignoring_case=True).should(
+        match.exact_text(' ONE  !!!\n').not_
+    )
+    s('#visible').with_(_match_ignoring_case=True).should(
+        have.no.exact_text(' ONE  !!!\n')
+    )
+    s('#visible').with_(_match_ignoring_case=True).should(
         have.no.exact_text(' ONE  !!!\n').not_.not_
     )
     # - visible and incorrect expected (partial) passes
     s('#visible').should(match.exact_text('ONE').ignore_case.not_)
     s('#visible').should(have.no.exact_text('ONE').ignore_case)
     s('#visible').should(have.no.exact_text('ONE').ignore_case.not_.not_)
-    s('#visible').with_(_ignore_case=True).should(match.exact_text('ONE').not_)
-    s('#visible').with_(_ignore_case=True).should(have.no.exact_text('ONE'))
-    s('#visible').with_(_ignore_case=True).should(have.no.exact_text('ONE').not_.not_)
+    s('#visible').with_(_match_ignoring_case=True).should(match.exact_text('ONE').not_)
+    s('#visible').with_(_match_ignoring_case=True).should(have.no.exact_text('ONE'))
+    s('#visible').with_(_match_ignoring_case=True).should(
+        have.no.exact_text('ONE').not_.not_
+    )
     # - visible and correct expected (normalized) fails
     try:
         s('#visible').should(have.no.exact_text('ONE !!!').ignore_case)
@@ -410,7 +418,9 @@ def test_should_have_no_exact_text__passed_and_failed__with_text_to_trim__ignore
             'Reason: ConditionMismatch: actual text: One !!!\n'
         ) in str(error)
     try:
-        s('#visible').with_(_ignore_case=True).should(have.no.exact_text('ONE !!!'))
+        s('#visible').with_(_match_ignoring_case=True).should(
+            have.no.exact_text('ONE !!!')
+        )
         pytest.fail('expect mismatch')
     except AssertionError as error:
         assert (
@@ -431,7 +441,9 @@ def test_should_have_no_exact_text__passed_and_failed__with_text_to_trim__ignore
             'Reason: ConditionMismatch: actual text: \n'
         ) in str(error)
     try:
-        s('#visible-empty').with_(_ignore_case=True).should(have.no.exact_text(''))
+        s('#visible-empty').with_(_match_ignoring_case=True).should(
+            have.no.exact_text('')
+        )
         pytest.fail('expect mismatch')
     except AssertionError as error:
         assert (
@@ -456,8 +468,7 @@ def test_should_have_no_exact_text__passed_and_failed__with_text_to_trim__ignore
             'Reason: ConditionMismatch: actual text: \n'
         ) in str(error)
     try:
-        s('#hidden').with_(_ignore_case=True).should(have.no.exact_text(''))
-        s('#hidden').with_(ignore_case=True).should(have.no.exact_text(''))
+        s('#hidden').with_(_match_ignoring_case=True).should(have.no.exact_text(''))
         pytest.fail('expect mismatch')
     except AssertionError as error:
         assert (
@@ -478,7 +489,9 @@ def test_should_have_no_exact_text__passed_and_failed__with_text_to_trim__ignore
             'Reason: ConditionMismatch: actual text: \n'
         ) in str(error)
     try:
-        s('#hidden-empty').with_(_ignore_case=True).should(have.no.exact_text(''))
+        s('#hidden-empty').with_(_match_ignoring_case=True).should(
+            have.no.exact_text('')
+        )
         pytest.fail('expect mismatch')
     except AssertionError as error:
         assert (
@@ -504,7 +517,7 @@ def test_should_have_no_exact_text__passed_and_failed__with_text_to_trim__ignore
             '{"method":"css selector","selector":"#absent"}\n'
         ) in str(error)
     try:
-        s('#absent').with_(_ignore_case=True).should(have.no.exact_text(''))
+        s('#absent').with_(_match_ignoring_case=True).should(have.no.exact_text(''))
         pytest.fail('expect failure')
     except AssertionError as error:
         assert (

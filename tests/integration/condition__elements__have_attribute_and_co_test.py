@@ -228,17 +228,17 @@ def test_have_attribute__condition_variations(session_browser):
 
     # - ignore_case
     names.first.should(have.value('john 20TH').ignore_case)
-    names.first.with_(_ignore_case=True).should(have.value('john 20TH'))
+    names.first.with_(_match_ignoring_case=True).should(have.value('john 20TH'))
     names.first.should(have.value_containing('john').ignore_case)
-    names.first.with_(_ignore_case=True).should(have.value_containing('john'))
+    names.first.with_(_match_ignoring_case=True).should(have.value_containing('john'))
 
     names.should(have.values('john 20TH', 'doe 2ND').ignore_case)
-    names.with_(_ignore_case=True).should(have.values('john 20TH', 'doe 2ND'))
+    names.with_(_match_ignoring_case=True).should(have.values('john 20TH', 'doe 2ND'))
     names.should(have.values_containing('john', 'doe').ignore_case)
-    names.with_(_ignore_case=True).should(have.values_containing('john', 'doe'))
+    names.with_(_match_ignoring_case=True).should(have.values_containing('john', 'doe'))
 
     try:
-        names.first.with_(_ignore_case=True).should(have.no.value('john 20TH'))
+        names.first.with_(_match_ignoring_case=True).should(have.no.value('john 20TH'))
         pytest.fail('should fail on mismatch')
     except AssertionError as error:
         assert (
@@ -249,7 +249,9 @@ def test_have_attribute__condition_variations(session_browser):
         ) in str(error)
 
     try:
-        names.with_(_ignore_case=True).should(have.no.values_containing('john', 'doe'))
+        names.with_(_match_ignoring_case=True).should(
+            have.no.values_containing('john', 'doe')
+        )
         pytest.fail('should fail on mismatch')
     except AssertionError as error:
         assert (

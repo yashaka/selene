@@ -134,6 +134,7 @@ skip-string-normalization = 1
         use-symbolic-message-instead,
         typevar-name-incorrect-variance,
         anomalous-backslash-in-string,
+        too-many-statements,
         use-dict-literal''']
     [tool.pylint.'REPORTS']
     evaluation=['10.0 - ((float(5 * error + warning + refactor + convention) / statement) * 10)']

@@ -1159,8 +1159,12 @@ class Config:
     #       - does not explicitly tell that relates only to matching
     #         * but... it should be kind of obvious that can be used only in context of matching
     #         * and actually it's consistent with have.*.ignore_case conditions
+    #       - ! it will confuse in the following context:
+    #         > browser.with(ignore_case=True).element(by.text('submit')).click()
+    #         as we might start think that the search by text will be done ignoring case
+    #         but it will not :(
     # todo: consider documenting the major list of conditions that are affected by this option
-    _ignore_case: bool = False
+    _match_ignoring_case: bool = False
 
     # TODO: better name? now technically it's not a decorator but decorator_builder...
     # or decorator_factory...

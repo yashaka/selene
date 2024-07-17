@@ -245,8 +245,10 @@ def test_texts__including_ignorecase__passed_and_failed__compared_to_texts_like(
     # have.texts (ignore_case) compared to have.texts_like (ignore_case)
     browser.all('li').should(match.texts('one', 'two', 'three', _ignore_case=True))
     browser.all('li').should(have.texts('one', 'two', 'three').ignore_case)
-    browser.all('li').with_(_ignore_case=True).should(have.texts('one', 'two', 'three'))
-    browser.all('li').with_(_ignore_case=True).should(
+    browser.all('li').with_(_match_ignoring_case=True).should(
+        have.texts('one', 'two', 'three')
+    )
+    browser.all('li').with_(_match_ignoring_case=True).should(
         have._texts_like('one', 'two', ...)
     )
     try:
@@ -261,7 +263,7 @@ def test_texts__including_ignorecase__passed_and_failed__compared_to_texts_like(
             "Three???']\n"
         ) in str(error)
     try:
-        browser.all('li').with_(_ignore_case=True).should(
+        browser.all('li').with_(_match_ignoring_case=True).should(
             have.texts('one.', 'two.', 'three.')
         )
         pytest.fail('expected text mismatch')
@@ -274,7 +276,7 @@ def test_texts__including_ignorecase__passed_and_failed__compared_to_texts_like(
             "Three???']\n"
         ) in str(error)
     try:
-        browser.all('li').with_(_ignore_case=True).should(
+        browser.all('li').with_(_match_ignoring_case=True).should(
             have._texts_like('one.', 'two.', ...)
         )
         pytest.fail('expected text mismatch')
@@ -293,7 +295,7 @@ def test_texts__including_ignorecase__passed_and_failed__compared_to_texts_like(
         ) in str(error)
     try:
         browser.all('li').with_(
-            _ignore_case=True,
+            _match_ignoring_case=True,
             _match_only_visible_elements_texts=False,
         ).should(have._texts_like('one.', 'two.', ...))
         pytest.fail('expected text mismatch')
@@ -313,10 +315,10 @@ def test_texts__including_ignorecase__passed_and_failed__compared_to_texts_like(
     # - inverted
     # - - with no before
     browser.all('li').should(have.no.texts('one.', 'two.', 'three.').ignore_case)
-    browser.all('li').with_(_ignore_case=True).should(
+    browser.all('li').with_(_match_ignoring_case=True).should(
         have.no.texts('one.', 'two.', 'three.')
     )
-    browser.all('li').with_(_ignore_case=True).should(
+    browser.all('li').with_(_match_ignoring_case=True).should(
         have.no._texts_like('one.', 'two.', ...)
     )
     try:
@@ -331,7 +333,7 @@ def test_texts__including_ignorecase__passed_and_failed__compared_to_texts_like(
             "Three???']\n"
         ) in str(error)
     try:
-        browser.all('li').with_(_ignore_case=True).should(
+        browser.all('li').with_(_match_ignoring_case=True).should(
             have.no.texts('one', 'two', 'three')
         )
         pytest.fail('expected mismatch')
@@ -344,7 +346,7 @@ def test_texts__including_ignorecase__passed_and_failed__compared_to_texts_like(
             "Three???']\n"
         ) in str(error)
     try:
-        browser.all('li').with_(_ignore_case=True).should(
+        browser.all('li').with_(_match_ignoring_case=True).should(
             have.no._texts_like('one', 'two', ...)
         )
         pytest.fail('expected mismatch')
@@ -364,7 +366,7 @@ def test_texts__including_ignorecase__passed_and_failed__compared_to_texts_like(
         ) in str(error)
     try:
         browser.all('li').with_(
-            _ignore_case=True,
+            _match_ignoring_case=True,
             _match_only_visible_elements_texts=False,
         ).should(have.no._texts_like('one', 'two', ...))
         pytest.fail('expected mismatch')

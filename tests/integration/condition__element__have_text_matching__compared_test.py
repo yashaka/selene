@@ -130,13 +130,13 @@ def test_text_matching__regex_pattern__ignore_case__compared(session_browser):
     browser.all('li').first.should(match.exact_text('1) one!!!').not_)  # TODO: o_O
     browser.all('li').first.should(have.no.exact_text('1) one!!!'))
     browser.all('li').first.should(match.exact_text('1) one!!!', _ignore_case=True))
-    browser.all('li').first.with_(_ignore_case=True).should(
+    browser.all('li').first.with_(_match_ignoring_case=True).should(
         match.exact_text('1) one!!!')
     )
     browser.all('li').first.should(have.exact_text('1) one!!!').ignore_case)
     browser.all('li').first.should(match.text_containing('one', _ignore_case=True))
     browser.all('li').first.should(have.text('one').ignore_case)
-    browser.all('li').first.with_(_ignore_case=True).should(have.text('one'))
+    browser.all('li').first.with_(_match_ignoring_case=True).should(have.text('one'))
     browser.all('li').first.should(match.text_pattern(r'.*one.*', _flags=re.IGNORECASE))
     browser.all('li').first.should(match.text_pattern(r'.*one.*').not_)
     browser.all('li').first.should(
@@ -309,13 +309,13 @@ def test_text_matching__regex_pattern__error__on_mismatch__with_ignorecase(
     )
 
     browser.all('li').first.should(have.text_matching(r'.*one.*').ignore_case)
-    browser.all('li').first.with_(_ignore_case=True).should(
+    browser.all('li').first.with_(_match_ignoring_case=True).should(
         have.text_matching(r'.*one.*')
     )
-    browser.all('li').with_(_ignore_case=True).first.should(
+    browser.all('li').with_(_match_ignoring_case=True).first.should(
         have.text_matching(r'.*one.*')
     )
-    browser.with_(_ignore_case=True).all('li').first.should(
+    browser.with_(_match_ignoring_case=True).all('li').first.should(
         have.text_matching(r'.*one.*')
     )
 
@@ -330,7 +330,7 @@ def test_text_matching__regex_pattern__error__on_mismatch__with_ignorecase(
             'Reason: ConditionMismatch: actual text: 1) One!!!\n'
         ) in str(error)
     try:
-        browser.all('li').first.with_(_ignore_case=True).should(
+        browser.all('li').first.with_(_match_ignoring_case=True).should(
             have.text_matching(r'one')
         )
         pytest.fail('expected mismatch')
@@ -354,7 +354,7 @@ def test_text_matching__regex_pattern__error__on_mismatch__with_ignorecase(
         ) in str(error)
 
     try:
-        browser.all('li').first.with_(_ignore_case=True).should(
+        browser.all('li').first.with_(_match_ignoring_case=True).should(
             have.no.text_matching(r'.*one.*')
         )
         pytest.fail('expected mismatch')
@@ -396,7 +396,7 @@ def test_text_matching__regex_pattern__error__on_invalid_regex__with_ignorecase(
         ) in str(error)
 
     try:
-        browser.all('li').first.with_(_ignore_case=True).should(
+        browser.all('li').first.with_(_match_ignoring_case=True).should(
             have.text_matching(r'*one*')
         )
         pytest.fail('expected invalid regex error')
@@ -441,7 +441,7 @@ def test_text_matching__regex_pattern__error__on_invalid_regex__with_ignorecase(
         ) in str(error)
 
     try:
-        browser.all('li').first.with_(_ignore_case=True).should(
+        browser.all('li').first.with_(_match_ignoring_case=True).should(
             have.no.text_matching(r'*one*')
         )
         pytest.fail('expected invalid regex error')

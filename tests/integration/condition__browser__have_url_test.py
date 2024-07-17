@@ -54,7 +54,9 @@ def test_have_url_containing__ignore_case(session_browser):
         ) in str(error)
         assert re.findall(r'file:.*empty\.html\n', str(error))
     try:
-        browser.with_(_ignore_case=True).should(have.url_containing('NONEMPTY.html'))
+        browser.with_(_match_ignoring_case=True).should(
+            have.url_containing('NONEMPTY.html')
+        )
         pytest.fail('expect mismatch')
     except AssertionError as error:
         assert (
@@ -74,7 +76,9 @@ def test_have_url_containing__ignore_case(session_browser):
         ) in str(error)
         assert re.findall(r'file:.*empty\.html\n', str(error))
     try:
-        browser.with_(_ignore_case=True).should(have.no.url_containing('EMPTY.html'))
+        browser.with_(_match_ignoring_case=True).should(
+            have.no.url_containing('EMPTY.html')
+        )
         pytest.fail('expect mismatch')
     except AssertionError as error:
         assert (
