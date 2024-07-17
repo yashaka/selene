@@ -32,8 +32,12 @@ from tests.integration.helpers.givenpage import GivenPage
 
 
 # TODO: break down into more atomic tests (probably not fully atomic)
-def test_should_be_hidden__passed_and_failed__compared_to_be_visible(session_browser):
+def test_should_be_present_in_dom__passed_and_failed__compared_to_be_absent_in_dom(
+    session_browser,
+):
     browser = session_browser.with_(timeout=0.1)
+    s = lambda selector: browser.element(selector)
+    ss = lambda selector: browser.all(selector)
     GivenPage(session_browser.driver).opened_with_body(
         '''
         <!--<button id="absent">Press me</button>-->
@@ -75,6 +79,7 @@ def test_should_be_hidden__passed_and_failed__compared_to_be_visible(session_bro
     absent.should(match.present_in_dom.not_)
     absent.should(match.present_in_dom.not_.not_.not_)
     absent.should(be.not_.present_in_dom)
+    ss('#absent').first.should(be.not_.present_in_dom)  # todo: add more such cases
     # - hidden fails
     try:
         hidden.should(be.not_.present_in_dom)
@@ -142,6 +147,23 @@ def test_should_be_hidden__passed_and_failed__compared_to_be_visible(session_bro
             '\n'
             'Reason: ConditionMismatch: condition not matched\n'
         ) in str(error)
+
+
+def test_should_be_hidden__passed_and_failed__compared_to_be_visible(session_browser):
+    browser = session_browser.with_(timeout=0.1)
+    GivenPage(session_browser.driver).opened_with_body(
+        '''
+        <!--<button id="absent">Press me</button>-->
+        <button id="hidden" style="display: none">Press me</button>
+        <button id="visible" style="display: block">Press me</button>
+        '''
+    )
+
+    absent = browser.element("#absent")
+    hidden = browser.element("#hidden")
+    visible = browser.element("#visible")
+
+    # THEN
 
     # hidden in dom?
     # - hidden passes

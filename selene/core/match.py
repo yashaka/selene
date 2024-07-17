@@ -213,7 +213,10 @@ present_in_dom: Condition[Element] = Match(
         if not appium_tools._is_mobile_element(webelement)
         else str(webelement)  # todo: find out what best to log for mobile
     ),
-    _falsy_exceptions=(NoSuchElementException,),
+    _falsy_exceptions=(
+        AssertionError,
+        NoSuchElementException,
+    ),
 )
 
 # todo: consider refactoring so it would be similar to present_in_dom
@@ -232,7 +235,10 @@ def __deprecated_is_present(element: Element) -> bool:
 present: Condition[Element] = Match(
     'is present in DOM',
     by=__deprecated_is_present,  # noqa
-    _falsy_exceptions=(NoSuchElementException,),
+    _falsy_exceptions=(
+        AssertionError,
+        NoSuchElementException,
+    ),
 )
 """Deprecated 'is present' condition. Use present_in_dom instead. """
 
@@ -252,7 +258,10 @@ def __deprecated_is_existing(element: Element) -> bool:
 existing: Condition[Element] = Match(
     'is present in DOM',
     by=__deprecated_is_existing,  # noqa
-    _falsy_exceptions=(NoSuchElementException,),
+    _falsy_exceptions=(
+        AssertionError,
+        NoSuchElementException,
+    ),
 )
 """Deprecated 'is existing' condition. Use present_in_dom instead."""
 
@@ -265,7 +274,10 @@ visible: Condition[Element] = Match(
         if not appium_tools._is_mobile_element(actual)
         else str(actual)  # todo: find out what best to log for mobile
     ),
-    _falsy_exceptions=(NoSuchElementException,),
+    _falsy_exceptions=(
+        AssertionError,
+        NoSuchElementException,
+    ),
 )
 
 # todo: remove once decide on the best implementation
