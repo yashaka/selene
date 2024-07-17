@@ -136,6 +136,7 @@ def test_have_attribute__condition_variations(session_browser):
             'firstname\n'
             'Screenshot: '
         ) in str(error)
+    names.should(have.no.attribute('id').value_containing('42').each)
 
     # with .or_
     ss('.name').should(
