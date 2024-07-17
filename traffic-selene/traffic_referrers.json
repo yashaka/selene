@@ -1,8 +1,8 @@
 [
   {
     "referrer": "Google",
-    "count": 230,
-    "uniques": 60
+    "count": 186,
+    "uniques": 55
   },
   {
     "referrer": "github.com",
@@ -11,8 +11,8 @@
   },
   {
     "referrer": "school.qa.guru",
-    "count": 75,
-    "uniques": 3
+    "count": 73,
+    "uniques": 2
   },
   {
     "referrer": "DuckDuckGo",
@@ -20,19 +20,9 @@
     "uniques": 47
   },
   {
-    "referrer": "yandex.ru",
-    "count": 30,
-    "uniques": 8
-  },
-  {
     "referrer": "automated-testing.info",
     "count": 26,
     "uniques": 2
-  },
-  {
-    "referrer": "autotest.how",
-    "count": 22,
-    "uniques": 1
   },
   {
     "referrer": "ecosia.org",
@@ -40,13 +30,23 @@
     "uniques": 19
   },
   {
-    "referrer": "yashaka.github.io",
-    "count": 10,
-    "uniques": 5
+    "referrer": "yandex.ru",
+    "count": 21,
+    "uniques": 8
   },
   {
-    "referrer": "ya.ru",
-    "count": 10,
-    "uniques": 3
+    "referrer": "yashaka.github.io",
+    "count": 9,
+    "uniques": 4
+  },
+  {
+    "referrer": "Bing",
+    "count": 7,
+    "uniques": 2
+  },
+  {
+    "referrer": "memotut.com",
+    "count": 7,
+    "uniques": 1
   }
 ]
