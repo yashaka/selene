@@ -31,14 +31,15 @@ from tests.integration.helpers.givenpage import GivenPage
 
 def test_have_attribute__condition_variations(session_browser):
     browser = session_browser.with_(timeout=0.1)
+    s = lambda selector: browser.element(selector)
     ss = lambda selector: browser.all(selector)
-    GivenPage(session_browser.driver).opened_with_body(
+    GivenPage(browser.driver).opened_with_body(
         '''
-        <ul>Hey:
+        <ul class="names">Hey:
            <li><label>First Name:</label> <input type="text" class="name" id="firstname" value="John 20th"></li>
            <li><label>Last Name:</label> <input type="text" class="name" id="lastname" value="Doe 2nd"></li>
         </ul>
-        <ul>Your training today:
+        <ul class="exercises">Your training today:
            <li><label>Pull up:</label><input type="text" class='exercise' id="pullup" value="20"></li>
            <li><label>Push up:</label><input type="text" class='exercise' id="pushup" value="30"></li>
         </ul>
@@ -48,7 +49,7 @@ def test_have_attribute__condition_variations(session_browser):
     names = browser.all('.name')
     exercises = browser.all('.exercise')
 
-    # the following passes too, cause js prop exists, are we ok with that?
+    # todo: the following passes too, cause js prop exists, are we ok with that?
     browser.element('ul').should(have.attribute('id'))
 
     names.should(have.attribute('id').values('firstname', 'lastname'))
@@ -118,6 +119,13 @@ def test_have_attribute__condition_variations(session_browser):
             'lastname\n'
             'Screenshot: '
         ) in str(error)
+    # - just in case... trying to cover more complex examples:
+    s('ul.names').all('.name').should(
+        have.attribute('id').value_containing('name').each
+    )
+    s('body').element('ul.names').all('.name').should(
+        have.attribute('id').value_containing('name').each
+    )
     # assuming two inputs for names: #firstname and #lastname
     # not each name contain 'first' (one contain 'last' instead of 'first')
     names.should(have.attribute('id').value_containing('first').each.not_)
