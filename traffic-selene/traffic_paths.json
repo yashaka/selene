@@ -2,25 +2,19 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 283,
-    "uniques": 184
+    "count": 270,
+    "uniques": 177
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 44,
-    "uniques": 16
+    "count": 42,
+    "uniques": 15
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 34,
-    "uniques": 9
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene",
-    "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 28,
+    "count": 24,
     "uniques": 6
   },
   {
@@ -30,33 +24,39 @@
     "uniques": 13
   },
   {
-    "path": "/yashaka/selene/tree/master/docs",
-    "title": "selene/docs at master · yashaka/selene · GitHub",
-    "count": 20,
-    "uniques": 6
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene/common",
-    "title": "selene/selene/common at master · yashaka/selene · GitHub",
-    "count": 17,
+    "path": "/yashaka/selene/tree/master/selene",
+    "title": "selene/selene at master · yashaka/selene · GitHub",
+    "count": 15,
     "uniques": 4
-  },
-  {
-    "path": "/yashaka/selene/tree/master/selene/api",
-    "title": "selene/selene/api at master · yashaka/selene",
-    "count": 17,
-    "uniques": 3
-  },
-  {
-    "path": "/yashaka/selene/tree/master/.run",
-    "title": "selene/.run at master · yashaka/selene",
-    "count": 14,
-    "uniques": 1
   },
   {
     "path": "/yashaka/selene/blob/master/examples/run_remote_in_android_app_with_options_for_browserstack/version_4__app_fixture_style/test_wikipedia.py",
     "title": "selene/examples/run_remote_in_android_app_with_options_for_browserstack/versi...",
     "count": 13,
     "uniques": 1
+  },
+  {
+    "path": "/yashaka/selene/blob/9baf811e86263984fcdd4b378e68291d626eb0bc/tests/examples/todomvc/straightforward_approach/todomvc_test.py",
+    "title": "selene/tests/examples/todomvc/straightforward_approach/todomvc_test.py at 9ba...",
+    "count": 12,
+    "uniques": 2
+  },
+  {
+    "path": "/yashaka/selene/releases",
+    "title": "Releases · yashaka/selene",
+    "count": 10,
+    "uniques": 6
+  },
+  {
+    "path": "/yashaka/selene/blob/master/examples/run_remote_in_ios_safari_with_options_for_browserstack/test_todomvc.py",
+    "title": "selene/examples/run_remote_in_ios_safari_with_options_for_browserstack/test_t...",
+    "count": 10,
+    "uniques": 2
+  },
+  {
+    "path": "/yashaka/selene/blob/master/pyproject.toml",
+    "title": "selene/pyproject.toml at master · yashaka/selene",
+    "count": 10,
+    "uniques": 2
   }
 ]
