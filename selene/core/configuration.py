@@ -1438,7 +1438,7 @@ class Config:
             #       should become monad-friendly,
             #       with some kind of .map/.bind under the hood
             #       and propagating error to the end if happened
-            maybe_path, failure = fp._either(
+            path, maybe_failure = fp._either(
                 self._save_screenshot_strategy, or_=WebDriverException
             )(self)
             return TimeoutException(
@@ -1447,11 +1447,11 @@ class Config:
                 #       here and below for page_source
                 + '\nScreenshot: '
                 + (
-                    self._format_path_as_uri(maybe_path)
-                    if maybe_path is not None
+                    self._format_path_as_uri(path)
+                    if not maybe_failure
                     else 'cannot be saved because of: {name}: {message}'.format(
-                        name=failure.__class__.__name__,
-                        message=getattr(failure, "msg", str(failure)),
+                        name=maybe_failure.__class__.__name__,
+                        message=getattr(maybe_failure, "msg", str(maybe_failure)),
                     )
                 )
             )
@@ -1465,18 +1465,18 @@ class Config:
                 else self._generate_filename(suffix='.html')
             )
 
-            maybe_path, failure = fp._either(
+            path, maybe_failure = fp._either(
                 self._save_page_source_strategy, or_=WebDriverException
             )(self, filename)
             return TimeoutException(
                 error.msg
                 + '\nPageSource: '
                 + (
-                    self._format_path_as_uri(maybe_path)
-                    if maybe_path is not None
+                    self._format_path_as_uri(path)
+                    if not maybe_failure
                     else 'cannot be saved because of: {name}: {message}'.format(
-                        name=failure.__class__.__name__,
-                        message=getattr(failure, "msg", str(failure)),
+                        name=maybe_failure.__class__.__name__,
+                        message=getattr(maybe_failure, "msg", str(maybe_failure)),
                     )
                 )
             )
