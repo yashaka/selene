@@ -2,8 +2,8 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 270,
-    "uniques": 177
+    "count": 324,
+    "uniques": 206
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
@@ -12,22 +12,28 @@
     "uniques": 15
   },
   {
+    "path": "/yashaka/selene/issues",
+    "title": "Issues · yashaka/selene · GitHub",
+    "count": 27,
+    "uniques": 17
+  },
+  {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
     "count": 24,
     "uniques": 6
   },
   {
-    "path": "/yashaka/selene/issues",
-    "title": "Issues · yashaka/selene · GitHub",
-    "count": 23,
-    "uniques": 13
-  },
-  {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 15,
-    "uniques": 4
+    "count": 17,
+    "uniques": 5
+  },
+  {
+    "path": "/yashaka/selene/blob/master/examples/run_cross_platform/tests/acceptance_test.py",
+    "title": "selene/examples/run_cross_platform/tests/acceptance_test.py at master · yasha...",
+    "count": 13,
+    "uniques": 6
   },
   {
     "path": "/yashaka/selene/blob/master/examples/run_remote_in_android_app_with_options_for_browserstack/version_4__app_fixture_style/test_wikipedia.py",
@@ -36,27 +42,21 @@
     "uniques": 1
   },
   {
-    "path": "/yashaka/selene/blob/9baf811e86263984fcdd4b378e68291d626eb0bc/tests/examples/todomvc/straightforward_approach/todomvc_test.py",
-    "title": "selene/tests/examples/todomvc/straightforward_approach/todomvc_test.py at 9ba...",
-    "count": 12,
-    "uniques": 2
-  },
-  {
     "path": "/yashaka/selene/releases",
     "title": "Releases · yashaka/selene",
-    "count": 10,
+    "count": 12,
     "uniques": 6
   },
   {
-    "path": "/yashaka/selene/blob/master/examples/run_remote_in_ios_safari_with_options_for_browserstack/test_todomvc.py",
-    "title": "selene/examples/run_remote_in_ios_safari_with_options_for_browserstack/test_t...",
-    "count": 10,
-    "uniques": 2
+    "path": "/yashaka/selene/blob/master/pyproject.toml",
+    "title": "selene/pyproject.toml at master · yashaka/selene · GitHub",
+    "count": 12,
+    "uniques": 3
   },
   {
-    "path": "/yashaka/selene/blob/master/pyproject.toml",
-    "title": "selene/pyproject.toml at master · yashaka/selene",
-    "count": 10,
+    "path": "/yashaka/selene/blob/9baf811e86263984fcdd4b378e68291d626eb0bc/tests/examples/todomvc/straightforward_approach/todomvc_test.py",
+    "title": "selene/tests/examples/todomvc/straightforward_approach/todomvc_test.py at 9ba...",
+    "count": 12,
     "uniques": 2
   }
 ]
