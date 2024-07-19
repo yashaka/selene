@@ -23,6 +23,8 @@ from selene.core.condition import Condition
 from selene.core.entity import Element, Collection
 from selene.core._browser import Browser
 
+# todo: consider deprecating ElementCondition & Co...
+
 
 class ElementCondition(Condition[Element]):
     pass

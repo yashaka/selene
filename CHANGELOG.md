@@ -137,79 +137,32 @@ taking into account its callable based on Entity nature, and "name" vs "descript
 
 consider `str | Callable[[...], str]` vs `str | Callable[[...], str]` as type for name
 
-## 2.0.0rc10: «copy&paste, frames, shadow & texts_like» (to be released on DD.05.2024)
+### TODO: Can we ensure type errors on element.should(collection_condition), etc.?
 
-### TODO: consider regex support via .pattern prop (similar to .ignore_case) (#537)
-
-### TODO: consider renaming Condition `test` arg to `match` for consistency with Match
-
-Compare current:
-
-```python
-from selene.core.condition import Condition, Match
-from selene.core.exceptions import ConditionMismatch
-
-has_positive_number = Condition(
-    'has positive number',
-    test=ConditionMismatch._to_raise_if_not(
-        actual=lambda entity: entity.number,
-        by=lambda number: number > 0,
-    )
-)
-# =>
-has_positive_number_ = Match(
-    'has positive number',
-    actual=lambda entity: entity.number,
-    by=lambda number: number > 0,
-)
-```
-
-to:
-
-```python
-from selene.core.condition import Condition, Match
-from selene.core.exceptions import ConditionMismatch
-
-has_positive_number = Condition(
-    'has positive number',
-    match=ConditionMismatch._to_raise_if_not(
-        actual=lambda entity: entity.number,
-        by=lambda number: number > 0,
-    )
-)
-# =>
-has_positive_number_ = Match(
-    'has positive number',
-    actual=lambda entity: entity.number,
-    by=lambda number: number > 0,
-)
-```
-
-Then the reason of Match existence becomes easier to understand:)
-Who knows, maybe we even have to remove `actual` and by `args` of Condition, 
-or, at least, not remove, but make them private (`_actual`, `_by`) and reveal them for usage only in `Match` as `actual` and `by`...
-
-Then we have to consider rething condition.__call__ aliases... And corresponding `test` vs `match` naming...  We have some kind of conflict between `entity.matching(condition)` and `condition.match(entity)`, because the term is same, but meaning different – predicate vs assertion... But also the gramatic form is different `*ing` vs `*`... So maybe it's ok...
-
-`Test` might be also a good candidate over `Match` ... But `Test` does not correlate in `entity.should(Test(actual=..., by=...))
-
-### TODO: Ensure no type errors on element.should(collection_condition), etc.
+currently there are no type errors... :(
 
 check vscode pylance, mypy, jetbrains qodana...
 
-### TODO: check if there are no type errors on passing be._empty to should
+### TODO: consider renaming _describe_actual_result to _describe_actual and...
+
+... providing `lambda it: it` as default to actual
+... and so making _describe_actual work also when actual is not provided
+
+(speaking about all: ConditionMismatch, Condition, Match...)
+
+### TODO: consider removing experimantal mark from `ConditionMismatch._to_raise_if_not`
+
+## 2.0.0rc10: «copy&paste, frames, shadow & texts_like» (to be released on DD.05.2024)
+
+### TODO: consider regex support via .pattern prop (similar to .ignore_case) (#537)
 
 ### TODO: decide on ... vs (...,) as one_or_more
 
 consider customizing them via config
 
-### TODO: Consider passing Condition instance as by in Match
+### TODO: when to Match we pass by as Condition, that has its own _falsy_exceptions...
 
-like in `clickable = Match('clickable', by=be.visible.and_(be.enabled))`
-
-### TODO: Consider privatizing Condition actual and by params
-
-should we even refactor out them from Condition and move to Match only?
+should not we take them to set below, or at least override our default?
 
 ### Deprecated conditions
 

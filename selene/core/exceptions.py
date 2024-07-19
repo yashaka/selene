@@ -133,6 +133,7 @@ class ConditionMismatch(AssertionError):
     def _to_raise_if_not(
         cls,
         by: Callable[[E | R], bool],
+        # todo: should we provide lambda it: it as default to actual?
         actual: Optional[Callable[[E], E | R]] = None,
         *,
         # we can't name it:
@@ -140,6 +141,14 @@ class ConditionMismatch(AssertionError):
         #   is it a description of the result of the whole comparison? or what?
         # - as `describe_actual` because it will not be clear:
         #   do we describe actual as a query? or as a result of the query being called?
+        #     - Hm... BUT! actual is also not named as `actual_query` but just `actual`
+        #         maybe then `describe_actual` is a better name, because then
+        #         it can be used even if actual is not provided
+        #         then it will be applied directly to the entity...
+        #       Hm... maybe, even `describe` will work then...
+        # todo: but should we name it regardless of "actual" arg presence?
+        #       should not we allow to use it when actual is not provided?
+        #       so it's applied to raw entity, same way as by will be...
         _describe_actual_result: Callable[[E | R], str] | None = None,
         _inverted: Optional[bool] = False,
         # todo: should we rename it to _exceptions_as_truthy_on_inverted?
@@ -148,7 +157,7 @@ class ConditionMismatch(AssertionError):
         #       as we started to differentiate raising falsy from raising non-falsy
         _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
     ):
-        @functools.wraps(by)
+        @functools.wraps(by)  # todo: should we also count non-none actual fn in wraps?
         def wrapped(entity: E) -> None:
             def describe_not_match(actual_value):
                 describe_actual_result = _describe_actual_result or (

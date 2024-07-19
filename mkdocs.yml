@@ -28,6 +28,7 @@ nav:
     - Config: reference/configuration.md
     - command.*: reference/command.md
     - query.*: reference/query.md
+    - match.* predefined conditions: reference/match.md
     - Expected Conditions: reference/condition.md
     - Selene Exceptions: reference/exceptions.md
   - Contribution:

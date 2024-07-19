@@ -50,11 +50,6 @@ from selene.common import predicate, helpers, appium_tools
 from selene.common._typing_functions import Query
 from selene.core import query
 from selene.core.condition import Condition, Match
-from selene.core.conditions import (
-    ElementCondition,
-    CollectionCondition,
-    BrowserCondition,
-)
 from selene.core.entity import Collection, Element, Configured
 from selene.core._browser import Browser
 
@@ -226,9 +221,26 @@ present_in_dom: Condition[Element] = Match(
     ),
 )
 
-# todo: consider refactoring so it would be similar to present_in_dom
-#       in context of details in error message, by utilizing _describe_actual_result
-absent_in_dom: Condition[Element] = Condition.as_not(present_in_dom, 'is absent in DOM')
+
+# todo: should not we allow something like this:
+#       though prev version in this specific case is better
+#       because it describes the original webelement snapshot used during match
+# present_in_dom: Condition[Element] = Match(
+#     'is present in DOM',
+#     by=lambda element: element.locate() is not None,
+#     _describe_actual=lambda element: (
+#         f'actual html element: {webelement.get_attribute("outerHTML")}'
+#         if not appium_tools._is_mobile_element(webelement:=element.locate())
+#         else str(webelement)  # todo: find out what best to log for mobile
+#     ),
+#     _falsy_exceptions=(
+#         AssertionError,
+#         NoSuchElementException,
+#     ),
+# )
+
+
+absent_in_dom: Condition[Element] = Condition('is absent in DOM', present_in_dom.not_)
 
 
 def __deprecated_is_present(element: Element) -> bool:
@@ -257,7 +269,7 @@ present: Condition[Element] = Match(
 """Deprecated 'is present' condition. Use present_in_dom instead. """
 
 
-absent: Condition[Element] = Condition.as_not(present, 'is absent in DOM')
+absent: Condition[Element] = Condition('is absent in DOM', present.not_)
 """Deprecated 'is absent' condition. Use absent_in_dom instead."""
 
 
@@ -315,7 +327,7 @@ that will result in good error like:
 – but is slower, because of two calls to webdriver on actual
 """
 
-hidden: Condition[Element] = Condition.as_not(visible, 'is hidden')
+hidden: Condition[Element] = Condition('is hidden', visible.not_)
 
 hidden_in_dom: Condition[Element] = present_in_dom.and_(visible.not_)
 
@@ -325,7 +337,7 @@ enabled: Condition[Element] = Match(
     by=lambda element: element.locate().is_enabled(),
 )
 
-# disabled: Condition[Element] = Condition.as_not(enabled, 'disabled')
+# disabled: Condition[Element] = Condition('disabled', enabled.not_)
 disabled: Condition[Element] = enabled.not_
 
 clickable: Condition[Element] = visible.and_(enabled)
@@ -376,8 +388,8 @@ class __x_ElementHasText(Condition[Element]):
                 # todo: refactor to and change tests correspondingly:
                 # f'{" ignoring case:" if _ignore_case else ":"} {expected}'
             ),
-            actual=query.text,
-            by=lambda actual: (
+            _actual=query.text,
+            _by=lambda actual: (
                 _compared_by_predicate_to(str(expected).lower())(str(actual).lower())
                 if _ignore_case
                 else _compared_by_predicate_to(str(expected))(str(actual))
@@ -487,8 +499,8 @@ class text_pattern(Condition[Element]):
                 )
                 + f' {expected}'
             ),
-            actual=lambda entity: (entity, query.text(entity)),
-            by=lambda entity_and_actual: predicate.matches(
+            _actual=lambda entity: (entity, query.text(entity)),
+            _by=lambda entity_and_actual: predicate.matches(
                 expected,
                 (
                     _flags | re.IGNORECASE
@@ -545,8 +557,8 @@ class _ElementDescriptor(Condition[Element]):
 
         super().__init__(
             f"has {_type_name} '{name}'",
-            actual=_type_element_query(name),
-            by=predicate.is_truthy,  # todo: should it be more like .is_not_none?
+            _actual=_type_element_query(name),
+            _by=predicate.is_truthy,  # todo: should it be more like .is_not_none?
             _inverted=_inverted,
         )
 
@@ -996,7 +1008,7 @@ class _exact_texts_like(Condition[Collection]):
     ):  # noqa
         if self._MATCHING_SEPARATOR.__len__() != 1:
             raise ValueError('MATCHING_SEPARATOR should be a one character string')
-        super().__init__(lambda _: self.__str__(), test=self.__call__)
+        super().__init__(lambda _: self.__str__(), self.__call__)
         self._expected = expected
         self._inverted = _inverted
         self._globs = _globs if _globs else _exact_texts_like._DEFAULT_GLOBS

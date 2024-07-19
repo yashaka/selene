@@ -51,20 +51,21 @@ on the dynamically loaded page.
     From other point of view – the True|False-predicate-based conditions
     are easier to define. To keep similar level of easiness, Selene provides
     additional helpers (like
-    [`ConditionMismatch._to_raise_on_not(predicate)`][selene.core.exceptions.ConditionMismatch._to_raise_on_not])
-    and classes ([`Condition`][selene.core.condition.Condition],
-    [`Match`][selene.core.condition.Match])
-    to build conditions based on predicates. More on their usage below.
+    [`ConditionMismatch._to_raise_if_not(predicate)`][selene.core.exceptions.ConditionMismatch._to_raise_if_not])
+    and the [`Match`][selene.core.condition.Match] to build conditions based on
+    predicates. While the base class of Match – the
+    [`Condition`][selene.core.condition.Condition] class currently has stable API only
+    for Pass|Fail-function-based matchers). More on their usage below.
 
 ## Predefined conditions
 
 ### match.\* VS be.\* & have.\*
 
-Usually you don't need to build conditions yourself,
-they are predefined for easier reuse.
-In Selene, they are predefined in [`match.*`](selene.core.match)
-and can be accessed additionally via [`be.*`](selene.support.conditions.be)
-and [`have.*`](selene.support.conditions.have) syntax.
+Usually you don't need to build conditions yourself, they are predefined
+for easier reuse. In Selene, they are predefined in
+[`match.*`](../match) and can be accessed additionally via
+[`be.*`](../be) and [`have.*`](../have)
+syntax.
 
 `match` is handy because it's a "one term to learn and one import to use":
 
@@ -115,15 +116,15 @@ def no_visible_alert(browser):
         pass
 
 
-# Maybe you don't like that in Selene the match.text condition
-# tests for entity text by contains and decide to override it:
+# Maybe you don't like the match.exact_text + match.text_containing conditions naming
+# and decide to override it:
 
 def text(expected):
     return __selene_match.exact_text(expected)
 
 
 def partial_text(expected):
-    return __selene_match.text(expected)
+    return __selene_match.text_containing(expected)
 ```
 
 So we can use it like:
@@ -162,17 +163,16 @@ browser.element('#field').should(have.no.css_class('required'))
 
 !!! info
 
-    If you need a more detailed explanation of
-    how we "extended" Selene's predefined conditions in the example above,
-    look at the
+    If you need a more detailed explanation of how we "extended" Selene's predefined
+    conditions in the example above, look at the
     [How to implement custom advanced commands?][selene.core.command--how-to-implement-custom-advanced-commands]
-    article, that explains same pattern for the case of
-    extending Selene predefined commands.
+    article, that explains same pattern for the case of extending Selene
+    predefined commands.
 
 ## Functional conditions definition
 
-Ok, now, let's go deeper into how to define custom conditions
-starting from function-based conditions.
+Ok, now, let's go deeper into how to define custom conditions starting from
+function-based conditions.
 
 !!! tip
 
@@ -190,14 +190,14 @@ starting from function-based conditions.
     If you are an experienced SDET engineer, and are familiar with the concept
     of expected conditions and how to define them e.g. in Selenium WebDriver,
     and want a fast way to get familiar with how to define most powerful
-    custom conditions in Selene, jump directly to the examples
-    of [`Match`](selene.core.condition.Match) usage.
-    In case of any doubts on the topic,
-    read on this article without skipping any section.
+    custom conditions in Selene, jump directly to the examples of
+    [`Match`][selene.core.condition.Match] class usage.
+    In case of any doubts on the topic, read on this article without skipping
+    any section.
 
 ### Pass|Fail-function-based definition
 
-The simplest way to implement a condition is to define a function
+The simplest way to implement a condition in Selene is to define a function
 that raises AssertionError if the argument passed to the function
 does not match some criteria:
 
@@ -222,9 +222,9 @@ is_positive = ConditionMismatch._to_raise_if_not(lambda x: x > 0)
 Then we test a condition simply by calling it:
 
 ```python
-is_positive(1)  # passes
+is_positive(1)      # ✅ passes
 try:
-    is_positive(0)  # fails
+    is_positive(0)  # ❌ fails
 except AssertionError as error:
     assert 'Expected positive number, but got 0' in str(error)
 ```
@@ -240,10 +240,11 @@ def has_positive_number(entity):
 class Storage:
     number = 0
 
-# imagine that here we created an async operation p
+# imagine that here we created an async operation
 # that after some timeout will update number in storage - to > 0
 
 from selene.core.wait import Wait
+
 Wait(Storage, at_most=1.0).for_(has_positive_number)
 ```
 
@@ -291,7 +292,7 @@ what we were waiting for.
 
 #### Improving error messages of lambda-based conditions
 
-But what if we used lambda predicate to define the condition:
+But what if we used a lambda predicate to define the condition:
 
 ```python
 from selene.core.exceptions import ConditionMismatch
@@ -307,7 +308,7 @@ there is no way to build a name for it:
 ```text
 Timed out after 1.0s, while waiting for:
 <class 'Storage'>.<function <lambda> at 0x106b5d8b0>
-Reason:  ConditionMismatch: actual: 0
+Reason: ConditionMismatch: actual: 0
 ```
 
 To fix this, we can provide a name for the lambda
@@ -336,7 +337,7 @@ Feel free to choose the way that fits your needs best among:
 
 - Pass|Fail-function-condition
 - True|False-lambda-predicate-condition
-built with wrapped lambda into `Query` and `ConditionMismatch._to_raise_if_not`.
+    built with wrapped lambda into `Query` and `ConditionMismatch._to_raise_if_not`.
 
 #### Basic refactoring of conditions
 
@@ -414,9 +415,8 @@ def is_more_than(limit):
 
 ## Object-Oriented re-composable conditions Demo
 
-This is enough for simpler cases,
-but what if we want to be able to compose new conditions based on existing ones,
-like in:
+This is enough for simpler cases, but what if we want to be able to compose
+new conditions based on existing ones, like in:
 
 ```
 # wait for not negative even number
@@ -424,8 +424,8 @@ Wait(Storage, at_most=1.0).for_(has_positive_number.and_(has_even_number).not_)
 ```
 
 Here comes in rescue the [`Condition`][selene.core.condition.Condition] class
-and its [`Match`][selene.core.condition.Match] subclass,
-allowing to build such "re-composable" conditions.
+and its [`Match`][selene.core.condition.Match] subclass, allowing to build such
+"re-composable" conditions.
 
 ## ⬇️ Classes to build and recompose conditions
 """
@@ -466,20 +466,48 @@ else:
 class Condition(Generic[E]):
     """Class to build, invert and compose "callable matcher" objects,
     that conforms to `Callable[[E], None | <RAISED ERROR>]` protocol,
-    and represent the "conditions that can pass or fail when tested against an entity".
-    So, once called on some entity of type E
+    and represent the "conditions that can pass or fail when tested or
+    so called "matched" against an entity". So, once called on some entity of type E
     such condition object should test if the entity matches the condition object,
     and then simply pass if matched or raise AssertionError otherwise.
+
+    !!! note
+
+        You can find using the "match" term in different forms, depending on context.
+        It may confuse a bit. Assume the following...
+
+        If you see in the code "match", i.e. as a "verb in the imperative mood"
+        or as a "noun", then, usually, the "assertion" is meant, i.e.
+        "test a condition against an entity, then pass if matched or fail otherwise".
+        For example: `element.should(match.visible)` or
+        `number.should(Match('is positive'), by=lambda it: it > 0)` or
+        `number.wait.for_(Condition('is positive', match=ConditionMismatch._to_raise_if_not(lambda it: it > 0)))`.
+
+        If you see "matching", i.e. as a "verb in present participle", then
+        the "predicate application" will be forced, i.e.
+        "test a condition against an entity, then return True if matched or False otherwise".
+        For example: `element.matching(be.visible)` or even `element.matching(match.visible)`
+        (the "matching" meaning kind of "overrides the match one").
+
+        Yes, `matching(match.*)` – look a bit weird, but firstly,
+        there more readable alternatives like `matching(be.*)` or simply `matching(*)`, and,
+        secondly, if your tests are implemented according to best practices,
+        you will rarely need applying condition as predicate ;).
+
+        There is also an alternative, a bit more readable way to check the
+        "matching" result: `match.visible._matching(element)` – but take into account
+        that the `_` prefix in `condition._matching` marks the method as a part
+        of Selene's experimental API, that may change with the time.
 
     ### When to use Condition-object-based definition
 
     For most cases you don't need this class directly,
-    you can simply reuse the conditions predefined in [`match.*`](selene.core.match).
+    you can simply reuse the conditions predefined in [`match.*`](../match).
 
     You will start to need this class when you want to build your own custom conditions
     to use in a specific to your case assertions.
     And even then, it might be enough to use a simpler version of this class –
-    its [Match][selene.core.condition.Match] subclass that has smaller bunch of params
+    its [Match][selene.core.condition.Match] subclass that has handier bunch of params
     to set on constructing new condition, that is especially handy
     when you build conditions inline without the need to store and reuse them later,
     like in:
@@ -495,7 +523,7 @@ class Condition(Generic[E]):
     ```
 
     For other examples of using `Match`, up to something as concise
-    as `input.should(Match(query.value, is_normalized))`,
+    as `input.should(Match(actual=query.value, by=is_normalized))`,
     see [its section][selene.core.condition.Match].
 
     And for simplest scenarios you may keep it most KISS
@@ -505,7 +533,8 @@ class Condition(Generic[E]):
 
     But when you start bothering about reusing existing conditions
     to build new ones on top of them by applying logical `and`, `or`,
-    or `not` operators you start to face some limitations...
+    or `not` operators you start to face some limitations of "functional-only"
+    conditions...
 
     Compare:
 
@@ -538,10 +567,10 @@ class Condition(Generic[E]):
     !!! note
 
         If you see
-        [ConditionMismatch._to_raise_if_not_actual](selene.core.exceptions.ConditionMismatch._to_raise_if_not_actual)
+        [ConditionMismatch._to_raise_if_not_actual][selene.core.exceptions.ConditionMismatch._to_raise_if_not_actual]
         for the first time,
         it's similar to
-        [ConditionMismatch._to_raise_if_not](selene.core.exceptions.ConditionMismatch._to_raise_if_not),
+        [ConditionMismatch._to_raise_if_not][selene.core.exceptions.ConditionMismatch._to_raise_if_not],
         but with inverted order of params:
         `ConditionMismatch._to_raise_if_not_actual(number, is_positive)`
         ==
@@ -551,7 +580,7 @@ class Condition(Generic[E]):
 
     ### Specifics of the Condition-object-based definition
 
-    - It is simply a wrapping functional condition (PASS|FAIL-function-based)
+    - It is simply a wrapping functional condition (Pass|Fail-function-based)
         into a Condition object with custom name.
         Thus, we can use all variations of defining functional conditions
         to define object-oriented ones.
@@ -563,19 +592,103 @@ class Condition(Generic[E]):
     ### Customizing name of inverted conditions
 
     The name of the `has_negative_number_or_zero` will be automatically
-    constructed as `'has not (positive number)'`. In case you want custom:
+    constructed as `'has not (positive number)'`. In case you want custom,
+    you can simply re-wrap it into a new condition:
 
     ```python
     has_positive_number = Condition(
         'has positive number',
-        actual=lambda entity: entity.number,
-        by=lambda number: number > 0,
+        ConditionMismatch._to_raise_if_not_actual(
+            lambda entity: entity.number,
+            lambda number: number > 0,
+        ),
     )
 
-    has_negative_number_or_zero = Condition.as_not(  # ⬅️
-        'has negative number or zero',  # 💡
-        has_positive_number
+    has_negative_number_or_zero = Condition(  # ⬅️
+        'has negative number or zero',        # 💡
+        has_positive_number.not_
     )
+    ```
+
+    Same re-wrap can be done with a Match subclass of Condition,
+    but with an explicit keyword argument only:
+
+    ```python
+    ...
+
+    has_negative_number_or_zero = Match(  # ⬅️
+        'has negative number or zero',
+        by=has_positive_number.not_
+    )  #  ↖️
+    ```
+
+    !!! tip
+
+        The "customizing name" pattern above can give a bit more benefits,
+        when applied to conditions built via `Match` class by providing
+        `actual` and `by` params.
+
+        ```python
+        has_positive_number = Match(              # ⬅️
+            'has positive number',
+            actual=lambda entity: entity.number,  # 💡
+            by=lambda number: number > 0,         # 💡
+        )
+
+        has_negative_number_or_zero = Condition(
+            'has negative number or zero',
+            has_positive_number.not_
+        )
+        '''
+        # OR
+        has_negative_number_or_zero = Match(
+            'has negative number or zero',
+            by=has_positive_number.not_
+        )
+        '''
+        ```
+
+        In this case the error message will be a bit more informative,
+        logging also the actual value.
+
+    !!! tip
+
+        There is an alternative shortcut to invert a base condition with custom name
+        – the `Condition.as_not(base_condition, new_name)` method:
+
+        ```python
+        ...
+
+        # compare:
+        has_negative_number_or_zero = Condition(
+            'has negative number or zero',
+            has_positive_number.not_
+        )
+
+        # to:
+        has_negative_number_or_zero = Condition.as_not(  # ⬅️
+            has_positive_number,
+            'has negative number or zero',  # 💡
+        )
+        ```
+
+        It works completely the same under the hood as inverting + wrapping via
+        `Condition(new_name, base_condition.not_)`
+        or `Match(new_name, by=base_condition.not_)` – it's just a matter of taste.
+
+    ### Customizing name of other composable conditions
+
+    Same "wrap" technique can be used to name conditions composed by logical
+    `and` or `or` like in:
+
+    ```python
+    hidden_in_dom = Condition('hidden in DOM', present_in_dom.and_(visible.not_))
+    blank = Condition('blank', tag('input').and_(value('')).or_(exact_text('')))
+    '''
+    # OR with a Match subclass
+    hidden_in_dom = Match('hidden in DOM', present_in_dom.and_(visible.not_))
+    blank = Match('blank', tag('input').and_(value('')).or_(exact_text('')))
+    '''
     ```
 
     ### Re-composing methods summary
@@ -585,11 +698,64 @@ class Condition(Generic[E]):
     - to invert condition you use `condition.not_` property
     - to compose conditions by logical `and` you use `condition.and_(another_condition)`
     - to compose conditions by logical `or` you use `condition.or_(another_condition)`
+    - to override condition name after "composition" you wrap it into a new condition
+        via `Condition(new_name, composed_condition)`
 
     ### Alternative signatures for Condition class initializer
 
-    Condition class initializer has more than two params (name and functional condition)
-    and different variations of valid signatures to use...
+    Condition class initializer has more than two params, not just name and
+    functional condition as we have seen above
+
+    - `name` – a required custom name for the condition or a callable on optional
+        entity, that will be used to describe the condition in the error message
+        depending on the entity, that can be useful in case of multi-entity conditions,
+        for example, a `size` condition can work with both "singular" and "plural"
+        entities, then we could provide the name as
+        `lambda entity: 'have size' if entity is not None and hasattr(entity, '__len__') else 'has size'`
+    - `test` – a Pass|Fail-function based condition
+
+    ⬆️ Both these parameters are "positional only". This is an "internal trick of us"
+    to postpone the time to decide on the final naming of them. We can hardly choose
+    between `name` and `description` for the first one, and between `test` and `match`
+    for the second one:), but while they are "positional only" you have nothing
+    to worry about on your side;).
+
+    Other params are optional:
+
+    - `_actual` – a callable on entity to get the actual value from it to match.
+        Can't be passed if `test` arg was provided. If `test` arg was not provided,
+        yet can be skipped, then it will be similar to passing `lambda it: it` as actual
+    - `_by` - a callable predicate to check for matching actual value if `_actual`
+        was provided or for matching entity itself otherwise. Can't be passed if `test`
+        was provided. You have to choose how to define a condition – via `test`
+        or via `by` with optional `actual`.
+    - `_describe_actual_result` – a callable on the actual value used during match,
+        that will be used if match failed to describe the actual value in the error
+        message. Currently, will be used only if `_actual` was provided explicitly,
+        but this might change in the future...
+    - `_inverted` – a boolean flag to mark the condition as inverted. False by default.
+    - `_falsy_exceptions` – a tuple of exceptions that should be considered as "falsy"
+        if condition was inverted. By default, it's `(AssertionError, )` only.
+
+    All are marked as "experimental/internal" for the following reasons:
+
+    - `_actual` and `_by` might be moved completely from Condition to its Match subclass
+        in order to simplify the implementation of the base Condition class,
+        taking into account that providing such arguments nevertheless leads to more
+        readable code exactly in case of Match, not Condition.
+    - `_describe_actual_result` can be renamed (e.g. to `describe_actual` or `describe`)
+        and also moved to Match for same reason as `_actual`
+    - `_inverted` is planned to be "protected" all the time, in order to force end user
+        to use `.not_` property to invert conditions even if they are "inline" ones
+    - `_falsy_exceptions` can be renamed and also are marked as "protected"
+        to eliminate usage in the "inline" context
+
+    This bunch of params lead to different ways to define conditions.
+    Since the Condition class has more params marked as "internal/experimental"
+    than the Match class, we will show more of such variations in examples of
+    the [Match][selene.core.condition.Match] class usage. And now we provide
+    just a few to see the actual difference between defining condition via
+    Pass|Fail-function and via True|False-predicate.
 
     Recall the initial example:
 
@@ -603,36 +769,53 @@ class Condition(Generic[E]):
     )
     ```
 
-    #### The core parameter: **test**
-
-    Let's rewrite it utilizing the named arguments python feature:
+    or with using `_to_raise_if_not` over `_to_raise_if_not_actual` – they differ
+    by order of params:
 
     ```python
     has_positive_number = Condition(
         'has positive number',
-        test=ConditionMismatch._to_raise_if_not_actual(
-            lambda entity: entity.number,
+        ConditionMismatch._to_raise_if_not(
             lambda number: number > 0,
+            lambda entity: entity.number,
         )
     )
     ```
 
+    But utilizing the named arguments python feature, we can
+    define our own order (unless params are defined as positional only,
+    and they are not in this case):
+
+    ```python
+    has_positive_number = Condition(
+        'has positive number',
+        ConditionMismatch._to_raise_if_not(
+            actual=lambda entity: entity.number,
+            by=lambda number: number > 0,
+        )
+    )
+    ```
+
+    #### The core parameter: **test** (2nd positional parameter)
+
+    Regardless of what happens with params to ConditionMismatch class methods,
+    the 2nd positional-only param to the Condition initializer is allways the same –
+    Pass|Fail-function-based condition.
+
     #### Parameters: actual and by VS test
 
-    Thus, the functional condition that is the core of object-oriented condition
-    – is passed as the `test` argument. In order to remove a bit of boilerplate
-    on object-oriented condition definition, there two other
-    alternative parameters to the Condition class initializer:
-    `actual` and `by` – similar to the parameters of the
-    [`Condition._to_raise_if_not_actual`](selene.core.exceptions.ConditionMismatch._to_raise_if_not_actual)
-    helper that we use to define functional True|False-predicate-based conditions.
+    In order to remove a bit of boilerplate on object-oriented condition definition,
+    there two other alternative parameters to the Condition class initializer:
+    `_actual` and `_by` – similar to the parameters of the
+    [`Condition._to_raise_if_not`][selene.core.exceptions.ConditionMismatch._to_raise_if_not]
+    helper that we used to define functional True|False-predicate-based conditions.
 
     Compare:
 
     ```python
     has_positive_number = Condition(
         'has positive number',
-        test=ConditionMismatch._to_raise_if_not(
+        ConditionMismatch._to_raise_if_not(
             actual=lambda entity: entity.number,
             by=lambda number: number > 0,
         )
@@ -644,35 +827,100 @@ class Condition(Generic[E]):
     ```python
     has_positive_number = Condition(
         'has positive number',
+        _actual=lambda entity: entity.number,
+        _by=lambda number: number > 0,
+    )
+    ```
+
+    or by utilizing the [Match][selene.core.condition.Match]
+    subclass of Condition, that has `actual` and `by` params as stable
+    (not experimental), and so – safer to use:
+
+    ```python
+    has_positive_number = Match(
+        'has positive number',
         actual=lambda entity: entity.number,
         by=lambda number: number > 0,
     )
     ```
 
-    `actual` is optional by the way, so the following is also valid:
+    `actual` (or `_actual` in case of Condition) is optional by the way, so the
+    following is also valid:
 
     ```python
-    has_positive_number = Condition(
+    has_positive_number = Match(
         'has positive number',
         by=lambda entity: entity.number > 0,
     )
     ```
 
-    !!! tip
-
-        Remember, that it's not mandatory to wrap lambdas into Query objects
-        here to achieve readable error messages,
-        because we already provided a custom name.
-
-    #### Relation to Match subclass
+    #### Match over Condition for readability
 
     If you find passing optional `actual` and mandatory `by` better
-    than passing mandatory `test`,
+    than passing 2nd positional argument as Pass|Fail-function condition,
     and the `Condition` term is too low level for your case, consider using the
-    [`Match`][selene.core.condition.Match] subclass of the `Condition` class
-    that accepts only `actual` and `by` with optional `name` parameters,
-    and fits better with a `should` method of Selene entities – compare:
-    `entity.should(Match(...))` to `entity.should(Condition(...))`😉.
+    [`Match`][selene.core.condition.Match] subclass in full power. It also fits better
+    with a `should` method of Selene entities in context of inline definition
+    of conditions – compare: `entity.should(Match(...))` to
+    `entity.should(Condition(...))`😉.
+
+    #### Tuning error message description of the actual result
+
+    Remember, that it's not mandatory to wrap lambdas into Query objects
+    here to achieve readable error messages, because we already provided a
+    custom name. But in case of providing actual that has a readable name,
+    e.g. via wrapping as `Query('named', lambda entity: ...)`, we will get
+    a bit more descriptive actual result description in the error message:
+    `actual named: ...` over `actual: ...` if we provided pure lambda...
+
+    Another way to tune the description of the actual result is to set the
+    `_describe_actual_result` parameter. Compare:
+
+    ```python
+    has_positive_number = Match(
+        'has positive number',
+        actual=lambda entity: entity.number,
+        by=lambda number: number > 0,
+    )
+    has_positive_number(0)
+    # will fail with:
+    '''
+    ConditionMismatch: actual: 0
+    '''
+    ```
+
+    or:
+
+    ```python
+    has_positive_number = Match(
+        'has positive number',
+        actual=Query('number', lambda entity: entity.number),
+        by=lambda number: number > 0,
+    )
+    has_positive_number(0)
+    # will fail with:
+    '''
+    ConditionMismatch: actual number: 0
+    '''
+    ```
+
+    to:
+
+    ```python
+    has_positive_number = Match(
+        'has positive number',
+        actual=Query('number', lambda entity: entity.number),
+        by=lambda number: number > 0,
+        _describe_actual_result=lambda number: (
+            f'actual number {number} is not positive ❌'
+        ),
+    )
+    has_positive_number(0)
+    # will fail with:
+    '''
+    ConditionMismatch: actual number 0 is not positive ❌
+    '''
+    ```
     """
 
     @classmethod
@@ -683,7 +931,7 @@ class Condition(Generic[E]):
             for condition in conditions:
                 condition.__call__(entity)
 
-        return cls(' and '.join(map(str, conditions)), test=func)
+        return cls(' and '.join(map(str, conditions)), func)
 
     @classmethod
     def by_or(cls, *conditions):
@@ -699,11 +947,11 @@ class Condition(Generic[E]):
                     errors.append(e)
             raise AssertionError('; '.join(map(str, errors)))
 
-        return cls(' or '.join(map(str, conditions)), test=func)
+        return cls(' or '.join(map(str, conditions)), func)
 
     @classmethod
     def for_each(cls, condition) -> Condition[Iterable[E]]:
-        # TODO consider refactoring to be predicate-based or both-based
+        # TODO: consider refactoring to be predicate-based or both-based
         #      and ensure inverted works
         def func(entity):
             items_with_error: List[Tuple[str, str]] = []
@@ -721,7 +969,7 @@ class Condition(Generic[E]):
                     )
                 )
 
-        return typing.cast(Condition[Iterable[E]], cls(f' each {condition}', test=func))
+        return typing.cast(Condition[Iterable[E]], cls(f' each {condition}', func))
 
     @classmethod
     def as_not(
@@ -731,45 +979,7 @@ class Condition(Generic[E]):
         /,
         # todo: consider adding additional description param for backwards compatibility
     ) -> Condition[E]:
-        # todo: how will it work composed conditions?
-
-        # todo: should we bother? – about "negated inversion via Condition.as_not"
-        #       will "swallow" the reason of failure...
-        #       because we invert the predicate or test itself, ignoring exceptions
-        #       so then when we "recover original exception failure" on negation
-        #       we can just recover it to "false" not to "raise reason error"
-        if name:
-            return (
-                cls(
-                    # now we provide the new name that counts inversion
-                    name,
-                    # specifying already an inverted fn
-                    test=condition.__test_inverted,
-                    # thus, no need to mark condition for further inversion:
-                    _inverted=False,
-                )
-                if condition.__by is None
-                else cls(
-                    name,
-                    # # We have to skip the actual here (re-building it into by below),
-                    # # because can't "truthify" its Exceptions when raised on inverted
-                    # # TODO: or can we?
-                    # actual=condition.__actual,
-                    by=Query._inverted(
-                        functools.wraps(condition.__by)(
-                            lambda entity: condition.__by(  # type: ignore
-                                condition.__actual(entity)
-                                if condition.__actual
-                                else entity
-                            )
-                        ),
-                        _truthy_exceptions=(AssertionError, WebDriverException),
-                    ),
-                    _inverted=False,
-                )
-            )
-        else:
-            return condition.not_
+        return cls(name, condition.not_) if name is not None else condition.not_
 
     # todo: should we rename this description to name too?
     #       currently it was left as it is for backwards compatibility
@@ -777,20 +987,20 @@ class Condition(Generic[E]):
     #       yet naming first positionally param as name
     @classmethod
     def raise_if_not(cls, description: str, predicate: Predicate[E]) -> Condition[E]:
-        return cls(description, by=predicate)
+        return cls(description, _by=predicate)
 
     @classmethod
     def raise_if_not_actual(
         cls, description: str, query: Lambda[E, R], predicate: Predicate[R]
     ) -> Condition[E]:
-        return cls(description, actual=query, by=predicate)
+        return cls(description, _actual=query, _by=predicate)
 
     @overload
     def __init__(
         self,
         name: str | Callable[[E | None], str],
-        /,
         test: Lambda[E, None],
+        /,
         *,
         _inverted=False,
         _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
@@ -811,8 +1021,8 @@ class Condition(Generic[E]):
         name: str | Callable[[E | None], str],
         /,
         *,
-        actual: Lambda[E, R],
-        by: Predicate[R],
+        _actual: Lambda[E, R],
+        _by: Predicate[R],
         _describe_actual_result: Lambda[R, str] | None = None,
         _inverted=False,
         _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
@@ -824,7 +1034,7 @@ class Condition(Generic[E]):
         name: str | Callable[[E | None], str],
         /,
         *,
-        by: Predicate[E],
+        _by: Predicate[E],
         _inverted=False,
         _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
     ): ...
@@ -847,11 +1057,12 @@ class Condition(Generic[E]):
     def __init__(
         self,
         name: str | Callable[[E | None], str],  # TODO: consider Callable[[...], str]
-        /,  # TODO: what if we move it after test? :) and not bother about naming:)
         test: Lambda[E, None] | None = None,
+        /,  # moved after test to not bother about best name (e.g. test vs match) for now
         *,
-        actual: Lambda[E, R] | None = None,
-        by: Predicate[R] | None = None,
+        _actual: Lambda[E, R] | None = None,
+        # TODO: shouldn't it be by: Predicate[E] | Predicate[R] | None = None ?
+        _by: Predicate[R] | None = None,
         _describe_actual_result: Lambda[R, str] | None = None,
         _inverted=False,
         _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
@@ -862,15 +1073,15 @@ class Condition(Generic[E]):
         self.__falsy_exceptions = _falsy_exceptions
         self.__by = None
 
-        if by:  # i.e. condition is based on predicate (fn returning True/False)
+        if _by:  # i.e. condition is based on predicate (fn returning True/False)
             if test:
                 raise ValueError(
                     'either test or by with optional actual should be provided, '
                     'not both'
                 )
-            self.__actual = actual
+            self.__actual = _actual
             self.__describe_actual_result = _describe_actual_result
-            self.__by = by
+            self.__by = _by
             self.__test = (
                 ConditionMismatch._to_raise_if_not(
                     self.__by,
@@ -900,7 +1111,7 @@ class Condition(Generic[E]):
             return
 
         if test:  # i.e. condition based on fn passing with None or raising Error
-            if actual:
+            if _actual:
                 raise ValueError(
                     'either test or by with optional actual should be provided, '
                     'not both'
@@ -930,7 +1141,7 @@ class Condition(Generic[E]):
             'either test or by with optional actual should be provided, not nothing'
         )
 
-    # TODO: rethink not_ naming...
+    # todo: rethink not_ naming...
     #       if condition is builder-like, for example:
     #       have.text('foo').ignore_case
     #       then, while semi-ok here:
@@ -939,7 +1150,7 @@ class Condition(Generic[E]):
     #       have.text('foo').not_.ignore_case
     #       but we can reduce incorrect usage just by limiting to -> Condition[E]
     #       – is it enough?
-    # TODO: decide on actual returned class object...
+    # todo: decide on actual returned class object...
     #       if we return self.__class__(...), we can technically access new custom
     #       methods in subclasses – condition.not_.HERE
     #       But then we have to override each time the .not_ prop in subclasses
@@ -964,7 +1175,7 @@ class Condition(Generic[E]):
         return (
             Condition(
                 self.__name,
-                test=self.__test,
+                self.__test,
                 _inverted=not self.__inverted,
                 _falsy_exceptions=self.__falsy_exceptions,
             )
@@ -972,8 +1183,8 @@ class Condition(Generic[E]):
             else (
                 Condition(
                     self.__name,
-                    actual=self.__actual,  # type: ignore
-                    by=self.__by,
+                    _actual=self.__actual,  # type: ignore
+                    _by=self.__by,
                     _describe_actual_result=self.__describe_actual_result,
                     _inverted=not self.__inverted,
                     _falsy_exceptions=self.__falsy_exceptions,
@@ -993,7 +1204,7 @@ class Condition(Generic[E]):
         no_or_not = 'not' if is_or_have == 'is' else 'no'
         return f'{is_or_have} {no_or_not} ({name})'
 
-    # TODO: consider changing has to have on the fly for CollectionConditions
+    # todo: consider changing has to have on the fly for CollectionConditions
     # todo: or changing in collection locator rendering `all` to `collection`
     def __str__(self):
         # return self.__describe() if not self.__inverted else self.__describe_inverted()
@@ -1083,6 +1294,10 @@ class Condition(Generic[E]):
         # with some subclasses implementations, that override __call__
         return self.__call__(entity)
 
+    # todo: while `visible.matching(element)` looks good, `match.visible._matching(element)` looks worse
+    #       What if we make `match.visible.for_(element)` to serve as predicate in bool context?"
+    #       > if match.visible.for_(element): ...
+    #       isn't it the perfect design? :)
     def _matching(self, entity: E) -> bool:
         return self.predicate(entity)
 
@@ -1106,8 +1321,7 @@ class Condition(Generic[E]):
             try:
                 self.__call__(entity)  # <- HERE
                 return True
-            # TODO: should we check only for AssertionError here? or broader?
-            except AssertionError:
+            except self.__falsy_exceptions:
                 return False
 
         return fn
@@ -1125,72 +1339,13 @@ class Condition(Generic[E]):
         return Condition.for_each(self)
 
 
-# TODO: should Match be not just alias but a subclass overriding __init__
-#       to accept only name (maybe optional) + predicates with optional actual
-#       i.e. not accepting test param at all...
-#       as, finally, the test param is more unhandy in straightforward inline usage
-#       – So far, YES, it seemed like a good idea to get rid of test param in Match
-#       narrowing the usage for the end user to the most convenient one...
-# TODO: Hm... but what about redefining conditions based on existing ones?
-#       Imagine:
-#       $('#save').should(Match('«Save document» is shown', test=be.visible))
-#       Such case is rare, and looks like not optimal, because there are better
-#       ways to document failures of business steps like this... But maybe...
-#       we should at least leave such option...
-#       And now we can't pass test to Match... (because of redefined __init__)
-#       By the way, something like this would be still possible:
-#       $('#save').should(Match('«Save document» is shown', by=query.is_displayed))
-#       though, we have no query.is_* so far... should we have?
-#       yet... it looks tempting to be able to reuse existing conditions
-#       and re-describe them with Match... currently this would be possible only
-#       with Condition:
-#       $('#save').should(Condition('«Save document» is shown', test=be.visible))
-#       maybe this will be important in scenarios like:
-#       $('#save').should(Match('clickable', test=be.visible.and_(be.enabled)))
-#       or even more relevant not-inline version:
-#       clickable = Match('clickable', test=be.visible.and_(be.enabled))
-#       though in such case it looks Ok to use Condition class
-#       clickable = Condition('clickable', test=be.visible.and_(be.enabled))
-#       this will work too right now:
-#       clickable = Condition('clickable', be.visible.and_(be.enabled))
-#       hm... why not then accept only by in Match (not test), but allow
-#       automatic conversion from condition to its predicate
-#       when the Condition instance is passed instead of predicate...
-#       clickable = Match('clickable', by=be.visible.and_(be.enabled))
-#       and then will work too:
-#       clickable = Match('clickable', be.visible.and_(be.enabled))
-#       hm... looks like a solution...
-#       but won't it be overcomplicated in context of understanding?
-#       hm... maybe this is really a good idea, because by=condition correlate
-#       with all.by(condition)... so it's kind of consistent to expect
-#       that condition can be passed in place of by...
-#       hm... but won't it be confusing to pass "only predicate" in place of by
-#       in the Condition class? o_O
-#       It really looks like pretty confusing:D
-#       NOTE: if implemented, take into account _falsy_exceptions...
-# TODO: just a crazy idea... why then import both Match and/or match.*
-#       why not to make match be a class over module –
-#       a class with static methods and attributes as predefined conditions
-#       and __init__ overriding Condition to accept just predicate & co?
-#       TODO: check how autocomplete will work,
-#             will it autocomplete after ma... – just match or match()?
-#       – Hm, the idea looks very tempting... but we should separate
-#       "the most optimal usage" from the one that can tend to be not optimal...
-#       If we give an easy way for the end user to to define inline conditions
-#       with lambdas - the user may end with doing just that...
-#       while in most scenarios it would be better to define custom conditions
-#       in a separate Module... Hence, we can complicate it a bit for the user
-#       by forcing him to use an additional import of Match
-#       to use inline conditions... Hm...
-#       But use probably will use be, have, not match... So importing match
-#       is already an "another import"... hm...
-#       Other thing... is that if we make match a class, then for consistency
-#       it would be better to do the same for command.* and query.*...
-#       Isn't it too much?
 class Match(Condition[E]):
-    """A subclass-based alias to [Condition][selene.core.condition.Condition]
+    """A subclass-based alternative to [Condition][selene.core.condition.Condition]
     class for better readability on straightforward usage of conditions
-    built inline with optional custom name...
+    built inline with optional custom name, True|False-predicate as `by` argument
+    instead of Pass|Fail-function-based condition as 2nd positional Condition argument,
+    and optional callable query on entity as `actual` argument to get a value
+    from entity to match in `by` callable.
 
     ### Demo examples
 
@@ -1219,7 +1374,7 @@ class Match(Condition[E]):
     !!! warning
 
         Remember that in most cases you don't need to build condition
-        from scratch. You can reuse the one from predefined conditions
+        from scratch. You can reuse the ones from predefined conditions
         at `match.*` or among corresponding aliases at `be.*` and `have.*`.
         For example, instead of
         `Match(query.title, predicate.equals('Expected')`
@@ -1232,30 +1387,37 @@ class Match(Condition[E]):
     ### Differences from Condition initializer
 
     Unlike its base class (Condition),
-    the `Match` subclass has a bit less of params variations to set
-    on constructing new condition.
-    The `Match` initializer:
+    the `Match` subclass has a bit different parameter variations to set
+    on constructing new condition. The `Match` initializer:
 
-    - does not accept `test` param,
-        that is actually the core of its superclass `Condition` logic, and is used to store
-        the Pass|Fail-function (aka functional condition) to test the entity
-        against the actual condition criteria, implemented in that function.
-    - accepts only the alternative to `test` params:
+    - does not accept `test` param (2nd positional-only Condition init parameter),
+        that is actually the core of its superclass `Condition` logic,
+        and is used to store the Pass|Fail-function (aka functional condition)
+        to test the entity against the actual condition criteria,
+        implemented in that function.
+    - accepts the alternative to `test` params:
         the `by` predicate and the optional `actual` query
         to transform an entity before passing to the predicate for match.
-    - accepts name as the first positional param, but can be skipped
-        if you are OK with automatically generated name based on
-        `by` and `actual` arguments names.
+        Both `by` and `actual` are not marked as "experimental" or "internal",
+        as they are in case of Condition initializer for now.
+        - `by` is a "keyword-only" parameter.
+        - `actual` can be passed as a 2nd positional param, if both `name` and `by`
+            are present, or as a keyword-only param otherwise.
+    - accepts name as the first positional param only, similar to Condition class
+        initializer, but can be skipped if you are OK with automatically generated name
+        based on `by` and `actual` arguments names.
+    - accepts other not mentioned yet parameters, similar to Condition initializer:
+        `_describe_actual_result`, `_inverted`, `_falsy_exceptions`.
 
     ### Better fit for straightforward inline usage
 
-    Such combination of params is especially handy
-    when you build conditions inline without the need
-    to store and reuse them later, like in:
+    Such combination of params is especially handy when you build conditions inline
+    without the need to store and reuse them later, like in:
 
     ```python
     from selene import browser
     from selene.core.condition import Match
+
     input = browser.element('#field')
     input.should(Match(
         'normalized value',
@@ -1282,6 +1444,7 @@ class Match(Condition[E]):
     ```python
     from selene import browser, query
     from selene.core.condition import Match
+
     input = browser.element('#field')
     input.should(Match(
         'normalized value',
@@ -1294,6 +1457,7 @@ class Match(Condition[E]):
     ```python
     from selene import browser, query
     from selene.core.condition import Match
+
     input = browser.element('#field')
     input.should(Match(
         'normalized value',
@@ -1302,14 +1466,30 @@ class Match(Condition[E]):
     ))
     ```
 
-    ### Optionality of name
-
-    Or with default name, autogenerated based on passed query
-    name:
+    In such specific case you can pass actual as a 2nd positional param
+    (not a keyword param):
 
     ```python
     from selene import browser, query
     from selene.core.condition import Match
+
+    input = browser.element('#field')
+    input.should(Match(
+        'normalized value',
+        query.value,
+        by=lambda value: not re.find_all(r'(\s)\1+', value),
+    ))
+    ```
+
+    ### Optionality of name
+
+    You can skip first name positional-only parameter to get a default name, that
+    will be autogenerated based on passed query name:
+
+    ```python
+    from selene import browser, query
+    from selene.core.condition import Match
+
     input = browser.element('#field')
     input.should(Match(
         actual=query.value,
@@ -1337,28 +1517,39 @@ class Match(Condition[E]):
     ```python
     from selene import browser, query
     from selene.core.condition import Match
+
     input = browser.element('#field')
     input.should(Match(actual=query.value, by=is_normalized))
     ```
 
-    Or without named arguments for even more concise code:
+    !!! warning
 
-    ```python
-    from selene import browser, query
-    from selene.core.condition import Match
+        Remember, that we can't use positional arguments for `actual` and `by`
+        like in:
 
-    browser.element('#field').should(Match(query.value, is_normalized))
-    ```
+        ```python
+        from selene import browser, query
+        from selene.core.condition import Match
+
+        browser.element('#field').should(Match(query.value, is_normalized))  # ❌
+        ```
+
+        This example is not valid!
+
+        Yet it is pretty tempting syntax to have, so maybe we'll implement it
+        in future versions, stay tuned;)
 
     ### Parametrized predicates
 
-    Or maybe you need something "more parametrized":
+    In case you need something "more parametrized":
 
     ```python
     from selene import browser, query
     from selene.core.condition import Match
 
-    browser.element('#field').should(Match(query.value, has_no_pattern(r'(\s)\1+')))
+    browser.element('#field').should(
+        Match(actual=query.value, by=has_no_pattern(r'(\s)\1+'))
+    )
     ```
 
     – where:
@@ -1372,16 +1563,15 @@ class Match(Condition[E]):
 
     ### When custom name over autogenerated
 
-    But now the autogenerated name
-    (that you will see in error messages on fail) – may be too low level.
-    Thus, you might want to provide more high level custom name:
+    – But now the autogenerated name (that you will see in error messages on fail) –
+    may be too low level. Thus, you might want to provide more high level custom name:
 
     ```python
     from selene import browser, query
     from selene.core.condition import Match
 
     browser.element('#field').should(
-        Match('normalized value', query.value, has_no_pattern(r'(\s)\1+'))
+        Match('normalized value', query.value, by=has_no_pattern(r'(\s)\1+'))
     )
     ```
 
@@ -1409,11 +1599,120 @@ class Match(Condition[E]):
     # To reuse all existing have.* conditions, thus, extending them:
     from selene.support.conditions.have import *
 
-    normalized_value = Match('normalized value', query.value, by=has_no_pattern(r'(\s)\1+'))
+    normalized_value = Match(
+        'normalized value',
+        query.value,
+        by=has_no_pattern(r'(\s)\1+')
+    )
     ```
+
+    Find more complicated examples of conditions definition in Selene's
+    [match.*](../match) module.
 
     Have fun! ;)
     """
+
+    @overload
+    def __init__(
+        self,
+        name: str | Callable[[E | None], str],
+        /,
+        actual: Lambda[E, R],
+        *,
+        by: Predicate[R],
+        _describe_actual_result: Lambda[R, str] | None = None,
+        _inverted=False,
+        _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
+    ): ...
+
+    @overload
+    def __init__(
+        self,
+        name: str | Callable[[E | None], str],
+        /,
+        *,
+        by: Predicate[E] | Condition[E],
+        _inverted=False,
+        _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
+    ): ...
+
+    @overload
+    def __init__(
+        self,
+        *,
+        actual: Lambda[E, R],
+        by: Predicate[R],
+        _describe_actual_result: Lambda[R, str] | None = None,
+        _inverted=False,
+        _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
+    ): ...
+
+    @overload
+    def __init__(
+        self,
+        *,
+        by: Predicate[E],
+        _inverted=False,
+        _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
+    ): ...
+
+    def __init__(
+        self,
+        name: str | Callable[[E | None], str] | None = None,
+        actual: Lambda[E, R] | None = None,
+        *,
+        by: Predicate[E] | Predicate[R] | Condition[E],
+        _describe_actual_result: Lambda[R, str] | None = None,
+        _inverted=False,
+        _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
+    ):
+        """
+        The only valid and stable signatures in usage:
+
+        ```python
+        Match(by=lambda x: x > 0)
+        Match(actual=lambda x: x - 1, by=lambda x: x > 0)
+        Match('has positive decrement', lambda x: x - 1, by=lambda x: x > 0)
+        Match('has positive decrement', actual=lambda x: x - 1, by=lambda x: x > 0)
+        Match(actual=lambda x: x - 1, by=lambda x: x > 0)
+        ```
+
+        In addition to the examples above you can optionally add named
+        `_describe_actual_result` argument whenever you pass the `actual` argument.
+        You also can optionally provide _inverted and _falsy_exceptions arguments.
+        But keep in mind that they are marked with `_` prefix to indicate their
+        private and potentially "experimental" use, that can change in future versions.
+        """
+        if not name and not (by_name := Query._full_description_for(by)):
+            raise ValueError(
+                'either provide a name or ensure that at least by predicate '
+                'has __qualname__ (defined as regular named function) '
+                'or custom __str__ implementation '
+                '(like lambda wrapped in Query object)'
+            )
+        actual_name = Query._full_description_for(actual)
+        name = name or (
+            ((str(actual_name) + ' ') if actual_name else '') + str(by_name)  # noqa
+        )
+        if isinstance(by, Condition):
+            super().__init__(
+                name,
+                by,
+                _inverted=_inverted,
+                # TODO: since by is Condition, already defined with its _falsy_exceptions...
+                #       should not we take them to set below, or at least override our default?
+                _falsy_exceptions=_falsy_exceptions,
+            )
+        else:
+            # todo: fix "cannot infer type of argument 1 of __init__" or ignore
+            super().__init__(  # type: ignore
+                name,
+                _actual=actual,  # type: ignore
+                _by=by,
+                _describe_actual_result=_describe_actual_result,
+                _inverted=_inverted,
+                _falsy_exceptions=_falsy_exceptions,
+            )
 
     # TODO: provide examples of error messages
 
@@ -1492,14 +1791,14 @@ class Match(Condition[E]):
                 )
             if not left_args:
                 super().__init__(
-                    name, actual=kwargs.get('actual', None), by=kwargs['by']
+                    name, _actual=kwargs.get('actual', None), _by=kwargs['by']
                 )
                 return
             if left_args and len(left_args) == 1:
-                super().__init__(name, by=left_args[0])
+                super().__init__(name, _by=left_args[0])
                 return
             if left_args and len(left_args) == 2:
-                super().__init__(name, actual=left_args[0], by=left_args[1])
+                super().__init__(name, _actual=left_args[0], _by=left_args[1])
                 return
             raise ValueError('too much of positional arguments')
         if args and callable(args[0]):
@@ -1524,125 +1823,10 @@ class Match(Condition[E]):
             name = ((str(actual_desc) + ' ') if actual_desc else '') + str(
                 by_name
             )  # noqa
-            super().__init__(name, actual=actual, by=by)
+            super().__init__(name, _actual=actual, _by=by)
             return
 
         raise ValueError('invalid arguments to Match initializer')
-
-    @overload
-    def __init__(
-        self,
-        name: str | Callable[[E | None], str],
-        /,
-        actual: Lambda[E, R],
-        *,
-        by: Predicate[R],
-        _describe_actual_result: Lambda[R, str] | None = None,
-        _inverted=False,
-        _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
-    ): ...
-
-    @overload
-    def __init__(
-        self,
-        name: str | Callable[[E | None], str],
-        /,
-        *,
-        by: Predicate[E],
-        _inverted=False,
-        _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
-    ): ...
-
-    @overload
-    def __init__(
-        self,
-        *,
-        actual: Lambda[E, R],
-        by: Predicate[R],
-        _describe_actual_result: Lambda[R, str] | None = None,
-        _inverted=False,
-        _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
-    ): ...
-
-    @overload
-    def __init__(
-        self,
-        *,
-        by: Predicate[E],
-        _inverted=False,
-        _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
-    ): ...
-
-    def __init__(
-        self,
-        name: str | Callable[[E | None], str] | None = None,
-        actual: Lambda[E, R] | None = None,
-        *,
-        by: Predicate[E] | Predicate[R],
-        _describe_actual_result: Lambda[R, str] | None = None,
-        _inverted=False,
-        _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
-    ):
-        """
-        The only valid and stable signatures in usage:
-
-        ```python
-        Match(by=lambda x: x > 0)
-        Match(actual=lambda x: x - 1, by=lambda x: x > 0)
-        Match('has positive decrement', lambda x: x - 1, by=lambda x: x > 0)
-        Match('has positive decrement', actual=lambda x: x - 1, by=lambda x: x > 0)
-        Match(actual=lambda x: x - 1, by=lambda x: x > 0)
-        ```
-
-        In addition to the examples above you can optionally add named
-        `_describe_actual_result` argument whenever you pass the `actual` argument.
-        You also can optionally provide _inverted and _falsy_exceptions arguments.
-        But keep in mind that they are marked with `_` prefix to indicate their
-        private and potentially "experimental" use, that can change in future versions.
-        """
-        if not name and not (by_name := Query._full_description_for(by)):
-            raise ValueError(
-                'either provide a name or ensure that at least by predicate '
-                'has __qualname__ (defined as regular named function) '
-                'or custom __str__ implementation '
-                '(like lambda wrapped in Query object)'
-            )
-        actual_name = Query._full_description_for(actual)
-        name = name or (
-            ((str(actual_name) + ' ') if actual_name else '') + str(by_name)  # noqa
-        )
-        # todo: fix "cannot infer type of argument 1 of __init__" or ignore
-        super().__init__(  # type: ignore
-            name,
-            actual=actual,  # type: ignore
-            by=by,
-            _describe_actual_result=_describe_actual_result,
-            _inverted=_inverted,
-            _falsy_exceptions=_falsy_exceptions,
-        )
-
-
-# TODO: clean this temp examples
-# is_positive: Match[int] = Match(by=lambda x: x > 0)
-# has_positive_decrement: Match[int] = Match(actual=lambda x: x - 1, by=lambda x: x > 0)
-# has_positive_decrement_: Match[int] = Match(
-#     'has positive decrement', lambda x: x - 1, by=lambda x: x > 0
-# )
-# has_positive_decrement__: Match[int] = Match(actual=lambda x: x - 1, by=lambda x: x > 0)
-
-
-# Match(lambda x: x > 0)
-# Match(lambda actual: actual - 1, lambda res: res > 0)
-# Match('has positive decrement', lambda actual: actual - 1, lambda res: res > 0)
-# Match(
-#     lambda: 'has positive decrement',
-#     actual=lambda actual: actual - 1,
-#     by=lambda res: res > 0,
-# )
-# Match(
-#     lambda: 'has positive decrement',
-#     by=lambda res: res > 0,
-# )
 
 
 def not_(condition_to_be_inverted: Condition):

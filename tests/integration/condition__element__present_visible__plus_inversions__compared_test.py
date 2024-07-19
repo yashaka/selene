@@ -117,8 +117,9 @@ def test_should_be_present_in_dom__passed_and_failed__compared_to_be_absent_in_d
         assert (
             "browser.element(('css selector', '#hidden')).is absent in DOM\n"
             '\n'
-            'Reason: ConditionMismatch: condition not matched\n'
-            # todo: DESIRED: to see actual webelement, maybe even its html
+            'Reason: ConditionMismatch: actual html element: <button id="hidden" '
+            'style="display: none">Press me</button>\n'
+            'Screenshot: '
         ) in str(error)
     # - visible fails
     try:
@@ -128,8 +129,8 @@ def test_should_be_present_in_dom__passed_and_failed__compared_to_be_absent_in_d
         assert (
             "browser.element(('css selector', '#visible')).is absent in DOM\n"
             '\n'
-            'Reason: ConditionMismatch: condition not matched\n'
-            # todo: DESIRED: to see actual webelement, maybe even its html
+            'Reason: ConditionMismatch: actual html element: <button id="visible" '
+            'style="display: block">Press me</button>\n'
         ) in str(error)
 
     # not absent in dom?
@@ -413,7 +414,9 @@ def test_hidden__passed_and_failed(
         assert (
             "browser.element(('css selector', '#visible')).is hidden\n"
             '\n'
-            'Reason: ConditionMismatch: condition not matched\n'
+            'Reason: ConditionMismatch: actual html element: <button id="visible" '
+            'style="display: block">Press me</button>\n'
+            'Screenshot: '
         ) in str(error)
 
 

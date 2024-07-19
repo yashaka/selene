@@ -67,6 +67,32 @@ def test_should_be_present__via_inline_Match__passed_and_failed(session_browser)
             'absent',
         )
     )
+    # - with actual failure as True on inversion via re-wrap into Condition
+    # todo: add similar tests for other cases where we assert error message
+    absent.should(
+        Condition(
+            'absent',
+            Match(
+                'present',
+                actual=lambda element: element.locate(),
+                by=lambda actual: actual is not None,
+                _falsy_exceptions=(NoSuchElementException,),
+            ).not_,
+        )
+    )
+    # - with actual failure as True on inversion via re-wrap into Match
+    # todo: add similar tests for other cases where we assert error message
+    absent.should(
+        Match(
+            'absent',
+            by=Match(
+                'present',
+                actual=lambda element: element.locate(),
+                by=lambda actual: actual is not None,
+                _falsy_exceptions=(NoSuchElementException,),
+            ).not_,
+        )
+    )
     # - with actual failure
     try:
         absent.should(
@@ -106,7 +132,9 @@ def test_should_be_present__via_inline_Match__passed_and_failed(session_browser)
         assert (
             "browser.element(('css selector', '#absent')).not (absent)\n"
             '\n'
-            'Reason: ConditionMismatch: condition not matched\n'
+            'Reason: NoSuchElementException: no such element: Unable to locate element: '
+            '{"method":"css selector","selector":"#absent"}\n'
+            '  (Session info: '  # 'chrome=126.0.6478.182); For documentation on this error, '
         ) in str(error)
     # ↪ compared to ↙
     # - with actual failure but wrapped into test on negated inversion via Condition.as_not
@@ -148,9 +176,19 @@ def test_should_be_present__via_inline_Match__passed_and_failed(session_browser)
         pytest.fail('expected failure')
     except AssertionError as error:
         assert (
+            'Message: \n'
+            '\n'
+            'Timed out after 0.1s, while waiting for:\n'
             "browser.element(('css selector', '#absent')).not (absent)\n"
             '\n'
-            'Reason: ConditionMismatch: condition not matched\n'
+            'Reason: NoSuchElementException: Message: no such element: Unable to locate '
+            'element: {"method":"css selector","selector":"#absent"}\n'
+            '  (Session info: '  # 'chrome=126.0.6478.182); For documentation on this error, '
+            # 'please visit: '
+            # 'https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception\n'
+            # ':\n'
+            # 'condition not matched; For documentation on this error, please visit: '
+            # 'https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception\n'
         ) in str(error)
     # - with actual mismatch on inversion (without 'is' prefix in name)
     try:
