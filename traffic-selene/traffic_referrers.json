@@ -1,52 +1,52 @@
 [
   {
     "referrer": "Google",
-    "count": 191,
-    "uniques": 64
+    "count": 200,
+    "uniques": 69
   },
   {
     "referrer": "github.com",
-    "count": 125,
-    "uniques": 27
+    "count": 129,
+    "uniques": 29
   },
   {
     "referrer": "school.qa.guru",
-    "count": 93,
+    "count": 96,
     "uniques": 3
   },
   {
     "referrer": "DuckDuckGo",
-    "count": 73,
-    "uniques": 67
+    "count": 75,
+    "uniques": 69
   },
   {
     "referrer": "ecosia.org",
-    "count": 33,
-    "uniques": 31
+    "count": 35,
+    "uniques": 33
   },
   {
     "referrer": "yandex.ru",
-    "count": 20,
+    "count": 16,
     "uniques": 11
   },
   {
     "referrer": "yashaka.github.io",
-    "count": 10,
+    "count": 9,
     "uniques": 5
   },
   {
-    "referrer": "Bing",
-    "count": 7,
-    "uniques": 2
-  },
-  {
-    "referrer": "memotut.com",
-    "count": 7,
+    "referrer": "kit-docs.internal.eng.qops.net",
+    "count": 5,
     "uniques": 1
   },
   {
-    "referrer": "pypi.org",
-    "count": 5,
-    "uniques": 4
+    "referrer": "automated-testing.info",
+    "count": 4,
+    "uniques": 2
+  },
+  {
+    "referrer": "qa.guru",
+    "count": 4,
+    "uniques": 2
   }
 ]
