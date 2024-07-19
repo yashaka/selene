@@ -144,7 +144,7 @@ def test_should_be_present__via_inline_Match__passed_and_failed(session_browser)
             Condition.as_not(
                 Condition(
                     'present',
-                    test=ConditionMismatch._to_raise_if_not_actual(
+                    ConditionMismatch._to_raise_if_not_actual(
                         query=lambda element: element.locate(),
                         by=lambda actual: actual is not None,
                     ),

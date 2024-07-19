@@ -24,7 +24,9 @@ from selene import by, have
 
 def test_search(browser):
     browser.open('https://www.ecosia.org/')
-    browser.element(by.name('q')).type('github yashaka/selene python').press_enter()
+    browser.element(by.name('q')).type(
+        'github yashaka/selene python User-oriented API'
+    ).press_enter()
 
     browser.all('.web-result').first.element('.result__link').click()
 
