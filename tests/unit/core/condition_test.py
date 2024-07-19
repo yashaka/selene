@@ -526,6 +526,145 @@ def test___init__renamed_match_not__of_constructed_via__init__actual_by_compared
         assert 'condition not matched' == str(error)
 
 
-# TODO: add InvalidCompareError tests (positive and negative)
+def test_constructed_via_Match__init__actual_by_n_falsy_exc__compared():
+    # GIVEN
+    # - compare definition
+    nth_positive__________________ = lambda number: Match(
+        f'element number {number} is positive',
+        actual=lambda iterable: iterable[number - 1],
+        by=lambda nth: nth > 0,
+    )
+    nth_positive__falsy_IndexError = lambda number: Match(
+        f'element number {number} is positive',
+        actual=lambda iterable: iterable[number - 1],
+        by=lambda nth: nth > 0,
+        _falsy_exceptions=(AssertionError, IndexError),
+    )
+
+    # THEN as is
+    # - compare name
+    assert 'element number 2 is positive' == str(nth_positive__________________(2))
+    assert 'element number 2 is positive' == str(nth_positive__falsy_IndexError(2))
+    # - compare pass
+    nth_positive__________________(2)._test([0, 1, 0])
+    nth_positive__falsy_IndexError(2)._test([0, 1, 0])
+    # - compare fail (mismatch)
+    try:
+        nth_positive__________________(3)([0, 1, 0])
+        pytest.fail('on mismatch')
+    except AssertionError as error:
+        assert 'actual: 0' == str(error)
+    try:
+        nth_positive__falsy_IndexError(3)([0, 1, 0])
+        pytest.fail('on mismatch')
+    except AssertionError as error:
+        assert 'actual: 0' == str(error)
+    # - compare fail (IndexError) vs fail (AssertionError)
+    try:
+        nth_positive__________________(4)([0, 1, 0])
+        pytest.fail('on failure')
+    except IndexError as error:  # ⬅️❗
+        assert 'list index out of range' == str(error)
+    try:
+        nth_positive__falsy_IndexError(4)([0, 1, 0])
+        pytest.fail('on failure')
+    except AssertionError as error:  # ⬅️❗️
+        assert 'list index out of range' == str(error)
+
+    # THEN inverted
+    # - compare name
+    assert 'not (element number 2 is positive)' == str(
+        nth_positive__________________(2).not_
+    )
+    assert 'not (element number 2 is positive)' == str(
+        nth_positive__falsy_IndexError(2).not_
+    )
+    # - compare pass (inverted mismatch)
+    nth_positive__________________(3).not_([0, 1, 0])
+    nth_positive__falsy_IndexError(3).not_([0, 1, 0])
+    # - compare fail vs pass (inverted failure)
+    try:
+        nth_positive__________________(4).not_([0, 1, 0])
+        pytest.fail('on failure')
+    except IndexError as error:  # ⬅️❗
+        assert 'list index out of range' == str(error)
+    nth_positive__falsy_IndexError(4).not_([0, 1, 0])
+    # - compare fail (inverted mismatch)
+    try:
+        nth_positive__________________(2).not_([0, 1, 0])
+        pytest.fail('on mismatch')
+    except AssertionError as error:
+        assert 'actual: 1' == str(error)
+    try:
+        nth_positive__falsy_IndexError(2).not_([0, 1, 0])
+        pytest.fail('on mismatch')
+    except AssertionError as error:
+        assert 'actual: 1' == str(error)
+
+    # THEN renamed inverted
+    # - compare name
+    assert 'not (2nd is positive)' == str(
+        Match('2nd is positive', by=nth_positive__________________(2)).not_
+    )
+    assert 'not (2nd is positive)' == str(
+        Match('2nd is positive', by=nth_positive__falsy_IndexError(2)).not_
+    )
+    # - compare pass (inverted mismatch)
+    Match('3rd is positive', by=nth_positive__________________(3)).not_([0, 1, 0])
+    Match('3rd is positive', by=nth_positive__falsy_IndexError(3)).not_([0, 1, 0])
+    # - compare fail vs pass (inverted failure)
+    try:
+        Match('4th is positive', by=nth_positive__________________(4)).not_([0, 1, 0])
+        pytest.fail('on failure')
+    except IndexError as error:
+        assert 'list index out of range' == str(error)
+    Match('4th is positive', by=nth_positive__falsy_IndexError(4)).not_([0, 1, 0])
+    # - compare fail (inverted mismatch)
+    try:
+        Match('2nd is positive', by=nth_positive__________________(2)).not_([0, 1, 0])
+        pytest.fail('on mismatch')
+    except AssertionError as error:
+        assert 'condition not matched' == str(error)  # 😢 # todo: can we improve it?
+    try:
+        Match('2nd is positive', by=nth_positive__falsy_IndexError(2)).not_([0, 1, 0])
+        pytest.fail('on mismatch')
+    except AssertionError as error:
+        assert 'condition not matched' == str(error)
+
+    # THEN inverted renamed
+    # - compare name
+    assert '2nd is negative or zero' == str(
+        Match('2nd is negative or zero', by=nth_positive__________________(2).not_)
+    )
+    assert '2nd is negative or zero' == str(
+        Match('2nd is negative or zero', by=nth_positive__falsy_IndexError(2).not_)
+    )
+    # - compare pass (inverted mismatch)
+    Match('3rd is negative or zero', by=nth_positive__________________(3).not_)(
+        [0, 1, 0]
+    )
+    Match('3rd is negative or zero', by=nth_positive__falsy_IndexError(3).not_)(
+        [0, 1, 0]
+    )
+    # - compare fail vs pass (inverted failure)
+    try:
+        Match('4th is negative or zero', by=nth_positive__________________(4).not_)(
+            [0, 1, 0]
+        )
+        pytest.fail('on failure')
+    except IndexError as error:
+        assert 'list index out of range' == str(error)
+    Match('4th is negative or zero', by=nth_positive__falsy_IndexError(4).not_)(
+        [0, 1, 0]
+    )
+    # - compare fail (inverted mismatch)
+    try:
+        Match('2nd is negative or zero', by=nth_positive__________________(2).not_)(
+            [0, 1, 0]
+        )
+        pytest.fail('on mismatch')
+    except AssertionError as error:
+        assert 'actual: 1' == str(error)
+
 
 # TODO: cover subclass based conditions

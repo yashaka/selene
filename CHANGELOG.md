@@ -160,10 +160,6 @@ check vscode pylance, mypy, jetbrains qodana...
 
 consider customizing them via config
 
-### TODO: when to Match we pass by as Condition, that has its own _falsy_exceptions...
-
-should not we take them to set below, or at least override our default?
-
 ### Deprecated conditions
 
 - `be.present` in favor of `be.present_in_dom`

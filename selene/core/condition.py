@@ -1065,6 +1065,7 @@ class Condition(Generic[E]):
         _by: Predicate[R] | None = None,
         _describe_actual_result: Lambda[R, str] | None = None,
         _inverted=False,
+        # todo: should we find more "human-readable" name? like in Wait(at_most) over Wait(timeout)
         _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
     ):
         # can be already stored
@@ -1699,9 +1700,14 @@ class Match(Condition[E]):
                 name,
                 by,
                 _inverted=_inverted,
-                # TODO: since by is Condition, already defined with its _falsy_exceptions...
-                #       should not we take them to set below, or at least override our default?
                 _falsy_exceptions=_falsy_exceptions,
+                # Seems like the following is not needed, because by will catch everything internally
+                #       – See also unit tests for this case
+                # todo: once finalized naming of falsy_exceptions, consider making it protected
+                #       for easier access in cases like here...
+                # _falsy_exceptions=getattr(
+                #     by, f'_{by.__class__.__name__}__falsy_exceptions', _falsy_exceptions
+                # ),
             )
         else:
             # todo: fix "cannot infer type of argument 1 of __init__" or ignore
