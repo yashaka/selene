@@ -220,6 +220,8 @@ Or, by using non-waiting versions, if "you are in a rush:)"::
 
 """
 
+from selene.core import match  # noqa
+
 # """
 # Just types...
 # """
