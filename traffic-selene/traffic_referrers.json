@@ -1,8 +1,8 @@
 [
   {
     "referrer": "Google",
-    "count": 199,
-    "uniques": 69
+    "count": 214,
+    "uniques": 77
   },
   {
     "referrer": "github.com",
@@ -16,18 +16,18 @@
   },
   {
     "referrer": "DuckDuckGo",
-    "count": 75,
-    "uniques": 69
+    "count": 83,
+    "uniques": 77
   },
   {
     "referrer": "ecosia.org",
-    "count": 34,
-    "uniques": 33
+    "count": 36,
+    "uniques": 35
   },
   {
     "referrer": "yandex.ru",
-    "count": 16,
-    "uniques": 11
+    "count": 19,
+    "uniques": 12
   },
   {
     "referrer": "yashaka.github.io",

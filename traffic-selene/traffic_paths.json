@@ -2,20 +2,20 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 339,
-    "uniques": 216
+    "count": 368,
+    "uniques": 226
+  },
+  {
+    "path": "/yashaka/selene/issues",
+    "title": "Issues · yashaka/selene · GitHub",
+    "count": 36,
+    "uniques": 17
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
     "count": 36,
     "uniques": 13
-  },
-  {
-    "path": "/yashaka/selene/issues",
-    "title": "Issues · yashaka/selene · GitHub",
-    "count": 32,
-    "uniques": 15
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
@@ -36,6 +36,12 @@
     "uniques": 3
   },
   {
+    "path": "/yashaka/selene/issues/548",
+    "title": "Screenshots and page source saved erroneously with save_screenshot_on_failure...",
+    "count": 13,
+    "uniques": 11
+  },
+  {
     "path": "/yashaka/selene/blob/master/examples/run_remote_in_android_app_with_options_for_browserstack/version_4__app_fixture_style/test_wikipedia.py",
     "title": "selene/examples/run_remote_in_android_app_with_options_for_browserstack/versi...",
     "count": 13,
@@ -48,15 +54,9 @@
     "uniques": 2
   },
   {
-    "path": "/yashaka/selene/issues/188",
-    "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
+    "path": "/yashaka/selene/releases/tag/2.0.0rc9",
+    "title": "Release 2.0.0rc9 · yashaka/selene · GitHub",
     "count": 11,
-    "uniques": 8
-  },
-  {
-    "path": "/yashaka/selene/releases",
-    "title": "Releases · yashaka/selene",
-    "count": 10,
-    "uniques": 5
+    "uniques": 9
   }
 ]
