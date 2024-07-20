@@ -25,6 +25,9 @@ import abc
 import itertools
 import typing
 from abc import ABC, abstractmethod
+from types import MappingProxyType
+
+from typing_extensions import Literal, Dict, cast
 
 from selenium.webdriver.common.options import BaseOptions
 from selenium.webdriver.common.service import Service
@@ -104,6 +107,11 @@ class Browser(WaitingEntity['Browser']):
         _match_only_visible_elements_texts: bool = True,
         _match_only_visible_elements_size: bool = False,
         _match_ignoring_case: bool = False,
+        _placeholders_to_match_elements: Dict[
+            Literal['exactly_one', 'zero_or_one', 'one_or_more', 'zero_or_more'], Any
+        ] = cast(  # noqa
+            dict, MappingProxyType({})
+        ),
         # Etc.
         _build_wait_strategy: Callable[[Config], Callable[[E], Wait[E]]] = ...,
     ) -> Browser: ...

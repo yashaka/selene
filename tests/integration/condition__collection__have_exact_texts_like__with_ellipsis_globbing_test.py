@@ -778,7 +778,7 @@ def test_exact_texts_like__with_default_doubled_globs(
     # TODO: cover other "doubled" cases?
 
 
-def test_exact_texts_like__where_overrides_original_globs(
+def test_exact_texts_like__overrides_original_globs__compared(
     session_browser,
 ):
     browser = session_browser.with_(timeout=0.1)
@@ -796,10 +796,94 @@ def test_exact_texts_like__where_overrides_original_globs(
         '''
     )
 
+    # no override
+    # - pass on have
+    browser.all('li').should(
+        have._exact_texts_like(..., 'Two', ..., "'Five'", 6, "'7'")
+    )
+    # - pass on have no (mismatch on wrong placeholder)
+    browser.all('li').should(
+        have.no._exact_texts_like(..., 'Two', ..., "'Five'", 6, "'7'", (...,))
+    )
+    # - pass on have no (mismatch on wrong element)
+    browser.all('li').should(
+        have.no._exact_texts_like(..., 'Two', ..., "'Five'", 6, '7')
+    )
+
+    # override via config
+    # - pass on have
+    browser.with_(_placeholders_to_match_elements=dict(one_or_more=(...,))).all(
+        'li'
+    ).should(have._exact_texts_like((...,), 'Two', (...,), "'Five'", 6, "'7'"))
+    # - pass on have no (mismatch on wrong placeholder)
+    browser.with_(_placeholders_to_match_elements=dict(one_or_more=(...,))).all(
+        'li'
+    ).should(
+        have.no._exact_texts_like((...,), 'Two', (...,), "'Five'", 6, "'7'", [...])
+    )
+    # - pass on have no (mismatch on wrong element)
+    browser.with_(_placeholders_to_match_elements=dict(one_or_more=(...,))).all(
+        'li'
+    ).should(have.no._exact_texts_like((...,), 'Two', (...,), "'Five'", 6, '7'))
+
+    # override via config to empty dict (keeps original defaults)
+    # - pass on have
+    browser.with_(_placeholders_to_match_elements=dict()).all('li').should(
+        have._exact_texts_like(..., 'Two', ..., "'Five'", 6, "'7'")
+    )
+    # - pass on have no (mismatch on wrong placeholder)
+    browser.with_(_placeholders_to_match_elements=dict()).all('li').should(
+        have.no._exact_texts_like(..., 'Two', ..., "'Five'", 6, "'7'", (...,))
+    )
+    # - pass on have no (mismatch on wrong element)
+    browser.with_(_placeholders_to_match_elements=dict()).all('li').should(
+        have.no._exact_texts_like(..., 'Two', ..., "'Five'", 6, '7')
+    )
+
+    # override via where
+    # - pass on have
+    browser.all('li').should(
+        have._exact_texts_like((...,), 'Two', (...,), "'Five'", 6, "'7'").where(
+            one_or_more=(...,)
+        )
+    )
+    # - pass on have no (mismatch on wrong placeholder)
     browser.all('li').should(
         have.no._exact_texts_like(
-            (...,), 'Two', (...,), 4, "'Five'", 6, '7', [...]
+            (...,), 'Two', (...,), "'Five'", 6, "'7'", [...]
         ).where(one_or_more=(...,))
+    )
+    # - pass on have no (mismatch on wrong element)
+    browser.all('li').should(
+        have.no._exact_texts_like((...,), 'Two', (...,), "'Five'", 6, '7').where(
+            one_or_more=(...,)
+        )
+    )
+
+    # override via where overrides overridden config
+    # - pass on have
+    browser.with_(_placeholders_to_match_elements=dict(one_or_more=[...])).all(
+        'li'
+    ).should(
+        have._exact_texts_like((...,), 'Two', (...,), "'Five'", 6, "'7'").where(
+            one_or_more=(...,)
+        )
+    )
+    # - pass on have no (mismatch on wrong placeholder)
+    browser.with_(_placeholders_to_match_elements=dict(one_or_more=[...])).all(
+        'li'
+    ).should(
+        have.no._exact_texts_like(
+            (...,), 'Two', (...,), "'Five'", 6, "'7'", [...]
+        ).where(one_or_more=(...,))
+    )
+    # - pass on have no (mismatch on wrong element)
+    browser.with_(_placeholders_to_match_elements=dict(one_or_more=[...])).all(
+        'li'
+    ).should(
+        have.no._exact_texts_like((...,), 'Two', (...,), "'Five'", 6, '7').where(
+            one_or_more=(...,)
+        )
     )
 
 

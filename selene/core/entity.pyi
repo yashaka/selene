@@ -2,6 +2,7 @@ import abc
 import itertools
 import typing
 from abc import ABC, abstractmethod
+from types import MappingProxyType
 
 from selenium.webdriver.common.options import BaseOptions
 from selenium.webdriver.common.service import Service
@@ -22,7 +23,19 @@ from selene.support.webdriver import WebHelper as WebHelper
 from selenium.webdriver.remote.switch_to import SwitchTo as SwitchTo
 from selenium.webdriver.remote.webdriver import WebDriver as WebDriver
 from selenium.webdriver.remote.webelement import WebElement
-from typing import Callable, Iterable, Optional, Tuple, TypeVar, Union, Any, Generic
+from typing_extensions import (
+    Callable,
+    Iterable,
+    Optional,
+    Tuple,
+    TypeVar,
+    Union,
+    Any,
+    Generic,
+    Dict,
+    Literal,
+    cast,
+)
 
 E = TypeVar('E', bound='Assertable')
 R = TypeVar('R')
@@ -88,6 +101,11 @@ class Element(WaitingEntity['Element']):
         _match_only_visible_elements_texts: bool = True,
         _match_only_visible_elements_size: bool = False,
         _match_ignoring_case: bool = False,
+        _placeholders_to_match_elements: Dict[
+            Literal['exactly_one', 'zero_or_one', 'one_or_more', 'zero_or_more'], Any
+        ] = cast(  # noqa
+            dict, MappingProxyType({})
+        ),
         # Etc.
         _build_wait_strategy: Callable[[Config], Callable[[E], Wait[E]]] = ...,
     ) -> Element: ...
@@ -153,6 +171,11 @@ class Collection(WaitingEntity['Collection'], Iterable[Element]):
         _match_only_visible_elements_texts: bool = True,
         _match_only_visible_elements_size: bool = False,
         _match_ignoring_case: bool = False,
+        _placeholders_to_match_elements: Dict[
+            Literal['exactly_one', 'zero_or_one', 'one_or_more', 'zero_or_more'], Any
+        ] = cast(  # noqa
+            dict, MappingProxyType({})
+        ),
         # Etc.
         _build_wait_strategy: Callable[[Config], Callable[[E], Wait[E]]] = ...,
     ) -> Collection: ...

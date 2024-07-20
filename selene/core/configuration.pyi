@@ -20,7 +20,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 import itertools
-from typing import Callable, Optional, Any, Union
+from types import MappingProxyType
+
+from typing_extensions import Callable, Optional, Any, Union, Dict, Literal, cast
 
 from selenium.webdriver.common.options import BaseOptions
 from selenium.webdriver.common.service import Service
@@ -101,6 +103,9 @@ class Config:
     _match_only_visible_elements_texts: bool = True
     _match_only_visible_elements_size: bool = False
     _match_ignoring_case: bool = False
+    _placeholders_to_match_elements: Dict[
+        Literal['exactly_one', 'zero_or_one', 'one_or_more', 'zero_or_more'], Any
+    ] = cast(dict, MappingProxyType({}))
     # Etc.
     _build_wait_strategy: Callable[[Config], Callable[[E], Wait[E]]] = ...
     _executor: _DriverStrategiesExecutor = ...
@@ -158,6 +163,11 @@ class Config:
         _match_only_visible_elements_texts: bool = True,
         _match_only_visible_elements_size: bool = False,
         _match_ignoring_case: bool = False,
+        _placeholders_to_match_elements: Dict[
+            Literal['exactly_one', 'zero_or_one', 'one_or_more', 'zero_or_more'], Any
+        ] = cast(  # noqa
+            dict, MappingProxyType({})
+        ),
         # Etc.
         _build_wait_strategy: Callable[[Config], Callable[[E], Wait[E]]] = ...,
     ): ...
@@ -214,6 +224,11 @@ class Config:
         _match_only_visible_elements_texts: bool = True,
         _match_only_visible_elements_size: bool = False,
         _match_ignoring_case: bool = False,
+        _placeholders_to_match_elements: Dict[
+            Literal['exactly_one', 'zero_or_one', 'one_or_more', 'zero_or_more'], Any
+        ] = cast(  # noqa
+            dict, MappingProxyType({})
+        ),
         # Etc.
         _build_wait_strategy: Callable[[Config], Callable[[E], Wait[E]]] = ...,
     ): ...

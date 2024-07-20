@@ -28,9 +28,11 @@ import itertools
 import os
 import time
 import warnings
+from types import MappingProxyType
+
 import typing_extensions as typing
 from selenium.common import WebDriverException
-from typing_extensions import Callable, Optional, Any, TypeVar
+from typing_extensions import Callable, Optional, Any, TypeVar, Dict, Literal, cast
 
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.options import BaseOptions
@@ -1165,6 +1167,54 @@ class Config:
     #         but it will not :(
     # todo: consider documenting the major list of conditions that are affected by this option
     _match_ignoring_case: bool = False
+    # TODO: find the best name...
+    #       compare:
+    #       > _placeholders_to_match_elements
+    #       > _placeholders_to_list_globs
+    #       > _placeholders_for_list_globs
+    #       > _placeholders_for_list_globs_to_match
+    _placeholders_to_match_elements: Dict[
+        Literal['zero_or_one', 'exactly_one', 'one_or_more', 'zero_or_more'], Any
+    ] = cast(dict, MappingProxyType({}))
+    """A dict of default placeholders to be used among values passed to Selene
+    collection conditions like `have._texts_like(*values)`. Such values then can
+    be considered as a list globbing pattern, where a defined placeholder will
+
+    match the corresponding to placeholder type number of ANY elements.
+
+    The default list globbing placeholders are:
+
+    - `[{...}]` matches **zero or one** item of any text in the list
+    - `{...}` matches **exactly one** item of any text in the list
+    - `...` matches one **or more** items of any text in the list
+    - `[...]` matches **zero** or more items of any text in the list
+
+    Thus, using this option you can redefine them. Assuming, you don't like, that
+    `...` matches "one or more" and want it to match "exactly one" instead, then
+    you can set the following defaults:
+
+    ```python
+    from selene import browser
+
+    ...
+    # GIVEN default placeholders
+    browser.all('.number0-9').should(have._texts_like([{...}], 0, {...}, 2, ...))
+
+    # WHEN
+    browser.config._placeholders_to_match_elements = {
+        'zero_or_one': '[...]',
+        'exactly_one': '...',
+        'one_or_more': '(...,)',
+        'zero_or_more': '[(...,)]',
+    }
+
+    # THEN
+    browser.all('.number0-9').should(have._texts_like([...], 0, ..., 2, (...,)))
+    ```
+
+    All globbing placeholders can be mixed in the same list of expected item values
+    in any order.
+    * """
 
     # TODO: better name? now technically it's not a decorator but decorator_builder...
     # or decorator_factory...

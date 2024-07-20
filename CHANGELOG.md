@@ -152,11 +152,15 @@ check vscode pylance, mypy, jetbrains qodana...
 
 ### TODO: consider removing experimantal mark from `ConditionMismatch._to_raise_if_not`
 
-## 2.0.0rc10: «copy&paste, frames, shadow & texts_like» (to be released on DD.05.2024)
-
 ### TODO: consider regex support via .pattern prop (similar to .ignore_case) (#537)
 
-### TODO: customize ... vs (...,) as one_or_more, etc. – via config option
+## 2.0.0rc10: «copy&paste, frames, shadow & texts_like» (to be released on DD.05.2024)
+
+### TODO: in addition to browser – _page for pure web and _device for pure mobile?
+
+### TODO: Location strategy?
+
+### TODO: basic Element descriptors?
 
 ### Deprecated conditions
 
@@ -270,7 +274,7 @@ List of collection conditions added (still marked as experimental with `_` prefi
 
 Where:
 
-- default list glob placeholders are:
+- default list globbing placeholders are:
   - `[{...}]` matches **zero or one** item of any text in the list
   - `{...}` matches **exactly one** item of any text in the list
   - `...` matches one **or more** items of any text in the list

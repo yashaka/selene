@@ -961,40 +961,29 @@ class _exact_texts_like(Condition[Collection]):
     """
     _MATCHING_EMPTY_STRING_MARKER = '‹EMTPY_STRING›'
     _RENDERING_SEPARATOR = ', '
+    # todo: consider customizing via config
     _RENDERING_TRANSLATIONS = (
         ({...}, '{...}'),
         ([{...}], '[{...}]'),
         (..., '...'),
         ([...], '[...])'),
-    )
-    # initially designed version
-    __X_RENDERING_TRANSLATIONS = (
-        (..., '...'),
-        ([...], '[...]'),
+        # was added to support a bit more placeholder renderings
         ((...,), '(...,)'),
         ([(...,)], '[(...,)])'),
     )
 
     _PredefinedPatternType = Literal[
-        'exactly_one', 'zero_or_one', 'one_or_more', 'zero_or_more'
+        'zero_or_one', 'exactly_one', 'one_or_more', 'zero_or_more'
     ]
 
-    # TODO: consider to redefine on self (or other options),
-    #  to get fresh version of _MATCHING_SEPARATOR if it was patched
+    # todo: consider to redefine on self (or other options),
+    #       to get fresh version of _MATCHING_SEPARATOR if it was patched
+    # todo: consider customizing via config
     _PredefinedGlobPatterns: Dict[_PredefinedPatternType, str] = dict(
-        # TODO: ensure correctness of patterns
         exactly_one=r'[^' + _MATCHING_SEPARATOR + r']+',
         zero_or_one=r'[^' + _MATCHING_SEPARATOR + r']*',
         one_or_more=r'.+?',
         zero_or_more=r'.*?',
-    )
-
-    # todo: initial default globs version
-    __X_DEFAULT_GLOBS: Tuple[Tuple[Any, str], ...] = (
-        (..., _PredefinedGlobPatterns['exactly_one']),
-        ([...], _PredefinedGlobPatterns['zero_or_one']),
-        ((...,), _PredefinedGlobPatterns['one_or_more']),
-        ([(...,)], _PredefinedGlobPatterns['zero_or_more']),
     )
 
     _DEFAULT_GLOBS: Tuple[Tuple[Any, str], ...] = (
@@ -1018,7 +1007,7 @@ class _exact_texts_like(Condition[Collection]):
         super().__init__(lambda _: self.__str__(), self.__call__)
         self._expected = expected
         self._inverted = _inverted
-        self._globs = _globs if _globs else _exact_texts_like._DEFAULT_GLOBS
+        self._globs = _globs
         self._name_prefix = _name_prefix
         self._name = _name
         self._flags = _flags
@@ -1088,11 +1077,19 @@ class _exact_texts_like(Condition[Collection]):
             _flags=self._flags,
         )
 
-    @property
-    def _glob_markers(self):
-        return [glob_marker for glob_marker, _ in self._globs]
+    def __globs_from(
+        self, *, placeholders: Dict[_exact_texts_like._PredefinedPatternType, Any]
+    ) -> Tuple[Tuple[Any, str], ...]:
+        return tuple(
+            (glob_marker, self._PredefinedGlobPatterns[glob_pattern_type])
+            for glob_pattern_type, glob_marker in placeholders.items()
+        )
 
     def __call__(self, entity: Collection):
+        entity_globs = self.__globs_from(
+            placeholders=entity.config._placeholders_to_match_elements
+        )
+        globs = self._globs or entity_globs or _exact_texts_like._DEFAULT_GLOBS
 
         actual_texts = (
             [
@@ -1107,7 +1104,7 @@ class _exact_texts_like(Condition[Collection]):
         # TODO: consider moving to self
         zero_like = lambda item_marker: item_marker in [
             marker
-            for marker, pattern in self._globs
+            for marker, pattern in globs
             if pattern
             in (
                 _exact_texts_like._PredefinedGlobPatterns['zero_or_one'],
@@ -1149,9 +1146,7 @@ class _exact_texts_like(Condition[Collection]):
         actual_to_render = _exact_texts_like._RENDERING_SEPARATOR.join(actual_texts)
 
         glob_pattern_by = lambda marker: next(  # noqa
-            glob_pattern
-            for glob_marker, glob_pattern in self._globs
-            if glob_marker == marker
+            glob_pattern for glob_marker, glob_pattern in globs if glob_marker == marker
         )
         with_added_empty_string_marker = lambda item: (
             str(item) if item != '' else _exact_texts_like._MATCHING_EMPTY_STRING_MARKER
@@ -1176,7 +1171,7 @@ class _exact_texts_like(Condition[Collection]):
                         + (
                             self._process_patterns(with_added_empty_string_marker(item))
                             + MATCHING_SEPARATOR
-                            if item not in self._glob_markers
+                            if item not in [glob_marker for glob_marker, _ in globs]
                             else (
                                 glob_pattern_by(item)
                                 + MATCHING_SEPARATOR
