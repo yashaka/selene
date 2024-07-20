@@ -2,6 +2,7 @@ from typing import Optional
 
 import selene
 from selene import command, be, have, query
+from selene.support._pom import _Element
 from tests.integration.helpers.givenpage import GivenPage
 
 
@@ -151,15 +152,34 @@ def test_drags_source_and_drops_it_to_target_with_forced_retry(session_browser):
     browser.element('#target2').element('#draggable').should(be.present_in_dom)
 
 
-class ReactContinuousSlider:
+# Example of the classic OOP-like PageObject pattern
+class __X_ReactContinuousSlider:
     def __init__(self, browser: Optional[selene.Browser]):
         self.browser = browser if browser else selene.browser
-        self.container = self.browser.element('#ContinuousSlider+*')
-        self.thumb = self.container.element('.MuiSlider-thumb')
+        self.context = self.browser.element('#ContinuousSlider+*')
+
+        self.thumb = self.context.element('.MuiSlider-thumb')
         self.thumb_input = self.thumb.element('input')
-        self.volume_up = self.container.element('[data-testid=VolumeUpIcon]')
-        self.volume_down = self.container.element('[data-testid=VolumeDownIcon]')
-        self.rail = self.container.element('.MuiSlider-rail')
+        self.volume_up = self.context.element('[data-testid=VolumeUpIcon]')
+        self.volume_down = self.context.element('[data-testid=VolumeDownIcon]')
+        self.rail = self.context.element('.MuiSlider-rail')
+
+    def open(self):
+        self.browser.open('https://mui.com/material-ui/react-slider/#ContinuousSlider')
+        return self
+
+
+# Example of the POM-like PageObject pattern
+class ReactContinuousSlider:
+    thumb = _Element('.MuiSlider-thumb')
+    thumb_input = thumb.Element('input')
+    volume_up = _Element('[data-testid=VolumeUpIcon]')
+    volume_down = _Element('[data-testid=VolumeDownIcon]')
+    rail = _Element('.MuiSlider-rail')
+
+    def __init__(self, browser: Optional[selene.Browser]):
+        self.browser = browser or selene.browser
+        self.context = self.browser.element('#ContinuousSlider+*')
 
     def open(self):
         self.browser.open('https://mui.com/material-ui/react-slider/#ContinuousSlider')

@@ -160,7 +160,7 @@ check vscode pylance, mypy, jetbrains qodana...
 
 ### TODO: Location strategy?
 
-### TODO: basic Element descriptors?
+### DOING: basic Element descriptors?
 
 ### Deprecated conditions
 
