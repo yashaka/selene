@@ -188,7 +188,7 @@ def test_exact_texts_like__with_default_exactly_one_and_zero_or_more(
             'Zero',
             1,
             'Two',
-            [(...,)],  # means zero or MORE and so does match 2 texts
+            [...],  # means zero or MORE and so does match 2 texts
             "'Five'",
             6,
             7,  # here list ends
@@ -197,10 +197,10 @@ def test_exact_texts_like__with_default_exactly_one_and_zero_or_more(
 
     browser.all('li').should(
         have._exact_texts_like(
-            ...,
+            {...},
             1,
             'Two',
-            [(...,)],  # means zero or MORE and so does match 2 texts
+            [...],  # means zero or MORE and so does match 2 texts
             "'Five'",
             6,
             '7',  # here list ends
@@ -209,10 +209,10 @@ def test_exact_texts_like__with_default_exactly_one_and_zero_or_more(
 
     browser.all('li').should(
         have._exact_texts_like(
-            ...,
-            ...,
+            {...},
+            {...},
             'Two',
-            [(...,)],  # means zero or MORE and so does match 2 texts
+            [...],  # means zero or MORE and so does match 2 texts
             "'Five'",
             6,
             '7',
@@ -221,47 +221,47 @@ def test_exact_texts_like__with_default_exactly_one_and_zero_or_more(
 
     browser.all('li').should(
         have._exact_texts_like(
-            ...,
-            ...,
+            {...},
+            {...},
             'Two',
-            [(...,)],  # means zero or MORE and so does match 2 texts
+            [...],  # means zero or MORE and so does match 2 texts
             "'Five'",
-            ...,
-            ...,
+            {...},
+            {...},
         )
     )
 
     browser.all('li').should(
         have._exact_texts_like(
-            ...,
-            ...,
+            {...},
+            {...},
             'Two',
-            ...,
+            {...},
             4,
             "'Five'",
             6,
-            ...,  # means exactly one and so does match 1 text
+            {...},  # means exactly one and so does match 1 text
         )
     )
 
     browser.all('li').should(
         have._exact_texts_like(
-            ...,
-            ...,
+            {...},
+            {...},
             'Two',
-            ...,
+            {...},
             4,
             "'Five'",
             6,
-            (...,),  # means one or more and so does match 1 text
+            ...,  # means one or more and so does match 1 text
         )
     )
 
     browser.all('li').should(
         have.no._exact_texts_like(
-            ...,  # means exactly one and so does NOT match because of 2 texts (Zero, 1)
+            {...},  # means exactly one and does NOT match because of 2 texts (Zero, 1)
             'Two',
-            [(...,)],  # means zero or MORE and so does match 2 texts
+            [...],  # means zero or MORE and so does match 2 texts
             "'Five'",
             6,
             '7',
@@ -270,9 +270,9 @@ def test_exact_texts_like__with_default_exactly_one_and_zero_or_more(
 
     browser.all('li').should(
         have._exact_texts_like(
-            [(...,)],  # means zero or more and so does match 2 texts at start
+            [...],  # means zero or more and so does match 2 texts at start
             'Two',
-            ...,
+            {...},
             4,
             "'Five'",
             6,
@@ -282,25 +282,25 @@ def test_exact_texts_like__with_default_exactly_one_and_zero_or_more(
 
     browser.all('li').should(
         have._exact_texts_like(
-            ...,
-            ...,
+            {...},
+            {...},
             'Two',
-            ...,
+            {...},
             4,
             "'Five'",
             6,
             '7',  # here list ends
-            [(...,)],  # means ZERO or more and so does match 0 texts
+            [...],  # means ZERO or more and so does match 0 texts
         )
     )
 
     browser.all('li').should(
         have._exact_texts_like(
-            [(...,)],  # means ZERO or more and so does match 0 texts
+            [...],  # means ZERO or more and so does match 0 texts
             'Zero',  # here list STARTs
             1,
             'Two',
-            ...,
+            {...},
             4,
             "'Five'",
             6,
@@ -310,13 +310,13 @@ def test_exact_texts_like__with_default_exactly_one_and_zero_or_more(
 
     browser.all('li').should(
         have._exact_texts_like(
-            ...,
-            ...,
+            {...},
+            {...},
             'Two',
-            ...,
+            {...},
             4,
             "'Five'",
-            [(...,)],  # means ZERO or more and so does match 0 texts
+            [...],  # means ZERO or more and so does match 0 texts
             6,
             '7',
         )
@@ -324,12 +324,12 @@ def test_exact_texts_like__with_default_exactly_one_and_zero_or_more(
 
     browser.all('li').should(
         have.no._exact_texts_like(
-            ...,  # means exactly one and so does NOT match
+            {...},  # means exactly one and so does NOT match
             4,
             "'Five'",
             6,
             '7',
-            [(...,)],
+            [...],
         )
     )
 
@@ -355,75 +355,75 @@ def test_exact_texts_like__with_default_exactly_one_one_or_more_and_zero_or_more
 
     browser.all('li').should(
         have._exact_texts_like(
-            (...,),  # means zero or MORE and so does match 2 texts
+            ...,  # means zero or MORE and so does match 2 texts
             'Two',
-            [(...,)],
+            [...],
             "'Five'",
-            ...,
+            {...},
             '7',
         )
     )
 
     browser.all('li').should(
         have.no._exact_texts_like(
-            (...,),
-            'Two',
-            [(...,)],
-            "'Five'",
             ...,
-            ...,  # means zero or MORE and so does NOT match this absent text
+            'Two',
+            [...],
+            "'Five'",
+            {...},
+            {...},  # means zero or MORE and so does NOT match this absent text
             '7',
         )
     )
 
     browser.all('li').should(
         have._exact_texts_like(
-            ...,
-            ...,
+            {...},
+            {...},
             'Two',
-            [(...,)],
+            [...],
             "'Five'",
             '6',
-            (...,),
+            ...,
         )
     )
 
     browser.all('li').should(
         have._exact_texts_like(
-            [(...,)],
+            [...],
             'Two',
-            ...,
-            ...,
+            {...},
+            {...},
             "'Five'",
             '6',
-            (...,),
+            ...,
         )
     )
 
     browser.all('li').should(
         have._exact_texts_like(
-            [(...,)],
+            [...],
             'Two',
-            ...,
-            ...,
+            {...},
+            {...},
             "'Five'",
-            [(...,)],
+            [...],
             '6',
-            (...,),
+            ...,
         )
     )
 
     browser.all('li').should(
         have._exact_texts_like(
-            [(...,)],
+            [...],
             'Two',
-            ...,
-            ...,
+            {...},
+            {...},
             "'Five'",
-            [(...,)],
+            [...],
             '6',
             7,
-            [(...,)],
+            [...],
         )
     )
 
@@ -450,59 +450,43 @@ def test_exact_texts_like__with_default_exactly_one_one_or_more_zero_or_more_zer
 
     browser.all('li').should(
         have._exact_texts_like(
-            [(...,)],
-            'Two',
-            ...,
-            4,
             [...],
+            'Two',
+            {...},
+            4,
+            [{...}],
             "'Five'",
-            (...,),
+            ...,
             8,
-            [(...,)],
+            [...],
         )
     )
 
     browser.all('li').should(
         have._exact_texts_like(
-            [(...,)],
-            'Two',
-            ...,
-            4,
             [...],
+            'Two',
+            {...},
+            4,
+            [{...}],
             6,
-            (...,),
+            ...,
             8,
-            [(...,)],
+            [...],
         )
     )
 
     browser.all('li').should(
         have.no._exact_texts_like(
-            [(...,)],
-            'Two',
-            ...,
-            4,
             [...],
+            'Two',
+            {...},
+            4,
+            [{...}],
             7,
-            (...,),
-            8,
-            [(...,)],
-        )
-    )
-
-    browser.all('li').should(
-        have._exact_texts_like(
-            [(...,)],
-            'Zero',
-            1,
-            'Two',
             ...,
-            4,
-            [...],
-            "'Five'",
-            (...,),
             8,
-            [(...,)],
+            [...],
         )
     )
 
@@ -512,11 +496,11 @@ def test_exact_texts_like__with_default_exactly_one_one_or_more_zero_or_more_zer
             'Zero',
             1,
             'Two',
-            ...,
+            {...},
             4,
-            [(...,)],
+            [{...}],
             "'Five'",
-            (...,),
+            ...,
             8,
             [...],
         )
@@ -524,28 +508,44 @@ def test_exact_texts_like__with_default_exactly_one_one_or_more_zero_or_more_zer
 
     browser.all('li').should(
         have._exact_texts_like(
-            [...],
+            [{...}],
+            'Zero',
             1,
             'Two',
-            ...,
+            {...},
             4,
-            [(...,)],
-            "'Five'",
-            (...,),
-            8,
             [...],
+            "'Five'",
+            ...,
+            8,
+            [{...}],
+        )
+    )
+
+    browser.all('li').should(
+        have._exact_texts_like(
+            [{...}],
+            1,
+            'Two',
+            {...},
+            4,
+            [...],
+            "'Five'",
+            ...,
+            8,
+            [{...}],
         )
     )
 
     browser.all('li').should(
         have.no._exact_texts_like(
-            [...],
+            [{...}],
             'Two',
-            ...,
+            {...},
             4,
-            [(...,)],
+            [...],
             "'Five'",
-            (...,),
+            ...,
             8,
             [...],
         )
@@ -553,30 +553,30 @@ def test_exact_texts_like__with_default_exactly_one_one_or_more_zero_or_more_zer
 
     browser.all('li').should(
         have._exact_texts_like(
-            [...],
+            [{...}],
             1,
             'Two',
-            ...,
+            {...},
             4,
-            [(...,)],
+            [...],
             "'Five'",
             6,
             7,
-            [...],
+            [{...}],
         )
     )
 
     browser.all('li').should(
         have.no._exact_texts_like(
-            [...],
+            [{...}],
             1,
             'Two',
-            ...,
+            {...},
             4,
-            [(...,)],
+            [...],
             "'Five'",
             6,
-            [...],
+            [{...}],
         )
     )
 
@@ -603,175 +603,175 @@ def test_exact_texts_like__with_default_doubled_globs(
 
     browser.all('li').should(
         have._exact_texts_like(
-            [(...,)],
+            [...],
             'Two',
-            ...,
+            {...},
             4,
-            [...],  # zero
-            [...],  # or two
+            [{...}],  # zero
+            [{...}],  # or two
             7,
             8,
-            [(...,)],
+            [...],
         )
     )
 
     browser.all('li').should(
         have.no._exact_texts_like(
-            [(...,)],
+            [...],
             'Two',
-            ...,
+            {...},
             4,
-            [...],  # zero
-            [...],  # or two
+            [{...}],  # zero
+            [{...}],  # or two
             8,
-            [(...,)],
+            [...],
         )
     )
 
     browser.all('li').should(
         have._exact_texts_like(
-            [(...,)],
+            [...],
             'Two',
-            ...,
+            {...},
             4,
-            [...],  # zero or one
-            [...],  # or two
+            [{...}],  # zero or one
+            [{...}],  # or two
             6,
             7,
             8,
-            [(...,)],
+            [...],
         )
     )
 
     browser.all('li').should(
         have._exact_texts_like(
-            [(...,)],
+            [...],
             'Two',
-            ...,
+            {...},
             4,
-            [...],  # zero or one
-            [...],  # or two
+            [{...}],  # zero or one
+            [{...}],  # or two
             "'Five'",
             6,
             7,
             8,
-            [(...,)],
+            [...],
         )
     )
 
     browser.all('li').should(
         have._exact_texts_like(
-            [(...,)],
+            [...],
             'Two',
-            ...,
+            {...},
             4,
-            ...,  # one
-            [...],  # or two
+            {...},  # one
+            [{...}],  # or two
             6,
             7,
             8,
-            [(...,)],
+            [...],
         )
     )
 
     browser.all('li').should(
         have.no._exact_texts_like(
-            [(...,)],
+            [...],
             'Two',
-            ...,
+            {...},
             4,
-            ...,  # one
-            [...],  # or two
+            {...},  # one
+            [{...}],  # or two
             "'Five'",
             6,
             7,
             8,
-            [(...,)],
+            [...],
         )
     )
 
     browser.all('li').should(
         have._exact_texts_like(
-            [(...,)],
+            [...],
             'Two',
-            ...,
+            {...},
             4,
-            ...,  # one
-            [...],  # or two
+            {...},  # one
+            [{...}],  # or two
             7,
             8,
-            [(...,)],
+            [...],
         )
     )
 
     browser.all('li').should(
         have.no._exact_texts_like(
-            [(...,)],
+            [...],
             'Two',
-            ...,
+            {...},
             4,
-            ...,  # one
-            [...],  # or two
+            {...},  # one
+            [{...}],  # or two
             8,
-            [(...,)],
+            [...],
         )
     )
 
     browser.all('li').should(
         have._exact_texts_like(
-            [(...,)],
+            [...],
             'Two',
-            ...,
+            {...},
             4,
-            [...],  # one
-            ...,  # or two
+            [{...}],  # one
+            {...},  # or two
             6,
             7,
             8,
-            [(...,)],
+            [...],
         )
     )
 
     browser.all('li').should(
         have.no._exact_texts_like(
-            [(...,)],
+            [...],
             'Two',
-            ...,
+            {...},
             4,
-            [...],  # one
-            ...,  # or two
+            [{...}],  # one
+            {...},  # or two
             "'Five'",
             6,
             7,
             8,
-            [(...,)],
+            [...],
         )
     )
 
     browser.all('li').should(
         have._exact_texts_like(
-            [(...,)],
+            [...],
             'Two',
-            ...,
+            {...},
             4,
-            [...],  # one
-            ...,  # or two
+            [{...}],  # one
+            {...},  # or two
             7,
             8,
-            [(...,)],
+            [...],
         )
     )
 
     browser.all('li').should(
         have.no._exact_texts_like(
-            [(...,)],
+            [...],
             'Two',
-            ...,
+            {...},
             4,
-            [...],  # one
-            ...,  # or two
+            [{...}],  # one
+            {...},  # or two
             8,
-            [(...,)],
+            [...],
         )
     )
 
@@ -797,9 +797,9 @@ def test_exact_texts_like__where_overrides_original_globs(
     )
 
     browser.all('li').should(
-        have.no._exact_texts_like(..., 'Two', ..., 4, "'Five'", 6, '7', [(...,)]).where(
-            one_or_more=...
-        )
+        have.no._exact_texts_like(
+            (...,), 'Two', (...,), 4, "'Five'", 6, '7', [...]
+        ).where(one_or_more=(...,))
     )
 
 
@@ -822,9 +822,7 @@ def test_exact_texts_like__on__mixed_numbers_and_quoted_text__with_default_one_o
         '''
     )
 
-    browser.all('li').should(
-        have._exact_texts_like((...,), 'Two', (...,), 4, "'Five'", (...,))
-    )
+    browser.all('li').should(have._exact_texts_like(..., 'Two', ..., 4, "'Five'", ...))
 
 
 def test_exact_texts_like__on__mixed_numbers_emtpy_and_quoted_text(session_browser):
@@ -843,9 +841,7 @@ def test_exact_texts_like__on__mixed_numbers_emtpy_and_quoted_text(session_brows
         '''
     )
 
-    browser.all('li').should(
-        have._exact_texts_like(..., 'Two', ..., 4, "'Five'", ...).where(one_or_more=...)
-    )
+    browser.all('li').should(have._exact_texts_like(..., 'Two', ..., 4, "'Five'", ...))
 
 
 def test_exact_texts_like__on__mixed__with_expected_empty_text(session_browser):
@@ -864,9 +860,7 @@ def test_exact_texts_like__on__mixed__with_expected_empty_text(session_browser):
         '''
     )
 
-    browser.all('li').should(
-        have._exact_texts_like(0, ..., '', ..., "'Five'", ...).where(one_or_more=...)
-    )
+    browser.all('li').should(have._exact_texts_like(0, ..., '', ..., "'Five'", ...))
 
 
 def test_correct_exact_texts_like_exception_message_with_custom_globs(session_browser):
@@ -886,9 +880,7 @@ def test_correct_exact_texts_like_exception_message_with_custom_globs(session_br
     )
 
     try:
-        browser.all('li').should(
-            have._exact_texts_like(..., 'Two', '', ..., "'Five'").where(one_or_more=...)
-        )
+        browser.all('li').should(have._exact_texts_like(..., 'Two', '', ..., "'Five'"))
         pytest.fail('expected texts mismatch')
     except AssertionError as error:
         assert (
@@ -976,16 +968,16 @@ def test_correct_no_exact_texts_like_exception_message__with_custom_globs_mixed(
     try:
         browser.all('li').should(
             have._exact_texts_like(
-                [...],
+                [{...}],
                 1,  # fails here: 1 != empty string
                 'Two',
-                ...,
+                {...},
                 4,
-                [(...,)],
-                "'Five'",
-                (...,),
-                8,
                 [...],
+                "'Five'",
+                ...,
+                8,
+                [{...}],
             )
         )
         pytest.fail('expected texts mismatch')
@@ -995,7 +987,7 @@ def test_correct_no_exact_texts_like_exception_message__with_custom_globs_mixed(
             '\n'
             'Timed out after 0.1s, while waiting for:\n'
             "browser.all(('css selector', 'li')).have exact texts like:\n"
-            "    [...], 1, Two, ..., 4, [(...,)]), 'Five', (...,), 8, [...]\n"
+            "    [{...}], 1, Two, {...}, 4, [...]), 'Five', ..., 8, [{...}]\n"
             '\n'
             'Reason: AssertionError: actual visible texts:\n'
             "    Zero, , Two, , 4, 'Five', 6, 7, 8\n"
@@ -1028,7 +1020,7 @@ def test_correct_no_exact_texts_like_exception_message__with_default_globs(
 
     try:
         browser.all('li').should(
-            have.no._exact_texts_like((...,), 'Two', '', (...,), "'Five'", 6)
+            have.no._exact_texts_like(..., 'Two', '', ..., "'Five'", 6)
         )
         pytest.fail('expected texts mismatch')
     except AssertionError as error:
@@ -1037,7 +1029,7 @@ def test_correct_no_exact_texts_like_exception_message__with_default_globs(
             '\n'
             'Timed out after 0.1s, while waiting for:\n'
             "browser.all(('css selector', 'li')).have no exact texts like:\n"
-            "    (...,), Two, , (...,), 'Five', 6\n"
+            "    ..., Two, , ..., 'Five', 6\n"
             '\n'
             'Reason: AssertionError: actual visible texts:\n'
             "    Zero, , Two, , 4, 'Five', 6\n"

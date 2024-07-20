@@ -56,43 +56,43 @@ def test_text_patterns_like__mixed__with_regex_patterns_support(
     # – for item texts in addition to support of ellipsis globs as items placeholders
     browser.all('li').should(
         match._text_patterns_like(
-            [...],
+            [{...}],
             r'.*?O.e.*?',
-            ...,
+            {...},
             r'.*?Thr.+.*?',
-            (...,),
+            ...,
             r'.*?Six.*?',
-            [(...,)],
+            [...],
             r'.*?Ten.*?',
-            [(...,)],
+            [...],
         )
     )
     # with alias
     browser.all('li').should(
         have._text_patterns_like(
-            [...],
+            [{...}],
             r'.*?O.e.*?',
-            ...,
+            {...},
             r'.*?Thr.+.*?',
-            (...,),
+            ...,
             r'.*?Six.*?',
-            [(...,)],
+            [...],
             r'.*?Ten.*?',
-            [(...,)],
+            [...],
         )
     )
     # with one more alias
     browser.all('li').should(
         have._texts_like(
-            [...],
+            [{...}],
             r'.*?O.e.*?',
-            ...,
+            {...},
             r'.*?Thr.+.*?',
-            (...,),
+            ...,
             r'.*?Six.*?',
-            [(...,)],
+            [...],
             r'.*?Ten.*?',
-            [(...,)],
+            [...],
         ).with_regex
     )
     # without "_like" version will lack support of ellipsis globs as items placeholders
@@ -112,15 +112,15 @@ def test_text_patterns_like__mixed__with_regex_patterns_support(
     )
     browser.all('li').should(
         match._text_patterns(
-            [...],
+            [{...}],
             r'.*?O.e.*?',
-            ...,
+            {...},
             r'.*?Thr.+.*?',
-            (...,),
+            ...,
             r'.*?Six.*?',
-            [(...,)],
+            [...],
             r'.*?Ten.*?',
-            [(...,)],
+            [...],
         ).not_
     )
     # with alias
@@ -166,15 +166,15 @@ def test_text_patternss_like__mixed__with_regex_patterns_support__error_messages
         # – for item texts in addition to support of ellipsis globs as items placeholders
         browser.all('li').should(
             have._text_patterns_like(
-                [...],
+                [{...}],
                 r'.*?O.e.*?',
-                ...,
+                {...},
                 r'.*?Three',  # fails on ending: 'Three' != 'Three...'
-                (...,),
+                ...,
                 r'.*?Six.*?',
-                [(...,)],
+                [...],
                 r'.*?Ten.*?',
-                [(...,)],
+                [...],
             )
         )
         pytest.fail('expected texts mismatch')
@@ -184,8 +184,8 @@ def test_text_patternss_like__mixed__with_regex_patterns_support__error_messages
             '\n'
             'Timed out after 0.1s, while waiting for:\n'
             "browser.all(('css selector', 'li')).have text patterns like:\n"
-            '    [...], .*?O.e.*?, ..., .*?Three, (...,), .*?Six.*?, [(...,)]), '
-            '.*?Ten.*?, [(...,)])\n'
+            '    [{...}], .*?O.e.*?, {...}, .*?Three, ..., .*?Six.*?, [...]), '
+            '.*?Ten.*?, [...])\n'
             '\n'
             'Reason: AssertionError: actual visible texts:\n'
             '    1) One..., 2) Two..., 3) Three..., 4) Four..., 5) Five..., 6) Six..., 7) '
@@ -203,15 +203,15 @@ def test_text_patternss_like__mixed__with_regex_patterns_support__error_messages
     try:
         browser.all('li').should(
             have._texts_like(
-                [...],
+                [{...}],
                 r'.*?O.e.*?',
-                ...,
+                {...},
                 r'.*?Three',  # fails on ending: 'Three' != 'Three...'
-                (...,),
+                ...,
                 r'.*?Six.*?',
-                [(...,)],
+                [...],
                 r'.*?Ten.*?',
-                [(...,)],
+                [...],
             ).with_regex
         )
         pytest.fail('expected texts mismatch')
@@ -282,42 +282,42 @@ def test_text_patterns_like__mixed__with_implicit_wildcards_patterns_support(
     # for the most common case (similar to classic have.texts)...
     browser.all('li').should(
         match._text_patterns_like(
-            [...],
+            [{...}],
             r'.*?One.*?',
-            ...,
+            {...},
             r'.*?Three.*?',
-            (...,),
+            ...,
             r'.*?Six.*?',
-            [(...,)],
+            [...],
             r'.*?Ten.*?',
-            [(...,)],
+            [...],
         )
     )
     # – there is a shortcut:
     browser.all('li').should(
         have._texts_like(
-            [...],
+            [{...}],
             'One',
-            ...,
+            {...},
             'Three',
-            (...,),
+            ...,
             'Six',
-            [(...,)],
+            [...],
             'Ten',
-            [(...,)],
+            [...],
         )
     )
     browser.all('li').should(
         have.no._texts_like(
-            [...],
+            [{...}],
             'Two',  # does NOT match: 'Two' != 'One'
-            ...,
+            {...},
             'Three',
-            (...,),
+            ...,
             'Six',
-            [(...,)],
+            [...],
             'Ten',
-            [(...,)],
+            [...],
         )
     )
 
@@ -346,22 +346,22 @@ def test_texts_like__mixed__with_implicit_wildcards_patterns_support__with_error
     try:
         browser.all('li').should(
             have._texts_like(
-                [...],
+                [{...}],
                 'ONE',  # fails here: 'ONE' != 'One'
-                ...,
+                {...},
                 'Three',
-                (...,),
+                ...,
                 'Six',
-                [(...,)],
+                [...],
                 'Ten',
-                [(...,)],
+                [...],
             )
         )
         pytest.fail('expected texts mismatch')
     except AssertionError as error:
         assert (
             "browser.all(('css selector', 'li')).have texts like:\n"
-            '    [...], ONE, ..., Three, (...,), Six, [(...,)]), Ten, [(...,)])\n'
+            '    [{...}], ONE, {...}, Three, ..., Six, [...]), Ten, [...])\n'
             '\n'
             'Reason: AssertionError: actual visible texts:\n'
             '    1) One..., 2) Two..., 3) Three..., 4) Four..., 5) Five..., 6) Six..., 7) '
@@ -399,41 +399,41 @@ def test_texts_like__mixed__with_explicit_wildcards_patterns_support(
     # .with_wildcards overrides default behavior
     browser.all('li').should(
         have.no._texts_like(
-            [...],
+            [{...}],
             'One',  # does not match cause correct pattern '*One*' != 'One'
-            ...,
+            {...},
             'Three',
-            (...,),
+            ...,
             'Six',
-            [(...,)],
+            [...],
             'Ten',
-            [(...,)],
+            [...],
         ).with_wildcards
     )
     browser.all('li').should(
         have._texts_like(
-            [...],
+            [{...}],
             '*O?e*',
-            ...,
+            {...},
             '*T??ee*',
-            (...,),
+            ...,
             '*Six*',
-            [(...,)],
+            [...],
             '*Ten*',
-            [(...,)],
+            [...],
         ).with_wildcards
     )
     browser.all('li').should(
         have.no._texts_like(
-            [...],
+            [{...}],
             '*O?e*',
-            ...,
+            {...},
             '*T???ee*',  # does not match: 'Three' != 'Th?ree'
-            (...,),
+            ...,
             '*Six*',
-            [(...,)],
+            [...],
             '*Ten*',
-            [(...,)],
+            [...],
         ).with_wildcards
     )
 
@@ -462,22 +462,22 @@ def test_texts_like__mixed__with_explicit_wildcards_patterns_support__with_error
     try:
         browser.all('li').should(
             have._texts_like(
-                [...],
+                [{...}],
                 'One',  # does not match cause correct pattern '*One*' != 'One'
-                ...,
+                {...},
                 '*T??ee*',
-                (...,),
+                ...,
                 '*Six*',
-                [(...,)],
+                [...],
                 '*Ten*',
-                [(...,)],
+                [...],
             ).with_wildcards
         )
         pytest.fail('expected texts mismatch')
     except AssertionError as error:
         assert (
             "browser.all(('css selector', 'li')).have texts with wildcards like:\n"
-            '    [...], One, ..., *T??ee*, (...,), *Six*, [(...,)]), *Ten*, [(...,)])\n'
+            '    [{...}], One, {...}, *T??ee*, ..., *Six*, [...]), *Ten*, [...])\n'
             '\n'
             'Reason: AssertionError: actual visible texts:\n'
             '    1) One..., 2) Two..., 3) Three..., 4) Four..., 5) Five..., 6) Six..., 7) '
@@ -515,29 +515,29 @@ def test_texts_like__mixed__where_custom_wildcards_patterns_support(
     # .with_wildcards customized overrides default (no-wildcards) behavior
     browser.all('li').should(
         have.no._texts_like(
-            [...],
+            [{...}],
             'One',
-            ...,
+            {...},
             'Three',
-            (...,),
+            ...,
             'Six',
-            [(...,)],
+            [...],
             'Ten',
-            [(...,)],
+            [...],
         ).where_wildcards(zero_or_more_chars='**', exactly_one_char='_')
     )
     # .with_wildcards customized overrides default explicit-wildcards behavior
     browser.all('li').should(
         have.no._texts_like(
-            [...],
+            [{...}],
             '*O?e*',
-            ...,
+            {...},
             '*T??ee*',
-            (...,),
+            ...,
             '*Six*',
-            [(...,)],
+            [...],
             '*Ten*',
-            [(...,)],
+            [...],
         ).where_wildcards(zero_or_more_chars='**', exactly_one_char='_')
     )
     # TODO: isn't it not obvious? the context is a bit different from .where...
@@ -548,42 +548,42 @@ def test_texts_like__mixed__where_custom_wildcards_patterns_support(
     # even one overrides everything
     browser.all('li').should(
         have.no._texts_like(
-            [...],
+            [{...}],
             '**One**',
-            ...,
+            {...},
             '**T??ee**',  # now are not considered as wildcards = does not match
-            (...,),
+            ...,
             '**Six**',
-            [(...,)],
+            [...],
             '**Ten**',
-            [(...,)],
+            [...],
         ).where_wildcards(zero_or_more_chars='**')
     )
     # even one overrides everything
     browser.all('li').should(
         have._texts_like(
-            [...],
+            [{...}],
             '**One**',
-            ...,
+            {...},
             '**Three**',  # now are not considered as wildcards = does not match
-            (...,),
+            ...,
             '**Six**',
-            [(...,)],
+            [...],
             '**Ten**',
-            [(...,)],
+            [...],
         ).where_wildcards(zero_or_more_chars='**')
     )
     browser.all('li').should(
         have._texts_like(
-            [...],
+            [{...}],
             '**O_e**',
-            ...,
+            {...},
             '**T__ee**',
-            (...,),
+            ...,
             '**Six**',
-            [(...,)],
+            [...],
             '**Ten**',
-            [(...,)],
+            [...],
         ).where_wildcards(zero_or_more_chars='**', exactly_one_char='_')
     )
 
@@ -612,15 +612,15 @@ def test_texts_like__mixed__where_custom_wildcards_patterns_support__with_errors
     try:
         browser.all('li').should(
             have.no._texts_like(  # fails here because actually matches without no
-                [...],
+                [{...}],
                 '**O_e**',
-                ...,
+                {...},
                 '**T__ee**',
-                (...,),
+                ...,
                 '**Six**',
-                [(...,)],
+                [...],
                 '**Ten**',
-                [(...,)],
+                [...],
             ).where_wildcards(zero_or_more_chars='**', exactly_one_char='_')
         )
         pytest.fail('expected condition mismatch')
@@ -643,13 +643,13 @@ def test_texts_matching__regex_pattern__error__on_invalid_regex(session_browser)
     )
 
     try:
-        browser.all('li').should(have._texts_like(r'*One.*', ..., ...).with_regex)
+        browser.all('li').should(have._texts_like(r'*One.*', {...}, {...}).with_regex)
         pytest.fail('expected invalid regex error')
     except AssertionError as error:
         assert (
             'Timed out after 0.1s, while waiting for:\n'
             "browser.all(('css selector', 'li')).have text patterns like:\n"
-            '    *One.*, ..., ...\n'
+            '    *One.*, {...}, {...}\n'
             '\n'
             'Reason: AssertionError:  RegexError: nothing to repeat at position 1\n'
             'actual visible texts:\n'
@@ -678,14 +678,14 @@ def test_texts_matching__regex_pattern__ignore_case_error__on_invalid_regex(
 
     try:
         browser.all('li').should(
-            have._texts_like(r'*one.*', ..., ...).with_regex.ignore_case.not_
+            have._texts_like(r'*one.*', {...}, {...}).with_regex.ignore_case.not_
         )
         pytest.fail('expected invalid regex error')
     except AssertionError as error:
         assert (
             "browser.all(('css selector', 'li')).have no text patterns like (flags: "
             're.IGNORECASE):\n'
-            '    *one.*, ..., ...\n'
+            '    *one.*, {...}, {...}\n'
             '\n'
             'Reason: AssertionError:  RegexError: nothing to repeat at position 1\n'
             'actual visible texts:\n'
@@ -713,14 +713,14 @@ def test_texts_like__including_ignorecase__passed_compared_to_failed(
     )
 
     # have.texts_like
-    browser.all('li').should(have._texts_like('One', ..., ...))
+    browser.all('li').should(have._texts_like('One', {...}, {...}))
     try:
-        browser.all('li').should(have._texts_like('one', ..., ...))
+        browser.all('li').should(have._texts_like('one', {...}, {...}))
         pytest.fail('expected text mismatch')
     except AssertionError as error:
         assert (
             "browser.all(('css selector', 'li')).have texts like:\n"
-            '    one, ..., ...\n'
+            '    one, {...}, {...}\n'
             '\n'
             'Reason: AssertionError: actual visible texts:\n'
             '    1) One!!!, 2) Two..., 3) Three???\n'
@@ -731,15 +731,15 @@ def test_texts_like__including_ignorecase__passed_compared_to_failed(
             '    1) One!!!‚2) Two...‚3) Three???‚\n'
         ) in str(error)
     # - inverted
-    browser.all('li').should(have.no._texts_like('one', ..., ...))
-    browser.all('li').should(have._texts_like('one', ..., ...).not_)
+    browser.all('li').should(have.no._texts_like('one', {...}, {...}))
+    browser.all('li').should(have._texts_like('one', {...}, {...}).not_)
     try:
-        browser.all('li').should(have.no._texts_like('One', ..., ...))
+        browser.all('li').should(have.no._texts_like('One', {...}, {...}))
         pytest.fail('expected mismatch')
     except AssertionError as error:
         assert (
             "browser.all(('css selector', 'li')).have no texts like:\n"
-            '    One, ..., ...\n'
+            '    One, {...}, {...}\n'
             '\n'
             'Reason: AssertionError: actual visible texts:\n'
             '    1) One!!!, 2) Two..., 3) Three???\n'
@@ -750,16 +750,18 @@ def test_texts_like__including_ignorecase__passed_compared_to_failed(
             '    1) One!!!‚2) Two...‚3) Three???‚\n'
         ) in str(error)
     # have._texts_like (ignore_case)
-    browser.all('li').should(match._texts_like('one', ..., ..., _flags=re.IGNORECASE))
-    browser.all('li').should(have._texts_like('one', ..., ...).ignore_case)
+    browser.all('li').should(
+        match._texts_like('one', {...}, {...}, _flags=re.IGNORECASE)
+    )
+    browser.all('li').should(have._texts_like('one', {...}, {...}).ignore_case)
     try:
-        browser.all('li').should(have._texts_like('one.', ..., ...).ignore_case)
+        browser.all('li').should(have._texts_like('one.', {...}, {...}).ignore_case)
         pytest.fail('expected text mismatch')
     except AssertionError as error:
         assert (
             "browser.all(('css selector', 'li')).have texts like (flags: "
             're.IGNORECASE):\n'
-            '    one., ..., ...\n'
+            '    one., {...}, {...}\n'
             '\n'
             'Reason: AssertionError: actual visible texts:\n'
             '    1) One!!!, 2) Two..., 3) Three???\n'
@@ -771,17 +773,19 @@ def test_texts_like__including_ignorecase__passed_compared_to_failed(
         ) in str(error)
     # - double inversion == no inversion
     browser.all('li').should(
-        match._texts_like('one', ..., ..., _flags=re.IGNORECASE).not_.not_
+        match._texts_like('one', {...}, {...}, _flags=re.IGNORECASE).not_.not_
     )
-    browser.all('li').should(have.no._texts_like('one', ..., ...).ignore_case.not_)
+    browser.all('li').should(have.no._texts_like('one', {...}, {...}).ignore_case.not_)
     try:
-        browser.all('li').should(have.no._texts_like('one.', ..., ...).ignore_case.not_)
+        browser.all('li').should(
+            have.no._texts_like('one.', {...}, {...}).ignore_case.not_
+        )
         pytest.fail('expected text mismatch')
     except AssertionError as error:
         assert (
             "browser.all(('css selector', 'li')).have texts like (flags: "
             're.IGNORECASE):\n'
-            '    one., ..., ...\n'
+            '    one., {...}, {...}\n'
             '\n'
             'Reason: AssertionError: actual visible texts:\n'
             '    1) One!!!, 2) Two..., 3) Three???\n'
@@ -793,15 +797,15 @@ def test_texts_like__including_ignorecase__passed_compared_to_failed(
         ) in str(error)
     # - inverted
     # - - with no before
-    browser.all('li').should(have.no._texts_like('one.', ..., ...).ignore_case)
+    browser.all('li').should(have.no._texts_like('one.', {...}, {...}).ignore_case)
     try:
-        browser.all('li').should(have.no._texts_like('one', ..., ...).ignore_case)
+        browser.all('li').should(have.no._texts_like('one', {...}, {...}).ignore_case)
         pytest.fail('expected mismatch')
     except AssertionError as error:
         assert (
             "browser.all(('css selector', 'li')).have no texts like (flags: "
             're.IGNORECASE):\n'
-            '    one, ..., ...\n'
+            '    one, {...}, {...}\n'
             '\n'
             'Reason: AssertionError: actual visible texts:\n'
             '    1) One!!!, 2) Two..., 3) Three???\n'
@@ -813,15 +817,15 @@ def test_texts_like__including_ignorecase__passed_compared_to_failed(
         ) in str(error)
     # - - with not after, in the end
     #     (in the middle works but without Autocomplete & not recommended)
-    browser.all('li').should(have._texts_like('one.', ..., ...).ignore_case.not_)
+    browser.all('li').should(have._texts_like('one.', {...}, {...}).ignore_case.not_)
     try:
-        browser.all('li').should(have._texts_like('one', ..., ...).ignore_case.not_)
+        browser.all('li').should(have._texts_like('one', {...}, {...}).ignore_case.not_)
         pytest.fail('expected mismatch')
     except AssertionError as error:
         assert (
             "browser.all(('css selector', 'li')).have no texts like (flags: "
             're.IGNORECASE):\n'
-            '    one, ..., ...\n'
+            '    one, {...}, {...}\n'
             '\n'
             'Reason: AssertionError: actual visible texts:\n'
             '    1) One!!!, 2) Two..., 3) Three???\n'

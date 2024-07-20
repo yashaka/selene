@@ -156,9 +156,7 @@ check vscode pylance, mypy, jetbrains qodana...
 
 ### TODO: consider regex support via .pattern prop (similar to .ignore_case) (#537)
 
-### TODO: decide on ... vs (...,) as one_or_more
-
-consider customizing them via config
+### TODO: customize ... vs (...,) as one_or_more, etc. – via config option
 
 ### Deprecated conditions
 
@@ -242,11 +240,11 @@ browser.all('li').should(have.texts_matching(
 ))
 # that is also equivalent to:
 browser.all('li').should(have._texts_like(
-  r'\d\) One(.)\1\1', ..., ...
+  r'\d\) One(.)\1\1', {...}, {...}
 ).with_regex)
 # or even:
 browser.all('li').should(have._texts_like(
-  r'\d\) One(.)\1\1', (...,)  # = one or more
+  r'\d\) One(.)\1\1', ...,  # = one or more
 ).with_regex)
 # And with smart approach you can mix to achieve more with less:
 browser.all('li')[:3].should(have.text_matching(
@@ -273,10 +271,10 @@ List of collection conditions added (still marked as experimental with `_` prefi
 Where:
 
 - default list glob placeholders are:
-  - `[...]` matches **zero or one** item of any text in the list
-  - `...` matches **exactly one** item of any text in the list
-  - `(...,)` matches one **or more** items of any text in the list
-  - `[(...,)]` matches **zero** or more items of any text in the list
+  - `[{...}]` matches **zero or one** item of any text in the list
+  - `{...}` matches **exactly one** item of any text in the list
+  - `...` matches one **or more** items of any text in the list
+  - `[...]` matches **zero** or more items of any text in the list
 - all globbing placeholders can be mixed in the same list of expected items in any order
 - regex patterns can't use `^` (start of text) and `$` (end of text)
     because they are implicit, and if added explicitly will break the match
@@ -288,7 +286,7 @@ Where:
 
 Warning:
 
-- Actual implementation does not compare each list item separately, it merges all expected items into one regex pattern and matches it with merged text of all visible elements collection texts, and so it may be tricky to analyze the error message in case of failure. To keep life simpler, try to reduce the usage of such conditions to the simplest cases, preferring wildcards to regex patterns, trying even to avoid wildcards if possible, in the perfect end, sticking just to `exact_texts_like` or `texts_like` conditions with only one explicitly (for readability) customized list glob, choosing `...` as the simplest glob placeholder, for example: `browser.all('li').should(have._exact_texts_like(1, 2, 'Three', ...).where(one_or_more=...))` to assert actual texts `<li>1</li><li>2</li><li>Three</li><li>4</li><li>5</li>` in the list.
+- Actual implementation does not compare each list item separately, it merges all expected items into one regex pattern and matches it with merged text of all visible elements collection texts, and so it may be tricky to analyze the error message in case of failure. To keep life simpler, try to reduce the usage of such conditions to the simplest cases, preferring wildcards to regex patterns, trying even to avoid wildcards if possible, in the perfect end, sticking just to `exact_texts_like` or `texts_like` conditions with only one explicitly (for readability) customized list glob, choosing `...` as the simplest glob placeholder depending on context, for example, to assert actual texts `<li>1</li><li>2</li><li>Three</li><li>4</li><li>5</li>` in the list, if you want to match "one or more" – define `...` explicitely: `browser.all('li').should(have._exact_texts_like(1, 2, 'Three', ...).where(one_or_more=...))`, and if you want to match "exactly one" – again, use same `...` defined explicitly: `browser.all('li').should(have._exact_texts_like(1, ..., ..., 4, 5).where(exactly_one=...))`.
 
 Examples of usage:
 
@@ -308,37 +306,37 @@ from selene import browser, have
 # )
 
 browser.all('li').should(have._exact_texts_like(
-    '1) One!!!', '2) Two!!!', ..., ..., ...  # = exactly one
+    '1) One!!!', '2) Two!!!', {...}, {...}, {...}  # = exactly one
 ))
 browser.all('li').should(have._texts_like(
-    r'\d\) One!+', r'\d.*', ..., ..., ...
+    r'\d\) One!+', r'\d.*', {...}, {...}, {...}
 ).with_regex)
 browser.all('li').should(have._texts_like(
-    '?) One*', '?) Two*', ..., ..., ...
+    '?) One*', '?) Two*', {...}, {...}, {...}
 ).with_wildcards)
 browser.all('li').should(have._texts_like(
-    '_) One**', '_) Two*', ..., ..., ...
+    '_) One**', '_) Two*', {...}, {...}, {...}
 ).where_wildcards(zero_or_more='**', exactly_one='_'))
 browser.all('li').should(have._texts_like(
-    'One', 'Two', ..., ..., ...  # matches each text by contains
+    'One', 'Two', {...}, {...}, {...}  # matches each text by contains
 ))  # kind of "with implicit * wildcards" in the beginning and the end of each text
 
 
 browser.all('li').should(have._texts_like(
-    ..., ..., ..., 'Four', 'Five'
+    {...}, {...}, {...}, 'Four', 'Five'
 ))
 browser.all('li').should(have._texts_like(
-    'One', ..., ..., 'Four', 'Five'
+    'One', {...}, {...}, 'Four', 'Five'
 ))
 
 browser.all('li').should(have._texts_like(
-    'One', 'Two', (..., )  # = one or more
+    'One', 'Two', ...  # = one or more
 ))
 browser.all('li').should(have._texts_like(
-    [(..., )], 'One', 'Two', [(..., )]  # = ZERO or more ;)
+    [...], 'One', 'Two', [...]  # = ZERO or more ;)
 ))
 browser.all('li').should(have._texts_like(
-    [...,], 'One', 'Two', 'Three', 'Four', [...]  # = zero or ONE ;)
+    [{...}], 'One', 'Two', 'Three', 'Four', [{...}]  # = zero or ONE ;)
 ))
 
 # If you don't need so much "globs"...
@@ -346,12 +344,15 @@ browser.all('li').should(have._texts_like(
 # to keep things simpler for easier support and more explicit for readability)
 # – you can use the simplest glob item with explicitly customized meaning:
 browser.all('li').should(have._exact_texts_like(
-    'One', 'Two', ...      # = one OR MORE
-).where(one_or_more=...))  # – because the ... meaning was overridden
+    'One', 'Two', ..., ..., ...  # = exactly one
+).where(one_or_more=...))        # – because the ... meaning was overridden
+browser.all('li').should(have._exact_texts_like(
+    ..., 'One', 'Two', ...      # = one OR MORE
+).where(zero_or_more=...))      # – because the ... meaning was overriden
 # Same works for other conditions that end with `_like`
 browser.all('li').should(have._exact_texts_like(
     '1) One!!!', '2) Two!!!', ...
-).where(one_or_more=...))
+).where(zero_or_more=...))
 ```
 
 ### Text related now supports ignore_case (including regex conditions)

@@ -66,10 +66,12 @@ def test_text_matching__regex_pattern__compared(
     browser.all('li').should(have.texts_matching(r'\d\) One!+', r'.*', r'.*'))
     browser.all('li').should(have.texts_matching(r'\d\) One!+', r'.*', r'.*').not_.not_)
     # that is also equivalent to:
-    browser.all('li').should(have._texts_like(r'\d\) One(.)\1\1', ..., ...).with_regex)
+    browser.all('li').should(
+        have._texts_like(r'\d\) One(.)\1\1', {...}, {...}).with_regex
+    )
     # or even:
     browser.all('li').should(
-        have._texts_like(r'\d\) One(.)\1\1', (...,)).with_regex  # = one or more
+        have._texts_like(r'\d\) One(.)\1\1', ...).with_regex  # = one or more
     )
     # And with smart approach you can mix to achieve more with less:
     browser.all('li')[:3].should(have.text_matching(r'\d\) \w+(.)\1\1').each)
@@ -288,9 +290,10 @@ def test_text_matching__regex_pattern__ignore_case__compared(session_browser):
             '    1) One!!!, 2) Two..., 3) Three???\n'
             '\n'
             'Pattern used for matching:\n'
-            '    ^.*?One.*?‚.*?Two.*?‚[^‚]+‚$\n'
+            '    ^.*?One.*?‚.*?Two.*?‚.+?‚$\n'
             'Actual text used to match:\n'
             '    1) One!!!‚2) Two...‚3) Three???‚\n'
+            'Screenshot: '
         ) in str(error)
 
 

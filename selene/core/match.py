@@ -962,6 +962,13 @@ class _exact_texts_like(Condition[Collection]):
     _MATCHING_EMPTY_STRING_MARKER = '‹EMTPY_STRING›'
     _RENDERING_SEPARATOR = ', '
     _RENDERING_TRANSLATIONS = (
+        ({...}, '{...}'),
+        ([{...}], '[{...}]'),
+        (..., '...'),
+        ([...], '[...])'),
+    )
+    # initially designed version
+    __X_RENDERING_TRANSLATIONS = (
         (..., '...'),
         ([...], '[...]'),
         ((...,), '(...,)'),
@@ -982,15 +989,15 @@ class _exact_texts_like(Condition[Collection]):
         zero_or_more=r'.*?',
     )
 
-    _DEFAULT_GLOBS: Tuple[Tuple[Any, str], ...] = (
+    # todo: initial default globs version
+    __X_DEFAULT_GLOBS: Tuple[Tuple[Any, str], ...] = (
         (..., _PredefinedGlobPatterns['exactly_one']),
         ([...], _PredefinedGlobPatterns['zero_or_one']),
         ((...,), _PredefinedGlobPatterns['one_or_more']),
         ([(...,)], _PredefinedGlobPatterns['zero_or_more']),
     )
 
-    # TODO: consider this set of list globs as a default
-    __X_DEFAULT_GLOBS: Tuple[Tuple[Any, str], ...] = (
+    _DEFAULT_GLOBS: Tuple[Tuple[Any, str], ...] = (
         ({...}, _PredefinedGlobPatterns['exactly_one']),
         ([{...}], _PredefinedGlobPatterns['zero_or_one']),
         (..., _PredefinedGlobPatterns['one_or_more']),
