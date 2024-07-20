@@ -123,7 +123,7 @@ class ConditionMismatch(AssertionError):
         by: Callable[[R], bool],
         actual: Callable[[E], R] | None = None,
         *,
-        _describe_actual_result: Callable[[E | R], str] | None = None,
+        _describe_actual_result: Callable[[R], str] | None = None,
         _inverted: bool = False,
         _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
     ): ...
@@ -134,7 +134,7 @@ class ConditionMismatch(AssertionError):
         cls,
         by: Callable[[E | R], bool],
         # todo: should we provide lambda it: it as default to actual?
-        actual: Optional[Callable[[E], E | R]] = None,
+        actual: Callable[[E], E | R] | None = None,
         *,
         # we can't name it:
         # - as `describe` because it will not be clear what are we going to describe
@@ -258,9 +258,9 @@ class ConditionMismatch(AssertionError):
     def _to_raise_if(
         cls,
         by: Callable[[E | R], bool],
-        actual: Callable[[E], R] | None = None,
+        actual: Callable[[E], E | R] | None = None,
         *,
-        _describe_actual_result: Callable[[R], str] | None = None,
+        _describe_actual_result: Callable[[E | R], str] | None = None,
         _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
     ):
         return cls._to_raise_if_not(

@@ -24,7 +24,7 @@ from __future__ import annotations
 
 import time
 import warnings
-from typing_extensions import Generic, Callable, TypeVar, Optional
+from typing_extensions import Generic, Callable, TypeVar, Optional, cast
 
 from selene.core.exceptions import TimeoutException
 
@@ -93,11 +93,11 @@ class Wait(Generic[E]):
     def hook_failure(
         self,
     ) -> Optional[Callable[[TimeoutException], Exception]]:
-        # TODO: hook_failure or failure_hook?
+        # todo: hook_failure or failure_hook?
         return self._hook_failure
 
-    # TODO: consider renaming to `def to(...)`, though will sound awkward when wait.to(condition)
-    # TODO: do we need a second description/named param?
+    # todo: consider renaming to `def to(...)`, though will sound awkward when wait.to(condition)
+    # todo: do we need a second description/named param?
     def for_(self, fn: Callable[[E], R]) -> R:
         def logic(fn: Callable[[E], R]) -> R:
             finish_time = time.time() + self._timeout
@@ -131,7 +131,12 @@ class Wait(Generic[E]):
 
                         raise self._hook_failure(failure)
 
-        return self._decorator(self)(logic)(fn)
+        decorator = cast(
+            Callable[[Wait[E]], Callable[[Callable[..., R]], Callable[..., R]]],
+            self._decorator,
+        )
+
+        return decorator(self)(logic)(fn)
 
     def until(self, fn: Callable[[E], R]) -> bool:
         try:
@@ -140,7 +145,7 @@ class Wait(Generic[E]):
         except TimeoutException:
             return False
 
-    # TODO: do we really need these aliases?
+    # todo: do we really need these aliases?
     def command(self, name: str, fn: Callable[[E], None]) -> None:
         self.for_(Command(name, fn))
 

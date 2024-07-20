@@ -48,7 +48,7 @@ R = TypeVar('R')
 
 Lambda = Callable[[T], R]
 Proc = Callable[[T], None]
-Predicate = Callable[[T], bool]
+Predicate = Callable[[T], bool]  # todo: should we return bool or Optional[bool]?
 Fn = Callable[[T], R]
 
 
@@ -67,7 +67,7 @@ class Query(Generic[E, R]):
         self._name = name
         self._fn = fn
 
-    def __call__(self, entity: E) -> R | None:
+    def __call__(self, entity: E) -> R | None:  # todo: do we really need None here?
         return self._fn(entity)
 
     def __str__(self):
@@ -150,25 +150,25 @@ class Query(Generic[E, R]):
             else alternative
         )
 
-    @staticmethod
-    @overload
-    def _inverted(
-        predicate: Predicate[E],
-        _truthy_exceptions: Iterable[Type[Exception]] = (),
-    ) -> Predicate[E]: ...
+    # @staticmethod
+    # @overload
+    # def _inverted(
+    #     predicate: Predicate[E],
+    #     _truthy_exceptions: Iterable[Type[Exception]] = (),
+    # ) -> Predicate[E]: ...
+    #
+    # @staticmethod
+    # @overload
+    # def _inverted(
+    #     predicate: Query[E, bool],
+    #     _truthy_exceptions: Iterable[Type[Exception]] = (),
+    # ) -> Query[E, bool]: ...
 
     @staticmethod
-    @overload
     def _inverted(
-        predicate: Query[E, bool],
+        predicate: Callable[[E], bool | None],
         _truthy_exceptions: Iterable[Type[Exception]] = (),
-    ) -> Query[E, bool]: ...
-
-    @staticmethod
-    def _inverted(
-        predicate: Predicate[E] | Query[E, bool],
-        _truthy_exceptions: Iterable[Type[Exception]] = (),
-    ) -> Predicate[E] | Query[E, bool]:
+    ) -> Callable[[E], bool | None]:
         # TODO: ensure it works correctly:) e.g. unit test it
 
         def not_predicate(entity: E) -> bool:
@@ -187,6 +187,7 @@ class Query(Generic[E, R]):
                 not_predicate,
             )
 
+        # todo: consider refactoring to getattr(predicate, '__module__', None)
         not_predicate.__module__ = predicate.__module__
         not_predicate.__annotations__ = predicate.__annotations__
 
