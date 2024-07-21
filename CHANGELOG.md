@@ -168,6 +168,8 @@ check vscode pylance, mypy, jetbrains qodana...
 
 ### DOING: draft Element descriptors POC?
 
+#### TODO: decide on lru_cache vs set attr on instance...
+
 ### Deprecated conditions
 
 - `be.present` in favor of `be.present_in_dom`
