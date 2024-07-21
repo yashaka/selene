@@ -152,7 +152,7 @@ check vscode pylance, mypy, jetbrains qodana...
 
 ### TODO: stable Element descriptors
 
-### TODO: consider removing experimantal mark from `ConditionMismatch._to_raise_if_not`
+### TODO: consider removing experimental mark from `ConditionMismatch._to_raise_if_not`
 
 ### TODO: consider regex support via .pattern prop (similar to .ignore_case) (#537)
 

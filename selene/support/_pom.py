@@ -51,10 +51,51 @@ import selene
 class Element:  # todo: consider implementing LocationContext interface
     def __init__(self, selector: str | Tuple[str, str], _context=None):
         self.__selector = selector
-        self.__context = _context
+
+        self.__context = lambda instance: (
+            (_context(instance) if callable(_context) else _context)
+            or getattr(  # todo: refactor to one-liner via helper
+                instance,
+                'context',
+                getattr(
+                    instance,
+                    '_context',
+                    getattr(
+                        instance,
+                        'browser',
+                        getattr(
+                            instance,
+                            '_browser',
+                            selene.browser,
+                        ),
+                    ),
+                ),
+            )
+        )
 
     def within(self, context, /):
         return Element(self.__selector, _context=context)
+
+    @property
+    def within_browser(self):
+        return self.within(
+            lambda instance: getattr(
+                instance,
+                'browser',
+                getattr(
+                    instance,
+                    '_browser',
+                    selene.browser,
+                    # # currently disabled to leave at least one option to for end user
+                    # # to disable this feature
+                    # getattr(
+                    #     instance,
+                    #     f'_{instance.__class__.__name__}__browser',
+                    #     selene.browser,
+                    # ),
+                ),
+            )
+        )
 
     def Element(self, selector: str | Tuple[str, str]) -> Element:
         return Element(selector, _context=self)
@@ -69,23 +110,16 @@ class Element:  # todo: consider implementing LocationContext interface
 
     @lru_cache
     def __get__(self, instance, owner):
-        self.__context = self.__context or getattr(
-            instance,
-            'context',
-            getattr(
-                instance,
-                'browser',
-                selene.browser,
-            ),
-        )
+
+        actual_context = self.__context(instance)
 
         self.__as_context = cast(
             selene.Element,
             (
-                self.__context.element(self.__selector)
-                if isinstance(self.__context, (selene.Browser, selene.Element))
+                actual_context.element(self.__selector)
+                if isinstance(actual_context, (selene.Browser, selene.Element))
                 # self.__context is of type self.__class__ ;)
-                else self.__context._element(self.__selector)
+                else actual_context._element(self.__selector)
             ),
         )
 
@@ -106,10 +140,52 @@ class All:
 
     def __init__(self, selector: str | Tuple[str, str], _context=None):
         self.__selector = selector
-        self.__context = _context
+
+        self.__context = lambda instance: (
+            (_context(instance) if callable(_context) else _context)
+            or getattr(  # todo: refactor to one-liner via helper
+                instance,
+                'context',
+                getattr(
+                    instance,
+                    '_context',
+                    getattr(
+                        instance,
+                        'browser',
+                        getattr(
+                            instance,
+                            '_browser',
+                            selene.browser,
+                        ),
+                    ),
+                ),
+            )
+        )
 
     def within(self, context, /):
         return All(self.__selector, _context=context)
+
+    # todo: think on better name... within_page?
+    @property
+    def within_browser(self):
+        return self.within(
+            lambda instance: getattr(
+                instance,
+                'browser',
+                getattr(
+                    instance,
+                    '_browser',
+                    selene.browser,
+                    # # currently disabled to leave at least one option to for end user
+                    # # to disable this feature
+                    # getattr(
+                    #     instance,
+                    #     f'_{instance.__class__.__name__}__browser',
+                    #     selene.browser,
+                    # ),
+                ),
+            )
+        )
 
     # --- Descriptor --- #
 
@@ -118,16 +194,7 @@ class All:
 
     @lru_cache
     def __get__(self, instance, owner) -> selene.Element:
-        self.__context = self.__context or getattr(
-            instance,
-            'context',
-            getattr(
-                instance,
-                'browser',
-                selene.browser,
-            ),
-        )
-        self.__as_context = self.__context.all(self.__selector)
+        self.__as_context = self.__context(instance).all(self.__selector)
 
         return self.__as_context
 
