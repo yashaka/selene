@@ -6,6 +6,7 @@ from selene.support._pom import Element, All
 
 class DataGridMIT:
     grid = Element('[role=grid]')
+    headers = grid.All('[role=columnheader]')
 
     footer = Element('.MuiDataGrid-footerContainer')
     pagination = footer.Element('.MuiTablePagination-root')
@@ -31,9 +32,14 @@ def test_material_ui__react_x_data_grid_mit(characters):
     browser.open('https://mui.com/x/react-data-grid/#DataGridDemo')
 
     # THEN
+    characters.headers.should(have.size(6))
+    characters.headers.should(
+        have._exact_texts_like(
+            {...}, 'ID', 'First name', 'Last name', 'Age', 'Full name'
+        )
+    )
     characters.pagination_rows_displayed.should(have.exact_text('1–5 of 9'))
     characters.page_to_right.click()
     characters.pagination_rows_displayed.should(have.exact_text('6–9 of 9'))
     characters.page_to_left.click()
     characters.pagination_rows_displayed.should(have.exact_text('1–5 of 9'))
-    characters.footer.should(have.text('1–5 of 9'))

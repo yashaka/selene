@@ -150,8 +150,8 @@ class Element:  # todo: consider implementing LocationContext interface
     def _element(self, selector: str | Tuple[str, str]):
         return self.__as_context.element(selector)
 
-    # def _all(self, selector: str | Tuple[str, str]) -> selene.Collection:
-    #     return self.__as_context.all(selector)
+    def _all(self, selector: str | Tuple[str, str]) -> selene.Collection:
+        return self.__as_context.all(selector)
 
 
 class All:
@@ -212,7 +212,17 @@ class All:
 
     @lru_cache
     def __get__(self, instance, owner) -> selene.Element:
-        self.__as_context = self.__context(instance).all(self.__selector)
+        actual_context = self.__context(instance)
+
+        self.__as_context = cast(
+            selene.Element,
+            (
+                actual_context.all(self.__selector)
+                if isinstance(actual_context, (selene.Browser, selene.Element))
+                # self.__context is of type self.__class__ ;)
+                else actual_context._all(self.__selector)
+            ),
+        )
 
         return self.__as_context
 
