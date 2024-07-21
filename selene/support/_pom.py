@@ -98,7 +98,7 @@ class Element:  # todo: consider implementing LocationContext interface
             )
         )
 
-    def Element(self, selector: str | Tuple[str, str]) -> Element:
+    def element(self, selector: str | Tuple[str, str]) -> Element:
         # return Element(selector, _context=self)
         return Element(
             selector,
@@ -112,7 +112,7 @@ class Element:  # todo: consider implementing LocationContext interface
             )[1],
         )
 
-    def All(self, selector: str | Tuple[str, str]) -> All:
+    def all(self, selector: str | Tuple[str, str]) -> All:
         return All(
             selector,
             _context=lambda instance: (
@@ -137,7 +137,7 @@ class Element:  # todo: consider implementing LocationContext interface
                 actual_context.element(self.__selector)
                 if isinstance(actual_context, (selene.Browser, selene.Element))
                 # self.__context is of type self.__class__ ;)
-                else actual_context._element(self.__selector)
+                else actual_context._selene_element(self.__selector)
             ),
         )
 
@@ -147,10 +147,10 @@ class Element:  # todo: consider implementing LocationContext interface
 
     # currently protected from direct access on purpose to not missclick on it
     # when actually the .Element or .All is needed
-    def _element(self, selector: str | Tuple[str, str]):
+    def _selene_element(self, selector: str | Tuple[str, str]):
         return self.__as_context.element(selector)
 
-    def _all(self, selector: str | Tuple[str, str]) -> selene.Collection:
+    def _selene_all(self, selector: str | Tuple[str, str]) -> selene.Collection:
         return self.__as_context.all(selector)
 
 
@@ -220,7 +220,7 @@ class All:
                 actual_context.all(self.__selector)
                 if isinstance(actual_context, (selene.Browser, selene.Element))
                 # self.__context is of type self.__class__ ;)
-                else actual_context._all(self.__selector)
+                else actual_context._selene_all(self.__selector)
             ),
         )
 

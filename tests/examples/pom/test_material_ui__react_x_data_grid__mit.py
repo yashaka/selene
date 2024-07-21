@@ -6,28 +6,28 @@ from selene.support._pom import Element, All
 
 class DataGridMIT:
     grid = Element('[role=grid]')
-    headers = grid.All('[role=columnheader]')
-    header = grid.Element('.MuiDataGrid-columnHeaders')
-    toggle_all_checkbox = header.Element('.PrivateSwitchBase-input')
+    headers = grid.all('[role=columnheader]')
+    header = grid.element('.MuiDataGrid-columnHeaders')
+    toggle_all_checkbox = header.element('.PrivateSwitchBase-input')
     '''
     # todo: support also the following:
     toggle_all = headers.ElementBy(have.attribute('data-field').value('__check__'))
     toggle_all_checkbox = toggle_all.Element('[type=checkbox]')
     '''
-    content = grid.Element('[role=rowgroup]')
-    rows = content.All('[role=row]')
+    content = grid.element('[role=rowgroup]')
+    rows = content.all('[role=row]')
     _cells_selector = '[role=gridcell]'
-    cells = content.All(_cells_selector)
+    cells = content.all(_cells_selector)
 
     def cells_of_row(self, number):
         return self.rows[number - 1].all(self._cells_selector)
 
     footer = Element('.MuiDataGrid-footerContainer')
-    selected_rows_count = footer.Element('.MuiDataGrid-selectedRowCount')
-    pagination = footer.Element('.MuiTablePagination-root')
-    pagination_rows_displayed = pagination.Element('.MuiTablePagination-displayedRows')
-    page_to_right = pagination.Element('[data-testid=KeyboardArrowRightIcon]')
-    page_to_left = pagination.Element('[data-testid=KeyboardArrowLeftIcon]')
+    selected_rows_count = footer.element('.MuiDataGrid-selectedRowCount')
+    pagination = footer.element('.MuiTablePagination-root')
+    pagination_rows_displayed = pagination.element('.MuiTablePagination-displayedRows')
+    page_to_right = pagination.element('[data-testid=KeyboardArrowRightIcon]')
+    page_to_left = pagination.element('[data-testid=KeyboardArrowLeftIcon]')
 
     def __init__(self, context):
         self.context = context

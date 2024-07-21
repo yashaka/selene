@@ -172,7 +172,7 @@ class __X_ReactContinuousSlider:
 # Example of the POM-like PageObject pattern
 class ReactContinuousSlider:
     thumb = Element('.MuiSlider-thumb')
-    thumb_input = thumb.Element('input')
+    thumb_input = thumb.element('input')
     volume_up = Element('[data-testid=VolumeUpIcon]')
     volume_down = Element('[data-testid=VolumeDownIcon]')
     rail = Element('.MuiSlider-rail')
