@@ -6,23 +6,23 @@
   },
   {
     "referrer": "school.qa.guru",
-    "count": 96,
-    "uniques": 3
-  },
-  {
-    "referrer": "github.com",
-    "count": 82,
-    "uniques": 26
+    "count": 100,
+    "uniques": 5
   },
   {
     "referrer": "DuckDuckGo",
-    "count": 80,
-    "uniques": 75
+    "count": 90,
+    "uniques": 83
+  },
+  {
+    "referrer": "github.com",
+    "count": 83,
+    "uniques": 27
   },
   {
     "referrer": "ecosia.org",
-    "count": 35,
-    "uniques": 34
+    "count": 38,
+    "uniques": 37
   },
   {
     "referrer": "yandex.ru",
