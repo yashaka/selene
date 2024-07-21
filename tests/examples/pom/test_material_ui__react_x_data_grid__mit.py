@@ -18,18 +18,19 @@ class DataGridMIT:
     rows = content.all('[role=row]')
     _cells_selector = '[role=gridcell]'
     cells = content.all(_cells_selector)
-    editing_cell_input = content.element('.MuiDataGrid-cell--editing input')
+    editing_cell_input = content.element('.MuiDataGrid-cell--editing').element('input')
     '''
-    # TODO: make the following work...
-    #       it fails because content.element('.MuiDataGrid-cell--editing')
-    #       can't be "resolved", because has no name, was not actually used as a descriptor
-    #       how to fix it? can we?
+    # DONE: now the following works...
+    #       it failed previously because content.element('.MuiDataGrid-cell--editing')
+    #       couldn't be "resolved", because has no name, was not actually used
+    #       as a descriptor
     editing_cell_input = content.element('.MuiDataGrid-cell--editing').element('input')
     # this will work, by the way:
     editing_cell = content.element('.MuiDataGrid-cell--editing')
     editing_cell_input = editing_cell.element('input')
-    # by the way, check something like (it should work... – can we use it to fix above?):
+    # the following worked
     editing_cell_input = Element('input').within(lambda self: self.content.element('.MuiDataGrid-cell--editing'))
+    # so we fixed it incorporating this idea into the code of descriptor.element
     '''
 
     def cells_of_row(self, number, /):

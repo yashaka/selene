@@ -50,6 +50,9 @@ import selene
 #       > The
 class Element:  # todo: consider implementing LocationContext interface
     def __init__(self, selector: str | Tuple[str, str], _context=None):
+        # todo: consider refactoring to protected over private attributes
+        #       at least for easier debugging
+        #       and easier dynamic checks of attributes presence
         self.__selector = selector
 
         # todo: should we wrap lambda below into lru_cache?
@@ -72,6 +75,17 @@ class Element:  # todo: consider implementing LocationContext interface
                     ),
                 ),
             )
+        )
+
+    def _as_context(self, instance) -> selene.Element:
+        return (
+            context_of_self.element(self.__selector)
+            if isinstance(
+                context_of_self := self.__context(instance),
+                (selene.Browser, selene.Element),
+            )
+            # => self.__context is a descriptor:
+            else context_of_self._as_context(instance).element(self.__selector)
         )
 
     def within(self, context, /):
@@ -99,26 +113,34 @@ class Element:  # todo: consider implementing LocationContext interface
         )
 
     def element(self, selector: str | Tuple[str, str]) -> Element:
-        # return Element(selector, _context=self)
         return Element(
             selector,
             _context=lambda instance: (  # todo: should we lru_cache it?
-                getattr(instance, self.__name),  # ← resolving descriptors chain
-                self,  # before returning the actual context :P
-                # otherwise any descriptor built on top of previously defined
-                # can be resolved improperly, because previous one
-                # might be not accessed yet, thus we have to simulate such assess
-                # on our own by forcing getattr
-            )[1],
+                (
+                    getattr(instance, self.__name),  # ← resolving descriptors chain –
+                    self,  # – before returning the actual context :P
+                    # otherwise any descriptor built on top of previously defined
+                    # can be resolved improperly, because previous one
+                    # might be not accessed yet, thus we have to simulate such assess
+                    # on our own by forcing getattr
+                )[1]
+                if hasattr(self, f'_{self.__class__.__name__}__name')
+                # => self if a "pass-through"-descriptor)
+                else self._as_context(instance)
+            ),
         )
 
     def all(self, selector: str | Tuple[str, str]) -> All:
         return All(
             selector,
             _context=lambda instance: (
-                getattr(instance, self.__name),
-                self,
-            )[1],
+                (
+                    getattr(instance, self.__name),
+                    self,
+                )[1]
+                if hasattr(self, f'_{self.__class__.__name__}__name')
+                else self._as_context(instance)
+            ),
         )
 
     # --- Descriptor --- #
@@ -126,36 +148,19 @@ class Element:  # todo: consider implementing LocationContext interface
     def __set_name__(self, owner, name):
         self.__name = name  # TODO: use it
 
+    # TODO: should not we set attr on instance instead of lru_cache? :D
+    #       set first time, then reuse :D
+    #       current impl looks like cheating :D
     @lru_cache
     def __get__(self, instance, owner):
+        return self._as_context(instance)
 
-        actual_context = self.__context(instance)
-
-        self.__as_context = cast(
-            selene.Element,
-            (
-                actual_context.element(self.__selector)
-                if isinstance(actual_context, (selene.Browser, selene.Element))
-                # self.__context is of type self.__class__ ;)
-                else actual_context._selene_element(self.__selector)
-            ),
-        )
-
-        return self.__as_context
-
-    # --- LocationContext --- #
-
-    # currently protected from direct access on purpose to not missclick on it
-    # when actually the .Element or .All is needed
-    def _selene_element(self, selector: str | Tuple[str, str]):
-        return self.__as_context.element(selector)
-
-    def _selene_all(self, selector: str | Tuple[str, str]) -> selene.Collection:
-        return self.__as_context.all(selector)
+    # --- LocationContext ---
+    # prev impl. was completely wrong, cause store "as_context" snapshot on self
+    # but had to store it on instance...
 
 
 class All:
-
     def __init__(self, selector: str | Tuple[str, str], _context=None):
         self.__selector = selector
 
@@ -178,6 +183,17 @@ class All:
                     ),
                 ),
             )
+        )
+
+    def _as_context(self, instance) -> selene.Collection:
+        return (
+            context_of_self.all(self.__selector)
+            if isinstance(
+                context_of_self := self.__context(instance),
+                (selene.Browser, selene.Element, selene.Collection),
+            )
+            # => self.__context is a descriptor:
+            else context_of_self._as_context(instance).all(self.__selector)
         )
 
     def within(self, context, /):
@@ -212,23 +228,10 @@ class All:
 
     @lru_cache
     def __get__(self, instance, owner):
-        actual_context = self.__context(instance)
-
-        self.__as_context = cast(
-            selene.Collection,
-            (
-                actual_context.all(self.__selector)
-                if isinstance(actual_context, (selene.Browser, selene.Element))
-                # self.__context is of type self.__class__ ;)
-                else actual_context._selene_all(self.__selector)
-            ),
-        )
-
-        return self.__as_context
+        return self._as_context(instance)
 
     # --- FilteringContext --- #
-
-    # TODO: implement...
+    # todo: do we need it?
 
 
 # todo: consider aliases...
