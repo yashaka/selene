@@ -67,7 +67,9 @@ class DataGridMIT:
 @pytest.mark.parametrize(
     'characters',
     [
-        DataGridMIT(browser.element('#DataGridDemo+* .MuiDataGrid-root')),
+        DataGridMIT(
+            browser.with_(timeout=2.0).element('#DataGridDemo+* .MuiDataGrid-root')
+        ),
         # DataGridMIT.by_id('demo-simple-select'),
     ],
 )
