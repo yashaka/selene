@@ -619,6 +619,10 @@ def native_property(name: str, _inverted=False):
     )
 
 
+# todo: should we make it smarter enough to handle mobile element context?
+checked: Condition[Element] = native_property('checked').value(True)
+
+
 def css_property(name: str, _inverted=False):
     return _ElementDescriptor(
         name,

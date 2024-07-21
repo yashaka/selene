@@ -36,6 +36,8 @@ selected = match.selected
 enabled = match.enabled
 disabled = match.disabled
 
+checked = match.checked
+
 clickable = match.clickable
 
 blank = match.blank

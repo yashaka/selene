@@ -116,6 +116,9 @@ def property_(name: str, *args, **kwargs):
     return _match.native_property(name, _inverted=True)
 
 
+checked = _match.checked.not_
+
+
 def css_property(name: str, *args, **kwargs):
     if args or 'value' in kwargs:
         warnings.warn(
