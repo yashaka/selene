@@ -158,6 +158,8 @@ check vscode pylance, mypy, jetbrains qodana...
 
 ### TODO: consider regex support via .pattern prop (similar to .ignore_case) (#537)
 
+### TODO: fix Autocomplete after entity.perform(command.*).HERE
+
 ## 2.0.0rc10: «copy&paste, frames, shadow & texts_like» (to be released on DD.05.2024)
 
 ### TODO: in addition to browser – _page for pure web and _device for pure mobile?

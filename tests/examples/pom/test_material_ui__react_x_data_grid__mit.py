@@ -1,6 +1,6 @@
 import pytest
 
-from selene import browser, have, be
+from selene import browser, have, be, command, query
 from selene.support._pom import Element, All
 
 
@@ -18,9 +18,39 @@ class DataGridMIT:
     rows = content.all('[role=row]')
     _cells_selector = '[role=gridcell]'
     cells = content.all(_cells_selector)
+    editing_cell_input = content.element('.MuiDataGrid-cell--editing input')
+    '''
+    # TODO: make the following work...
+    #       it fails because content.element('.MuiDataGrid-cell--editing')
+    #       can't be "resolved", because has no name, was not actually used as a descriptor
+    #       how to fix it? can we?
+    editing_cell_input = content.element('.MuiDataGrid-cell--editing').element('input')
+    # this will work, by the way:
+    editing_cell = content.element('.MuiDataGrid-cell--editing')
+    editing_cell_input = editing_cell.element('input')
+    # by the way, check something like (it should work... – can we use it to fix above?):
+    editing_cell_input = Element('input').within(lambda self: self.content.element('.MuiDataGrid-cell--editing'))
+    '''
 
-    def cells_of_row(self, number):
+    def cells_of_row(self, number, /):
         return self.rows[number - 1].all(self._cells_selector)
+
+    # todo: support int for column
+    def cell(self, *, row, column_data_field=None, column=None):
+        if column:
+            column_data_field = self.headers.element_by(have.exact_text(column)).get(
+                query.attribute('data-field')
+            )
+
+        return self.cells_of_row(row).element_by(
+            have.attribute('data-field').value(column_data_field)
+        )
+
+    def set_cell(self, *, row, column_data_field=None, column=None, to_text):
+        self.cell(
+            row=row, column_data_field=column_data_field, column=column
+        ).double_click()
+        self.editing_cell_input.perform(command.select_all).type(to_text).press_enter()
 
     footer = Element('.MuiDataGrid-footerContainer')
     selected_rows_count = footer.element('.MuiDataGrid-selectedRowCount')
@@ -69,6 +99,15 @@ def test_material_ui__react_x_data_grid_mit(characters):
     characters.selected_rows_count.should(be.not_.visible)
 
     characters.rows.should(have.size(5))
+    characters.cells_of_row(1).should(
+        have._exact_texts_like(..., 'Jon', 'Snow', '14', 'Jon Snow')
+    )
+    characters.set_cell(row=1, column_data_field='firstName', to_text='John')
+    characters.cells_of_row(1).should(
+        have._exact_texts_like(..., 'John', 'Snow', '14', 'John Snow')
+    )
+
+    characters.set_cell(row=1, column='First name', to_text='Jon')
     characters.cells_of_row(1).should(
         have._exact_texts_like(..., 'Jon', 'Snow', '14', 'Jon Snow')
     )
