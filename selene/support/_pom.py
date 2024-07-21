@@ -211,11 +211,11 @@ class All:
         self.__name = name  # TODO: use it
 
     @lru_cache
-    def __get__(self, instance, owner) -> selene.Element:
+    def __get__(self, instance, owner):
         actual_context = self.__context(instance)
 
         self.__as_context = cast(
-            selene.Element,
+            selene.Collection,
             (
                 actual_context.all(self.__selector)
                 if isinstance(actual_context, (selene.Browser, selene.Element))

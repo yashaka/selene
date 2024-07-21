@@ -14,6 +14,13 @@ class DataGridMIT:
     toggle_all = headers.ElementBy(have.attribute('data-field').value('__check__'))
     toggle_all_checkbox = toggle_all.Element('[type=checkbox]')
     '''
+    content = grid.Element('[role=rowgroup]')
+    rows = content.All('[role=row]')
+    _cells_selector = '[role=gridcell]'
+    cells = content.All(_cells_selector)
+
+    def cells_of_row(self, number):
+        return self.rows[number - 1].all(self._cells_selector)
 
     footer = Element('.MuiDataGrid-footerContainer')
     selected_rows_count = footer.Element('.MuiDataGrid-selectedRowCount')
@@ -60,3 +67,8 @@ def test_material_ui__react_x_data_grid_mit(characters):
     characters.toggle_all_checkbox.click()
     characters.toggle_all_checkbox.should(be.not_.checked)
     characters.selected_rows_count.should(be.not_.visible)
+
+    characters.rows.should(have.size(5))
+    characters.cells_of_row(1).should(
+        have._exact_texts_like(..., 'Jon', 'Snow', '14', 'Jon Snow')
+    )

@@ -150,6 +150,8 @@ check vscode pylance, mypy, jetbrains qodana...
 
 (speaking about all: ConditionMismatch, Condition, Match...)
 
+### todo: support smart flattening in *_like conditions (with list globbing)
+
 ### TODO: stable Element descriptors
 
 ### TODO: consider removing experimental mark from `ConditionMismatch._to_raise_if_not`
