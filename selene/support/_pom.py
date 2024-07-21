@@ -20,10 +20,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 from __future__ import annotations
+
+from functools import lru_cache
+
 from typing_extensions import Tuple, cast
 
 import selene
-from selene.core.entity import Element, Collection
 
 
 # TODO: should we built these descriptors into Element and Collection classes?
@@ -46,52 +48,85 @@ from selene.core.entity import Element, Collection
 #       > Inside + InsideAll
 #       > InnerElement
 #       > The
-class _Element:  # todo: consider implementing LocationContext interface
+class Element:  # todo: consider implementing LocationContext interface
     def __init__(self, selector: str | Tuple[str, str], _context=None):
         self.__selector = selector
         self.__context = _context
 
-    def Element(self, selector: str | Tuple[str, str]) -> _Element:
-        return _Element(selector, _context=self)
+    def within(self, context, /):
+        return Element(self.__selector, _context=context)
 
-    def All(self, selector: str | Tuple[str, str]) -> _All:
-        return _All(selector, _context=self)
+    def Element(self, selector: str | Tuple[str, str]) -> Element:
+        return Element(selector, _context=self)
+
+    def All(self, selector: str | Tuple[str, str]) -> All:
+        return All(selector, _context=self)
 
     # --- Descriptor --- #
 
     def __set_name__(self, owner, name):
         self.__name = name  # TODO: use it
 
-    # TODO: consider caching
+    @lru_cache
     def __get__(self, instance, owner):
-        self.__context = self.__context or getattr(instance, 'context', selene.browser)
-        self.__as_context = cast(Element, self.__context.element(self.__selector))
+        self.__context = self.__context or getattr(
+            instance,
+            'context',
+            getattr(
+                instance,
+                'browser',
+                selene.browser,
+            ),
+        )
+
+        self.__as_context = cast(
+            selene.Element,
+            (
+                self.__context.element(self.__selector)
+                if isinstance(self.__context, (selene.Browser, selene.Element))
+                # self.__context is of type self.__class__ ;)
+                else self.__context._element(self.__selector)
+            ),
+        )
 
         return self.__as_context
 
     # --- LocationContext --- #
 
-    def element(self, selector: str | Tuple[str, str]):
+    # currently protected from direct access on purpose to not missclick on it
+    # when actually the .Element or .All is needed
+    def _element(self, selector: str | Tuple[str, str]):
         return self.__as_context.element(selector)
 
-    def all(self, selector: str | Tuple[str, str]) -> Collection:
-        return self.__as_context.all(selector)
+    # def _all(self, selector: str | Tuple[str, str]) -> selene.Collection:
+    #     return self.__as_context.all(selector)
 
 
-class _All:
+class All:
 
     def __init__(self, selector: str | Tuple[str, str], _context=None):
         self.__selector = selector
         self.__context = _context
+
+    def within(self, context, /):
+        return All(self.__selector, _context=context)
 
     # --- Descriptor --- #
 
     def __set_name__(self, owner, name):
         self.__name = name  # TODO: use it
 
-    # TODO: consider caching
-    def __get__(self, instance, owner) -> Element:
-        self.__context = self.__context or getattr(instance, 'context', selene.browser)
+    @lru_cache
+    def __get__(self, instance, owner) -> selene.Element:
+        self.__context = self.__context or getattr(
+            instance,
+            'context',
+            getattr(
+                instance,
+                'browser',
+                selene.browser,
+            ),
+        )
         self.__as_context = self.__context.all(self.__selector)
 
         return self.__as_context
@@ -101,5 +136,6 @@ class _All:
     # TODO: implement...
 
 
-S = _Element
-SS = _All
+# todo: consider aliases...
+# S = _Element
+# SS = _All

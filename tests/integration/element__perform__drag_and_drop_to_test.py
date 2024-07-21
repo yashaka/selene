@@ -2,7 +2,7 @@ from typing import Optional
 
 import selene
 from selene import command, be, have, query
-from selene.support._pom import _Element
+from selene.support._pom import Element
 from tests.integration.helpers.givenpage import GivenPage
 
 
@@ -171,11 +171,11 @@ class __X_ReactContinuousSlider:
 
 # Example of the POM-like PageObject pattern
 class ReactContinuousSlider:
-    thumb = _Element('.MuiSlider-thumb')
+    thumb = Element('.MuiSlider-thumb')
     thumb_input = thumb.Element('input')
-    volume_up = _Element('[data-testid=VolumeUpIcon]')
-    volume_down = _Element('[data-testid=VolumeDownIcon]')
-    rail = _Element('.MuiSlider-rail')
+    volume_up = Element('[data-testid=VolumeUpIcon]')
+    volume_down = Element('[data-testid=VolumeDownIcon]')
+    rail = Element('.MuiSlider-rail')
 
     def __init__(self, browser: Optional[selene.Browser]):
         self.browser = browser or selene.browser

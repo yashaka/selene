@@ -150,6 +150,8 @@ check vscode pylance, mypy, jetbrains qodana...
 
 (speaking about all: ConditionMismatch, Condition, Match...)
 
+### TODO: stable Element descriptors
+
 ### TODO: consider removing experimantal mark from `ConditionMismatch._to_raise_if_not`
 
 ### TODO: consider regex support via .pattern prop (similar to .ignore_case) (#537)
@@ -160,7 +162,7 @@ check vscode pylance, mypy, jetbrains qodana...
 
 ### TODO: Location strategy?
 
-### DOING: basic Element descriptors?
+### DOING: draft Element descriptors POC?
 
 ### Deprecated conditions
 
