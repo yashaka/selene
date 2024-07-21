@@ -52,6 +52,7 @@ class Element:  # todo: consider implementing LocationContext interface
     def __init__(self, selector: str | Tuple[str, str], _context=None):
         self.__selector = selector
 
+        # todo: should we wrap lambda below into lru_cache?
         self.__context = lambda instance: (
             (_context(instance) if callable(_context) else _context)
             or getattr(  # todo: refactor to one-liner via helper
@@ -98,10 +99,27 @@ class Element:  # todo: consider implementing LocationContext interface
         )
 
     def Element(self, selector: str | Tuple[str, str]) -> Element:
-        return Element(selector, _context=self)
+        # return Element(selector, _context=self)
+        return Element(
+            selector,
+            _context=lambda instance: (  # todo: should we lru_cache it?
+                getattr(instance, self.__name),  # ← resolving descriptors chain
+                self,  # before returning the actual context :P
+                # otherwise any descriptor built on top of previously defined
+                # can be resolved improperly, because previous one
+                # might be not accessed yet, thus we have to simulate such assess
+                # on our own by forcing getattr
+            )[1],
+        )
 
     def All(self, selector: str | Tuple[str, str]) -> All:
-        return All(selector, _context=self)
+        return All(
+            selector,
+            _context=lambda instance: (
+                getattr(instance, self.__name),
+                self,
+            )[1],
+        )
 
     # --- Descriptor --- #
 
