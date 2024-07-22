@@ -1,5 +1,6 @@
 import pytest
 
+import selene
 from selene import browser, have, be, command, query
 from selene.support._pom import Element, All
 
@@ -29,7 +30,7 @@ class DataGridMIT:
     cells = content.all(_cells_selector)
     editing_cell_input = content.element('.MuiDataGrid-cell--editing').element('input')
 
-    def __init__(self, context):
+    def __init__(self, context: selene.Element):
         self.context = context
 
     def cells_of_row(self, number, /):

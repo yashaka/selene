@@ -50,13 +50,12 @@ import selene
 #       > The
 class Element:  # todo: consider implementing LocationContext interface
     def __init__(self, selector: str | Tuple[str, str], _context=None):
-        # todo: consider refactoring to protected over private attributes
-        #       at least for easier debugging
-        #       and easier dynamic checks of attributes presence
-        self.__selector = selector
+        # TODO: should we set _name on init too?
+        #       at least to None, if value was not provided...
+        self._selector = selector
 
         # todo: should we wrap lambda below into lru_cache?
-        self.__context = lambda instance: (
+        self._context = lambda instance: (
             (_context(instance) if callable(_context) else _context)
             or getattr(  # todo: refactor to one-liner via helper
                 instance,
@@ -79,17 +78,17 @@ class Element:  # todo: consider implementing LocationContext interface
 
     def _as_context(self, instance) -> selene.Element:
         return (
-            context_of_self.element(self.__selector)
+            context_of_self.element(self._selector)
             if isinstance(
-                context_of_self := self.__context(instance),
+                context_of_self := self._context(instance),
                 (selene.Browser, selene.Element),
             )
-            # => self.__context is a descriptor:
-            else context_of_self._as_context(instance).element(self.__selector)
+            # => self._context is a descriptor:
+            else context_of_self._as_context(instance).element(self._selector)
         )
 
     def within(self, context, /):
-        return Element(self.__selector, _context=context)
+        return Element(self._selector, _context=context)
 
     @property
     def within_browser(self):
@@ -117,14 +116,14 @@ class Element:  # todo: consider implementing LocationContext interface
             selector,
             _context=lambda instance: (  # todo: should we lru_cache it?
                 (
-                    getattr(instance, self.__name),  # ← resolving descriptors chain –
+                    getattr(instance, self._name),  # ← resolving descriptors chain –
                     self,  # – before returning the actual context :P
                     # otherwise any descriptor built on top of previously defined
                     # can be resolved improperly, because previous one
                     # might be not accessed yet, thus we have to simulate such assess
                     # on our own by forcing getattr
                 )[1]
-                if hasattr(self, f'_{self.__class__.__name__}__name')
+                if hasattr(self, '_name')
                 # => self if a "pass-through"-descriptor)
                 else self._as_context(instance)
             ),
@@ -135,10 +134,10 @@ class Element:  # todo: consider implementing LocationContext interface
             selector,
             _context=lambda instance: (
                 (
-                    getattr(instance, self.__name),
+                    getattr(instance, self._name),
                     self,
                 )[1]
-                if hasattr(self, f'_{self.__class__.__name__}__name')
+                if hasattr(self, '_name')
                 else self._as_context(instance)
             ),
         )
@@ -146,7 +145,7 @@ class Element:  # todo: consider implementing LocationContext interface
     # --- Descriptor --- #
 
     def __set_name__(self, owner, name):
-        self.__name = name  # TODO: use it
+        self._name = name  # TODO: use it
 
     # TODO: should not we set attr on instance instead of lru_cache? :D
     #       set first time, then reuse :D
@@ -162,9 +161,9 @@ class Element:  # todo: consider implementing LocationContext interface
 
 class All:
     def __init__(self, selector: str | Tuple[str, str], _context=None):
-        self.__selector = selector
+        self._selector = selector
 
-        self.__context = lambda instance: (
+        self._context = lambda instance: (
             (_context(instance) if callable(_context) else _context)
             or getattr(  # todo: refactor to one-liner via helper
                 instance,
@@ -187,17 +186,17 @@ class All:
 
     def _as_context(self, instance) -> selene.Collection:
         return (
-            context_of_self.all(self.__selector)
+            context_of_self.all(self._selector)
             if isinstance(
-                context_of_self := self.__context(instance),
+                context_of_self := self._context(instance),
                 (selene.Browser, selene.Element, selene.Collection),
             )
-            # => self.__context is a descriptor:
-            else context_of_self._as_context(instance).all(self.__selector)
+            # => self._context is a descriptor:
+            else context_of_self._as_context(instance).all(self._selector)
         )
 
     def within(self, context, /):
-        return All(self.__selector, _context=context)
+        return All(self._selector, _context=context)
 
     # todo: think on better name... within_page?
     @property
@@ -224,7 +223,7 @@ class All:
     # --- Descriptor --- #
 
     def __set_name__(self, owner, name):
-        self.__name = name  # TODO: use it
+        self._name = name  # TODO: use it
 
     @lru_cache
     def __get__(self, instance, owner):
