@@ -21,9 +21,7 @@
 # SOFTWARE.
 from __future__ import annotations
 
-from functools import lru_cache
-
-from typing_extensions import Tuple, cast
+from typing_extensions import Tuple
 
 import selene
 
@@ -148,12 +146,17 @@ class element:  # todo: consider implementing LocationContext interface
     def __set_name__(self, owner, name):
         self._name = name  # TODO: use it
 
-    # TODO: should not we set attr on instance instead of lru_cache? :D
-    #       set first time, then reuse :D
-    #       current impl looks like cheating :D
-    @lru_cache
     def __get__(self, instance, owner):
-        return self._as_context(instance)
+        # # this if is not needed, because unless we define __set__ on the descriptor
+        # # on dot access, after we setattr on instance, python will first look in __dict__
+        # # and only then in __get__ (of a non-data-descriptor
+        # # – the one without __set__ or __del__)
+        # if hasattr(instance, self._name):
+        #     return getattr(instance, self._name)
+        # else:
+        as_context = self._as_context(instance)
+        setattr(instance, self._name, as_context)
+        return as_context
 
     # --- LocationContext ---
     # prev impl. was completely wrong, cause store "as_context" snapshot on self
@@ -226,9 +229,10 @@ class all_:
     def __set_name__(self, owner, name):
         self._name = name  # TODO: use it
 
-    @lru_cache
     def __get__(self, instance, owner):
-        return self._as_context(instance)
+        as_context = self._as_context(instance)
+        setattr(instance, self._name, as_context)
+        return as_context
 
     # --- FilteringContext --- #
     # todo: do we need it?
