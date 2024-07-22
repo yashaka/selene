@@ -2,14 +2,14 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 373,
-    "uniques": 230
+    "count": 344,
+    "uniques": 208
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 36,
-    "uniques": 16
+    "count": 34,
+    "uniques": 15
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
@@ -24,16 +24,16 @@
     "uniques": 7
   },
   {
-    "path": "/yashaka/selene/tree/master/selene",
-    "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 17,
-    "uniques": 5
-  },
-  {
     "path": "/yashaka/selene/blob/master/pyproject.toml",
     "title": "selene/pyproject.toml at master · yashaka/selene · GitHub",
     "count": 16,
     "uniques": 3
+  },
+  {
+    "path": "/yashaka/selene/tree/master/selene",
+    "title": "selene/selene at master · yashaka/selene · GitHub",
+    "count": 15,
+    "uniques": 4
   },
   {
     "path": "/yashaka/selene/issues/548",
@@ -48,14 +48,14 @@
     "uniques": 1
   },
   {
-    "path": "/yashaka/selene/blob/9baf811e86263984fcdd4b378e68291d626eb0bc/tests/examples/todomvc/straightforward_approach/todomvc_test.py",
-    "title": "selene/tests/examples/todomvc/straightforward_approach/todomvc_test.py at 9ba...",
-    "count": 12,
-    "uniques": 2
-  },
-  {
     "path": "/yashaka/selene/issues/188",
     "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
+    "count": 11,
+    "uniques": 8
+  },
+  {
+    "path": "/yashaka/selene/releases/tag/2.0.0rc9",
+    "title": "Release 2.0.0rc9 · yashaka/selene · GitHub",
     "count": 11,
     "uniques": 8
   }
