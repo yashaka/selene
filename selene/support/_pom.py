@@ -52,6 +52,7 @@ class element:  # todo: consider implementing LocationContext interface
         # TODO: should we set _name on init too?
         #       at least to None, if value was not provided...
         self._selector = selector
+        self._instantiated_as_descriptor = False
 
         # todo: should we wrap lambda below into lru_cache?
         self._context = lambda instance: (
@@ -77,6 +78,9 @@ class element:  # todo: consider implementing LocationContext interface
 
     def _as_context(self, instance) -> selene.Element:
         return (
+            # # todo: one day we gonna pass a name to element ;)
+            # #       once selene entities support naming
+            # context_of_self.element(self._selector, _name=self._name)
             context_of_self.element(self._selector)
             if isinstance(
                 context_of_self := self._context(instance),
@@ -122,7 +126,8 @@ class element:  # todo: consider implementing LocationContext interface
                     # might be not accessed yet, thus we have to simulate such assess
                     # on our own by forcing getattr
                 )[1]
-                if hasattr(self, '_name')
+                # if hasattr(self, '_name')
+                if self._instantiated_as_descriptor
                 # => self if a "pass-through"-descriptor)
                 else self._as_context(instance)
             ),
@@ -136,7 +141,7 @@ class element:  # todo: consider implementing LocationContext interface
                     getattr(instance, self._name),
                     self,
                 )[1]
-                if hasattr(self, '_name')
+                if self._instantiated_as_descriptor
                 else self._as_context(instance)
             ),
         )
@@ -145,6 +150,7 @@ class element:  # todo: consider implementing LocationContext interface
 
     def __set_name__(self, owner, name):
         self._name = name  # TODO: use it
+        self._instantiated_as_descriptor = True
 
     def __get__(self, instance, owner):
         # # this if is not needed, because unless we define __set__ on the descriptor
@@ -166,6 +172,7 @@ class element:  # todo: consider implementing LocationContext interface
 class all_:
     def __init__(self, selector: str | Tuple[str, str], _context=None):
         self._selector = selector
+        self._instantiated_as_descriptor = False
 
         self._context = lambda instance: (
             (_context(instance) if callable(_context) else _context)
@@ -228,6 +235,7 @@ class all_:
 
     def __set_name__(self, owner, name):
         self._name = name  # TODO: use it
+        self._instantiated_as_descriptor = True
 
     def __get__(self, instance, owner):
         as_context = self._as_context(instance)
