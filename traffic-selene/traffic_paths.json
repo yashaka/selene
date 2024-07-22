@@ -2,8 +2,14 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 344,
-    "uniques": 208
+    "count": 379,
+    "uniques": 233
+  },
+  {
+    "path": "/yashaka/selene/tree/master/examples",
+    "title": "selene/examples at master · yashaka/selene · GitHub",
+    "count": 39,
+    "uniques": 14
   },
   {
     "path": "/yashaka/selene/issues",
@@ -12,28 +18,34 @@
     "uniques": 15
   },
   {
-    "path": "/yashaka/selene/tree/master/examples",
-    "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 34,
-    "uniques": 12
-  },
-  {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 19,
-    "uniques": 7
+    "count": 22,
+    "uniques": 8
   },
   {
     "path": "/yashaka/selene/blob/master/pyproject.toml",
     "title": "selene/pyproject.toml at master · yashaka/selene · GitHub",
-    "count": 16,
-    "uniques": 3
+    "count": 18,
+    "uniques": 4
   },
   {
     "path": "/yashaka/selene/tree/master/selene",
     "title": "selene/selene at master · yashaka/selene · GitHub",
-    "count": 15,
+    "count": 17,
+    "uniques": 5
+  },
+  {
+    "path": "/yashaka/selene/tree/master/docs",
+    "title": "selene/docs at master · yashaka/selene · GitHub",
+    "count": 16,
     "uniques": 4
+  },
+  {
+    "path": "/yashaka/selene/tree/master",
+    "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
+    "count": 14,
+    "uniques": 5
   },
   {
     "path": "/yashaka/selene/issues/548",
@@ -46,17 +58,5 @@
     "title": "selene/examples/run_remote_in_android_app_with_options_for_browserstack/versi...",
     "count": 13,
     "uniques": 1
-  },
-  {
-    "path": "/yashaka/selene/issues/188",
-    "title": "use ActionChains to clear an input instead of `.clear()` · Issue #188 · yasha...",
-    "count": 11,
-    "uniques": 8
-  },
-  {
-    "path": "/yashaka/selene/releases/tag/2.0.0rc9",
-    "title": "Release 2.0.0rc9 · yashaka/selene · GitHub",
-    "count": 11,
-    "uniques": 8
   }
 ]
