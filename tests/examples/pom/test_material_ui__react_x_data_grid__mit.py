@@ -2,11 +2,11 @@ import pytest
 
 import selene
 from selene import browser, have, be, command, query
-from selene.support._pom import Element, All
+from selene.support._pom import element, all_
 
 
 class DataGridMIT:
-    grid = Element('[role=grid]')
+    grid = element('[role=grid]')
 
     header = grid.element('.MuiDataGrid-columnHeaders')
     toggle_all_checkbox = header.element('.PrivateSwitchBase-input')
@@ -17,7 +17,7 @@ class DataGridMIT:
     '''
     column_headers = grid.all('[role=columnheader]')
 
-    footer = Element('.MuiDataGrid-footerContainer')
+    footer = element('.MuiDataGrid-footerContainer')
     selected_rows_count = footer.element('.MuiDataGrid-selectedRowCount')
     pagination = footer.element('.MuiTablePagination-root')
     pagination_rows_displayed = pagination.element('.MuiTablePagination-displayedRows')

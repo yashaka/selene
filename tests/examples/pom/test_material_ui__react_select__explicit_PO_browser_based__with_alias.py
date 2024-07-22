@@ -1,14 +1,14 @@
 import pytest
 
 from selene import browser, have
-from selene.support._pom import Element, All
+from selene.support._pom import element, all_
 
 
 class MUIBasicSelect:
-    label = Element('label')
-    selected_text = Element('.MuiSelect-select')
-    input = Element('input')
-    items = All('[role=option]').within_browser
+    label = element('label')
+    selected_text = element('.MuiSelect-select')
+    input = element('input')
+    items = all_('[role=option]').within_browser
 
     def __init__(self, context, browser):  # noqa
         self.browser = browser

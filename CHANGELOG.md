@@ -170,10 +170,6 @@ check vscode pylance, mypy, jetbrains qodana...
 
 #### TODO: decide on lru_cache vs set attr on instance...
 
-#### TODO: consider _pom.element over _pom.Element, and _pom.all_ over _pom.All
-
-maybe as aliases... 
-
 ### Deprecated conditions
 
 - `be.present` in favor of `be.present_in_dom`

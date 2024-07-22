@@ -1,11 +1,11 @@
-from selene.support._pom import Element, All
+from selene.support._pom import element, all_
 
 
 def test__pom__element_is_unique_for_each_object():
     class Page:
         selector = '.element'
-        element = Element(selector)
-        elements = All(selector)
+        element = element(selector)
+        elements = all_(selector)
 
     page1 = Page()
     page2 = Page()

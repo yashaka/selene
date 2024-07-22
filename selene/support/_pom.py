@@ -48,7 +48,8 @@ import selene
 #       > Inside + InsideAll
 #       > InnerElement
 #       > The
-class Element:  # todo: consider implementing LocationContext interface
+# todo: consider having _Element(selector, _context) as class, then element(selector) as alias
+class element:  # todo: consider implementing LocationContext interface
     def __init__(self, selector: str | Tuple[str, str], _context=None):
         # TODO: should we set _name on init too?
         #       at least to None, if value was not provided...
@@ -88,7 +89,7 @@ class Element:  # todo: consider implementing LocationContext interface
         )
 
     def within(self, context, /):
-        return Element(self._selector, _context=context)
+        return element(self._selector, _context=context)
 
     @property
     def within_browser(self):
@@ -111,8 +112,8 @@ class Element:  # todo: consider implementing LocationContext interface
             )
         )
 
-    def element(self, selector: str | Tuple[str, str]) -> Element:
-        return Element(
+    def element(self, selector: str | Tuple[str, str]) -> element:
+        return element(
             selector,
             _context=lambda instance: (  # todo: should we lru_cache it?
                 (
@@ -129,8 +130,8 @@ class Element:  # todo: consider implementing LocationContext interface
             ),
         )
 
-    def all(self, selector: str | Tuple[str, str]) -> All:
-        return All(
+    def all(self, selector: str | Tuple[str, str]) -> all_:
+        return all_(
             selector,
             _context=lambda instance: (
                 (
@@ -159,7 +160,7 @@ class Element:  # todo: consider implementing LocationContext interface
     # but had to store it on instance...
 
 
-class All:
+class all_:
     def __init__(self, selector: str | Tuple[str, str], _context=None):
         self._selector = selector
 
@@ -196,7 +197,7 @@ class All:
         )
 
     def within(self, context, /):
-        return All(self._selector, _context=context)
+        return all_(self._selector, _context=context)
 
     # todo: think on better name... within_page?
     @property
