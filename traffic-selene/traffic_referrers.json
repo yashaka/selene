@@ -1,18 +1,13 @@
 [
   {
     "referrer": "Google",
-    "count": 218,
-    "uniques": 73
+    "count": 199,
+    "uniques": 67
   },
   {
     "referrer": "github.com",
-    "count": 143,
-    "uniques": 27
-  },
-  {
-    "referrer": "DuckDuckGo",
-    "count": 107,
-    "uniques": 101
+    "count": 140,
+    "uniques": 25
   },
   {
     "referrer": "school.qa.guru",
@@ -20,9 +15,14 @@
     "uniques": 5
   },
   {
+    "referrer": "DuckDuckGo",
+    "count": 98,
+    "uniques": 94
+  },
+  {
     "referrer": "ecosia.org",
-    "count": 44,
-    "uniques": 44
+    "count": 42,
+    "uniques": 42
   },
   {
     "referrer": "yandex.ru",
@@ -31,8 +31,8 @@
   },
   {
     "referrer": "yashaka.github.io",
-    "count": 7,
-    "uniques": 5
+    "count": 6,
+    "uniques": 4
   },
   {
     "referrer": "kit-docs.internal.eng.qops.net",
@@ -40,12 +40,12 @@
     "uniques": 1
   },
   {
-    "referrer": "ya.ru",
+    "referrer": "statics.teams.cdn.office.net",
     "count": 4,
-    "uniques": 2
+    "uniques": 1
   },
   {
-    "referrer": "statics.teams.cdn.office.net",
+    "referrer": "Bing",
     "count": 4,
     "uniques": 1
   }
