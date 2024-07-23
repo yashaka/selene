@@ -1,12 +1,15 @@
+import re
+
 import pytest
 
 import selene
-from selene import browser, have, be, command, query
+from selene import have, be, command, query
 from selene.support._pom import element, all_
+from selene.common.helpers import _HTML_TAGS
 
 
 class DataGridMIT:
-    grid = element('[role=grid]')
+    grid = element('role=grid')
 
     header = grid.element('.MuiDataGrid-columnHeaders')
     toggle_all_checkbox = header.element('.PrivateSwitchBase-input')
@@ -15,18 +18,18 @@ class DataGridMIT:
     toggle_all = headers.ElementBy(have.attribute('data-field').value('__check__'))
     toggle_all_checkbox = toggle_all.Element('[type=checkbox]')
     '''
-    column_headers = grid.all('[role=columnheader]')
+    column_headers = grid.all('role=columnheader')
 
     footer = element('.MuiDataGrid-footerContainer')
     selected_rows_count = footer.element('.MuiDataGrid-selectedRowCount')
     pagination = footer.element('.MuiTablePagination-root')
     pagination_rows_displayed = pagination.element('.MuiTablePagination-displayedRows')
-    page_to_right = pagination.element('[data-testid=KeyboardArrowRightIcon]')
-    page_to_left = pagination.element('[data-testid=KeyboardArrowLeftIcon]')
+    page_to_right = pagination.element('KeyboardArrowRightIcon')
+    page_to_left = pagination.element('KeyboardArrowLeftIcon')
 
-    content = grid.element('[role=rowgroup]')
-    rows = content.all('[role=row]')
-    _cells_selector = '[role=gridcell]'
+    content = grid.element('role=rowgroup')
+    rows = content.all('role=row')
+    _cells_selector = 'role=gridcell'
     cells = content.all(_cells_selector)
     editing_cell_input = content.element('.MuiDataGrid-cell--editing').element('input')
 
@@ -54,19 +57,44 @@ class DataGridMIT:
         self.editing_cell_input.perform(command.select_all).type(to_text).press_enter()
 
 
-@pytest.mark.parametrize(
-    'characters',
-    [
-        DataGridMIT(
-            browser.with_(timeout=2.0).element('#DataGridDemo+* .MuiDataGrid-root')
-        ),
-    ],
-)
-def test_material_ui__react_x_data_grid_mit(characters):
-    browser.driver.refresh()
+@pytest.fixture(scope='function')
+def browser():
+    selene.browser.driver.refresh()
 
+    yield selene.browser.with_(
+        timeout=2.0,
+        selector_to_by_strategy=lambda selector: (
+            # wrap into default strategy
+            selene.browser.config.selector_to_by_strategy(
+                # detected testid
+                f'[data-testid={selector}]'
+                if re.match(
+                    # word_with_dashes_underscores_or_numbers
+                    r'^[a-zA-Z_\d\-]+$',
+                    selector,
+                )
+                and selector not in _HTML_TAGS
+                else (
+                    # detected attribute=value
+                    f'[{match.group(1)}="{match.group(2)}"]'
+                    if (
+                        match := re.match(
+                            # word_with_dashes_underscores_or_numbers=*
+                            r'^([a-zA-Z_\d\-]+)=(.*)$',
+                            selector,
+                        )
+                    )
+                    else selector
+                )
+            )
+        ),
+    )
+
+
+def test_material_ui__react_x_data_grid_mit(browser):
     # WHEN
     browser.open('https://mui.com/x/react-data-grid/#DataGridDemo')
+    characters = DataGridMIT(browser.element('#DataGridDemo+* .MuiDataGrid-root'))
 
     # THEN
     # - check headers

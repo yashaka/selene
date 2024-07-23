@@ -40,7 +40,7 @@ from selene.common._typing_functions import Query, Command
 from selene.core.condition import Condition
 from selene.core.locator import Locator
 
-from selene.common.helpers import to_by, flatten
+from selene.common.helpers import flatten
 from selene.core.exceptions import TimeoutException, _SeleneError
 
 E = TypeVar('E', bound='Assertable')
@@ -240,7 +240,7 @@ class Element(WaitingEntity['Element']):
     # --- Relative location --- #
 
     def element(self, css_or_xpath_or_by: Union[str, Tuple[str, str]]) -> Element:
-        by = to_by(css_or_xpath_or_by)
+        by = self.config._selector_or_by_to_by(css_or_xpath_or_by)
 
         return Element(
             Locator(f'{self}.element({by})', lambda: self().find_element(*by)),
@@ -248,7 +248,7 @@ class Element(WaitingEntity['Element']):
         )
 
     def all(self, css_or_xpath_or_by: Union[str, Tuple[str, str]]) -> Collection:
-        by = to_by(css_or_xpath_or_by)
+        by = self.config._selector_or_by_to_by(css_or_xpath_or_by)
 
         return Collection(
             Locator(f'{self}.all({by})', lambda: self().find_elements(*by)),
@@ -1061,7 +1061,7 @@ class Collection(WaitingEntity['Collection'], Iterable[Element]):
 
             browser.all('.row').all('.cell')).should(have.texts('A1', 'A2', 'B1', 'B2'))
         """
-        by = to_by(selector)
+        by = self.config._selector_or_by_to_by(selector)
 
         # TODO: consider implement it through calling self.collected
         #       because actually the impl is self.collected(lambda element: element.all(selector))
@@ -1103,7 +1103,7 @@ class Collection(WaitingEntity['Collection'], Iterable[Element]):
 
             browser.all('.row').all_first('.cell')).should(have.texts('A1', 'B1'))
         """
-        by = to_by(selector)
+        by = self.config._selector_or_by_to_by(selector)
 
         # TODO: consider implement it through calling self.collected
         #       because actually the impl is self.collected(lambda element: element.element(selector))

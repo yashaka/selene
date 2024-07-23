@@ -164,8 +164,6 @@ check vscode pylance, mypy, jetbrains qodana...
 
 ### TODO: in addition to browser – _page for pure web and _device for pure mobile?
 
-### TODO: Location strategy?
-
 ### DOING: draft Element descriptors POC?
 
 ### Deprecated conditions
@@ -466,6 +464,10 @@ See a bit more in documented ["FAQ: How to work with iFrames in Selene?"](https:
 ### config._disable_wait_decorator_on_get_query
 
 `True` by default, is needed for cleaner logging implemented via `config._wait_decorator` and more optimal performance for `.get(query._frame_context)` in case of nested frames.
+
+### config.selector_to_by_strategy
+
+See a practical example of usage in [FAQ: How to simplify search by Test IDs?](https://yashaka.github.io/selene/faq/custom-test-id-selectors-howto/).
 
 ### More commands in command.py
 

@@ -32,7 +32,17 @@ from types import MappingProxyType
 
 import typing_extensions as typing
 from selenium.common import WebDriverException
-from typing_extensions import Callable, Optional, Any, TypeVar, Dict, Literal, cast
+from selenium.webdriver.common.by import By
+from typing_extensions import (
+    Callable,
+    Optional,
+    Any,
+    TypeVar,
+    Dict,
+    Literal,
+    cast,
+    Tuple,
+)
 
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.options import BaseOptions
@@ -1215,6 +1225,76 @@ class Config:
     All globbing placeholders can be mixed in the same list of expected item values
     in any order.
     * """
+
+    # todo: consider automatically add [] around the attribute=value
+    #       including quotes around value with spaces
+    #       automatically convert text=... to xpath by text
+    #       find more inspirations from:
+    #       https://playwright.dev/docs/other-locators
+    #       and
+    #       https://playwright.dev/docs/locators
+    #       and
+    #       https://github.com/microsoft/playwright/releases/tag/v1.27.0
+    selector_to_by_strategy: Callable[[str], Tuple[str, str]] = lambda selector: (
+        (By.XPATH, selector)
+        if (
+            selector.startswith('/')
+            or selector.startswith('./')
+            or selector.startswith('..')
+            or selector.startswith('(')
+            or selector.startswith('*/')
+        )
+        else (By.CSS_SELECTOR, selector)
+    )
+    """A strategy to convert a selector string to a Selenium By type of selector,
+    that is a 2-dimension tuple of selector type and selector value.
+
+    Can be useful to define custom selectors to be used on building common Selene
+    entities like `browser.element(selector)` or `browser.all(selector)`.
+
+    You can find a simple example of such strategy definition in the default value
+    of this option. Here goes a smarter example of building a custom strategy on top
+    of the default one, that will automatically convert a "one word" selector string
+    to the `[data-testid=<WORD>]` css selector:
+
+    ```python
+    # tests/conftest.py
+    import re
+    import pytest
+    import selene
+    from selene.common.helpers import _HTML_TAGS
+
+    @pytest.fixture(scope='function', autouse=True)
+    def browser_management():
+        selene.browser.config.selector_to_by_strategy = lambda selector: (
+            # wrap into default strategy
+            selene.browser.config.selector_to_by_strategy(
+                # detected testid
+                f'[data-testid={selector}]'
+                if re.match(
+                    # word_with_dashes_underscores_or_numbers
+                    r'^[a-zA-Z_\d\-]+$',
+                    selector,
+                )
+                and selector not in _HTML_TAGS
+                else selector
+            )
+        )
+
+        yield
+
+        selene.browser.quit()
+    ```
+    """
+
+    def _selector_or_by_to_by(
+        self, selector_or_by: str | Tuple[str, str], /
+    ) -> Tuple[str, str]:
+        return (
+            self.selector_to_by_strategy(selector_or_by)  # noqa
+            if isinstance(selector_or_by, str)
+            else selector_or_by
+        )
 
     # TODO: better name? now technically it's not a decorator but decorator_builder...
     # or decorator_factory...

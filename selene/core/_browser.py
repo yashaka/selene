@@ -27,7 +27,6 @@ from typing import Optional, Union, Tuple
 from selenium.webdriver.remote.switch_to import SwitchTo
 from selenium.webdriver.remote.webdriver import WebDriver
 
-from selene.common.helpers import to_by
 from selene.core._actions import _Actions
 from selene.core.configuration import Config
 from selene.core.entity import WaitingEntity, Element, Collection
@@ -87,7 +86,8 @@ class Browser(WaitingEntity['Browser']):
         if isinstance(css_or_xpath_or_by, Locator):
             return Element(css_or_xpath_or_by, self.config)
 
-        by = to_by(css_or_xpath_or_by)
+        by = self.config._selector_or_by_to_by(css_or_xpath_or_by)
+        # todo: do we need by_to_locator_strategy?
 
         return Element(
             Locator(f'{self}.element({by})', lambda: self.driver.find_element(*by)),
@@ -100,7 +100,7 @@ class Browser(WaitingEntity['Browser']):
         if isinstance(css_or_xpath_or_by, Locator):
             return Collection(css_or_xpath_or_by, self.config)
 
-        by = to_by(css_or_xpath_or_by)
+        by = self.config._selector_or_by_to_by(css_or_xpath_or_by)
 
         return Collection(
             Locator(f'{self}.all({by})', lambda: self.driver.find_elements(*by)),

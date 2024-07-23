@@ -22,7 +22,7 @@
 import itertools
 from types import MappingProxyType
 
-from typing_extensions import Callable, Optional, Any, Union, Dict, Literal, cast
+from typing_extensions import Callable, Optional, Any, Union, Dict, Literal, cast, Tuple
 
 from selenium.webdriver.common.options import BaseOptions
 from selenium.webdriver.common.service import Service
@@ -106,10 +106,13 @@ class Config:
     _placeholders_to_match_elements: Dict[
         Literal['exactly_one', 'zero_or_one', 'one_or_more', 'zero_or_more'], Any
     ] = cast(dict, MappingProxyType({}))
+    selector_to_by_strategy: Callable[[str], Tuple[str, str]] = ...
+    def _selector_or_by_to_by(
+        self, selector_or_by: str | Tuple[str, str], /
+    ) -> Tuple[str, str]: ...
     # Etc.
     _build_wait_strategy: Callable[[Config], Callable[[E], Wait[E]]] = ...
     _executor: _DriverStrategiesExecutor = ...
-
     def __init__(
         self,
         *,
@@ -168,6 +171,7 @@ class Config:
         ] = cast(  # noqa
             dict, MappingProxyType({})
         ),
+        selector_to_by_strategy: Callable[[str], Tuple[str, str]] = ...,
         # Etc.
         _build_wait_strategy: Callable[[Config], Callable[[E], Wait[E]]] = ...,
     ): ...
@@ -229,6 +233,7 @@ class Config:
         ] = cast(  # noqa
             dict, MappingProxyType({})
         ),
+        selector_to_by_strategy: Callable[[str], Tuple[str, str]] = ...,
         # Etc.
         _build_wait_strategy: Callable[[Config], Callable[[E], Wait[E]]] = ...,
     ): ...

@@ -36,7 +36,6 @@ from selene.common.fp import pipe as pipe, F
 from selene.common.helpers import (
     flatten as flatten,
     is_absolute_url as is_absolute_url,
-    to_by as to_by,
 )
 from selene.core.condition import Condition as Condition
 from selene.core.configuration import Config as Config
@@ -112,6 +111,7 @@ class Browser(WaitingEntity['Browser']):
         ] = cast(  # noqa
             dict, MappingProxyType({})
         ),
+        selector_to_by_strategy: Callable[[str], Tuple[str, str]] = ...,
         # Etc.
         _build_wait_strategy: Callable[[Config], Callable[[E], Wait[E]]] = ...,
     ) -> Browser: ...

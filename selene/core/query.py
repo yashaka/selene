@@ -202,7 +202,6 @@ from selenium.webdriver.remote.webelement import WebElement
 
 from selene import support
 from selene.common._typing_functions import Query, Command
-from selene.common.helpers import to_by
 from selene.core.entity import Element, Collection
 from selene.core._browser import Browser
 from selene.core.locator import Locator
@@ -746,7 +745,7 @@ class _frame_context:
             If you notice performance drawbacks, consider choosing an explicit way
             to work with frame context as a context manager passed to `with` statement.
         """
-        by = to_by(selector)
+        by = self._container.config._selector_or_by_to_by(selector)
 
         return Element(
             Locator(
@@ -773,7 +772,7 @@ class _frame_context:
             Same "potential performance drawbacks" warning is applied here
             as for [_element][selene.core.query._frame_context._element] method.
         """
-        by = to_by(selector)
+        by = self._container.config._selector_or_by_to_by(selector)
 
         return Collection(
             Locator(
