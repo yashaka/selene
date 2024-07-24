@@ -161,6 +161,7 @@ class element:  # todo: consider implementing LocationContext interface
         #     return getattr(instance, self._name)
         # else:
         as_context = self._as_context(instance)
+        setattr(as_context, '_name', self._name)
         setattr(instance, self._name, as_context)
         return as_context
 
@@ -239,6 +240,7 @@ class all_:
 
     def __get__(self, instance, owner):
         as_context = self._as_context(instance)
+        setattr(as_context, '_name', self._name)
         setattr(instance, self._name, as_context)
         return as_context
 

@@ -166,6 +166,12 @@ check vscode pylance, mypy, jetbrains qodana...
 
 ### DOING: draft Element descriptors POC?
 
+#### TODO: make descriptor based PageObjects be used as descriptors on their own
+
+#### TODO: implement pom-descriptor-like decorators to name objects returned from methods
+
+... maybe even from properties? (but should work out of the box if @property is applied as last)
+
 ### Deprecated conditions
 
 - `be.present` in favor of `be.present_in_dom`

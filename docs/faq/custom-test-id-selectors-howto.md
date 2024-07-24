@@ -2,7 +2,7 @@
 
 {% include-markdown 'warn-from-next-release.md' %}
 
-– By using advanced [config.selector_to_by_strategy][selene.core.configuration.Config.selector_to_by_strategy] as simply as:
+– By customizing [config.selector_to_by_strategy][selene.core.configuration.Config.selector_to_by_strategy] as simply as:
 
 ```python
 # tests/conftest.py
@@ -70,4 +70,4 @@ def test_search():
     browser.should(have.title_containing('yashaka/selene'))
 ```
 
-Se a bigger example of utilizing same technique with [Page Object Model pattern applied to the DataGrid React component](https://github.com/yashaka/selene/blob/master/tests/examples/pom/test_material_ui__react_x_data_grid__mit.py).
+See a bigger example of utilizing same technique with [Page Object Model pattern applied to the DataGrid React component](https://github.com/yashaka/selene/blob/master/tests/examples/pom/test_material_ui__react_x_data_grid__mit.py).

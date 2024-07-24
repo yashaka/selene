@@ -91,7 +91,11 @@ def wait_with(
         def decorator(for_):
             @functools.wraps(for_)
             def wrapper(fn):
-                title = f'{wait.entity}: {fn}'
+                title = (
+                    wait.entity._name or str(wait.entity)
+                    if hasattr(wait.entity, '_name')
+                    else str(wait.entity)
+                ) + f': {fn}'
 
                 def translate(initial: str, item: Tuple[str, str]):
                     old, new = item
