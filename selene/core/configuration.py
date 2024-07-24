@@ -1288,7 +1288,9 @@ class Config:
     """
 
     def _selector_or_by_to_by(
-        self, selector_or_by: str | Tuple[str, str], /
+        self,
+        selector_or_by: str | Tuple[str, str],
+        /,
     ) -> Tuple[str, str]:
         return (
             self.selector_to_by_strategy(selector_or_by)  # noqa
