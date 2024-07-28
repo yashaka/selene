@@ -2,31 +2,31 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 360,
-    "uniques": 210
+    "count": 368,
+    "uniques": 211
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 40,
-    "uniques": 14
+    "count": 42,
+    "uniques": 15
   },
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 37,
-    "uniques": 10
+    "count": 39,
+    "uniques": 11
   },
   {
     "path": "/yashaka/selene/issues",
     "title": "Issues · yashaka/selene · GitHub",
-    "count": 28,
-    "uniques": 13
+    "count": 30,
+    "uniques": 14
   },
   {
     "path": "/yashaka/selene/commits/master",
     "title": "Commits · yashaka/selene · GitHub",
-    "count": 22,
+    "count": 25,
     "uniques": 6
   },
   {
@@ -48,15 +48,15 @@
     "uniques": 7
   },
   {
+    "path": "/yashaka/selene/blob/master/README.md",
+    "title": "selene/README.md at master · yashaka/selene · GitHub",
+    "count": 14,
+    "uniques": 5
+  },
+  {
     "path": "/yashaka/selene/issues/548",
     "title": "Screenshots and page source saved erroneously with save_screenshot_on_failure...",
     "count": 13,
     "uniques": 11
-  },
-  {
-    "path": "/yashaka/selene/blob/master/examples/run_remote_in_android_app_with_options_for_browserstack/version_4__app_fixture_style/test_wikipedia.py",
-    "title": "selene/examples/run_remote_in_android_app_with_options_for_browserstack/versi...",
-    "count": 13,
-    "uniques": 1
   }
 ]
