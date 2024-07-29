@@ -13,6 +13,10 @@ edit_uri: edit/master/docs/
 # Page tree
 nav:
   - Overview: index.md
+  - Selene Quick Start: selene-quick-start-tutorial.md
+  - Selene in Action: selene-in-action-tutorial.md
+  - Selene for PageObjects: selene-for-page-objects-guide.md
+  - Selene Cheetsheet: selene-cheetsheet-howto.md
   # - Learn Basics:
   #   - Stub Title 1: learn-basics/automate-testing-guide.md
   # - Learn Advanced:
