@@ -453,9 +453,7 @@ class Google:
     query = browser.element(by.name('q'))
     results = browser.all('#rso>div')
     first_result_header = results.first.element('h3')
-
-    def __init__(self):
-        self.__submit_button = browser.all(by.name('btnK')).first
+    submit_button = browser.all(by.name('btnK')).first
 
     def result(self, number):
         return self.results[number - 1]
@@ -475,6 +473,6 @@ google = Google()
 
 And here it is important that in most cases such premature encapsulation contradicts KISS. Why do we really need to hide something here? :) From whom? :) On some project, if some manual testers write these tests, and we want to allow them to use only step functions – then yes, it could be... But if not, why this premature optimization? (which is the root of all evil). Why not simplify your life and embed everything in one object returned from a function (or class).
 
-For the possibility of refactoring elements and actions on them, or more precisely – for the ability to use all the power and variability of Python without restrictions from the automation tool of user steps in the browser – just corresponds to the peculiarity of Selene elements to be “lazy”, that is, “not to be found immediately at the moment of their definition”, which equates them to locators of the type `By.NAME('q')`.
+For the possibility of refactoring elements and actions on them, or more precisely – for the ability to use all the power and variability of Python without restrictions from the automation tool of user steps in the browser – just corresponds to the peculiarity of Selene elements to be “lazy”, that is, “not to be found immediately at the moment of their definition”, which equates them to locators of the type `(By.NAME,'q')`.
 
 Amen ;)  

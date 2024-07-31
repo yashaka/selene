@@ -2,7 +2,7 @@
 
 ## What and where?
 
-Selene in Pythonis a tool for automating user actions in the browser, oriented towards the convenience and ease of implementing business logic in automated tests, in the language of the user, without distracting from the technical details of working with the “browser driver”. For example, technical details can include working with element waits when automating testing of dynamic web applications, implementing high-level actions over elements, complex locators based on low-level selectors, and so on.
+Selene in Python is a tool for automating user actions in the browser, oriented towards the convenience and ease of implementing business logic in automated tests, in the language of the user, without distracting from the technical details of working with the “browser driver”. For example, technical details can include working with element waits when automating testing of dynamic web applications, implementing high-level actions over elements, complex locators based on low-level selectors, and so on.
 
 Under the hood it uses Selenium WebDriver as the main tool for interacting with the browser. Therefore, it is also called more high-level “wrapper” around more low-level tools such as Selenium WebDriver
 
@@ -21,7 +21,7 @@ So, owning [basic skills in programming](https://autotest.how/start-programming.
 
 * [Git](https://git-scm.com/)
 * [Chrome Browser](https://www.google.com/chrome/)
-  * [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/getting-started) – <ru>не обязательно, мы установим его из кода далее</ru><uk>не обов'язково, ми встановимо його з коду далі</uk><en>not required, we will install it from the code later</en>
+  * [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/getting-started) – not required, it will be installed from the code automatically
 
 
 ## Initialize project
@@ -459,9 +459,9 @@ def test_finds_selene():
 
 ```
 
-There is a brief description of the main Selene's API. Be sure to read this before using Selene in a real project.
+There is a brief description of the main [Selene's API](./selene-cheetsheet-howto.md). Be sure to read this before using Selene in a real project.
 
-And support can be obtained in the official [telegram chat](https://selene_py_ru.t.me), in which there is a [large FAQ in the pinned message](https://t.me/selene_py_ru/475).
+And support can be obtained in the official [telegram chat](https://t.me/selene_py).
 
 More detailed practical application of basic commands is explained in the [“Selene in Action”](./selene-in-action-tutorial.md) tutorial.
 
