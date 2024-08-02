@@ -2,14 +2,14 @@
   {
     "path": "/yashaka/selene",
     "title": "yashaka/selene: User-oriented Web UI browser tests in Python",
-    "count": 279,
-    "uniques": 170
+    "count": 298,
+    "uniques": 186
   },
   {
     "path": "/yashaka/selene/tree/master/examples",
     "title": "selene/examples at master · yashaka/selene · GitHub",
-    "count": 34,
-    "uniques": 14
+    "count": 38,
+    "uniques": 16
   },
   {
     "path": "/yashaka/selene/commits/master",
@@ -20,8 +20,8 @@
   {
     "path": "/yashaka/selene/tree/master/tests",
     "title": "selene/tests at master · yashaka/selene · GitHub",
-    "count": 29,
-    "uniques": 9
+    "count": 31,
+    "uniques": 10
   },
   {
     "path": "/yashaka/selene/tree/master/docs",
@@ -42,21 +42,21 @@
     "uniques": 6
   },
   {
+    "path": "/yashaka/selene/tree/master/tests/examples",
+    "title": "selene/tests/examples at master · yashaka/selene · GitHub",
+    "count": 16,
+    "uniques": 6
+  },
+  {
     "path": "/yashaka/selene/tree/master/.run",
     "title": "selene/.run at master · yashaka/selene · GitHub",
     "count": 12,
     "uniques": 3
   },
   {
-    "path": "/yashaka/selene/blob/master/tests/base_test.py",
-    "title": "selene/tests/base_test.py at master · yashaka/selene · GitHub",
-    "count": 11,
-    "uniques": 5
-  },
-  {
-    "path": "/yashaka/selene/blob/master/examples/run_cross_platform/tests/acceptance_test.py",
-    "title": "selene/examples/run_cross_platform/tests/acceptance_test.py at master · yasha...",
-    "count": 10,
-    "uniques": 5
+    "path": "/yashaka/selene/blob/master/selene/core/query.py",
+    "title": "selene/selene/core/query.py at master · yashaka/selene",
+    "count": 12,
+    "uniques": 1
   }
 ]

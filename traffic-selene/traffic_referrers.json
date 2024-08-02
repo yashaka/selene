@@ -1,13 +1,13 @@
 [
   {
     "referrer": "Google",
-    "count": 303,
-    "uniques": 73
+    "count": 318,
+    "uniques": 80
   },
   {
     "referrer": "github.com",
-    "count": 178,
-    "uniques": 28
+    "count": 181,
+    "uniques": 30
   },
   {
     "referrer": "DuckDuckGo",
@@ -31,8 +31,8 @@
   },
   {
     "referrer": "ecosia.org",
-    "count": 18,
-    "uniques": 17
+    "count": 22,
+    "uniques": 18
   },
   {
     "referrer": "kit-docs.internal.eng.qops.net",
