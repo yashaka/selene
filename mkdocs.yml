@@ -26,6 +26,7 @@ nav:
     - How to work with iFrames: faq/iframes-howto.md
     - How to work with Shadow DOM: faq/shadow-dom-howto.md
     - How to use custom profile: faq/custom-user-profile-howto.md
+    - How to add Chrome extension: faq/adding-chrome-extension-howto.md
     - How to extend Selene [TBD]: faq/extending-selene-howto.md
   # - Use Cases:
   #   - Stub Title 1: use-cases/path-to-some-example.md
