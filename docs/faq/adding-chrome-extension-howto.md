@@ -26,7 +26,10 @@
 
 ### Code description
 
-#### `my_project/resources/__init__.py` help function
+#### Helper to build absolute Path to resources
+
+`my_project/resources/__init__.py`
+
 ```python
 from pathlib import Path
 
@@ -34,7 +37,10 @@ path = Path(__file__).resolve().parent
 ```
 
 
-#### `tests/conftest.py` install extension and navigate into it's settings
+#### Install extension and navigate into it's settings
+
+`tests/conftest.py`
+
 ```python
 import pytest
 from selene import browser, have, Element, be
@@ -47,9 +53,8 @@ from my_project import resources
 @pytest.fixture(autouse=True)
 def browser_with_ublock():
     ublock_path = resources.path / 'chrome_extensions/uBlock-Origin.crx'
-    ublock_id = (
-        'cjpalhdlnbpafiamejdnhcphjbkeiagm'  # it's a unique constant for uBlock Origin
-    )
+    # ublock_id a unique constant for uBlock Origin extension
+    ublock_id = 'cjpalhdlnbpafiamejdnhcphjbkeiagm'
     options = webdriver.ChromeOptions()
     options.add_extension(ublock_path)
     browser.config.driver_options = options
@@ -78,7 +83,8 @@ def browser_with_ublock():
 
 ```
 
-#### `tests/test_ublock.py` verify that uBlock extension rules are applied to site with ads
+#### Verify that uBlock extension rules are applied to site with ads
+`tests/test_ublock.py` 
 
 ```python
 from selene import browser, have
