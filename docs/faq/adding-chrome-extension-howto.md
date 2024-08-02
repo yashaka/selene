@@ -14,7 +14,7 @@
  ┃ ┗ 📂resources
  ┃   ┣ 📜__init__.py
  ┃   ┗ 📂chrome_extensions
- ┃     ┗ 📜uBlock-Origin.ctx
+ ┃     ┗ 📜uBlock-Origin.crx
  ┣ 📂tests
  ┃ ┣ 📜test_ublock.py
  ┃ ┗ 📜conftest.py
@@ -26,7 +26,7 @@
 
 ### Code description
 
-#### `my_project / resources / __init__.py`: help function
+#### `my_project/resources/__init__.py` help function
 ```python
 from pathlib import Path
 
@@ -34,7 +34,7 @@ path = Path(__file__).resolve().parent
 ```
 
 
-#### `tests / conftest.py`: install extension and navigate into it's settings
+#### `tests/conftest.py` install extension and navigate into it's settings
 ```python
 import pytest
 from selene import browser, have, Element, be
@@ -78,7 +78,7 @@ def browser_with_ublock():
 
 ```
 
-#### `tests / test_ublock.py`: verify that uBlock extension rules are applied to site with ads
+#### `tests/test_ublock.py` verify that uBlock extension rules are applied to site with ads
 
 ```python
 from selene import browser, have
