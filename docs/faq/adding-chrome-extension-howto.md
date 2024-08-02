@@ -79,7 +79,7 @@ def browser_with_ublock():
         have.text('uBlock Origin')
     )
 
-    return browser
+    yield
 
 ```
 
