@@ -1,38 +1,38 @@
 [
   {
     "referrer": "Google",
-    "count": 296,
-    "uniques": 75
+    "count": 303,
+    "uniques": 73
   },
   {
     "referrer": "github.com",
-    "count": 159,
-    "uniques": 24
+    "count": 178,
+    "uniques": 28
   },
   {
     "referrer": "DuckDuckGo",
-    "count": 60,
-    "uniques": 56
-  },
-  {
-    "referrer": "yandex.ru",
-    "count": 40,
-    "uniques": 12
+    "count": 52,
+    "uniques": 48
   },
   {
     "referrer": "yashaka.github.io",
-    "count": 40,
-    "uniques": 2
+    "count": 41,
+    "uniques": 3
+  },
+  {
+    "referrer": "yandex.ru",
+    "count": 39,
+    "uniques": 12
   },
   {
     "referrer": "school.qa.guru",
-    "count": 24,
-    "uniques": 5
+    "count": 26,
+    "uniques": 6
   },
   {
     "referrer": "ecosia.org",
-    "count": 20,
-    "uniques": 19
+    "count": 18,
+    "uniques": 17
   },
   {
     "referrer": "kit-docs.internal.eng.qops.net",
