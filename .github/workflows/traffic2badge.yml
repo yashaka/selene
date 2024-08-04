@@ -8,6 +8,7 @@ on:
 
 jobs:
   run:
+    if: github.repository_owner == 'yashaka'
     name: Make GitHub Traffic to Badge
     runs-on: ubuntu-latest
     steps:
