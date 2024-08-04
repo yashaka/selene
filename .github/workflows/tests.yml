@@ -59,10 +59,9 @@ jobs:
         id: changed-files
         with:
           files: |
-            selene/**
-            tests/**
             poetry.lock
             tests.yml
+            {selene,tests}/**/*.py
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
