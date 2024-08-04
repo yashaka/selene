@@ -60,7 +60,7 @@ jobs:
         with:
           files: |
             poetry.lock
-            tests.yml
+            **/tests.yml
             {selene,tests}/**/*.py
 
       - name: Set up Python ${{ matrix.python-version }}
