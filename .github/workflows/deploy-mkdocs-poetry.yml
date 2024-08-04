@@ -22,6 +22,7 @@ jobs:
 
   # Build docs via MkDocs with poetry shell (environment)
   build-docs:
+    if: github.repository_owner == 'yashaka'
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -56,6 +57,7 @@ jobs:
 
   # Deploy docs job
   deploy-docs:
+    if: github.repository_owner == 'yashaka'
     # Add a dependency to the build job
     needs: build-docs
 
