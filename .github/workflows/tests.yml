@@ -58,10 +58,11 @@ jobs:
       - uses: tj-actions/changed-files@v44
         id: changed-files
         with:
+          dir_names: true
+          dir_names_include_files: +(selene|tests)/**/*.py
           files: |
             poetry.lock
             tests.yml
-            +(selene|tests)/**/*.py
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
