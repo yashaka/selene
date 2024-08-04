@@ -58,9 +58,9 @@ jobs:
       - uses: tj-actions/changed-files@v44
         id: changed-files
         with:
-          dir_names: true
-          dir_names_include_files: +(selene|tests)/**/*.py
           files: |
+            selene/**
+            tests/**
             poetry.lock
             tests.yml
 
@@ -68,7 +68,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-        if: steps.changed-files.outputs.any_changed == 'true'
+        if: steps.changed-files.outputs.any_modified == 'true'
 
       # can be packaged as Docker-image
       - name: Install dependencies
@@ -76,7 +76,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install poetry
           poetry install
-        if: steps.changed-files.outputs.any_changed == 'true'
+        if: steps.changed-files.outputs.any_modified == 'true'
 
       # can be packaged as Docker-image; p.s.: no need to install chrome or firefox on github-actions
       - name: Install xvfb
@@ -84,17 +84,17 @@ jobs:
           sudo apt-get update
           sudo apt-get install xvfb
           sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
-        if: steps.changed-files.outputs.any_changed == 'true'
+        if: steps.changed-files.outputs.any_modified == 'true'
 
       - name: Tests
         run: |
           poetry run pytest -sv --cov-config .coveragerc --cov-report html:skip-covered --cov-report term:skip-covered --cov=selene  --cov-report xml:coverage.xml --tb=short tests/ --headless=True
           mkdir -p Artifacts/skip-covered
           cp -r skip-covered Artifacts/skip-covered
-        if: steps.changed-files.outputs.any_changed == 'true'
+        if: steps.changed-files.outputs.any_modified == 'true'
 
       - name: Code Coverage
         uses: codecov/codecov-action@v4.5.0
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-        if: steps.changed-files.outputs.any_changed == 'true'
+        if: steps.changed-files.outputs.any_modified == 'true'
