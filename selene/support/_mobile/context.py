@@ -119,25 +119,21 @@ class Device(WaitingEntity['Device']):
             return Element(selector_or_by_or_locator, self.config)
 
         # TODO: should not we apply translation in a more lazy way, based on config?
-        bys_per_platform = {
-            'android': self.config._selector_or_by_to_by(
-                selector_or_by_per_platform.get(
-                    'android',
-                    selector_or_by_per_platform.get('drd', selector_or_by_or_locator),
-                )
+        selector_or_by_per_platform = {
+            'android': selector_or_by_per_platform.get(
+                'android',
+                selector_or_by_per_platform.get('drd', selector_or_by_or_locator),
             ),
-            'ios': self.config._selector_or_by_to_by(
-                selector_or_by_per_platform.get('ios', selector_or_by_or_locator)
-            ),
+            'ios': selector_or_by_per_platform.get('ios', selector_or_by_or_locator),
         }
 
         # todo: do we need by_to_locator_strategy?
         return Element(
             PlatformWiseByLocator(
                 lambda by: f'{self}.element({by})',
-                bys_per_platform=bys_per_platform,
-                config=self.config,
                 search=lambda by: self.driver.find_element(*by),
+                selector_or_by_platform=selector_or_by_per_platform,
+                config=self.config,
             ),
             self.config,
         )
@@ -168,24 +164,21 @@ class Device(WaitingEntity['Device']):
             return AllElements(selector_or_by_or_locator, self.config)
 
         # TODO: should not we apply translation in a more lazy way, based on config?
-        bys_per_platform = {
-            'android': self.config._selector_or_by_to_by(
-                selector_or_by_per_platform.get(
-                    'android',
-                    selector_or_by_per_platform.get('drd', selector_or_by_or_locator),
-                )
+        selector_or_by_per_platform = {
+            'android': selector_or_by_per_platform.get(
+                'android',
+                selector_or_by_per_platform.get('drd', selector_or_by_or_locator),
             ),
-            'ios': self.config._selector_or_by_to_by(
-                selector_or_by_per_platform.get('ios', selector_or_by_or_locator)
-            ),
+            'ios': selector_or_by_per_platform.get('ios', selector_or_by_or_locator),
         }
 
+        # todo: do we need by_to_locator_strategy?
         return AllElements(
             PlatformWiseByLocator(
                 lambda by: f'{self}.all({by})',
-                bys_per_platform=bys_per_platform,
-                config=self.config,
                 search=lambda by: self.driver.find_elements(*by),
+                selector_or_by_platform=selector_or_by_per_platform,
+                config=self.config,
             ),
             self.config,
         )

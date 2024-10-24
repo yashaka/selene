@@ -96,18 +96,24 @@ class PlatformWiseByLocator(Locator[T]):
         description: Callable[[Tuple[str, str]], str],
         *,
         search: Callable,
-        bys_per_platform,
+        selector_or_by_platform,
         config: Config,
     ):
         self._config = config
-        self._bys_per_platform = bys_per_platform
+        self._bys_per_platform = selector_or_by_platform
 
         def locate():
-            by = bys_per_platform.get(self._current_platform_name)
+            by = config._selector_or_by_to_by(
+                selector_or_by_platform.get(self._current_platform_name)
+            )
             return search(by) if by is not None else cast(T, _SkippedAppiumElement())
 
         super().__init__(
-            lambda: description(bys_per_platform.get(self._current_platform_name)),
+            lambda: description(
+                config._selector_or_by_to_by(
+                    selector_or_by_platform.get(self._current_platform_name)
+                )
+            ),
             locate,
         )
 
