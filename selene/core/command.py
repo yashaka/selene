@@ -289,6 +289,7 @@ from selenium.webdriver import Keys
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 
+from selene.core import entity
 from selene.core.entity import Element, Collection
 from selene.core._browser import Browser
 from selene.core.exceptions import _SeleneError
@@ -308,11 +309,11 @@ def save_screenshot(path: Optional[str] = None) -> Command[Browser]:
         lambda browser: browser.config._save_screenshot_strategy(browser.config, path),
     )
 
-    if isinstance(path, Browser):
+    if entity._wraps_driver(path):
         # somebody passed command as `.perform(command.save_screenshot)`
         # not as `.perform(command.save_screenshot())`
-        browser = path
-        command.__call__(browser)
+        driver_wrapper = path
+        command.__call__(driver_wrapper)
 
     return command
 
@@ -323,23 +324,23 @@ def save_page_source(path: Optional[str] = None) -> Command[Browser]:
         lambda browser: browser.config._save_page_source_strategy(browser.config, path),
     )
 
-    if isinstance(path, Browser):
+    if entity._wraps_driver(path):
         # somebody passed command as `.perform(command.save_screenshot)`
         # not as `.perform(command.save_screenshot())`
-        browser = path
-        command.__call__(browser)
+        driver_wrapper = path
+        command.__call__(driver_wrapper)
 
     return command
 
 
-def __select_all_actions(entity: Element | Browser):
+def __select_all_actions(some_entity: Element | Browser):
     _COMMAND_KEY = Keys.COMMAND if sys.platform == 'darwin' else Keys.CONTROL
-    actions: ActionChains = ActionChains(entity.config.driver)
+    actions: ActionChains = ActionChains(some_entity.config.driver)
 
     actions.key_down(_COMMAND_KEY)
 
-    if isinstance(entity, Element):
-        actions.send_keys_to_element(entity.locate(), 'a')
+    if entity._is_element(some_entity):
+        actions.send_keys_to_element(some_entity.locate(), 'a')  # type: ignore
     else:
         actions.send_keys('a')
 
@@ -363,7 +364,7 @@ def copy_and_paste(text: str):
     Does not support mobile context. Not tested with desktop apps.
     """
 
-    def action(entity: Element | Browser):
+    def action(some_entity: Element | Browser):
         try:
             import pyperclip  # type: ignore
         except ImportError as error:
@@ -379,10 +380,10 @@ def copy_and_paste(text: str):
 
         pyperclip.copy(text)
 
-        actions = ActionChains(entity.config.driver)
+        actions = ActionChains(some_entity.config.driver)
         actions.key_down(_COMMAND_KEY)
-        if isinstance(entity, Element):
-            actions.send_keys_to_element(entity.locate(), 'v')
+        if entity._is_element(some_entity):
+            actions.send_keys_to_element(some_entity.locate(), 'v')  # type: ignore
         else:
             actions.send_keys('v')
         actions.key_up(_COMMAND_KEY)
@@ -391,13 +392,13 @@ def copy_and_paste(text: str):
     return Command(f'copy and paste: {text}»', action)
 
 
-def __copy(entity: Element | Browser):
+def __copy(some_entity: Element | Browser):
     _COMMAND_KEY = Keys.COMMAND if sys.platform == 'darwin' else Keys.CONTROL
 
-    actions = ActionChains(entity.config.driver)
+    actions = ActionChains(some_entity.config.driver)
     actions.key_down(_COMMAND_KEY)
-    if isinstance(entity, Element):
-        actions.send_keys_to_element(entity.locate(), 'c')
+    if entity._is_element(some_entity):
+        actions.send_keys_to_element(some_entity.locate(), 'c')  # type: ignore
     else:
         actions.send_keys('c')
     actions.key_up(_COMMAND_KEY)
@@ -411,13 +412,13 @@ copy: Command[Element | Browser] = Command(
 )
 
 
-def __paste(entity: Element | Browser):
+def __paste(some_entity: Element | Browser):
     _COMMAND_KEY = Keys.COMMAND if sys.platform == 'darwin' else Keys.CONTROL
 
-    actions = ActionChains(entity.config.driver)
+    actions = ActionChains(some_entity.config.driver)
     actions.key_down(_COMMAND_KEY)
-    if isinstance(entity, Element):
-        actions.send_keys_to_element(entity.locate(), 'v')
+    if entity._is_element(some_entity):
+        actions.send_keys_to_element(some_entity.locate(), 'v')  # type: ignore
     else:
         actions.send_keys('v')
     actions.key_up(_COMMAND_KEY)
@@ -465,7 +466,7 @@ def long_press(duration=1.0):
 
     command = Command(f'long press with duration={duration}', action)
 
-    if isinstance(duration, Element):
+    if entity._is_element(duration):
         # somebody passed command as `.perform(command.long_press)`
         # not as `.perform(command.long_press())`
         # TODO: refactor to really allow such use case without conflicts on types

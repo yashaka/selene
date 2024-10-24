@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2015-2022 Iakiv Kramarenko
+# Copyright (c) 2015 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -19,19 +19,16 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from __future__ import annotations
-from typing import TypeVar, Generic, Callable
-
-T = TypeVar('T')
+from selene import _managed  # noqa
 
 
-class Locator(Generic[T]):
-    def __init__(self, description: str | Callable[[], str], locate: Callable[[], T]):
-        self._description = description
-        self._locate = locate
+# """
+# Just types...
+# """
+from selene.support._mobile.elements import Element, AllElements  # noqa
+from selene.support._mobile.context import Device  # noqa
 
-    def __call__(self) -> T:
-        return self._locate()
+# device
+from selene._managed import config
 
-    def __str__(self):
-        return self._description() if callable(self._description) else self._description
+device = Device(config)

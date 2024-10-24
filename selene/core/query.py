@@ -202,6 +202,7 @@ from selenium.webdriver.remote.webelement import WebElement
 
 from selene import support
 from selene.common._typing_functions import Query, Command
+from selene.core import entity
 from selene.core.entity import Element, Collection
 from selene.core._browser import Browser
 from selene.core.locator import Locator
@@ -294,16 +295,19 @@ location_once_scrolled_into_view: Query[Element, Dict[str, int]] = Query(
 # TODO: what to do now with have.size* ? o_O
 size: Query[Element | Collection | Browser, dict | int] = Query(
     'size',
-    lambda entity: (
-        entity.driver.get_window_size()
-        if isinstance(entity, Browser)
+    # TODO: refactor this to avoid using typing.cast or type: ignore
+    #       by introducing isinstance based checks on some BaseClass for specific entity types
+    lambda some_entity: (
+        some_entity.driver.get_window_size()  # type: ignore
+        if entity._wraps_driver(some_entity)
         else (
-            entity.locate().size
-            if isinstance(entity, Element)
+            some_entity.locate().size  # type: ignore
+            if entity._is_element(some_entity)
             else (
-                len(entity.locate())
-                if isinstance(entity, Collection)
-                else typing.cast(Browser, entity).driver.get_window_size()
+                len(some_entity.locate())  # type: ignore
+                if entity._is_collection(some_entity)
+                # TODO: refactor this redundant else clause o_O
+                else typing.cast(Browser, some_entity).driver.get_window_size()
             )
         )
     ),
@@ -857,11 +861,11 @@ def screenshot_saved(
         lambda browser: browser.config._save_screenshot_strategy(browser.config, path),
     )
 
-    if isinstance(path, Browser):
+    if entity._wraps_driver(path):
         # somebody passed query as `.get(query.save_screenshot)`
         # not as `.get(query.save_screenshot())`
-        browser = path
-        return query.__call__(browser)  # type: ignore
+        driver_wrapper = path
+        return query.__call__(driver_wrapper)  # type: ignore
 
     return query
 
@@ -874,11 +878,11 @@ def page_source_saved(
         lambda browser: browser.config._save_page_source_strategy(browser.config, path),
     )
 
-    if isinstance(path, Browser):
+    if entity._wraps_driver(path):
         # somebody passed query as `.get(query.save_screenshot)`
         # not as `.get(query.page_source_saved())`
-        browser = path
-        return query.__call__(browser)  # type: ignore
+        driver_wrapper = path
+        return query.__call__(driver_wrapper)  # type: ignore
 
     return query
 

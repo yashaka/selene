@@ -80,6 +80,7 @@ class Configured(ABC):
     #     pass
 
 
+# TODO: consider renaming to simply Entity?
 class WaitingEntity(Matchable[E], Configured):
     def __init__(self, config: Config):
         self._config = config
@@ -144,6 +145,26 @@ class WaitingEntity(Matchable[E], Configured):
 
     def matching(self, condition: Condition[E]) -> bool:
         return condition.predicate(typing.cast(E, self))
+
+
+def _is_element(obj: object) -> bool:
+    return (
+        isinstance(obj, WaitingEntity)
+        and hasattr(obj, 'locate')
+        and not isinstance(obj, Iterable)
+    )
+
+
+def _is_collection(obj: object) -> bool:
+    return (
+        isinstance(obj, WaitingEntity)
+        and hasattr(obj, 'locate')
+        and isinstance(obj, Iterable)
+    )
+
+
+def _wraps_driver(obj: object) -> bool:
+    return isinstance(obj, WaitingEntity) and hasattr(obj, 'driver')
 
 
 class Element(WaitingEntity['Element']):

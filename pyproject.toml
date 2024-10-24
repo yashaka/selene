@@ -61,7 +61,7 @@ codecov = "*"
 mypy = "*"
 pydantic = "^1.10.7"
 python-dotenv = "0.21.1"
-Appium-Python-Client = "^2.9.0"
+Appium-Python-Client = "^4.2.0"
 pyperclip = "^1.8.2"
 setuptools = "^70.0.0"
 

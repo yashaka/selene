@@ -2,16 +2,16 @@
 
 [[package]]
 name = "appium-python-client"
-version = "2.11.1"
+version = "4.2.0"
 description = "Python client for Appium"
 optional = false
 python-versions = "*"
 files = [
-    {file = "Appium-Python-Client-2.11.1.tar.gz", hash = "sha256:0e9d3a76f03217add68a9389d5630a7b63355a6bd5ba70711c47ed3463908d33"},
+    {file = "appium_python_client-4.2.0.tar.gz", hash = "sha256:ef882a54928980f2ea99822844f9cf6e7a8b93a22855abce86d8b6bf9d1a239b"},
 ]
 
 [package.dependencies]
-selenium = ">=4.1,<5.0"
+selenium = ">=4.12,<5.0"
 
 [[package]]
 name = "astroid"
@@ -1484,22 +1484,22 @@ use-chardet-on-py3 = ["chardet (>=3.0.2,<6)"]
 
 [[package]]
 name = "selenium"
-version = "4.22.0"
+version = "4.25.0"
 description = "Official Python bindings for Selenium WebDriver"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "selenium-4.22.0-py3-none-any.whl", hash = "sha256:e424991196e9857e19bf04fe5c1c0a4aac076794ff5e74615b1124e729d93104"},
-    {file = "selenium-4.22.0.tar.gz", hash = "sha256:903c8c9d61b3eea6fcc9809dc7d9377e04e2ac87709876542cc8f863e482c4ce"},
+    {file = "selenium-4.25.0-py3-none-any.whl", hash = "sha256:3798d2d12b4a570bc5790163ba57fef10b2afee958bf1d80f2a3cf07c4141f33"},
+    {file = "selenium-4.25.0.tar.gz", hash = "sha256:95d08d3b82fb353f3c474895154516604c7f0e6a9a565ae6498ef36c9bac6921"},
 ]
 
 [package.dependencies]
 certifi = ">=2021.10.8"
 trio = ">=0.17,<1.0"
 trio-websocket = ">=0.9,<1.0"
-typing_extensions = ">=4.9.0"
+typing_extensions = ">=4.9,<5.0"
 urllib3 = {version = ">=1.26,<3", extras = ["socks"]}
-websocket-client = ">=1.8.0"
+websocket-client = ">=1.8,<2.0"
 
 [[package]]
 name = "setuptools"
@@ -1783,4 +1783,4 @@ test = ["big-O", "importlib-resources", "jaraco.functools", "jaraco.itertools", 
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "bab2b490e72520ad77fbce7130f1a61bd06a925473f3cd6c0fea5cfa921c1141"
+content-hash = "f28fa30b0cc13c555febd090c9832c8e5cfa5d193cac15dcc9be5849adb529df"
