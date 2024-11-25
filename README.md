@@ -1,5 +1,5 @@
 <!-- --8<-- [start:githubSection] -->
-# Selene - User-oriented Web UI browser tests in Python (Selenide port)
+# Selene: User-Oriented Web UI Browser Tests in Python
 
 ![Pre-release Version](https://img.shields.io/github/v/release/yashaka/selene?label=latest)
 [![tests](https://github.com/yashaka/selene/actions/workflows/tests.yml/badge.svg)](https://github.com/yashaka/selene/actions/workflows/tests.yml)
@@ -8,99 +8,98 @@
 [![MIT License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/yashaka/selene/blob/master/LICENSE)
 
 [![Downloads](https://pepy.tech/badge/selene)](https://pepy.tech/project/selene)
-[![Project Template](https://img.shields.io/badge/project-template-9cf.svg)](https://github.com/yashaka/python-web-test)
+[![web tests template](https://img.shields.io/badge/web-template-9cf.svg)](https://github.com/yashaka/python-web-test)
+[![mobile cross-platform tests template](https://img.shields.io/badge/mobile-template-9cf.svg)](https://github.com/yashaka/python-web-test)
+
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 [![Join telegram chat https://t.me/selene_py](https://img.shields.io/badge/chat-telegram-blue)](https://t.me/selene_py)
 [![Присоединяйся к чату https://t.me/selene_py_ru](https://img.shields.io/badge/%D1%87%D0%B0%D1%82-telegram-red)](https://t.me/selene_py_ru)
 
-[![Sign up for a course https://autotest.how/sdet-start](https://img.shields.io/badge/course-sign_up-blue)](https://autotest.how/sdet-start)
-[![Запишись на курс https://autotest.how/sdet-start-ru](https://img.shields.io/badge/%D0%BD%D0%B0%D0%B1%D0%BE%D1%80-%D0%BD%D0%B0%20%D0%BA%D1%83%D1%80%D1%81-red)](https://autotest.how/sdet-start-ru)
-[![Реєструйся на курс https://autotest.how/sdet-start-uk](https://img.shields.io/badge/%D0%BD%D0%B0%D0%B1%D1%96%D1%80-%D0%BD%D0%B0_%D0%BA%D1%83%D1%80%D1%81-yellow)](https://autotest.how/sdet-start-uk)
+## Overview of Selene
 
-Main features:
+Selene is a concise and powerful library for writing browser UI tests in Python. It was built as a Pythonic port of the popular Selenide project from the Java world. 
+Selene helps developers write readable and maintainable tests that "speak" in common English, making them easier to understand and share across teams.
 
-- **User-oriented API for Selenium Webdriver** (code like speak common English)
-- **Ajax support** (Smart implicit waiting and retry mechanism)
-- **PageObjects support** (all elements are lazy-evaluated objects)
-- **Automatic driver management** (no need to install and setup driver for quick local execution)
+Selene’s core strength is its user-oriented API, which abstracts the complexity of working with Selenium WebDriver. Tests can be written using simple, expressive syntax and support features like lazy-evaluated elements, automatic retry mechanisms for smarter implicit waiting for Ajax-like loading. With built-in PageObject support, it enables the reusability of web elements through Widgets.
 
-Selene was inspired by [Selenide][selenide] from Java world.
+## Table of Contents
 
-Tests with Selene can be built either in a simple straightforward "selenide" style or with PageObjects composed from Widgets i.e. reusable element components.
-
-Currently, this [official documentation](https://yashaka.github.io/selene/) is far from being complete. Please, use the following links to get started from scratch:
-
-* [Selenides – Quick Start](https://autotest.how/selenides-quick-start-docs-md)
-* [Selenides in Action](https://autotest.how/selenides-in-action-docs-md)
-* [Selene Cheatsheet](https://autotest.how/selene-cheatsheet-md)
-
-Find more below...
-
+- [Main Features](#main-features)
 - [Versions](#versions)
-    - [Migration Guide](#migration-guide)
+  - [Migration Guide](#migration-guide)
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Usage](#usage)
-    - [Quick Start](#quick-start)
-    - [Core API](#core-api)
-    - [Automatic Driver and Browser Management](#automatic-driver-and-browser-management)
-    - [Advanced API](#advanced-api)
+  - [Quick Start](#quick-start)
+  - [Core API](#core-api)
+  - [Advanced API](#advanced-api)
 - [Tutorials](#tutorials)
-- [Examples](#more-examples)
+- [Expanded Examples](#expanded-examples)
 - [Contribution](#contribution)
-- [Release Workflow](#release-workflow)
 - [Changelog](#changelog)
+
+## Main Features
+
+- **User-oriented API**: Write test scripts in natural language with simple syntax that reads like common English.
+- **Ajax-like loading support**: Built-in smart implicit waiting and retry mechanisms to handle dynamically loaded web elements.
+- **PageObjects support**: Lazy-evaluated elements allows to build PageObjects composing elements over selectors or `By.*` tuple-like locators, allowing also to create reusable elements for different components.
+- **Extended list of expected conditions**: Much bigger list of conditions aka matchers than in raw Selenium allows to implement more readable and concise assertions in tests.
+- **Extended list of predefined commands on element**: Reduces the need of composing custom commands with `ActionChains`. 
+- **Out of the box support of frames and shadow root**.
+- **Flexible filtering of collections**: Allows to build composable locators reducing the need of complex XPath-selectors and results in much more detailed error messages that helps with tests maintenance.
+- **Very detailed error messages**: For both actions and assertions on elements.
+- **Automatic driver management**: Automatically handles browser driver setup and teardown for quick, local executions.
+- **Highly customizable**: Advanced users can configure or extend Selene for specific requirements. For example, you can customize your own selector templates. You also can customize same options (for example timeout) via same API on all levels: 1) globally; 2) on specific browser instance; 3) on specific element or collection of elements stored in a variable 4) for specific action or assertion on element.
+- **Support for both local and remote drivers**: Selene supports a variety of environments, including local browsers, headless setups, and cloud services like Selenium Grid – in a similar way that Selenium supports it – by providing the corresponding driver options.
+- **Multiplatform support**: Works with web and Appium's mobile or desktop drivers. Though, some options in config are platform-specific.
 
 ## Versions
 
-- Latest recommended version to use is latest among [2.0.0rc*][latest-recommended-version]
-    - it's a completely new version of selene, with improved API and speed
-    - supports Python `3.8+`
-    - supports Selenium `>=4.12.0`
-    - it's incompatible with [1.x][brunch-ver-1]
-    - current master branch is pointed to 2.x
-    - yet in alpha/beta stage, refining API, improving "migratability" and testing
-    - most active Selene users already upgraded to 2.0 alpha/beta 
-      and have been using it in production during last 2 years
-    - the only risk is API changes, 
-      some commands are in progress of deprecation and renaming
-- Latest version marked as stable is: [1.0.2][selene-stable]
-    - its sources and corresponding README version
-    can be found at [1.x][brunch-ver-1] branch.
-    - supports python `2.7, 3.5, 3.6, 3.7`
+Selene currently supports two major versions:
 
-THIS README DESCRIBES THE USAGE OF THE PRE-RELEASE version of Selene. For older docs look at [1.x][brunch-ver-1] branch.
+- **Latest Recommended Pre-Release Version (v2.0.0rc9)**:
+  - Python versions: `3.8+`
+  - Selenium support: `>=4.12.0`
+  - This version introduces an improved API, better performance, and is recommended for new projects.
+  - Though is in alpha/beta stage, refining API, improving "migratability" and testing
+  - Most active Selene users already upgraded to 2.0 alpha/beta and have been using it in production during last 2 years
+  - The only risk is API changes, some commands are in progress of deprecation and renaming
 
-### Migration guide
+- **Stable Version (v1.0.2)**:
+  - Python versions: `2.7, 3.5, 3.6, 3.7`
+  - Selenium support: `<4.0.0`
+  - Use this version if your project requires compatibility with older Python versions.
+  
+For migration from v1.x to v2.x, follow the [migration guide](#migration-guide).
 
-From `1.0.2` to `2.0.0b<LATEST>`:
+### Migration Guide
 
-- upgrade to Python 3.7+
-- update selene to `2.0.0b<LATEST>`
-    - find&replace the `collection.first()` method from `.first()` to `.first`
-    - ensure all conditions like `text('foo')` are used via `be.*` or `have.*` syntax
-        - example:
-            - find&replace all
-                - `(text('foo'))` to `(have.text('foo'))`
-                - `(visible)` to `(be.visible)`
-            - smarter find&replace (with some manual refactoring)
-                - `.should(x, timeout=y)` to `.with_(timeout=y).should(x)`
-                - `.should_not(be.*)` to `.should(be.not_.*)` or `.should(be.*.not_)`
-                - `.should_not(have.*)` to `.should(have.no.*)` or `.should(have.*.not_)`
-                - `.should_each(condition)` to `.should(condition.each)`
-            - and add corresponding imports:
-            `from selene import be, have`
-    - fix another broken imports if available
-    - run tests, read deprecation warnings, and refactor to new style recommended in warning messages
+From `1.0.2` to `2.0.0rc<LATEST>`:
+- Upgrade to Python 3.8+
+- Update selene to `2.0.0rc<LATEST>`
+  - Replace the `collection.first()` method from `.first()` to `.first`
+  - Ensure all conditions like `text('foo')` use the `be.*` or `have.*` syntax
+  - Update other deprecated methods as needed
+
+Examples of potential refactoring during migration:
+- find&replace all
+  - `(text('foo'))` to `(have.text('foo'))`
+  - `(visible)` to `(be.visible)`
+- smarter find&replace (with some manual refactoring)
+  - `.should(x, timeout=y)` to `.with_(timeout=y).should(x)`
+  - `.should_not(be.*)` to `.should(be.not_.*)` or `.should(be.*.not_)`
+  - `.should_not(have.*)` to `.should(have.no.*)` or `.should(have.*.not_)`
+  - `.should_each(condition)` to `.should(condition.each)`
+- and add corresponding imports:
+  `from selene import be, have`
 
 ## Prerequisites
 
-[Python 3.8+][python-38]
+[Python 3.8+][python-38] is required.
 
-Given [pyenv][pyenv] installed, installing needed version of Python is pretty simple:
-
-```plain
+Given [pyenv][pyenv] is installed, installing the needed version of Python is simple:
+```bash
 $ pyenv install 3.8.13
 $ pyenv global 3.8.13
 $ python -V
@@ -109,64 +108,48 @@ Python 3.8.13
 
 ## Installation
 
-### via poetry + pyenv (recommended)
+### via Poetry + Pyenv (Recommended)
 
-GIVEN [poetry][poetry] and [pyenv][pyenv] installed ...
-
-AND
-
-```plain
+Ensure [poetry][poetry] and [pyenv][pyenv] are installed, then:
+```bash
 poetry new my-tests-with-selene
 cd my-tests-with-selene
 pyenv local 3.8.13
-```
-
-WHEN latest pre-release recommended version:
-
-```plain
-poetry add selene --allow-prereleases
-```
-
-WHEN latest stable version:
-
-```plain
-poetry add selene
-```
-
-THEN
-
-```plain
+poetry add selene --allow-prereleases  # for pre-release version
 poetry install
 ```
 
-### via pip
+### via Pip
 
-Latest recommended pre-release alpha version:
-
-```plain
+For the pre-release version (recommended for new projects):
+```bash
 pip install selene --pre
 ```
 
-Latest stable version:
-
-```plain
+For the latest stable version:
+```bash
 pip install selene
 ```
 
-### from sources
+### from Sources
 
-GIVEN webdriver
+If you prefer to install Selene directly from the source code:
 
-THEN
-
-```plain
+```bash
 git clone https://github.com/yashaka/selene.git
+cd selene
 python setup.py install
 ```
 
-or using pip:
+Or using poetry:
 
-```plain
+```bash
+poetry add git+https://github.com/yashaka/selene.git
+```
+
+Or using pip:
+
+```bash
 pip install git+https://github.com/yashaka/selene.git
 ```
 
@@ -174,137 +157,66 @@ pip install git+https://github.com/yashaka/selene.git
 
 ### Quick Start
 
-Simply...
+Automate a simple Google search using Selene:
 
 ```python
-from selene import browser, by, be, have
+from selene import browser, be, have
 
 browser.open('https://google.com/ncr')
-browser.element(by.name('q')).should(be.blank)\
+browser.element('[name=q]').should(be.blank)\
     .type('selenium').press_enter()
 browser.all('#rso>div').should(have.size_greater_than(5))\
     .first.should(have.text('Selenium automates browsers'))
+
+# not mandatory, because will be closed automatically:
+# browser.quit()
 ```
 
-OR with custom setup
+### Core API
+
+- Selene provides an intuitive API for interacting with web elements using modules like `be`, `have` or `by`.
+- Lazy and Dynamic Elements: Selene elements are lazy and dynamic, meaning they are located each time an action is performed. This ensures interaction with the most up-to-date element.
+
+- Here is a basic element interaction:
 
 ```python
-from selene import browser, by, be, have
+from selene import browser, by, be
 
-browser.config.driver_name = 'firefox'
-browser.config.base_url = 'https://google.com'
-browser.config.timeout = 2
-# browser.config.* = ...
+# because elements are "lazy",
+# you can store them in variable:
+search_box = browser.element(by.name('q'))
 
-browser.open('/ncr')
-browser.element(by.name('q')).should(be.blank) \
-    .type('selenium').press_enter()
-browser.all('#rso>div').should(have.size_greater_than(5)) \
-    .first.should(have.text('Selenium automates browsers'))
+# – even before the actual page will be loaded:
+browser.open('https://google.com/ncr')
+search_box.should(be.blank).type('Selenium').press_enter()
 ```
 
-OR more Selenide from java style:
+### Selecting Element Locators
 
-```python
-from selene import browser, by, be, have
-from selene.support.shared import config
-from selene.support.shared.jquery_style import s, ss
+Choosing the correct element locators is crucial for reliable tests. Here are some tips:
 
+1. **Inspect the Element:** Right-click on the web element and select Inspect to view its HTML in the browser's developer tools.
 
-config.browser_name = 'firefox'
-config.base_url = 'https://google.com'
-config.timeout = 2
-# config.* = ...
+2. **Use Unique Attributes:** Look for unique attributes like id, name, or custom attributes to use in your selectors. Best practice is to negotiate with developers on using unique `data-*` attributes specifically for testing needs, like `data-test-id`.
 
-browser.open('/ncr')
-s(by.name('q')).should(be.blank) \
-    .type('selenium').press_enter()
-ss('#rso>div').should(have.size_greater_than(5)) \
-    .first.should(have.text('Selenium automates browsers'))
-```
+3. **Construct CSS or XPath Selectors:** Build selectors that uniquely identify elements. For example, using conciser css-selectors `#elementId`, `.className`, or `[name="q"]`, or using XPath for things that CSS can't handle: `//*[text()="Submit"]/..`. Selene will automatically detect whether you provide a CSS or XPath selector.
 
-### Core Api
+4. **Utilize Selene's Selector Helpers (optional):** If you need most human-readable code, you can use `by.name('q')`, `by.text('Submit')` and other `by.*` helpers. Notice, that someone would prefer raw css selector like `[name=q]` over `by.name('q')` for the purpose of [KISS](https://en.wikipedia.org/wiki/KISS_principle) principle.
 
+5. **Break down long selectors into smaller parts for better readability and maintainability:** If to find an element you have a complex selector like in:  `browser.element('//*[@role="row" and contains(.,"Jon")]//*[@data-field="select-row"]')`, decomposing it utilizing Selene's filtering collections API to `browser.all('[role=row]').element_by(have.text('Jon')).element('[data-field=select-row]')` will make it easier to understand and maintain, because if something changes in the structure of the page, and your test fails, you will see exactly where it fails among "decomposed parts" of the selector, while in case of longer XPath selector you will see only that it fails somewhere in the middle of the long selector with the following need to double-check each potential reason of failure.
+  
+6. **Create custom selector strategy (optional):** Imagine your frontend developers follow best practices and use `data-test-id` attributes for all elements that need to be covered in tests, and there is a followed naming convention for such element to be snake_case_OR-kebab-case-words. With Selene's `browser.config.selector_to_by_strategy` option you can define a custom selector strategy to automatically detect all such `"snake_kebab-words"` passed as selectors and transform them into `[data-test-id="snake_kebab-words"]` locators. Then an example like `
+browser.all('[data-testid=result]').first.element('[data-testid=result-title-a]').click()` can be simplified to `browser.all('result').first.element('result-title-a').click()`. See [How to simplify search by Test IDs?](https://yashaka.github.io/selene/faq/custom-test-id-selectors-howto/) guide for more details.
 
-```python
-
-# Given:
-from selenium.webdriver import Chrome
-
-# AND chromedriver executable available in $PATH
-
-# WHEN:
-from selene import Browser, Config
-
-browser = Browser(
-    Config(
-        driver=Chrome(),
-        base_url='https://google.com',
-        timeout=2,
-    )
-)
-
-# AND:
-browser.open('/ncr')
-
-# AND:
-# browser.element('//*[@name="q"]')).type('selenium').press_enter()
-# OR...
-# browser.element('[name=q]')).type('selenium').press_enter()
-# OR...
-from selene import by
-# browser.element(by.name('q')).type('selenium').press_enter()
-# OR...for total readability
-query = browser.element(by.name('q'))
-# actual search doesn't start on calling browser.element above, 
-# i.e. the element is "lazy"... or in other words it serves as locator         
-# Below, on calling actual first action, 
-#     ⬇ the actual webelement is located first time
-query.type('selenium').press_enter()       
-#                      ⬆
-#                  and here it's located again, i.e. the element is "dynamic"
-
-# AND in case we need to filter collection of items 
-#     by some condition like visibility:
-
-from selene import be
-results = browser.all('#rso>div').by(be.visible)
-
-# THEN we can assert some condition:
-from selene import have
-# results.should(have.size_greater_than(5))
-# results.first.should(have.text('Selenium automates browsers'))
-# OR...
-results.should(have.size_greater_than(5))\
-    .first.should(have.text('Selenium automates browsers'))
-
-# FINALLY the browser can be quit:
-browser.quit()
-# but it's not mandatory, because by default Selenes kills all drivers on exit
-# that can be disabled by:
-browser.config.hold_driver_at_exit = True
-```
+    *❗This feature will be available in the next release of Selene.️*
 
 ### Automatic Driver and Browser Management
 
-Instead of:
+Selene can automatically manage the browser driver for you, but you can customize it if needed.
 
-```python
-from selenium.webdriver import Chrome
-from selene import Browser, Config
+#### **Automatic Driver Management**
 
-browser = Browser(
-    Config(
-        driver=Chrome(),
-        base_url='https://google.com',
-        timeout=2
-    )
-)
-
-browser.open('/ncr')
-```
-
-You can simply use the browser instance predefined for you in `selene` module:
+- Use the predefined browser instance without manually creating a driver:
 
 ```python
 from selene import browser
@@ -315,9 +227,9 @@ browser.config.timeout = 2
 browser.open('/ncr')
 ```
 
-So you don't need to create you driver instance manually. It will be created for you automatically.
+#### **Custom Driver Setup**
 
-Yet, if you need some special case, like working with remote driver, etc., you can still use shared browser object with additional configuration:
+- If you need custom driver settings, such as using a remote driver or adding options, configure the driver accordingly:
 
 ```python
 from selenium import webdriver
@@ -325,24 +237,19 @@ from selene import browser
 
 options = webdriver.ChromeOptions()
 options.add_argument('--headless')
-options.add_argument('--no-sandbox')
-options.add_argument('--disable-gpu')
-options.add_argument('--disable-notifications')
-options.add_argument('--disable-extensions')
-options.add_argument('--disable-infobars')
-options.add_argument('--enable-automation')
-options.add_argument('--disable-dev-shm-usage')
-options.add_argument('--disable-setuid-sandbox')
+# Add other options as needed
+
+# Selene will automatically detect the browser type (Chrome, Firefox, etc.)
+# based on the options passed
 browser.config.driver_options = options
-browser.config.driver_remote_url = 'http://localhost:4444/wd/hub', 
+browser.config.driver_remote_url = 'http://localhost:4444/wd/hub'
 browser.config.base_url = 'https://google.com'
 browser.config.timeout = 2
 
 browser.open('/ncr')
-...
 ```
 
-But if you like to create the driver on your own, you can do it too:
+- Alternatively, create and assign your own driver instance:
 
 ```python
 from selenium import webdriver
@@ -350,210 +257,48 @@ from selene import browser
 
 options = webdriver.ChromeOptions()
 options.add_argument('--headless')
-# ... other arguments
+# Add other options as needed
+
 browser.config.driver = webdriver.Remote(
-  'http://localhost:4444/wd/hub', 
-  options=options
+    command_executor='http://localhost:4444/wd/hub',
+    options=options
 )
-# Once you start to build and set the driver on your own,
-# probably you are going to fully manage it life cycle,
-# thus, consider disabling the automatic driver reset on browser.open
-# if driver was crashed or quit:
-browser.config._reset_not_alive_driver_on_get_url = False
-# And consider disabling the automatic driver quit on exit:
-browser.config.hold_driver_at_exit = True
-# Other common options will still be useful:
+
 browser.config.base_url = 'https://google.com'
 browser.config.timeout = 2
 
 browser.open('/ncr')
-...
-
-# Finally, you can quit the driver manually:
-browser.quit()
-```
-
-### Advanced API
-
-Sometimes you might need some extra things to reach your specific goals... Here go examples of Selene's `command`, `query`, custom conditions, `.matching(condition)` and `.wait_until(condition)`...
-
-```python
-from selene import browser, have
-
-...
-
-###################################################
-# Maybe you need some advanced actions on elements,
-# e.g. for workaround something through js:
-
-from selene import command
-
-browser.element('#not-in-view').perform(command.js.scroll_into_view)
-
-...
-
-###################################################
-# Probably you think that will need something like:
-
-from selene import query
-
-...
-
-def my_int_from(text):
-    return int(text.split(' ')[0])
-
-product_text = browser.element('#price-label').get(query.text)
-# ... to assert something not standard:
-price = my_int_from(product_text)
-assert price > 100
-
-# But such version is very unstable in dynamic web world...
-# Usually it's...
-# either better to implement your custom condition:
-
-from selene.core.condition import Condition
-from selene.core.conditions import ElementCondition
-from selene.core.entity import Element
-
-
-def have_in_text_the_int_number_more_than(number) -> Condition[Element]:
-    def fn(element: Element) -> None:
-        text = element.get(query.text)
-        parsed_number = my_int_from(text)
-        if not parsed_number > number:
-            raise AssertionError(
-                f'actual text was: {text}'
-                f'with parsed int number: {parsed_number}'
-            )
-    return ElementCondition(
-        f'has in text the int number more than: {number}', 
-        fn
-    )
-
-
-browser.element('#price-label').should(
-    have_in_text_the_int_number_more_than(100)
-)
-'''
-# You even can create your own project_package/selene_extensions/have.py
-# with the following content:
-
-from selene.support.conditioins.have import *
-
-def int_number_more_than(number) -> Condition[Element]:
-    def fn(element: Element) -> None:
-        text = element.get(query.text)
-        parsed_number = my_int_from(text)
-        if not parsed_number > number:
-            raise AssertionError(
-                f'actual text was: {text}'
-                f'with parsed int number: {parsed_number}'
-            )
-    return ElementCondition(
-        f'has in text the int number more than: {number}', 
-        fn
-    )
-    
-# And then in your test:
-
-from project_package.selene_extensions import have
-
-browser.element('#price-label').should(have.text('Price: ') \
-    .should(have.int_number_more_than(100))
-
-# i.e. using it same style as in selene,
-# with also access to all original selene conditions
-'''
-
-# Such condition-based alternative to the original `assert price > 100` is less fragile,
-# because Python's `assert` does not have "implicit waiting",
-# while Selene's `should` command does have ;)
-
-# Furthermore, the good test is when you totally control your test data, 
-# and the code like below:
-
-product = browser.element('#to-remember-for-future')
-
-product_text_before = product.get(query.text)
-price_before = my_int_from(product_text_before)
-
-... # some test steps
-
-product_text_after = product.get(query.text)
-price_after = my_int_from(product_text_after)
-
-assert price_after > price_before
-
-# – normally, should be refactored to something like:
-
-product = browser.element('#to-remember-for-future')
-
-product.should(have.text('100$'))
-
-... # some test steps
-
-product.should(have.text('125$'))
-
-
-###############################################
-# You might also think you need something like:
-
-from selene import query
-
-if browser.element('#i-might-say-yes-or-no').get(query.text) == 'yes':
-    ...  # do something...
-
-# Or:
-
-from selene import query
-
-if browser.all('.option').get(query.size) >= 2:
-    ...  # do something...
-
-# – maybe, one day, you really find a use case:)
-
-# But for above cases, probably easier would be:
-
-if browser.element('#i-might-say-yes-or-no').wait_until(have.text('yes')):
-    ...  # do something
-
-...
-
-if browser.all('.i-will-appear').wait_until(have.size_greater_than_or_equal(2)):
-    ...  # do something
-
-# Or, by using non-waiting versions, if "you are in a rush:)":
-
-if browser.element('#i-might-say-yes-or-no').matching(have.text('yes')):
-    ...  # do something
-
-...
-
-if browser.all('.i-will-appear').matching(have.size_greater_than_or_equal(2)):
-    ... # do something
 ```
 
 ## Tutorials
 
-TBD
+- [Selene: Quick Start](https://yashaka.github.io/selene/selene-quick-start-tutorial/)
+- [Selene in action](https://yashaka.github.io/selene/selene-in-action-tutorial/)
+- [Selene for PageObjects](https://yashaka.github.io/selene/selene-for-page-objects-guide/)
 
-## More Examples
+## Tips for Effective Test Automation
 
-- [Project template][project-template]
+- **Use Readable and Stable Selectors:** Aim for selectors that are unique, expressive and minimally coupled with DOM structure to make your tests more maintainable.
 
-TBD
+- **Encapsulate Reusable Components:** Utilize the Page Object Model to encapsulate elements and actions, promoting code reuse.
+
+- **Leverage Built-in Waiting:** Selene automatically waits for elements to be in the desired state, reducing the need for explicit waits.
+
+- *Explore the API:* Dive into Selene's source code or [documentation](https://yashaka.github.io/selene) to understand the available methods and configurations better.
 
 ## Contribution
 
-[see CONTRIBUTING.md][contribution]
+We welcome contributions to Selene! Here's how you can get involved:
 
-## Release Workflow
+1. **Fork the repository** and clone it locally.
+2. Make sure to follow the project’s style and conventions.
+3. Submit a pull request (PR) with a clear description of the changes.
 
-[see Release workflow][release-workflow]
+For more details, refer to our [contribution guide](https://yashaka.github.io/selene/contribution/to-source-code-guide/).
 
 ## Changelog
 
-[see CHANGELOG.md][changelog]
+See the [Changelog](https://yashaka.github.io/selene/changelog/) for more details about recent updates.
 
 <!-- References -->
 [selenide]: http://selenide.org/
