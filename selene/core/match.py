@@ -80,10 +80,17 @@ class _EntityHasSomethingSupportingIgnoreCase(Match[E]):
         self.__falsy_exceptions = _falsy_exceptions
 
         super().__init__(
+            # This formatting section was improved to:
+            # 1. Use guillemets («») instead of quotes for better visual separation
+            # 2. Always include a colon for consistent formatting
+            # 3. Place "ignoring case" before the colon
+            # Examples:
+            #   - Without ignore case: "has text: «expected text»"
+            #   - With ignore case: "has text ignoring case: «expected text»"
             lambda maybe_entity: (
                 name
                 + (
-                    ' ignoring case:'
+                    ' ignoring case'
                     if (
                         maybe_entity is not None
                         and maybe_entity.config._match_ignoring_case
@@ -91,9 +98,7 @@ class _EntityHasSomethingSupportingIgnoreCase(Match[E]):
                     or _ignore_case
                     else ''
                 )
-                + f' \'{expected}\''
-                # todo: refactor to and change tests correspondingly:
-                # f'{" ignoring case:" if _ignore_case else ":"} «{expected}»'
+                + f': «{expected}»'
             ),
             actual=lambda entity: (entity, actual(entity)),
             by=lambda entity_and_actual: (
