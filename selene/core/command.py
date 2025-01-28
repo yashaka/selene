@@ -304,31 +304,27 @@ from selenium.webdriver.common.actions.pointer_input import PointerInput
 #       in order to make autocomplete work properly
 #       do it for save_screenshot and all other similar impls
 def save_screenshot(path: Optional[str] = None) -> Command[Browser]:
-    command: Command[Browser] = Command(
-        'save screenshot',
-        lambda browser: browser.config._save_screenshot_strategy(browser.config, path),
-    )
+    def screenshot_action(browser: Browser) -> None:
+        browser.config._save_screenshot_strategy(browser.config, path)
+
+    command: Command[Browser] = Command('save_screenshot', screenshot_action)
 
     if entity._wraps_driver(path):
-        # somebody passed command as `.perform(command.save_screenshot)`
-        # not as `.perform(command.save_screenshot())`
         driver_wrapper = path
-        command.__call__(driver_wrapper)
+        return comman(driver_wrapper)  # type: ignore
 
     return command
 
 
 def save_page_source(path: Optional[str] = None) -> Command[Browser]:
-    command: Command[Browser] = Command(
-        'save page source',
-        lambda browser: browser.config._save_page_source_strategy(browser.config, path),
-    )
+    def page_source_action(browser: Browser) -> None:
+        browser.config._save_screenshot_strategy(browser.config, path)
+
+    command: Command[Browser] = Command('save_page_source', page_source_action)
 
     if entity._wraps_driver(path):
-        # somebody passed command as `.perform(command.save_screenshot)`
-        # not as `.perform(command.save_screenshot())`
         driver_wrapper = path
-        command.__call__(driver_wrapper)
+        command.__call__(driver_wrapper)  # type: ignore
 
     return command
 
@@ -563,20 +559,32 @@ def drag_and_drop_by_offset(x: int, y: int) -> Command[Element]:
     return Command(f'drag and drop by offset: x={x}, y={y}', func)
 
 
-class js:  # pylint: disable=invalid-name
+class js:
     """A container for JavaScript-based commands.
+
+    This class provides JavaScript-based implementations of various browser commands.
+    These commands are designed to be used with Selene's perform() method.
 
     Examples:
         >>> from selene import browser, command
         >>> browser.element('#new-todo').perform(command.js.set_value('abc'))
 
-    !!! danger
-        Don't use them in mobile context! JavaScript doesn't work their.
+    Warning:
+        Don't use these commands in mobile context! JavaScript doesn't work there.
     """
 
     @staticmethod
     def set_value(value: Union[str, int]) -> Command[Element]:
-        def func(element: Element):
+        """Sets an element's value using JavaScript.
+
+        Args:
+            value: The value to set. Can be string or integer.
+
+        Returns:
+            Command object that when executed will set the element's value
+        """
+
+        def set_value_action(element: Element) -> None:
             element.execute_script(
                 """
                 var text = arguments[0];
@@ -593,11 +601,20 @@ class js:  # pylint: disable=invalid-name
                 str(value),
             )
 
-        return Command(f'set value by js: {value}', func)
+        return Command(f'set value by js: {value}', set_value_action)
 
     @staticmethod
     def type(keys: Union[str, int]) -> Command[Element]:
-        def func(element: Element):
+        """Types text into an element using JavaScript.
+
+        Args:
+            keys: The text to type. Can be string or integer.
+
+        Returns:
+            Command object that when executed will type the text into the element
+        """
+
+        def type_action(element: Element) -> None:
             element.execute_script(
                 """
                 textToAppend = arguments[0];
@@ -616,26 +633,39 @@ class js:  # pylint: disable=invalid-name
                 str(keys),
             )
 
-        return Command(f'set value by js: {keys}', func)
+        return Command(f'type by js: {keys}', type_action)
 
-    scroll_into_view: Command[Element] = Command(
-        'scroll into view',
-        lambda element: element.execute_script('element.scrollIntoView(true)'),
-    )
+    @staticmethod
+    def scroll_into_view() -> Command[Element]:
+        """Scrolls an element into view using JavaScript.
 
-    # TODO: should we process collections too? i.e. click through all elements?
+        Returns:
+            Command object that when executed will scroll the element into view
+        """
+
+        def scroll_action(element: Element) -> None:
+            element.execute_script('element.scrollIntoView(true)')
+
+        return Command('scroll into view', scroll_action)
+
     class __ClickWithOffset(Command[Element]):
+        """Internal class for handling click with offset functionality."""
+
         def __init__(self):
             self._name = 'click'
 
         @overload
-        def __call__(self, element: Element) -> None: ...
+        def __call__(self, element: Element) -> None:
+            """Handle direct element click without offset."""
+            ...
 
         @overload
-        def __call__(self, *, xoffset=0, yoffset=0) -> Command[Element]: ...
+        def __call__(self, *, xoffset=0, yoffset=0) -> Command[Element]:
+            """Handle click with specified offset."""
+            ...
 
         def __call__(self, element: Element | None = None, *, xoffset=0, yoffset=0):
-            def func(element: Element):
+            def click_action(element: Element) -> None:
                 element.execute_script(
                     '''
                     const offsetX = arguments[0]
@@ -669,9 +699,7 @@ class js:  # pylint: disable=invalid-name
                 )
 
             if element is not None:
-                # somebody passed command as `.perform(command.js.click)`
-                # not as `.perform(command.js.click())`
-                func(element)
+                click_action(element)
                 return None
 
             return Command(
@@ -680,107 +708,161 @@ class js:  # pylint: disable=invalid-name
                     if (not xoffset and not yoffset)
                     else f'click(xoffset={xoffset},yoffset={yoffset})'
                 ),
-                func,
+                click_action,
             )
 
+    # Instance of click with offset functionality
     click = __ClickWithOffset()
 
-    clear_local_storage: Command[Browser] = Command(
-        'clear local storage',
-        lambda browser: browser.driver.execute_script('window.localStorage.clear()'),
-    )
+    @staticmethod
+    def clear_local_storage() -> Command[Browser]:
+        """Clears browser's local storage using JavaScript.
 
-    clear_session_storage: Command[Browser] = Command(
-        'clear local storage',
-        lambda browser: browser.driver.execute_script('window.sessionStorage.clear()'),
-    )
+        Returns:
+            Command object that when executed will clear local storage
+        """
 
-    remove: Command[Union[Element, Collection]] = Command(
-        'remove',
-        lambda entity: (
-            entity.execute_script('element.remove()')
-            if not hasattr(entity, '__iter__')
-            else [element.execute_script('element.remove()') for element in entity]
-        ),
-    )
+        def clear_local_action(browser: Browser) -> None:
+            browser.driver.execute_script('window.localStorage.clear()')
+
+        return Command('clear local storage', clear_local_action)
 
     @staticmethod
-    def set_style_property(name: str, value: Union[str, int]) -> Command[Element]:
-        return Command(
-            f'set element.style.{name}="{value}"',
-            lambda entity: (
+    def clear_session_storage() -> Command[Browser]:
+        """Clears browser's session storage using JavaScript.
+
+        Returns:
+            Command object that when executed will clear session storage
+        """
+
+        def clear_session_action(browser: Browser) -> None:
+            browser.driver.execute_script('window.sessionStorage.clear()')
+
+        return Command('clear session storage', clear_session_action)
+
+    @staticmethod
+    def remove() -> Command[Union[Element, Collection]]:
+        """Removes element(s) from DOM using JavaScript.
+
+        Returns:
+            Command object that when executed will remove the element(s)
+        """
+
+        def remove_action(entity: Union[Element, Collection]) -> None:
+            if not hasattr(entity, '__iter__'):
+                entity.execute_script('element.remove()')
+            else:
+                for element in entity:
+                    element.execute_script('element.remove()')
+
+        return Command('remove', remove_action)
+
+    @staticmethod
+    def set_style_property(
+        name: str, value: Union[str, int]
+    ) -> Command[Union[Element, Collection]]:
+        """Sets a style property on element(s) using JavaScript.
+
+        Args:
+            name: The name of the style property to set
+            value: The value to set for the style property
+
+        Returns:
+            Command object that when executed will set the style property
+        """
+
+        def style_setter(entity: Union[Element, Collection]) -> None:
+            if not hasattr(entity, '__iter__'):
                 entity.execute_script(f'element.style.{name}="{value}"')
-                if not hasattr(entity, '__iter__')
-                else [
+            else:
+                for element in entity:
                     element.execute_script(f'element.style.{name}="{value}"')
-                    for element in entity
-                ]
-            ),
-        )
 
-    set_style_display_to_none: Command[Union[Element, Collection]] = Command(
-        'set element.style.display="none"',
-        lambda entity: (
-            entity.execute_script('element.style.display="none"')
-            if not hasattr(entity, '__iter__')
-            else [
-                element.execute_script('element.style.display="none"')
-                for element in entity
-            ]
-        ),
-    )
+        return Command(f'set element.style.{name}="{value}"', style_setter)
 
-    set_style_display_to_block: Command[Union[Element, Collection]] = Command(
-        'set element.style.display="block"',
-        lambda entity: (
-            entity.execute_script('element.style.display="block"')
-            if not hasattr(entity, '__iter__')
-            else [
-                element.execute_script('element.style.display="block"')
-                for element in entity
-            ]
-        ),
-    )
+    @staticmethod
+    def set_style_display_to_none() -> Command[Union[Element, Collection]]:
+        """Sets style.display='none' on element(s) using JavaScript.
 
-    set_style_visibility_to_hidden: Command[Union[Element, Collection]] = Command(
-        'set element.style.visibility="hidden"',
-        lambda entity: (
-            entity.execute_script('element.style.visibility="hidden"')
-            if not hasattr(entity, '__iter__')
-            else [
-                element.execute_script('element.style.visibility="hidden"')
-                for element in entity
-            ]
-        ),
-    )
+        Returns:
+            Command object that when executed will hide the element(s)
+        """
 
-    set_style_visibility_to_visible: Command[Union[Element, Collection]] = Command(
-        'set element.style.visibility="visible"',
-        lambda entity: (
-            entity.execute_script('element.style.visibility="visible"')
-            if not hasattr(entity, '__iter__')
-            else [
-                element.execute_script('element.style.visibility="visible"')
-                for element in entity
-            ]
-        ),
-    )
+        def set_display_none(entity: Union[Element, Collection]) -> None:
+            if not hasattr(entity, '__iter__'):
+                entity.execute_script('element.style.display="none"')
+            else:
+                for element in entity:
+                    element.execute_script('element.style.display="none"')
 
-    # TODO: add js.drag_and_drop_by_offset(x, y)
+        return Command('set element.style.display="none"', set_display_none)
+
+    @staticmethod
+    def set_style_display_to_block() -> Command[Union[Element, Collection]]:
+        """Sets style.display='block' on element(s) using JavaScript.
+
+        Returns:
+            Command object that when executed will show the element(s) as block
+        """
+
+        def set_display_block(entity: Union[Element, Collection]) -> None:
+            if not hasattr(entity, '__iter__'):
+                entity.execute_script('element.style.display="block"')
+            else:
+                for element in entity:
+                    element.execute_script('element.style.display="block"')
+
+        return Command('set element.style.display="block"', set_display_block)
+
+    @staticmethod
+    def set_style_visibility_to_hidden() -> Command[Union[Element, Collection]]:
+        """Sets style.visibility='hidden' on element(s) using JavaScript.
+
+        Returns:
+            Command object that when executed will hide the element(s)
+        """
+
+        def set_visibility_hidden(entity: Union[Element, Collection]) -> None:
+            if not hasattr(entity, '__iter__'):
+                entity.execute_script('element.style.visibility="hidden"')
+            else:
+                for element in entity:
+                    element.execute_script('element.style.visibility="hidden"')
+
+        return Command('set element.style.visibility="hidden"', set_visibility_hidden)
+
+    @staticmethod
+    def set_style_visibility_to_visible() -> Command[Union[Element, Collection]]:
+        """Sets style.visibility='visible' on element(s) using JavaScript.
+
+        Returns:
+            Command object that when executed will show the element(s)
+        """
+
+        def set_visibility_visible(entity: Union[Element, Collection]) -> None:
+            if not hasattr(entity, '__iter__'):
+                entity.execute_script('element.style.visibility="visible"')
+            else:
+                for element in entity:
+                    element.execute_script('element.style.visibility="visible"')
+
+        return Command('set element.style.visibility="visible"', set_visibility_visible)
 
     @staticmethod
     def drag_and_drop_to(target: Element) -> Command[Element]:
+        """Simulates drag and drop via JavaScript.
+
+        Args:
+            target: The target element to drop onto
+
+        Returns:
+            Command object that when executed will perform the drag and drop
+
+        Warning:
+            May not work in all contexts. Known issues with Material UI React Continuous Slider
         """
-        Simulates drag and drop via JavaScript.
 
-        !!! warning
-
-            May not work everywhere. Among known cases:
-            does not work on [Material UI React Continuous Slider](https://mui.com/material-ui/react-slider/#ContinuousSlider)
-            where the normal drag and drop works fine.
-        """
-
-        def func(source: Element):
+        def drag_drop_action(source: Element) -> None:
             script = """
             (function() {
               function createEvent(typeOfEvent) {
@@ -827,28 +909,25 @@ class js:  # pylint: disable=invalid-name
                 target.locate(),
             )
 
-        return Command(f'drag and drop to: {target}', func)
+        return Command(f'drag and drop to: {target}', drag_drop_action)
 
     @staticmethod
     def drop_file(path: str) -> Command[Element]:
-        """
-        Simulates via JavaScript the “drag and drop” of file into self (this element).
-
-        The command is useful in cases,
-        when there is no actual hidden input of type file to `send_keys(path)` to.
+        """Simulates file drop onto an element via JavaScript.
 
         Args:
-            path: an absolute path to the file
+            path: Absolute path to the file to drop
+
+        Returns:
+            Command object that when executed will simulate file drop
+
+        Note:
+            Useful when there's no actual hidden input element to send_keys() to
         """
 
-        # TODO: should we move them to params?
-        #       what do they actually do? something like this? –
-        #           xoffset: x offset (from this element center) to drop file
-        #           yoffset: y offset (from this element center) to drop file
-        xoffset = 0
-        yoffset = 0
-
-        def func(source: Element):
+        def drop_file_action(source: Element) -> None:
+            xoffset = 0
+            yoffset = 0
             script = """
             var target = arguments[0],
             offsetX = arguments[1],
@@ -893,4 +972,4 @@ class js:  # pylint: disable=invalid-name
                 expected_conditions.staleness_of(temp_input)
             )
 
-        return Command(f'drop file: {path}', func)
+        return Command(f'drop file: {path}', drop_file_action)

@@ -25,7 +25,9 @@ def test_waits_for_visibility_minimum_needed_time(session_browser):
     assert "second" in session_browser.driver.current_url
 
 
-def test_fails_on_timeout_during_waits_first_for_present_in_dom_then_visibility(session_browser):
+def test_fails_on_timeout_during_waits_first_for_present_in_dom_then_visibility(
+    session_browser,
+):
     page = GivenPage(session_browser.driver)
     page.opened_with_body(
         '''
