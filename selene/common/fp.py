@@ -163,7 +163,7 @@ def thread_first(arg, *iterable_of_fn_or_tuple):
 
 
 def thread_last(arg, *iterable_of_fn_or_tuple):
-    """Thread the first argument through a sequence of functions
+    r"""Thread the first argument through a sequence of functions
     or tuples of functions with arguments in order to get rid of nested calls.
     Examples:
         >>> from selene.common.fp import thread_last, map_with

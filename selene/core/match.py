@@ -62,69 +62,70 @@ E = TypeVar('E', bound=Configured)
 class _EntityHasSomethingSupportingIgnoreCase(Match[E]):
     def __init__(
         self,
-        name,
+        name_or_description: str | Callable[[E | None], str],
         /,
-        expected,
-        actual,
-        by,
-        _ignore_case=False,
-        _inverted=False,
+        expected: Any,
+        actual: Callable[[E], Any],
+        by: Callable[[Any], Callable[[Any], bool]],
+        _ignore_case: bool = False,
+        _inverted: bool = False,
         _falsy_exceptions: Iterable[Type[Exception]] = (AssertionError,),
     ):
-        self.__name = name
-        self.__actual = actual
-        self.__expected = expected
-        self.__by = by
-        self.__ignore_case = _ignore_case
-        self.__inverted = _inverted
-        self.__falsy_exceptions = _falsy_exceptions
+        def _condition_description(maybe_entity: E | None) -> str:
+            # Convert the first argument to a string if it's callable
+            base_description = (
+                name_or_description(maybe_entity)
+                if callable(name_or_description)
+                else name_or_description
+            )
+            # Then apply " ignoring case" if needed, and add the final "«expected»"
+            if (
+                maybe_entity is not None and maybe_entity.config._match_ignoring_case
+            ) or _ignore_case:
+                return f"{base_description} ignoring case: «{expected}»"
+            return f"{base_description}: «{expected}»"
 
         super().__init__(
-            lambda maybe_entity: (
-                name
-                + (
-                    ' ignoring case:'
-                    if (
-                        maybe_entity is not None
-                        and maybe_entity.config._match_ignoring_case
-                    )
-                    or _ignore_case
-                    else ''
-                )
-                + f' \'{expected}\''
-                # todo: refactor to and change tests correspondingly:
-                # f'{" ignoring case:" if _ignore_case else ":"} «{expected}»'
-            ),
-            actual=lambda entity: (entity, actual(entity)),
+            # 1) condition_description (positional)
+            _condition_description,
+            # 2) actual (positional)
+            lambda entity: (entity, actual(entity)),
+            # The rest as keyword-only:
             by=lambda entity_and_actual: (
-                by(str(expected).lower())(str(actual).lower())
-                if (
-                    entity_and_actual[0],
-                    actual := entity_and_actual[1],
-                )[0].config._match_ignoring_case
-                or _ignore_case
-                else by(str(expected))(str(actual))
+                by(str(expected).lower())(str(entity_and_actual[1]).lower())
+                if entity_and_actual[0].config._match_ignoring_case or _ignore_case
+                else by(str(expected))(str(entity_and_actual[1]))
             ),
             _describe_actual_result=lambda entity_and_actual: (
                 Query._full_description_or(
-                    'actual', for_=actual, _with_prefix='actual '
+                    "actual", for_=actual, _with_prefix="actual "
                 )
-                + f': {entity_and_actual[1]}'
+                + f": {entity_and_actual[1]}"
             ),
             _inverted=_inverted,
             _falsy_exceptions=_falsy_exceptions,
         )
 
-    # TODO: should we add property pattern or with_regex (compare with *_like conditions)
-    #       similar to ignore_case, that adds regex support to condition?
+        self.__name_or_description = name_or_description
+        self.__expected = expected
+        self.__actual_fn = actual
+        self.__by_fn = by
+        self.__ignore_case = _ignore_case
+        self.__inverted = _inverted
+        self.__falsy_exceptions = _falsy_exceptions
 
     @property
     def ignore_case(self) -> Condition[E]:
-        return self.__class__(
-            self.__name,
+        """Creates a new condition that performs case-insensitive matching.
+
+        Returns:
+            A new condition instance with case-insensitive matching enabled.
+        """
+        return type(self)(
+            self.__name_or_description,
             self.__expected,
-            self.__actual,
-            self.__by,
+            self.__actual_fn,
+            self.__by_fn,
             _ignore_case=True,
             _inverted=self.__inverted,
             _falsy_exceptions=self.__falsy_exceptions,
@@ -836,7 +837,7 @@ class size(Match[Union[Collection, Browser, Element]]):
                         if element.is_displayed()
                     ]
                 )
-                if entity._is_collection(some_entity)
+                if isinstance(some_entity, Collection)  # Narrow type to Collection
                 and some_entity.config._match_only_visible_elements_size
                 else query.size(some_entity)
             ),

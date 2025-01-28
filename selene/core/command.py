@@ -304,31 +304,27 @@ from selenium.webdriver.common.actions.pointer_input import PointerInput
 #       in order to make autocomplete work properly
 #       do it for save_screenshot and all other similar impls
 def save_screenshot(path: Optional[str] = None) -> Command[Browser]:
-    command: Command[Browser] = Command(
-        'save screenshot',
-        lambda browser: browser.config._save_screenshot_strategy(browser.config, path),
-    )
+    def screenshot_action(browser: Browser) -> None:
+        browser.config._save_screenshot_strategy(browser.config, path)
+
+    command: Command[Browser] = Command('save_screenshot', screenshot_action)
 
     if entity._wraps_driver(path):
-        # somebody passed command as `.perform(command.save_screenshot)`
-        # not as `.perform(command.save_screenshot())`
         driver_wrapper = path
-        command.__call__(driver_wrapper)
+        return comman(driver_wrapper)  # type: ignore
 
     return command
 
 
 def save_page_source(path: Optional[str] = None) -> Command[Browser]:
-    command: Command[Browser] = Command(
-        'save page source',
-        lambda browser: browser.config._save_page_source_strategy(browser.config, path),
-    )
+    def page_source_action(browser: Browser) -> None:
+        browser.config._save_screenshot_strategy(browser.config, path)
+
+    command: Command[Browser] = Command('save_page_source', page_source_action)
 
     if entity._wraps_driver(path):
-        # somebody passed command as `.perform(command.save_screenshot)`
-        # not as `.perform(command.save_screenshot())`
         driver_wrapper = path
-        command.__call__(driver_wrapper)
+        command.__call__(driver_wrapper)  # type: ignore
 
     return command
 
