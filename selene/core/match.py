@@ -832,10 +832,11 @@ class size(Match[Union[Collection, Browser, Element]]):
                 len(
                     [
                         element
-                        for element in some_entity.locate()
+                        for element in some_entity.locate()  # type: ignore
                         if element.is_displayed()
                     ]
                 )
+                # todo: consider a more type-safe way to check types (to remove ignore above)
                 if entity._is_collection(some_entity)
                 and some_entity.config._match_only_visible_elements_size
                 else query.size(some_entity)

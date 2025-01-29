@@ -76,8 +76,6 @@ class Device(WaitingEntity['Device']):
     def _actions(self) -> _Actions:
         return _Actions(self.config)
 
-    # --- Element builders --- #
-
     def _is_android_or_ios(self):
         return hasattr(self.config.driver_options, 'platform_name') and (
             self.config.driver_options.platform_name.lower() in ('android', 'ios')
@@ -96,6 +94,8 @@ class Device(WaitingEntity['Device']):
             if self._is_android_or_ios()
             else or_per_platform.get('web')
         )
+
+    # --- Element builders --- #
 
     # TODO: consider @overload to have more specific signature variations
     # TODO: consider None by default,

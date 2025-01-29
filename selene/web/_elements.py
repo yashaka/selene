@@ -19,11 +19,14 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
+# type: ignore # TODO: remove finally
 from __future__ import annotations
 
-from typing_extensions import Optional, Union, Tuple, cast, Iterable, Sequence, Callable
+from typing_extensions import Union, Callable, Tuple, Iterable, Optional, Self
+import typing_extensions as typing
+import warnings
 
+from selene.common.fp import pipe
 from selene.common.helpers import flatten
 from selene.common._typing_functions import Command
 from selene.core.condition import Condition
@@ -32,27 +35,38 @@ from selene.core.entity import WaitingEntity
 from selene.core.locator import Locator
 from selene.core.wait import Wait
 
-from selenium.webdriver import ActionChains
+from selene.core.exceptions import TimeoutException, _SeleneError
 
-try:
-    from appium import webdriver
-    from appium.webdriver import WebElement as AppiumElement
-except ImportError as error:
-    raise ImportError(
-        'Appium-Python-Client is not installed, '
-        'run `pip install Appium-Python-Client`,'
-        'or add and install dependency '
-        'with your favorite dependency manager like poetry: '
-        '`poetry add Appium-Python-Client`'
-    ) from error
+from selenium.webdriver.remote.webdriver import WebDriver
+from selenium.webdriver.remote.webelement import WebElement
+from selenium.webdriver import ActionChains
+from selenium.webdriver.common.keys import Keys
 
 
 class Element(WaitingEntity['Element']):
+    @staticmethod
+    def _log_webelement_outer_html_for(
+        element: Element,
+    ) -> Callable[[TimeoutException], Exception]:
+        def log_webelement_outer_html(error: TimeoutException) -> Exception:
+            from selene.core import query
+            from selene.core.match import present_in_dom
+
+            cached = element.cached
+
+            if cached.matching(present_in_dom):
+                return TimeoutException(
+                    f'{error.msg}\n'
+                    f'Actual webelement: {query.outer_html(element)}'  # type: ignore
+                )
+            else:
+                return error
+
+        return log_webelement_outer_html
+
     # TODO: should we move locator based init and with_ to Located base abstract class?
 
-    # TODO: we need a separate Config for Mobile
-    #       e.g. we don't need log_outer_html_on_failure for mobile, etc.
-    def __init__(self, locator: Locator[AppiumElement], config: Config):
+    def __init__(self, locator: Locator[WebElement], config: Config):
         self._locator = locator
         super().__init__(config)
 
@@ -69,14 +83,14 @@ class Element(WaitingEntity['Element']):
     def __str__(self):
         return str(self._locator)
 
-    def locate(self) -> AppiumElement:
+    def locate(self) -> WebElement:
         return self._locator()
 
     @property
     def __raw__(self):
         return self.locate()
 
-    def __call__(self) -> AppiumElement:
+    def __call__(self) -> WebElement:
         return self.locate()
 
     # --- WaitingEntity --- #
@@ -90,105 +104,165 @@ class Element(WaitingEntity['Element']):
         #             or_fail_with=pipe(
         #                 Element._log_webelement_outer_html_for(self),
         #                 self.config.hook_wait_failure))
-        return super().wait
+        if self.config.log_outer_html_on_failure:
+            # TODO: remove this part completely from core.entity logic
+            #       move it to support.shared.config
+            return super().wait.or_fail_with(
+                pipe(
+                    Element._log_webelement_outer_html_for(self),
+                    super().wait.hook_failure,
+                )
+            )
+        else:
+            return super().wait
 
-    # @property
-    # def cached(self) -> Element:
-    #     # TODO: do we need caching ? with lazy save of webelement to cache
-    #
-    #     cache = None
-    #     error = None
-    #     try:
-    #         cache = self.locate()
-    #     except Exception as e:
-    #         error = e
-    #
-    #     def get_webelement():
-    #         if cache:
-    #             return cache
-    #         raise error
-    #
-    #     return Element(Locator(f'{self}.cached', get_webelement), self.config)
+    @property
+    def cached(self) -> Element:
+        # TODO: do we need caching ? with lazy save of webelement to cache
+
+        cache = None
+        error = None
+        try:
+            cache = self()
+        except Exception as e:
+            error = e
+
+        def get_webelement():
+            if cache:
+                return cache
+            raise error
+
+        return Element(Locator(f'{self}.cached', get_webelement), self.config)
 
     # --- Relative location --- #
 
-    # TODO: refactor for platform wise locators
-    def element(self, selector_or_by: Union[str, Tuple[str, str]], /) -> Element:
-        by = self.config._selector_or_by_to_by(selector_or_by)
+    def element(self, css_or_xpath_or_by: Union[str, Tuple[str, str]]) -> Element:
+        by = self.config._selector_or_by_to_by(css_or_xpath_or_by)
 
         return Element(
-            Locator(
-                f'{self}.element({by})',
-                lambda: cast(AppiumElement, self.locate().find_element(*by)),
-            ),
+            Locator(f'{self}.element({by})', lambda: self().find_element(*by)),
             self.config,
         )
 
-    def all(self, selector_or_by: Union[str, Tuple[str, str]], /) -> AllElements:
-        by = self.config._selector_or_by_to_by(selector_or_by)
+    def all(self, css_or_xpath_or_by: Union[str, Tuple[str, str]]) -> Collection:
+        by = self.config._selector_or_by_to_by(css_or_xpath_or_by)
 
-        return AllElements(
-            Locator(
-                f'{self}.all({by})',
-                lambda: cast(Sequence[AppiumElement], self.locate().find_elements(*by)),
-            ),
+        return Collection(
+            Locator(f'{self}.all({by})', lambda: self().find_elements(*by)),
             self.config,
         )
 
     # --- Commands --- #
 
-    # TODO: can we implement script on SELF for Mobile?
-    # def execute_script(self, script_on_self: str, *arguments):
-    #     """
-    #     Executes JS script on self as webelement. Will not work for Mobile!
-    #
-    #     The script can use predefined parameters:
-    #     - ``element`` and ``self`` are aliases to this element handle, i.e. ``self.locate()`` or ``self.locate()``.
-    #     - ``arguments`` are accessible from the script with same order and indexing as they are provided to the method
-    #
-    #     Examples::
-    #
-    #         browser.element('[id^=google_ads]').execute_script('element.remove()')
-    #         # OR
-    #         browser.element('[id^=google_ads]').execute_script('self.remove()')
-    #         '''
-    #         # are shortcuts to
-    #         browser.execute_script('arguments[0].remove()', browser.element('[id^=google_ads]')())
-    #         '''
-    #
-    #         browser.element('input').execute_script('element.value=arguments[0]', 'new value')
-    #         # OR
-    #         browser.element('input').execute_script('self.value=arguments[0]', 'new value')
-    #         '''
-    #         # are shortcuts to
-    #         browser.execute_script('arguments[0].value=arguments[1]', browser.element('input').locate(), 'new value')
-    #         '''
-    #     """
-    #     driver = cast(webdriver.Remote, self.config.driver)
-    #     webelement = self()
-    #     # TODO: should we wrap it in wait or not?
-    #     # TODO: should we add additional it and/or its aliases for element?
-    #     return driver.execute_driver(
-    #         script_on_self,
-    #         # webelement,
-    #         # arguments,
-    #     )
+    def execute_script(self, script_on_self: str, *arguments):
+        """
+        Executes JS script on self as webelement. Will not work for Mobile!
+
+        The script can use predefined parameters:
+        - ``element`` and ``self`` are aliases to this element handle, i.e. ``self.locate()`` or ``self()``.
+        - ``arguments`` are accessible from the script with same order and indexing as they are provided to the method
+
+        Examples::
+
+            browser.element('[id^=google_ads]').execute_script('element.remove()')
+            # OR
+            browser.element('[id^=google_ads]').execute_script('self.remove()')
+            '''
+            # are shortcuts to
+            browser.execute_script('arguments[0].remove()', browser.element('[id^=google_ads]')())
+            '''
+
+            browser.element('input').execute_script('element.value=arguments[0]', 'new value')
+            # OR
+            browser.element('input').execute_script('self.value=arguments[0]', 'new value')
+            '''
+            # are shortcuts to
+            browser.execute_script('arguments[0].value=arguments[1]', browser.element('input').locate(), 'new value')
+            '''
+        """
+        driver: WebDriver = self.config.driver
+        webelement = self()
+        # TODO: should we wrap it in wait or not?
+        # TODO: should we add additional it and/or its aliases for element?
+        return driver.execute_script(
+            f'''
+                let element = arguments[0]
+                let self = arguments[0]
+                return (function(...args) {{
+                    {script_on_self}
+                }})(...arguments[1])
+            ''',
+            webelement,
+            arguments,
+        )
+
+    # TODO: do we need this method?
+    #       do we really need to wrap script into function(element,args) here?
+    #       if yes... wouldn't it be better to use standard arguments name
+    #       instead of args?
+    #       for better integration with js support in jetbrains products?
+    def _execute_script(
+        self,
+        script_on_self_element_and_args: str,
+        *extra_args,
+    ):
+        warnings.warn(
+            '._execute_script is now deprecated '
+            'in favor of .execute_script(script_on_self, *arguments) '
+            'that uses access to arguments (NOT args!) in the script',
+            DeprecationWarning,
+        )
+        driver: WebDriver = self.config.driver
+        webelement = self()
+        # TODO: should we wrap it in wait or not?
+        return driver.execute_script(
+            f'''
+                return (function(element, args) {{
+                    {script_on_self_element_and_args}
+                }})(arguments[0], arguments[1])
+            ''',
+            webelement,
+            extra_args,
+        )
 
     def set_value(self, value: Union[str, int]) -> Element:
         # TODO: should we move all commands like following or queries like in conditions - to separate py modules?
-        # todo: should we make them webelement based (Callable[[MobileElement], None]) instead of element based?
+        # TODO: should we make them webelement based (Callable[[WebElement], None]) instead of element based?
         def fn(element: Element):
-            mobelement = element.locate()
-            mobelement.clear()
-            mobelement.send_keys(str(value))
+            webelement = (
+                element._actual_not_overlapped_webelement
+                if self.config.wait_for_no_overlap_found_by_js
+                else element()
+            )
+            webelement.clear()  # TODO: change to impl based not on clear, because clear generates post-events...
+            webelement.send_keys(str(value))
 
-        self.wait.for_(Command(f'set value: {value}', fn))
+        from selene.core import command
 
-        # todo: consider returning self.cached, since after first successful call,
+        # TODO: should we log the webelement source in the command name below?
+        #       i.e. change from:
+        #
+        #   else Command(f'set value: {value}', fn)
+        #
+        #       to more low level:
+        #
+        #   else (
+        #       Command(f'actual_not_overlapped_webelement.clear().send_keys({value})', fn)
+        #       if self.config.wait_for_no_overlap_found_by_js
+        #       else
+        #       Command(f'actual_webelement.clear().send_keys({value})', fn)
+        #   )
+        #
+        self.wait.for_(
+            command.js.set_value(value)
+            if self.config.set_value_by_js
+            else Command(f'set value: {value}', fn)
+        )
+
+        # TODO: consider returning self.cached, since after first successful call,
         #       all next ones should normally pass
         #       no waiting will be needed normally
-        #       if yes - then we should pass fn commands to wait.for_
-        #       so the latter will return webelement to cache
+        #       if yes - then we should pass fn commands to wait.for_ so the latter will return webelement to cache
         #       also it will make sense to make this behaviour configurable...
         return self
 
@@ -203,71 +277,176 @@ class Element(WaitingEntity['Element']):
         """
         return self.set_value(value)
 
+    def _actual_visible_webelement_and_maybe_its_cover(
+        self, center_x_offset=0, center_y_offset=0
+    ) -> Tuple[WebElement, WebElement]:
+        # TODO: will it be faster render outerHTML via lazy rendered SeleneError
+        #       instead of: throw `element ${element.outerHTML} is not visible`
+        #       in below js
+        results = self.execute_script(
+            '''
+                var centerXOffset = arguments[0];
+                var centerYOffset = arguments[1];
+
+                var isVisible = !!(
+                    element.offsetWidth
+                    || element.offsetHeight
+                    || element.getClientRects().length
+                ) && window.getComputedStyle(element).visibility !== 'hidden'
+
+                if (!isVisible) {
+                    throw `element ${element.outerHTML} is not visible`
+                }
+
+                var rect = element.getBoundingClientRect();
+                var x = rect.left + rect.width/2 + centerXOffset;
+                var y = rect.top + rect.height/2 + centerYOffset;
+
+                // TODO: now we return [element, null]
+                //       in case of elementFromPoint returns null
+                //       (kind of – if we don't know what to do,
+                //       let's at least not block the execution...)
+                //       rethink this... and handle the iframe case
+                //       read more in
+// https://developer.mozilla.org/en-US/docs/Web/API/Document/elementFromPoint
+
+                var elementByXnY = document.elementFromPoint(x,y);
+                if (elementByXnY == null) {
+                    return [element, null];
+                }
+
+                var isNotOverlapped = element.isSameNode(elementByXnY);
+
+                return isNotOverlapped
+                       ? [element, null]
+                       : [element, elementByXnY];
+            ''',
+            center_x_offset,
+            center_y_offset,
+        )
+        webelement = results[0]
+        maybe_cover = results[1]
+
+        return webelement, maybe_cover
+
+    @property
+    def _actual_not_overlapped_webelement(self):
+        (
+            webelement,
+            maybe_cover,
+        ) = self._actual_visible_webelement_and_maybe_its_cover()
+        if maybe_cover is not None:
+            raise _SeleneError(
+                lambda: f'Element: {webelement.get_attribute("outerHTML")}\n'
+                + '\tis overlapped by: '
+                + maybe_cover.get_attribute("outerHTML")
+            )
+
+        return webelement
+
     def type(self, text: Union[str, int]) -> Element:
         def fn(element: Element):
-            mobelement = element.locate()
-            mobelement.send_keys(str(text))
+            if self.config.wait_for_no_overlap_found_by_js:
+                webelement = element._actual_not_overlapped_webelement
+            else:
+                webelement = element()
+            webelement.send_keys(str(text))
 
-        self.wait.for_(Command(f'type: {text}', fn))
+        from selene.core import command
+
+        self.wait.for_(
+            command.js.type(text)
+            if self.config.type_by_js
+            else Command(f'type: {text}', fn)
+        )
 
         return self
 
     def send_keys(self, *value) -> Element:
         """
-        Similar to type(text), but with a more low-level naming & args,
-        that might be useful in some cases.
+        To be used for more low level operations like «uploading files», etc.
+        To simulate normal input of keys by user when typing
+        - use Element.type(self, text).
         """
-        # todo: here it's a bit weird... we actually needed command not query,
-        #       but because of send_keys in Appium returns not None, we have to use query
-        #       to ensure correct typing
-        self.wait.query('send keys', lambda element: element.locate().send_keys(*value))
+        self.wait.command('send keys', lambda element: element().send_keys(*value))
         return self
 
     def press(self, *keys) -> Element:
-        """
-        Similar to send_keys but with a more high level naming
-        """
-
         def fn(element: Element):
-            mobelement = element.locate()
-            mobelement.send_keys(*keys)
+            webelement = (
+                element._actual_not_overlapped_webelement
+                if self.config.wait_for_no_overlap_found_by_js
+                else element()
+            )
+            webelement.send_keys(*keys)
 
         self.wait.command(f'press keys: {keys}', fn)
 
         return self
 
+    def press_enter(self) -> Element:
+        return self.press(Keys.ENTER)
+
+    def press_escape(self) -> Element:
+        return self.press(Keys.ESCAPE)
+
+    def press_tab(self) -> Element:
+        return self.press(Keys.TAB)
+
     def clear(self) -> Element:
         def fn(element: Element):
-            mobelement = element.locate()
-            mobelement.clear()
+            webelement = (
+                element._actual_not_overlapped_webelement
+                if self.config.wait_for_no_overlap_found_by_js
+                else element()
+            )
+            webelement.clear()
 
         self.wait.command('clear', fn)
 
         return self
 
+    def submit(self) -> Element:
+        def fn(element: Element):
+            webelement = (
+                element._actual_not_overlapped_webelement
+                if self.config.wait_for_no_overlap_found_by_js
+                else element()
+            )
+            webelement.submit()
+
+        self.wait.command('submit', fn)
+
+        return self
+
     # TODO: consider support of percentage in offsets (in command.js.click too)
-    # TODO: will this implementation of offsets work for Mobile?
-    # TODO: should TAPPING be implemented in different than simple clicking way?
-    # TODO: do we need a click alias? should render the name of it differently per platform?
-    def tap(self, *, xoffset=0, yoffset=0) -> Element:
-        """Just a normal tap action with optional offset:)"""
+    def click(self, *, xoffset=0, yoffset=0) -> Element:
+        """Just a normal click with optional offset:)"""
 
         def raw_click(element: Element):
             element.locate().click()
 
         def click_with_offset_actions(element: Element):
             actions: ActionChains = ActionChains(self.config.driver)
-            mobelement = element.locate()
+            webelement = (
+                element._actual_not_overlapped_webelement
+                if self.config.wait_for_no_overlap_found_by_js
+                else element.locate()
+            )
             actions.move_to_element_with_offset(
-                mobelement, xoffset, yoffset
+                webelement, xoffset, yoffset
             ).click().perform()
 
+        from selene.core import command
+
         self.wait.for_(
-            (
-                Command('tap', raw_click)
+            command.js.click(xoffset=xoffset, yoffset=yoffset)
+            if self.config.click_by_js
+            else (
+                Command('click', raw_click)
                 if (not xoffset and not yoffset)
                 else Command(
-                    f'tap(xoffset={xoffset},yoffset={yoffset})',
+                    f'click(xoffset={xoffset},yoffset={yoffset})',
                     click_with_offset_actions,
                 )
             )
@@ -275,26 +454,87 @@ class Element(WaitingEntity['Element']):
 
         return self
 
-    def long_press(self, duration=1.0) -> Element:
-        """Long press on element (also known as “touch and hold”) with duration in milliseconds.
+    def double_click(self) -> Element:
+        actions: ActionChains = ActionChains(self.config.driver)
 
-        Args:
-            duration (float): duration of the hold between press and release in seconds
-        """
-        from selene.core import command
+        def fn(element: Element):
+            webelement = (
+                element._actual_not_overlapped_webelement
+                if self.config.wait_for_no_overlap_found_by_js
+                else element.locate()
+            )
+            actions.double_click(webelement).perform()
 
-        self.perform(command.long_press(duration))
+        self.wait.command('double click', fn)
+
         return self
 
+    def context_click(self) -> Element:
+        actions: ActionChains = ActionChains(self.config.driver)
 
-# todo: wouldn't it be enough to name it as All? (currently we have All as alias to AllElements)
-class AllElements(WaitingEntity['AllElements'], Iterable[Element]):
-    def __init__(self, locator: Locator[Sequence[AppiumElement]], config: Config):
+        def fn(element: Element):
+            webelement = (
+                element._actual_not_overlapped_webelement
+                if self.config.wait_for_no_overlap_found_by_js
+                else element()
+            )
+            actions.context_click(webelement).perform()
+
+        self.wait.command('context click', fn)
+
+        return self
+
+    def hover(self) -> Element:
+        actions: ActionChains = ActionChains(self.config.driver)
+
+        def fn(element: Element):
+            webelement = (
+                element._actual_not_overlapped_webelement
+                if self.config.wait_for_no_overlap_found_by_js
+                else element()
+            )
+            actions.move_to_element(webelement).perform()
+
+        self.wait.command('hover', fn)
+
+        return self
+
+    # TODO: should we reflect queries as self methods? or not...
+    # pros: faster to query element attributes
+    # cons: queries are not test oriented. test is steps + asserts
+    #       so queries will be used only occasionally, then why to make a heap from Element?
+    #       hence, occasionally it's enough to have them called as
+    #           query.outer_html(element)  # non-waiting version
+    #       or
+    #           element.get(query.outer_html)  # waiting version
+    # def outer_html(self) -> str:
+    #     return self.wait.for_(query.outer_html)
+
+    # --- Deprecate or not? --- #
+
+    def s(self, css_or_xpath_or_by: Union[str, Tuple[str, str]]) -> Element:
+        # warnings.warn(
+        #     "consider using more explicit `element` instead: browser.element('#foo').element('.bar')",
+        #     SyntaxWarning)
+        return self.element(css_or_xpath_or_by)
+
+    def ss(self, css_or_xpath_or_by: Union[str, Tuple[str, str]]) -> Collection:
+        # warnings.warn(
+        #     "consider using `all` instead: browser.element('#foo').all('.bar')",
+        #     SyntaxWarning)
+        return self.all(css_or_xpath_or_by)
+
+
+# TODO: consider renaming or at list aliased to AllElements
+#       for better consistency with browser.all(selector)
+#       and maybe even aliased by All for nicer POM support via descriptors
+class Collection(WaitingEntity['Collection'], Iterable[Element]):
+    def __init__(self, locator: Locator[typing.Sequence[WebElement]], config: Config):
         self._locator = locator
         super().__init__(config)
 
-    def with_(self, config: Optional[Config] = None, **config_as_kwargs) -> AllElements:
-        return AllElements(
+    def with_(self, config: Optional[Config] = None, **config_as_kwargs) -> Collection:
+        return Collection(
             self._locator,
             config if config else self.config.with_(**config_as_kwargs),
         )
@@ -302,20 +542,20 @@ class AllElements(WaitingEntity['AllElements'], Iterable[Element]):
     def __str__(self):
         return str(self._locator)
 
-    def locate(self) -> Sequence[AppiumElement]:
+    def locate(self) -> typing.Sequence[WebElement]:
         return self._locator()
 
     @property
     def __raw__(self):
         return self.locate()
 
-    def __call__(self) -> Sequence[AppiumElement]:
+    def __call__(self) -> typing.Sequence[WebElement]:
         return self.locate()
 
     @property
-    def cached(self) -> AllElements:
-        mobelements = self.locate()
-        return AllElements(Locator(f'{self}.cached', lambda: mobelements), self.config)
+    def cached(self) -> Collection:
+        webelements = self.locate()
+        return Collection(Locator(f'{self}.cached', lambda: webelements), self.config)
 
     def __iter__(self):
         i = 0
@@ -333,18 +573,18 @@ class AllElements(WaitingEntity['AllElements'], Iterable[Element]):
     # TODO: add config.index_collection_from_1, disabled by default
     # TODO: consider additional number param, that counts from 1
     #       if provided instead of index
-    def element(self, index: int, /) -> Element:
-        def find() -> AppiumElement:
-            mobelements = self.locate()
-            length = len(mobelements)
+    def element(self, index: int) -> Element:
+        def find() -> WebElement:
+            webelements = self.locate()
+            length = len(webelements)
 
             if length <= index:
                 raise AssertionError(
                     f'Cannot get element with index {index} '
-                    + f'from mobile elements collection with length {length}'
+                    + f'from webelements collection with length {length}'
                 )
 
-            return mobelements[index]
+            return webelements[index]
 
         return Element(Locator(f'{self}[{index}]', find), self.config)
 
@@ -353,14 +593,14 @@ class AllElements(WaitingEntity['AllElements'], Iterable[Element]):
         """
         A human-readable alias to .element(0) or [0]
         """
-        return cast(Element, self[0])
+        return typing.cast(Element, self[0])
 
     @property
     def second(self) -> Element:
         """
         A human-readable alias to .element(1) or [1]
         """
-        return cast(Element, self[1])
+        return typing.cast(Element, self[1])
 
     @property
     def even(self):
@@ -381,10 +621,10 @@ class AllElements(WaitingEntity['AllElements'], Iterable[Element]):
         start: Optional[int] = None,
         stop: Optional[int] = None,
         step: int = 1,
-    ) -> AllElements:
-        def find() -> Sequence[AppiumElement]:
-            mobelements = self.locate()
-            length = len(mobelements)
+    ) -> Collection:
+        def find() -> typing.Sequence[WebElement]:
+            webelements = self.locate()
+            length = len(webelements)
             if start is not None and start != 0 and start >= length:
                 raise AssertionError(
                     f'not enough elements to slice collection '
@@ -400,9 +640,9 @@ class AllElements(WaitingEntity['AllElements'], Iterable[Element]):
 
             # TODO: assert length according to provided start, stop...
 
-            return mobelements[start:stop:step]
+            return webelements[start:stop:step]
 
-        return AllElements(
+        return Collection(
             Locator(
                 f'{self}[{start or ""}'
                 f':{stop or ""}'
@@ -414,7 +654,7 @@ class AllElements(WaitingEntity['AllElements'], Iterable[Element]):
 
     def __getitem__(
         self, index_or_slice: Union[int, slice]
-    ) -> Union[Element, AllElements]:
+    ) -> Union[Element, Collection]:
         if isinstance(index_or_slice, slice):
             return self.sliced(
                 index_or_slice.start, index_or_slice.stop, index_or_slice.step
@@ -422,38 +662,45 @@ class AllElements(WaitingEntity['AllElements'], Iterable[Element]):
 
         return self.element(index_or_slice)
 
-    def from_(self, start: int) -> AllElements:
-        return cast(AllElements, self[start:])
+    def from_(self, start: int) -> Collection:
+        return typing.cast(Collection, self[start:])
 
-    def to(self, stop: int) -> AllElements:
-        return cast(AllElements, self[:stop])
+    def to(self, stop: int) -> Collection:
+        return typing.cast(Collection, self[:stop])
 
     def by(
         self, condition: Union[Condition[Element], Callable[[Element], None]]
-    ) -> AllElements:
+    ) -> Collection:
         condition = (
             condition
             if isinstance(condition, Condition)
             else Condition(str(condition), condition)  # TODO: check here for fn name
         )
 
-        return AllElements(
+        return Collection(
             Locator(
-                f'{self}.by({condition})',
+                f'{self}.filtered_by({condition})',
                 lambda: [
-                    element.locate()
-                    for element in self.cached
-                    if element.matching(condition)
+                    element() for element in self.cached if element.matching(condition)
                 ],
             ),
             self.config,
         )
 
+    def filtered_by(
+        self, condition: Union[Condition[Element], Callable[[Element], None]]
+    ) -> Collection:
+        warnings.warn(
+            'collection.filtered_by(condition) is deprecated in favor of collection.by(condition)',
+            DeprecationWarning,
+        )
+        return self.by(condition)
+
     def by_their(
         self,
         selector: Union[str, Tuple[str, str], Callable[[Element], Element]],
         condition: Condition[Element],
-    ) -> AllElements:
+    ) -> Collection:
         """
         Returns elements from collection that have inner/relative element,
         found by ``selector`` and matching ``condition``.
@@ -559,12 +806,12 @@ class AllElements(WaitingEntity['AllElements'], Iterable[Element]):
             else Condition(str(condition), condition)
         )
 
-        def find() -> AppiumElement:
+        def find() -> WebElement:
             cached = self.cached
 
             for element in cached:
                 if element.matching(condition):
-                    return element.locate()
+                    return element()
 
             from selene.core import query
 
@@ -577,7 +824,7 @@ class AllElements(WaitingEntity['AllElements'], Iterable[Element]):
                 raise AssertionError(
                     f'\n\tCannot find element by condition «{condition}» '
                     f'\n\tAmong {self}'
-                    f'\n\tActual mobelements collection:'
+                    f'\n\tActual webelements collection:'
                     f'\n\t{outer_htmls}'
                 )  # TODO: isn't it better to print it all the time via hook, like for Element?
             else:
@@ -662,8 +909,8 @@ class AllElements(WaitingEntity['AllElements'], Iterable[Element]):
         return self.element_by(lambda it: condition(find_in(it)))
 
     def collected(
-        self, finder: Callable[[Element], Union[Element, AllElements]]
-    ) -> AllElements:
+        self, finder: Callable[[Element], Union[Element, Collection]]
+    ) -> Collection:
         # TODO: consider adding predefined queries to be able to write
         #         collected(query.element(selector))
         #       over
@@ -675,19 +922,19 @@ class AllElements(WaitingEntity['AllElements'], Iterable[Element]):
         #       consider also putting such element builders like to find.* module instead of query.* module
         #       because they are not supposed to be used in entity.get(*) context defined for other query.* fns
 
-        return AllElements(
+        return Collection(
             Locator(
                 f'{self}.collected({finder})',
                 # TODO: consider skipping None while flattening
-                lambda: cast(
-                    Sequence[AppiumElement],
+                lambda: typing.cast(
+                    typing.Sequence[WebElement],
                     flatten([finder(element)() for element in self.cached]),
                 ),
             ),
             self.config,
         )
 
-    def all(self, selector: Union[str, Tuple[str, str]]) -> AllElements:
+    def all(self, selector: Union[str, Tuple[str, str]]) -> Collection:
         """
         Returns a collection of all elements found be selector inside each element of self
 
@@ -716,21 +963,19 @@ class AllElements(WaitingEntity['AllElements'], Iterable[Element]):
         # TODO: consider implement it through calling self.collected
         #       because actually the impl is self.collected(lambda element: element.all(selector))
 
-        return AllElements(
+        return Collection(
             Locator(
                 f'{self}.all({by})',
-                lambda: cast(
-                    Sequence[AppiumElement],
-                    flatten(
-                        [mobelement.find_elements(*by) for mobelement in self.locate()]
-                    ),
+                lambda: typing.cast(
+                    typing.Sequence[WebElement],
+                    flatten([webelement.find_elements(*by) for webelement in self()]),
                 ),
             ),
             self.config,
         )
 
     # todo: consider collection.all_first(number, selector) to get e.g. two first td from each tr
-    def all_first(self, selector: Union[str, Tuple[str, str]]) -> AllElements:
+    def all_first(self, selector: Union[str, Tuple[str, str]]) -> Collection:
         """
         Returns a collection of each first element found be selector inside each element of self
 
@@ -760,16 +1005,15 @@ class AllElements(WaitingEntity['AllElements'], Iterable[Element]):
         # TODO: consider implement it through calling self.collected
         #       because actually the impl is self.collected(lambda element: element.element(selector))
 
-        return AllElements(
+        return Collection(
             Locator(
                 f'{self}.all_first({by})',
-                lambda: [
-                    cast(AppiumElement, mobelement.find_element(*by))
-                    for mobelement in self.locate()
-                ],
+                lambda: [webelement.find_element(*by) for webelement in self()],
             ),
             self.config,
         )
 
 
-All = AllElements
+AllElements = Collection
+
+All = Collection

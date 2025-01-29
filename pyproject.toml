@@ -135,7 +135,9 @@ skip-string-normalization = 1
         typevar-name-incorrect-variance,
         anomalous-backslash-in-string,
         too-many-statements,
-        use-dict-literal''']
+        use-dict-literal,
+        attribute-defined-outside-init,
+        too-many-return-statements''']
     [tool.pylint.'REPORTS']
     evaluation=['10.0 - ((float(5 * error + warning + refactor + convention) / statement) * 10)']
     output-format=['colorized']

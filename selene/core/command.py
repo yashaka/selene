@@ -283,7 +283,7 @@ see the actual implementation of Selene's advanced commands in this module.
 """
 from __future__ import annotations
 import sys
-from typing import Union, Optional, overload
+from typing_extensions import Union, Optional, overload, cast
 
 from selenium.webdriver import Keys
 from selenium.webdriver.support import expected_conditions
@@ -300,37 +300,70 @@ from selenium.webdriver.common.actions.action_builder import ActionBuilder
 from selenium.webdriver.common.actions.pointer_input import PointerInput
 
 
-# TODO: refactor to be of same style as __ClickWithOffset
-#       in order to make autocomplete work properly
-#       do it for save_screenshot and all other similar impls
-def save_screenshot(path: Optional[str] = None) -> Command[Browser]:
-    command: Command[Browser] = Command(
-        'save screenshot',
-        lambda browser: browser.config._save_screenshot_strategy(browser.config, path),
-    )
+class __SaveScreenshot(Command[Browser]):
+    """A class to build a expected condition to be used in waits or assertions"""
 
-    if entity._wraps_driver(path):
-        # somebody passed command as `.perform(command.save_screenshot)`
-        # not as `.perform(command.save_screenshot())`
-        driver_wrapper = path
-        command.__call__(driver_wrapper)
+    def __init__(self):
+        self._name = 'save screenshot'
 
-    return command
+    # if somebody applies a condition as `condition`
+    @overload
+    def __call__(self, browser: Browser, /) -> None: ...
+
+    # if somebody applies a condition as `condition()`
+    @overload
+    def __call__(self, path: Optional[str] = None, /) -> Command[Browser]: ...
+
+    def __call__(self, browser_or_path: Browser | Optional[str] = None, /):
+        path: str | None = browser_or_path if isinstance(browser_or_path, str) else None
+        command: Command[Browser] = Command(
+            str(self) + (f' to: {path}' if path is not None else ''),
+            lambda browser: browser.config._save_screenshot_strategy(
+                browser.config, path
+            ),
+        )
+
+        if entity._wraps_driver(browser_or_path):
+            command.__call__(cast(Browser, browser_or_path))
+            return None
+
+        return command
 
 
-def save_page_source(path: Optional[str] = None) -> Command[Browser]:
-    command: Command[Browser] = Command(
-        'save page source',
-        lambda browser: browser.config._save_page_source_strategy(browser.config, path),
-    )
+save_screenshot = __SaveScreenshot()
 
-    if entity._wraps_driver(path):
-        # somebody passed command as `.perform(command.save_screenshot)`
-        # not as `.perform(command.save_screenshot())`
-        driver_wrapper = path
-        command.__call__(driver_wrapper)
 
-    return command
+class __SavePageSource(Command[Browser]):
+    """A class to build a expected condition to be used in waits or assertions"""
+
+    def __init__(self):
+        self._name = 'save page source'
+
+    # if somebody applies a condition as `condition`
+    @overload
+    def __call__(self, browser: Browser, /) -> None: ...
+
+    # if somebody applies a condition as `condition()`
+    @overload
+    def __call__(self, path: Optional[str] = None, /) -> Command[Browser]: ...
+
+    def __call__(self, browser_or_path: Browser | Optional[str] = None, /):
+        path: str | None = browser_or_path if isinstance(browser_or_path, str) else None
+        command: Command[Browser] = Command(
+            str(self) + (f' to: {path}' if path is not None else ''),
+            lambda browser: browser.config._save_page_source_strategy(
+                browser.config, path
+            ),
+        )
+
+        if entity._wraps_driver(browser_or_path):
+            command.__call__(cast(Browser, browser_or_path))
+            return None
+
+        return command
+
+
+save_page_source = __SavePageSource()
 
 
 def __select_all_actions(some_entity: Element | Browser):
@@ -432,6 +465,7 @@ paste: Command[Element | Browser] = Command(
 )
 
 
+# TODO: refactor to be implemented class-based – like __SaveScreenshot
 # TODO: can we make it work for both mobile and web?
 #       should we selectively choose proper interaction.POINTER_TOUCH below?
 # TODO: consider renaming to touch_long_press
@@ -701,7 +735,10 @@ class js:  # pylint: disable=invalid-name
             entity.execute_script('element.remove()')
             if not hasattr(entity, '__iter__')
             else [element.execute_script('element.remove()') for element in entity]
-        ),
+        )
+        # command should return None anyway:
+        and None
+        or None,  # TODO: should we change Command to return None | Any to avoid this workaround?
     )
 
     @staticmethod
@@ -715,7 +752,9 @@ class js:  # pylint: disable=invalid-name
                     element.execute_script(f'element.style.{name}="{value}"')
                     for element in entity
                 ]
-            ),
+            )
+            and None
+            or None,
         )
 
     set_style_display_to_none: Command[Union[Element, Collection]] = Command(
@@ -727,7 +766,9 @@ class js:  # pylint: disable=invalid-name
                 element.execute_script('element.style.display="none"')
                 for element in entity
             ]
-        ),
+        )
+        and None
+        or None,
     )
 
     set_style_display_to_block: Command[Union[Element, Collection]] = Command(
@@ -739,7 +780,9 @@ class js:  # pylint: disable=invalid-name
                 element.execute_script('element.style.display="block"')
                 for element in entity
             ]
-        ),
+        )
+        and None
+        or None,
     )
 
     set_style_visibility_to_hidden: Command[Union[Element, Collection]] = Command(
@@ -751,7 +794,9 @@ class js:  # pylint: disable=invalid-name
                 element.execute_script('element.style.visibility="hidden"')
                 for element in entity
             ]
-        ),
+        )
+        and None
+        or None,
     )
 
     set_style_visibility_to_visible: Command[Union[Element, Collection]] = Command(
@@ -763,7 +808,9 @@ class js:  # pylint: disable=invalid-name
                 element.execute_script('element.style.visibility="visible"')
                 for element in entity
             ]
-        ),
+        )
+        and None
+        or None,
     )
 
     # TODO: add js.drag_and_drop_by_offset(x, y)

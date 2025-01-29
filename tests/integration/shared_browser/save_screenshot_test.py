@@ -143,7 +143,13 @@ def test_saves_screenshot_on_failure(a_browser):
     assert os.path.isfile(expected_path)
 
 
-def test_remembers_last_saved_screenshot(a_browser, with_process_exit_teardown):
+@pytest.mark.parametrize(
+    'save_screenshot',
+    [command.save_screenshot(), command.save_screenshot],
+)
+def test_remembers_last_saved_screenshot(
+    a_browser, with_process_exit_teardown, save_screenshot
+):
     a_browser.open(EMPTY_PAGE_URL)
 
     # WHEN on failure
@@ -157,7 +163,7 @@ def test_remembers_last_saved_screenshot(a_browser, with_process_exit_teardown):
     )
 
     # WHEN on explicit save
-    a_browser.perform(command.save_screenshot())
+    a_browser.perform(save_screenshot)
 
     # THEN overriden
     assert a_browser.config.last_screenshot == os.path.join(
@@ -167,7 +173,7 @@ def test_remembers_last_saved_screenshot(a_browser, with_process_exit_teardown):
 
     # WHEN on explicit save on another browser with shared last_screenshot
     another = a_browser.with_(driver_name='firefox', hold_driver_at_exit=False)
-    another.perform(command.save_screenshot())
+    another.perform(save_screenshot)
 
     # THEN overriden
     assert (
@@ -183,7 +189,7 @@ def test_remembers_last_saved_screenshot(a_browser, with_process_exit_teardown):
     another = a_browser.with_(
         driver_name='firefox', hold_driver_at_exit=False, last_screenshot=None
     )
-    another.perform(command.save_screenshot())
+    another.perform(save_screenshot)
 
     # THEN not overriden but stored separately
     assert another.config.last_screenshot != a_browser.config.last_screenshot

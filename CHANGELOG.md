@@ -172,6 +172,30 @@ check vscode pylance, mypy, jetbrains qodana...
 
 ... maybe even from properties? (but should work out of the box if @property is applied as last)
 
+### DOING: split into core, web, mobile
+
+Done:
+- copy&paste Browser, Element, Collection into selene.web.*
+- `core._browser.Browser` (that will be now a "core general context" and should work for all platforms, that's why we don't need the following...):
+  - removed:
+    - `execute_script`
+    - `save_screenshot`
+    - `last_screenshot`
+    - `save_page_source`
+    - `last_page_source`
+    - `close_current_tab`
+    - `clear_local_storage`
+    - `clear_session_storage`
+  - deprecated:
+    - `switch_to_next_tab`
+    - `switch_to_previous_tab`
+    - `switch_to_tab`
+    - `switch_to`
+
+Next:
+- make core.Element a base class for web.Element
+- extend web.Element with more web-specific commands (shadow-root, frames, etc.)
+
 ### Deprecated conditions
 
 - `be.present` in favor of `be.present_in_dom`
@@ -531,7 +555,7 @@ Yet, marked as experimental... Because of some questions like:
 - should there be one option to rule them all? even not just in conditions of queries?
 - etc.
 
-### Document command.py and query.py on module level
+### Documented command.py and query.py on module level
 
 Providing a brief overview of the modules and how to define your own custom commands and queries. See official docs to check new articles in Reference.
 

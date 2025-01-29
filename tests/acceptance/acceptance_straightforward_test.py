@@ -62,8 +62,17 @@ class TestTodoMVC:
         # or
         tasks[::].should(have.texts('1', '2', '3'))
 
+        tasks[1:].should(have.texts('2', '3'))
+        tasks.from_(1).should(have.texts('2', '3'))
+        tasks[:2].should(have.texts('1', '2'))
+        tasks.to(2).should(have.texts('1', '2'))
+        tasks[1:2].should(have.texts('2'))
+        tasks[1:][:2].should(have.texts('2', '3'))
+        tasks.from_(1).to(2).should(have.texts('2', '3'))
+
         browser.element(by.link_text('Active')).click()
         tasks[:2].should(have.texts('1', '2'))
+        tasks.to(2).should(have.texts('1', '2'))
         tasks[2].should(be.hidden)
 
         browser.element(by.id('toggle-all')).click()

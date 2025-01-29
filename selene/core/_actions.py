@@ -31,7 +31,6 @@ from selenium.webdriver.common.action_chains import AnyDevice
 
 from selene.core.entity import Element
 from selene.core.configuration import Config
-from selene.core.exceptions import _SeleneError
 from selene.common._typing_functions import Query, Command
 
 
@@ -45,9 +44,9 @@ def _ensure_located(element: Element | WebElement | None) -> WebElement | None: 
 
 def _ensure_located(element):
     return (
-        element.get(Query('locate webelement', lambda it: it.locate()))
-        if isinstance(element, Element)
-        else element
+        element
+        if isinstance(element, WebElement)
+        else element.get(Query('locate webelement', lambda it: it.locate()))
     )
 
 

@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2015-2022 Iakiv Kramarenko
+# Copyright (c) 2015 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,8 @@ from selenium.webdriver.remote.webdriver import WebDriver
 
 from selene.core._actions import _Actions
 from selene.core.configuration import Config
-from selene.core.entity import WaitingEntity, Element, Collection
+from selene.core.entity import WaitingEntity
+from selene.web._elements import Element, Collection
 from selene.core.locator import Locator
 from selene.support.webdriver import WebHelper
 
@@ -60,22 +61,13 @@ class Browser(WaitingEntity['Browser']):
     def __raw__(self):
         return self.config.driver
 
-    # @property
-    # def actions(self) -> ActionChains:
-    #     """
-    #     It's kind of just a shortcut for pretty low level actions from selenium webdriver
-    #     Yet unsure about this property here:)
-    #     comparing to usual high level Selene API...
-    #     Maybe later it would be better to make own Actions with selene-style retries, etc.
-    #     """
-    #     return ActionChains(self.config.driver)
-
     @property
     def _actions(self) -> _Actions:
         return _Actions(self.config)
 
     # --- Element builders --- #
 
+    # TODO: consider @overload to have more specific signature variations
     # TODO: consider None by default,
     #       and *args, **kwargs to be able to pass custom things
     #       to be processed by config.location_strategy
@@ -116,6 +108,40 @@ class Browser(WaitingEntity['Browser']):
 
         return self
 
+    # TODO: should we deprecate all switch_to_* methods?
+    def switch_to_next_tab(self) -> Browser:
+        from selene.core import query
+
+        self.driver.switch_to.window(query.next_tab(self))
+
+        # TODO: should we use waiting version here (and in other similar cases)?
+        # self.perform(Command(
+        #     'open next tab',
+        #     lambda browser: browser.driver.switch_to.window(query.next_tab(self))))
+
+        return self
+
+    def switch_to_previous_tab(self) -> Browser:
+        from selene.core import query
+
+        self.driver.switch_to.window(query.previous_tab(self))
+        return self
+
+    def switch_to_tab(self, index_or_name: Union[int, str]) -> Browser:
+        if isinstance(index_or_name, int):
+            index = index_or_name
+            from selene.core import query
+
+            self.driver.switch_to.window(query.tab(index)(self))
+        else:
+            self.driver.switch_to.window(index_or_name)
+
+        return self
+
+    @property
+    def switch_to(self) -> SwitchTo:
+        return self.driver.switch_to
+
     # TODO: should we add also a shortcut for self.driver.switch_to.alert ?
     #       if we don't need to switch_to.'back' after switch to alert - then for sure we should...
     #       question is - should we implement our own alert as waiting entity?
@@ -130,58 +156,93 @@ class Browser(WaitingEntity['Browser']):
         """
         self.driver.quit()
 
-    # TODO: consider deprecating, it does not close browser, it closes current tab/window
     def close(self) -> Browser:
+        """Closes current tab or window."""
         self.driver.close()
+        return self
+
+    def execute_script(self, script, *args):
+        return self.driver.execute_script(script, *args)
+
+    def clear_local_storage(self) -> Browser:
+        from selene.core import command
+
+        self.perform(command.js.clear_local_storage)
+        return self
+
+    def clear_session_storage(self) -> Browser:
+        from selene.core import command
+
+        self.perform(command.js.clear_session_storage)
         return self
 
     # --- Deprecated --- #
 
-    def switch_to_next_tab(self) -> Browser:
+    # TODO: consider undeprecating it
+    def close_current_tab(self) -> Browser:
         warnings.warn(
-            'browser.switch_to_next_tab is deprecated',
+            'deprecated because the «tab» term is not relevant for mobile; '
+            'use a `browser.close()` or `browser.driver.close()` instead',
             DeprecationWarning,
         )
-        from selene.core import query
-
-        self.driver.switch_to.window(query.next_tab(self))
-
-        # TODO: should we use waiting version here (and in other similar cases)?
-        # self.perform(Command(
-        #     'open next tab',
-        #     lambda browser: browser.driver.switch_to.window(query.next_tab(self))))
-
+        self.driver.close()
         return self
 
-    def switch_to_previous_tab(self) -> Browser:
+    # TODO: should we move it to query.* and/or command.*?
+    #       like `browser.get(query.screenshot)` ?
+    #       like `browser.perform(command.save_screenshot)` ?
+    # TODO: deprecate file name, use path
+    #       because we can path folder path not file path and it will work
+    def save_screenshot(self, path: Optional[str] = None, /, *, file=None):
+        from selene.core import query  # type: ignore
+
+        if file is not None:
+            warnings.warn(
+                'browser.save_screenshot(file=...) is deprecated, '
+                'use browser.get(query.screenshot_saved(path=...))',
+                DeprecationWarning,
+            )
+            return self.get(query.screenshot_saved(file))  # type: ignore
+
         warnings.warn(
-            'browser.switch_to_previous_tab is deprecated',
+            'browser.save_screenshot is deprecated, '
+            'use browser.get(query.screenshot_saved())',
             DeprecationWarning,
         )
-        from selene.core import query
 
-        self.driver.switch_to.window(query.previous_tab(self))
-        return self
-
-    def switch_to_tab(self, index_or_name: Union[int, str]) -> Browser:
-        warnings.warn(
-            'browser.switch_to_tab is deprecated',
-            DeprecationWarning,
-        )
-        if isinstance(index_or_name, int):
-            index = index_or_name
-            from selene.core import query
-
-            self.driver.switch_to.window(query.tab(index)(self))
-        else:
-            self.driver.switch_to.window(index_or_name)
-
-        return self
+        return self.get(query.screenshot_saved(path))  # type: ignore
 
     @property
-    def switch_to(self) -> SwitchTo:
+    def last_screenshot(self) -> str:
         warnings.warn(
-            'browser.switch_to is considered to be deprecated',
-            PendingDeprecationWarning,
+            'browser.last_screenshot is deprecated, '
+            'use browser.config.last_screenshot',
+            DeprecationWarning,
         )
-        return self.driver.switch_to
+        return self.config.last_screenshot  # type: ignore
+
+    # TODO: refactor to have similar impl. as save_screenshot
+    def save_page_source(self, file: Optional[str] = None) -> Optional[str]:
+        warnings.warn(
+            'browser.save_page_source is deprecated, '
+            'use browser.get(query.page_source_saved())',
+            DeprecationWarning,
+        )
+
+        if file is None:
+            file = self.config._generate_filename(suffix='.html')  # type: ignore
+
+        saved_file = WebHelper(self.driver).save_page_source(file)
+
+        self.config.last_page_source = saved_file  # type: ignore
+
+        return saved_file
+
+    @property
+    def last_page_source(self) -> str:
+        warnings.warn(
+            'browser.last_page_source is deprecated, '
+            'use browser.config.last_page_source',
+            DeprecationWarning,
+        )
+        return self.config.last_page_source  # type: ignore

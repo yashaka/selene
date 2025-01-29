@@ -21,9 +21,10 @@
 # SOFTWARE.
 from __future__ import annotations
 
-from typing_extensions import Tuple
+from typing_extensions import Tuple, cast
 
 import selene
+from selene import web
 
 
 # TODO: should we built these descriptors into Element and Collection classes?
@@ -76,18 +77,24 @@ class element:  # todo: consider implementing LocationContext interface
             )
         )
 
-    def _as_context(self, instance) -> selene.Element:
-        return (
-            # # todo: one day we gonna pass a name to element ;)
-            # #       once selene entities support naming
-            # context_of_self.element(self._selector, _name=self._name)
-            context_of_self.element(self._selector)
-            if isinstance(
-                context_of_self := self._context(instance),
-                (selene.Browser, selene.Element),
-            )
-            # => self._context is a descriptor:
-            else context_of_self._as_context(instance).element(self._selector)
+    # TODO: use core.entity.Element instead of web.Element,
+    #       but make entity.Element a base class for web.Element
+    def _as_context(self, instance) -> web.Element:
+        # TODO: ensure types are correct without explicit cast
+        return cast(
+            web.Element,
+            (
+                # # todo: one day we gonna pass a name to element ;)
+                # #       once selene entities support naming
+                # context_of_self.element(self._selector, _name=self._name)
+                context_of_self.element(self._selector)
+                if isinstance(
+                    context_of_self := self._context(instance),
+                    (selene.Browser, web.Element),
+                )
+                # => self._context is a descriptor:
+                else context_of_self._as_context(instance).element(self._selector)
+            ),
         )
 
     def within(self, context, /):
@@ -196,15 +203,19 @@ class all_:
             )
         )
 
-    def _as_context(self, instance) -> selene.Collection:
-        return (
-            context_of_self.all(self._selector)
-            if isinstance(
-                context_of_self := self._context(instance),
-                (selene.Browser, selene.Element, selene.Collection),
-            )
-            # => self._context is a descriptor:
-            else context_of_self._as_context(instance).all(self._selector)
+    def _as_context(self, instance) -> web.Collection:
+        # TODO: ensure types are correct without explicit cast
+        return cast(
+            web.Collection,
+            (
+                context_of_self.all(self._selector)
+                if isinstance(
+                    context_of_self := self._context(instance),
+                    (selene.Browser, web.Element, web.Collection),
+                )
+                # => self._context is a descriptor:
+                else context_of_self._as_context(instance).all(self._selector)
+            ),
         )
 
     def within(self, context, /):

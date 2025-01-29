@@ -51,7 +51,7 @@ def produced_todos(number: int) -> Condition[Browser]:
             entity.element('#new-todo').type('one more').press_enter()
             raise AssertionError(f'actual produced todos were: {size}')
 
-    return BrowserCondition(f'have produced {number} todos', fn)
+    return Condition(f'have produced {number} todos', fn)
 
 
 def test_wait_for_produced_todos_v2():
@@ -118,7 +118,7 @@ def test_wait_for_notification_after_reload_v3():
     """
     browser.open('https://the-internet.herokuapp.com/notification_message_rendered')
 
-    def notification_on_reload(message: str) -> BrowserCondition:
+    def notification_on_reload(message: str) -> Condition[Browser]:
         def fn(entity: Browser):
             entity.element('[href*=notification_message]').click()
             notification = entity.element('#flash')
@@ -133,7 +133,7 @@ def test_wait_for_notification_after_reload_v3():
                     f'\t  actual: {actual}'
                 )
 
-        return BrowserCondition(
+        return Condition(
             f'received message {message} on reload',
             fn,
         )
