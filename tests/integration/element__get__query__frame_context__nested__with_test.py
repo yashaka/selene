@@ -21,7 +21,7 @@
 # SOFTWARE.
 import pytest
 
-from selene import command, have, query, be
+from selene import have, be
 
 
 # TODO: break down into 2 tests
@@ -32,8 +32,8 @@ def test_actions_on_nested_frames_element_via_with_statement(session_browser):
     browser.open('https://the-internet.herokuapp.com/nested_frames')
 
     # WHEN
-    with browser.element('[name=frame-top]').get(query._frame_context):
-        with browser.element('[name=frame-middle]').get(query._frame_context):
+    with browser.element('[name=frame-top]').frame_context:
+        with browser.element('[name=frame-middle]').frame_context:
             browser.element(
                 '#content',
                 # THEN
@@ -43,8 +43,8 @@ def test_actions_on_nested_frames_element_via_with_statement(session_browser):
 
     # WHEN failed
     try:
-        with browser.element('[name=frame-top]').get(query._frame_context):
-            with browser.element('[name=frame-middle]').get(query._frame_context):
+        with browser.element('[name=frame-top]').frame_context:
+            with browser.element('[name=frame-middle]').frame_context:
                 browser.element(
                     '#content',
                 ).should(have.exact_text('LEFT'))

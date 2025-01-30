@@ -147,6 +147,7 @@ class _CollectionHasSomeThingsSupportingIgnoreCase(Match[Collection]):
         self.__actual = actual
         self.__expected = expected
         self.__by = by
+        # TODO: seems like we never use self.__ignore_case... o_O wtf?
         self.__ignore_case = _ignore_case
         self.__inverted = _inverted
         self.__falsy_exceptions = _falsy_exceptions

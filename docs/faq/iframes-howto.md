@@ -33,7 +33,7 @@ browser.element('.textarea').should(
 
 In addition to that...
 
-## Selene provides an experimental feature – [query._frame_context][selene.core.query._frame_context] that...
+## Selene provides a built-into-Element feature – [element.frame_context][selene.web._elements.Element.frame_context] that...
 
 ### 1. Either removes a lot of boilerplate but might result in performance drawback
 
@@ -45,14 +45,14 @@ In addition to that...
 
     ...
     # GIVEN
-    iframe = browser.element('#editor-iframe').get(query._frame_context)
+    iframe = browser.element('#editor-iframe').frame_context
 
 
 
 
     # THEN work with elements as if iframe is a normal parent element
-    iframe._all('strong').should(have.size(0))
-    iframe._element('.textarea').type('Hello, World!').perform(command.select_all)
+    iframe.all('strong').should(have.size(0))
+    iframe.element('.textarea').type('Hello, World!').perform(command.select_all)
 
 
     # AND still dealing with elements outside iframe as usual
@@ -60,8 +60,8 @@ In addition to that...
 
 
     # AND ...
-    iframe._all('strong').should(have.size(1))
-    iframe._element('.textarea').should(
+    iframe.all('strong').should(have.size(1))
+    iframe.element('.textarea').should(
         have.js_property('innerHTML').value(
             '<p><strong>Hello, world!</strong></p>'
         )
@@ -76,12 +76,12 @@ In addition to that...
 
     ...
 
-    iframe = browser.element('#editor-iframe').get(query._frame_context)
-    iframe._all('strong').should(have.size(0))
-    iframe._element('.textarea').type('Hello, World!').perform(command.select_all)
+    iframe = browser.element('#editor-iframe').frame_context
+    iframe.all('strong').should(have.size(0))
+    iframe.element('.textarea').type('Hello, World!').perform(command.select_all)
     browser.element('#toolbar').element('#bold').click()
-    iframe._all('strong').should(have.size(1))
-    iframe._element('.textarea').should(
+    iframe.all('strong').should(have.size(1))
+    iframe.element('.textarea').should(
         have.js_property('innerHTML').value(
             '<p><strong>Hello, world!</strong></p>'
         )
@@ -96,14 +96,14 @@ In addition to that...
 
     ...
 
-    iframe = browser.element('#editor-iframe').get(query._frame_context)
+    iframe = browser.element('#editor-iframe').frame_context
 
 
 
 
 
-    iframe._all('strong').should(have.size(0))
-    iframe._element('.textarea').type('Hello, World!').perform(command.select_all)
+    iframe.all('strong').should(have.size(0))
+    iframe.element('.textarea').type('Hello, World!').perform(command.select_all)
 
 
 
@@ -111,8 +111,8 @@ In addition to that...
 
 
 
-    iframe._all('strong').should(have.size(1))
-    iframe._element('.textarea').should(
+    iframe.all('strong').should(have.size(1))
+    iframe.element('.textarea').should(
         have.js_property('innerHTML').value(
             '<p><strong>Hello, world!</strong></p>'
         )
@@ -159,13 +159,15 @@ The performance may decrease because Selene under the hood has to switch to the 
 It may decrease even more if you use such syntax for nested frames in cases more complex (have more commands to execute) than the example below:
 
 ```python
-from selene import browser, have, query
+from selene import browser, have
 
 browser.open('https://the-internet.herokuapp.com/nested_frames')
 
-browser.element('[name=frame-top]').get(query._frame_context)._element(
+browser.element('[name=frame-top]').frame_context.element(
     '[name=frame-middle]'
-).get(query._frame_context)._element('#content',).should(have.exact_text('MIDDLE'))
+).frame_context.element(
+    '#content'
+).should(have.exact_text('MIDDLE'))
 ```
 
 We recommend to not do premature optimization and start with this feature, and then switch to more optimal ways described below if you face significant performance drawbacks.
@@ -184,7 +186,7 @@ We recommend to not do premature optimization and start with this feature, and t
     # WHEN
 
     # THEN
-    with iframe.get(query._frame_context):
+    with iframe.frame_context:
         # AND work with elements inside frame:
         browser.all('strong').should(have.size(0))
         browser.element('.textarea').type('Hello, World!').perform(command.select_all)
@@ -193,7 +195,7 @@ We recommend to not do premature optimization and start with this feature, and t
     # AND deal with elements outside iframe
     browser.element('#toolbar').element('#bold').click()
     # AND come back to ...
-    with iframe.get(query._frame_context):
+    with iframe.frame_context:
         # AND ...
         browser.all('strong').should(have.size(1))
         browser.element('.textarea').should(
@@ -215,7 +217,7 @@ We recommend to not do premature optimization and start with this feature, and t
 
 
 
-    with iframe.get(query._frame_context):
+    with iframe.frame_context:
 
         browser.all('strong').should(have.size(0))
         browser.element('.textarea').type('Hello, World!').perform(command.select_all)
@@ -224,7 +226,7 @@ We recommend to not do premature optimization and start with this feature, and t
 
     browser.element('#toolbar').element('#bold').click()
 
-    with iframe.get(query._frame_context):
+    with iframe.frame_context:
 
         browser.all('strong').should(have.size(1))
         browser.element('.textarea').should(
@@ -270,14 +272,15 @@ The performance is kept optimal because via `with` statement we can group action
 Will also work for nested context:
 
 ```python
+import selene.web._elements
 from selene import browser, have, query, be
 
 # GIVEN even before opened browser
 browser.open('https://the-internet.herokuapp.com/nested_frames')
 
 # WHEN
-with browser.element('[name=frame-top]').get(query._frame_context):
-    with browser.element('[name=frame-middle]').get(query._frame_context):
+with browser.element('[name=frame-top]').frame_context:
+    with browser.element('[name=frame-middle]').frame_context:
         browser.element(
             '#content',
             # THEN
@@ -286,9 +289,9 @@ with browser.element('[name=frame-top]').get(query._frame_context):
     browser.element('[name=frame-right]').should(be.visible)
 ```
 
-### 3. It also has a handy [_within][selene.core.query._frame_context._within] decorator to tune PageObject steps to work with iframes
+### 3. It also has a handy [within][selene.web._elements._FrameContext.within] decorator to tune PageObject steps to work with iframes
 
-=== "_within decorator"
+=== "within decorator"
 
     ```python
     from selene import browser, command, have, query
@@ -296,21 +299,21 @@ with browser.element('[name=frame-top]').get(query._frame_context):
 
     class Editor:
 
-        area_frame = browser.element('#editor-iframe').get(query._frame_context)
+        area_frame = browser.element('#editor-iframe').frame_context
         text_area = browser.element('.textarea')
         toolbar = browser.element('#toolbar')
 
-        @area_frame._within
+        @area_frame.within
         def type(self, text):
             self.text_area.type(text)
             return self
 
-        @area_frame._within
+        @area_frame.within
         def should_have_bold_text_parts(self, count):
             self.text_area.all('strong').should(have.size(count))
             return self
 
-        @area_frame._within
+        @area_frame.within
         def select_all(self):
             self.text_area.perform(command.select_all)
             return self
@@ -319,7 +322,7 @@ with browser.element('[name=frame-top]').get(query._frame_context):
             self.toolbar.element('#bold').click()
             return self
 
-        @area_frame._within
+        @area_frame.within
         def should_have_content_html(self, text):
             self.text_area.should(
                 have.js_property('innerHTML').value(
@@ -390,7 +393,7 @@ with browser.element('[name=frame-top]').get(query._frame_context):
 
 
 
-    with iframe.get(query._frame_context):
+    with iframe.frame_context:
 
         browser.all('strong').should(have.size(0))
         browser.element('.textarea').type('Hello, World!').perform(command.select_all)
@@ -398,7 +401,7 @@ with browser.element('[name=frame-top]').get(query._frame_context):
 
     browser.element('#toolbar').element('#bold').click()
 
-    with iframe.get(query._frame_context):
+    with iframe.frame_context:
 
         browser.all('strong').should(have.size(1))
         browser.element('.textarea').should(
@@ -412,4 +415,4 @@ with browser.element('[name=frame-top]').get(query._frame_context):
 
     Take into account, that because we break previously groupped actions into separate methods, the performance might decrease same way as it was with a "search context" style, as we have to switch to the frame context and back for each method call.
 
-See a more detailed explanation and examples on [the feature reference][selene.core.query._frame_context].
+See a more detailed explanation and examples on [the feature reference][selene.web._elements._FrameContext].

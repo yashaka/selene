@@ -19,11 +19,9 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-import logging
-
 import pytest
 
-from selene import command, have, query, support
+from selene import have, query
 
 
 def test_actions_on_shadow_roots_of_all_elements(session_browser):
@@ -56,7 +54,7 @@ def test_actions_on_shadow_roots_of_all_elements(session_browser):
             'Message: \n'
             '\n'
             'Timed out after 0.5s, while waiting for:\n'
-            "browser.all(('css selector', 'my-paragraph')): shadow roots.all(('css "
+            "browser.all(('css selector', 'my-paragraph')).shadow roots.all(('css "
             "selector', '[name=my-text]')).have exact texts ['My WRONG text', 'My WRONG "
             "text']\n"
             '\n'

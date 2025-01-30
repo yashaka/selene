@@ -45,7 +45,8 @@ from selenium.webdriver.remote.switch_to import SwitchTo as SwitchTo
 from selenium.webdriver.remote.webdriver import WebDriver as WebDriver
 from typing import Callable, Optional, Tuple, Union, Any
 
-from selene.core.entity import WaitingEntity, Element, Collection, E
+from selene.core.entity import WaitingEntity, E
+from selene.web._elements import Element, Collection
 
 class Browser(WaitingEntity['Browser']):
     def __init__(self, config: Optional[Config] = ...) -> None: ...

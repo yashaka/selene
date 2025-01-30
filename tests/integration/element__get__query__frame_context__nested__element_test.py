@@ -21,6 +21,7 @@
 # SOFTWARE.
 import pytest
 
+import selene.web._elements
 from selene import command, have, query, be
 
 
@@ -33,9 +34,9 @@ def test_actions_on_nested_frames_element_via_search_context_via_get(
     browser.open('https://the-internet.herokuapp.com/nested_frames')
 
     # WHEN
-    browser.element('[name=frame-top]').get(query._frame_context)._element(
+    browser.element('[name=frame-top]').frame_context.element(
         '[name=frame-middle]'
-    ).get(query._frame_context)._element(
+    ).frame_context.element(
         '#content',
         # THEN
     ).should(
@@ -44,13 +45,9 @@ def test_actions_on_nested_frames_element_via_search_context_via_get(
 
     # WHEN failed
     try:
-        browser.element('[name=frame-top]').get(query._frame_context)._element(
+        browser.element('[name=frame-top]').frame_context.element(
             '[name=frame-middle]'
-        ).get(query._frame_context)._element(
-            '#content',
-        ).should(
-            have.exact_text('LEFT')
-        )
+        ).frame_context.element('#content',).should(have.exact_text('LEFT'))
         pytest.fail('should have failed on text mismatch')
     except AssertionError as error:
         # THEN
@@ -75,32 +72,28 @@ def test_actions_on_nested_frames_element_via_search_context__via_direct_applica
     browser.open('https://the-internet.herokuapp.com/nested_frames')
 
     # WHEN
-    query._frame_context(
-        query._frame_context(
+    query.frame_context(
+        query.frame_context(
             browser.with_(timeout=0.0).element('[name=frame-top]')
-        )._element('[name=frame-middle]')
-    )._element(
+        ).element('[name=frame-middle]')
+    ).element(
         '#content',
         # THEN
     ).should(
         have.exact_text('MIDDLE')
     )
 
-    # query._frame_context(
-    #     query._frame_context(
+    # query.frame_context(
+    #     query.frame_context(
     #         browser.with_(timeout=0.0).element('[name=frame-top]')
-    #     )._element('[name=frame-middle]')
-    # )._element('#content').should(have.exact_text('MIDDLE'))
+    #     ).element('[name=frame-middle]')
+    # ).element('#content').should(have.exact_text('MIDDLE'))
 
     # WHEN failed
     try:
-        browser.element('[name=frame-top]').get(query._frame_context)._element(
+        browser.element('[name=frame-top]').frame_context.element(
             '[name=frame-middle]'
-        ).get(query._frame_context)._element(
-            '#content',
-        ).should(
-            have.exact_text('LEFT')
-        )
+        ).frame_context.element('#content',).should(have.exact_text('LEFT'))
         pytest.fail('should have failed on text mismatch')
     except AssertionError as error:
         # THEN
