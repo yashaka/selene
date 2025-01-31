@@ -453,7 +453,7 @@ class Google:
     query = browser.element(by.name('q'))
     results = browser.all('#rso>div')
     first_result_header = results.first.element('h3')
-    submit_button = browser.all(by.name('btnK')).first
+    __submit_button = browser.all(by.name('btnK')).first
 
     def result(self, number):
         return self.results[number - 1]
