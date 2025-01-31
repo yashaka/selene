@@ -21,7 +21,7 @@
 # SOFTWARE.
 from typing import Union, Tuple
 
-from selene.core.entity import Element, Collection
+from selene.web._elements import Element, Collection
 from selene import browser
 
 

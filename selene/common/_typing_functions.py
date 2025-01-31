@@ -210,5 +210,7 @@ class Query(Generic[E, R]):
     # TODO: should we define __name__ and __qualname__ on it?
 
 
+# TODO: should we change it to Query[E, None | Any]?
+#       so it will be easier to define inline conditions where lambda returns not None
 class Command(Query[E, None]):
     pass

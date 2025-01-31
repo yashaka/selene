@@ -162,15 +162,48 @@ check vscode pylance, mypy, jetbrains qodana...
 
 ## 2.0.0rc10: «copy&paste, frames, shadow & texts_like» (to be released on DD.05.2024)
 
-### TODO: in addition to browser – _page for pure web and _device for pure mobile?
 
 ### DOING: draft Element descriptors POC?
+
+#### TODO: ensure works with frames and shadow roots
 
 #### TODO: make descriptor based PageObjects be used as descriptors on their own
 
 #### TODO: implement pom-descriptor-like decorators to name objects returned from methods
 
 ... maybe even from properties? (but should work out of the box if @property is applied as last)
+
+### TODO: in addition to browser – _page for pure web and _device for pure mobile?
+#### DOING: split into core, web, mobile
+
+Done:
+- copy&paste Browser, Element, Collection into selene.web.*
+- `core._browser.Browser` (that will be now a "core general context" and should work for all platforms, that's why we don't need the following...):
+  - removed:
+    - `execute_script`
+    - `save_screenshot`
+    - `last_screenshot`
+    - `save_page_source`
+    - `last_page_source`
+    - `close_current_tab`
+    - `clear_local_storage`
+    - `clear_session_storage`
+  - deprecated:
+    - `switch_to_next_tab`
+    - `switch_to_previous_tab`
+    - `switch_to_tab`
+    - `switch_to`
+- extend web.Element with more web-specific commands
+  - element.shadow_root based on `weblement.shadow_root`
+    - wrapped as _SearchContext class object with only .element and .all methods
+  - collection.shadow_roots based on webelement.shadow_root
+  - element.frame_context
+
+Next:
+- extend web.Element with more web-specific commands
+  - ...
+- make core.Element a base class for web.Element
+- ensure query.* and command.* use proper classes
 
 ### Deprecated conditions
 
@@ -184,7 +217,7 @@ check vscode pylance, mypy, jetbrains qodana...
 
 ### Added be.hidden_in_dom in addition to be.hidden
 
-Consider `be.hidden` as "hidden somewhere, maybe in DOM with "display:none", or even on frontend/backend, i.e. totally absent from the page". Then `be.hidden_in_dom` is stricter, and means "hidden in DOM, i.e. available in the page DOM, but not visible".
+Consider `be.hidden` as hidden somewhere, maybe in DOM with `"display:none"`, or even on frontend/backend, i.e. totally absent from the page. Then `be.hidden_in_dom` is stricter, and means "hidden in DOM, i.e. available in the page DOM, but not visible".
 
 ### Added experimental 4-in-1 be._empty over deprecated collection-condition be.empty
 
@@ -369,7 +402,7 @@ browser.all('li').should(have._exact_texts_like(
 ).where(zero_or_more=...))
 ```
 
-### Text related now supports ignore_case (including regex conditions)
+### Text related conditions now supports ignore_case (including regex conditions)
 
 ```python
 from selene import browser, have
@@ -415,6 +448,21 @@ browser.all('li').first.with_(_match_ignoring_case=True).should(have.exact_text(
 
 ```
 
+### Shadow DOM support via element.shadow_root or collection.shadow_roots
+
+As simple as:
+
+```python
+from selene import browser, have
+
+...
+
+browser.element('#element-with-shadow-dom').shadow_root.element(
+  '#shadowed-element'
+).click()
+browser.all('.item-with-shadow-dom').shadow_roots.should(have.size(3))
+```
+
 ### Shadow DOM support via query.js.shadow_root(s)
 
 As simple as:
@@ -432,31 +480,33 @@ browser.all('.item-with-shadow-dom').get(query.js.shadow_roots).should(have.size
 
 See one more example at [FAQ: How to work with Shadow DOM in Selene?](https://yashaka.github.io/selene/faq/shadow-dom-howto/)
 
-### A context manager, decorator and search context to work with iFrames (Experimental)
+### A context manager, decorator and search context to work with iFrames
 
 ```python
-from selene import browser, query, have
+from selene import browser, have
 
-my_frame_context = browser.element('#my-iframe').get(query._frame_context)
+my_frame_context = browser.element('#my-iframe').frame_context
 # now simply:
-my_frame_context._element('#inside-iframe').click()
-my_frame_context._all('.items-inside-iframe').should(have.size(3))
+my_frame_context.element('#inside-iframe').click()
+my_frame_context.all('.items-inside-iframe').should(have.size(3))
 # – here switching to frame and back happens for each command implicitly
 ...
 # or
 with my_frame_context:
-    # here elements inside frame will be found when searching via browser
-    browser.element('#inside-iframe').click()
-    browser.all('.items-inside-iframe').should(have.size(3))
-    # this is the most speedy version,
-    # because switching to frame happens on entering the context
-    # and switching back to default content happens on exiting the context
-    ...
+  # here elements inside frame will be found when searching via browser
+  browser.element('#inside-iframe').click()
+  browser.all('.items-inside-iframe').should(have.size(3))
+  # this is the most speedy version,
+  # because switching to frame happens on entering the context
+  # and switching back to default content happens on exiting the context
+  ...
 
-@my_frame_context._within
-def do_something(self):
-    # and here too ;)
-    ...
+
+@my_frame_context.within
+def do_something():
+  # and here too ;)
+  ...
+
 
 # so now you can simply call it:
 do_something()
@@ -465,11 +515,11 @@ do_something()
 # Switch to default content happens automatically, nevertheless;)
 ```
 
-See a bit more in documented ["FAQ: How to work with iFrames in Selene?"](https://yashaka.github.io/selene/faq/iframes-howto/) and much more in ["Reference: `query.*`](https://yashaka.github.io/selene/reference/query).
+See a bit more in documented ["FAQ: How to work with iFrames in Selene?"](https://yashaka.github.io/selene/faq/iframes-howto/) and much more in ["Reference: `Web/Elements`](https://yashaka.github.io/selene/reference/web/elements).
 
 ### config._disable_wait_decorator_on_get_query
 
-`True` by default, is needed for cleaner logging implemented via `config._wait_decorator` and more optimal performance for `.get(query._frame_context)` in case of nested frames.
+`True` by default, is needed for cleaner logging implemented via `config._wait_decorator` and more optimal performance for `.get(query.frame_context)` in case of nested frames.
 
 ### config.selector_to_by_strategy
 
@@ -531,7 +581,7 @@ Yet, marked as experimental... Because of some questions like:
 - should there be one option to rule them all? even not just in conditions of queries?
 - etc.
 
-### Document command.py and query.py on module level
+### Documented command.py and query.py on module level
 
 Providing a brief overview of the modules and how to define your own custom commands and queries. See official docs to check new articles in Reference.
 

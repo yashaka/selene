@@ -19,7 +19,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
+import selene.web._elements
 from selene import command, have, query
 from tests import const
 
@@ -31,7 +31,7 @@ def test_actions_within_frame_context(session_browser):
 
     toolbar = browser.element('.tox-toolbar__primary')
     text_area_frame = browser.element('.tox-edit-area__iframe')
-    text_area_frame_context = query._frame_context(text_area_frame)  # THEN lazy;)
+    text_area_frame_context = text_area_frame.frame_context  # THEN lazy;)
     text_area = browser.element('#tinymce')
 
     # WHEN

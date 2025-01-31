@@ -23,6 +23,7 @@ import logging
 
 import pytest
 
+import selene.web._elements
 from selene import command, have, query, support
 from tests import const
 
@@ -75,10 +76,8 @@ def test_actions_on_frame_element_with_logging(session_browser):
     # GIVEN even before opened browser
 
     toolbar = browser.element('.tox-toolbar__primary')
-    text_area_frame = browser.element('.tox-edit-area__iframe').get(
-        query._frame_context
-    )
-    text_area = text_area_frame._element('#tinymce')
+    text_area_frame = browser.element('.tox-edit-area__iframe').frame_context
+    text_area = text_area_frame.element('#tinymce')
     '''
     # TODO: consider Option B:
     text_area = browser._frame('.tox-edit-area__iframe').element('#tinymce')

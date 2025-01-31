@@ -141,7 +141,13 @@ def test_saves_page_source_on_failure(a_browser):
     assert os.path.isfile(expected_path)
 
 
-def test_remembers_last_saved_page_source(a_browser, with_process_exit_teardown):
+@pytest.mark.parametrize(
+    'save_page_source',
+    [command.save_page_source, command.save_page_source()],
+)
+def test_remembers_last_saved_page_source(
+    a_browser, with_process_exit_teardown, save_page_source
+):
     a_browser.open(EMPTY_PAGE_URL)
 
     # WHEN on failure
@@ -155,7 +161,7 @@ def test_remembers_last_saved_page_source(a_browser, with_process_exit_teardown)
     )
 
     # WHEN on explicit save
-    a_browser.perform(command.save_page_source())
+    a_browser.perform(save_page_source)
 
     # THEN overriden
     assert a_browser.config.last_page_source == os.path.join(
@@ -165,7 +171,7 @@ def test_remembers_last_saved_page_source(a_browser, with_process_exit_teardown)
 
     # WHEN on explicit save on another browser with shared last_screenshot
     another = a_browser.with_(driver_name='firefox', hold_driver_at_exit=False)
-    another.perform(command.save_page_source())
+    another.perform(save_page_source)
 
     # THEN overriden
     assert (
@@ -181,7 +187,7 @@ def test_remembers_last_saved_page_source(a_browser, with_process_exit_teardown)
     another = a_browser.with_(
         driver_name='firefox', hold_driver_at_exit=False, last_page_source=None
     )
-    another.perform(command.save_page_source())
+    another.perform(save_page_source)
 
     # THEN not overriden but stored separately
     assert another.config.last_page_source != a_browser.config.last_page_source

@@ -30,7 +30,7 @@ def teardown_function():
 
 class WYSIWYG:
     toolbar = browser.element('.tox-toolbar__primary')
-    text_area_frame = query._frame_context(browser.element('.tox-edit-area__iframe'))
+    text_area_frame = browser.element('.tox-edit-area__iframe').frame_context
     text_area = browser.element('#tinymce')
 
     def open(self):
@@ -41,17 +41,17 @@ class WYSIWYG:
         self.toolbar.element('[aria-label=Bold]').click()
         return self
 
-    @text_area_frame._within
+    @text_area_frame.within
     def should_have_text_html(self, text_html):
         self.text_area.should(have.property_('innerHTML').value(text_html))
         return self
 
-    @text_area_frame._within
+    @text_area_frame.within
     def select_all_text(self):
         self.text_area.perform(command.select_all)
         return self
 
-    @text_area_frame._within
+    @text_area_frame.within
     def reset_to(self, text):
         self.text_area.perform(command.select_all).type(text)
         return self

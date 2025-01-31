@@ -50,6 +50,7 @@ from selene.common import predicate, helpers, appium_tools
 from selene.common._typing_functions import Query
 from selene.core import query
 from selene.core.condition import Condition, Match
+from selene.core import entity
 from selene.core.entity import Collection, Element, Configured
 from selene.core._browser import Browser
 
@@ -146,6 +147,7 @@ class _CollectionHasSomeThingsSupportingIgnoreCase(Match[Collection]):
         self.__actual = actual
         self.__expected = expected
         self.__by = by
+        # TODO: seems like we never use self.__ignore_case... o_O wtf?
         self.__ignore_case = _ignore_case
         self.__inverted = _inverted
         self.__falsy_exceptions = _falsy_exceptions
@@ -811,7 +813,7 @@ class size(Match[Union[Collection, Browser, Element]]):
         self,
         expected: int | dict,
         _name=lambda maybe_entity: (
-            'have size' if isinstance(maybe_entity, Collection) else 'has size'
+            'have size' if entity._is_collection(maybe_entity) else 'has size'
         ),
         # todo: should we also tune actual rendering based on
         #       config._match_only_visible_elements_size?
@@ -827,11 +829,18 @@ class size(Match[Union[Collection, Browser, Element]]):
         # todo: should we raise AttributeError if dict as expected is passed to Collection?
         super().__init__(
             self.__name,
-            actual=lambda entity: (
-                len([element for element in entity.locate() if element.is_displayed()])
-                if isinstance(entity, Collection)
-                and entity.config._match_only_visible_elements_size
-                else query.size(entity)
+            actual=lambda some_entity: (
+                len(
+                    [
+                        element
+                        for element in some_entity.locate()  # type: ignore
+                        if element.is_displayed()
+                    ]
+                )
+                # todo: consider a more type-safe way to check types (to remove ignore above)
+                if entity._is_collection(some_entity)
+                and some_entity.config._match_only_visible_elements_size
+                else query.size(some_entity)
             ),
             by=_by(expected),
             _inverted=_inverted,
@@ -869,8 +878,8 @@ class size(Match[Union[Collection, Browser, Element]]):
     @property
     def _more_than(self) -> Condition[Collection]:
         return Match(
-            lambda entity: (
-                ('have' if isinstance(entity, Collection) else 'has')
+            lambda some_entity: (
+                ('have' if entity._is_collection(some_entity) else 'has')
                 + f' size more than {self.__expected}'
             ),
             query.size,
@@ -881,8 +890,8 @@ class size(Match[Union[Collection, Browser, Element]]):
     @property
     def _less_than(self) -> Condition[Collection]:
         return Match(
-            lambda entity: (
-                ('have' if isinstance(entity, Collection) else 'has')
+            lambda some_entity: (
+                ('have' if entity._is_collection(some_entity) else 'has')
                 + f' size less than {self.__expected}'
             ),
             query.size,

@@ -19,14 +19,14 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
+from __future__ import annotations
 from typing import TypeVar, Generic, Callable
 
 T = TypeVar('T')
 
 
 class Locator(Generic[T]):
-    def __init__(self, description: str, locate: Callable[[], T]):
+    def __init__(self, description: str | Callable[[], str], locate: Callable[[], T]):
         self._description = description
         self._locate = locate
 
@@ -34,4 +34,4 @@ class Locator(Generic[T]):
         return self._locate()
 
     def __str__(self):
-        return self._description
+        return self._description() if callable(self._description) else self._description

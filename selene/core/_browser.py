@@ -116,41 +116,6 @@ class Browser(WaitingEntity['Browser']):
 
         return self
 
-    # TODO: should we deprecate all switch_to_* methods?
-    def switch_to_next_tab(self) -> Browser:
-        from selene.core import query
-
-        self.driver.switch_to.window(query.next_tab(self))
-
-        # TODO: should we use waiting version here (and in other similar cases)?
-        # self.perform(Command(
-        #     'open next tab',
-        #     lambda browser: browser.driver.switch_to.window(query.next_tab(self))))
-
-        return self
-
-    def switch_to_previous_tab(self) -> Browser:
-        from selene.core import query
-
-        self.driver.switch_to.window(query.previous_tab(self))
-        return self
-
-    def switch_to_tab(self, index_or_name: Union[int, str]) -> Browser:
-        if isinstance(index_or_name, int):
-            index = index_or_name
-            from selene.core import query
-
-            self.driver.switch_to.window(query.tab(index)(self))
-        else:
-            self.driver.switch_to.window(index_or_name)
-
-        return self
-
-    # TODO: consider deprecating
-    @property
-    def switch_to(self) -> SwitchTo:
-        return self.driver.switch_to
-
     # TODO: should we add also a shortcut for self.driver.switch_to.alert ?
     #       if we don't need to switch_to.'back' after switch to alert - then for sure we should...
     #       question is - should we implement our own alert as waiting entity?
@@ -172,92 +137,51 @@ class Browser(WaitingEntity['Browser']):
 
     # --- Deprecated --- #
 
-    # TODO: should we keep it?
-    def execute_script(self, script, *args):
+    def switch_to_next_tab(self) -> Browser:
         warnings.warn(
-            'consider using browser.driver.execute_script '
-            'instead of browser.execute_script',
+            'browser.switch_to_next_tab is deprecated',
+            DeprecationWarning,
+        )
+        from selene.core import query
+
+        self.driver.switch_to.window(query.next_tab(self))
+
+        # TODO: should we use waiting version here (and in other similar cases)?
+        # self.perform(Command(
+        #     'open next tab',
+        #     lambda browser: browser.driver.switch_to.window(query.next_tab(self))))
+
+        return self
+
+    def switch_to_previous_tab(self) -> Browser:
+        warnings.warn(
+            'browser.switch_to_previous_tab is deprecated',
+            DeprecationWarning,
+        )
+        from selene.core import query
+
+        self.driver.switch_to.window(query.previous_tab(self))
+        return self
+
+    def switch_to_tab(self, index_or_name: Union[int, str]) -> Browser:
+        warnings.warn(
+            'browser.switch_to_tab is deprecated',
+            DeprecationWarning,
+        )
+        if isinstance(index_or_name, int):
+            index = index_or_name
+            from selene.core import query
+
+            self.driver.switch_to.window(query.tab(index)(self))
+        else:
+            self.driver.switch_to.window(index_or_name)
+
+        return self
+
+    @property
+    def switch_to(self) -> SwitchTo:
+        warnings.warn(
+            'browser.switch_to is considered to be deprecated',
             PendingDeprecationWarning,
         )
-        return self.driver.execute_script(script, *args)
-
-    # TODO: should we move it to query.* and/or command.*?
-    #       like `browser.get(query.screenshot)` ?
-    #       like `browser.perform(command.save_screenshot)` ?
-    # TODO: deprecate file name, use path
-    #       because we can path folder path not file path and it will work
-    def save_screenshot(self, file: Optional[str] = None):
-        warnings.warn(
-            'browser.save_screenshot is deprecated, '
-            'use browser.get(query.screenshot_saved())',
-            DeprecationWarning,
-        )
-
-        from selene.core import query  # type: ignore
-
-        return self.get(query.screenshot_saved())  # type: ignore
-
-    @property
-    def last_screenshot(self) -> str:
-        warnings.warn(
-            'browser.last_screenshot is deprecated, '
-            'use browser.config.last_screenshot',
-            DeprecationWarning,
-        )
-        return self.config.last_screenshot  # type: ignore
-
-    def save_page_source(self, file: Optional[str] = None) -> Optional[str]:
-        warnings.warn(
-            'browser.save_page_source is deprecated, '
-            'use browser.get(query.page_source_saved())',
-            DeprecationWarning,
-        )
-
-        if file is None:
-            file = self.config._generate_filename(suffix='.html')  # type: ignore
-
-        saved_file = WebHelper(self.driver).save_page_source(file)
-
-        self.config.last_page_source = saved_file  # type: ignore
-
-        return saved_file
-
-    @property
-    def last_page_source(self) -> str:
-        warnings.warn(
-            'browser.last_page_source is deprecated, '
-            'use browser.config.last_page_source',
-            DeprecationWarning,
-        )
-        return self.config.last_page_source  # type: ignore
-
-    def close_current_tab(self) -> Browser:
-        warnings.warn(
-            'deprecated because the «tab» term is not relevant for mobile; '
-            'use a `browser.close()` or `browser.driver.close()` instead',
-            DeprecationWarning,
-        )
-        self.driver.close()
-        return self
-
-    def clear_local_storage(self) -> Browser:
-        warnings.warn(
-            'deprecated because of js nature and not-relevance for mobile; '
-            'use `browser.perform(command.js.clear_local_storage)` instead',
-            DeprecationWarning,
-        )
-        from selene.core import command
-
-        self.perform(command.js.clear_local_storage)
-        return self
-
-    def clear_session_storage(self) -> Browser:
-        warnings.warn(
-            'deprecated because of js nature and not-relevance for mobile; '
-            'use `browser.perform(command.js.clear_session_storage)` instead',
-            DeprecationWarning,
-        )
-        from selene.core import command
-
-        self.perform(command.js.clear_session_storage)
-        return self
+        return self.driver.switch_to

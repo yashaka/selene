@@ -186,7 +186,6 @@ see the actual implementation of Selene's queries in this module.
 """
 from __future__ import annotations
 
-import functools
 import typing
 import warnings
 
@@ -195,16 +194,16 @@ from typing_extensions import (
     Dict,
     Any,
     Union,
-    TypeVar,
 )
 
 from selenium.webdriver.remote.webelement import WebElement
 
-from selene import support
-from selene.common._typing_functions import Query, Command
+from selene.common._typing_functions import Query
+from selene.core import entity
 from selene.core.entity import Element, Collection
 from selene.core._browser import Browser
 from selene.core.locator import Locator
+from selene.web._elements import _FrameContext
 
 
 # TODO: should not we separate Query type from actual queries implementations?
@@ -294,16 +293,19 @@ location_once_scrolled_into_view: Query[Element, Dict[str, int]] = Query(
 # TODO: what to do now with have.size* ? o_O
 size: Query[Element | Collection | Browser, dict | int] = Query(
     'size',
-    lambda entity: (
-        entity.driver.get_window_size()
-        if isinstance(entity, Browser)
+    # TODO: refactor this to avoid using typing.cast or type: ignore
+    #       by introducing isinstance based checks on some BaseClass for specific entity types
+    lambda some_entity: (
+        some_entity.driver.get_window_size()  # type: ignore
+        if entity._wraps_driver(some_entity)
         else (
-            entity.locate().size
-            if isinstance(entity, Element)
+            some_entity.locate().size  # type: ignore
+            if entity._is_element(some_entity)
             else (
-                len(entity.locate())
-                if isinstance(entity, Collection)
-                else typing.cast(Browser, entity).driver.get_window_size()
+                len(some_entity.locate())  # type: ignore
+                if entity._is_collection(some_entity)
+                # TODO: refactor this redundant else clause o_O
+                else typing.cast(Browser, some_entity).driver.get_window_size()
             )
         )
     ),
@@ -397,401 +399,11 @@ def js_property(
     return native_property(name)
 
 
-# --- Pseudo-queries --- #
+# --- Pseudo queries --- #
 
-
-class _frame_context:
-    """A context manager to work with frames (iframes).
-    Has an additional decorator to adapt context manager to step-methods
-    when implementing a PageObject pattern.
-    Partially serves as entity similar to Element
-    allowing to find element or collection inside frame.
-    Experimental feature.
-
-    This is a "pseudo-query", i.e. it does not "get something" from entity.
-    It's implemented as a query to be more readable in usage.
-
-    ## Laziness on query application
-
-    On `get(query._frame_context)`
-    it actually just wraps an element into context manager and so is lazy,
-    i.e. you can store result of such query into a variable
-    even before opening a browser and use it later.
-    Thus, unlike for other queries, there is no difference
-    between using the query directly as `query._frame_context(element)`
-    or via `get` method as `element.get(query._frame_context)`.
-
-    The "lazy result" of the query is also a "lazy search context"
-    similar to Element entity
-    – it allows to find elements or collections inside the frame
-    by using `self._element(selector)` or `self._all(selector)` methods.
-    This allows the easiest and most implicit way to work with frames in Selene
-    without bothering about switching to the frame and back:
-
-    ### Example: Using query result as "search context" with fully implicit frame management
-
-    ```python
-    from selene import browser, command, have, query
-    ...
-    iframe = browser.element('#editor-iframe').get(query._frame_context)
-    iframe._all('strong').should(have.size(0))
-    iframe._element('.textarea').type('Hello, World!').perform(command.select_all)
-    browser.element('#toolbar').element('#bold').click()
-    iframe._all('strong').should(have.size(1))
-    ```
-
-    !!! warning
-
-        But be aware that such syntax will force to switch to the frame and back
-        for each command executed on element or collection of elements
-        inside the frame. This might result in slower tests
-        if you have a lot of commands to be executed all together inside the frame.
-
-    !!! tip
-
-        We recommend to stay
-        [YAGNI](https://enterprisecraftsmanship.com/posts/yagni-revisited/)
-        and use this syntax by default, but when you notice performance drawbacks,
-        consider choosing an explicit way to work with frame context
-        as a context manager passed to `with` statement
-        or as a decorator `_within` applied to step-methods of PageObject
-        as described below.
-
-    ## Laziness ends on with statement
-
-    On passing the "lazy result" of the query to `with` statement
-    it actually transforms from "lazy query" into "actual command",
-    that performs an action on the entity –
-    the action of switching to the element's frame
-    with the corresponding implicit waiting.
-
-    On exiting the `with` statement it switches back to the default content,
-    without any additional implicit waiting.
-    This behavior might change in the future, and some waiting might be added.
-
-    ## Example: Straightforward usage of the query (in with statement):
-
-    ```python
-    from selene import browser, query, command, have
-
-    toolbar = browser.element('.tox-toolbar__primary')
-    text_area_frame = browser.element('.tox-edit-area__iframe')
-    text_area = browser.element('#tinymce')  # ❗️ inside the frame
-
-    browser.open('https://the-internet.herokuapp.com/iframe')
-
-    with text_area_frame.get(query._frame_context):
-        text_area.perform(command.select_all)
-
-    toolbar.element('[title=Bold]').click()
-
-    with text_area_frame.get(query._frame_context):
-        text_area.element('p').should(
-            have.js_property('innerHTML').value(
-                '<strong>Your content goes here.</strong>'
-            )
-        )
-    ```
-
-    ## Example: Usage utilizing the lazy nature of the query (in with statement)
-
-    ```python
-    from selene import browser, query, command, have
-
-    toolbar = browser.element('.tox-toolbar__primary')
-    text_area_frame = browser.element('.tox-edit-area__iframe')
-    text_area_frame_context = text_area_frame.get(query._frame_context)  # 💡↙️
-    text_area = browser.element('#tinymce')
-
-    browser.open('https://the-internet.herokuapp.com/iframe')
-
-    with text_area_frame_context:  # ⬅️
-        text_area.perform(command.select_all)
-
-    toolbar.element('[title=Bold]').click()
-
-    with text_area_frame_context:  # ⬅️
-        text_area.element('p').should(
-            have.js_property('innerHTML').value(
-                '<strong>Your content goes here.</strong>'
-            )
-        )
-    ```
-
-    ## Example: Usage utilizing the lazy nature of the query without get method:
-
-    Since the query application is fully lazy
-    (laziness ends only on `with` statement),
-    you can use it directly, without `get` method:
-
-    ```python
-    from selene import browser, query, command, have
-
-    toolbar = browser.element('.tox-toolbar__primary')
-    text_area_frame = browser.element('.tox-edit-area__iframe')
-    text_area_frame_context = query._frame_context(text_area_frame)  # 💡↙️
-    text_area = browser.element('#tinymce')
-
-    browser.open('https://the-internet.herokuapp.com/iframe')
-
-    with text_area_frame_context:  # ⬅️
-        text_area.perform(command.select_all)
-
-    toolbar.element('[title=Bold]').click()
-
-    with text_area_frame_context:  # ⬅️
-        text_area.element('p').should(
-            have.js_property('innerHTML').value(
-                '<strong>Your content goes here.</strong>'
-            )
-        )
-    ```
-
-    ## Example: Nested with statements for nested frames
-
-    ```python
-    from selene import browser, have, query, be
-
-    # GIVEN even before opened browser
-    browser.open('https://the-internet.herokuapp.com/nested_frames')
-
-    # WHEN
-    with browser.element('[name=frame-top]').get(query._frame_context):
-        with browser.element('[name=frame-middle]').get(query._frame_context):
-            browser.element(
-                '#content',
-                # THEN
-            ).should(have.exact_text('MIDDLE'))
-        # AND
-        browser.element('[name=frame-right]').should(be.visible)
-    ```
-
-    ## Example: Usage utilizing the [_within][selene.core.query._frame_context._within] decorator for PageObjects:
-
-    See example at [_within][selene.core.query._frame_context._within] section.
-    """
-
-    def __init__(self, element: Element):
-        self._container = element
-        self.__entered = False
-
-    def decorator(self, func):
-        """A decorator to mark a function as a step within context manager
-
-        See example of usage at [_within][selene.core.query._frame_context._within] section.
-        """
-
-        @functools.wraps(func)
-        def wrapper(*args, **kwargs):
-            with self:
-                return func(*args, **kwargs)
-
-        return wrapper
-
-    # aliases :) TODO: not sure which to keep
-    _step = decorator
-    _steps = decorator
-    _content = decorator
-    _inside = decorator
-    _inner = decorator
-    _within = decorator
-    """An alias to [`decorator`][selene.core.query._frame_context.decorator]
-
-    Example of usage:
-
-    ```python
-    from selene import browser, command, have, query
-
-
-    def teardown_function():
-        browser.quit()
-
-
-    class WYSIWYG:
-        toolbar = browser.element('.tox-toolbar__primary')
-        text_area_frame = query._frame_context(  # 💡⬇️
-            browser.element('.tox-edit-area__iframe')
-        )
-        text_area = browser.element('#tinymce')
-
-        def open(self):
-            browser.open('https://the-internet.herokuapp.com/iframe')
-            return self
-
-        def set_bold(self):
-            self.toolbar.element('[title=Bold]').click()
-            return self
-
-        @text_area_frame._within  # ⬅️
-        def should_have_text_html(self, text_html):
-            self.text_area.should(have.js_property('innerHTML').value(text_html))
-            return self
-
-        @text_area_frame._within  # ⬅️
-        def select_all_text(self):
-            self.text_area.perform(command.select_all)
-            return self
-
-        @text_area_frame._within  # ⬅️
-        def reset_to(self, text):
-            self.text_area.perform(command.select_all).type(text)
-            return self
-
-
-    def test_page_object_steps_within_frame_context():
-        wysiwyg = WYSIWYG().open()
-
-        wysiwyg.should_have_text_html(
-            '<p>Your content goes here.</p>',
-        ).select_all_text().set_bold().should_have_text_html(
-            '<p><strong>Your content goes here.</strong></p>',
-        )
-
-        wysiwyg.reset_to('New content').should_have_text_html(
-            '<p><strong>New content</strong></p>',
-        )
-    ```
-    """
-
-    def __enter__(self):
-        if not self.__entered:
-            self._container.wait.with_(
-                # resetting wait decorator to default
-                # in order to avoid automatic exit applied to each command
-                # including switching to the frame
-                # that (automatic exit) was added after self._element
-                # (this fixes breaking exiting from the frame in nested frame context)
-                decorator=None,
-            ).for_(
-                Command(
-                    'switch to frame',
-                    lambda entity: entity.config.driver.switch_to.frame(
-                        entity.locate()
-                    ),
-                )
-            )
-        self.__entered = True
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        if self.__entered:
-            driver = self._container.config.driver
-
-            # we intentionally use parent_frame() over default_content()
-            # to make it work for nested frames
-            # (in case of "root frames" parent_frame() should work as default_content())
-            driver.switch_to.parent_frame()
-            self.__entered = False
-
-    @property
-    def __as_wait_decorator(self):
-        if self._container.config._wait_decorator is None:
-            return support._wait.with_(context=self)
-
-        def composed_wait_decorator(wait):
-            def decorator(for_):
-                original_wait_decorator = self._container.config._wait_decorator
-                context_wait_decorator = support._wait.with_(context=self)
-
-                for_decorator_after_context = context_wait_decorator(wait)
-                for_decorator_after_original = original_wait_decorator(wait)
-
-                # by applying context decorator first (i.e. closer to the function call)
-                # we actually make it second in the chain
-                for_after_context = for_decorator_after_context(for_)
-
-                # – because lastly applied decorator will contain the first code
-                # to be executed before the decorated function
-                for_after_context_then_original = for_decorator_after_original(
-                    for_after_context
-                )
-
-                # – so, given original decorator is a logging decorator
-                # first we log the command,
-                # and then we actually switch to context before running the command
-                # ! This is very important because switching context for us
-                # ! is a low level command, that's why it should be "logged as second"
-                # ! that in reports like allure will also be "nested" on a deeper level
-                return for_after_context_then_original
-
-            return decorator
-
-        return composed_wait_decorator
-
-    def _element(self, selector: str | typing.Tuple[str, str]) -> Element:
-        """Allows to search for a first element by selector inside the frame context
-        with implicit switching to the frame and back for each method execution.
-
-        Is lazy, i.e. does not switch to the frame immediately on calling this method,
-        and so can be stored in a variable and used later.
-
-        Args:
-            selector: css or xpath as string or classic selenium tuple-like locator,
-                      e.g. `('css selector', '.some-class')`
-                      or `(By.CSS_SELECTOR, '.some-class')`
-
-        !!! warning
-            By adding implicit switching to the frame and back
-            for each command executed on entity, it makes the usage of such entity
-            slower in case of a lot of commands to be executed
-            all together inside the frame.
-
-            It becomes especially important in case of nested frames.
-            In such cases, if you use
-            `entity.get(query._frame_context)` over `query._frame_context(entity)`
-            then try to keep turned on the option:
-            [config._disable_wait_decorator_on_get_query][selene.core.configuration.Config._disable_wait_decorator_on_get_query]
-            That will help to avoid re-switching at least on `get` calls.
-
-            If you notice performance drawbacks, consider choosing an explicit way
-            to work with frame context as a context manager passed to `with` statement.
-        """
-        by = self._container.config._selector_or_by_to_by(selector)
-
-        return Element(
-            Locator(
-                f'{self._container}: element({by})',
-                # f'{self._container} {{ element({by}) }}',  # TODO: maybe this?
-                lambda: self._container.config.driver.find_element(*by),
-            ),
-            self._container.config.with_(_wait_decorator=self.__as_wait_decorator),
-        )
-
-    def _all(self, selector: str | typing.Tuple[str, str]) -> Collection:
-        """Allows to search for all elements by selector inside the frame context
-        with implicit switching to the frame and back for each method execution.
-
-        Is lazy, i.e. does not switch to the frame immediately on calling this method,
-        and so can be stored in a variable and used later.
-
-        Args:
-            selector: css or xpath as string or classic selenium tuple-like locator,
-                      e.g. `('css selector', '.some-class')`
-                      or `(By.CSS_SELECTOR, '.some-class')`
-
-        !!! warning
-            Same "potential performance drawbacks" warning is applied here
-            as for [_element][selene.core.query._frame_context._element] method.
-        """
-        by = self._container.config._selector_or_by_to_by(selector)
-
-        return Collection(
-            Locator(
-                f'{self._container}: all({by})',
-                lambda: self._container.config.driver.find_elements(*by),
-            ),
-            self._container.config.with_(_wait_decorator=self.__as_wait_decorator),
-        )
-
-
-# The following is not needed once we now have switch_to.parent_frame()
-# in _frame_context itself
-# class _nested_frame_context(_frame_context):
-#     def __exit__(self, exc_type, exc_val, exc_tb):
-#         driver = self._container.config.driver
-#         driver.switch_to.parent_frame()
+frame_context = _FrameContext
 
 # --- Browser queries --- #
-
 
 url: Query[Browser, str] = Query('url', lambda browser: browser.driver.current_url)
 
@@ -857,11 +469,11 @@ def screenshot_saved(
         lambda browser: browser.config._save_screenshot_strategy(browser.config, path),
     )
 
-    if isinstance(path, Browser):
+    if entity._wraps_driver(path):
         # somebody passed query as `.get(query.save_screenshot)`
         # not as `.get(query.save_screenshot())`
-        browser = path
-        return query.__call__(browser)  # type: ignore
+        driver_wrapper = path
+        return query.__call__(driver_wrapper)  # type: ignore
 
     return query
 
@@ -874,11 +486,11 @@ def page_source_saved(
         lambda browser: browser.config._save_page_source_strategy(browser.config, path),
     )
 
-    if isinstance(path, Browser):
+    if entity._wraps_driver(path):
         # somebody passed query as `.get(query.save_screenshot)`
         # not as `.get(query.page_source_saved())`
-        browser = path
-        return query.__call__(browser)  # type: ignore
+        driver_wrapper = path
+        return query.__call__(driver_wrapper)  # type: ignore
 
     return query
 
@@ -886,9 +498,10 @@ def page_source_saved(
 class js:
     shadow_root: Query[Element, Element] = Query(
         'shadow root',
+        # TODO: use _ElementsContext instead
         lambda element: Element(
             Locator(
-                f'{element}: shadow root',
+                f'{element}.shadow root',
                 lambda: element.config.driver.execute_script(
                     'return arguments[0].shadowRoot', element.locate()
                 ),
@@ -904,7 +517,7 @@ class js:
         'shadow roots',
         lambda collection: Collection(
             Locator(
-                f'{collection}: shadow roots',
+                f'{collection}.shadow roots',
                 lambda: collection.config.driver.execute_script(
                     'return [...arguments[0]].map(arg => arg.shadowRoot)',
                     collection.locate(),

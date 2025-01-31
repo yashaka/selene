@@ -283,12 +283,13 @@ see the actual implementation of Selene's advanced commands in this module.
 """
 from __future__ import annotations
 import sys
-from typing import Union, Optional, overload
+from typing_extensions import Union, Optional, overload, cast
 
 from selenium.webdriver import Keys
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 
+from selene.core import entity
 from selene.core.entity import Element, Collection
 from selene.core._browser import Browser
 from selene.core.exceptions import _SeleneError
@@ -299,47 +300,80 @@ from selenium.webdriver.common.actions.action_builder import ActionBuilder
 from selenium.webdriver.common.actions.pointer_input import PointerInput
 
 
-# TODO: refactor to be of same style as __ClickWithOffset
-#       in order to make autocomplete work properly
-#       do it for save_screenshot and all other similar impls
-def save_screenshot(path: Optional[str] = None) -> Command[Browser]:
-    command: Command[Browser] = Command(
-        'save screenshot',
-        lambda browser: browser.config._save_screenshot_strategy(browser.config, path),
-    )
+class __SaveScreenshot(Command[Browser]):
+    """A class to build a expected condition to be used in waits or assertions"""
 
-    if isinstance(path, Browser):
-        # somebody passed command as `.perform(command.save_screenshot)`
-        # not as `.perform(command.save_screenshot())`
-        browser = path
-        command.__call__(browser)
+    def __init__(self):
+        self._name = 'save screenshot'
 
-    return command
+    # if somebody applies a condition as `condition`
+    @overload
+    def __call__(self, browser: Browser, /) -> None: ...
 
+    # if somebody applies a condition as `condition()`
+    @overload
+    def __call__(self, path: Optional[str] = None, /) -> Command[Browser]: ...
 
-def save_page_source(path: Optional[str] = None) -> Command[Browser]:
-    command: Command[Browser] = Command(
-        'save page source',
-        lambda browser: browser.config._save_page_source_strategy(browser.config, path),
-    )
+    def __call__(self, browser_or_path: Browser | Optional[str] = None, /):
+        path: str | None = browser_or_path if isinstance(browser_or_path, str) else None
+        command: Command[Browser] = Command(
+            str(self) + (f' to: {path}' if path is not None else ''),
+            lambda browser: browser.config._save_screenshot_strategy(
+                browser.config, path
+            ),
+        )
 
-    if isinstance(path, Browser):
-        # somebody passed command as `.perform(command.save_screenshot)`
-        # not as `.perform(command.save_screenshot())`
-        browser = path
-        command.__call__(browser)
+        if entity._wraps_driver(browser_or_path):
+            command.__call__(cast(Browser, browser_or_path))
+            return None
 
-    return command
+        return command
 
 
-def __select_all_actions(entity: Element | Browser):
+save_screenshot = __SaveScreenshot()
+
+
+class __SavePageSource(Command[Browser]):
+    """A class to build a expected condition to be used in waits or assertions"""
+
+    def __init__(self):
+        self._name = 'save page source'
+
+    # if somebody applies a condition as `condition`
+    @overload
+    def __call__(self, browser: Browser, /) -> None: ...
+
+    # if somebody applies a condition as `condition()`
+    @overload
+    def __call__(self, path: Optional[str] = None, /) -> Command[Browser]: ...
+
+    def __call__(self, browser_or_path: Browser | Optional[str] = None, /):
+        path: str | None = browser_or_path if isinstance(browser_or_path, str) else None
+        command: Command[Browser] = Command(
+            str(self) + (f' to: {path}' if path is not None else ''),
+            lambda browser: browser.config._save_page_source_strategy(
+                browser.config, path
+            ),
+        )
+
+        if entity._wraps_driver(browser_or_path):
+            command.__call__(cast(Browser, browser_or_path))
+            return None
+
+        return command
+
+
+save_page_source = __SavePageSource()
+
+
+def __select_all_actions(some_entity: Element | Browser):
     _COMMAND_KEY = Keys.COMMAND if sys.platform == 'darwin' else Keys.CONTROL
-    actions: ActionChains = ActionChains(entity.config.driver)
+    actions: ActionChains = ActionChains(some_entity.config.driver)
 
     actions.key_down(_COMMAND_KEY)
 
-    if isinstance(entity, Element):
-        actions.send_keys_to_element(entity.locate(), 'a')
+    if entity._is_element(some_entity):
+        actions.send_keys_to_element(some_entity.locate(), 'a')  # type: ignore
     else:
         actions.send_keys('a')
 
@@ -363,7 +397,7 @@ def copy_and_paste(text: str):
     Does not support mobile context. Not tested with desktop apps.
     """
 
-    def action(entity: Element | Browser):
+    def action(some_entity: Element | Browser):
         try:
             import pyperclip  # type: ignore
         except ImportError as error:
@@ -379,10 +413,10 @@ def copy_and_paste(text: str):
 
         pyperclip.copy(text)
 
-        actions = ActionChains(entity.config.driver)
+        actions = ActionChains(some_entity.config.driver)
         actions.key_down(_COMMAND_KEY)
-        if isinstance(entity, Element):
-            actions.send_keys_to_element(entity.locate(), 'v')
+        if entity._is_element(some_entity):
+            actions.send_keys_to_element(some_entity.locate(), 'v')  # type: ignore
         else:
             actions.send_keys('v')
         actions.key_up(_COMMAND_KEY)
@@ -391,13 +425,13 @@ def copy_and_paste(text: str):
     return Command(f'copy and paste: {text}»', action)
 
 
-def __copy(entity: Element | Browser):
+def __copy(some_entity: Element | Browser):
     _COMMAND_KEY = Keys.COMMAND if sys.platform == 'darwin' else Keys.CONTROL
 
-    actions = ActionChains(entity.config.driver)
+    actions = ActionChains(some_entity.config.driver)
     actions.key_down(_COMMAND_KEY)
-    if isinstance(entity, Element):
-        actions.send_keys_to_element(entity.locate(), 'c')
+    if entity._is_element(some_entity):
+        actions.send_keys_to_element(some_entity.locate(), 'c')  # type: ignore
     else:
         actions.send_keys('c')
     actions.key_up(_COMMAND_KEY)
@@ -411,13 +445,13 @@ copy: Command[Element | Browser] = Command(
 )
 
 
-def __paste(entity: Element | Browser):
+def __paste(some_entity: Element | Browser):
     _COMMAND_KEY = Keys.COMMAND if sys.platform == 'darwin' else Keys.CONTROL
 
-    actions = ActionChains(entity.config.driver)
+    actions = ActionChains(some_entity.config.driver)
     actions.key_down(_COMMAND_KEY)
-    if isinstance(entity, Element):
-        actions.send_keys_to_element(entity.locate(), 'v')
+    if entity._is_element(some_entity):
+        actions.send_keys_to_element(some_entity.locate(), 'v')  # type: ignore
     else:
         actions.send_keys('v')
     actions.key_up(_COMMAND_KEY)
@@ -431,6 +465,7 @@ paste: Command[Element | Browser] = Command(
 )
 
 
+# TODO: refactor to be implemented class-based – like __SaveScreenshot
 # TODO: can we make it work for both mobile and web?
 #       should we selectively choose proper interaction.POINTER_TOUCH below?
 # TODO: consider renaming to touch_long_press
@@ -465,7 +500,7 @@ def long_press(duration=1.0):
 
     command = Command(f'long press with duration={duration}', action)
 
-    if isinstance(duration, Element):
+    if entity._is_element(duration):
         # somebody passed command as `.perform(command.long_press)`
         # not as `.perform(command.long_press())`
         # TODO: refactor to really allow such use case without conflicts on types
@@ -700,7 +735,10 @@ class js:  # pylint: disable=invalid-name
             entity.execute_script('element.remove()')
             if not hasattr(entity, '__iter__')
             else [element.execute_script('element.remove()') for element in entity]
-        ),
+        )
+        # command should return None anyway:
+        and None
+        or None,  # TODO: should we change Command to return None | Any to avoid this workaround?
     )
 
     @staticmethod
@@ -714,7 +752,9 @@ class js:  # pylint: disable=invalid-name
                     element.execute_script(f'element.style.{name}="{value}"')
                     for element in entity
                 ]
-            ),
+            )
+            and None
+            or None,
         )
 
     set_style_display_to_none: Command[Union[Element, Collection]] = Command(
@@ -726,7 +766,9 @@ class js:  # pylint: disable=invalid-name
                 element.execute_script('element.style.display="none"')
                 for element in entity
             ]
-        ),
+        )
+        and None
+        or None,
     )
 
     set_style_display_to_block: Command[Union[Element, Collection]] = Command(
@@ -738,7 +780,9 @@ class js:  # pylint: disable=invalid-name
                 element.execute_script('element.style.display="block"')
                 for element in entity
             ]
-        ),
+        )
+        and None
+        or None,
     )
 
     set_style_visibility_to_hidden: Command[Union[Element, Collection]] = Command(
@@ -750,7 +794,9 @@ class js:  # pylint: disable=invalid-name
                 element.execute_script('element.style.visibility="hidden"')
                 for element in entity
             ]
-        ),
+        )
+        and None
+        or None,
     )
 
     set_style_visibility_to_visible: Command[Union[Element, Collection]] = Command(
@@ -762,7 +808,9 @@ class js:  # pylint: disable=invalid-name
                 element.execute_script('element.style.visibility="visible"')
                 for element in entity
             ]
-        ),
+        )
+        and None
+        or None,
     )
 
     # TODO: add js.drag_and_drop_by_offset(x, y)
