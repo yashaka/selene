@@ -283,7 +283,7 @@ see the actual implementation of Selene's advanced commands in this module.
 """
 from __future__ import annotations
 import sys
-from typing_extensions import Union, Optional, overload, cast
+from typing_extensions import Union, Optional, overload, cast, Literal
 
 from selenium.webdriver import Keys
 from selenium.webdriver.support import expected_conditions
@@ -388,13 +388,16 @@ select_all: Command[Element | Browser] = Command(
 )
 
 
+# TODO: should we build it into web.Element?
 def copy_and_paste(text: str):
     """Copies text to clipboard programmatically and pastes it to the element
     by pressing OS-based keys combination.
 
-    Requires pyperclip package to be installed.
+    Requires [pyperclip](https://pypi.org/project/pyperclip/) package to be
+    installed.
 
     Does not support mobile context. Not tested with desktop apps.
+    See also [#570](https://github.com/yashaka/selene/issues/570)
     """
 
     def action(some_entity: Element | Browser):
@@ -438,6 +441,7 @@ def __copy(some_entity: Element | Browser):
     actions.perform()
 
 
+# TODO: should we build it into web.Element?
 # TODO: define name dynamically based on platform
 copy: Command[Element | Browser] = Command(
     'send «copy» keys shortcut as ctrl+c for win/linux or cmd+c for mac',
@@ -458,6 +462,7 @@ def __paste(some_entity: Element | Browser):
     actions.perform()
 
 
+# TODO: should we build it into web.Element?
 # TODO: define name dynamically based on platform
 paste: Command[Element | Browser] = Command(
     'send «paste» keys shortcut as ctrl+v for win/linux or cmd+v for mac',
@@ -555,8 +560,9 @@ def press_sequentially(text: str):
 #       .perform(command.drag_and_drop_to(target, assert_location_changed=True))
 
 
+# TODO: consider adding offset args like for click: xoffset, yoffset
 def drag_and_drop_to(
-    target: Element, _assert_location_changed: bool = False
+    target: Element, /, *, _assert_location_changed: bool = False
 ) -> Command[Element]:
     """
     Args:
@@ -652,10 +658,56 @@ class js:  # pylint: disable=invalid-name
 
         return Command(f'set value by js: {keys}', func)
 
-    scroll_into_view: Command[Element] = Command(
-        'scroll into view',
-        lambda element: element.execute_script('element.scrollIntoView(true)'),
-    )
+    class __ScrollIntoView(Command[Element]):
+        def __init__(self):
+            self._name = 'scroll into view'
+
+        @overload
+        def __call__(self, element: Element) -> None: ...
+
+        @overload
+        def __call__(
+            self,
+            *,
+            block: Literal['start', 'end', 'center', 'nearest'] = 'start',
+            inline: Literal['start', 'end', 'center', 'nearest'] = 'nearest',
+            behavior: Literal['auto', 'smooth'] = 'auto',
+        ) -> Command[Element]: ...
+
+        def __call__(
+            self,
+            element: Element | None = None,
+            *,
+            block: Literal['start', 'end', 'center', 'nearest'] = 'start',
+            inline: Literal['start', 'end', 'center', 'nearest'] = 'nearest',
+            behavior: Literal['auto', 'smooth'] = 'auto',
+        ):
+            def func(element: Element):
+                element.execute_script(
+                    '''
+                    const block = arguments[0]
+                    const inline = arguments[1]
+                    const behavior = arguments[2]
+
+                    element.scrollIntoView({block, inline, behavior})
+                    ''',
+                    block,
+                    inline,
+                    behavior,
+                )
+
+            if element is not None:
+                # somebody passed command as `.perform(command.js.scroll_into_view)`
+                # not as `.perform(command.js.click())`
+                func(element)
+                return None
+
+            return Command(
+                f'scroll into view: block={block}, inline={inline}, behavior={behavior}',
+                func,
+            )
+
+    scroll_into_view: Command[Element] = __ScrollIntoView()
 
     # TODO: should we process collections too? i.e. click through all elements?
     class __ClickWithOffset(Command[Element]):

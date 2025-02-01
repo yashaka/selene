@@ -58,7 +58,7 @@ class DataGridMIT:
         self.cell(
             row=row, column_data_field=column_data_field, column=column
         ).double_click()
-        self.editing_cell_input.perform(command.select_all).type(to_text).press_enter()
+        self.editing_cell_input.select_all().type(to_text).press_enter()
 
 
 class StringHandler(logging.Handler):

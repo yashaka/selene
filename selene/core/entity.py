@@ -310,11 +310,11 @@ class Element(WaitingEntity['Element']):
         # TODO: should we add additional it and/or its aliases for element?
         return driver.execute_script(
             f'''
-                let element = arguments[0]
-                let self = arguments[0]
+                let element = arguments[0]; let self = element
+                let argumentsToScript = arguments[1]
                 return (function(...args) {{
                     {script_on_self}
-                }})(...arguments[1])
+                }})(...argumentsToScript)
             ''',
             webelement,
             arguments,

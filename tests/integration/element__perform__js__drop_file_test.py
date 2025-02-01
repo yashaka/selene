@@ -33,9 +33,7 @@ def x_test_drops_file_to_self_in_react_mui(session_browser):
     browser.element('[data-testid=ClearIcon]').click()
     browser.element('[role=presentation]').perform(command.js.scroll_into_view)
 
-    browser.element('[role=presentation]').perform(
-        command.js.drop_file(resources.path('selenite.png'))
-    )
+    browser.element('[role=presentation]').drop_file(resources.path('selenite.png'))
 
     browser.element('[role=presentation]+*').all('.MuiTypography-body1').should(
         have.exact_texts('selenite.png')

@@ -99,6 +99,7 @@ class Browser(WaitingEntity['Browser']):
         set_value_by_js: bool = False,
         type_by_js: bool = False,
         click_by_js: bool = False,
+        drag_and_drop_by_js: bool = False,
         wait_for_no_overlap_found_by_js: bool = False,
         _match_only_visible_elements_texts: bool = True,
         _match_only_visible_elements_size: bool = False,

@@ -59,17 +59,13 @@ def test_drags_source_and_drops_it_to_target(session_browser):
     )
 
     # WHEN
-    browser.element('#draggable').perform(
-        command.drag_and_drop_to(browser.element('#target2'))
-    )
+    browser.element('#draggable').drag_and_drop_to(browser.element('#target2'))
 
     browser.element('#target1').element('#draggable').should(be.not_.present_in_dom)
     browser.element('#target2').element('#draggable').should(be.present_in_dom)
 
     # WHEN
-    browser.element('#draggable').perform(
-        command.drag_and_drop_to(browser.element('#target1'))
-    )
+    browser.element('#draggable').drag_and_drop_to(browser.element('#target1'))
 
     browser.element('#target1').element('#draggable').should(be.present_in_dom)
     browser.element('#target2').element('#draggable').should(be.not_.present_in_dom)
@@ -134,18 +130,14 @@ def test_drags_source_and_drops_it_to_target_with_forced_retry(session_browser):
     )
 
     # WHEN
-    browser.element('#draggable').perform(
-        command.drag_and_drop_to(browser.element('#target2'))
-    )
+    browser.element('#draggable').drag_and_drop_to(browser.element('#target2'))
 
     browser.element('#target1').element('#draggable').should(be.present_in_dom)
     browser.element('#target2').element('#draggable').should(be.not_.present_in_dom)
 
     # WHEN
-    browser.element('#draggable').perform(
-        command.drag_and_drop_to(
-            browser.element('#target2'), _assert_location_changed=True
-        )
+    browser.element('#draggable').drag_and_drop_to(
+        browser.element('#target2'), _assert_location_changed=True
     )
 
     browser.element('#target1').element('#draggable').should(be.not_.present_in_dom)
@@ -191,16 +183,16 @@ def test_drags_react_mui_slider(session_browser):
     slider = ReactContinuousSlider(browser).open()
 
     # WHEN
-    slider.thumb.perform(command.drag_and_drop_to(slider.volume_up))
+    slider.thumb.drag_and_drop_to(slider.volume_up)
 
     slider.thumb_input.should(have.value('100'))
 
     # WHEN
-    slider.thumb.perform(command.drag_and_drop_to(slider.rail))
+    slider.thumb.drag_and_drop_to(slider.rail)
 
     slider.thumb_input.should(have.value('50'))
 
     # WHEN
-    slider.thumb.perform(command.drag_and_drop_to(slider.volume_down))
+    slider.thumb.drag_and_drop_to(slider.volume_down)
 
     slider.thumb_input.should(have.value('0'))

@@ -258,6 +258,18 @@ class Element(WaitingEntity['Element']):
             self.config,
         )
 
+    def s(self, css_or_xpath_or_by: Union[str, Tuple[str, str]]) -> Element:
+        """A JQuery-like alias (~ $) to
+        [Element.element(selector_or_by)][selene.web._elements.Element.element].
+        """
+        return self.element(css_or_xpath_or_by)
+
+    def ss(self, css_or_xpath_or_by: Union[str, Tuple[str, str]]) -> Collection:
+        """A JQuery-like alias (~ $$) to
+        [Element.all(selector_or_by)][selene.web._elements.Element.all].
+        """
+        return self.all(css_or_xpath_or_by)
+
     @property
     def shadow_root(self) -> _ElementsContext:
         return _ElementsContext(
@@ -280,85 +292,7 @@ class Element(WaitingEntity['Element']):
 
         return _FrameContext(self)
 
-    # @property
-    # def shadow_root(self) -> Element:
-    #     from selene.core import query
-    #     self.locate().shadow_root
-    #
-    #     return self.get(query.js.shadow_root)
-
     # --- Commands --- #
-
-    def execute_script(self, script_on_self: str, *arguments):
-        """
-        Executes JS script on self as webelement. Will not work for Mobile!
-
-        The script can use predefined parameters:
-        - ``element`` and ``self`` are aliases to this element handle, i.e. ``self.locate()`` or ``self()``.
-        - ``arguments`` are accessible from the script with same order and indexing as they are provided to the method
-
-        Examples::
-
-            browser.element('[id^=google_ads]').execute_script('element.remove()')
-            # OR
-            browser.element('[id^=google_ads]').execute_script('self.remove()')
-            '''
-            # are shortcuts to
-            browser.execute_script('arguments[0].remove()', browser.element('[id^=google_ads]')())
-            '''
-
-            browser.element('input').execute_script('element.value=arguments[0]', 'new value')
-            # OR
-            browser.element('input').execute_script('self.value=arguments[0]', 'new value')
-            '''
-            # are shortcuts to
-            browser.execute_script('arguments[0].value=arguments[1]', browser.element('input').locate(), 'new value')
-            '''
-        """
-        driver: WebDriver = self.config.driver
-        webelement = self()
-        # TODO: should we wrap it in wait or not?
-        # TODO: should we add additional it and/or its aliases for element?
-        return driver.execute_script(
-            f'''
-                let element = arguments[0]
-                let self = arguments[0]
-                return (function(...args) {{
-                    {script_on_self}
-                }})(...arguments[1])
-            ''',
-            webelement,
-            arguments,
-        )
-
-    # TODO: do we need this method?
-    #       do we really need to wrap script into function(element,args) here?
-    #       if yes... wouldn't it be better to use standard arguments name
-    #       instead of args?
-    #       for better integration with js support in jetbrains products?
-    def _execute_script(
-        self,
-        script_on_self_element_and_args: str,
-        *extra_args,
-    ):
-        warnings.warn(
-            '._execute_script is now deprecated '
-            'in favor of .execute_script(script_on_self, *arguments) '
-            'that uses access to arguments (NOT args!) in the script',
-            DeprecationWarning,
-        )
-        driver: WebDriver = self.config.driver
-        webelement = self()
-        # TODO: should we wrap it in wait or not?
-        return driver.execute_script(
-            f'''
-                return (function(element, args) {{
-                    {script_on_self_element_and_args}
-                }})(arguments[0], arguments[1])
-            ''',
-            webelement,
-            extra_args,
-        )
 
     def set_value(self, value: Union[str, int]) -> Element:
         # TODO: should we move all commands like following or queries like in conditions - to separate py modules?
@@ -480,6 +414,14 @@ class Element(WaitingEntity['Element']):
         return webelement
 
     def type(self, text: Union[str, int]) -> Element:
+        """Simulates typing text into a text-like field element.
+        A human readable alternative to pure Selenium's send_keys method.
+
+        Will wait till the element is not covered by any other element like overlays, if
+        [config.wait_for_no_overlap_found_by_js][selene.core.configuration.Config.wait_for_no_overlap_found_by_js]
+        is set to True.
+        """
+
         def fn(element: Element):
             if self.config.wait_for_no_overlap_found_by_js:
                 webelement = element._actual_not_overlapped_webelement
@@ -498,15 +440,23 @@ class Element(WaitingEntity['Element']):
         return self
 
     def send_keys(self, *value) -> Element:
-        """
-        To be used for more low level operations like «uploading files», etc.
-        To simulate normal input of keys by user when typing
-        - use Element.type(self, text).
+        """To be used for more low level operations like «uploading files», etc.
+        To simulate normal input of keys by user when typing - consider using
+        [Element.type(self, text)][selene.web._elements.Element.type]
+        that has additional customizaton to wait for the element
+        to be not overlapped by other elements.
         """
         self.wait.command('send keys', lambda element: element().send_keys(*value))
         return self
 
     def press(self, *keys) -> Element:
+        """Simulates pressing keys on the element.
+        A human readable alternative to pure Selenium's send_keys method.
+
+        Can be customized via
+        [config.wait_for_no_overlap_found_by_js][selene.core.configuration.Config.wait_for_no_overlap_found_by_js].
+        """
+
         def fn(element: Element):
             webelement = (
                 element._actual_not_overlapped_webelement
@@ -529,6 +479,12 @@ class Element(WaitingEntity['Element']):
         return self.press(Keys.TAB)
 
     def clear(self) -> Element:
+        """Clears the text in a text-like field element.
+
+        Can be customized via
+        [config.wait_for_no_overlap_found_by_js][selene.core.configuration.Config.wait_for_no_overlap_found_by_js]
+        """
+
         def fn(element: Element):
             webelement = (
                 element._actual_not_overlapped_webelement
@@ -542,6 +498,12 @@ class Element(WaitingEntity['Element']):
         return self
 
     def submit(self) -> Element:
+        """Submits a form-like element.
+
+        Can be customized via
+        [config.wait_for_no_overlap_found_by_js][selene.core.configuration.Config.wait_for_no_overlap_found_by_js].
+        """
+
         def fn(element: Element):
             webelement = (
                 element._actual_not_overlapped_webelement
@@ -556,7 +518,23 @@ class Element(WaitingEntity['Element']):
 
     # TODO: consider support of percentage in offsets (in command.js.click too)
     def click(self, *, xoffset=0, yoffset=0) -> Element:
-        """Just a normal click with optional offset:)"""
+        """Just a normal click with optional offset:)
+
+        By default, if not offset is asked, will wait till the element is not
+        covered by any other element like overlays, because this is a pure
+        Selenium WebDriver behavior.
+
+        If you start specifying offsets, then, if you still want to wait for no
+        overlap, you should explicitly ask for it via setting to True the
+        [config.wait_for_no_overlap_found_by_js][selene.core.configuration.Config.wait_for_no_overlap_found_by_js].
+
+        If you want to simulate a click via JS, by turning on the
+        [config.click_by_js][selene.core.configuration.Config.click_by_js],
+        then unless [#566](https://github.com/yashaka/selene/issues/566) issue
+        is resolved, you can't wait for no overlap. After you can use
+        something like:
+        `browser.element('#save').should(be.not_overlapped).with_(click_by_js=True).click()`
+        """
 
         def raw_click(element: Element):
             element.locate().click()
@@ -590,6 +568,11 @@ class Element(WaitingEntity['Element']):
         return self
 
     def double_click(self) -> Element:
+        """Double clicks on the element.
+
+        Can be customized via
+        [config.wait_for_no_overlap_found_by_js][selene.core.configuration.Config.wait_for_no_overlap_found_by_js].
+        """
         actions: ActionChains = ActionChains(self.config.driver)
 
         def fn(element: Element):
@@ -605,6 +588,11 @@ class Element(WaitingEntity['Element']):
         return self
 
     def context_click(self) -> Element:
+        """Context clicks (aka right-click to open a popup menu) on the element.
+
+        Can be customized via
+        [config.wait_for_no_overlap_found_by_js][selene.core.configuration.Config.wait_for_no_overlap_found_by_js].
+        """
         actions: ActionChains = ActionChains(self.config.driver)
 
         def fn(element: Element):
@@ -619,7 +607,85 @@ class Element(WaitingEntity['Element']):
 
         return self
 
+    # --- Commands specific to Web context --- #
+
+    def execute_script(self, script_on_self: str, *arguments):
+        """
+        Executes JS script on self as webelement. Will not work for Mobile!
+
+        The script can use predefined parameters:
+        - ``element`` and ``self`` are aliases to this element handle, i.e. ``self.locate()`` or ``self()``.
+        - ``arguments`` are accessible from the script with same order and indexing as they are provided to the method
+
+        Examples::
+
+            browser.element('[id^=google_ads]').execute_script('element.remove()')
+            # OR
+            browser.element('[id^=google_ads]').execute_script('self.remove()')
+            '''
+            # are shortcuts to
+            browser.execute_script('arguments[0].remove()', browser.element('[id^=google_ads]')())
+            '''
+
+            browser.element('input').execute_script('element.value=arguments[0]', 'new value')
+            # OR
+            browser.element('input').execute_script('self.value=arguments[0]', 'new value')
+            '''
+            # are shortcuts to
+            browser.execute_script('arguments[0].value=arguments[1]', browser.element('input').locate(), 'new value')
+            '''
+        """
+        driver: WebDriver = self.config.driver
+        webelement = self()
+        # TODO: should we wrap it in wait or not?
+        # TODO: should we add additional it and/or its aliases for element?
+        return driver.execute_script(
+            f'''
+                let element = arguments[0]
+                let self = arguments[0]
+                return (function(...args) {{
+                    {script_on_self}
+                }})(...arguments[1])
+            ''',
+            webelement,
+            arguments,
+        )
+
+    # TODO: do we need this method?
+    #       do we really need to wrap script into function(element,args) here?
+    #       if yes... wouldn't it be better to use standard arguments name
+    #       instead of args?
+    #       for better integration with js support in jetbrains products?
+    def _execute_script(
+        self,
+        script_on_self_element_and_args: str,
+        *extra_args,
+    ):
+        warnings.warn(
+            '._execute_script is now deprecated '
+            'in favor of .execute_script(script_on_self, *arguments) '
+            'that uses access to arguments (NOT args!) in the script',
+            DeprecationWarning,
+        )
+        driver: WebDriver = self.config.driver
+        webelement = self()
+        # TODO: should we wrap it in wait or not?
+        return driver.execute_script(
+            f'''
+                return (function(element, args) {{
+                    {script_on_self_element_and_args}
+                }})(arguments[0], arguments[1])
+            ''',
+            webelement,
+            extra_args,
+        )
+
     def hover(self) -> Element:
+        """Hovers over the element.
+
+        Can be customized via
+        [config.wait_for_no_overlap_found_by_js][selene.core.configuration.Config.wait_for_no_overlap_found_by_js].
+        """
         actions: ActionChains = ActionChains(self.config.driver)
 
         def fn(element: Element):
@@ -634,30 +700,145 @@ class Element(WaitingEntity['Element']):
 
         return self
 
-    # TODO: should we reflect queries as self methods? or not...
-    # pros: faster to query element attributes
-    # cons: queries are not test oriented. test is steps + asserts
-    #       so queries will be used only occasionally, then why to make a heap from Element?
-    #       hence, occasionally it's enough to have them called as
-    #           query.outer_html(element)  # non-waiting version
-    #       or
-    #           element.get(query.outer_html)  # waiting version
-    # def outer_html(self) -> str:
-    #     return self.wait.for_(query.outer_html)
+    def press_sequentially(self, text: str) -> Element:
+        """Presses each key (letter) in text sequentially to the element.
 
-    # --- Deprecate or not? --- #
+        See more at [command.press_sequentially][selene.core.command.press_sequentially].
+        """
 
-    def s(self, css_or_xpath_or_by: Union[str, Tuple[str, str]]) -> Element:
-        # warnings.warn(
-        #     "consider using more explicit `element` instead: browser.element('#foo').element('.bar')",
-        #     SyntaxWarning)
-        return self.element(css_or_xpath_or_by)
+        from selene.core import command
 
-    def ss(self, css_or_xpath_or_by: Union[str, Tuple[str, str]]) -> Collection:
-        # warnings.warn(
-        #     "consider using `all` instead: browser.element('#foo').all('.bar')",
-        #     SyntaxWarning)
-        return self.all(css_or_xpath_or_by)
+        self.wait.for_(command.press_sequentially(text))
+
+        return self
+
+    def select_all(self) -> Element:
+        """Sends «select all» keys shortcut as ctrl+a for Win/Linux
+        or cmd+a for mac.
+
+        See more at [command.select_all][selene.core.command.select_all],
+        that can be also applied on a "browser" level, without specifying
+        the exact element to send shortcut to.
+        """
+
+        from selene.core import command
+
+        self.wait.for_(command.select_all)
+
+        return self
+
+    def drag_and_drop_to(
+        self, target: Element, /, *, _assert_location_changed: bool = False
+    ) -> Element:
+        """Drags the element to the target element.
+
+        Can be customized via
+        [config.drag_and_drop_by_js][selene.core.configuration.Config.drag_and_drop_by_js].
+        Though turning the config flag on will disable the _assert_location_changed feature
+        (wait for [#567](https://github.com/yashaka/selene/issues/567)).
+
+        See more at [command.drag_and_drop_to][selene.core.command.drag_and_drop_to].
+        See also [command.js.drag_and_drop_to][selene.core.command.js.drag_and_drop_to].
+        """
+
+        from selene.core import command
+
+        if self.config.drag_and_drop_by_js:
+            self.wait.for_(command.js.drag_and_drop_to(target))
+        else:
+            self.wait.for_(
+                command.drag_and_drop_to(
+                    target, _assert_location_changed=_assert_location_changed
+                )
+            )
+
+        return self
+
+    def drag_and_drop_by_offset(self, x: int, y: int) -> Element:
+        """Drags the element by the offset.
+
+        Currently, cannot be customized via
+        [config.drag_and_drop_by_js][selene.core.configuration.Config.drag_and_drop_by_js]
+        (wait for [#568](https://github.com/yashaka/selene/issues/568)).
+
+        See more at [command.drag_and_drop_by_offset][selene.core.command.drag_and_drop_by_offset].
+        """
+
+        from selene.core import command
+
+        self.wait.for_(command.drag_and_drop_by_offset(x, y))
+
+        return self
+
+    def drop_file(self, path: str) -> Element:
+        """Simulates via JS: drops file by absolute path to the element (self).
+        Usually is needed as a workaround for cases where there is no
+        `input[type=file]` available to send_keys with path to the file.
+        Prefer the [send_keys][selene.web._elements.Element.send_keys] method
+        if possible. See also [#569](https://github.com/yashaka/selene/issues/569)
+
+        See more at [command.js.drop_file][selene.core.command.js.drop_file].
+        """
+
+        from selene.core import command
+
+        self.wait.for_(command.js.drop_file(path))
+
+        return self
+
+    def scroll_to_top(self) -> Element:
+        """Simulates via JS: scrolls to an element so the top of the element
+        will be aligned to the top of the visible area of the scrollable ancestor.
+
+        See also [command.scroll_into_view][selene.core.command.scroll_into_view].
+        """
+
+        from selene.core import command
+
+        self.wait.for_(
+            Command(
+                'scroll to top',
+                command.js.scroll_into_view(block='start', inline='nearest'),
+            )
+        )
+
+        return self
+
+    def scroll_to_bottom(self) -> Element:
+        """Simulates via JS: scrolls to an element so the bottom of the element will
+        be aligned to the bottom of the visible area of the scrollable ancestor.
+
+        See also [command.scroll_into_view][selene.core.command.scroll_into_view].
+        """
+
+        from selene.core import command
+
+        self.wait.for_(
+            Command(
+                'scroll to bottom',
+                command.js.scroll_into_view(block='end', inline='nearest'),
+            )
+        )
+
+        return self
+
+    def scroll_to_center(self) -> Element:
+        """Simulates via JS: scrolls to an element so the center of the element will
+        be aligned to the center of the scrollable ancestor.
+
+        See also [command.scroll_into_view][selene.core.command.scroll_into_view].
+        """
+
+        from selene.core import command
+
+        self.wait.for_(
+            Command(
+                'scroll to center',
+                command.js.scroll_into_view(block='center', inline='center'),
+            )
+        )
+
+        return self
 
 
 # TODO: consider renaming or at list aliased to AllElements

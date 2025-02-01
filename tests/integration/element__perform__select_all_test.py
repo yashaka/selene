@@ -13,7 +13,7 @@ def test_select_all_called_on_element_makes_type_to_reset_text(session_browser):
         '''
     )
 
-    browser.element('#text-field').perform(command.select_all).type('reset')
+    browser.element('#text-field').select_all().type('reset')
 
     browser.element('#text-field').should(have.value('reset'))
 

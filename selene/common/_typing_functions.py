@@ -67,6 +67,8 @@ class Query(Generic[E, R]):
         self._name = name
         self._fn = fn
 
+    # TODO: should we add an `as` method to customize the name of existing query object?
+
     def __call__(self, entity: E) -> R | None:  # todo: do we really need None here?
         return self._fn(entity)
 

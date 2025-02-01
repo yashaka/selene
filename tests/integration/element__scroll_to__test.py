@@ -35,7 +35,7 @@ def test_can_scroll_to_element_manually(session_browser):
     )
     element = session_browser.element("#not-viewable-link")
 
-    element.perform(command.js.scroll_into_view)
+    element.scroll_to_top()
 
     element.click()  # we can click even if we did not make the scrolling
     # TODO: find the way to assert that scroll worked!

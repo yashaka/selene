@@ -58,13 +58,13 @@ def test_drags_source_by_offset_and_drops_it_to_target(session_browser):
     )
 
     # WHEN
-    browser.element('#draggable').perform(command.drag_and_drop_by_offset(x=150, y=0))
+    browser.element('#draggable').drag_and_drop_by_offset(x=150, y=0)
 
     browser.element('#target1').element('#draggable').should(be.not_.present_in_dom)
     browser.element('#target2').element('#draggable').should(be.present_in_dom)
 
     # WHEN
-    browser.element('#draggable').perform(command.drag_and_drop_by_offset(x=-150, y=0))
+    browser.element('#draggable').drag_and_drop_by_offset(x=-150, y=0)
 
     browser.element('#target1').element('#draggable').should(be.present_in_dom)
     browser.element('#target2').element('#draggable').should(be.not_.present_in_dom)
@@ -91,11 +91,11 @@ def test_drags_by_offset_react_mui_slider(session_browser):
     original_value = slider.thumb_input.get(query.value)
 
     # WHEN
-    slider.thumb.perform(command.drag_and_drop_by_offset(x=11, y=0))
+    slider.thumb.drag_and_drop_by_offset(x=11, y=0)
 
     slider.thumb_input.should(have.no.value(original_value))
 
     # WHEN
-    slider.thumb.perform(command.drag_and_drop_by_offset(x=-11, y=0))
+    slider.thumb.drag_and_drop_by_offset(x=-11, y=0)
 
     slider.thumb_input.should(have.value(original_value))

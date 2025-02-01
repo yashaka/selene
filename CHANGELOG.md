@@ -204,6 +204,7 @@ Next:
   - ...
 - make core.Element a base class for web.Element
 - ensure query.* and command.* use proper classes
+- rename context.py to client.py
 
 ### Deprecated conditions
 
@@ -525,6 +526,18 @@ See a bit more in documented ["FAQ: How to work with iFrames in Selene?"](https:
 
 See a practical example of usage in [FAQ: How to simplify search by Test IDs?](https://yashaka.github.io/selene/faq/custom-test-id-selectors-howto/).
 
+### More commands among browser.element(selector).*
+
+- `press_sequentially(text)`
+- `select_all()`
+- `drag_and_drop_to(target, _assert_location_changed=False)`
+  - with option to `.with(drag_and_drop_by_js=True).drag_and_drop_to(target)`
+- `drag_and_drop_by_offset(x, y)`
+- `drop_file(path)`
+- `scroll_to_top()`
+- `scroll_to_bottom()`
+- `scroll_to_center()`
+
 ### More commands in command.py
 
 - `command.copy`
@@ -612,14 +625,14 @@ Thanks to [Cameron Shimmin](https://github.com/cshimm) and Edale Miguel for PR [
     - there is also an experimental `condition._match`, that is actually aliased by `condition.__call__`
 - `ConditionNotMatchedError` in favor of `ConditionMismatch`
 
-### Refactorings
+### Refactorings with potential BREAKING CHANGES
 
 - moved `Query` & Co from `core/wait.py` to `common/_typing_functioins.py`
 - renamed first arg of Condition, Query, Command from `description` to `name`
   - and made it positional only for now
   - If this significantly breaks your code, please, let us know, so we can consider adding some type of backwards compatibility
 
-## 2.0.0rc9 (to be released on 06.03.2024)
+## 2.0.0rc9 (released on 06.03.2024)
 
 ### Click with offsets
 
