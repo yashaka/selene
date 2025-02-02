@@ -69,9 +69,10 @@ setuptools = "^70.0.0"
 optional = true
 
 [tool.poetry.group.docs.dependencies]
+mkdocstrings = "0.26.1"
+mkdocstrings-python = "1.11.1"
 mkdocs = "^1.4.2"
 mkdocs-material = "^9.1.6"
-mkdocstrings = {extras = ["python"], version = "^0.21.2"}
 mkdocs-redirects = "^1.2.0"
 mkdocs-git-revision-date-localized-plugin = "^1.2.0"
 mkdocs-include-markdown-plugin = "^6.1.1"

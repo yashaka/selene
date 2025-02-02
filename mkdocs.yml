@@ -112,7 +112,7 @@ plugins:
   - mkdocstrings:
       handlers:
         python:
-          paths: ['selene']
+#          paths: ['selene']
           options:
             show_source: false
             docstring_section_style: list
