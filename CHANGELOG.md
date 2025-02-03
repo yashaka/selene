@@ -160,6 +160,8 @@ check vscode pylance, mypy, jetbrains qodana...
 
 ### TODO: fix Autocomplete after entity.perform(command.*).HERE
 
+### TODO: drop python 3.8 support [#574](https://github.com/yashaka/selene/issues/574)
+
 ## 2.0.0rc10: «copy&paste, frames, shadow & texts_like» (to be released on DD.05.2024)
 
 
@@ -198,10 +200,9 @@ Done:
     - wrapped as _SearchContext class object with only .element and .all methods
   - collection.shadow_roots based on webelement.shadow_root
   - element.frame_context
+- Made selene.Element a web.Element instead of core.Element
 
 Next:
-- extend web.Element with more web-specific commands
-  - ...
 - make core.Element a base class for web.Element
 - ensure query.* and command.* use proper classes
 - rename context.py to client.py

@@ -226,6 +226,6 @@ from selene.core import match  # noqa
 # """
 # Just types...
 # """
-from selene.core.entity import Element, Collection  # noqa
+from selene.web import Element, Collection  # noqa
 
 __version__ = '2.0.0rc9'

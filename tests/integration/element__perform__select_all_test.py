@@ -5,7 +5,6 @@ from tests.integration.helpers.givenpage import GivenPage
 
 def test_select_all_called_on_element_makes_type_to_reset_text(session_browser):
     browser = session_browser.with_(timeout=1)
-    browser.config.hold_driver_at_exit = True
     page = GivenPage(browser.driver)
     page.opened_with_body(
         '''
@@ -23,7 +22,6 @@ def test_select_all_called_on_browser_makes_type_to_reset_text_on_focused_elemen
     session_browser,
 ):
     browser = session_browser.with_(timeout=1)
-    browser.config.hold_driver_at_exit = True
     page = GivenPage(browser.driver)
     page.opened_with_body(
         '''
@@ -42,7 +40,6 @@ def test_select_all_called_on_browser_makes_type_to_append_text_on_not_focused_e
     session_browser,
 ):
     browser = session_browser.with_(timeout=1)
-    browser.config.hold_driver_at_exit = True
     page = GivenPage(browser.driver)
     page.opened_with_body(
         '''
