@@ -23,6 +23,7 @@ nav:
   #   - Stub Title 1: learn-advanced/automate-testing-guide.md
   - FAQ:
     - How to simplify search by Test IDs?: faq/custom-test-id-selectors-howto.md
+    - How to work with clipboard in Selene?: faq/clipboard-copy-and-paste-howto.md
     - How to work with iFrames: faq/iframes-howto.md
     - How to work with Shadow DOM: faq/shadow-dom-howto.md
     - How to use custom profile: faq/custom-user-profile-howto.md
@@ -130,6 +131,7 @@ plugins:
 
 # Extensions
 markdown_extensions:
+  - attr_list
   - toc:
       permalink: "#"
   - admonition

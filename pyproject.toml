@@ -48,6 +48,7 @@ Changelog = "https://github.com/yashaka/selene/releases"
 [tool.poetry.dependencies]
 python = "^3.8"
 selenium = ">=4.12.0"
+pyperclip = "^1.9.0"
 future = "*"
 typing-extensions = ">=4.12.2"
 
@@ -62,7 +63,6 @@ mypy = "*"
 pydantic = "^1.10.7"
 python-dotenv = "0.21.1"
 Appium-Python-Client = "^4.2.0"
-pyperclip = "^1.8.2"
 setuptools = "^70.0.0"
 
 [tool.poetry.group.docs]
@@ -83,6 +83,7 @@ requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.mypy]
+follow_untyped_imports = true
 disable_error_code = 'annotation-unchecked'
 allow_redefinition = true  # TODO: how to properly make it work o_O ?
 color_output=1

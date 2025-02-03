@@ -121,6 +121,14 @@ def pipe(*functions) -> Optional[Callable[[Any], Any]]:
     )
 
 
+def perform(*functions) -> Callable[[], None]:
+    def one_by_one():
+        for fn in functions:
+            fn()
+
+    return one_by_one
+
+
 # TODO: support "detailed history of prev calls on failures"
 # TODO: support tuple form of functions
 # TODO: support ... as arg placeholder in tuple form of functions

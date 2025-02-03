@@ -1352,7 +1352,7 @@ class Config:
     and speeding up the test execution for some specific cases
     like working with nested Frames
     (for more see warning at
-    [_FrameContext.element][selene.web._elements._FrameContext._element]).
+    [_FrameContext.element][selene.web._elements._FrameContext.element]).
     """
 
     # TODO: why we name it as hook_* why not handle_* ?

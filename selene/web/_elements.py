@@ -712,6 +712,7 @@ class Element(WaitingEntity['Element']):
 
         return self
 
+    # TODO: won't it be better to name it press_select_all_shortcut?
     def select_all(self) -> Element:
         """Sends «select all» keys shortcut as ctrl+a for Win/Linux
         or cmd+a for mac.
@@ -719,11 +720,50 @@ class Element(WaitingEntity['Element']):
         See more at [command.select_all][selene.core.command.select_all],
         that can be also applied on a "browser" level, without specifying
         the exact element to send shortcut to.
+
+        Has no "by_js" version so far (see [#572](https://github.com/yashaka/selene/issues/572))
         """
 
         from selene.core import command
 
         self.wait.for_(command.select_all)
+
+        return self
+
+    def copy(self) -> Element:
+        """Sends «copy» OS-based keys shortcut.
+
+        See more at [command.copy][selene.core.command.copy],
+        that can be also applied on a "browser" level, without specifying
+        the exact element to send shortcut to.
+
+        See also ["all scenarios to work with clipboard"][clipboard-copy-and-paste-howto]
+        """
+
+        from selene.core import command
+
+        self.wait.for_(command.copy)
+
+        return self
+
+    def paste(self, text: Optional[str] = None) -> Element:
+        """Sends «paste» OS-based keys shortcut.
+
+        If text argument is provided, will copy it to clipboard before sending the keys shortuct.
+
+        See more at [command.paste][selene.core.command.paste],
+        that can be also applied on a "browser" level, without specifying
+        the exact element to send shortcut to.
+
+        See also ["all scenarios to work with clipboard"][clipboard-copy-and-paste-howto]
+        """
+
+        from selene.core import command
+
+        if text is None:
+            self.wait.for_(command.paste)
+        else:
+            self.wait.for_(command.paste(text))
 
         return self
 
@@ -790,7 +830,7 @@ class Element(WaitingEntity['Element']):
         """Simulates via JS: scrolls to an element so the top of the element
         will be aligned to the top of the visible area of the scrollable ancestor.
 
-        See also [command.scroll_into_view][selene.core.command.scroll_into_view].
+        See also [command.scroll_into_view][selene.core.command.js.scroll_into_view].
         """
 
         from selene.core import command
@@ -808,7 +848,7 @@ class Element(WaitingEntity['Element']):
         """Simulates via JS: scrolls to an element so the bottom of the element will
         be aligned to the bottom of the visible area of the scrollable ancestor.
 
-        See also [command.scroll_into_view][selene.core.command.scroll_into_view].
+        See also [command.scroll_into_view][selene.core.command.js.scroll_into_view].
         """
 
         from selene.core import command
@@ -826,7 +866,7 @@ class Element(WaitingEntity['Element']):
         """Simulates via JS: scrolls to an element so the center of the element will
         be aligned to the center of the scrollable ancestor.
 
-        See also [command.scroll_into_view][selene.core.command.scroll_into_view].
+        See also [command.scroll_into_view][selene.core.command.js.scroll_into_view].
         """
 
         from selene.core import command

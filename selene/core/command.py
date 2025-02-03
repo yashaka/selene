@@ -283,12 +283,16 @@ see the actual implementation of Selene's advanced commands in this module.
 """
 from __future__ import annotations
 import sys
+import warnings
+
+import pyperclip
 from typing_extensions import Union, Optional, overload, cast, Literal
 
 from selenium.webdriver import Keys
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 
+from selene.common import fp
 from selene.core import entity
 from selene.core.entity import Element, Collection
 from selene.core._browser import Browser
@@ -373,6 +377,10 @@ def __select_all_actions(some_entity: Element | Browser):
     actions.key_down(_COMMAND_KEY)
 
     if entity._is_element(some_entity):
+        # for select_all it's ok to click on input field before sending the shortcut
+        # probably it's even a good idea to do such click
+        # that's why it's ok for use to call actions.send_keys_to_element
+        # (web_element.send_keys does not such click;))
         actions.send_keys_to_element(some_entity.locate(), 'a')  # type: ignore
     else:
         actions.send_keys('a')
@@ -388,86 +396,130 @@ select_all: Command[Element | Browser] = Command(
 )
 
 
-# TODO: should we build it into web.Element?
 def copy_and_paste(text: str):
     """Copies text to clipboard programmatically and pastes it to the element
     by pressing OS-based keys combination.
-
-    Requires [pyperclip](https://pypi.org/project/pyperclip/) package to be
-    installed.
-
-    Does not support mobile context. Not tested with desktop apps.
-    See also [#570](https://github.com/yashaka/selene/issues/570)
     """
+    warnings.warn(
+        'copy_and_paste(text) is deprecated, '
+        + 'use .perform(command.paste(text)) instead',
+        DeprecationWarning,
+    )
 
-    def action(some_entity: Element | Browser):
-        try:
-            import pyperclip  # type: ignore
-        except ImportError as error:
-            raise ImportError(
-                'pyperclip package is not installed, '
-                'run `pip install pyperclip`,'
-                'or add and install dependency '
-                'with your favorite dependency manager like poetry: '
-                '`poetry add pyperclip`'
-            ) from error
-
-        _COMMAND_KEY = Keys.COMMAND if sys.platform == 'darwin' else Keys.CONTROL
-
-        pyperclip.copy(text)
-
-        actions = ActionChains(some_entity.config.driver)
-        actions.key_down(_COMMAND_KEY)
-        if entity._is_element(some_entity):
-            actions.send_keys_to_element(some_entity.locate(), 'v')  # type: ignore
-        else:
-            actions.send_keys('v')
-        actions.key_up(_COMMAND_KEY)
-        actions.perform()
-
-    return Command(f'copy and paste: {text}»', action)
+    return paste(text)
 
 
 def __copy(some_entity: Element | Browser):
     _COMMAND_KEY = Keys.COMMAND if sys.platform == 'darwin' else Keys.CONTROL
 
+    if entity._is_element(some_entity):
+        some_entity.locate().send_keys(_COMMAND_KEY, 'c')  # type: ignore
+        return
+
     actions = ActionChains(some_entity.config.driver)
     actions.key_down(_COMMAND_KEY)
-    if entity._is_element(some_entity):
-        actions.send_keys_to_element(some_entity.locate(), 'c')  # type: ignore
-    else:
-        actions.send_keys('c')
+    actions.send_keys('c')
     actions.key_up(_COMMAND_KEY)
     actions.perform()
 
 
-# TODO: should we build it into web.Element?
 # TODO: define name dynamically based on platform
 copy: Command[Element | Browser] = Command(
-    'send «copy» keys shortcut as ctrl+c for win/linux or cmd+c for mac',
+    'send «copy» OS-based keys shortcut',
     __copy,
 )
+"""A command to copy currently selected text to clipboard via OS-based keys combination.
+Is built into [web.Element][selene.core.entity.Element.copy].
+
+You can call command on both Element and Browser entities.
+
+See ["How to work with clipboard in Selene"][clipboard-copy-and-paste-howto]
+for other scenarios of working with clipboard.
+
+Does not support mobile context. Not tested with desktop apps.
+"""
 
 
-def __paste(some_entity: Element | Browser):
-    _COMMAND_KEY = Keys.COMMAND if sys.platform == 'darwin' else Keys.CONTROL
+class __Paste(Command[Union[Element, Browser]]):
+    def __init__(self):
+        self._name = lambda _: (
+            'paste via «'
+            + ('Command' if sys.platform == 'darwin' else 'Control')
+            + ' + v» shortcut'
+        )
 
-    actions = ActionChains(some_entity.config.driver)
-    actions.key_down(_COMMAND_KEY)
-    if entity._is_element(some_entity):
-        actions.send_keys_to_element(some_entity.locate(), 'v')  # type: ignore
-    else:
-        actions.send_keys('v')
-    actions.key_up(_COMMAND_KEY)
-    actions.perform()
+    @overload
+    def __call__(self, entity: Union[Element, Browser], /): ...
+
+    @overload
+    def __call__(self, text: str, /): ...
+
+    def __call__(self, entity_or_text: Union[Element, Browser] | str, /):
+        maybe_text = entity_or_text if isinstance(entity_or_text, str) else None
+
+        def name_as_either_copy_and_paste_or_just_paste(_):
+            return (
+                '' if maybe_text is None else f'copy «{maybe_text}» to clipboard and '
+            ) + str(self)
+
+        def maybe_copy_to_clipboard():
+            if maybe_text is None:
+                return
+            pyperclip.copy(maybe_text)
+
+        def perform_shortcut_based_actions(some_entity: Element | Browser):
+            _COMMAND_KEY = Keys.COMMAND if sys.platform == 'darwin' else Keys.CONTROL
+
+            if entity._is_element(some_entity):
+                some_entity.locate().send_keys(_COMMAND_KEY, 'v')  # type: ignore
+                return
+
+            actions = ActionChains(some_entity.config.driver)
+            actions.key_down(_COMMAND_KEY)
+            actions.send_keys('v')
+            actions.key_up(_COMMAND_KEY)
+            actions.perform()
+
+        command: Command[Union[Element, Browser]] = Command(
+            name_as_either_copy_and_paste_or_just_paste,
+            lambda entity: fp.perform(
+                maybe_copy_to_clipboard,
+                lambda: perform_shortcut_based_actions(entity),
+            )(),
+        )
+
+        if not isinstance(entity_or_text, str):
+            # command is being called
+            command.__call__(entity_or_text)
+
+        # command is being built
+        return command
 
 
-# TODO: should we build it into web.Element?
-# TODO: define name dynamically based on platform
-paste: Command[Element | Browser] = Command(
-    'send «paste» keys shortcut as ctrl+v for win/linux or cmd+v for mac',
-    __paste,
-)
+paste = __Paste()
+"""A command to paste text from clipboard via OS-based keys combination.
+Is built into [web.Element][selene.core.entity.Element.paste].
+
+If the text is passed as first parameter, then first the text will be copied to
+clipboard programmatically, then pasted to the element by pressing OS-based keys.
+
+The `.perform(command.paste())` call is not supported.
+The text param is mandatory if you start opening parentheses after
+`paste(here)`. Either call it as `.perform(command.paste('some text'))` or just
+`.perform(command.paste).`
+
+You can call command on both Element and Browser entities. In case of Browser,
+it will paste text to the focused input field.
+
+If you don't want to use the shortcut, but just want to get text from clipboard
+and send it to a text input, you can use `element.type(pyperclip.paste())`
+or `element.set_value(pyperclip.paste())` instead.
+
+See ["How to work with clipboard in Selene"][clipboard-copy-and-paste-howto]
+for other scenarios of working with clipboard.
+
+Does not support mobile context. Not tested with desktop apps.
+"""
 
 
 # TODO: refactor to be implemented class-based – like __SaveScreenshot

@@ -206,6 +206,10 @@ Next:
 - ensure query.* and command.* use proper classes
 - rename context.py to client.py
 
+### pyperclip as dependency in Selene
+
+Mainly for `command.paste(text)` command to work out of the box with clipboard.
+
 ### Deprecated conditions
 
 - `be.present` in favor of `be.present_in_dom`
@@ -528,8 +532,11 @@ See a practical example of usage in [FAQ: How to simplify search by Test IDs?](h
 
 ### More commands among browser.element(selector).*
 
+web.Element built in methods:
 - `press_sequentially(text)`
 - `select_all()`
+- `copy()`
+- `paste(text=None)`
 - `drag_and_drop_to(target, _assert_location_changed=False)`
   - with option to `.with(drag_and_drop_by_js=True).drag_and_drop_to(target)`
 - `drag_and_drop_by_offset(x, y)`
@@ -540,15 +547,18 @@ See a practical example of usage in [FAQ: How to simplify search by Test IDs?](h
 
 ### More commands in command.py
 
+web.Element or web.Browser commands:
 - `command.copy`
 - `command.paste`
-- `command.copy_and_paste(text)`
-    Requires 3rd party `pyperclip` package to be used,
-    in order to copy to clipboard before pasting
-    via simulating `ctrl+v` or `cmd+v` shortcut pressed.
+- `command.paste(text)`
+    The `pyperclip` package was added to Selene as dependency to achieve it.
+
+Element commands:
+- `command.press_sequentially(text: str)`
+
+mobile.Element commands:
 - `command.long_press(duration=0.1)` alias to `command._long_press(duration=0.1)`
     actually the _long_press is now an outdated alias and probably will be deprecated in future releases
-- `command.press_sequentially(text: str)`
 
 ### More collection queries in query.py
 
