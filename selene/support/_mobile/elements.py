@@ -28,7 +28,7 @@ from selene.common.helpers import flatten
 from selene.common._typing_functions import Command
 from selene.core.condition import Condition
 from selene.core.configuration import Config
-from selene.core.entity import WaitingEntity
+from selene.core._entity import _WaitingConfiguredEntity
 from selene.core.locator import Locator
 from selene.core.wait import Wait
 
@@ -47,7 +47,7 @@ except ImportError as error:
     ) from error
 
 
-class Element(WaitingEntity['Element']):
+class Element(_WaitingConfiguredEntity):
     # TODO: should we move locator based init and with_ to Located base abstract class?
 
     # TODO: we need a separate Config for Mobile
@@ -288,7 +288,7 @@ class Element(WaitingEntity['Element']):
 
 
 # todo: wouldn't it be enough to name it as All? (currently we have All as alias to AllElements)
-class AllElements(WaitingEntity['AllElements'], Iterable[Element]):
+class AllElements(_WaitingConfiguredEntity, Iterable[Element]):
     def __init__(self, locator: Locator[Sequence[AppiumElement]], config: Config):
         self._locator = locator
         super().__init__(config)

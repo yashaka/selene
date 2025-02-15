@@ -21,7 +21,7 @@
 # SOFTWARE.
 
 from __future__ import annotations
-from typing import Optional, List, Union, overload
+from typing_extensions import Optional, List, Union, overload
 
 from selenium.webdriver.common.actions.wheel_input import ScrollOrigin
 from selenium.webdriver.remote.webelement import WebElement
@@ -29,7 +29,7 @@ from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.action_chains import AnyDevice
 
-from selene.core.entity import Element
+from selene.core._element import Element
 from selene.core.configuration import Config
 from selene.common._typing_functions import Query, Command
 

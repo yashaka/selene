@@ -48,15 +48,16 @@ from typing_extensions import (
 
 from selene.common import predicate, helpers, appium_tools
 from selene.common._typing_functions import Query
-from selene.core import query
+from selene.core import query, Collection
 from selene.core.condition import Condition, Match
 from selene.core import entity
-from selene.core.entity import Collection, Element, Configured
+from selene.core._entity import _ConfiguredEntity
+from selene.core._element import Element
 from selene.core._browser import Browser
 
 
 # GENERAL CONDITION BUILDERS ------------------------------------------------- #
-E = TypeVar('E', bound=Configured)
+E = TypeVar('E', bound=_ConfiguredEntity)
 
 
 class _EntityHasSomethingSupportingIgnoreCase(Match[E]):
@@ -794,7 +795,7 @@ def __is_empty(collection: Collection):
         'use more explicit and obvious have.size(0) instead',
         DeprecationWarning,
     )
-    return len(collection()) == 0
+    return len(collection.locate()) == 0
 
 
 empty: Condition[Collection] = Match(

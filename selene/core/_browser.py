@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2015-2022 Iakiv Kramarenko
+# Copyright (c) 2015 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -22,90 +22,30 @@
 from __future__ import annotations
 
 import warnings
-from typing import Optional, Union, Tuple
+from typing_extensions import Optional, Union, Tuple
 
 from selenium.webdriver.remote.switch_to import SwitchTo
 from selenium.webdriver.remote.webdriver import WebDriver
 
 from selene.core._actions import _Actions
+from selene.core._client import Client
 from selene.core.configuration import Config
-from selene.core.entity import WaitingEntity, Element, Collection
+from selene.core._entity import _WaitingConfiguredEntity
+from selene.core import Collection
+from selene.core._element import Element
 from selene.core.locator import Locator
-from selene.support.webdriver import WebHelper
 
 
-class Browser(WaitingEntity['Browser']):
-    def __init__(self, config: Optional[Config] = None):
-        config = Config() if config is None else config
-        super().__init__(config)
-
-    def with_(self, config: Optional[Config] = None, **config_as_kwargs) -> Browser:
-        return (
-            Browser(config)
-            if config
-            else Browser(self.config.with_(**config_as_kwargs))
+class Browser(Client):
+    def __init__(self, config: Optional[Config] = None, **kwargs):
+        warnings.warn(
+            'selene.core.Browser is deprecated, use selene.core.Client instead',
+            DeprecationWarning,
         )
+        super().__init__(config=config, **kwargs)
 
     def __str__(self):
         return 'browser'
-
-    # todo: consider not just building driver but also adjust its size according to config
-    @property
-    def driver(self) -> WebDriver:
-        return self.config.driver
-
-    # TODO: consider making it callable (self.__call__() to be shortcut to self.__raw__ ...)
-
-    @property
-    def __raw__(self):
-        return self.config.driver
-
-    # @property
-    # def actions(self) -> ActionChains:
-    #     """
-    #     It's kind of just a shortcut for pretty low level actions from selenium webdriver
-    #     Yet unsure about this property here:)
-    #     comparing to usual high level Selene API...
-    #     Maybe later it would be better to make own Actions with selene-style retries, etc.
-    #     """
-    #     return ActionChains(self.config.driver)
-
-    @property
-    def _actions(self) -> _Actions:
-        return _Actions(self.config)
-
-    # --- Element builders --- #
-
-    # TODO: consider None by default,
-    #       and *args, **kwargs to be able to pass custom things
-    #       to be processed by config.location_strategy
-    #       and by default process none as "element to skip all actions on it"
-    def element(
-        self, css_or_xpath_or_by: Union[str, Tuple[str, str], Locator]
-    ) -> Element:
-        if isinstance(css_or_xpath_or_by, Locator):
-            return Element(css_or_xpath_or_by, self.config)
-
-        by = self.config._selector_or_by_to_by(css_or_xpath_or_by)
-        # todo: do we need by_to_locator_strategy?
-
-        return Element(
-            Locator(f'{self}.element({by})', lambda: self.driver.find_element(*by)),
-            self.config,
-        )
-
-    def all(
-        self, css_or_xpath_or_by: Union[str, Tuple[str, str], Locator]
-    ) -> Collection:
-        if isinstance(css_or_xpath_or_by, Locator):
-            return Collection(css_or_xpath_or_by, self.config)
-
-        by = self.config._selector_or_by_to_by(css_or_xpath_or_by)
-
-        return Collection(
-            Locator(f'{self}.all({by})', lambda: self.driver.find_elements(*by)),
-            self.config,
-        )
 
     # --- High Level Commands--- #
 
@@ -130,7 +70,6 @@ class Browser(WaitingEntity['Browser']):
         """
         self.driver.quit()
 
-    # TODO: consider deprecating, it does not close browser, it closes current tab/window
     def close(self) -> Browser:
         self.driver.close()
         return self

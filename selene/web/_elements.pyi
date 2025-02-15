@@ -19,7 +19,7 @@ from typing_extensions import (
 import typing_extensions as typing
 from selene.core.condition import Condition
 from selene.core.configuration import Config
-from selene.core.entity import WaitingEntity, Assertable
+from selene.core._entity import Assertable, _WaitingConfiguredEntity
 from selene.core.locator import Locator
 from selene.core.wait import Wait
 
@@ -33,7 +33,7 @@ class _SearchContext(typing.Protocol):
         self, by: str, value: str | None = None
     ) -> typing.List[WebElement]: ...
 
-class _ElementsContext(WaitingEntity['_ElementsContext']):
+class _ElementsContext(_WaitingConfiguredEntity):
     """An Element-like class that serves as pure context for search elements inside
     via `element(selector_or_by)` or `all(selector_or_by)` methods"""
 
@@ -78,30 +78,15 @@ class _ElementsContext(WaitingEntity['_ElementsContext']):
             self.config,
         )
 
-class Element(WaitingEntity['Element']):
+class Element(_WaitingConfiguredEntity):
     def __init__(self, locator: Locator[WebElement], config: Config) -> None: ...
     def with_(
         self,
         config: Optional[Config] = None,
         *,
-        # Options to customize general Selene behavior
-        # > to customize waiting logic
         timeout: float = 4,
-        # poll_during_waits: int = ...,  # currently fake option
-        # _wait_decorator: Callable[[Wait[E]], Callable[[F], F]] = lambda w: lambda f: f,
-        # reports_folder: Optional[str] = ...,
-        # _counter: itertools.count = ...,
         save_screenshot_on_failure: bool = True,
         save_page_source_on_failure: bool = True,
-        # last_screenshot: Optional[str] = None,
-        # last_page_source: Optional[str] = None,
-        # _save_screenshot_strategy: Callable[[Config, Optional[str]], Any] = ...,
-        # _save_page_source_strategy: Callable[[Config, Optional[str]], Any] = ...,
-        # # Options to customize web browser and elements behavior
-        # base_url: str = '',
-        # _get_base_url_on_open_with_no_args: bool = False,
-        # window_width: Optional[int] = None,
-        # window_height: Optional[int] = None,
         log_outer_html_on_failure: bool = False,
         set_value_by_js: bool = False,
         type_by_js: bool = False,
@@ -119,6 +104,7 @@ class Element(WaitingEntity['Element']):
         selector_to_by_strategy: Callable[[str], Tuple[str, str]] = ...,
         # Etc.
         _build_wait_strategy: Callable[[Config], Callable[[E], Wait[E]]] = ...,
+        **config_as_kwargs,
     ) -> Element: ...
     def locate(self) -> WebElement: ...
     @property
@@ -164,7 +150,7 @@ class Element(WaitingEntity['Element']):
     def scroll_to_bottom(self) -> Element: ...
     def scroll_to_center(self) -> Element: ...
 
-class Collection(WaitingEntity['Collection'], Iterable[Element]):
+class Collection(_WaitingConfiguredEntity, Iterable[Element]):
     def __init__(
         self, locator: Locator[typing.Sequence[WebElement]], config: Config
     ) -> None: ...
@@ -172,24 +158,10 @@ class Collection(WaitingEntity['Collection'], Iterable[Element]):
         self,
         config: Optional[Config] = None,
         *,
-        # Options to customize general Selene behavior
-        # > to customize waiting logic
         timeout: float = 4,
         poll_during_waits: int = ...,  # currently fake option
-        # _wait_decorator: Callable[[Wait[E]], Callable[[F], F]] = lambda w: lambda f: f,
-        # reports_folder: Optional[str] = ...,
-        # _counter: itertools.count = ...,
         save_screenshot_on_failure: bool = True,
         save_page_source_on_failure: bool = True,
-        # last_screenshot: Optional[str] = None,
-        # last_page_source: Optional[str] = None,
-        # _save_screenshot_strategy: Callable[[Config, Optional[str]], Any] = ...,
-        # _save_page_source_strategy: Callable[[Config, Optional[str]], Any] = ...,
-        # # Options to customize web browser and elements behavior
-        # base_url: str = '',
-        # _get_base_url_on_open_with_no_args: bool = False,
-        # window_width: Optional[int] = None,
-        # window_height: Optional[int] = None,
         log_outer_html_on_failure: bool = False,
         set_value_by_js: bool = False,
         type_by_js: bool = False,
@@ -207,6 +179,7 @@ class Collection(WaitingEntity['Collection'], Iterable[Element]):
         selector_to_by_strategy: Callable[[str], Tuple[str, str]] = ...,
         # Etc.
         _build_wait_strategy: Callable[[Config], Callable[[E], Wait[E]]] = ...,
+        **config_as_kwargs,
     ) -> Collection: ...
     def locate(self) -> typing.Sequence[WebElement]: ...
     @property

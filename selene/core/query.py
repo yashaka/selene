@@ -199,8 +199,8 @@ from typing_extensions import (
 from selenium.webdriver.remote.webelement import WebElement
 
 from selene.common._typing_functions import Query
-from selene.core import entity
-from selene.core.entity import Element, Collection
+from selene.core import entity, Collection
+from selene.core._element import Element
 from selene.core._browser import Browser
 from selene.core.locator import Locator
 from selene.web._elements import _FrameContext

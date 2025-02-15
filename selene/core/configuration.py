@@ -1633,6 +1633,36 @@ class Config:
             at_most=config.timeout,
             or_fail_with=config._inject_screenshot_and_page_source_pre_hooks(
                 config.hook_wait_failure
+                # if not config.log_outer_html_on_failure
+                # # optionally inject outer html logging:
+                # # currently commented... seems like this is partially a bad idea...
+                # # the actual implementation based on config.log_outer_html_on_failure
+                # # will live in actual entities implementation
+                # # if we put it here, we would have to predict all cases inforward,
+                # # that we can't... so better to leave it to the entities
+                # # the idea to have it here – can be reasoned by the fact that
+                # # the config.log_outer_html_on_failure lives here:)
+                # # yet... probably in future it would be good
+                # # to break this General Config into core.Config, web.Config, mobile.Config
+                # # then we could consider moving such hook adjustments to config...
+                # # it would be good, because currently we will have remove ability
+                # # to log outer html for core.Element in case it is used for web...
+                # else fp.pipe(
+                #     lambda error: fp.thread(
+                #         fp._either(
+                #             lambda entity: entity.locate(), or_=WebDriverException
+                #         )(entity),
+                #         lambda either_webelement_or_failure: (
+                #             error
+                #             if either_webelement_or_failure[1] is not None
+                #             else TimeoutException(
+                #                 f'{error.msg}\n'
+                #                 f'Actual webelement: {either_webelement_or_failure[0].get_attribute("outerHTML")}'
+                #             )
+                #         ),
+                #     ),
+                #     config.hook_wait_failure,
+                # )
             ),
             _decorator=config._wait_decorator,
         )
@@ -1647,3 +1677,6 @@ class Config:
     # TODO: should we move it config._executor.wait(entity) ?
     def wait(self, entity: E) -> Wait[E]:
         return self._build_wait_strategy(self)(entity)
+
+    def _wait(self, entity: E) -> Wait[E]:
+        return self.wait(entity)

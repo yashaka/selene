@@ -20,7 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 from selene.core.condition import Condition
-from selene.core.entity import Element, Collection
+from selene.core import Collection
+from selene.core._element import Element
 from selene.core._browser import Browser
 
 # todo: consider deprecating ElementCondition & Co...

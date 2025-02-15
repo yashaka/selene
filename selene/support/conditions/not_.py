@@ -23,14 +23,14 @@ from __future__ import annotations
 import warnings
 from typing import Any, Iterable
 
-from selene.core import match as _match
+from selene.core import match as _match, Collection
 
 # TODO:  consider breaking into be_not.* and have_no.*
 #        then, it can be implemented inside be.* and have.* (if utilizing classes)
 
 # --- be.not_.* conditions --- #
 from selene.core.condition import Condition
-from selene.core.entity import Element, Collection
+from selene.core._element import Element
 from selene.core._browser import Browser
 
 # TODO: consider refactoring to class for better extendability

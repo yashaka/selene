@@ -45,10 +45,11 @@ from selenium.webdriver.remote.switch_to import SwitchTo as SwitchTo
 from selenium.webdriver.remote.webdriver import WebDriver as WebDriver
 from typing import Callable, Optional, Tuple, Union, Any
 
-from selene.core.entity import WaitingEntity, E
+from selene.core._elements_context import E
+from selene.core._entity import _WaitingConfiguredEntity
 from selene.web._elements import Element, Collection
 
-class Browser(WaitingEntity['Browser']):
+class Browser(_WaitingConfiguredEntity):
     def __init__(self, config: Optional[Config] = ...) -> None: ...
     def with_(
         self,
@@ -112,6 +113,7 @@ class Browser(WaitingEntity['Browser']):
         selector_to_by_strategy: Callable[[str], Tuple[str, str]] = ...,
         # Etc.
         _build_wait_strategy: Callable[[Config], Callable[[E], Wait[E]]] = ...,
+        **config_as_kwargs,
     ) -> Browser: ...
     @property
     def driver(self) -> WebDriver: ...

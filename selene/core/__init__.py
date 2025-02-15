@@ -19,3 +19,12 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+from __future__ import annotations
+
+from selene.core._element import Element
+from selene.core._elements import All
+from selene.core.entity import Collection
+from selene.core._elements_context import _ElementsContext
+from selene.core._client import Client
+
+# TODO: should we break core.* into [core.]model.* and [core.]webdriver.*?

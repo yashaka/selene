@@ -95,6 +95,22 @@ def _either_res_or(
         return cast(R, AbsentResult(str(fn))), failure
 
 
+I = TypeVar('I')
+
+
+def _maybeinstance(instance, type_: Type[I]) -> I | None:
+    """An alternative to isinstance(type_instance:=instance, type_) to be used
+    as maybe_type_instance = _maybeinstance(instance, type_)...
+
+    Unfortunately will only work inside `if` clause with mypy...
+    Yet mypy also may not work in `else` clause in some cases... :(
+
+    Kind of, right now, there is no much need in this maybeinstance, because
+    we can use `isinstance(type_instance:=instance, type_)` directly...
+    """
+    return cast(I, instance) if isinstance(instance, type_) else None
+
+
 # todo: can we make the callable params generic too? (instead current ... as placeholder)
 def _either(
     res: Callable[..., R], /, *, or_: Type[E]
@@ -102,6 +118,14 @@ def _either(
     return functools.wraps(res)(
         lambda *args, **kwargs: _either_res_or(or_, res, *args, **kwargs)
     )
+
+
+def raise_(exception: E) -> None:
+    raise exception
+
+
+def throw(exception: E) -> None:
+    raise exception
 
 
 def pipe(*functions) -> Optional[Callable[[Any], Any]]:

@@ -49,9 +49,12 @@ from selenium.webdriver.remote.webdriver import WebDriver as WebDriver
 from selenium.webdriver.remote.webelement import WebElement
 from typing import Callable, Iterable, Optional, Tuple, TypeVar, Union, Any, Generic
 
-from selene.core.entity import WaitingEntity, Element, Collection, E
+from selene.core._elements_context import E
+from selene.core._entity import _WaitingConfiguredEntity
+from selene.core import Collection
+from selene.core._element import Element
 
-class Browser(WaitingEntity['Browser']):
+class Browser(_WaitingConfiguredEntity):
     def __init__(self, config: Optional[Config] = ...) -> None: ...
     def with_(
         self,
@@ -114,6 +117,7 @@ class Browser(WaitingEntity['Browser']):
         selector_to_by_strategy: Callable[[str], Tuple[str, str]] = ...,
         # Etc.
         _build_wait_strategy: Callable[[Config], Callable[[E], Wait[E]]] = ...,
+        **config_as_kwargs,
     ) -> Browser: ...
     @property
     def driver(self) -> WebDriver: ...

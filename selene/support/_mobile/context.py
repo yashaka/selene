@@ -44,11 +44,11 @@ except ImportError as error:
 
 from selene.core._actions import _Actions
 from selene.core.configuration import Config
-from selene.core.entity import WaitingEntity
+from selene.core._entity import _WaitingConfiguredEntity
 from selene.core.locator import Locator
 
 
-class Device(WaitingEntity['Device']):
+class Device(_WaitingConfiguredEntity):
     def __init__(self, config: Optional[Config] = None):
         config = Config() if config is None else config
         super().__init__(config)

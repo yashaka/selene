@@ -201,11 +201,15 @@ Done:
   - collection.shadow_roots based on webelement.shadow_root
   - element.frame_context
 - Made selene.Element a web.Element instead of core.Element
+- broke down core.entity.py into core.* [#454](https://github.com/yashaka/selene/issues/454)
 
 Next:
 - make core.Element a base class for web.Element
-- ensure query.* and command.* use proper classes
+- make web.Element a base class for web.Element
+- make device.Element a base class for web.Element + move cross-platform support to base classes
 - rename context.py to client.py
+- ensure query.* and command.* use proper base classes
+- review config options... some will not work for core.Element anymore... should we document this?
 
 ### pyperclip as dependency in Selene
 
@@ -612,6 +616,32 @@ Providing a brief overview of the modules and how to define your own custom comm
 ### Removed deprecated methods from Autocomplete on browser.*
 
 Just "autocomplete" is disabled, methods still work;)
+
+### Removed deprecated methods on ...
+
+browser.element(selector).* (web.Element.*):
+- `_execute_script(script_on_self_element_and_args, *extra_args)`
+  - use `execute_script(script_on_self, *args)` instead
+
+### Removed from selene.core.Browser.*
+
+- properties:
+  - `.__raw__` (renamed it to `._raw_`)
+
+### Removed from selene.core.Element.*
+
+- methods:
+  - `_execute_script(script_on_self_element_and_args, *extra_args)`
+- properties:
+  - `.__raw__` (renamed it to `._raw_`)
+- support of all js-like config options
+
+### Removed from selene.core.Collection.*
+
+- methods:
+  - deprecated earlier `collection.filtered_by(condition)` in favor of `collection.by(condition)`
+- properties:
+  - `.__raw__` (renamed it to `._raw_`)
 
 ### Fix misleading absence of waiting in slicing behavior
 

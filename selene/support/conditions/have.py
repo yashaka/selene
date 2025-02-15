@@ -23,9 +23,9 @@ from __future__ import annotations
 import warnings
 from typing import Any, Union, Iterable, Optional
 
-from selene.core import match
+from selene.core import match, Collection
 from selene.core.condition import Condition
-from selene.core.entity import Element, Collection
+from selene.core._element import Element
 from selene.core._browser import Browser
 from selene.support.conditions import not_ as __not
 

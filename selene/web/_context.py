@@ -29,16 +29,16 @@ from selenium.webdriver.remote.webdriver import WebDriver
 
 from selene.core._actions import _Actions
 from selene.core.configuration import Config
-from selene.core.entity import WaitingEntity
+from selene.core._entity import _WaitingConfiguredEntity
 from selene.web._elements import Element, Collection
 from selene.core.locator import Locator
 from selene.support.webdriver import WebHelper
 
 
-class Browser(WaitingEntity['Browser']):
+class Browser(_WaitingConfiguredEntity):
     def __init__(self, config: Optional[Config] = None):
         config = Config() if config is None else config
-        super().__init__(config)
+        super().__init__(config=config)
 
     def with_(self, config: Optional[Config] = None, **config_as_kwargs) -> Browser:
         return (

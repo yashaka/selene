@@ -24,7 +24,7 @@ from __future__ import annotations
 
 import functools
 
-from typing_extensions import Union, Callable, Tuple, Iterable, Optional, Self
+from typing_extensions import Union, Callable, Tuple, Iterable, Optional, Self, override
 import typing_extensions as typing
 import warnings
 
@@ -34,7 +34,8 @@ from selene.common.helpers import flatten
 from selene.common._typing_functions import Command
 from selene.core.condition import Condition
 from selene.core.configuration import Config
-from selene.core.entity import WaitingEntity, E
+from selene.core._elements_context import E
+from selene.core._entity import _LocatableEntity, _WaitingConfiguredEntity
 from selene.core.locator import Locator
 from selene.core.wait import Wait
 
@@ -55,13 +56,25 @@ class _SearchContext(typing.Protocol):
     ) -> typing.List[WebElement]: ...
 
 
-class _ElementsContext(WaitingEntity['_ElementsContext']):
+# TODO: won't it work also for Browser?
+class _ElementsContext(_LocatableEntity[_SearchContext], _WaitingConfiguredEntity):
     """An Element-like class that serves as pure context for search elements inside
     via `element(selector_or_by)` or `all(selector_or_by)` methods"""
 
-    def __init__(self, locator: Locator[_SearchContext], config: Config):
-        self._locator = locator
-        super().__init__(config)
+    def __init__(self, locator: Locator[_SearchContext], config: Config, **kwargs):
+        super().__init__(locator=locator, config=config, **kwargs)
+
+    def __str__(self):
+        return str(self._locator)
+
+    # --- Located-like aliases --- #
+
+    @property
+    def __raw__(self) -> _SearchContext:
+        return self.locate()
+
+    def __call__(self) -> _SearchContext:
+        return self.locate()
 
     # --- Configured --- #
 
@@ -73,49 +86,10 @@ class _ElementsContext(WaitingEntity['_ElementsContext']):
             config if config else self.config.with_(**config_as_kwargs),
         )
 
-    # --- Located --- #
-
-    def __str__(self):
-        return str(self._locator)
-
-    def locate(self) -> _SearchContext:
-        return self._locator()
-
-    @property
-    def __raw__(self) -> _SearchContext:
-        return self.locate()
-
-    def __call__(self) -> _SearchContext:
-        return self.locate()
-
-    # --- WaitingEntity --- #
-
-    @property
-    def wait(self) -> Wait[_ElementsContext]:
-        # TODO:  will not it break code like browser.with_(timeout=...)?
-        # TODO: fix that will disable/break shared hooks (snapshots)
-        # return Wait(self,  # TODO:  isn't it slower to create it each time from scratch? move to __init__?
-        #             at_most=self.config.timeout,
-        #             or_fail_with=pipe(
-        #                 Element._log_webelement_outer_html_for(self),
-        #                 self.config.hook_wait_failure))
-        if self.config.log_outer_html_on_failure:
-            # TODO: remove this part completely from core.entity logic
-            #       move it to support.shared.config
-            return super().wait.or_fail_with(
-                pipe(
-                    # TODO: decide on ...
-                    # Element._log_webelement_outer_html_for(self),
-                    super().wait.hook_failure,
-                )
-            )
-        else:
-            return super().wait
+    # --- Relative location --- #
 
     @property
     def cached(self) -> _ElementsContext:
-        # TODO: do we need caching ? with lazy save of webelement to cache
-
         cache = None
         error = None
         try:
@@ -129,8 +103,6 @@ class _ElementsContext(WaitingEntity['_ElementsContext']):
             raise error
 
         return _ElementsContext(Locator(f'{self}.cached', get_cache), self.config)
-
-    # --- Relative location --- #
 
     def element(self, selector_or_by: Union[str, Tuple[str, str]], /) -> Element:
         by = self.config._selector_or_by_to_by(selector_or_by)
@@ -149,7 +121,33 @@ class _ElementsContext(WaitingEntity['_ElementsContext']):
         )
 
 
-class Element(WaitingEntity['Element']):
+class Element(_LocatableEntity[WebElement], _WaitingConfiguredEntity):
+    def __init__(self, locator: Locator[WebElement], config: Config, **kwargs):
+        super().__init__(locator=locator, config=config, **kwargs)
+
+    def __str__(self):
+        return str(self._locator)
+
+    # --- Located-based aliases --- #
+
+    @property
+    def __raw__(self):
+        return self.locate()
+
+    def __call__(self) -> WebElement:
+        return self.locate()
+
+    # --- Configured overrides --- #
+
+    @override
+    def with_(self, config: Optional[Config] = None, **config_as_kwargs) -> Self:
+        return Element(
+            self._locator,
+            config if config else self.config.with_(**config_as_kwargs),
+        )
+
+    # --- WaitingEntity --- #
+
     @staticmethod
     def _log_webelement_outer_html_for(
         element: Element,
@@ -170,40 +168,8 @@ class Element(WaitingEntity['Element']):
 
         return log_webelement_outer_html
 
-    # TODO: should we move locator based init and with_ to Located base abstract class?
-
-    def __init__(self, locator: Locator[WebElement], config: Config):
-        self._locator = locator
-        super().__init__(config)
-
-    # --- Configured --- #
-
-    def with_(self, config: Optional[Config] = None, **config_as_kwargs) -> Element:
-        return Element(
-            self._locator,
-            config if config else self.config.with_(**config_as_kwargs),
-        )
-
-    # --- Located --- #
-
-    def __str__(self):
-        return str(self._locator)
-
-    def locate(self) -> WebElement:
-        return self._locator()
-
-    @property
-    def __raw__(self):
-        return self.locate()
-
-    def __call__(self) -> WebElement:
-        return self.locate()
-
-    # --- WaitingEntity --- #
-
     @property
     def wait(self) -> Wait[Element]:
-        # TODO:  will not it break code like browser.with_(timeout=...)?
         # TODO: fix that will disable/break shared hooks (snapshots)
         # return Wait(self,  # TODO:  isn't it slower to create it each time from scratch? move to __init__?
         #             at_most=self.config.timeout,
@@ -222,6 +188,8 @@ class Element(WaitingEntity['Element']):
         else:
             return super().wait
 
+    # --- Relative location --- #
+
     @property
     def cached(self) -> Element:
         # TODO: do we need caching ? with lazy save of webelement to cache
@@ -229,7 +197,7 @@ class Element(WaitingEntity['Element']):
         cache = None
         error = None
         try:
-            cache = self()
+            cache = self.locate()
         except Exception as e:
             error = e
 
@@ -239,8 +207,6 @@ class Element(WaitingEntity['Element']):
             raise error
 
         return Element(Locator(f'{self}.cached', get_webelement), self.config)
-
-    # --- Relative location --- #
 
     def element(self, css_or_xpath_or_by: Union[str, Tuple[str, str]]) -> Element:
         by = self.config._selector_or_by_to_by(css_or_xpath_or_by)
@@ -609,34 +575,38 @@ class Element(WaitingEntity['Element']):
 
     # --- Commands specific to Web context --- #
 
+    # TODO: should we reflect (or move it) in command.execute_script?
     def execute_script(self, script_on_self: str, *arguments):
-        """
-        Executes JS script on self as webelement. Will not work for Mobile!
+        """Executes JS script on self as webelement.
 
         The script can use predefined parameters:
-        - ``element`` and ``self`` are aliases to this element handle, i.e. ``self.locate()`` or ``self()``.
-        - ``arguments`` are accessible from the script with same order and indexing as they are provided to the method
+        - `element` and `self` are aliases to this element handle, i.e. `self.locate()` or `self()`.
+        - `arguments` are accessible from the script with same order and indexing as they are provided to the method
 
-        Examples::
+        Examples:
 
-            browser.element('[id^=google_ads]').execute_script('element.remove()')
-            # OR
-            browser.element('[id^=google_ads]').execute_script('self.remove()')
-            '''
-            # are shortcuts to
-            browser.execute_script('arguments[0].remove()', browser.element('[id^=google_ads]')())
-            '''
+        ```
+        browser.element('[id^=google_ads]').execute_script('element.remove()')
+        # OR
+        browser.element('[id^=google_ads]').execute_script('self.remove()')
+        '''
+        # are shortcuts to
+        browser.execute_script('arguments[0].remove()', browser.element('[id^=google_ads]')())
+        '''
+        ```
 
-            browser.element('input').execute_script('element.value=arguments[0]', 'new value')
-            # OR
-            browser.element('input').execute_script('self.value=arguments[0]', 'new value')
-            '''
-            # are shortcuts to
-            browser.execute_script('arguments[0].value=arguments[1]', browser.element('input').locate(), 'new value')
-            '''
+        ```
+        browser.element('input').execute_script('element.value=arguments[0]', 'new value')
+        # OR
+        browser.element('input').execute_script('self.value=arguments[0]', 'new value')
+        '''
+        # are shortcuts to
+        browser.execute_script('arguments[0].value=arguments[1]', browser.element('input').locate(), 'new value')
+        '''
+        ```
         """
         driver: WebDriver = self.config.driver
-        webelement = self()
+        webelement = self.locate()
         # TODO: should we wrap it in wait or not?
         # TODO: should we add additional it and/or its aliases for element?
         return driver.execute_script(
@@ -649,35 +619,6 @@ class Element(WaitingEntity['Element']):
             ''',
             webelement,
             arguments,
-        )
-
-    # TODO: do we need this method?
-    #       do we really need to wrap script into function(element,args) here?
-    #       if yes... wouldn't it be better to use standard arguments name
-    #       instead of args?
-    #       for better integration with js support in jetbrains products?
-    def _execute_script(
-        self,
-        script_on_self_element_and_args: str,
-        *extra_args,
-    ):
-        warnings.warn(
-            '._execute_script is now deprecated '
-            'in favor of .execute_script(script_on_self, *arguments) '
-            'that uses access to arguments (NOT args!) in the script',
-            DeprecationWarning,
-        )
-        driver: WebDriver = self.config.driver
-        webelement = self()
-        # TODO: should we wrap it in wait or not?
-        return driver.execute_script(
-            f'''
-                return (function(element, args) {{
-                    {script_on_self_element_and_args}
-                }})(arguments[0], arguments[1])
-            ''',
-            webelement,
-            extra_args,
         )
 
     def hover(self) -> Element:
@@ -884,7 +825,7 @@ class Element(WaitingEntity['Element']):
 # TODO: consider renaming or at list aliased to AllElements
 #       for better consistency with browser.all(selector)
 #       and maybe even aliased by All for nicer POM support via descriptors
-class Collection(WaitingEntity['Collection'], Iterable[Element]):
+class Collection(_WaitingConfiguredEntity, Iterable[Element]):
     def __init__(self, locator: Locator[typing.Sequence[WebElement]], config: Config):
         self._locator = locator
         super().__init__(config)

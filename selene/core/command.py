@@ -293,11 +293,12 @@ from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 
 from selene.common import fp
-from selene.core import entity
-from selene.core.entity import Element, Collection
+from selene.core import entity, Collection
+from selene.core._element import Element
 from selene.core._browser import Browser
 from selene.core.exceptions import _SeleneError
 from selene.common._typing_functions import Command
+from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.actions import interaction
 from selenium.webdriver.common.actions.action_builder import ActionBuilder
@@ -655,6 +656,57 @@ def drag_and_drop_by_offset(x: int, y: int) -> Command[Element]:
     return Command(f'drag and drop by offset: x={x}, y={y}', func)
 
 
+# TODO: should not we make it to work bothon Element and Browser?
+def _execute_script(script_on_self: str, *arguments) -> Command[Element]:
+    def func(self: Element):
+        """Executes JS script on self as webelement.
+
+        The script can use predefined parameters:
+        - `element` and `self` are aliases to this element handle, i.e. `self.locate()` or `self()`.
+        - `arguments` are accessible from the script with same order and indexing as they are provided to the method
+
+        Examples:
+
+        ```
+        browser.element('[id^=google_ads]').perform(command.execute_script('element.remove()'))
+        # OR
+        browser.element('[id^=google_ads]').perform(command.execute_script('self.remove()'))
+        '''
+        # are shortcuts to
+        browser.execute_script('arguments[0].remove()', browser.element('[id^=google_ads]')())
+        '''
+        ```
+
+        ```
+        browser.element('input').perform(command.execute_script('element.value=arguments[0]', 'new value'))
+        # OR
+        browser.element('input').perform(command.execute_script('self.value=arguments[0]', 'new value'))
+        '''
+        # are shortcuts to
+        browser.execute_script('arguments[0].value=arguments[1]', browser.element('input').locate(), 'new value')
+        '''
+        ```
+        """
+        driver: WebDriver = self.config.driver
+        webelement = self.locate()
+        # TODO: should we wrap it in wait or not?
+        # TODO: should we add additional it and/or its aliases for element?
+        return driver.execute_script(
+            f'''
+                let element = arguments[0]
+                let self = arguments[0]
+                return (function(...args) {{
+                    {script_on_self}
+                }})(...arguments[1])
+            ''',
+            webelement,
+            arguments,
+        )
+
+    # TODO: consider printing somehow in name: sript and args
+    return Command('execute script', func)
+
+
 class js:  # pylint: disable=invalid-name
     """A container for JavaScript-based commands.
 
@@ -668,8 +720,10 @@ class js:  # pylint: disable=invalid-name
 
     @staticmethod
     def set_value(value: Union[str, int]) -> Command[Element]:
-        def func(element: Element):
-            element.execute_script(
+
+        return Command(
+            f'set value by js: {value}',
+            _execute_script(
                 """
                 var text = arguments[0];
                 var maxlength = element.getAttribute('maxlength') === null
@@ -683,14 +737,14 @@ class js:  # pylint: disable=invalid-name
                 return null;
                 """,
                 str(value),
-            )
-
-        return Command(f'set value by js: {value}', func)
+            ),
+        )
 
     @staticmethod
     def type(keys: Union[str, int]) -> Command[Element]:
-        def func(element: Element):
-            element.execute_script(
+        return Command(
+            f'set value by js: {keys}',
+            _execute_script(
                 """
                 textToAppend = arguments[0];
                 var value = element.value || '';
@@ -706,9 +760,8 @@ class js:  # pylint: disable=invalid-name
                 return null;
                 """,
                 str(keys),
-            )
-
-        return Command(f'set value by js: {keys}', func)
+            ),
+        )
 
     class __ScrollIntoView(Command[Element]):
         def __init__(self):
@@ -734,19 +787,18 @@ class js:  # pylint: disable=invalid-name
             inline: Literal['start', 'end', 'center', 'nearest'] = 'nearest',
             behavior: Literal['auto', 'smooth'] = 'auto',
         ):
-            def func(element: Element):
-                element.execute_script(
-                    '''
-                    const block = arguments[0]
-                    const inline = arguments[1]
-                    const behavior = arguments[2]
+            func = _execute_script(
+                '''
+                const block = arguments[0]
+                const inline = arguments[1]
+                const behavior = arguments[2]
 
-                    element.scrollIntoView({block, inline, behavior})
-                    ''',
-                    block,
-                    inline,
-                    behavior,
-                )
+                element.scrollIntoView({block, inline, behavior})
+                ''',
+                block,
+                inline,
+                behavior,
+            )
 
             if element is not None:
                 # somebody passed command as `.perform(command.js.scroll_into_view)`
@@ -773,9 +825,8 @@ class js:  # pylint: disable=invalid-name
         def __call__(self, *, xoffset=0, yoffset=0) -> Command[Element]: ...
 
         def __call__(self, element: Element | None = None, *, xoffset=0, yoffset=0):
-            def func(element: Element):
-                element.execute_script(
-                    '''
+            func = _execute_script(
+                '''
                     const offsetX = arguments[0]
                     const offsetY = arguments[1]
                     const rect = element.getBoundingClientRect()
@@ -801,10 +852,10 @@ class js:  # pylint: disable=invalid-name
                       }
                     }
                     element.dispatchEvent(mouseEvent())
-                    ''',
-                    xoffset,
-                    yoffset,
-                )
+                ''',
+                xoffset,
+                yoffset,
+            )
 
             if element is not None:
                 # somebody passed command as `.perform(command.js.click)`
@@ -836,9 +887,9 @@ class js:  # pylint: disable=invalid-name
     remove: Command[Union[Element, Collection]] = Command(
         'remove',
         lambda entity: (
-            entity.execute_script('element.remove()')
+            _execute_script('element.remove()')(entity)
             if not hasattr(entity, '__iter__')
-            else [element.execute_script('element.remove()') for element in entity]
+            else [_execute_script('element.remove()')(element) for element in entity]
         )
         # command should return None anyway:
         and None
@@ -850,10 +901,10 @@ class js:  # pylint: disable=invalid-name
         return Command(
             f'set element.style.{name}="{value}"',
             lambda entity: (
-                entity.execute_script(f'element.style.{name}="{value}"')
+                _execute_script(f'element.style.{name}="{value}"')(entity)
                 if not hasattr(entity, '__iter__')
                 else [
-                    element.execute_script(f'element.style.{name}="{value}"')
+                    _execute_script(f'element.style.{name}="{value}"')(element)
                     for element in entity
                 ]
             )
@@ -864,10 +915,10 @@ class js:  # pylint: disable=invalid-name
     set_style_display_to_none: Command[Union[Element, Collection]] = Command(
         'set element.style.display="none"',
         lambda entity: (
-            entity.execute_script('element.style.display="none"')
+            _execute_script('element.style.display="none"')(entity)
             if not hasattr(entity, '__iter__')
             else [
-                element.execute_script('element.style.display="none"')
+                _execute_script('element.style.display="none"')(element)
                 for element in entity
             ]
         )
@@ -878,10 +929,10 @@ class js:  # pylint: disable=invalid-name
     set_style_display_to_block: Command[Union[Element, Collection]] = Command(
         'set element.style.display="block"',
         lambda entity: (
-            entity.execute_script('element.style.display="block"')
+            _execute_script('element.style.display="block"')(entity)
             if not hasattr(entity, '__iter__')
             else [
-                element.execute_script('element.style.display="block"')
+                _execute_script('element.style.display="block"')(element)
                 for element in entity
             ]
         )
@@ -892,10 +943,10 @@ class js:  # pylint: disable=invalid-name
     set_style_visibility_to_hidden: Command[Union[Element, Collection]] = Command(
         'set element.style.visibility="hidden"',
         lambda entity: (
-            entity.execute_script('element.style.visibility="hidden"')
+            _execute_script('element.style.visibility="hidden"')(entity)
             if not hasattr(entity, '__iter__')
             else [
-                element.execute_script('element.style.visibility="hidden"')
+                _execute_script('element.style.visibility="hidden"')(element)
                 for element in entity
             ]
         )
@@ -906,10 +957,10 @@ class js:  # pylint: disable=invalid-name
     set_style_visibility_to_visible: Command[Union[Element, Collection]] = Command(
         'set element.style.visibility="visible"',
         lambda entity: (
-            entity.execute_script('element.style.visibility="visible"')
+            _execute_script('element.style.visibility="visible"')(entity)
             if not hasattr(entity, '__iter__')
             else [
-                element.execute_script('element.style.visibility="visible"')
+                _execute_script('element.style.visibility="visible"')(element)
                 for element in entity
             ]
         )

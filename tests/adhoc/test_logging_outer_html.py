@@ -2,7 +2,7 @@ from selene import browser, have, be
 from tests import resources
 
 
-def test_one_element_when_enabled():
+def test_logging_outer_html__enabled__on_one_element():
     browser.config.timeout = 0.5
     browser.config.log_outer_html_on_failure = True
     browser.open(resources.TODOMVC_URL)
@@ -17,7 +17,7 @@ def test_one_element_when_enabled():
     assert 'Actual webelement:' in message
 
 
-def test_one_element_when_disabled():
+def test_logging_outer_html__disabled__on_one_element():
     browser.config.timeout = 0.5
     browser.config.log_outer_html_on_failure = False
     browser.open('http://todomvc.com/examples/emberjs/')
@@ -32,7 +32,7 @@ def test_one_element_when_disabled():
     assert 'Actual webelement:' not in message
 
 
-def test_collection_when_enabled():
+def test_logging_outer_html__enabled__on_collection():
     browser.config.timeout = 0.5
     browser.config.log_outer_html_on_failure = True
     browser.open(resources.TODOMVC_URL)
@@ -49,7 +49,7 @@ def test_collection_when_enabled():
     assert 'Actual webelements collection:' in message
 
 
-def test_collection_when_disabled():
+def test_logging_outer_html__disabled__on_collection():
     browser.config.timeout = 0.5
     browser.config.log_outer_html_on_failure = False
     browser.open('http://todomvc.com/examples/emberjs/')
