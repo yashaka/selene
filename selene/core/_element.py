@@ -46,11 +46,13 @@ class Element(
         config: Config,
         **kwargs,
     ):
+        _Element = kwargs.pop('_Element', self.__class__)
+        _All = kwargs.pop('_All', All)
         super().__init__(
             locator=locator,
             config=config,
-            _Element=self.__class__,
-            _All=All,
+            _Element=_Element,
+            _All=_All,
             **kwargs,
         )
 

@@ -114,6 +114,16 @@ class _ConfiguredEntity(_Entity):
         )
 
 
+# TODO: should we make it generic on WebDriver?
+class _DriverEntity(_ConfiguredEntity):
+    def __init__(self, config: Config, **kwargs):
+        super().__init__(config=config, **kwargs)
+
+    @property
+    def driver(self):
+        return self.config.driver
+
+
 R = TypeVar('R')
 """Reflects a result of a query"""
 
@@ -149,8 +159,8 @@ class _WaitingConfiguredEntity(_ConfiguredEntity, Assertable, Matchable):
                 self.wait.for_(Command('click', lambda element: element().click()))
                 return self
 
-        But so far, we use the latter version - though, less concise, but more explicit,
-        making it more obvious that waiting is built in;)
+        But so far, we often use the latter version - though, less concise, but
+        more explicit, making it more obvious that waiting is built in;)
 
         """
         self.wait.for_(command)
@@ -195,7 +205,7 @@ class _CachedLocatableEntity(_LocatableEntity[LR]):
             error = e
 
         def get_cache():
-            if cache:
+            if cache is not None:
                 return cache
             raise error
 

@@ -24,20 +24,25 @@ from __future__ import annotations
 
 import functools
 
-from typing_extensions import Union, Callable, Tuple, Iterable, Optional, Self, override
 import typing_extensions as typing
-import warnings
+from typing_extensions import (
+    Union,
+    Callable,
+    Tuple,
+    Optional,
+    Self,
+    override,
+)
 
 from selene import support
 from selene.common.fp import pipe
-from selene.common.helpers import flatten
 from selene.common._typing_functions import Command
-from selene.core.condition import Condition
 from selene.core.configuration import Config
-from selene.core._elements_context import E
-from selene.core._entity import _LocatableEntity, _WaitingConfiguredEntity
 from selene.core.locator import Locator
 from selene.core.wait import Wait
+from selene.core._elements_context import _ElementsContext
+from selene.core._elements import All
+from selene import core
 
 from selene.core.exceptions import TimeoutException, _SeleneError
 
@@ -47,106 +52,24 @@ from selenium.webdriver import ActionChains
 from selenium.webdriver.common.keys import Keys
 
 
-@typing.runtime_checkable
-class _SearchContext(typing.Protocol):
-    def find_element(self, by: str, value: str | None = None) -> WebElement: ...
-
-    def find_elements(
-        self, by: str, value: str | None = None
-    ) -> typing.List[WebElement]: ...
-
-
-# TODO: won't it work also for Browser?
-class _ElementsContext(_LocatableEntity[_SearchContext], _WaitingConfiguredEntity):
-    """An Element-like class that serves as pure context for search elements inside
-    via `element(selector_or_by)` or `all(selector_or_by)` methods"""
-
-    def __init__(self, locator: Locator[_SearchContext], config: Config, **kwargs):
-        super().__init__(locator=locator, config=config, **kwargs)
-
-    def __str__(self):
-        return str(self._locator)
-
-    # --- Located-like aliases --- #
-
-    @property
-    def __raw__(self) -> _SearchContext:
-        return self.locate()
-
-    def __call__(self) -> _SearchContext:
-        return self.locate()
-
-    # --- Configured --- #
-
-    def with_(
-        self, config: Optional[Config] = None, **config_as_kwargs
-    ) -> _ElementsContext:
-        return _ElementsContext(
-            self._locator,
-            config if config else self.config.with_(**config_as_kwargs),
+class Element(core.Element):
+    def __init__(
+        self,
+        locator: Locator[WebElement],
+        config: Config,
+        **kwargs,
+    ):
+        _Element = kwargs.pop('_Element', self.__class__)
+        _All = kwargs.pop('_All', core.All)
+        super().__init__(
+            locator=locator,
+            config=config,
+            _Element=_Element,
+            _All=_All,
+            **kwargs,
         )
 
-    # --- Relative location --- #
-
-    @property
-    def cached(self) -> _ElementsContext:
-        cache = None
-        error = None
-        try:
-            cache = self.locate()
-        except Exception as e:
-            error = e
-
-        def get_cache():
-            if cache:
-                return cache
-            raise error
-
-        return _ElementsContext(Locator(f'{self}.cached', get_cache), self.config)
-
-    def element(self, selector_or_by: Union[str, Tuple[str, str]], /) -> Element:
-        by = self.config._selector_or_by_to_by(selector_or_by)
-
-        return Element(
-            Locator(f'{self}.element({by})', lambda: self().find_element(*by)),
-            self.config,
-        )
-
-    def all(self, selector_or_by: Union[str, Tuple[str, str]], /) -> Collection:
-        by = self.config._selector_or_by_to_by(selector_or_by)
-
-        return Collection(
-            Locator(f'{self}.all({by})', lambda: self().find_elements(*by)),
-            self.config,
-        )
-
-
-class Element(_LocatableEntity[WebElement], _WaitingConfiguredEntity):
-    def __init__(self, locator: Locator[WebElement], config: Config, **kwargs):
-        super().__init__(locator=locator, config=config, **kwargs)
-
-    def __str__(self):
-        return str(self._locator)
-
-    # --- Located-based aliases --- #
-
-    @property
-    def __raw__(self):
-        return self.locate()
-
-    def __call__(self) -> WebElement:
-        return self.locate()
-
-    # --- Configured overrides --- #
-
-    @override
-    def with_(self, config: Optional[Config] = None, **config_as_kwargs) -> Self:
-        return Element(
-            self._locator,
-            config if config else self.config.with_(**config_as_kwargs),
-        )
-
-    # --- WaitingEntity --- #
+    # --- _WaitingConfiguredEntity --- #
 
     @staticmethod
     def _log_webelement_outer_html_for(
@@ -168,8 +91,9 @@ class Element(_LocatableEntity[WebElement], _WaitingConfiguredEntity):
 
         return log_webelement_outer_html
 
+    @override
     @property
-    def wait(self) -> Wait[Element]:
+    def wait(self) -> Wait[Self]:
         # TODO: fix that will disable/break shared hooks (snapshots)
         # return Wait(self,  # TODO:  isn't it slower to create it each time from scratch? move to __init__?
         #             at_most=self.config.timeout,
@@ -188,59 +112,31 @@ class Element(_LocatableEntity[WebElement], _WaitingConfiguredEntity):
         else:
             return super().wait
 
-    # --- Relative location --- #
+    # --- _ElementsContext: Aliases --- #
 
-    @property
-    def cached(self) -> Element:
-        # TODO: do we need caching ? with lazy save of webelement to cache
-
-        cache = None
-        error = None
-        try:
-            cache = self.locate()
-        except Exception as e:
-            error = e
-
-        def get_webelement():
-            if cache:
-                return cache
-            raise error
-
-        return Element(Locator(f'{self}.cached', get_webelement), self.config)
-
-    def element(self, css_or_xpath_or_by: Union[str, Tuple[str, str]]) -> Element:
-        by = self.config._selector_or_by_to_by(css_or_xpath_or_by)
-
-        return Element(
-            Locator(f'{self}.element({by})', lambda: self().find_element(*by)),
-            self.config,
-        )
-
-    def all(self, css_or_xpath_or_by: Union[str, Tuple[str, str]]) -> Collection:
-        by = self.config._selector_or_by_to_by(css_or_xpath_or_by)
-
-        return Collection(
-            Locator(f'{self}.all({by})', lambda: self().find_elements(*by)),
-            self.config,
-        )
-
-    def s(self, css_or_xpath_or_by: Union[str, Tuple[str, str]]) -> Element:
+    # TODO: should we add Locator to Union?
+    # TODO: should we type hint return type as Self?
+    def s(self, selector_or_by: Union[str, Tuple[str, str]], /) -> Element:
         """A JQuery-like alias (~ $) to
         [Element.element(selector_or_by)][selene.web._elements.Element.element].
         """
-        return self.element(css_or_xpath_or_by)
+        return self.element(selector_or_by)
 
-    def ss(self, css_or_xpath_or_by: Union[str, Tuple[str, str]]) -> Collection:
+    def ss(self, selector_or_by: Union[str, Tuple[str, str]], /) -> All[Element]:
         """A JQuery-like alias (~ $$) to
         [Element.all(selector_or_by)][selene.web._elements.Element.all].
         """
-        return self.all(css_or_xpath_or_by)
+        return self.all(selector_or_by)
+
+    # --- _ElementsContext: Extensions --- #
 
     @property
     def shadow_root(self) -> _ElementsContext:
         return _ElementsContext(
-            Locator(f'{self}.shadow root', lambda: self.locate().shadow_root),
-            self.config,
+            locator=Locator(f'{self}.shadow root', lambda: self.locate().shadow_root),
+            config=self.config,
+            _Element=self._Element,
+            _All=self._All,
         )
 
     @property
@@ -822,514 +718,6 @@ class Element(_LocatableEntity[WebElement], _WaitingConfiguredEntity):
         return self
 
 
-# TODO: consider renaming or at list aliased to AllElements
-#       for better consistency with browser.all(selector)
-#       and maybe even aliased by All for nicer POM support via descriptors
-class Collection(_WaitingConfiguredEntity, Iterable[Element]):
-    def __init__(self, locator: Locator[typing.Sequence[WebElement]], config: Config):
-        self._locator = locator
-        super().__init__(config)
-
-    def with_(self, config: Optional[Config] = None, **config_as_kwargs) -> Collection:
-        return Collection(
-            self._locator,
-            config if config else self.config.with_(**config_as_kwargs),
-        )
-
-    def __str__(self):
-        return str(self._locator)
-
-    def locate(self) -> typing.Sequence[WebElement]:
-        return self._locator()
-
-    @property
-    def __raw__(self):
-        return self.locate()
-
-    def __call__(self) -> typing.Sequence[WebElement]:
-        return self.locate()
-
-    @property
-    def cached(self) -> Collection:
-        webelements = self.locate()
-        return Collection(Locator(f'{self}.cached', lambda: webelements), self.config)
-
-    def __iter__(self):
-        i = 0
-        cached = self.cached
-        while i < len(cached()):
-            element = cached[i]
-            yield element
-            i += 1
-
-    def __len__(self):
-        from selene.core import query
-
-        return self.get(query.size)
-
-    # TODO: add config.index_collection_from_1, disabled by default
-    # TODO: consider additional number param, that counts from 1
-    #       if provided instead of index
-    def element(self, index: int) -> Element:
-        def find() -> WebElement:
-            webelements = self.locate()
-            length = len(webelements)
-
-            if length <= index:
-                raise AssertionError(
-                    f'Cannot get element with index {index} '
-                    + f'from webelements collection with length {length}'
-                )
-
-            return webelements[index]
-
-        return Element(Locator(f'{self}[{index}]', find), self.config)
-
-    @property
-    def first(self) -> Element:
-        """
-        A human-readable alias to .element(0) or [0]
-        """
-        return typing.cast(Element, self[0])
-
-    @property
-    def second(self) -> Element:
-        """
-        A human-readable alias to .element(1) or [1]
-        """
-        return typing.cast(Element, self[1])
-
-    @property
-    def even(self):
-        """
-        A human-readable alias to [1::2], i.e. filtering collection to have only even elements
-        """
-        return self[1::2]
-
-    @property
-    def odd(self):
-        """
-        A human-readable alias to [::2], i.e. filtering collection to have only odd elements
-        """
-        return self[::2]
-
-    def sliced(
-        self,
-        start: Optional[int] = None,
-        stop: Optional[int] = None,
-        step: int = 1,
-    ) -> Collection:
-        def find() -> typing.Sequence[WebElement]:
-            webelements = self.locate()
-            length = len(webelements)
-            if start is not None and start != 0 and start >= length:
-                raise AssertionError(
-                    f'not enough elements to slice collection '
-                    f'from START on index={start}, '
-                    f'actual elements collection length is {length}'
-                )
-            if stop is not None and stop != -1 and length < stop:
-                raise AssertionError(
-                    'not enough elements to slice collection '
-                    f'from {start or "START"} to STOP at index={stop}, '
-                    f'actual elements collection length is {length}'
-                )
-
-            # TODO: assert length according to provided start, stop...
-
-            return webelements[start:stop:step]
-
-        return Collection(
-            Locator(
-                f'{self}[{start or ""}'
-                f':{stop or ""}'
-                f'{":" + str(step) if step else ""}]',
-                find,
-            ),
-            self.config,
-        )
-
-    def __getitem__(
-        self, index_or_slice: Union[int, slice]
-    ) -> Union[Element, Collection]:
-        if isinstance(index_or_slice, slice):
-            return self.sliced(
-                index_or_slice.start, index_or_slice.stop, index_or_slice.step
-            )
-
-        return self.element(index_or_slice)
-
-    def from_(self, start: int) -> Collection:
-        return typing.cast(Collection, self[start:])
-
-    def to(self, stop: int) -> Collection:
-        return typing.cast(Collection, self[:stop])
-
-    def by(
-        self, condition: Union[Condition[Element], Callable[[Element], None]]
-    ) -> Collection:
-        condition = (
-            condition
-            if isinstance(condition, Condition)
-            else Condition(str(condition), condition)  # TODO: check here for fn name
-        )
-
-        return Collection(
-            Locator(
-                f'{self}.filtered_by({condition})',
-                lambda: [
-                    element() for element in self.cached if element.matching(condition)
-                ],
-            ),
-            self.config,
-        )
-
-    def filtered_by(
-        self, condition: Union[Condition[Element], Callable[[Element], None]]
-    ) -> Collection:
-        warnings.warn(
-            'collection.filtered_by(condition) is deprecated in favor of collection.by(condition)',
-            DeprecationWarning,
-        )
-        return self.by(condition)
-
-    def by_their(
-        self,
-        selector: Union[str, Tuple[str, str], Callable[[Element], Element]],
-        condition: Condition[Element],
-    ) -> Collection:
-        """
-        Returns elements from collection that have inner/relative element,
-        found by ``selector`` and matching ``condition``.
-
-        Is a shortcut for ``collection.by(lambda element: condition(element.element(selector))``.
-
-        Example (straightforward)
-        -------------------------
-
-        GIVEN html elements somewhere in DOM::
-            .result
-                .result-title
-                .result-url
-                .result-snippet
-
-        THEN::
-
-            browser.all('.result')\
-                .by_their('.result-title', have.text('Selene'))\
-                .should(have.size(3))
-
-        is similar to::
-
-            browser.all('.result')\
-                .by_their(lambda it: have.text(text)(it.element('.result-title')))\
-                .should(have.size(3))
-
-        Example (PageObject)
-        --------------------
-
-        GIVEN html elements somewhere in DOM::
-            .result
-                .result-title
-                .result-url
-                .result-snippet
-
-        AND::
-
-            results = browser.all('.result')
-            class Result:
-                def __init__(self, element):
-                    self.element = element
-                    self.title = self.element.element('.result-title')
-                    self.url = self.element.element('.result-url')
-            # ...
-
-        THEN::
-
-            results.by_their(lambda it: Result(it).title, have.text(text))\
-                .should(have.size(3))
-
-        is similar to::
-
-            results.by_their(lambda it: have.text(text)(Result(it).title))\
-                .should(have.size(3))
-        """
-
-        def find_in(parent: Element) -> Element:
-            if callable(selector):
-                return selector(parent)
-            else:
-                return parent.element(selector)
-
-        return self.by(lambda it: condition(find_in(it)))
-
-    def element_by(
-        self, condition: Union[Condition[Element], Callable[[Element], None]]
-    ) -> Element:
-        # TODO: a first_by(condition) alias would be shorter,
-        #  and more consistent with by(condition).first
-        #  but the phrase items.element_by(have.text('foo')) leads to a more
-        #  natural meaning that such element should be only one...
-        #  while items.first_by(have.text('foo')) gives a clue that
-        #  it's just one of many...
-        #  should we then make element_by fail
-        #  if the condition matches more than one element? (maybe we can control it via corresponding config option?)
-        #  yet we don't fail if browser.element(selector) or element.element(selector)
-        #  finds more than one element... o_O
-
-        # TODO: In the implementation below...
-        #       We use condition in context of "matching", i.e. as a predicate...
-        #       why then not accept Callable[[E], bool] also?
-        #       (as you remember, Condition is Callable[[E], None] throwing Error)
-        #       This will allow the following code be possible
-        #           results.element_by(lambda it:
-        #               Result(it).title.matching(have.text(text)))
-        #       instead of:
-        #           results.element_by(lambda it: have.text(text)(
-        #                              Result(it).title))
-        #       in addition to:
-        #           results.element_by_its(lambda it:
-        #               Result(it).title, have.text(text))
-        #       Open Points:
-        #       - do we need element_by_its, if we allow Callable[[E], bool] ?
-        #       - if we add elements_by_its, do we need then to accept Callable[[E], bool] ?
-        #       - probably... Callable[[E], bool] will lead to worse error messages,
-        #         in such case we ignore thrown error's message
-        #         - hm... ut seems like we nevertheless ignore it...
-        #           we use element.matching(condition) below
-        condition = (
-            condition
-            if isinstance(condition, Condition)
-            else Condition(str(condition), condition)
-        )
-
-        def find() -> WebElement:
-            cached = self.cached
-
-            for element in cached:
-                if element.matching(condition):
-                    return element()
-
-            from selene.core import query
-
-            if self.config.log_outer_html_on_failure:
-                """
-                TODO: move it support.shared.config
-                """
-                outer_htmls = [query.outer_html(element) for element in cached]
-
-                raise AssertionError(
-                    f'\n\tCannot find element by condition «{condition}» '
-                    f'\n\tAmong {self}'
-                    f'\n\tActual webelements collection:'
-                    f'\n\t{outer_htmls}'
-                )  # TODO: isn't it better to print it all the time via hook, like for Element?
-            else:
-                raise AssertionError(
-                    f'\n\tCannot find element by condition «{condition}» '
-                    f'\n\tAmong {self}'
-                )
-
-        return Element(Locator(f'{self}.element_by({condition})', find), self.config)
-
-    def element_by_its(
-        self,
-        selector: Union[str, Tuple[str, str], Callable[[Element], Element]],
-        condition: Condition[Element],
-    ) -> Element:
-        """
-        Returns element from collection that has inner/relative element
-        found by ``selector`` and matching ``condition``.
-        Is a shortcut for ``collection.element_by(lambda its: condition(its.element(selector))``.
-
-        Example (straightforward)
-        -------------------------
-
-        GIVEN html elements somewhere in DOM::
-
-            .result
-                .result-title
-                .result-url
-                .result-snippet
-
-        THEN::
-
-            browser.all('.result')\
-                .element_by_its('.result-title', have.text(text))\
-                .element('.result-url').click()
-
-        ... is a shortcut for::
-
-            browser.all('.result')\
-                .element_by(lambda its: have.text(text)(its.element('.result-title')))\
-                .element('.result-url').click()
-
-        Example (PageObject)
-        --------------------
-
-        GIVEN html elements somewhere in DOM::
-
-            .result
-                .result-title
-                .result-url
-                .result-snippet
-
-        AND::
-
-            results = browser.all('.result')
-            class Result:
-                def __init__(self, element):
-                    self.element = element
-                    self.title = self.element.element('.result-title')
-                    self.url = self.element.element('.result-url')
-
-        THEN::
-
-            Result(results.element_by_its(lambda it: Result(it).title, have.text(text)))\
-                .url.click()
-
-        is a shortcut for::
-
-            Result(results.element_by(lambda it: have.text(text)(Result(it).title)))\
-                .url.click()
-            # ...
-        """
-
-        # TODO: tune implementation to ensure error messages are ok
-
-        def find_in(parent: Element):
-            if callable(selector):
-                return selector(parent)
-            else:
-                return parent.element(selector)
-
-        return self.element_by(lambda it: condition(find_in(it)))
-
-    def collected(
-        self, finder: Callable[[Element], Union[Element, Collection]]
-    ) -> Collection:
-        # TODO: consider adding predefined queries to be able to write
-        #         collected(query.element(selector))
-        #       over
-        #         collected(lambda element: element.element(selector))
-        #       and
-        #         collected(query.all(selector))
-        #       over
-        #         collected(lambda element: element.all(selector))
-        #       consider also putting such element builders like to find.* module instead of query.* module
-        #       because they are not supposed to be used in entity.get(*) context defined for other query.* fns
-
-        return Collection(
-            Locator(
-                f'{self}.collected({finder})',
-                # TODO: consider skipping None while flattening
-                lambda: typing.cast(
-                    typing.Sequence[WebElement],
-                    flatten([finder(element)() for element in self.cached]),
-                ),
-            ),
-            self.config,
-        )
-
-    def all(self, selector: Union[str, Tuple[str, str]]) -> Collection:
-        """
-        Returns a collection of all elements found be selector inside each element of self
-
-        An alias to ``collection.collected(lambda its: its.all(selector))``.
-
-        Example
-        -------
-
-        Given html::
-
-            <table>
-              <tr class="row">
-                <td class="cell">A1</td><td class="cell">A2</td>
-              </tr>
-              <tr class="row">
-                <td class="cell">B1</td><td class="cell">B2</td>
-              </tr>
-            </table>
-
-        Then::
-
-            browser.all('.row').all('.cell')).should(have.texts('A1', 'A2', 'B1', 'B2'))
-        """
-        by = self.config._selector_or_by_to_by(selector)
-
-        # TODO: consider implement it through calling self.collected
-        #       because actually the impl is self.collected(lambda element: element.all(selector))
-
-        return Collection(
-            Locator(
-                f'{self}.all({by})',
-                lambda: typing.cast(
-                    typing.Sequence[WebElement],
-                    flatten([webelement.find_elements(*by) for webelement in self()]),
-                ),
-            ),
-            self.config,
-        )
-
-    # todo: consider collection.all_first(number, selector) to get e.g. two first td from each tr
-    def all_first(self, selector: Union[str, Tuple[str, str]]) -> Collection:
-        """
-        Returns a collection of each first element found be selector inside each element of self
-
-        An alias to ``collection.collected(lambda its: its.element(selector))``.
-        Not same as ``collection.all(selector).first`` that is same as ``collection.first.element(selector)``
-
-        Example
-        -------
-
-        Given html::
-
-            <table>
-              <tr class="row">
-                <td class="cell">A1</td><td class="cell">A2</td>
-              </tr>
-              <tr class="row">
-                <td class="cell">B1</td><td class="cell">B2</td>
-              </tr>
-            </table>
-
-        Then::
-
-            browser.all('.row').all_first('.cell')).should(have.texts('A1', 'B1'))
-        """
-        by = self.config._selector_or_by_to_by(selector)
-
-        # TODO: consider implement it through calling self.collected
-        #       because actually the impl is self.collected(lambda element: element.element(selector))
-
-        return Collection(
-            Locator(
-                f'{self}.all_first({by})',
-                lambda: [webelement.find_element(*by) for webelement in self()],
-            ),
-            self.config,
-        )
-
-    # --- Unique for Web --- #
-
-    @property
-    def shadow_roots(self) -> Collection:
-
-        # TODO: should not we return Collection of _SearchContexts instead of Collection of WebElements?
-        return Collection(
-            Locator(
-                f'{self}.shadow roots',
-                lambda: [webelement.shadow_root for webelement in self.locate()],
-            ),
-            self.config,
-        )
-
-
-AllElements = Collection
-
-All = Collection
-
-
 # TODO: should we rename it to FrameContextManager
 class _FrameContext:
     """A context manager to work with frames (iframes).
@@ -1709,7 +1097,7 @@ class _FrameContext:
             self._container.config.with_(_wait_decorator=self.__as_wait_decorator),
         )
 
-    def all(self, selector: str | typing.Tuple[str, str]) -> Collection:
+    def all(self, selector: str | typing.Tuple[str, str]) -> All[Element]:
         """Allows to search for all elements by selector inside the frame context
         with implicit switching to the frame and back for each method execution.
 
@@ -1727,7 +1115,7 @@ class _FrameContext:
         """
         by = self._container.config._selector_or_by_to_by(selector)
 
-        return Collection(
+        return All(
             Locator(
                 f'{self._container}: all({by})',
                 lambda: self._container.config.driver.find_elements(*by),

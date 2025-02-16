@@ -39,7 +39,7 @@ from typing_extensions import (
 from selene.common.fp import thread_last
 
 T = TypeVar('T')
-E = TypeVar('E')
+E = TypeVar('E', contravariant=True)
 R = TypeVar('R')
 
 # TODO: not sure, if we need all these Lambda, Proc, Query, Command in python
@@ -62,14 +62,14 @@ class Query(Generic[E, R]):
         self,
         name: str | Callable[[E | None], str],
         /,
-        fn: Callable[[E], R | None],
+        fn: Callable[[E], R],
     ):
         self._name = name
         self._fn = fn
 
     # TODO: should we add an `as` method to customize the name of existing query object?
 
-    def __call__(self, entity: E) -> R | None:  # todo: do we really need None here?
+    def __call__(self, entity: E) -> R:
         return self._fn(entity)
 
     def __str__(self):

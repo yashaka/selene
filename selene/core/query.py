@@ -200,10 +200,10 @@ from selenium.webdriver.remote.webelement import WebElement
 
 from selene.common._typing_functions import Query
 from selene.core import entity, Collection
+from selene.core._entity import _ConfiguredEntity, _DriverEntity
 from selene.core._element import Element
-from selene.core._browser import Browser
 from selene.core.locator import Locator
-from selene.web._elements import _FrameContext
+from selene.web._element import _FrameContext
 
 
 # TODO: should not we separate Query type from actual queries implementations?
@@ -291,22 +291,18 @@ location_once_scrolled_into_view: Query[Element, Dict[str, int]] = Query(
 )
 
 # TODO: what to do now with have.size* ? o_O
-size: Query[Element | Collection | Browser, dict | int] = Query(
+# TODO: refactor with overload? is this even possible with variables?
+size: Query[Element | Collection | _DriverEntity, dict | int] = Query(
     'size',
     # TODO: refactor this to avoid using typing.cast or type: ignore
     #       by introducing isinstance based checks on some BaseClass for specific entity types
     lambda some_entity: (
         some_entity.driver.get_window_size()  # type: ignore
-        if entity._wraps_driver(some_entity)
+        if isinstance(some_entity, _DriverEntity)
         else (
             some_entity.locate().size  # type: ignore
-            if entity._is_element(some_entity)
-            else (
-                len(some_entity.locate())  # type: ignore
-                if entity._is_collection(some_entity)
-                # TODO: refactor this redundant else clause o_O
-                else typing.cast(Browser, some_entity).driver.get_window_size()
-            )
+            if isinstance(some_entity, Element)
+            else len(some_entity.locate())  # type: ignore
         )
     ),
 )
@@ -405,57 +401,57 @@ frame_context = _FrameContext
 
 # --- Browser queries --- #
 
-url: Query[Browser, str] = Query('url', lambda browser: browser.driver.current_url)
+url: Query[_DriverEntity, str] = Query('url', lambda entity: entity.driver.current_url)
 
-title: Query[Browser, str] = Query('title', lambda browser: browser.driver.title)
+title: Query[_DriverEntity, str] = Query('title', lambda entity: entity.driver.title)
 
 # todo: should we use more low level name? actually... the 'window_handles' one?
 #       or should we just provide an alias to query.tabs as query.window_handles?
 #       to provide both option for the end user to choose depending on context?
-tabs: Query[Browser, List[str]] = Query(
-    'tabs', lambda browser: browser.driver.window_handles
+tabs: Query[_DriverEntity, List[str]] = Query(
+    'tabs', lambda entity: entity.driver.window_handles
 )
 
-tabs_number: Query[Browser, int] = Query(
-    'tabs number', lambda browser: len(browser.driver.window_handles)
+tabs_number: Query[_DriverEntity, int] = Query(
+    'tabs number', lambda entity: len(entity.driver.window_handles)
 )
 
 
-def tab(index: int) -> Query[Browser, str]:
-    def fn(browser: Browser) -> str:
-        return browser.driver.window_handles[index]
+def tab(index: int) -> Query[_DriverEntity, str]:
+    def fn(entity: _DriverEntity) -> str:
+        return entity.driver.window_handles[index]
 
     return Query(f'tab by index {index}', fn)
 
 
-current_tab: Query[Browser, str] = Query(
+current_tab: Query[_DriverEntity, str] = Query(
     'current tab (window handle)',
-    lambda browser: browser.driver.current_window_handle,
+    lambda entity: entity.driver.current_window_handle,
 )
 
 
-def __next_tab_fn(browser: Browser) -> str:
-    tabs = browser.driver.window_handles
-    current = browser.driver.current_window_handle
+def __next_tab_fn(entity: _DriverEntity) -> str:
+    tabs = entity.driver.window_handles
+    current = entity.driver.current_window_handle
     current_index = tabs.index(current)
-    return tabs[0] if current_index >= len(tabs) - 1 else tabs[current_index + 1]
+    return tabs[0] if current_index == len(tabs) - 1 else tabs[current_index + 1]
 
 
-next_tab: Query[Browser, str] = Query('next tab', __next_tab_fn)
+next_tab: Query[_DriverEntity, str] = Query('next tab', __next_tab_fn)
 
 
-def __previous_tab_fn(browser: Browser) -> str:
-    tabs = browser.driver.window_handles
-    current = browser.driver.current_window_handle
+def __previous_tab_fn(entity: _ConfiguredEntity) -> str:
+    tabs = entity.config.driver.window_handles
+    current = entity.config.driver.current_window_handle
     current_index = tabs.index(current)
     return tabs[-1] if current_index == 0 else tabs[current_index - 1]
 
 
-previous_tab: Query[Browser, str] = Query('previous tab', __previous_tab_fn)
+previous_tab: Query[_ConfiguredEntity, str] = Query('previous tab', __previous_tab_fn)
 
 
-page_source: Query[Browser, str] = Query(
-    'page source', lambda browser: browser.driver.page_source
+page_source: Query[_DriverEntity, str] = Query(
+    'page source', lambda entity: entity.driver.page_source
 )
 
 
@@ -463,10 +459,10 @@ page_source: Query[Browser, str] = Query(
 #       not jus query objects
 def screenshot_saved(
     path: typing.Optional[str] = None,
-) -> Query[Browser, typing.Optional[str]]:
-    query: Query[Browser, typing.Optional[str]] = Query(
+) -> Query[_DriverEntity, typing.Optional[str]]:
+    query: Query[_DriverEntity, typing.Optional[str]] = Query(
         'save and get screenshot',
-        lambda browser: browser.config._save_screenshot_strategy(browser.config, path),
+        lambda entity: entity.config._save_screenshot_strategy(entity.config, path),
     )
 
     if entity._wraps_driver(path):
@@ -480,10 +476,10 @@ def screenshot_saved(
 
 def page_source_saved(
     path: typing.Optional[str] = None,
-) -> Query[Browser, typing.Optional[str]]:
-    query: Query[Browser, typing.Optional[str]] = Query(
+) -> Query[_DriverEntity, typing.Optional[str]]:
+    query: Query[_DriverEntity, typing.Optional[str]] = Query(
         'save and get page source',
-        lambda browser: browser.config._save_page_source_strategy(browser.config, path),
+        lambda entity: entity.config._save_page_source_strategy(entity.config, path),
     )
 
     if entity._wraps_driver(path):

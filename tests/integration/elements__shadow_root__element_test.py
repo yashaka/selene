@@ -68,15 +68,18 @@ def test_actions_on_shadow_roots_elements(session_browser):
     paragraphs = browser.all('my-paragraph')
 
     # WHEN even before opened browser
-    paragraph_1_shadow = paragraphs.shadow_roots.first
-    paragraph_2_shadow = paragraphs.shadow_roots.second
+    # paragraph_1_shadow = paragraphs.shadow_roots.first
+    paragraph_1_shadow = paragraphs.get(query.js.shadow_roots).first
+    # paragraph_2_shadow = paragraphs.shadow_roots.second
+    paragraph_2_shadow = paragraphs.get(query.js.shadow_roots).second
     my_shadowed_text_1 = paragraph_1_shadow.element('[name=my-text]')
     my_shadowed_text_2 = paragraph_2_shadow.element('[name=my-text]')
     # AND
     browser.open('https://the-internet.herokuapp.com/shadowdom')
 
     # THEN
-    paragraphs.shadow_roots.should(have.size(2))
+    # paragraphs.shadow_roots.should(have.size(2))
+    paragraphs.get(query.js.shadow_roots).should(have.size(2))
     paragraphs.first.should(have.exact_text("Let's have some different text!"))
     my_shadowed_text_1.should(have.exact_text("My default text"))
     paragraphs.second.should(

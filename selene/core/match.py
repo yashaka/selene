@@ -51,9 +51,8 @@ from selene.common._typing_functions import Query
 from selene.core import query, Collection
 from selene.core.condition import Condition, Match
 from selene.core import entity
-from selene.core._entity import _ConfiguredEntity
+from selene.core._entity import _ConfiguredEntity, _DriverEntity
 from selene.core._element import Element
-from selene.core._browser import Browser
 
 
 # GENERAL CONDITION BUILDERS ------------------------------------------------- #
@@ -808,7 +807,7 @@ Use [size(0)][selene.core.match.size] instead.
 """
 
 
-class size(Match[Union[Collection, Browser, Element]]):
+class size(Match[Union[Collection, _DriverEntity, Element]]):
 
     def __init__(
         self,
@@ -847,9 +846,9 @@ class size(Match[Union[Collection, Browser, Element]]):
             _inverted=_inverted,
         )
 
-    # # there is no much sense to apply or_less & co to Browser or Element sizes
+    # # there is no much sense to apply or_less & co to _DriverEntity or Element sizes
     # @property
-    # def or_less(self) -> Condition[Collection | Browser | Element]:
+    # def or_less(self) -> Condition[Collection | _DriverEntity | Element]:
     #     return self.__class__(
     #         self.__expected,
     #         f'{self.__name} or less',
@@ -1539,7 +1538,7 @@ class _texts_like(_exact_texts_like):
 
 def url(
     expected: str, _name='has url', _by=predicate.equals, _inverted=False
-) -> _EntityHasSomethingSupportingIgnoreCase[Browser]:
+) -> _EntityHasSomethingSupportingIgnoreCase[_DriverEntity]:
     return _EntityHasSomethingSupportingIgnoreCase(
         _name, expected, actual=query.url, by=_by, _inverted=_inverted
     )
@@ -1551,7 +1550,7 @@ def url_containing(expected: str, _inverted=False):
 
 def title(
     expected: str, _name='has title', _by=predicate.equals, _inverted=False
-) -> _EntityHasSomethingSupportingIgnoreCase[Browser]:
+) -> _EntityHasSomethingSupportingIgnoreCase[_DriverEntity]:
     return _EntityHasSomethingSupportingIgnoreCase(
         _name, expected, actual=query.title, by=_by, _inverted=_inverted
     )
@@ -1563,7 +1562,7 @@ def title_containing(expected: str, _inverted=False):
     )
 
 
-class tabs_number(Match[Browser]):
+class tabs_number(Match[_DriverEntity]):
 
     def __init__(
         self,
@@ -1585,7 +1584,7 @@ class tabs_number(Match[Browser]):
         )
 
     @property
-    def or_less(self) -> Condition[Browser]:
+    def or_less(self) -> Condition[_DriverEntity]:
         return Match(
             f'{self.__name} or less',
             query.tabs_number,
@@ -1594,7 +1593,7 @@ class tabs_number(Match[Browser]):
         )
 
     @property
-    def or_more(self) -> Condition[Browser]:
+    def or_more(self) -> Condition[_DriverEntity]:
         return Match(
             f'{self.__name} or more',
             query.tabs_number,
@@ -1603,7 +1602,7 @@ class tabs_number(Match[Browser]):
         )
 
     @property
-    def _more_than(self) -> Condition[Browser]:
+    def _more_than(self) -> Condition[_DriverEntity]:
         return Match(
             f'has tabs number more than {self.__expected}',
             query.tabs_number,
@@ -1612,7 +1611,7 @@ class tabs_number(Match[Browser]):
         )
 
     @property
-    def _less_than(self) -> Condition[Browser]:
+    def _less_than(self) -> Condition[_DriverEntity]:
         return Match(
             f'has tabs number less than {self.__expected}',
             query.tabs_number,
@@ -1637,7 +1636,9 @@ def tabs_number_less_than_or_equal(expected: int, _inverted=False):
     return tabs_number(expected, _inverted=_inverted).or_less
 
 
-def browser_has_js_returned(expected: Any, script: str, *args) -> Condition[Browser]:
+def browser_has_js_returned(
+    expected: Any, script: str, *args
+) -> Condition[_DriverEntity]:
     warnings.warn(
         'deprecated because js does not work for mobile; '
         'use have.script_returned(True, ...) instead',
@@ -1666,9 +1667,9 @@ def browser_has_js_returned(expected: Any, script: str, *args) -> Condition[Brow
 #       maybe make it class based with predefined predicates
 # todo: consider making it work on element too; collection?
 #       probably the decision depends on finalisation of element.execute_script signature
-def script_returned(expected: Any, script: str, *args) -> Condition[Browser]:
+def script_returned(expected: Any, script: str, *args) -> Condition[_DriverEntity]:
     # todo: consider moving to query module
-    def script_result(browser: Browser):
+    def script_result(browser: _DriverEntity):
         return browser.driver.execute_script(script, *args)
 
     return Match(

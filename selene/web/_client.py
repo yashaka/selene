@@ -26,78 +26,51 @@ from typing import Optional, Union, Tuple
 
 from selenium.webdriver.remote.switch_to import SwitchTo
 from selenium.webdriver.remote.webdriver import WebDriver
+from selenium.webdriver.remote.webelement import WebElement
 
-from selene.core._actions import _Actions
-from selene.core.configuration import Config
-from selene.core._entity import _WaitingConfiguredEntity
-from selene.web._elements import Element, Collection
-from selene.core.locator import Locator
 from selene.support.webdriver import WebHelper
+from selene.core._actions import _Actions
+from selene.core._entity import _DriverEntity, _WaitingConfiguredEntity
+from selene.core.locator import Locator
+from selene.core._elements import All
+from selene.core._elements_context import _ElementsContext
+from selene.core.configuration import Config
+from selene.web._element import Element
 
 
-class Browser(_WaitingConfiguredEntity):
-    def __init__(self, config: Optional[Config] = None):
-        config = Config() if config is None else config
-        super().__init__(config=config)
+class Browser(
+    _ElementsContext[WebDriver, WebElement, Element, All[Element]],
+    _WaitingConfiguredEntity,
+    _DriverEntity,
+):
+    def __init__(
+        self,
+        config: Optional[Config] = None,
+        **kwargs,
+    ):
+        locator = kwargs.pop('locator', Locator('client', lambda: self.config.driver))
+        config = (
+            Config()
+            if (maybe_config := kwargs.pop('config', config)) is None
+            else maybe_config
+        )
+        _Element = kwargs.pop('_Element', Element)
+        _All = kwargs.pop('_All', All)
 
-    def with_(self, config: Optional[Config] = None, **config_as_kwargs) -> Browser:
-        return (
-            Browser(config)
-            if config
-            else Browser(self.config.with_(**config_as_kwargs))
+        super().__init__(
+            locator=locator,
+            config=config,
+            _Element=_Element,
+            _All=_All,
+            **kwargs,
         )
 
     def __str__(self):
         return 'browser'
 
-    # todo: consider not just building driver but also adjust its size according to config
-    @property
-    def driver(self) -> WebDriver:
-        return self.config.driver
-
-    # TODO: consider making it callable (self.__call__() to be shortcut to self.__raw__ ...)
-
-    @property
-    def __raw__(self):
-        return self.config.driver
-
     @property
     def _actions(self) -> _Actions:
         return _Actions(self.config)
-
-    # --- Element builders --- #
-
-    # TODO: consider @overload to have more specific signature variations
-    # TODO: consider None by default,
-    #       and *args, **kwargs to be able to pass custom things
-    #       to be processed by config.location_strategy
-    #       and by default process none as "element to skip all actions on it"
-    def element(
-        self, css_or_xpath_or_by: Union[str, Tuple[str, str], Locator]
-    ) -> Element:
-        if isinstance(css_or_xpath_or_by, Locator):
-            return Element(css_or_xpath_or_by, self.config)
-
-        by = self.config._selector_or_by_to_by(css_or_xpath_or_by)
-        # todo: do we need by_to_locator_strategy?
-
-        return Element(
-            Locator(f'{self}.element({by})', lambda: self.driver.find_element(*by)),
-            self.config,
-        )
-
-    def all(
-        self, css_or_xpath_or_by: Union[str, Tuple[str, str], Locator]
-    ) -> Collection:
-        if isinstance(css_or_xpath_or_by, Locator):
-            return Collection(css_or_xpath_or_by, self.config)
-
-        by = self.config._selector_or_by_to_by(css_or_xpath_or_by)
-
-        return Collection(
-            Locator(f'{self}.all({by})', lambda: self.driver.find_elements(*by)),
-            self.config,
-        )
 
     # --- High Level Commands--- #
 

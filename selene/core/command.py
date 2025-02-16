@@ -295,7 +295,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selene.common import fp
 from selene.core import entity, Collection
 from selene.core._element import Element
-from selene.core._browser import Browser
+from selene.core._entity import _DriverEntity
 from selene.core.exceptions import _SeleneError
 from selene.common._typing_functions import Command
 from selenium.webdriver.remote.webdriver import WebDriver
@@ -305,7 +305,7 @@ from selenium.webdriver.common.actions.action_builder import ActionBuilder
 from selenium.webdriver.common.actions.pointer_input import PointerInput
 
 
-class __SaveScreenshot(Command[Browser]):
+class __SaveScreenshot(Command[_DriverEntity]):
     """A class to build a expected condition to be used in waits or assertions"""
 
     def __init__(self):
@@ -313,23 +313,24 @@ class __SaveScreenshot(Command[Browser]):
 
     # if somebody applies a condition as `condition`
     @overload
-    def __call__(self, browser: Browser, /) -> None: ...
+    def __call__(self, browser: _DriverEntity, /) -> None: ...
 
     # if somebody applies a condition as `condition()`
     @overload
-    def __call__(self, path: Optional[str] = None, /) -> Command[Browser]: ...
+    def __call__(self, path: Optional[str] = None, /) -> Command[_DriverEntity]: ...
 
-    def __call__(self, browser_or_path: Browser | Optional[str] = None, /):
+    def __call__(self, browser_or_path: _DriverEntity | Optional[str] = None, /):
         path: str | None = browser_or_path if isinstance(browser_or_path, str) else None
-        command: Command[Browser] = Command(
+        command: Command[_DriverEntity] = Command(
             str(self) + (f' to: {path}' if path is not None else ''),
             lambda browser: browser.config._save_screenshot_strategy(
                 browser.config, path
             ),
         )
 
-        if entity._wraps_driver(browser_or_path):
-            command.__call__(cast(Browser, browser_or_path))
+        if isinstance(browser_or_path, _DriverEntity):
+            browser = browser_or_path
+            command.__call__(browser)
             return None
 
         return command
@@ -338,7 +339,7 @@ class __SaveScreenshot(Command[Browser]):
 save_screenshot = __SaveScreenshot()
 
 
-class __SavePageSource(Command[Browser]):
+class __SavePageSource(Command[_DriverEntity]):
     """A class to build a expected condition to be used in waits or assertions"""
 
     def __init__(self):
@@ -346,23 +347,24 @@ class __SavePageSource(Command[Browser]):
 
     # if somebody applies a condition as `condition`
     @overload
-    def __call__(self, browser: Browser, /) -> None: ...
+    def __call__(self, browser: _DriverEntity, /) -> None: ...
 
     # if somebody applies a condition as `condition()`
     @overload
-    def __call__(self, path: Optional[str] = None, /) -> Command[Browser]: ...
+    def __call__(self, path: Optional[str] = None, /) -> Command[_DriverEntity]: ...
 
-    def __call__(self, browser_or_path: Browser | Optional[str] = None, /):
+    def __call__(self, browser_or_path: _DriverEntity | Optional[str] = None, /):
         path: str | None = browser_or_path if isinstance(browser_or_path, str) else None
-        command: Command[Browser] = Command(
+        command: Command[_DriverEntity] = Command(
             str(self) + (f' to: {path}' if path is not None else ''),
             lambda browser: browser.config._save_page_source_strategy(
                 browser.config, path
             ),
         )
 
-        if entity._wraps_driver(browser_or_path):
-            command.__call__(cast(Browser, browser_or_path))
+        if isinstance(browser_or_path, _DriverEntity):
+            browser = browser_or_path
+            command.__call__(browser)
             return None
 
         return command
@@ -371,13 +373,13 @@ class __SavePageSource(Command[Browser]):
 save_page_source = __SavePageSource()
 
 
-def __select_all_actions(some_entity: Element | Browser):
+def __select_all_actions(some_entity: Element | _DriverEntity):
     _COMMAND_KEY = Keys.COMMAND if sys.platform == 'darwin' else Keys.CONTROL
     actions: ActionChains = ActionChains(some_entity.config.driver)
 
     actions.key_down(_COMMAND_KEY)
 
-    if entity._is_element(some_entity):
+    if isinstance(some_entity, Element):
         # for select_all it's ok to click on input field before sending the shortcut
         # probably it's even a good idea to do such click
         # that's why it's ok for use to call actions.send_keys_to_element
@@ -391,7 +393,7 @@ def __select_all_actions(some_entity: Element | Browser):
     actions.perform()
 
 
-select_all: Command[Element | Browser] = Command(
+select_all: Command[Element | _DriverEntity] = Command(
     'send «select all» keys shortcut as ctrl+a or cmd+a for mac',
     __select_all_actions,
 )
@@ -410,10 +412,10 @@ def copy_and_paste(text: str):
     return paste(text)
 
 
-def __copy(some_entity: Element | Browser):
+def __copy(some_entity: Element | _DriverEntity):
     _COMMAND_KEY = Keys.COMMAND if sys.platform == 'darwin' else Keys.CONTROL
 
-    if entity._is_element(some_entity):
+    if isinstance(some_entity, Element):
         some_entity.locate().send_keys(_COMMAND_KEY, 'c')  # type: ignore
         return
 
@@ -425,7 +427,7 @@ def __copy(some_entity: Element | Browser):
 
 
 # TODO: define name dynamically based on platform
-copy: Command[Element | Browser] = Command(
+copy: Command[Element | _DriverEntity] = Command(
     'send «copy» OS-based keys shortcut',
     __copy,
 )
@@ -441,7 +443,7 @@ Does not support mobile context. Not tested with desktop apps.
 """
 
 
-class __Paste(Command[Union[Element, Browser]]):
+class __Paste(Command[Union[Element, _DriverEntity]]):
     def __init__(self):
         self._name = lambda _: (
             'paste via «'
@@ -450,12 +452,12 @@ class __Paste(Command[Union[Element, Browser]]):
         )
 
     @overload
-    def __call__(self, entity: Union[Element, Browser], /): ...
+    def __call__(self, entity: Union[Element, _DriverEntity], /): ...
 
     @overload
     def __call__(self, text: str, /): ...
 
-    def __call__(self, entity_or_text: Union[Element, Browser] | str, /):
+    def __call__(self, entity_or_text: Union[Element, _DriverEntity] | str, /):
         maybe_text = entity_or_text if isinstance(entity_or_text, str) else None
 
         def name_as_either_copy_and_paste_or_just_paste(_):
@@ -468,11 +470,11 @@ class __Paste(Command[Union[Element, Browser]]):
                 return
             pyperclip.copy(maybe_text)
 
-        def perform_shortcut_based_actions(some_entity: Element | Browser):
+        def perform_shortcut_based_actions(some_entity: Element | _DriverEntity):
             _COMMAND_KEY = Keys.COMMAND if sys.platform == 'darwin' else Keys.CONTROL
 
-            if entity._is_element(some_entity):
-                some_entity.locate().send_keys(_COMMAND_KEY, 'v')  # type: ignore
+            if isinstance(some_entity, Element):
+                some_entity.locate().send_keys(_COMMAND_KEY, 'v')
                 return
 
             actions = ActionChains(some_entity.config.driver)
@@ -481,7 +483,7 @@ class __Paste(Command[Union[Element, Browser]]):
             actions.key_up(_COMMAND_KEY)
             actions.perform()
 
-        command: Command[Union[Element, Browser]] = Command(
+        command: Command[Union[Element, _DriverEntity]] = Command(
             name_as_either_copy_and_paste_or_just_paste,
             lambda entity: fp.perform(
                 maybe_copy_to_clipboard,
@@ -874,12 +876,12 @@ class js:  # pylint: disable=invalid-name
 
     click = __ClickWithOffset()
 
-    clear_local_storage: Command[Browser] = Command(
+    clear_local_storage: Command[_DriverEntity] = Command(
         'clear local storage',
         lambda browser: browser.driver.execute_script('window.localStorage.clear()'),
     )
 
-    clear_session_storage: Command[Browser] = Command(
+    clear_session_storage: Command[_DriverEntity] = Command(
         'clear local storage',
         lambda browser: browser.driver.execute_script('window.sessionStorage.clear()'),
     )

@@ -45,7 +45,7 @@ WaitingEntity = _WaitingConfiguredEntity
 def _is_element(obj: object) -> bool:
     return (
         isinstance(obj, _WaitingConfiguredEntity)
-        and hasattr(obj, 'locate')
+        and not hasattr(obj, 'driver')
         and not isinstance(obj, Iterable)
     )
 

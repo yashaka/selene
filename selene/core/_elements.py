@@ -70,7 +70,9 @@ class All(
 
     # TODO: do we really need it? consider deprecating it
     def __len__(self):
-        return len(self.locate())
+        from selene.core import query
+
+        return self.get(query.size)
 
     # --- Iterable --- #
 

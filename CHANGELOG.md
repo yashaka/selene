@@ -203,10 +203,18 @@ Done:
 - Made selene.Element a web.Element instead of core.Element
 - broke down core.entity.py into core.* [#454](https://github.com/yashaka/selene/issues/454)
 
-Next:
+In Progress:
 - make core.Element a base class for web.Element
-- make web.Element a base class for web.Element
-- make device.Element a base class for web.Element + move cross-platform support to base classes
+  - refactor _FrameContext
+  - consider web.Collection with .shadow_roots
+- fix `Module "selene.web._element" has no attribute "Element" mypy (attr-defined)`
+- fix broken pom (see pom tests)
+- ...
+- fix broken log_outer_html_on_failure on collections (test_logging_outer_html__enabled__on_collection)
+- ...
+
+Next:
+- make core.Element a base class for device.Element + move cross-platform support to base classes
 - rename context.py to client.py
 - ensure query.* and command.* use proper base classes
 - review config options... some will not work for core.Element anymore... should we document this?
@@ -458,19 +466,19 @@ browser.all('li').first.with_(_match_ignoring_case=True).should(have.exact_text(
 
 ```
 
-### Shadow DOM support via element.shadow_root or collection.shadow_roots
+### Shadow DOM support via element.shadow_root or collection.get(query.js.shadow_roots)
 
 As simple as:
 
 ```python
-from selene import browser, have
+from selene import browser, have, query
 
 ...
 
 browser.element('#element-with-shadow-dom').shadow_root.element(
   '#shadowed-element'
 ).click()
-browser.all('.item-with-shadow-dom').shadow_roots.should(have.size(3))
+browser.all('.item-with-shadow-dom').get(query.js.shadow_roots).should(have.size(3))
 ```
 
 ### Shadow DOM support via query.js.shadow_root(s)
@@ -662,6 +670,7 @@ Thanks to [Cameron Shimmin](https://github.com/cshimm) and Edale Miguel for PR [
 
 ### Deprecations
 
+- `selene.core._browser.Browser`
 - `condition.call(entity)` in favor of `condition(entity)` or `condition.__call__(entity)`
     - there is also an experimental `condition._match`, that is actually aliased by `condition.__call__`
 - `ConditionNotMatchedError` in favor of `ConditionMismatch`

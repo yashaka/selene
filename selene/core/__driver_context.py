@@ -21,20 +21,33 @@
 # SOFTWARE.
 from __future__ import annotations
 
-from typing_extensions import Optional, Callable, Sequence
+from typing_extensions import Optional, Callable, Sequence, TypeVar, Generic
 
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
 
 from selene.core._actions import _Actions
 from selene.core._elements import All
-from selene.core._elements_context import _ElementsContext
+from selene.core._elements_context import _ElementsContext, _SearchContext
 from selene.core.configuration import Config
-from selene.core._entity import _DriverEntity, _WaitingConfiguredEntity
+from selene.core._entity import _DriverEntity, _Entity, _WaitingConfiguredEntity
 from selene.core._element import Element
 from selene.core.locator import Locator
 
+# TODO: does not work... do we even need it? isn't _DriverEntity enough?
 
+EC = TypeVar('EC', bound=_ElementsContext)
+A = TypeVar('A')
+SC = TypeVar('SC', bound=WebDriver)  # , default=WebDriver)
+"""Reflects Search Context, e.g. WebDriver"""
+SR = TypeVar('SR', bound=WebElement)  # , default=WebElement)
+"""Reflects Search Result, e.g. WebElement"""
+
+
+# TODO: Should we name it _drived_context.DrivedContext?
+#       technically... config is so far also driver-based
+#       thus, any _ConfiguredEntity sub-class is drived out of the box
+#       so, maybe DriverContext is still a better way...
 # TODO: should we make it generic on Element and Collection?
 # TODO: de we need a one generic base class for all client-like classes?
 #       so we can build corresponding queries/commands/conditions based on them?
@@ -43,57 +56,42 @@ from selene.core.locator import Locator
 #       i.e. allowing something like
 #       element.perform(command.switch_to_next_tab) o_O
 # TODO: Client does not need .cached but gets it... :( should we fix it?
-class Client(
-    _ElementsContext[WebDriver, WebElement, Element, All[Element]],
+class __DriverContext(
+    _ElementsContext[SC, SR, EC, A],
     _WaitingConfiguredEntity,
     _DriverEntity,
+    Generic[EC, A, SC, SR],
+    # Generic[EC, A, SC, SR],
 ):
     def __init__(
         self,
         config: Optional[Config] = None,
         *,
-        _Element: Callable[[Locator[WebElement], Config], Element] = Element,
+        _Element: Callable[[Locator[SR], Config], EC],
         _All: Callable[
             [
-                Locator[Sequence[WebElement]],
+                Locator[Sequence[SR]],
                 Config,
-                Callable[[Locator[WebElement], Config], Element],
+                Callable[[Locator[SR], Config], EC],
             ],
-            All[Element],
-        ] = All,
+            A,
+        ],
         **kwargs,
     ):
-        locator = kwargs.pop('locator', Locator('client', lambda: self.driver))
         config = (
             Config()
-            if (maybe_config := kwargs.pop('config', config)) is None
+            if (maybe_config := kwargs.get('config', config)) is None
             else maybe_config
         )
-        _Element = kwargs.pop('_Element', _Element)
-        _All = kwargs.pop('_All', _All)
+
         super().__init__(
-            locator=locator,
+            locator=Locator('context', lambda: self.config.driver),  # type: ignore
             config=config,
             _Element=_Element,
             _All=_All,
             **kwargs,
         )
 
-    # todo: consider adjusting driver size according to config here
-    @property
-    def driver(self) -> WebDriver:
-        return self.config.driver
-
     @property
     def _actions(self) -> _Actions:
         return _Actions(self.config)
-
-    # --- High Level Commands--- #
-
-    # # TODO: do we need it as part of a most general search context?
-    # def open(self, relative_or_absolute_url: Optional[str] = None) -> Context:
-    #     # TODO: should we keep it less pretty but more KISS? like:
-    #     # self.config._driver_get_url_strategy(self.config)(relative_or_absolute_url)
-    #     self.config._executor.get_url(relative_or_absolute_url)
-    #
-    #     return self

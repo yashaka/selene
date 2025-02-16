@@ -1340,7 +1340,7 @@ class Condition(Generic[E]):
         return Condition.for_each(self)
 
 
-class Match(Condition[E]):
+class Match(Condition[E], Generic[E]):
     """A subclass-based alternative to [Condition][selene.core.condition.Condition]
     class for better readability on straightforward usage of conditions
     built inline with optional custom name, True|False-predicate as `by` argument

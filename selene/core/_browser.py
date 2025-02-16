@@ -22,18 +22,13 @@
 from __future__ import annotations
 
 import warnings
-from typing_extensions import Optional, Union, Tuple
+from typing_extensions import Optional, Union
 
 from selenium.webdriver.remote.switch_to import SwitchTo
 from selenium.webdriver.remote.webdriver import WebDriver
 
-from selene.core._actions import _Actions
 from selene.core._client import Client
 from selene.core.configuration import Config
-from selene.core._entity import _WaitingConfiguredEntity
-from selene.core import Collection
-from selene.core._element import Element
-from selene.core.locator import Locator
 
 
 class Browser(Client):

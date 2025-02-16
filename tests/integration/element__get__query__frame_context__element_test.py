@@ -23,7 +23,7 @@ import logging
 
 import pytest
 
-import selene.web._elements
+import selene.web._element
 from selene import command, have, query, support
 from tests import const
 

@@ -1,3 +1,5 @@
+import pytest
+
 from selene import browser, have, be
 from tests import resources
 
@@ -37,14 +39,25 @@ def test_logging_outer_html__enabled__on_collection():
     browser.config.log_outer_html_on_failure = True
     browser.open(resources.TODOMVC_URL)
 
+    # WHEN
+    footer_paragraphs = browser.all('footer p')
+    wrong_paragraph = footer_paragraphs.element_by(have.attribute('wrong_attr'))
+
+    # THEN
+    assert browser.config.log_outer_html_on_failure is True
+    assert footer_paragraphs.config.log_outer_html_on_failure is True
+    assert wrong_paragraph.config.log_outer_html_on_failure is True
+
+    # WHEN
     message = None
     try:
-        browser.all('footer p').element_by(have.attribute('wrong_attr')).should(
-            be.visible
-        )
+        wrong_paragraph.should(be.visible)
+        pytest.fail('should have failed')
     except Exception as e:
+        # THEN
         message = str(e)
 
+    # AND
     assert message is not None
     assert 'Actual webelements collection:' in message
 

@@ -31,7 +31,7 @@ from selene.core import match as _match, Collection
 # --- be.not_.* conditions --- #
 from selene.core.condition import Condition
 from selene.core._element import Element
-from selene.core._browser import Browser
+from selene.core._entity import _DriverEntity
 
 # TODO: consider refactoring to class for better extendability
 #       when creating custom conditions
@@ -256,7 +256,7 @@ def tabs_number_greater_than_or_equal(value: int):
     return _match.tabs_number_greater_than_or_equal(value, _inverted=True)
 
 
-def js_returned_true(script_to_return_bool: str) -> Condition[Browser]:
+def js_returned_true(script_to_return_bool: str) -> Condition[_DriverEntity]:
     warnings.warn(
         'deprecated; use have.script_returned(True, ...) instead',
         PendingDeprecationWarning,
@@ -264,7 +264,7 @@ def js_returned_true(script_to_return_bool: str) -> Condition[Browser]:
     return _match.script_returned(True, script_to_return_bool).not_
 
 
-def js_returned(expected: Any, script: str, *args) -> Condition[Browser]:
+def js_returned(expected: Any, script: str, *args) -> Condition[_DriverEntity]:
     warnings.warn(
         'deprecated; use have.script_returned(...) instead',
         PendingDeprecationWarning,
@@ -272,7 +272,7 @@ def js_returned(expected: Any, script: str, *args) -> Condition[Browser]:
     return _match.script_returned(expected, script, *args).not_
 
 
-def script_returned(expected: Any, script: str, *args) -> Condition[Browser]:
+def script_returned(expected: Any, script: str, *args) -> Condition[_DriverEntity]:
     return _match.script_returned(expected, script, *args).not_
 
 

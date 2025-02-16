@@ -272,7 +272,7 @@ The performance is kept optimal because via `with` statement we can group action
 Will also work for nested context:
 
 ```python
-import selene.web._elements
+import selene.web._element
 from selene import browser, have, query, be
 
 # GIVEN even before opened browser

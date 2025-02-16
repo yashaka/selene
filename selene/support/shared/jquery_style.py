@@ -21,13 +21,15 @@
 # SOFTWARE.
 from typing import Union, Tuple
 
-from selene.web._elements import Element, Collection
+from selene.core._elements import All
+from selene.web._element import Element
 from selene import browser
+from selene.web import Collection
 
 
 def s(css_or_xpath_or_by: Union[str, Tuple[str, str]]) -> Element:
     return browser.element(css_or_xpath_or_by)
 
 
-def ss(css_or_xpath_or_by: Union[str, Tuple[str, str]]) -> Collection:
+def ss(css_or_xpath_or_by: Union[str, Tuple[str, str]]) -> All[Element]:
     return browser.all(css_or_xpath_or_by)
