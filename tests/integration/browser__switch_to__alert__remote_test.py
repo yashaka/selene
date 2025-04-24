@@ -1,24 +1,3 @@
-# MIT License
-#
-# Copyright (c) 2015-2022 Iakiv Kramarenko
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in all
-# copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
 import pytest
 from selenium.common.exceptions import NoAlertPresentException
 
@@ -39,59 +18,68 @@ def with_dismiss_alerts_teardown(the_module_remote_browser):
         pass
 
 
-def test_alert_is_present(the_module_remote_browser, with_dismiss_alerts_teardown):
+def test_alert_is_present_after_click(the_module_remote_browser, with_dismiss_alerts_teardown):
+    # GIVEN
     browser = the_module_remote_browser
     GivenPage(browser.driver).opened_with_body(
         """
         <p>
         <input id="alert_btn" type="button" onclick="alert('Good morning')" value="Run">
-        </p>"""
+        </p>
+        """
     )
 
+    # WHEN
     browser.element("#alert_btn").click()
 
+    # THEN
     try:
         _ = browser.switch_to.alert
-        assert True
     except NoAlertPresentException:
-        assert False, 'actual: alert not present, expected: alert is present'
+        pytest.fail("Expected alert to be present, but it was not.")
 
 
 def test_can_accept_alert(the_module_remote_browser, with_dismiss_alerts_teardown):
+    # GIVEN
     browser = the_module_remote_browser
     GivenPage(browser.driver).opened_with_body(
         """
         <p>
         <input id="alert_btn" type="button" onclick="alert('Good morning')" value="Run">
-        </p>"""
+        </p>
+        """
     )
-    browser.element("#alert_btn").click()
 
+    # WHEN
+    browser.element("#alert_btn").click()
     browser.switch_to.alert.accept()
 
+    # THEN
     try:
         browser.switch_to.alert.accept()
-        assert False, 'actual: alert presents, expected: alert not present'
+        pytest.fail("Expected no alert to be present, but one was.")
     except NoAlertPresentException:
-        assert True
+        pass
 
 
-def test_can_dismiss_confirm_dialog(
-    the_module_remote_browser, with_dismiss_alerts_teardown
-):
+def test_can_dismiss_alert(the_module_remote_browser, with_dismiss_alerts_teardown):
+    # GIVEN
     browser = the_module_remote_browser
     GivenPage(browser.driver).opened_with_body(
         """
         <p>
         <input id="alert_btn" type="button" onclick="alert('Good morning')" value="Run">
-        </p>"""
+        </p>
+        """
     )
-    browser.element("#alert_btn").click()
 
+    # WHEN
+    browser.element("#alert_btn").click()
     browser.switch_to.alert.dismiss()
 
+    # THEN
     try:
         browser.switch_to.alert.accept()
-        assert False, 'actual: alert presents, expected: alert not present'
+        pytest.fail("Expected no alert to be present, but one was.")
     except NoAlertPresentException:
-        assert True
+        pass
