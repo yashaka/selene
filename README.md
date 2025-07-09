@@ -59,7 +59,7 @@ Selene’s core strength is its user-oriented API, which abstracts the complexit
 Selene currently supports two major versions:
 
 - **Latest Recommended Pre-Release Version (v2.0.0rc9)**:
-  - Python versions: `3.8+`
+  - Python versions: `3.9+`
   - Selenium support: `>=4.12.0`
   - This version introduces an improved API, better performance, and is recommended for new projects.
   - Though is in alpha/beta stage, refining API, improving "migratability" and testing
@@ -96,7 +96,7 @@ Examples of potential refactoring during migration:
 
 ## Prerequisites
 
-[Python 3.8+][python-38] is required.
+[Python 3.9+][python-39] is required.
 
 Given [pyenv][pyenv] is installed, installing the needed version of Python is simple:
 ```bash
@@ -305,7 +305,7 @@ See the [Changelog](https://yashaka.github.io/selene/changelog/) for more detail
 [latest-recommended-version]: https://pypi.org/project/selene/2.0.0rc9/
 [brunch-ver-1]: https://github.com/yashaka/selene/tree/1.x
 [selene-stable]: https://pypi.org/project/selene/1.0.2/
-[python-38]: https://www.python.org/downloads/release/python-380/
+[python-39]: https://www.python.org/downloads/release/python-390/
 [pyenv]: https://github.com/pyenv/pyenv
 [poetry]: https://python-poetry.org/
 [project-template]: https://github.com/yashaka/python-web-test
