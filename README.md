@@ -33,10 +33,12 @@ Selene’s core strength is its user-oriented API, which abstracts the complexit
 - [Usage](https://github.com/yashaka/selene#usage)
   - [Quick Start](https://github.com/yashaka/selene#quick-start)
   - [Core API](https://github.com/yashaka/selene#core-api)
+  - [Automatic Driver and Browser Management](https://github.com/yashaka/selene#automatic-driver-and-browser-management)
   - [Advanced API](https://github.com/yashaka/selene#advanced-api)
 - [Tutorials](https://github.com/yashaka/selene#tutorials)
-- [Expanded Examples](https://github.com/yashaka/selene#Examples)
+- [Examples](https://github.com/yashaka/selene#Examples)
 - [Contribution](https://github.com/yashaka/selene#contribution)
+- [Release Workflow](https://github.com/yashaka/selene#release-workflow)
 - [Changelog](https://github.com/yashaka/selene#changelog)
 
 ## Main Features
