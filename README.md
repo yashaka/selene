@@ -25,19 +25,19 @@ Selene’s core strength is its user-oriented API, which abstracts the complexit
 
 ## Table of Contents
 
-- [Main Features](#main-features)
-- [Versions](#versions)
-  - [Migration Guide](#migration-guide)
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [Usage](#usage)
-  - [Quick Start](#quick-start)
-  - [Core API](#core-api)
-  - [Advanced API](#advanced-api)
-- [Tutorials](#tutorials)
-- [Expanded Examples](#expanded-examples)
-- [Contribution](#contribution)
-- [Changelog](#changelog)
+- [Main Features](https://github.com/yashaka/selene#main-features)
+- [Versions](https://github.com/yashaka/selene#versions)
+  - [Migration Guide](https://github.com/yashaka/selene#migration-guide)
+- [Prerequisites](https://github.com/yashaka/selene#prerequisites)
+- [Installation](https://github.com/yashaka/selene#installation)
+- [Usage](https://github.com/yashaka/selene#usage)
+  - [Quick Start](https://github.com/yashaka/selene#quick-start)
+  - [Core API](https://github.com/yashaka/selene#core-api)
+  - [Advanced API](https://github.com/yashaka/selene#advanced-api)
+- [Tutorials](https://github.com/yashaka/selene#tutorials)
+- [Expanded Examples](https://github.com/yashaka/selene#expanded-examples)
+- [Contribution](https://github.com/yashaka/selene#contribution)
+- [Changelog](https://github.com/yashaka/selene#changelog)
 
 ## Main Features
 
@@ -71,7 +71,7 @@ Selene currently supports two major versions:
   - Selenium support: `<4.0.0`
   - Use this version if your project requires compatibility with older Python versions.
   
-For migration from v1.x to v2.x, follow the [migration guide](#migration-guide).
+For migration from v1.x to v2.x, follow the [migration guide](https://github.com/yashaka/selene#migration-guide).
 
 ### Migration Guide
 
