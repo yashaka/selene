@@ -820,6 +820,26 @@ class Element(_LocatableEntity[WebElement], _WaitingConfiguredEntity):
         )
 
         return self
+     
+    def get_text(self) -> str:
+        """Gets the text content of the element.
+
+        See more at [query.text][selene.core.query.text].
+        """
+
+        from selene.core import query
+
+        return self.get(query.text)
+    
+    def get_attribute(self, name: str) -> Optional[str]:
+        """Gets the value of the specified attribute of the element.
+
+        See more at [query.attribute][selene.core.query.attribute].
+        """
+
+        from selene.core import query
+
+        return self.get(query.attribute(name))
 
 
 # TODO: consider renaming or at list aliased to AllElements
