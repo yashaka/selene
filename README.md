@@ -285,6 +285,13 @@ browser.open('/ncr')
 - **Leverage Built-in Waiting:** Selene automatically waits for elements to be in the desired state, reducing the need for explicit waits.
 
 - *Explore the API:* Dive into Selene's source code or [documentation](https://yashaka.github.io/selene) to understand the available methods and configurations better.
+## Expanded Examples
+
+Selene includes a variety of ready-to-use examples in the `examples/` folder to help you learn common testing patterns.
+
+* `examples/hard_wait_before_wait.py` – demonstrates using the `pre_pause_in_wait`
+  decorator to introduce a fixed sleep (“hard wait”) before each waiting action in Selene.
+  Useful for debugging, demos, or handling flaky dynamic UI elements.
 
 ## Contribution
 
