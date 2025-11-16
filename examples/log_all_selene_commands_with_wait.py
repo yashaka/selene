@@ -1,14 +1,10 @@
 from functools import reduce
 from typing import Tuple
-
 import pytest
-
 from selene import have, browser
 from selene.core.wait import Wait
 import logging
-
 from tests import resources
-
 
 class SeleneFormatter(logging.Formatter):
     translations = (
@@ -29,14 +25,12 @@ class SeleneFormatter(logging.Formatter):
             original,
         )
 
-
 log = logging.getLogger('SE')
 log.setLevel(20)
 handler = logging.StreamHandler()
 formatter = SeleneFormatter("[%(name)s] - %(message)s")
 handler.setFormatter(formatter)
 log.addHandler(handler)
-
 
 def log_on_wait(wait: Wait):
     def log_on_wait_decorator(for_):
@@ -55,7 +49,6 @@ def log_on_wait(wait: Wait):
 
     return log_on_wait_decorator
 
-
 @pytest.fixture(scope='function', autouse=True)
 def browser_management():
     SeleneFormatter.translations = (
@@ -70,39 +63,26 @@ def browser_management():
         (': is ', ': should be'),
     )
     browser.config._wait_decorator = log_on_wait
-
     yield
-
 
 def test_logging_via__wait_decorator():
     """
-        should log something like:
+    should log something like:
 
     [SE] - step: element('#new-todo') > type: a: STARTED
     [SE] - step: element('#new-todo') > type: a: ENDED
-    [SE] - step: element('#new-todo') > press keys: Enter: STARTED
-    [SE] - step: element('#new-todo') > press keys: Enter: ENDED
-    [SE] - step: element('#new-todo') > type: b: STARTED
-    [SE] - step: element('#new-todo') > type: b: ENDED
-    [SE] - step: element('#new-todo') > press keys: Enter: STARTED
-    [SE] - step: element('#new-todo') > press keys: Enter: ENDED
-    [SE] - step: element('#new-todo') > type: c: STARTED
-    [SE] - step: element('#new-todo') > type: c: ENDED
-    [SE] - step: element('#new-todo') > press keys: Enter: STARTED
-    [SE] - step: element('#new-todo') > press keys: Enter: ENDED
-    [SE] - step: all('#todo-list>li') > has texts ('ab', 'b', 'c', 'd'): STARTED
-    [SE] - step: all('#todo-list>li') > has texts ('ab', 'b', 'c', 'd'): FAILED: Message:
-
+    ...
     Timed out after 4s, while waiting for:
     all('#todo-list>li').has texts ('ab', 'b', 'c', 'd')
-
-
     """
 
+    # Arrange – Setup browser and open page
     browser.open(resources.TODOMVC_URL)
 
+    # Act – Add todos via UI
     browser.element('#new-todo').type('a').press_enter()
     browser.element('#new-todo').type('b').press_enter()
     browser.element('#new-todo').type('c').press_enter()
 
+    # Assert – Verify todos are present and correct
     browser.all('#todo-list>li').should(have.texts('ab', 'b', 'c', 'd'))

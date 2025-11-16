@@ -25,7 +25,6 @@ from selene.core.condition import Condition
 from selene.core.conditions import ElementCondition, BrowserCondition
 from tests import resources
 
-
 def have_produced_todos(number: int) -> Condition[Element]:
     def fn(entity: Element) -> None:
         size = len(browser.all("#todo-list>li"))
@@ -33,14 +32,14 @@ def have_produced_todos(number: int) -> Condition[Element]:
         if not produced_enough:
             entity.type('one more').press_enter()
             raise AssertionError(f'actual produced todos were: {size}')
-
     return Condition(f'have produced {number} todos', fn)
 
-
 def test_wait_for_produced_todos_v1():
+    # Arrange – Setup
     browser.open(resources.TODOMVC_URL)
+    # Act – None for this style, the custom condition triggers
+    # Assert – Verify todos created
     browser.element('#new-todo').should(have_produced_todos(3))
-
 
 def produced_todos(number: int) -> Condition[Browser]:
     def fn(entity: Browser) -> None:
@@ -49,74 +48,56 @@ def produced_todos(number: int) -> Condition[Browser]:
         if not produced_enough:
             entity.element('#new-todo').type('one more').press_enter()
             raise AssertionError(f'actual produced todos were: {size}')
-
     return Condition(f'have produced {number} todos', fn)
 
-
 def test_wait_for_produced_todos_v2():
+    # Arrange – Setup
     browser.open('http://todomvc.com/examples/emberjs/')
+    # Act – None
+    # Assert
     browser.wait.for_(produced_todos(3))
 
-
 def test_wait_for_notification_after_reload_v1():
+    # Arrange – Setup
     browser.open('https://the-internet.herokuapp.com/notification_message_rendered')
-
+    # Act – Action in the custom wait function
     def assert_action_successful_on_reload(entity):
         browser.element('[href*=notification_message]').click()
-
+        # Assert – Verify notification text
         if not browser.element('#flash').matching(
             have.exact_text('Action successful\n×')
         ):
             raise AssertionError('wrong message received')
-
+    # Assert
     browser.wait.for_(assert_action_successful_on_reload)
-
 
 def test_wait_for_notification_after_reload_v2():
     """
     more descriptive implementation
     with custom rendering of error message on failure
     """
+    # Arrange – Setup
     browser.open('https://the-internet.herokuapp.com/notification_message_rendered')
-
+    # Act
     def assert_action_successful_on_reload(entity):
         browser.element('[href*=notification_message]').click()
         notification = browser.element('#flash')
         webelement = notification()
         actual = webelement.text
         expected = 'Action successful\n×'
-
+        # Assert
         if actual != expected:
             raise AssertionError(
                 f'notification message was wrong:'
                 f'\texpected: {expected}'
                 f'\t  actual: {actual}'
             )
-
     browser.wait.for_(assert_action_successful_on_reload)
 
-
 def test_wait_for_notification_after_reload_v3():
-    """
-    more descriptive implementation
-    with custom rendering of error message on failure
-
-    with condition parameter - a text of message to receive
-
-    with a bit cleaner custom condition description in the log on failure
-    (by default the condition name
-    would be more low level default python fn representation)
-
-    wrapping condition as fn into class like BrowserCondition
-    – also allows to use some extra built-in feature s
-      like BrowserCondition.or_, .and_, etc.
-
-    here we also use the condition parameter - entity,
-    - that should be browser
-      if condition was called on a browser object
-    """
+    # Arrange – Setup
     browser.open('https://the-internet.herokuapp.com/notification_message_rendered')
-
+    # Act & Assert are in the custom condition
     def notification_on_reload(message: str) -> Condition[Browser]:
         def fn(entity: Browser):
             entity.element('[href*=notification_message]').click()
@@ -124,46 +105,37 @@ def test_wait_for_notification_after_reload_v3():
             webelement = notification()
             actual = webelement.text
             expected = message
-
+            # Assert
             if actual != expected:
                 raise AssertionError(
                     f'notification message was wrong:'
                     f'\texpected: {expected}'
                     f'\t  actual: {actual}'
                 )
-
         return Condition(
             f'received message {message} on reload',
             fn,
         )
-
     browser.wait.for_(
         notification_on_reload('Action successful\n×').or_(
             notification_on_reload('Action unsuccesful, please try again\n×')
         )
     )
 
-
 def test_wait_for_notification_after_reload_v4():
-    """
-    with default rendering (built into selene's condition) of error message on failure
-    """
+    # Arrange – Setup
     browser.open('https://the-internet.herokuapp.com/notification_message_rendered')
-
+    # Act in custom wait function
     def assert_action_successful_on_reload(entity):
         browser.element('[href*=notification_message]').click()
+        # Assert
         have.exact_text('Action successful\n×')(browser.element('#flash'))
-
     browser.wait.for_(assert_action_successful_on_reload)
 
-
 def test_wait_for_notification_after_reload_v5():
-    """
-    with default rendering (built into selene's condition) of error message on failure
-    AND simplified syntax with lambdas
-    """
+    # Arrange – Setup
     browser.open('https://the-internet.herokuapp.com/notification_message_rendered')
-
+    # Act & Assert in lambda
     browser.wait.for_(
         lambda _: (
             browser.element('[href*=notification_message]').click(),
@@ -171,15 +143,10 @@ def test_wait_for_notification_after_reload_v5():
         )
     )
 
-
 def test_wait_for_notification_after_reload_v6():
-    """
-    with default rendering (built into selene's condition) of error message on failure
-    and simplified syntax with lambdas
-    AND with optimised performance and removed potential side effects of "nested waiting"
-    """
+    # Arrange – Setup
     browser.open('https://the-internet.herokuapp.com/notification_message_rendered')
-
+    # Act & Assert in lambda, with optimized click
     browser.wait.for_(
         lambda _: (
             browser.element('[href*=notification_message]')().click(),
