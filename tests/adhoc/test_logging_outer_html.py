@@ -59,6 +59,7 @@ def test_logging_outer_html__enabled__on_collection():
 
     # AND
     assert message is not None
+    # TODO: FIX – no 'Actual webelements collection' in message
     assert 'Actual webelements collection:' in message
 
 
