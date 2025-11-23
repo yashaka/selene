@@ -80,8 +80,10 @@ class ReactContinuousSlider:
         self.container = self.browser.element('#ContinuousSlider+*')
         self.thumb = self.container.element('.MuiSlider-thumb')
         self.thumb_input = self.thumb.element('input')
-        self.volume_up = self.container.element('[data-testid=VolumeUpIcon]')
-        self.volume_down = self.container.element('[data-testid=VolumeDownIcon]')
+        # self.volume_up = self.container.element('[data-testid=VolumeUpIcon]')
+        self.volume_up = self.container.all('svg').second
+        # self.volume_down = self.container.element('[data-testid=VolumeDownIcon]')
+        self.volume_down = self.container.all('svg').first
         self.rail = self.container.element('.MuiSlider-rail')
 
     def open(self):
