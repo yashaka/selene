@@ -25,8 +25,10 @@ class DataGridMIT:
     selected_rows_count = footer.element('.MuiDataGrid-selectedRowCount')
     pagination = footer.element('.MuiTablePagination-root')
     pagination_rows_displayed = pagination.element('.MuiTablePagination-displayedRows')
-    page_to_right = pagination.element('KeyboardArrowRightIcon')
-    page_to_left = pagination.element('KeyboardArrowLeftIcon')
+    page_to_right = pagination.element('title=Go to next page')
+    page_to_left = pagination.element('title=Go to previous page')
+    # page_to_right = pagination.element('KeyboardArrowRightIcon')
+    # page_to_left = pagination.element('KeyboardArrowLeftIcon')
 
     content = grid.element('role=rowgroup')
     rows = content.all('role=row')

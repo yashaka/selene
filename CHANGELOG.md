@@ -42,15 +42,15 @@ TODOs:
 - decide on None as default in managed driver descriptor instead of ...
   taking into account that mypy does not like it
   - actually I tend to keep both `...` and `None`, yet using `...` as default
-    in Selene's internals. But let's document this at least. 
-    Mentioning also this: https://github.com/python/mypy/issues/7818
+    in Selene's internals. But let's document this at least.
+    Mentioning also this: <https://github.com/python/mypy/issues/7818>
 - consider a way to customize "locator description" [#439](https://github.com/yashaka/selene/issues/439)
   - consider storing "raw selector" of locator to be able to log it as it is [#438](https://github.com/yashaka/selene/issues/438)
   - consider storing `locator.name` and take it from class attribute name if Element object
     is used as descriptor (via `__set_name__` impl.)
     - while being a descriptor...
       check if `hassattr(owner, 'element')` (or context, or container?)
-      then consider starting the search from the context 
+      then consider starting the search from the context
       and make this configurable via `config.search_from_defined_context = True`
       (probably `False` by default)
       and being able to override somehow on element definition level
@@ -71,7 +71,7 @@ TODOs:
   - The variable `__all__` is a list of public objects of that module, as interpreted by `import *`. ... In other words, `__all__` is a list of strings defining what symbols in a module will be exported when `from module import *` is used on the module
 - config.driver_proxy or config.driver_remote_proxy?
 - decide on driver as callable, and decide on driver as callable with config as param
-    - how can we check that user passed fn with params? 
+  - how can we check that user passed fn with params?
 - consider renaming everything inside match.* so it can be readable when used as `.should(match.*)`
   - take into account that `.matching(match.*)` is yet less readable
   compared to `matching(have.*)` or `matching(be.*)`
@@ -81,21 +81,21 @@ TODOs:
 TODOs:
 
 - implement run_cross_platform_with_fixture_and_custom_location_strategy example with:
-    - location strategy
-    - element actions logging to allure
-    - jenkins pipeline with matrix job
+  - location strategy
+  - element actions logging to allure
+  - jenkins pipeline with matrix job
 - deprecate browser.switch_to?
-    - add corresponding set of commands to be used as waiting commands via `browser.perform` 
-        - make `command.switch_to_frame` to accept selene element?
-    - add something like `browser.perform(switch_to_tab('my tab title'))`
-        - maybe make browser.switch ... to work with retry logic
+  - add corresponding set of commands to be used as waiting commands via `browser.perform`
+    - make `command.switch_to_frame` to accept selene element?
+  - add something like `browser.perform(switch_to_tab('my tab title'))`
+    - maybe make browser.switch ... to work with retry logic
             or make separate command.switch...
 
-## 2.0.0rc? (to be released on DD.MM.2024)
+## 2.0.0rc? (to be released on DD.MM.2026)
 
 - set window size inside driver factory
 - add safari support (trim space on text in case of safari)
-- example of basic auth and auth via cookies (https://github.com/autotests-cloud/example_project/blob/master/src/test/java/cloud/autotests/tests/demowebshop/LoginTests.java)
+- example of basic auth and auth via cookies (<https://github.com/autotests-cloud/example_project/blob/master/src/test/java/cloud/autotests/tests/demowebshop/LoginTests.java>)
 - can we force order of how `selene.*` is rendered on autocomplete? via `__all__`...
 
 ### TODO: implement multi entity conditions
@@ -110,7 +110,7 @@ TODOs:
 
 ### TODO: document subclass based custom conditions
 
-### TODO: should we help users do not shoot their legs when using browser.all(selector) in for loops? #534 
+### TODO: should we help users do not shoot their legs when using browser.all(selector) in for loops? #534
 
 ### TODO: not_ as callable object?
 
@@ -143,7 +143,7 @@ currently there are no type errors... :(
 
 check vscode pylance, mypy, jetbrains qodana...
 
-### TODO: consider renaming _describe_actual_result to _describe_actual and...
+### TODO: consider renaming _describe_actual_result to_describe_actual and
 
 ... providing `lambda it: it` as default to actual
 ... and so making _describe_actual work also when actual is not provided
@@ -164,7 +164,6 @@ check vscode pylance, mypy, jetbrains qodana...
 
 ## 2.0.0rc10: «copy&paste, frames, shadow & texts_like» (to be released on DD.05.2024)
 
-
 ### DOING: draft Element descriptors POC?
 
 #### TODO: ensure works with frames and shadow roots
@@ -175,10 +174,12 @@ check vscode pylance, mypy, jetbrains qodana...
 
 ... maybe even from properties? (but should work out of the box if @property is applied as last)
 
-### TODO: in addition to browser – _page for pure web and _device for pure mobile?
+### TODO: in addition to browser – _page for pure web and_device for pure mobile?
+
 #### DOING: split into core, web, mobile
 
 Done:
+
 - copy&paste Browser, Element, Collection into selene.web.*
 - `core._browser.Browser` (that will be now a "core general context" and should work for all platforms, that's why we don't need the following...):
   - removed:
@@ -204,6 +205,7 @@ Done:
 - broke down core.entity.py into core.* [#454](https://github.com/yashaka/selene/issues/454)
 
 In Progress:
+
 - make core.Element a base class for web.Element
   - refactor _FrameContext
   - consider web.Collection with .shadow_roots
@@ -214,9 +216,10 @@ In Progress:
 - ...
 
 Next:
+
 - make core.Element a base class for device.Element + move cross-platform support to base classes
 - rename context.py to client.py
-- ensure query.* and command.* use proper base classes
+- ensure query.*and command.* use proper base classes
 - review config options... some will not work for core.Element anymore... should we document this?
 
 ### pyperclip as dependency in Selene
@@ -245,7 +248,7 @@ The `be._empty` condition works same but if applied to collection
 then will assert that it has size 0. Additionally, when applied to "form" element,
 then it will check for all form "value-like" inputs to be empty.
 
-Hence, the `blank` condition is more precise, while `empty` is more general. Because of its generality, the `empty` condition can be easier to remember, but can lead to some kind of confusion when applied to both element and collection in same test. Also, its behavior can be less predictable from the user perspective when applied to form with textarea, that is both "value-like" and "text-based" element. That's why it is still marked as experimental. 
+Hence, the `blank` condition is more precise, while `empty` is more general. Because of its generality, the `empty` condition can be easier to remember, but can lead to some kind of confusion when applied to both element and collection in same test. Also, its behavior can be less predictable from the user perspective when applied to form with textarea, that is both "value-like" and "text-based" element. That's why it is still marked as experimental.
 
 Please, consider using `be._empty` to test it in your context and provide a feedback under [#544](https://github.com/yashaka/selene/issues/544), so we can decide on its fate – keep it or not.
 
@@ -347,7 +350,7 @@ Where:
   - `*` matches **zero or more** of any characters in a text item
   - `?` matches **exactly one** of any character in a text item
 - expected list items flattening is not supported like in `have.texts` and `have.exact_texts`
-    because `[]` are used in list globs. So, you can't use nested lists or tuples to format the expected list of items. 
+    because `[]` are used in list globs. So, you can't use nested lists or tuples to format the expected list of items.
 
 Warning:
 
@@ -546,6 +549,7 @@ See a practical example of usage in [FAQ: How to simplify search by Test IDs?](h
 ### More commands among browser.element(selector).*
 
 web.Element built in methods:
+
 - `press_sequentially(text)`
 - `select_all()`
 - `copy()`
@@ -561,22 +565,25 @@ web.Element built in methods:
 ### More commands in command.py
 
 web.Element or web.Browser commands:
+
 - `command.copy`
 - `command.paste`
 - `command.paste(text)`
     The `pyperclip` package was added to Selene as dependency to achieve it.
 
 Element commands:
+
 - `command.press_sequentially(text: str)`
 
 mobile.Element commands:
+
 - `command.long_press(duration=0.1)` alias to `command._long_press(duration=0.1)`
     actually the _long_press is now an outdated alias and probably will be deprecated in future releases
 
 ### More collection queries in query.py
 
 - query.texts
-    - finally, you can get all texts of elements in collection
+  - finally, you can get all texts of elements in collection
         via
         `browser.all('.item').get(query.texts)`
         over
@@ -596,9 +603,9 @@ mobile.Element commands:
   - `have.size(int).or_more` as alias to `have.size_greater_than_or_equal(int)`
   - `have.size(int).or_less` as alias to `have.size_less_than_or_equal(int)`
 - element conditions
-  - `have.size(dict_of_element_size)` 
+  - `have.size(dict_of_element_size)`
 - browser conditions
-  - `have.size(dict_of_browser_size)` 
+  - `have.size(dict_of_browser_size)`
   - `have.url(string).ignore_case`
   - `have.url_containing(string).ignore_case`
 
@@ -612,6 +619,7 @@ mobile.Element commands:
   - `False` by default (for backward compatibility)
 
 Yet, marked as experimental... Because of some questions like:
+
 - better names?
 - should we make them also work on queries? not just on conditions?
 - should there be one option to rule them all? even not just in conditions of queries?
@@ -625,9 +633,10 @@ Providing a brief overview of the modules and how to define your own custom comm
 
 Just "autocomplete" is disabled, methods still work;)
 
-### Removed deprecated methods on ...
+### Removed deprecated methods on
 
-browser.element(selector).* (web.Element.*):
+browser.element(selector).*(web.Element.*):
+
 - `_execute_script(script_on_self_element_and_args, *extra_args)`
   - use `execute_script(script_on_self, *args)` instead
 
@@ -672,12 +681,12 @@ Thanks to [Cameron Shimmin](https://github.com/cshimm) and Edale Miguel for PR [
 
 - `selene.core._browser.Browser`
 - `condition.call(entity)` in favor of `condition(entity)` or `condition.__call__(entity)`
-    - there is also an experimental `condition._match`, that is actually aliased by `condition.__call__`
+  - there is also an experimental `condition._match`, that is actually aliased by `condition.__call__`
 - `ConditionNotMatchedError` in favor of `ConditionMismatch`
 
 ### Refactorings with potential BREAKING CHANGES
 
-- moved `Query` & Co from `core/wait.py` to `common/_typing_functioins.py`
+- moved `Query` & Co from `core/wait.py` to `common/_typing_functions.py`
 - renamed first arg of Condition, Query, Command from `description` to `name`
   - and made it positional only for now
   - If this significantly breaks your code, please, let us know, so we can consider adding some type of backwards compatibility
@@ -731,11 +740,11 @@ browser.element('#text-field').type('reset')
 browser.element('#text-field').should(have.value('reset'))
 ```
 
-### __qualname__ support in context of rendering conditions in error messages
+### **qualname** support in context of rendering conditions in error messages
 
 Allows to simplify custom conditions implementation to something like:
 
-```python 
+```python
 class have:
     @staticmethod
     def attribute(entity):
@@ -755,7 +764,7 @@ Since the `have.attribute` staticmethod will already have `__qualname__` defined
 
 ### Experimental browser._actions
 
-`browser._actions` is an instance of experimental _Actions class – an alternative implementation of ActionChains from Selenium... 
+`browser._actions` is an instance of experimental _Actions class – an alternative implementation of ActionChains from Selenium...
 
 So you can use:
 
@@ -788,52 +797,57 @@ ActionChains(browser.driver).move_to_element(s('#point1').should(be.in_dom).loca
 
 Here are advantages of Selene's _actions over Selenium's ActionChains:
 
-* the code is more concise
-* you can pass Selene's elements to it, instead of Selenium's webelements
-* adding new command to the chain automatically includes automatic waiting for element to be in DOM
-* if some error happens inside `.perform` – it will be automatically retried in context of common Selene's implicit waiting logic
+- the code is more concise
+- you can pass Selene's elements to it, instead of Selenium's webelements
+- adding new command to the chain automatically includes automatic waiting for element to be in DOM
+- if some error happens inside `.perform` – it will be automatically retried in context of common Selene's implicit waiting logic
 
 Here are some open points regarding this implementation and why this feature is marked as experimental:
-* the implicit waiting are yet not same powerful as in other Selene's commands
-  * error messages are less readable, too low level
-  * not sure if retry logic inside `.perform` is needed at all... can hardly imagine any failure there that can be fixed by retrying
-* not sure how will it work with Appium drivers...
 
-### Some inner refactoring...
+- the implicit waiting are yet not same powerful as in other Selene's commands
+  - error messages are less readable, too low level
+  - not sure if retry logic inside `.perform` is needed at all... can hardly imagine any failure there that can be fixed by retrying
+- not sure how will it work with Appium drivers...
 
-* moved Browser class from selene.core.entity.py to selene.core._browser.py
+### Some inner refactoring
+
+- moved Browser class from selene.core.entity.py to selene.core._browser.py
   (yet the module is named as experimental, yet the safest way to import Browser is `from selene import Browser` that is unchanged!)
 
 ## 2.0.0rc6 (released on 25.01.2024)
 
 ### Goodbye python 3.7 and webdriver-manager 👋🏻
 
-* drop py3.7 support + upgrade selenium>=4.12.0
-* drop webdriver-manager in favor of Selenium Manager
+- drop py3.7 support + upgrade selenium>=4.12.0
+- drop webdriver-manager in favor of Selenium Manager
 
 ## 2.0.0rc5 (released on 22.01.2024)
 
 ### drag & drop in advanced commands
 
 when Selenium can interact with simple draggable controls:
-* `browser.element('#volume-slider-thumb').perform(command.drag_and_drop_to(browser.element('#volume-up')))`
-* when for some reason, for example because of not loaded page yet, you have to retry dragging until we can asset that element actually was moved to the new location:
-  * `browser.element('#volume-slider-thumb').perform(command.drag_and_drop_to(browser.element('#volume-up'), _assert_location_changed=True))`
+
+- `browser.element('#volume-slider-thumb').perform(command.drag_and_drop_to(browser.element('#volume-up')))`
+- when for some reason, for example because of not loaded page yet, you have to retry dragging until we can asset that element actually was moved to the new location:
+  - `browser.element('#volume-slider-thumb').perform(command.drag_and_drop_to(browser.element('#volume-up'), _assert_location_changed=True))`
     the `_assert_location_changed=True` is marked as experimental by `_` prefix,
     so it may be renamed or removed in future releases.
-* `browser.element('#volume-slider-thumb').perform(command.drag_and_drop_by_offset(x=-10, y=0))`
+- `browser.element('#volume-slider-thumb').perform(command.drag_and_drop_by_offset(x=-10, y=0))`
 
 when Selenium can not interact with simple draggable controls:
-* `browser.element('#volume-slider-thumb').perform(command.js.drag_and_drop_to(browser.element('#volume-up')))`
+
+- `browser.element('#volume-slider-thumb').perform(command.js.drag_and_drop_to(browser.element('#volume-up')))`
 
 when there is no input element with type file, and you need to simulate the "drop file" by JS:
-* `browser.element('#drag-file-here-to-upload').perform(command.js.drop_file('/path/to/file'))`
+
+- `browser.element('#drag-file-here-to-upload').perform(command.js.drop_file('/path/to/file'))`
 
 Find more examples at these tests:
-* element__perform__drag_and_drop_by_offset_test.py
-* element__perform__drag_and_drop_to_test.py
-* element__perform__drop_file_test.py
-* element__perform__js__drag_and_drop_to_test.py
+
+- element__perform__drag_and_drop_by_offset_test.py
+- element__perform__drag_and_drop_to_test.py
+- element__perform__drop_file_test.py
+- element__perform__js__drag_and_drop_to_test.py
 
 ## 2.0.0rc4 (released on 29.07.2023)
 
@@ -851,7 +865,7 @@ Hence, 4.0.0 should be kind of supported now... But Selene's tests, if executed 
 
 ## 2.0.0rc3post1 (released on 27.07.2023)
 
-### Fixes patch from rc3 to download latest chromedriver if google did not publish matched chromedriver for latest Chrome version.
+### Fixes patch from rc3 to download latest chromedriver if google did not publish matched chromedriver for latest Chrome version
 
 webdriver-manager is still frozen to 3.8.6, though there are already 4.0.
 
@@ -882,7 +896,7 @@ If something went wrong, roll back to 2.0.0rc2.
 
 We also froze webdriver_manager version to 3.8.6, so it will not be updated automatically and our hotfix will not be broken :D. Let's see how it goes further... One day we hope to remove hotfix and unfreeze webdriver_manager version.
 
-Should work for new versions of Chrome from v115 out of the box. 
+Should work for new versions of Chrome from v115 out of the box.
 
 If you use webdriver_manager on your own, you can do the following trick to patch it with the fix:
 
@@ -921,17 +935,17 @@ browser.config.driver_options.binary_location = '/Applications/Google Chrome.app
 
 Before:
 
- - `config.driver_name` was `'chrome'` by default
+- `config.driver_name` was `'chrome'` by default
 
 Now:
 
 - `config.driver_name` is `None` by default
-    - and means "desired requested driver name"
+  - and means "desired requested driver name"
 - setting `config.driver_options` usually is enough to guess the driver name,
   e.g., just by setting `config.driver_options = FirefoxOptions()`
   you already tell Selene to build Firefox driver.
 
-### config.driver_service 
+### config.driver_service
 
 Just in case you want, e.g. to use own driver executable like:
 
@@ -982,7 +996,6 @@ Once automatic rebuild is disabled, you can schedule rebuild on next access to d
 
 There is another "rebuild" option in config that is disabled by default: `browser.config.rebuild_not_alive_driver`. It is used to rebuild driver on **any** next access to it, if it is not alive. This is different from `browser.config._reset_not_alive_driver_on_get_url` that resets driver (scheduling to be rebuilt) **only** on next call to `browser.open(url)`. Take into account that enabling this option may leed to slower tests when running on remote drivers, because it will check if driver is alive on any access to it, not only on `browser.open(url)`.
 
-
 #### «browser» term is deprecated in a lot of places
 
 ... except `Browser` class itself, of course (but this might be changed somewhere in 3.0🙃)
@@ -993,12 +1006,12 @@ For example, `config.browser_name` is deprecated in favor of `config.driver_name
 
 #### `from selene import browser`
 
-– to be used instead of `from selene.support.shared import browser`. 
+– to be used instead of `from selene.support.shared import browser`.
 
 No difference between Config and SharedConfig anymore. The new, completely refactored, Config is now used everywhere and allows to customize browser instance in a more convenient way.
 
-Adds ability to use `browser.with_(**config_options_to_override)` to create new browser instance, for example: 
-     
+Adds ability to use `browser.with_(**config_options_to_override)` to create new browser instance, for example:
+
 ```python
 from selene import browser
 
@@ -1011,7 +1024,7 @@ browser.config.timeout = 10
 ```
   
 as alternative to:
-    
+
 ```python
 from selene import Browser, Config
 
@@ -1071,7 +1084,7 @@ Will just open driver or do nothing if driver is already opened.
 
 Can also load page from `browser.config.base_url` if it is set and additional experimental `browser.config._get_base_url_on_open_with_no_args = True` option is set (that is `False` by default).
 
-#### Automatic driver rebuilding still happens on `browser.open`, but...
+#### Automatic driver rebuilding still happens on `browser.open`, but
 
 but can be configured as follows:
 
@@ -1084,7 +1097,7 @@ but can be configured as follows:
 
 Yet you have to install it manually. But given installed via `pip install Appium-Python-Client` or something like `poetry add Appium-Python-Client`, running tests on mobile devices is as easy as...
 
-##### Running locally against Appium server:
+##### Running locally against Appium server
 
 ```python
 from appium.options.android import UiAutomator2Options
@@ -1115,7 +1128,7 @@ browser.all(by_id('page_list_item_title')).should(
 )
 ```
 
-##### Running remotely against Browserstack server:
+##### Running remotely against Browserstack server
 
 ```python
 from appium.options.android import UiAutomator2Options
@@ -1151,15 +1164,15 @@ browser.all(by_id('page_list_item_title')).should(
 
 ```
 
-#### A lot of other local, remote and mobile test examples at...
+#### A lot of other local, remote and mobile test examples at
 
-https://github.com/yashaka/selene/tree/master/examples
+<https://github.com/yashaka/selene/tree/master/examples>
 
 #### autocomplete for entity.with_(HERE)
 
 ### Other
 
-#### Deprecated 
+#### Deprecated
 
 - `browser.save_screenshot` in favor of `browser.get(query.screenshot_saved())`
 - `browser.save_page_source` in favor of `browser.get(query.page_source_saved())`
@@ -1176,9 +1189,10 @@ https://github.com/yashaka/selene/tree/master/examples
 #### Removed
 
 - from selene.support.shared import SharedConfig, SharedBrowser
-- from selene.core.entity import BrowserCondition, ElementCondition, CollectionCondition 
+- from selene.core.entity import BrowserCondition, ElementCondition, CollectionCondition
 
-#### Removed deprecated 
+#### Removed deprecated
+
 - shared.browser.config.desired_capabilities
 - shared.browser.config.start_maximized
 - shared.browser.config.start_maximized
@@ -1197,7 +1211,7 @@ https://github.com/yashaka/selene/tree/master/examples
 #### Removed not deprecated
 
 - shared.browser.config.Source
-  - renamed to shared.browser.config._Source. 
+  - renamed to shared.browser.config._Source.
     Currently, is used nowhere in Selene
 - shared.browser.config.set_driver (getter and setter)
 - shared.browser.config.counter
@@ -1208,6 +1222,7 @@ https://github.com/yashaka/selene/tree/master/examples
 ## 2.0.0b15-b17
 
 ### Dependencies
+
 - update selenium (with weakened dependency to >=4.4.3)
 - update webdriver_manager (with weakened dependency to >=3.8.5)
 
@@ -1230,12 +1245,11 @@ ads = browser.all('[id^=google_ads][id$=container__]')
 ads.perform(command.js.set_style_property('display', 'none'))
 ```
 
-
 #### added conditions: `have.values` and `have.values_containing`
 
 #### all conditions like `have.texts` & `have.exact_texts` – flatten passed lists of texts
 
-This allows to pass args as lists (even nested) not just as varagrs. 
+This allows to pass args as lists (even nested) not just as varagrs.
 
 ```python
 from selene.support.shared import browser
@@ -1273,7 +1287,7 @@ browser.all('.cell').should(
 )
 ```
 
-#### removed trimming text on conditions like have.exact_text, have.texts, etc.
+#### removed trimming text on conditions like have.exact_text, have.texts, etc
 
 because all string normalization is already done by Selenium Webdriver.
 
@@ -1281,7 +1295,7 @@ because all string normalization is already done by Selenium Webdriver.
 
 ## 2.0.0b13 (released on 04.10.2022)
 
-### NEW
+### NEW features
 
 ### have.text, have.exact_text, have.texts and have.exact_texts strip/trim text when matching
 
@@ -1291,7 +1305,7 @@ Now, you can set only one axis dimension for the browser, and it will change it 
 
 #### access to self.locate() as `element` or `self` from the script passed to element.execute_script(script_on_self, *arguments)
 
-Examples: 
+Examples:
 
 ```python
 from selene.support.shared import browser
@@ -1321,7 +1335,7 @@ browser.execute_script('arguments[0].value=arguments[1]', browser.element('input
 
 #### `entity.__raw__`
 
-It's a «dangled» property and so consider it an experimental/private feature. 
+It's a «dangled» property and so consider it an experimental/private feature.
 For element and collection – it's same as `.locate()`.
 For `browser` it's same as `.driver` ;)
 
@@ -1329,7 +1343,7 @@ Read more on it at this [comment to #284](https://github.com/yashaka/selene/issu
 
 ... as aliases to element(), collection() correspondingly
 
-### NEW: DEPRECATED: 
+### NEW: DEPRECATED
 
 #### element._execute_script(script_on_self, *args)
 
@@ -1339,7 +1353,7 @@ Read more on it at this [comment to #284](https://github.com/yashaka/selene/issu
 
 #### browser.close_current_tab()
 
-Deprecated because the «tab» term is not relevant for mobile context. 
+Deprecated because the «tab» term is not relevant for mobile context.
 Use a `browser.close()` or `browser.driver.close()` instead.
 
 The deprecation mark was removed from the `browser.close()` correspondingly.
@@ -1362,7 +1376,7 @@ browser.element('input').execute_script('arguments[0].value=arguments[1]', 'new 
 browser.element('input').execute_script('element.value=arguments[0]', 'new value')
 ```
 
-#### removed earlier deprecated 
+#### removed earlier deprecated
 
 - `browser.elements(selector)` in favor of `browser.all(selector)`
 - `browser.ss(selector)` in favor of `browser.all(selector)`
@@ -1370,7 +1384,7 @@ browser.element('input').execute_script('element.value=arguments[0]', 'new value
 - `element.get_actual_webelement()` in favor of `element.locate()`
 - `collection.get_actual_webelements()` in favor of `collection.locate()`
 
-#### renamed collection.filtered_by_their(selector, condition) to collection.by_their(selector, condition) 
+#### renamed collection.filtered_by_their(selector, condition) to collection.by_their(selector, condition)
 
 #### removed collection.should_each ... [#277](https://github.com/yashaka/selene/issues/277)
 
@@ -1383,6 +1397,7 @@ browser.element('input').execute_script('element.value=arguments[0]', 'new value
 ### NEW: collection.should(condition.each) [#277](https://github.com/yashaka/selene/issues/277)
 
 The older style is totally **deprecated** now:
+
 - Instead of:
   - `collection.should(element_condition)` and `collection.should_each(element_condition)`
 - Use:
@@ -1418,12 +1433,13 @@ browser: Browser = ...
 ### BREAKING CHANGE: removed 'opera' support for shared.browser.config.browser_name
 
 see reasons at:
+
 - [Selenium Changelog for 4.3.0](https://github.com/SeleniumHQ/selenium/blob/31190f8edd801a2ead8ba3d49982cbdbc838885d/py/CHANGES#L22)
 - [[🐛 Bug]: Opera Browser in Selenium 4 Usage](https://github.com/SeleniumHQ/selenium/issues/10835)
 
 ## 2.0.0b10 (released on 14.09.2022)
 
-### NEW: BREAKING CHANGE: removed deprecated selene.core.entity.Collection.:
+### NEW: BREAKING CHANGE: removed deprecated selene.core.entity.Collection
 
 - `caching(self)` in favor of `cashed(self)`
 - `all_by(self, condition) -> Collection` in favor of `by(conditioin)`
@@ -1452,6 +1468,7 @@ examples.run_cross_platform.wikipedia_e2e_tests.utils.locators.by(have.no.css_cl
 ```
 
 Hence, considering to deprecate:
+
 - `collection.filtered_by(condition)` in favor of `collection.by(condition)`
 - `collection.element_by(condition)` in favor of `collection.by(condition).first`
 
@@ -1477,7 +1494,7 @@ Now you can achieve more readable `collection.sliced(step=2)` instead of awkward
 
 Remember that you still can use less readable but more concise `collection[::2]` ;)
 
-### DEPRECATED:
+### DEPRECATED
 
 - selene.core.entity.SeleneElement
   - you can use selene.core.entity.Element
@@ -1553,7 +1570,6 @@ Remember that you still can use less readable but more concise `collection[::2]`
   - .parent(self)
   - .id(self)
 
-
 ## 2.0.0b8 (released on 05.09.2022)
 
 ### NEW: `selene.support._logging.wait_with(context, translations)`
@@ -1595,13 +1611,14 @@ But check the default value for this parameter, maybe you'll be fine with it;)
 And remember, the majority of selene extensions from the support.* package, including its `_logging` module – are things you'd better implement on your side to be less dependent to 3rd party helpers;) Feel free to Copy&Paste it into your code and adjust to your needs.
 
 ## 2.0.0b7 (released on 02.09.2022)
+
 - BREAKING_CHANGE: change type of config._wait_decorator to access entities, not just commands on them
   - from `Callable[[F], F]`
   - to `Callable[[Wait[E]], Callable[[F], F]]`
-  - i.e. now it should be not a simple decorator 
+  - i.e. now it should be not a simple decorator
     that maps function F to a new F with for example added logging,
     but it should be «decorator with parameter»
-    or in other words – a «decorator factory» function 
+    or in other words – a «decorator factory» function
     that based on passed parameter of Wait type will return an actual decorator
     to be applied to the main logic of waiting inside Wait#for_ method.
   - This change will allow inside the decorator
@@ -1611,8 +1628,8 @@ And remember, the majority of selene extensions from the support.* package, incl
     - simpler one: [examples/log_all_selene_commands_with_wait.py](https://github.com/yashaka/selene/tree/master/examples/log_all_selene_commands_with_wait.py)
     - more «frameworkish» one: [examples/log_all_selene_commands_with_wait__framework](https://github.com/yashaka/selene/tree/master/examples/log_all_selene_commands_with_wait__framework)
 
-
 ## 2.0.0b6 (released on 31.08.2022)
+
 - NEW: added "opera" and "edge" support for shared browser
   - example:
 
@@ -1624,8 +1641,8 @@ And remember, the majority of selene extensions from the support.* package, incl
     ```
 
 - NEW: added config._wait_decorator
-  - decorating Wait#for_ method 
-    - that is used when performing any element command 
+  - decorating Wait#for_ method
+    - that is used when performing any element command
       and assertion (i.e. should)
     - hence, can be used to log corresponding commands with waits
       and integrate with something like allure reporting;)
@@ -1658,39 +1675,43 @@ And remember, the majority of selene extensions from the support.* package, incl
     ```
 
 ## 2.0.0b5 (released on 24.06.2022)
+
 - NEW: added command.js.*:
   - remove
   - set_style_display_to_none
   - set_style_display_to_block
   - set_style_visibility_to_hidden
   - set_style_visibility_to_visible
-  Example: 
-  ```
+  Example:
+  ```py
   browser.all('[id^=google_ads]').perform(command.js.remove)
   ```
 
-
 ## 2.0.0b4 (released on 15.06.2022)
+
 - NEW: upgrade selenium to 4.2.0 & webdriver-manager to 3.7.0
 - FIX: set_window_size in shared.browser.open
-- FIX: provide correct chrome type for wdm 
+- FIX: provide correct chrome type for wdm
 
 ## 2.0.0b3 (released on 29.05.2022)
+
 - added support of python 3.10.* [#393](https://github.com/yashaka/selene/issues/393)
 - upgraded webdriver-manager to 3.5.4 [#408](https://github.com/yashaka/selene/issues/393)
 
 ## 2.0.0b2 (released on 29.03.2022)
-- first steps on simplifying the current browser management, 
+
+- first steps on simplifying the current browser management,
   yet making it more powerful
   - now you can pass a lambda to `browser.config.driver = HERE`
     providing more smart logic of driver management
     see a dummy example at this [test](https://github.com/yashaka/selene/tree/master/tests/acceptance/custom_driver_source/test_adding_todos.py)
 
 ## 2.0.0b1 (to be released on 23.02.2022)
+
 - added support selenium 4.1 [#375](https://github.com/yashaka/selene/issues/375)
   - the =4.1 version is frozen/hardcoded as dependency
     - without backwards compatibility to selenium 3
-      - the newly added service arg have been added to automatic driver management on the selene side 
+      - the newly added service arg have been added to automatic driver management on the selene side
         - yet, if anyone needs backwards compatibility, we can consider implementing it in following patches, feel free to file an issue;)
   - fixed [#398](https://github.com/yashaka/selene/issues/398)
 - Upgrade [webdriver-manager](https://github.com/SergeyPirogov/webdriver_manager) 3.5.0 -> 3.5.3 ([see changes](https://github.com/SergeyPirogov/webdriver_manager/compare/v3.5.0...v.3.5.3))
@@ -1707,6 +1728,7 @@ And remember, the majority of selene extensions from the support.* package, incl
         - yet not sure about this decision... let's see...
 
 ## 2.0.0a40 (released on 09.10.2021)
+
 - added `browser.config.wait_for_no_overlap_found_by_js` (`False` by default)
   - making following element methods to wait for no overlap:
     - type(text)
@@ -1720,17 +1742,22 @@ And remember, the majority of selene extensions from the support.* package, incl
     - hover()
 
 ## 2.0.0a39 (released on 26.07.2021)
+
 - Upgrade [webdriver-manager](https://github.com/SergeyPirogov/webdriver_manager) 3.4.1 -> 3.4.2 ([see changes](https://github.com/SergeyPirogov/webdriver_manager/compare/v3.4.1...v.3.4.2))
 
 ## 2.0.0a38 (released on 05.05.2021)
+
 - Upgrade [webdriver-manager](https://github.com/SergeyPirogov/webdriver_manager) 3.3.0 -> 3.4.1 ([see changes](https://github.com/SergeyPirogov/webdriver_manager/compare/v3.3.0...v.3.4.1))
 
 ## 2.0.0a37 (released on 24.04.2021)
+
 - Upgrade [webdriver-manager](https://github.com/SergeyPirogov/webdriver_manager) 2.3.0 -> 3.3.0 [#299](https://github.com/yashaka/selene/issues/299)
 - New release and publish process of selene [#246](https://github.com/yashaka/selene/issues/246#issuecomment-825897200)
 
 ## 2.0.0a36 (released on 30.03.2021)
+
 Contributors release.
+
 - Moved selene from Pipenv to [Poetry](https://python-poetry.org/) as a greater python dependency resolver of 2021 (see #302).
 - Moved to a new release process with Poetry: added bash aliases in `./.run/*.sh` (see #304).
 - Moved from setup.py and setup.cfg to pyproject.toml config-file.
@@ -1738,74 +1765,85 @@ Contributors release.
 - Updated CONTRIBUTING.md with `black` and `pylint` job description.
 
 ## 2.0.0a35 (released on 27.03.2021)
+
 - added command.js.click
 - if you set driver for `shared.browser` manually via `browser.config.driver = ...`
   now it will automatically close previous driver, if it is alive
-- in selene 1.0 if you could do mixed driver management, 
+- in selene 1.0 if you could do mixed driver management,
   like: use automatic driver, then manual, then automatic...
   in selene 2.0 this behaviour was broken, and this version fixes this;)
 - deprecated `shared.config.quit_driver`; use `shared.config.reset_driver` instead
   - actually, you don't need this method,
     in most cases you just need `shared.browser.quit()` – use it if you don't know what you do;)
-- fixed `browser.switch_to_tab(index_or_name)` when arg is of `int` type    
-    
+- fixed `browser.switch_to_tab(index_or_name)` when arg is of `int` type
+
 ## 2.0.0a34 (released on 22.12.2020)
+
 - fixed [#231](https://github.com/yashaka/selene/issues/225): Need additional option to turn off logging outerHTML
   - added `support.shared.config.log_outer_html_on_failure` (`False` by default)
 
 ## 2.0.0a33 (released on 10.09.2020)
+
 - fixed [#225](https://github.com/yashaka/selene/issues/225): Failed to get last_screenshot from shared browser if element with custom config failed
 
 ## 2.0.0a32 (released on 10.09.2020)
+
 - broken release:)
 
 ## 2.0.0a31 (released on 31.07.2020)
+
 - fixed type hints in `*.should(here)`
   - latest PyCharm 2020.2 revealed the hidden issue with typing
 
 ## 2.0.0a30 (released on 30.07.2020)
+
 - fixed `selene.support.shared.browser.with_`
   - to return sharedbrowser instance instead of browser instance
-- made `browser.config.hold_browser_open` to influence browser quit logic 
+- made `browser.config.hold_browser_open` to influence browser quit logic
   - even if set after calling `browser.open` or resetting `browser.config.driver`
 
 ## 2.0.0a29 (released on 30.07.2020)
+
 - fixed shared browser automatic quit on process exit
-  - that led to session error 
+  - that led to session error
     in case you quit shared browser manually in your fixture
 
 ## 2.0.0a28 (released on 21.05.2020)
+
 - added support of xpath to start with `(` in `s(selector)`, etc.
   - example: `ss('(//h1|//h2)[contains(text(), "foo")]').should(have.size(10))`
 
 ## 2.0.0a27 (released on 19.05.2020)
+
 - fixed command.js.type and configuration.type_by_js + element.type
 
 ## 2.0.0a26 (released on 19.05.2020)
+
 - if driver was set like `shared.config.driver = my_custom_driver`
   - then it's not mandatory to call `shared.browser.open` first
-    
+
 ## 2.0.0a25 (released on 18.05.2020)
+
 - fixing [#172](https://github.com/yashaka/selene/issues/172)
   - added `shared.config.set_driver: callable[[], webdriver]`
     as alternative to `shared.config.driver: webdriver`
-    - now if config.set_driver is set - it will be used 
+    - now if config.set_driver is set - it will be used
       to create and reload the driver instance according to your needs
-    - setting `shared.config.driver = my_driver` is equivalent to setting 
+    - setting `shared.config.driver = my_driver` is equivalent to setting
       then `shared.config.set_driver = lambda: my_driver`
-    - only `shared.browser.open(url)` now makes `set_driver` 
+    - only `shared.browser.open(url)` now makes `set_driver`
       to be triggered on first start and if driver was crashed or quit
       - i.e. if driver is crashed
         any further action on `shared.browser.element` will crash too
         unless you call `shared.browser.open` again
-        - browser.open will also crash 
+        - browser.open will also crash
           if you used `shared.config.driver = my_driver` before
 - **removed** implementation of "re-creating browser" if shared.config.browser_name was changed
   - this should make shared.browser more friendly with appium
-  - and nevertheless shared.config should be used only "after quit and before open"... 
-      
-    
+  - and nevertheless shared.config should be used only "after quit and before open"...
+
 ## 2.0.0a24 (to be released on 17.05.2020)
+
 - fixed [#210](https://github.com/yashaka/selene/issues/210)
   - when installing using pip -- unicodedecodeerror: 'charmap' codec can't decode byte
   
@@ -1824,7 +1862,7 @@ Contributors release.
 
 was:
 
-```
+```shell
 timed out after 4s, while waiting for:
 browser.all(('css selector', '#task-list>li')).element_by(has exact text a).double click
 reason: assertionerror: cannot find element by condition «has exact text a» from webelements collection:
@@ -1833,18 +1871,17 @@ reason: assertionerror: cannot find element by condition «has exact text a» fr
 
 now:
 
-```
+```shell
 timed out after 4s, while waiting for:
 browser.all(('css selector', '#task-list>li')).element_by(has exact text a).double click
 
 reason: assertionerror: 
-	cannot find element by condition «has exact text a» 
-	among browser.all(('css selector', '#task-list>li'))
-	actual webelements collection:
-	[]
+ cannot find element by condition «has exact text a» 
+ among browser.all(('css selector', '#task-list>li'))
+ actual webelements collection:
+ []
 ```
 
-  
 ## 2.0.0a22 (released on 20.03.2020)
 
 - fixed [#206 – "after manually quitting, setting a new driver fails"](https://github.com/yashaka/selene/issues/206)
@@ -1854,7 +1891,7 @@ reason: assertionerror:
   - `filtered_by_their`
   - ... see code examples below:
 
-```
+```py
 # given
 #
 #    .result
@@ -1900,19 +1937,22 @@ results.element_by(
 # reason: assertionerror: cannot find element by condition «<function collection.element_by_its.<locals>.<lambda> at 0x10df67f28>» from webelements collection:
 
 ```
-  -  
+
 ## 2.0.0a21 (released on 22.01.2020)
+
 - fixed hooks for entities created via entity.with_(Config(...))
 
 ## 2.0.0a20 (released on 21.01.2020)
+
 - Fixed UnicodeEncodeError: 'charmap' codec
   - thanks to [PR-197](https://github.com/yashaka/selene/pull/197) from @ak40u
 
 ## 2.0.0a19 (released on 16.01.2020)
+
 - removed deprecation from shared.config.counter and reports_folder
 - removed backports.functools-lru-cache from project dependencies
 - removed six from explicit project dependencies
-- removed selene.version.py (moved version number to selene.__init__.__version__)
+- removed selene.version.py (moved version number to selene.**init**.**version**)
 - deprecated: by.be_following_sibling, be_parent, be_first_child
   - use xpath explicitly to not hide complexity in workaround
   - yet you can create you own xpath helpers to to show that you are using xpath but in a more readable style
@@ -1920,23 +1960,24 @@ results.element_by(
   - the only exception is by.text
     - it uses xpath under the hood, but so complicated that no way to use it explicitly :)
 - removed warning from `collection.first`
-  - it's nevertheless useless. 
+  - it's nevertheless useless.
   - `first` is the one of things that breaks your code when migrating to 2.*
     - after migration, just find&replace every `.first()` to `.first`, and that's it:)
-    
 
 ## 2.0.0a18 (released on 14.01.2020)
+
 - deprecated finally `send_keys`, added `press(*keys)` instead
-  - use `type` for 'typing text', use `press` or `press_enter` & co for 'pressing keys' 
+  - use `type` for 'typing text', use `press` or `press_enter` & co for 'pressing keys'
 - removed s, ss from selene.support.shared (were added by mistake in a17)
-  - yet unsure... maybe it was a good idea... to keep s, ss in shared.__init__.py too... let's think on this more...
+  - yet unsure... maybe it was a good idea... to keep s, ss in shared.**init**.py too... let's think on this more...
 - removed selene.api.base and selene.api.shared from distribution
-  - even selene.api is not needed anymore... let's not use it... 
-  - it was needed in the past for * style imports, 
-    - but nevertheless it's a bad practice to do so... 
+  - even selene.api is not needed anymore... let's not use it...
+  - it was needed in the past for * style imports,
+    - but nevertheless it's a bad practice to do so...
 - updated readme and project long description for pypy
 
 ## 2.0.0a17 (released on 14.01.2020)
+
 - deprecated selene.config, use `from selene.support.shared import config` instead
   - where you also can find shared browser: `from selene.support.shared import browser, config`
   - you also can go the minimalistic way with the only `browser` import:
@@ -1950,13 +1991,14 @@ results.element_by(
   - use selene.support.shared.jquery_style instead
 - separate core from shared selene api in selene.*
   - now to get shared browser or config you have to import them explicitly from selene.support.shared
-  - added some base docs into selene.__init__ 
+  - added some base docs into selene.**init**
 
 ## 2.0.0a16 (released on 13.01.2020)
+
 - fixed absent screenshots for customized elements through with_
   - e.g. in `browser.element(...).with_(timeout=...).should(be.visible)`
   - as impl: moved main auto-saving screens/page_source logic to SharedConfig
-  - deprecated latest_* methods in Browser in favour of last_*
+  - deprecated latest_*methods in Browser in favour of last_*
 - added experimental syntax for ignore_case in:
   - `browser.element(...).should(have.attribute('foo').value('bar', ignore_case=True)`
   - `browser.element(...).should(have.attribute('foo').value_containing('bar', ignore_case=True)`
@@ -1970,12 +2012,13 @@ results.element_by(
         - or
         - `browser.all(...).should(have.texts_in_any_order('a', 'b', 'c')`
         - seems like better to have options over predefined names... to combine them whatever you like
-          - but what then to do with conditions like value_containing? move _containing to option to?
+          - but what then to do with conditions like value_containing? move_containing to option to?
             - `browser.element(...).should(have.value('a', contained=True, ignore_case=True')`
             - ooo, and this is also technically possible:
               - `browser.element(...).should(have.value('a').contained.ignoring_case)`
 
 ## 2.0.0a15 (released on 13.01.2020)
+
 - fixed len(collection) to wait if collection can't be found
 - made query.size to work with both element and collection
   - element.get(query.size) will return the size of the element (as a Dict)
@@ -1986,18 +2029,19 @@ results.element_by(
   - refactored waiting (moved base wait impl for entities to config.wait(entity)
 
 ## 2.0.0a14 (released on 10.01.2020)
+
 - removed deprecation from shared.browser.save_screenshot, save_page_source, latest_screenshot, latest_page_source
   - since they nevertheless are used internally by selene
   - and methods looks like better named than original selenium ones, like `get_screenshot_as_png` :)
 - refactored hooks to the style: `config.hook_wait_failure = lambda e: e`
-  - the hook should be a function that receives failure as argument, 
+  - the hook should be a function that receives failure as argument,
   - process it, and return back potentially new failure object
   - by default it's just an "identity" function, returning itself
     - for shared config the default is overwritten by hook adding screenshot and page_source to the failure message
     - to disable default screenshot and page_source on failure
       - just do `config.hook_wait_failure = None`
         - yet, we may add in future explicit things like `config.screenshot_on_failure = False # True by default`
-  - no other hooks avaialbe so far... somewhen in future we will add more hooks, 
+  - no other hooks avaialbe so far... somewhen in future we will add more hooks,
     - like `config.hook_wait_command`, etc.
 - fixed original `collection.all` and `collection.map` implementations (were broken in previous versions)
 - marked `collection.all` with FutureWarning (yet unclear what naming would be best)
@@ -2018,26 +2062,29 @@ results.element_by(
 - switched in wait from webdriver TimeoutException to selene.core.exceptions.TimeoutException
   - actually no need to reuse webdriver one
   - and this might help with reporting selene failure in allure reports, let's see...
-- tried to implement something special for configuring remote driver management in shared config... 
-  - but... just left some comments for future... 
-  - it's too complicated to be implemennted in a consistent way in selene. 
-  - so far the main strategy is just to create an instance on your own 
+- tried to implement something special for configuring remote driver management in shared config...
+  - but... just left some comments for future...
+  - it's too complicated to be implemennted in a consistent way in selene.
+  - so far the main strategy is just to create an instance on your own
   - and then set it in config by `config.driver = webdriver.Remote(...)`, KISS ;)
 
 ## 2.0.0a13 (released on 10.01.2020)
-- added temporary Collection#filter_by as deprecated 
-- added temporary Collection#find_by as deprecated 
+
+- added temporary Collection#filter_by as deprecated
+- added temporary Collection#find_by as deprecated
 - fixed shared browser.latest_screenshot (and added browser.latest_page_source)
   - made it as property (as method it will still work as deprecated)
-    - actually if you `from selene import browser` 
+    - actually if you `from selene import browser`
     - you will get deprecated browser module with latest_screenshot as method
     - the warning then will tell you to use import `from selene.support.shared import browser`
     - which will have it as a property
 
 ## 2.0.0a12 (released on 09.01.2020)
+
 - fixed [#195](https://github.com/yashaka/selene/issues/195): added len(collection)
 
 ## 2.0.0a11 (released on 08.01.2020)
+
 - added logging screenshot and page source hooks for failures of any waiting in shared browser behaviour
   - this is enabled by default, no option in config.* to disable such behaviour
   - yet you can turn it off by `config.hooks = Hooks(wait=WaitHooks(failure=lambda e: e)`
@@ -2045,8 +2092,9 @@ results.element_by(
 - removed  SyntaxWarning for element.s and element.ss
 
 ## 2.0.0a10 (released on 08.01.2020)
+
 - enhanced migratability
-  - added syntax warning to collection.first with a hint 
+  - added syntax warning to collection.first with a hint
     - to use .first as a property over .first() as a method
   - added selene.wait.py with wait_for alias (deprecated)
 - moved all new modules from selene to selene.core
@@ -2054,14 +2102,15 @@ results.element_by(
 - tuned imports to be cleaner
   - try to import everything `from selene import ...`
     - the main things you might need are: browser, config, by, be, have, Browser, Config
-      - yet browser here, is old deprecated selene.browser module... 
-      - so temporary import browser from selene.support.shared 
+      - yet browser here, is old deprecated selene.browser module...
+      - so temporary import browser from selene.support.shared
         - later once selene.browser.py is removed, you can import new browser object from selene too
-    - only s and ss you will not find there, 
+    - only s and ss you will not find there,
       - but you can import them from selene.support.jquery_style_selectors as in 1.*
 - changed DeprecationWarning to SyntaxWarning for element.s and element.ss
 
 ## 2.0.0a9 (released on 07.01.2020)
+
 - enhanced migratability of 2.*:
   - temporally added deprecated modules
     - selene.elements
@@ -2069,86 +2118,96 @@ results.element_by(
     - selene.driver
   - ensured proper config can be imported from selene (`from selene import config`)
 - ensured everything potentially needed in real use is available after `from selene.api import *`
-  - it includes mentioned below selene.api.base.* and selene.api.shared.* imports
+  - it includes mentioned below selene.api.base.*and selene.api.shared.* imports
 - added selene.api.base for "hardcore" users
   - with `from selene.api.base import *`
   - included only Browser + Config for manual driver creation
   - and by, be, have for extra selectors and conditions
 - added selene.api.shared for "easy tests with selene" with automatic driver creation
   - with `from selene.api.shared import *`
-  - you can get browser.* and config.* for automatically created driver, 
+  - you can get browser.*and config.* for automatically created driver,
     - with customization through config.*
 - added also all usually needed imports to selene.*
 - yet unsure what imports will be left in the end :) thinking...
 
 ## 2.0.0a8 (released on 06.01.2020)
+
 - fixed config.* setters (timeout, base_url, etc...)
 
 ## 2.0.0a7 (released on 05.01.2020)
+
 - removed some deprecation markings
   - from selene.common.helpers warn helpers
   - from selene.condition.not_, selene.condition.Condition#not_
   - from be.clickable
 
 ## 2.0.0a6 (released on 05.01.2020)
+
 - fixed `entity.with_(...)`
   - where entity = browser | element | collection
 
 ## 2.0.0a5 (released on 03.01.2020)
+
 - enhanced migratability of 2.*:
-    - reflected all "old and redundant" SeleneElement methods as deprecated in Element
-      - added corresponding conditions
-    - reflected all "old and redundant" SeleneCollection methods as deprecated in Collection
-      - did not add methods that were already deprecated in 1.*
-    - temporally added selene.browser module to reflect browser.* methods from 1.* as deprecated
-    - moved jquery_style_selectors.py module back to selene.support
+  - reflected all "old and redundant" SeleneElement methods as deprecated in Element
+    - added corresponding conditions
+  - reflected all "old and redundant" SeleneCollection methods as deprecated in Collection
+    - did not add methods that were already deprecated in 1.*
+  - temporally added selene.browser module to reflect browser.*methods from 1.* as deprecated
+  - moved jquery_style_selectors.py module back to selene.support
 - fixed autocomplete for *.should methods
 - fixed browser.switch_to
 - added `entity.with_(timeout=6)` style in addition to `entity.with_(Config(timeout=6))`
   - where entity = browser | element | collection
 
-### known issues:
+### known issues
+
 - entity.with_ does not work in case of shared browser :(
   - where entity = browser | element | collection
 
-
 ## 2.0.0a4 (released on 30.12.2019)
+
 - fixed default browser_name handling in shared config; implemented some old opts in config
 
 ## 2.0.0a3 (released on 30.12.2019)
+
 - removed from selene.support.past all not used old implementations
-- tuned selene.__init__ imports to have browser (reimported from selene.support.shared)
+- tuned selene.**init** imports to have browser (reimported from selene.support.shared)
 - fixed extra modules in build for publishing
 - removed six from dependencies in setup.py
 
 ## 2.0.0a2 (released on 30.12.2019)
+
 - fixed packages to be published
 
 ## 2.0.0a1 (released on 28.12.2019, broken:))
+
 - complete reincarnation of Selene for python version >= 3.7 :). Current limitations:
-  - no test coverage; 
+  - no test coverage;
   - do updated docs
     - you can check the only one working test at `tests/acceptance/shared_browser/straightforward_style_test.py`
-    - and use it as a fast intro 
-    - keep in mind that it describes old style + new style; 
+    - and use it as a fast intro
+    - keep in mind that it describes old style + new style;
     - so you will not see there some guides for newer style; wait for that;)
-  - no hooks (and so no screenshots in error messages); 
+  - no hooks (and so no screenshots in error messages);
   - no temporal support for 1.0.0 aliases for some methods
     - will be added as deprecated and kept for some time to allow smoother migration
 
   - old implementation of everything still exists in `selene.support.past.*`
   
 ## 1.0.1 (released on 28.12.2019)
+
 - no changes; just releasing latest version (before refactoring) as stable
 
 ## 1.0.0ax (next from master branch)
+
 - removed
   - tbd
 - defaults changes:
   - tbd
 - naming changes:
   - tbd
-- removed deprecated things: 
+- removed deprecated things:
   - tbd
 - deprecated (will produce `DeprecationWarning`):
   - tbd
@@ -2158,22 +2217,25 @@ results.element_by(
   - tbd
   
 ## 1.0.0a16
+
 - new features:
-  - added `SeleneElement#matching(condition)` and `SeleneCollection#matching(condition)` 
+  - added `SeleneElement#matching(condition)` and `SeleneCollection#matching(condition)`
     - as "non-waiting-predicate" version of should
-    - e.g. to be used like 
-        - `browser.element('#foo').matching(be.visible)` 
-        - over 
-        - `browser.element('#foo').is_displayed()`
-          - this version will be deprecated in next versions...
+    - e.g. to be used like
+      - `browser.element('#foo').matching(be.visible)`
+      - over
+      - `browser.element('#foo').is_displayed()`
+        - this version will be deprecated in next versions...
 - fixed `not_` usage in `SeleneCollection#element_by/filtered_by`
 
 ## 1.0.0a15
+
 - new features:
   - added `by.id`
   - now `browser.element` can parse xpath in string selector passed as parameter
 
 ## 1.0.0a14
+
 - removed
   - ConditionMismatchException.message (use `str(exOfConditionMismatchExceptionType)` for the same purpose)
 - defaults changes:
@@ -2184,9 +2246,10 @@ results.element_by(
   - `be`, `by`, and `have` imports to `selene` module
 
 ## 1.0.0a12-13
+
 - naming changes:
   - tbd
-- removed deprecated things: 
+- removed deprecated things:
   - `selene.tools` (use `selene.browser` instead)
   - `SeleneElement#`
     - `insist` (use `should` instead)
@@ -2209,86 +2272,97 @@ results.element_by(
     - `find_by` (consider using `element_by` instead)
 - new features:
   - [#15](https://github.com/yashaka/selene/issues/15): added `browser.title()` shortcut for `browser.driver().title`
-    
+
 ## 1.0.0a11 (to be released 13.05.2017)
-  - naming changes:
-    - browser.visit() renamed to browser.open_url()
-    - config.maximize_windows -> config.start_maximized
-    - config.screenshot_folder -> config.reports_folder
-  - improvements
-    - screenshot link is now clickable in console output
-  - bug fixes:
-    - [#124](https://github.com/yashaka/selene/issues/124): If by.xpath contains utf8 symbols and not condition get UnicodeEncodeError: 'ascii'   
-  - planned to remove in next version:
-    - selene.tools
- 
+
+- naming changes:
+  - browser.visit() renamed to browser.open_url()
+  - config.maximize_windows -> config.start_maximized
+  - config.screenshot_folder -> config.reports_folder
+- improvements
+  - screenshot link is now clickable in console output
+- bug fixes:
+  - [#124](https://github.com/yashaka/selene/issues/124): If by.xpath contains utf8 symbols and not condition get UnicodeEncodeError: 'ascii'
+- planned to remove in next version:
+  - selene.tools
+
 ## 1.0.0a10 (released 01.03.2017)
-  - [#103](https://github.com/yashaka/selene/issues/103): NEW API entry points
-    - now all main selene API is available via single wildcard import: `from selene.api import *`
-      - you can use the "old direct imports way" but at least until 1.0 release "the new way" will result in more stable API. We may move modules between packages, but your new way imports remain stable. See more explantains in issue description #103   
-    - read Quick Start section in README.MD for more details.
-  - **UPCOMING BREAKING CHANGES**:
-    - deprecated selene.config.app_host, use `selene.config.base_url` instead 
-      - selene.config.app_host still works but will be removed in next versions
-    - [#101](https://github.com/yashaka/selene/issues/101): deprecated selene.tools, use selene.browser and selene.support.jquery_style_selectors instead or just the "new way imports from #103"
-  - new features
-    - [#51](https://github.com/yashaka/selene/issues/51): added ability to configure selene via passing/setting system variables
-    
+
+- [#103](https://github.com/yashaka/selene/issues/103): NEW API entry points
+  - now all main selene API is available via single wildcard import: `from selene.api import *`
+    - you can use the "old direct imports way" but at least until 1.0 release "the new way" will result in more stable API. We may move modules between packages, but your new way imports remain stable. See more explantains in issue description #103
+  - read Quick Start section in README.MD for more details.
+- **UPCOMING BREAKING CHANGES**:
+  - deprecated selene.config.app_host, use `selene.config.base_url` instead
+    - selene.config.app_host still works but will be removed in next versions
+  - [#101](https://github.com/yashaka/selene/issues/101): deprecated selene.tools, use selene.browser and selene.support.jquery_style_selectors instead or just the "new way imports from #103"
+- new features
+  - [#51](https://github.com/yashaka/selene/issues/51): added ability to configure selene via passing/setting system variables
+
 ## 1.0.0a9 (to be released 01.03.2017)
-  - skipped:)
+
+- skipped:)
 
 ## 1.0.0a8 (released 16.02.2017)
-  - new features added
-    - #76: config.maximize_window (set to True by default)
-    - #68: config.hold_browser_open (set to False by default)
-    - #78: config.desired_capabilities (set to None by default)
-    - #92: selene.tools.latest_screenshot() (returns NoneObject if no screenshot have been added yet)
-    - #85: SeleneElement#context_click()
-    - #77: SeleneElement#scroll_to() (not needed in all cases, but may be usefull in some browsers sometimes...)
-    - #75: support for phantomjs browser
-    - conditions: url, url_containing, title_containing
-    - refactored aliases implementation from selene.support.conditions.have
-      - now they are implemented as method definitions giving better hints during autocomplete
-  - project infrastracture
-    - #84: improved travis job: added archiving build artifacts (test results)
+
+- new features added
+  - #76: config.maximize_window (set to True by default)
+  - #68: config.hold_browser_open (set to False by default)
+  - #78: config.desired_capabilities (set to None by default)
+  - #92: selene.tools.latest_screenshot() (returns NoneObject if no screenshot have been added yet)
+  - #85: SeleneElement#context_click()
+  - #77: SeleneElement#scroll_to() (not needed in all cases, but may be usefull in some browsers sometimes...)
+  - #75: support for phantomjs browser
+  - conditions: url, url_containing, title_containing
+  - refactored aliases implementation from selene.support.conditions.have
+    - now they are implemented as method definitions giving better hints during autocomplete
+- project infrastracture
+  - #84: improved travis job: added archiving build artifacts (test results)
   
 ## 1.0.0a7 (released 22.01.2017)
-  - fixed #71: weird paths of screenshots for windows
-  - updated #56: now selene should work with python 3 (but feature is not fully tested)
-    
+
+- fixed #71: weird paths of screenshots for windows
+- updated #56: now selene should work with python 3 (but feature is not fully tested)
+
 ## 1.0.0a6 (released 17.01.2017)
-  - added selene.tools.wait_to to wait for driver conditions like have.title, have.js_returned_true
-  - added Title and JsReturnedTrue webdriver conditions
-  - added selene.tools.execute_script
-    
+
+- added selene.tools.wait_to to wait for driver conditions like have.title, have.js_returned_true
+- added Title and JsReturnedTrue webdriver conditions
+- added selene.tools.execute_script
+
 ## 1.0.0a5 (released 16.01.2017)
-  - refactored conditions implementation
-  - broken support for python 3 (will be fixed in next versions)
+
+- refactored conditions implementation
+- broken support for python 3 (will be fixed in next versions)
 
 ## 1.0.0a4 (next from master branch)
-  - added automatic screenshots on failed "should" methods
-    - by default screenshots are created in {user_home}/.selene/screenshots/{id_of_current_tests_run}
-    - by default the "previous run" screenshots are not cleared on "next run"
-  - screenshot can be created manually by `selene.tools.take_screenshot`
+
+- added automatic screenshots on failed "should" methods
+  - by default screenshots are created in {user_home}/.selene/screenshots/{id_of_current_tests_run}
+  - by default the "previous run" screenshots are not cleared on "next run"
+- screenshot can be created manually by `selene.tools.take_screenshot`
 
 ## 1.0.0a3 (next from master branch)
-  - improvements:
-    - error messages are cleaner
-      - TODO: still lacks proper test coverage of all cases...
-  - internal
-    - refactored wait_for implementation, made it cleaner
-      - TODO: still need to refactor condition implementation
-    
+
+- improvements:
+  - error messages are cleaner
+    - TODO: still lacks proper test coverage of all cases...
+- internal
+  - refactored wait_for implementation, made it cleaner
+    - TODO: still need to refactor condition implementation
+
 ## 1.0.0a2 (not published, available via direct install from sources)
+
 - new features:
   - automatic driver management (thanks to PR from @SergeyPirogov)
-    - no more need to `set_driver`, 
-      just use any command from `selene.tools`, 
+    - no more need to `set_driver`,
+      just use any command from `selene.tools`,
       like `visit`, `s`, or `ss` and driver will be opened automatically,
       and then closed automatically (unless you decide to set it manually via `set_driver`)
     - includes automatic installation of needed drivers via [webdriver_manager](https://github.com/SergeyPirogov/webdriver_manager)
-    
+
 ## 1.0.0a1 (not published, available via direct install from sources)
+
 - internal
   - improved test coverage
     - added "given-helpers" for preconditions for atomic tests
@@ -2298,14 +2372,14 @@ results.element_by(
   - object oriented paradigm is now supported in context of webdriver usage
     - Don't like "static" s, ss helpers (from selene.tools module) using global driver instance set by set_driver(...)?
     - now you can use driver.element, driver.all correspondingly
-        - where driver = SeleneDriver.wrap(FirefoxDriver()), etc.
-        - SeleneDriver has almost the same interface as WebDriver, but with additional methods
-          - so you can do everything you can do with raw selenium when needed
+      - where driver = SeleneDriver.wrap(FirefoxDriver()), etc.
+      - SeleneDriver has almost the same interface as WebDriver, but with additional methods
+        - so you can do everything you can do with raw selenium when needed
   - additional "helpers" from selene.support package
     - more readable and convenient API to retrieve conditions via selene.support.(be|have)
       - e.g. `s('#element').should(have.text('foo'))`
     - more readable and convenient API to retrieve by locators via selene.support.by
-      - e.g. 
+      - e.g.
         - `s(by.text('foo')).click()`
         - `s('#element').element(by.be_following_sibling).click()`
     - SeleneElement relative search shortcut-methods:
@@ -2320,26 +2394,31 @@ results.element_by(
     - it's mandatory to use get_driver(...) from selene.tools for this
 
 ## 0.0.8 (released 08.12.2016)
+
 - locked the selenium version to 2.53.1
 - fixed encoding issues when working with text of elements in conditions
 - added bys.by_name
 
 ## 0.0.7 (released 01.03.2016)
+
 - fixed python3 support
 - fixed the is_displayed method - now it contains implicit wait for "exist in DOM" instead of "visible"
 - added ss(".element", of=Task) syntax in addition to ss(".element").of(Task)
 - removed "general interceptor of all unknown methods" SElement's base class (actually commented it in code:)
-- refactored lazy inner collection classes to use extend in __init__ and not use SElementsCollectionWrapper (removed the latter and SElementWrapper)
+- refactored lazy inner collection classes to use extend in **init** and not use SElementsCollectionWrapper (removed the latter and SElementWrapper)
 - refactored: removed unnecessary extend from "inner" selement collections (it is needed obviously only for "inner" selement collection element classes)
 
 ## 0.0.6 (released 22.02.2016)
+
 - added alias methods:
-```
+
+```py
     insist_not = assure_not
     should_not = assure_not
     should_not_be = assure_not
     should_not_have = assure_not
 ```
+
 - removed stopit from dependencies
 - optimized element actions (now they wait for visibility only if first try failed)
   - now selene is as fast as selenium with research of elements before any action. Manual cashing is also available when "raw selenium" speed is needed (semi-automatic customizable cashing will be added later)
@@ -2352,7 +2431,7 @@ results.element_by(
 - big refactoring
   - removed currently unstable things
     - automatic driver management (Firefox)
-        - so now management is manual but you can use any driver you want (Firefox, Chrome, etc...)
+      - so now management is manual but you can use any driver you want (Firefox, Chrome, etc...)
     - screenshooting
   - removed "too complicated" things
     - automatic Loading of widgets
@@ -2365,10 +2444,17 @@ results.element_by(
   - added support of other locators (in addition to css)
 
 ## 0.0.4
+
 ...
+
 ## 0.0.3
+
 ...
+
 ## 0.0.2
+
 ...
+
 ## 0.0.1
+
 ...
