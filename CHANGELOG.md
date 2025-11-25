@@ -99,7 +99,11 @@ TODOs:
 - can we force order of how `selene.*` is rendered on autocomplete? via `__all__`...
 - deprecate `have.js_returned` in favour of `have.script_returned`
 
-## 2.0.0rc9 (to be released on 06.03.2024)
+## 2.0.0rc10 (released on 06.03.2024)
+
+## Removed support for python 3.8 and 3.9, requires >= 3.10 now
+
+## 2.0.0rc9 (released on 06.03.2024)
 
 ### Click with offsets
 

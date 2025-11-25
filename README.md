@@ -56,7 +56,7 @@ Find more below...
 
 - Latest recommended version to use is latest among [2.0.0rc*][latest-recommended-version]
     - it's a completely new version of selene, with improved API and speed
-    - supports Python `3.8+`
+    - supports Python `>=3.10`
     - supports Selenium `>=4.12.0`
     - it's incompatible with [1.x][brunch-ver-1]
     - current master branch is pointed to 2.x

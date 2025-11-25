@@ -1,8 +1,10 @@
-[tool.poetry]
+[project]
 name = "selene"
-version = "2.0.0rc9"
+version = "2.0.0rc10"
 description = "User-oriented browser tests in Python (Selenide port)"
-authors = ["Iakiv Kramarenko <yashaka@gmail.com>"]
+authors = [
+    {name = "Iakiv Kramarenko", email = "yashaka@gmail.com"}
+]
 license = "MIT"
 readme = "README.md"
 keywords = [
@@ -14,9 +16,6 @@ keywords = [
     "widget",
     "wrapper"
 ]
-homepage = "https://yashaka.github.io/selene/"
-repository = "https://github.com/yashaka/selene/"
-documentation = "https://yashaka.github.io/selene/"
 classifiers = [
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
@@ -24,13 +23,26 @@ classifiers = [
     "Natural Language :: English",
     "Environment :: Web Environment",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: Apache Software License",
     "Operating System :: OS Independent",
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Topic :: Software Development :: Libraries :: Application Frameworks",
     "Topic :: Internet :: WWW/HTTP :: Browsers",
     "Topic :: Software Development :: Testing",
 ]
+requires-python = ">=3.10"
+dependencies = [
+    "selenium>=4.12.0",
+    "future",
+    "typing-extensions>=4.15.0"
+]
+
+[project.urls]
+Homepage = "https://yashaka.github.io/selene/"
+Repository = "https://github.com/yashaka/selene/"
+Documentation = "https://yashaka.github.io/selene/"
+Changelog = "https://github.com/yashaka/selene/releases"
+
+[tool.poetry]
 packages = [
     {include = "selene"},
     {include = "selene/api"},
@@ -42,17 +54,8 @@ packages = [
     {include = "selene/py.typed"}
 ]
 
-[tool.poetry.urls]
-Changelog = "https://github.com/yashaka/selene/releases"
-
-[tool.poetry.dependencies]
-python = "^3.8"
-selenium = ">=4.12.0"
-future = "*"
-typing-extensions = ">=4.9.0"
-
-[tool.poetry.dev-dependencies]
-black = "^24.2.0"
+[tool.poetry.group.dev.dependencies]
+black = "^25.11.0"
 pycodestyle = "*"
 pylint = "2.13.9"
 pytest = "*"
