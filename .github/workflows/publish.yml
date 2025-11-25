@@ -7,8 +7,8 @@ jobs:
   build_and_publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: abatilo/actions-poetry@v2
+      - uses: actions/checkout@v5
+      - uses: abatilo/actions-poetry@v3
 
       - name: Bump version
         run: |
@@ -24,6 +24,6 @@ jobs:
           message: 'bump version up to ${{ github.event.release.tag_name }}'
 
       - name: Build and publish to pypi
-        uses: JRubics/poetry-publish@v1.16
+        uses: JRubics/poetry-publish@v2.1
         with:
           pypi_token: ${{ secrets.PYPI_TOKEN }}
