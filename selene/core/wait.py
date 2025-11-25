@@ -147,7 +147,8 @@ class Wait(Generic[E]):
 
                         raise self._hook_failure(failure)
 
-        return self._decorator(self)(logic)(fn)
+        # TODO: fix typing issue
+        return self._decorator(self)(logic)(fn)  # type: ignore
 
     def until(self, fn: Callable[[E], R]) -> bool:
         try:

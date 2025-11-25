@@ -83,10 +83,10 @@ def element_has_exact_text(expected: str) -> Condition[Element]:
 
 def element_has_js_property(name: str):
     # TODO: should we keep simpler but less obvious name - *_has_property ?
-    def property_value(element: Element) -> str:
+    def property_value(element: Element):
         return element().get_property(name)
 
-    def property_values(collection: Collection) -> List[str]:
+    def property_values(collection: Collection):
         return [element.get_property(name) for element in collection()]
 
     raw_property_condition = ElementCondition.raise_if_not_actual(
@@ -181,10 +181,10 @@ def element_has_css_property(name: str):
 
 
 def element_has_attribute(name: str):
-    def attribute_value(element: Element) -> str:
+    def attribute_value(element: Element):
         return element().get_attribute(name)
 
-    def attribute_values(collection: Collection) -> List[str]:
+    def attribute_values(collection: Collection):
         return [element.get_attribute(name) for element in collection()]
 
     raw_attribute_condition = ElementCondition.raise_if_not_actual(
@@ -270,7 +270,7 @@ def collection_has_values_containing(
 
 
 def element_has_css_class(expected: str) -> Condition[Element]:
-    def class_attribute_value(element: Element) -> str:
+    def class_attribute_value(element: Element):
         return element().get_attribute('class')
 
     return ElementCondition.raise_if_not_actual(

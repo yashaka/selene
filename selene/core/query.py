@@ -29,8 +29,8 @@ from selene.core._browser import Browser
 from selene.core.wait import Query
 
 
-def attribute(name: str) -> Query[Element, str]:
-    def fn(element: Element) -> str:
+def attribute(name: str) -> Query[Element, str | None]:
+    def fn(element: Element) -> str | None:
         return element().get_attribute(name)
 
     return Query(f'attribute {name}', fn)

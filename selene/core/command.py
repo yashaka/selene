@@ -308,7 +308,10 @@ class js:  # pylint: disable=invalid-name
             entity.execute_script('element.remove()')
             if not hasattr(entity, '__iter__')
             else [element.execute_script('element.remove()') for element in entity]
-        ),
+        )
+        # command should return None anyway:
+        and None
+        or None,  # TODO: should we change Command to return None | Any to avoid this workaround?,
     )
 
     @staticmethod
@@ -322,7 +325,9 @@ class js:  # pylint: disable=invalid-name
                     element.execute_script(f'element.style.{name}="{value}"')
                     for element in entity
                 ]
-            ),
+            )
+            and None
+            or None,
         )
 
     set_style_display_to_none: Command[Union[Element, Collection]] = Command(
@@ -334,7 +339,9 @@ class js:  # pylint: disable=invalid-name
                 element.execute_script('element.style.display="none"')
                 for element in entity
             ]
-        ),
+        )
+        and None
+        or None,
     )
 
     set_style_display_to_block: Command[Union[Element, Collection]] = Command(
@@ -346,7 +353,9 @@ class js:  # pylint: disable=invalid-name
                 element.execute_script('element.style.display="block"')
                 for element in entity
             ]
-        ),
+        )
+        and None
+        or None,
     )
 
     set_style_visibility_to_hidden: Command[Union[Element, Collection]] = Command(
@@ -358,7 +367,9 @@ class js:  # pylint: disable=invalid-name
                 element.execute_script('element.style.visibility="hidden"')
                 for element in entity
             ]
-        ),
+        )
+        and None
+        or None,
     )
 
     set_style_visibility_to_visible: Command[Union[Element, Collection]] = Command(
@@ -370,7 +381,9 @@ class js:  # pylint: disable=invalid-name
                 element.execute_script('element.style.visibility="visible"')
                 for element in entity
             ]
-        ),
+        )
+        and None
+        or None,
     )
 
     # TODO: add js.drag_and_drop_by_offset(x, y)
