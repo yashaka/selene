@@ -127,7 +127,7 @@ def test_element_search_fails_with_message_when_implicitly_waits_for_condition(
         '(Session info: *); For documentation on this error, please visit: '
         'https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#elementnotinteractableexception',
         'Screenshot: *.png',
-        'PageSource: *.html'
+        'PageSource: *.html',
     ]
 
 
