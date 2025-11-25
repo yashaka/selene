@@ -76,7 +76,7 @@ def test_element_search_fails_with_message__when_no_such_element(
         '{"method":"css selector","selector":"#non-existing"}',
         '(Session info: *); For documentation on this error, please visit: '
         'https://www.selenium.dev/documentation/webdriver/troubleshooting'
-        '/errors#no-such-element-exception',
+        '/errors#nosuchelementexception',
         'Screenshot: *.png',
         'PageSource: *.html',
     ]
@@ -124,9 +124,10 @@ def test_element_search_fails_with_message_when_implicitly_waits_for_condition(
         "browser.element(('css selector', '#hidden-button')).click",
         '',
         'Reason: ElementNotInteractableException: element not interactable',
-        '(Session info: *)',
+        '(Session info: *); For documentation on this error, please visit: '
+        'https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#elementnotinteractableexception',
         'Screenshot: *.png',
-        'PageSource: *.html',
+        'PageSource: *.html'
     ]
 
 
@@ -152,7 +153,8 @@ def test_inner_element_search_fails_with_message_when_implicitly_waits_for_condi
         "'#hidden-button')).click",
         '',
         'Reason: ElementNotInteractableException: element not interactable',
-        '(Session info: *)',
+        '(Session info: *); For documentation on this error, please visit: '
+        'https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#elementnotinteractableexception',
         'Screenshot: *.png',
         'PageSource: *.html',
     ]
@@ -180,7 +182,8 @@ def test_inner_element_search_fails_with_message_when_implicitly_waits_for_condi
         "selector', '#button')).click",
         '',
         'Reason: ElementNotInteractableException: element not interactable',
-        '(Session info: *)',
+        '(Session info: *); For documentation on this error, please visit: '
+        'https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#elementnotinteractableexception',
         'Screenshot: *.png',
         'PageSource: *.html',
     ]
@@ -210,7 +213,7 @@ def test_inner_element_search_fails_with_message_when_implicitly_waits_for_condi
         'Reason: NoSuchElementException: no such element: Unable to locate '
         'element: {"method":"css selector","selector":"#not-existing"}',
         '(Session info: *); For documentation on this error, please visit: '
-        'https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception',
+        'https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#nosuchelementexception',
         'Screenshot: *.png',
         'PageSource: *.html',
     ]
