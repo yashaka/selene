@@ -2,7 +2,7 @@ from typing import Optional
 
 import selene
 from selene import command, be, have, query
-from selene.support._pom import element
+from selene.support._pom import element, all_
 from tests.integration.helpers.givenpage import GivenPage
 
 
@@ -152,8 +152,10 @@ class __X_ReactContinuousSlider:
 
         self.thumb = self.context.element('.MuiSlider-thumb')
         self.thumb_input = self.thumb.element('input')
-        self.volume_up = self.context.element('[data-testid=VolumeUpIcon]')
-        self.volume_down = self.context.element('[data-testid=VolumeDownIcon]')
+        self.volume_up = self.context.all('svg').second
+        self.volume_down = self.context.all('svg').first
+        # self.volume_up = self.context.element('[data-testid=VolumeUpIcon]')
+        # self.volume_down = self.context.element('[data-testid=VolumeDownIcon]')
         self.rail = self.context.element('.MuiSlider-rail')
 
     def open(self):
@@ -165,8 +167,12 @@ class __X_ReactContinuousSlider:
 class ReactContinuousSlider:
     thumb = element('.MuiSlider-thumb')
     thumb_input = thumb.element('input')
-    volume_up = element('[data-testid=VolumeUpIcon]')
-    volume_down = element('[data-testid=VolumeDownIcon]')
+    volume_up = element('svg:nth-of-type(2)')
+    volume_down = element('svg:nth-of-type(1)')
+    # volume_up = all_('svg').second  # TODO: implement
+    # volume_down = all_('svg').first # TODO: implement
+    # volume_up = element('[data-testid=VolumeUpIcon]')
+    # volume_down = element('[data-testid=VolumeDownIcon]')
     rail = element('.MuiSlider-rail')
 
     def __init__(self, browser: Optional[selene.Browser]):

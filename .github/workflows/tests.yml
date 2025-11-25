@@ -86,6 +86,11 @@ jobs:
           sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
         if: steps.changed-files.outputs.any_modified == 'true'
 
+      - name: Install a copy/paste mechanism
+        run: |
+          sudo apt-get install xclip
+        if: steps.changed-files.outputs.any_modified == 'true'
+
       - name: Tests
         run: |
           poetry run pytest -sv --cov-config .coveragerc --cov-report html:skip-covered --cov-report term:skip-covered --cov=selene  --cov-report xml:coverage.xml --tb=short tests/ --headless=True
