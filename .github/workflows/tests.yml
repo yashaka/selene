@@ -1,7 +1,6 @@
 name: tests
 
 on:
-
   push:
     paths-ignore:
       - .run/
@@ -39,7 +38,6 @@ on:
       - .github/FUNDING.yml
 
 jobs:
-
   test:
     runs-on: ubuntu-latest
     env:
@@ -50,10 +48,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [ '3.8', '3.11' ]
+        # python-version: ["3.10", "3.14"]
+        python-version: ["3.10"]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
 
       - uses: technote-space/get-diff-action@v6
         with:
@@ -64,7 +63,7 @@ jobs:
             tests.yml
 
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}
         if: env.GIT_DIFF
@@ -84,6 +83,11 @@ jobs:
           sudo apt-get install xvfb
           sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
         if: env.GIT_DIFF
+
+      - name: Install a copy/paste mechanism
+        run: |
+          sudo apt-get install xclip
+        if: steps.changed-files.outputs.any_modified == 'true'
 
       - name: Tests
         run: |

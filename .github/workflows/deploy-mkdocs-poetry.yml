@@ -3,7 +3,7 @@ name: Deploy Docs to Pages
 env:
   # Specify Python version to quick change in the future
   # See: https://github.com/actions/setup-python/tree/main#available-versions-of-python
-  PYTHON_VERSION: "3.8"
+  PYTHON_VERSION: "3.10"
 
 
 # Controls when the workflow will run
@@ -29,12 +29,12 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
       - name: Install Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
@@ -50,7 +50,7 @@ jobs:
 
       # upload the static files as an artifact
       - name: Upload static artifact (.zip)
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v3
         with:
           path: "site/"
 
@@ -74,4 +74,4 @@ jobs:
     steps:
       - name: Deploy docs to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v1
+        uses: actions/deploy-pages@v4
