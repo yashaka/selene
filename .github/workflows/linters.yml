@@ -90,7 +90,7 @@ jobs:
 
   Mypy:
     name: Mypy
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
