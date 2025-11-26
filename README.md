@@ -171,6 +171,13 @@ browser.all('#rso>div').should(have.size_greater_than(5))\
 # not mandatory, because will be closed automatically:
 # browser.quit()
 ```
+## Tutorials
+
+- Selene: Quick Start
+- Selene in action
+- Selene for PageObjects
+- **Hard Wait Example:** [examples/waits/hard_wait_then_wait_example.py](examples/waits/hard_wait_then_wait_example.py) – demonstrates why explicit waits are preferred over hardcoded sleeps in UI testing.
+
 
 ### Core API
 
