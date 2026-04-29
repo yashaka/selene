@@ -7,6 +7,8 @@ from selene import have, command
 import pyperclip
 from tests.integration.helpers.givenpage import GivenPage
 
+pytestmark = [pytest.mark.clipboard, pytest.mark.flaky]
+
 
 def test_copy_currently_selected_text_on_the_page_into_clipboard_via_shortcut(
     session_browser,

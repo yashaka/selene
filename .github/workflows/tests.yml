@@ -1,7 +1,6 @@
 name: tests
 
 on:
-
   push:
     paths-ignore:
       - .run/
@@ -19,7 +18,6 @@ on:
       - .github/workflows/publish.yml
       - .github/workflows/traffic2badge.yml
       - .github/FUNDING.yml
-
   pull_request:
     paths-ignore:
       - .run/
@@ -39,67 +37,110 @@ on:
       - .github/FUNDING.yml
 
 jobs:
-
-  test:
+  regression:
+    name: Regression (blocking)
     runs-on: ubuntu-latest
     env:
       DISPLAY: ":99"
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      selenoid_login: ${{ secrets.SELENOID_LOGIN }}
-      selenoid_password: ${{ secrets.SELENOID_PASSWORD }}
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: [ '3.10' ]
-#        python-version: [ '3.10', '3.14' ]
-
     steps:
       - uses: actions/checkout@v5
-
-      - uses: tj-actions/changed-files@v44
-        id: changed-files
+      - uses: actions/setup-python@v6
         with:
-          files: |
-            poetry.lock
-            **/tests.yml
-            {selene,tests}/**/*.py
-
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v6
-        with:
-          python-version: ${{ matrix.python-version }}
-        if: steps.changed-files.outputs.any_modified == 'true'
-
-      # can be packaged as Docker-image
+          python-version: "3.10"
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install poetry
           poetry install
-        if: steps.changed-files.outputs.any_modified == 'true'
-
-      # can be packaged as Docker-image; p.s.: no need to install chrome or firefox on github-actions
       - name: Install xvfb
         run: |
           sudo apt-get update
-          sudo apt-get install xvfb
+          sudo apt-get install -y xvfb
           sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
-        if: steps.changed-files.outputs.any_modified == 'true'
-
-      - name: Install a copy/paste mechanism
+      - name: Regression tests
         run: |
-          sudo apt-get install xclip
-        if: steps.changed-files.outputs.any_modified == 'true'
-
-      - name: Tests
-        run: |
-          poetry run pytest -sv --cov-config .coveragerc --cov-report html:skip-covered --cov-report term:skip-covered --cov=selene  --cov-report xml:coverage.xml --tb=short tests/ --headless=True
-          mkdir -p Artifacts/skip-covered
-          cp -r skip-covered Artifacts/skip-covered
-        if: steps.changed-files.outputs.any_modified == 'true'
-
+          poetry run pytest -sv \
+            --cov-config .coveragerc \
+            --cov-report html:skip-covered \
+            --cov-report term:skip-covered \
+            --cov=selene \
+            --cov-report xml:coverage.xml \
+            --tb=short \
+            -m "not (clipboard or speed or remote or flaky)" \
+            tests/ \
+            --headless=True
       - name: Code Coverage
         uses: codecov/codecov-action@v4.5.0
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-        if: steps.changed-files.outputs.any_modified == 'true'
+
+  clipboard:
+    name: Clipboard (non-blocking)
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    env:
+      DISPLAY: ":99"
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.10"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install poetry
+          poetry install
+      - name: Install xvfb and xclip
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb xclip
+          sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
+      - name: Clipboard tests
+        run: poetry run pytest -sv --tb=short -m "clipboard" tests/ --headless=True
+
+  speed:
+    name: Speed (non-blocking)
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    env:
+      DISPLAY: ":99"
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.10"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install poetry
+          poetry install
+      - name: Install xvfb
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb
+          sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
+      - name: Speed tests
+        run: poetry run pytest -sv --tb=short -m "speed" tests/ --headless=True
+
+  remote:
+    name: Remote (non-blocking)
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    if: ${{ secrets.SELENOID_LOGIN != '' && secrets.SELENOID_PASSWORD != '' }}
+    env:
+      DISPLAY: ":99"
+      selenoid_login: ${{ secrets.SELENOID_LOGIN }}
+      selenoid_password: ${{ secrets.SELENOID_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.10"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install poetry
+          poetry install
+      - name: Remote tests
+        run: poetry run pytest -sv --tb=short -m "remote" tests/ --headless=True
