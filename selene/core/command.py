@@ -373,22 +373,41 @@ save_page_source = __SavePageSource()
 
 def __select_all_actions(some_entity: Element | Browser):
     _COMMAND_KEY = Keys.COMMAND if sys.platform == 'darwin' else Keys.CONTROL
-    actions: ActionChains = ActionChains(some_entity.config.driver)
-
-    actions.key_down(_COMMAND_KEY)
-
     if entity._is_element(some_entity):
-        # for select_all it's ok to click on input field before sending the shortcut
-        # probably it's even a good idea to do such click
-        # that's why it's ok for use to call actions.send_keys_to_element
-        # (web_element.send_keys does not such click;))
-        actions.send_keys_to_element(some_entity.locate(), 'a')  # type: ignore
-    else:
+        webelement = some_entity.locate()
+        tag_name = (webelement.tag_name or "").lower()
+        input_type = (webelement.get_attribute("type") or "").lower()
+
+        if tag_name == "textarea" or (
+            tag_name == "input"
+            and input_type
+            not in {"button", "checkbox", "color", "file", "hidden", "image", "radio", "reset", "submit"}
+        ):
+            some_entity.config.driver.execute_script(
+                """
+                const e = arguments[0];
+                e.focus();
+                if (typeof e.setSelectionRange === 'function') {
+                    e.setSelectionRange(0, e.value.length);
+                }
+                """,
+                webelement,
+            )
+            return
+
+        actions: ActionChains = ActionChains(some_entity.config.driver)
+        actions.click(webelement)
+        actions.key_down(_COMMAND_KEY)
         actions.send_keys('a')
-
-    actions.key_up(_COMMAND_KEY)
-
-    actions.perform()
+        actions.key_up(_COMMAND_KEY)
+        actions.perform()
+        return
+    else:
+        actions: ActionChains = ActionChains(some_entity.config.driver)
+        actions.key_down(_COMMAND_KEY)
+        actions.send_keys('a')
+        actions.key_up(_COMMAND_KEY)
+        actions.perform()
 
 
 select_all: Command[Element | Browser] = Command(
@@ -414,7 +433,11 @@ def __copy(some_entity: Element | Browser):
     _COMMAND_KEY = Keys.COMMAND if sys.platform == 'darwin' else Keys.CONTROL
 
     if entity._is_element(some_entity):
-        some_entity.locate().send_keys(_COMMAND_KEY, 'c')  # type: ignore
+        actions = ActionChains(some_entity.config.driver)
+        actions.key_down(_COMMAND_KEY)
+        actions.send_keys('c')
+        actions.key_up(_COMMAND_KEY)
+        actions.perform()
         return
 
     actions = ActionChains(some_entity.config.driver)
@@ -472,7 +495,29 @@ class __Paste(Command[Union[Element, Browser]]):
             _COMMAND_KEY = Keys.COMMAND if sys.platform == 'darwin' else Keys.CONTROL
 
             if entity._is_element(some_entity):
-                some_entity.locate().send_keys(_COMMAND_KEY, 'v')  # type: ignore
+                webelement = some_entity.locate()
+                is_active = some_entity.config.driver.execute_script(
+                    "return document.activeElement === arguments[0];",
+                    webelement,
+                )
+                if not is_active:
+                    some_entity.config.driver.execute_script(
+                        """
+                        const e = arguments[0];
+                        e.focus();
+                        if (typeof e.setSelectionRange === 'function' && typeof e.value === 'string') {
+                            const end = e.value.length;
+                            e.setSelectionRange(end, end);
+                        }
+                        """,
+                        webelement,
+                    )
+
+                actions = ActionChains(some_entity.config.driver)
+                actions.key_down(_COMMAND_KEY)
+                actions.send_keys('v')
+                actions.key_up(_COMMAND_KEY)
+                actions.perform()
                 return
 
             actions = ActionChains(some_entity.config.driver)
