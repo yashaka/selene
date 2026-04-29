@@ -3,6 +3,7 @@ Reflects main scenarios from docs/faq/clipboard-copy-and-paste-howto.md
 (those that uses either command.copy or command.paste explicitly or implicitly)
 """
 
+import pytest
 from selene import have, command
 import pyperclip
 from tests.integration.helpers.givenpage import GivenPage
