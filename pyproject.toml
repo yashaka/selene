@@ -93,6 +93,7 @@ exclude = [
 ]
 
 [tool.pytest.ini_options]
+addopts = "--color=yes"
 markers = [
     "smoke: critical fast checks",
     "regression: stable functional regression",
