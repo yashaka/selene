@@ -101,7 +101,9 @@ TODOs:
 
 ## 2.0.0rc10 (released on 06.03.2024)
 
-## Removed support for python 3.8 and 3.9, requires >= 3.10 now
+### Changed
+
+- removed support for Python 3.8 and 3.9; Selene now requires Python >= 3.10
 
 ## 2.0.0rc9 (released on 06.03.2024)
 

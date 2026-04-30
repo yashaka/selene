@@ -19,10 +19,15 @@ keywords = [
 classifiers = [
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Development Status :: 4 - Beta",
     "Natural Language :: English",
     "Environment :: Web Environment",
     "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Topic :: Software Development :: Libraries :: Application Frameworks",
@@ -55,15 +60,15 @@ packages = [
 ]
 
 [tool.poetry.group.dev.dependencies]
-black = "^25.11.0"
+black = "^26.0.0"
 pycodestyle = "*"
-pylint = "2.13.9"
+pylint = "4.0.5"
 pytest = "*"
 pytest-cov = "*"
 mypy = "*"
-pydantic = "^1.10.7"
-python-dotenv = "0.21.1"
-Appium-Python-Client = "^2.9.0"
+pydantic = "^2.13.3"
+python-dotenv = "^1.2.2"
+Appium-Python-Client = "^5.3.1"
 
 [tool.poetry.group.docs]
 optional = true
@@ -91,7 +96,7 @@ exclude = [
 
 [tool.black]
 line-length = 88
-target-version = ['py38']
+target-version = ['py310']
 skip-string-normalization = 1
 
 [tool.pylint]

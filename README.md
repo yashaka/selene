@@ -76,7 +76,7 @@ THIS README DESCRIBES THE USAGE OF THE PRE-RELEASE version of Selene. For older 
 
 From `1.0.2` to `2.0.0b<LATEST>`:
 
-- upgrade to Python 3.7+
+- upgrade to Python 3.10+
 - update selene to `2.0.0b<LATEST>`
     - find&replace the `collection.first()` method from `.first()` to `.first`
     - ensure all conditions like `text('foo')` are used via `be.*` or `have.*` syntax
@@ -96,15 +96,15 @@ From `1.0.2` to `2.0.0b<LATEST>`:
 
 ## Prerequisites
 
-[Python 3.8+][python-38]
+[Python 3.10+][python-310]
 
 Given [pyenv][pyenv] installed, installing needed version of Python is pretty simple:
 
 ```plain
-$ pyenv install 3.8.13
-$ pyenv global 3.8.13
+$ pyenv install 3.10.16
+$ pyenv global 3.10.16
 $ python -V
-Python 3.8.13
+Python 3.10.16
 ```
 
 ## Installation
@@ -118,7 +118,7 @@ AND
 ```plain
 poetry new my-tests-with-selene
 cd my-tests-with-selene
-pyenv local 3.8.13
+pyenv local 3.10.16
 ```
 
 WHEN latest pre-release recommended version:
@@ -557,10 +557,10 @@ TBD
 
 <!-- References -->
 [selenide]: http://selenide.org/
-[latest-recommended-version]: https://pypi.org/project/selene/2.0.0rc9/
+[latest-recommended-version]: https://pypi.org/project/selene/2.0.0rc10/
 [brunch-ver-1]: https://github.com/yashaka/selene/tree/1.x
 [selene-stable]: https://pypi.org/project/selene/1.0.2/
-[python-37]: https://www.python.org/downloads/release/python-380/
+[python-310]: https://www.python.org/downloads/release/python-31016/
 [pyenv]: https://github.com/pyenv/pyenv
 [poetry]: https://python-poetry.org/
 [project-template]: https://github.com/yashaka/python-web-test
