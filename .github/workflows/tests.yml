@@ -16,7 +16,6 @@ on:
       - .github/workflows/deploy-mkdocs-poetry.yml
       - .github/workflows/linters.yml
       - .github/workflows/publish.yml
-      - .github/workflows/traffic2badge.yml
       - .github/FUNDING.yml
 
   pull_request:
@@ -34,7 +33,6 @@ on:
       - .github/workflows/deploy-mkdocs-poetry.yml
       - .github/workflows/linters.yml
       - .github/workflows/publish.yml
-      - .github/workflows/traffic2badge.yml
       - .github/FUNDING.yml
 
 jobs:
@@ -52,21 +50,23 @@ jobs:
         python-version: ["3.10"]
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
-      - uses: technote-space/get-diff-action@v6
+      - uses: dorny/paths-filter@v3
+        id: changed-files
         with:
-          PATTERNS: |
-            +(selene|tests)/**/*.py
-          FILES: |
-            poetry.lock
-            tests.yml
+          filters: |
+            tests:
+              - 'selene/**/*.py'
+              - 'tests/**/*.py'
+              - 'poetry.lock'
+              - '.github/workflows/tests.yml'
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}
-        if: env.GIT_DIFF
+        if: steps.changed-files.outputs.tests == 'true'
 
       # can be packaged as Docker-image
       - name: Install dependencies
@@ -74,7 +74,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install poetry
           poetry install
-        if: env.GIT_DIFF
+        if: steps.changed-files.outputs.tests == 'true'
 
       # can be packaged as Docker-image; p.s.: no need to install chrome or firefox on github-actions
       - name: Install xvfb
@@ -82,19 +82,19 @@ jobs:
           sudo apt-get update
           sudo apt-get install xvfb
           sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
-        if: env.GIT_DIFF
+        if: steps.changed-files.outputs.tests == 'true'
 
       - name: Install a copy/paste mechanism
         run: |
           sudo apt-get install xclip
-        if: steps.changed-files.outputs.any_modified == 'true'
+        if: steps.changed-files.outputs.tests == 'true'
 
       - name: Tests
         run: |
           poetry run pytest -sv --cov-config .coveragerc --cov-report html:skip-covered --cov-report term:skip-covered --cov=selene  --cov-report xml:coverage.xml --tb=short tests/ --headless=True
           mkdir -p Artifacts/skip-covered
           cp -r skip-covered Artifacts/skip-covered
-        if: env.GIT_DIFF
+        if: steps.changed-files.outputs.tests == 'true'
 
       # can be improved by flags/options
 #      - name: Code Coverage

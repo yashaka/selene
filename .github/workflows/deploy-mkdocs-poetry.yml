@@ -29,7 +29,7 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -50,7 +50,7 @@ jobs:
 
       # upload the static files as an artifact
       - name: Upload static artifact (.zip)
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: "site/"
 
@@ -74,4 +74,4 @@ jobs:
     steps:
       - name: Deploy docs to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
