@@ -30,6 +30,7 @@ from selenium.webdriver.common.actions.wheel_input import WheelInput
 from selenium.webdriver.remote.webelement import WebElement
 
 from selenium.webdriver import ActionChains
+
 AnyDevice = Union[PointerInput, KeyInput, WheelInput]
 
 from selene.core.entity import Element
