@@ -101,9 +101,28 @@ TODOs:
 
 ## 2.0.0rc10 (released on 06.03.2024)
 
+### Added
+
+- backported `query._frame_context` for frame/iframe context management
+- added integration coverage for nested `with` usage of `query._frame_context`
+
+### Fixed
+
+- fixed compatibility with Selenium `>=4.40` (including `4.43`) by replacing
+  direct `AnyDevice` import from `selenium.webdriver.common.action_chains`
+  with a local compatible type alias in `selene.core._actions`
+  (covers issues [#595](https://github.com/yashaka/selene/issues/595)
+  and [#596](https://github.com/yashaka/selene/issues/596))
+- fixed `wait_until(...)` behavior to avoid saving screenshot/page source
+  artifacts for handled `False` outcomes (issue
+  [#548](https://github.com/yashaka/selene/issues/548))
+
 ### Changed
 
 - removed support for Python 3.8 and 3.9; Selene now requires Python >= 3.10
+- aligned project metadata/docs to Python `>=3.10`
+- updated CI workflows for GitHub Actions runtime changes (Node 24 readiness)
+- removed deprecated `traffic2badge` workflow
 
 ## 2.0.0rc9 (released on 06.03.2024)
 
