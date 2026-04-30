@@ -140,7 +140,12 @@ class Wait(Generic[E]):
 
     def until(self, fn: Callable[[E], R]) -> bool:
         try:
-            self.for_(fn)
+            Wait(
+                self.entity,
+                self._timeout,
+                or_fail_with=identity,
+                _decorator=self._decorator,
+            ).for_(fn)
             return True
         except TimeoutException:
             return False
