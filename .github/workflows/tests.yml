@@ -89,11 +89,6 @@ jobs:
           sudo apt-get install xclip
         if: steps.changed-files.outputs.tests == 'true'
 
-      - name: Install a copy/paste mechanism
-        run: |
-          sudo apt-get install xclip
-        if: steps.changed-files.outputs.any_modified == 'true'
-
       - name: Tests
         run: |
           poetry run pytest -sv --cov-config .coveragerc --cov-report html:skip-covered --cov-report term:skip-covered --cov=selene  --cov-report xml:coverage.xml --tb=short tests/ --headless=True
