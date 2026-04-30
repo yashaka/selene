@@ -485,8 +485,7 @@ class _frame_context:
 #     def __exit__(self, exc_type, exc_val, exc_tb):
 #         driver = self._container.config.driver
 #         driver.switch_to.parent_frame()
-
-
+#
 # --- Collection queries --- #
 
 # --- Browser queries --- #

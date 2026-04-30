@@ -44,9 +44,7 @@ def test_actions_on_nested_frames_element_via_with_statement(session_browser):
     # WHEN failed
     try:
         with browser.element('[name=frame-top]').get(query._frame_context):
-            with browser.element('[name=frame-middle]').get(
-                query._nested_frame_context
-            ):
+            with browser.element('[name=frame-middle]').get(query._frame_context):
                 browser.element(
                     '#content',
                 ).should(have.exact_text('LEFT'))
