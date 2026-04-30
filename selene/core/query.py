@@ -24,8 +24,10 @@ from typing import List, Dict, Any, Union
 
 from selenium.webdriver.remote.webelement import WebElement
 
+from selene.common.helpers import to_by
 from selene.core.entity import Element, Collection
 from selene.core._browser import Browser
+from selene.core.locator import Locator
 from selene.core.wait import Query
 
 
