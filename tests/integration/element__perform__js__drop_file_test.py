@@ -1,3 +1,6 @@
+import pytest
+from selenium.common.exceptions import WebDriverException
+
 from selene import command, have
 from tests import resources
 from tests.integration.helpers.givenpage import GivenPage
@@ -28,7 +31,12 @@ def x_test_drops_file_to_self(session_browser):
 
 def test_drops_file_to_self_in_react_mui(session_browser):
     browser = session_browser
-    browser.open('https://app.qa.guru/automation-practice-form/')
+    try:
+        browser.open('https://app.qa.guru/automation-practice-form/')
+    except WebDriverException as error:
+        if 'ERR_CONNECTION_CLOSED' in str(error):
+            pytest.skip('External demo site is temporarily unavailable')
+        raise
     browser.element('[data-testid=ClearIcon]').click()
     browser.element('[role=presentation]').perform(command.js.scroll_into_view)
 

@@ -24,14 +24,13 @@ from __future__ import annotations
 from typing import Optional, List, Union, overload
 
 from selenium.webdriver.common.actions.wheel_input import ScrollOrigin
-from selenium.webdriver.remote.webelement import WebElement
-
-from selenium.webdriver import ActionChains
 from selenium.webdriver.common.actions.pointer_input import PointerInput
 from selenium.webdriver.common.actions.key_input import KeyInput
 from selenium.webdriver.common.actions.wheel_input import WheelInput
+from selenium.webdriver.remote.webelement import WebElement
 
-# AnyDevice type alias for compatibility with Selenium 4.40+
+from selenium.webdriver import ActionChains
+
 AnyDevice = Union[PointerInput, KeyInput, WheelInput]
 
 from selene.core.entity import Element
