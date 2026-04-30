@@ -28,7 +28,7 @@ from selene.common.helpers import to_by
 from selene.core.entity import Element, Collection
 from selene.core._browser import Browser
 from selene.core.locator import Locator
-from selene.core.wait import Query
+from selene.core.wait import Query, Command
 
 
 def attribute(name: str) -> Query[Element, str | None]:
