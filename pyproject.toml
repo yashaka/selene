@@ -92,6 +92,17 @@ exclude = [
     '^.+_test\.py$',
 ]
 
+[tool.pytest.ini_options]
+addopts = "--color=yes"
+markers = [
+    "smoke: critical fast checks",
+    "regression: stable functional regression",
+    "clipboard: OS/shortcut-dependent clipboard tests",
+    "speed: performance-sensitive comparisons",
+    "remote: requires remote webdriver + secrets",
+    "flaky: known unstable tests (non-blocking)",
+]
+
 
 [tool.black]
 line-length = 88

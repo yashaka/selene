@@ -3,9 +3,12 @@ Reflects main scenarios from docs/faq/clipboard-copy-and-paste-howto.md
 (those that uses either command.copy or command.paste explicitly or implicitly)
 """
 
+import pytest
 from selene import have, command
 import pyperclip
 from tests.integration.helpers.givenpage import GivenPage
+
+pytestmark = [pytest.mark.clipboard, pytest.mark.flaky]
 
 
 def test_copy_currently_selected_text_on_the_page_into_clipboard_via_shortcut(

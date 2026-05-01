@@ -24,6 +24,8 @@ from selenium.common.exceptions import NoAlertPresentException
 
 from tests.integration.helpers.givenpage import GivenPage
 
+pytestmark = [pytest.mark.remote, pytest.mark.flaky]
+
 
 @pytest.fixture(scope='function')
 def with_dismiss_alerts_teardown(the_module_remote_browser):
