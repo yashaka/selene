@@ -19,6 +19,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+import pytest
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -31,6 +32,8 @@ from selene.support.shared import browser
 from tests import resources
 from tests.acceptance.helpers.helper import get_test_driver
 from tests.helpers import time_spent
+
+pytestmark = [pytest.mark.speed, pytest.mark.flaky]
 
 TODOMVC_URL = resources.TODOMVC_URL
 

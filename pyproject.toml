@@ -65,6 +65,7 @@ pycodestyle = "*"
 pylint = "4.0.5"
 pytest = "*"
 pytest-cov = "*"
+pyperclip = "*"
 mypy = "*"
 pydantic = "^2.13.3"
 python-dotenv = "^1.2.2"
@@ -91,6 +92,17 @@ color_output=1
 exclude = [
     '^test_.+\.py$',
     '^.+_test\.py$',
+]
+
+[tool.pytest.ini_options]
+addopts = "--color=yes"
+markers = [
+    "smoke: critical fast checks",
+    "regression: stable functional regression",
+    "clipboard: OS/shortcut-dependent clipboard tests",
+    "speed: performance-sensitive comparisons",
+    "remote: requires remote webdriver + secrets",
+    "flaky: known unstable tests (non-blocking)",
 ]
 
 
