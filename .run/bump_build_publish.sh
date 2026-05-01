@@ -1,6 +1,11 @@
 #!/bin/bash
 set -euo pipefail
 
-bash .run/bump_version.sh "${1:-patch}"
-bash .run/build.sh --for-pypi
-bash .run/publish.sh
+run() {
+  echo "+ $*"
+  "$@"
+}
+
+run bash .run/bump_version.sh "${1:-patch}"
+run bash .run/build.sh --for-pypi
+run bash .run/publish.sh

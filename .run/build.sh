@@ -1,4 +1,10 @@
 #!/bin/bash
+
+run() {
+  echo "+ $*"
+  "$@"
+}
+
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -17,27 +23,27 @@ cleanup() {
 build_for_pypi() {
   trap cleanup EXIT
 
-  cp "$ROOT_DIR/README.md" "$PYPI_README"
-  cp "$PYPROJECT" "$PYPROJECT_BACKUP"
+  run cp "$ROOT_DIR/README.md" "$PYPI_README"
+  run cp "$PYPROJECT" "$PYPROJECT_BACKUP"
 
   # Convert local markdown anchors like (#section) to absolute GitHub links
   # so links remain clickable in PyPI rendered description.
-  perl -0pi -e 's/\]\(#([^)]+)\)/](https:\/\/github.com\/yashaka\/selene#\1)/g' "$PYPI_README"
+  run perl -0pi -e 's/\]\(#([^)]+)\)/](https:\/\/github.com\/yashaka\/selene#\1)/g' "$PYPI_README"
 
   if ! rg -q '^readme = "README.md"$' "$PYPROJECT"; then
     echo 'Expected `readme = "README.md"` in pyproject.toml' >&2
     exit 1
   fi
 
-  perl -0pi -e 's/^readme = "README\.md"$/readme = "README.pypi.md"/m' "$PYPROJECT"
+  run perl -0pi -e 's/^readme = "README\.md"$/readme = "README.pypi.md"/m' "$PYPROJECT"
   cd "$ROOT_DIR"
-  poetry build
-  twine check dist/*
+  run poetry build
+  run twine check dist/*
 }
 
 build_default() {
   cd "$ROOT_DIR"
-  poetry build
+  run poetry build
 }
 
 case "$MODE" in

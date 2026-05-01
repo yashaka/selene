@@ -46,24 +46,23 @@ packages = [
 Changelog = "https://github.com/yashaka/selene/releases"
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = ">=3.10"
 selenium = ">=4.12.0"
 pyperclip = "^1.9.0"
 future = "*"
-typing-extensions = ">=4.12.2"
+typing-extensions = ">=4.15.0"
 
 [tool.poetry.dev-dependencies]
-black = "^24.2.0"
+black = "^26.0.0"
 pycodestyle = "*"
-pylint = "^3.2.2"
+pylint = "4.0.5"
 pytest = "*"
 pytest-cov = "*"
 codecov = "*"
 mypy = "*"
-pydantic = "^1.10.7"
-python-dotenv = "0.21.1"
-Appium-Python-Client = "^4.2.0"
-setuptools = "^70.0.0"
+pydantic = "^2.13.3"
+python-dotenv = "^1.2.2"
+Appium-Python-Client = "^5.3.1"
 
 [tool.poetry.group.docs]
 optional = true
@@ -75,7 +74,7 @@ mkdocs = "^1.4.2"
 mkdocs-material = "^9.1.6"
 mkdocs-redirects = "^1.2.0"
 mkdocs-git-revision-date-localized-plugin = "^1.2.0"
-mkdocs-include-markdown-plugin = "^6.1.1"
+mkdocs-include-markdown-plugin = "^7.1.8"
 mkdocs-macros-plugin = "^1.0.5"
 
 [build-system]

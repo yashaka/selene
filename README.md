@@ -25,7 +25,6 @@ Selene’s core strength is its user-oriented API, which abstracts the complexit
 
 ## Table of Contents
 
-- [Overview of Selene](#overview-of-selene)
 - [Main Features](#main-features)
 - [Versions](#versions)
   - [Migration Guide](#migration-guide)
@@ -105,7 +104,7 @@ Given [pyenv][pyenv] is installed, installing the needed version of Python is si
 $ pyenv install 3.10.16
 $ pyenv global 3.10.16
 $ python -V
-Python 3.8.13
+Python 3.10.16
 ```
 
 ## Installation
@@ -307,7 +306,7 @@ See the [Changelog](https://yashaka.github.io/selene/changelog/) for more detail
 [latest-recommended-version]: https://pypi.org/project/selene/2.0.0rc9/
 [brunch-ver-1]: https://github.com/yashaka/selene/tree/1.x
 [selene-stable]: https://pypi.org/project/selene/1.0.2/
-[python-310]: https://www.python.org/downloads/
+[python-310]: https://www.python.org/downloads/release/python-3100/
 [pyenv]: https://github.com/pyenv/pyenv
 [poetry]: https://python-poetry.org/
 [project-template]: https://github.com/yashaka/python-web-test
