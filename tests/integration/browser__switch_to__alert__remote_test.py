@@ -24,7 +24,7 @@ from selenium.common.exceptions import NoAlertPresentException
 
 from tests.integration.helpers.givenpage import GivenPage
 
-pytestmark = [pytest.mark.remote, pytest.mark.flaky]
+pytestmark = [pytest.mark.flaky]
 
 
 @pytest.fixture(scope='function')
