@@ -1,3 +1,8 @@
 #!/bin/bash
 
-mypy . --follow-imports=skip --ignore-missing-imports
+run() {
+  echo "+ $*"
+  "$@"
+}
+
+run mypy . --follow-imports=skip --ignore-missing-imports

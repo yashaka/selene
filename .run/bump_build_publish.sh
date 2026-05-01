@@ -1,4 +1,10 @@
 #!/bin/bash
-bash .run/bump_version.sh $1
-bash .run/build.sh
-bash .rub/publish.sh
+
+run() {
+  echo "+ $*"
+  "$@"
+}
+
+run bash .run/bump_version.sh "$1"
+run bash .run/build.sh
+run bash .rub/publish.sh

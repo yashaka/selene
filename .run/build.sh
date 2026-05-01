@@ -1,2 +1,8 @@
 #!/bin/bash
-poetry build
+
+run() {
+  echo "+ $*"
+  "$@"
+}
+
+run poetry build

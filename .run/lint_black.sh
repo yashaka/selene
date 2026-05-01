@@ -1,2 +1,8 @@
 #!/bin/bash
-black . --check --diff
+
+run() {
+  echo "+ $*"
+  "$@"
+}
+
+run black . --check --diff
