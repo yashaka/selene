@@ -33,9 +33,10 @@ Selene’s core strength is its user-oriented API, which abstracts the complexit
 - [Usage](#usage)
   - [Quick Start](#quick-start)
   - [Core API](#core-api)
-  - [Advanced API](#advanced-api)
+  - [Selecting Element Locators](#selecting-element-locators)
+  - [Automatic Driver and Browser Management](#automatic-driver-and-browser-management)
 - [Tutorials](#tutorials)
-- [Expanded Examples](#expanded-examples)
+- [Tips for Effective Test Automation](#tips-for-effective-test-automation)
 - [Contribution](#contribution)
 - [Changelog](#changelog)
 
