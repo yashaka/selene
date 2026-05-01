@@ -19,6 +19,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+import pytest
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -31,6 +32,8 @@ from selene.support.shared import browser
 from tests import resources
 from tests.acceptance.helpers.helper import get_test_driver
 from tests.helpers import time_spent
+
+pytestmark = [pytest.mark.speed, pytest.mark.flaky]
 
 TODOMVC_URL = resources.TODOMVC_URL
 
@@ -104,5 +107,4 @@ def test_cashed_selene_is_almost_as_fast_raw_selenium():
     selene_time = time_spent(create_tasks_with_selene_with_cash)
     selenium_time = time_spent(create_tasks_with_raw_selenium)
     print(f"{selene_time} vs {selenium_time}")
-    # Keep this check useful but less flaky on slower CI workers.
-    assert selene_time < 1.35 * selenium_time
+    assert selene_time < 1.25 * selenium_time

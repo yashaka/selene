@@ -24,6 +24,8 @@ from selenium.common.exceptions import NoAlertPresentException
 
 from tests.integration.helpers.givenpage import GivenPage
 
+pytestmark = [pytest.mark.remote, pytest.mark.flaky]
+
 
 @pytest.fixture(scope='function')
 def with_dismiss_alerts_teardown(the_module_remote_browser):
@@ -39,10 +41,7 @@ def with_dismiss_alerts_teardown(the_module_remote_browser):
         pass
 
 
-# TODO: fix tests after fixed creds
-
-
-def x_test_alert_is_present(the_module_remote_browser, with_dismiss_alerts_teardown):
+def test_alert_is_present(the_module_remote_browser, with_dismiss_alerts_teardown):
     browser = the_module_remote_browser
     GivenPage(browser.driver).opened_with_body(
         """
@@ -60,7 +59,7 @@ def x_test_alert_is_present(the_module_remote_browser, with_dismiss_alerts_teard
         assert False, 'actual: alert not present, expected: alert is present'
 
 
-def x_test_can_accept_alert(the_module_remote_browser, with_dismiss_alerts_teardown):
+def test_can_accept_alert(the_module_remote_browser, with_dismiss_alerts_teardown):
     browser = the_module_remote_browser
     GivenPage(browser.driver).opened_with_body(
         """
@@ -79,7 +78,7 @@ def x_test_can_accept_alert(the_module_remote_browser, with_dismiss_alerts_teard
         assert True
 
 
-def x_test_can_dismiss_confirm_dialog(
+def test_can_dismiss_confirm_dialog(
     the_module_remote_browser, with_dismiss_alerts_teardown
 ):
     browser = the_module_remote_browser
