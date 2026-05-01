@@ -3,7 +3,7 @@ name: Deploy Docs to Pages
 env:
   # Specify Python version to quick change in the future
   # See: https://github.com/actions/setup-python/tree/main#available-versions-of-python
-  PYTHON_VERSION: "3.8"
+  PYTHON_VERSION: "3.10"
 
 
 # Controls when the workflow will run
