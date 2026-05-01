@@ -1,2 +1,8 @@
 #!/bin/bash
-mkdocs serve
+
+run() {
+  echo "+ $*"
+  "$@"
+}
+
+run mkdocs serve
