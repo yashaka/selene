@@ -59,7 +59,7 @@ Selene’s core strength is its user-oriented API, which abstracts the complexit
 Selene currently supports two major versions:
 
 - **Latest Recommended Pre-Release Version (v2.0.0rc9)**:
-  - Python versions: `3.8+`
+  - Python versions: `3.10+`
   - Selenium support: `>=4.12.0`
   - This version introduces an improved API, better performance, and is recommended for new projects.
   - Though is in alpha/beta stage, refining API, improving "migratability" and testing
@@ -76,7 +76,7 @@ For migration from v1.x to v2.x, follow the [migration guide](#migration-guide).
 ### Migration Guide
 
 From `1.0.2` to `2.0.0rc<LATEST>`:
-- Upgrade to Python 3.8+
+- Upgrade to Python 3.10+
 - Update selene to `2.0.0rc<LATEST>`
   - Replace the `collection.first()` method from `.first()` to `.first`
   - Ensure all conditions like `text('foo')` use the `be.*` or `have.*` syntax
@@ -96,14 +96,14 @@ Examples of potential refactoring during migration:
 
 ## Prerequisites
 
-[Python 3.8+][python-38] is required.
+[Python 3.10+][python-310] is required.
 
 Given [pyenv][pyenv] is installed, installing the needed version of Python is simple:
 ```bash
-$ pyenv install 3.8.13
-$ pyenv global 3.8.13
+$ pyenv install 3.10.16
+$ pyenv global 3.10.16
 $ python -V
-Python 3.8.13
+Python 3.10.16
 ```
 
 ## Installation
@@ -114,7 +114,7 @@ Ensure [poetry][poetry] and [pyenv][pyenv] are installed, then:
 ```bash
 poetry new my-tests-with-selene
 cd my-tests-with-selene
-pyenv local 3.8.13
+pyenv local 3.10.16
 poetry add selene --allow-prereleases  # for pre-release version
 poetry install
 ```
@@ -305,7 +305,7 @@ See the [Changelog](https://yashaka.github.io/selene/changelog/) for more detail
 [latest-recommended-version]: https://pypi.org/project/selene/2.0.0rc9/
 [brunch-ver-1]: https://github.com/yashaka/selene/tree/1.x
 [selene-stable]: https://pypi.org/project/selene/1.0.2/
-[python-38]: https://www.python.org/downloads/release/python-380/
+[python-310]: https://www.python.org/downloads/release/python-3100/
 [pyenv]: https://github.com/pyenv/pyenv
 [poetry]: https://python-poetry.org/
 [project-template]: https://github.com/yashaka/python-web-test
