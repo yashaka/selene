@@ -25,21 +25,21 @@ Selene’s core strength is its user-oriented API, which abstracts the complexit
 
 ## Table of Contents
 
-- [Main Features](https://github.com/yashaka/selene#main-features)
-- [Versions](https://github.com/yashaka/selene#versions)
-  - [Migration Guide](https://github.com/yashaka/selene#migration-guide)
-- [Prerequisites](https://github.com/yashaka/selene#prerequisites)
-- [Installation](https://github.com/yashaka/selene#installation)
-- [Usage](https://github.com/yashaka/selene#usage)
-  - [Quick Start](https://github.com/yashaka/selene#quick-start)
-  - [Core API](https://github.com/yashaka/selene#core-api)
-  - [Automatic Driver and Browser Management](https://github.com/yashaka/selene#automatic-driver-and-browser-management)
-  - [Advanced API](https://github.com/yashaka/selene#advanced-api)
-- [Tutorials](https://github.com/yashaka/selene#tutorials)
-- [Examples](https://github.com/yashaka/selene#Examples)
-- [Contribution](https://github.com/yashaka/selene#contribution)
-- [Release Workflow](https://github.com/yashaka/selene#release-workflow)
-- [Changelog](https://github.com/yashaka/selene#changelog)
+- [Overview of Selene](#overview-of-selene)
+- [Main Features](#main-features)
+- [Versions](#versions)
+  - [Migration Guide](#migration-guide)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Usage](#usage)
+  - [Quick Start](#quick-start)
+  - [Core API](#core-api)
+  - [Selecting Element Locators](#selecting-element-locators)
+  - [Automatic Driver and Browser Management](#automatic-driver-and-browser-management)
+- [Tutorials](#tutorials)
+- [Tips for Effective Test Automation](#tips-for-effective-test-automation)
+- [Contribution](#contribution)
+- [Changelog](#changelog)
 
 ## Main Features
 
@@ -61,7 +61,7 @@ Selene’s core strength is its user-oriented API, which abstracts the complexit
 Selene currently supports two major versions:
 
 - **Latest Recommended Pre-Release Version (v2.0.0rc9)**:
-  - Python versions: `3.8+`
+  - Python versions: `3.10+`
   - Selenium support: `>=4.12.0`
   - This version introduces an improved API, better performance, and is recommended for new projects.
   - Though is in alpha/beta stage, refining API, improving "migratability" and testing
@@ -73,12 +73,12 @@ Selene currently supports two major versions:
   - Selenium support: `<4.0.0`
   - Use this version if your project requires compatibility with older Python versions.
   
-For migration from v1.x to v2.x, follow the [migration guide](https://github.com/yashaka/selene#migration-guide).
+For migration from v1.x to v2.x, follow the [migration guide](#migration-guide).
 
 ### Migration Guide
 
 From `1.0.2` to `2.0.0rc<LATEST>`:
-- Upgrade to Python 3.8+
+- Upgrade to Python 3.10+
 - Update selene to `2.0.0rc<LATEST>`
   - Replace the `collection.first()` method from `.first()` to `.first`
   - Ensure all conditions like `text('foo')` use the `be.*` or `have.*` syntax
@@ -98,12 +98,12 @@ Examples of potential refactoring during migration:
 
 ## Prerequisites
 
-[Python 3.8+][python-38] is required.
+[Python 3.10+][python-310] is required.
 
 Given [pyenv][pyenv] is installed, installing the needed version of Python is simple:
 ```bash
-$ pyenv install 3.8.13
-$ pyenv global 3.8.13
+$ pyenv install 3.10.16
+$ pyenv global 3.10.16
 $ python -V
 Python 3.8.13
 ```
@@ -116,7 +116,7 @@ Ensure [poetry][poetry] and [pyenv][pyenv] are installed, then:
 ```bash
 poetry new my-tests-with-selene
 cd my-tests-with-selene
-pyenv local 3.8.13
+pyenv local 3.10.16
 poetry add selene --allow-prereleases  # for pre-release version
 poetry install
 ```
@@ -307,7 +307,7 @@ See the [Changelog](https://yashaka.github.io/selene/changelog/) for more detail
 [latest-recommended-version]: https://pypi.org/project/selene/2.0.0rc9/
 [brunch-ver-1]: https://github.com/yashaka/selene/tree/1.x
 [selene-stable]: https://pypi.org/project/selene/1.0.2/
-[python-38]: https://www.python.org/downloads/release/python-380/
+[python-310]: https://www.python.org/downloads/
 [pyenv]: https://github.com/pyenv/pyenv
 [poetry]: https://python-poetry.org/
 [project-template]: https://github.com/yashaka/python-web-test
