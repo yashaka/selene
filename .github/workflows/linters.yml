@@ -44,6 +44,7 @@ jobs:
         with:
           python-version: '3.10'
       - run: |
+          pip install tomli
           # Keep CI in sync with local Poetry env:
           # read black version from poetry.lock and install only that package via pip.
           BLACK_VERSION=$(python .run/get_lock_version.py black)
@@ -60,6 +61,7 @@ jobs:
           python-version: '3.10'
       - name: Pycodestyle
         run: |
+          pip install tomli
           PYCODESTYLE_VERSION=$(python .run/get_lock_version.py pycodestyle)
           pip install "pycodestyle==$PYCODESTYLE_VERSION"
           .run/lint_pycodestyle.sh
@@ -74,6 +76,7 @@ jobs:
           python-version: '3.10'
       - name: Pylint
         run: |
+          pip install tomli
           PYLINT_VERSION=$(python .run/get_lock_version.py pylint)
           pip install "pylint==$PYLINT_VERSION"
           .run/lint_pylint.sh
@@ -88,6 +91,7 @@ jobs:
           python-version: '3.10'
       - name: Pylint Full Report
         run: |
+          pip install tomli
           PYLINT_VERSION=$(python .run/get_lock_version.py pylint)
           pip install "pylint==$PYLINT_VERSION"
           touch __init__.py
@@ -104,6 +108,7 @@ jobs:
           python-version: '3.10'
       - name: Mypy
         run: |
+          pip install tomli
           # Keep CI in sync with local Poetry env:
           # read mypy version from poetry.lock and install only that package via pip.
           MYPY_VERSION=$(python .run/get_lock_version.py mypy)

@@ -2,8 +2,13 @@
 from __future__ import annotations
 
 import sys
-import tomllib
 from pathlib import Path
+from typing import Any
+
+try:
+    import tomllib  # Python >= 3.11
+except ModuleNotFoundError:  # pragma: no cover - CI on Python 3.10
+    import tomli as tomllib  # type: ignore[no-redef]
 
 
 def main() -> int:
@@ -17,7 +22,7 @@ def main() -> int:
         print("poetry.lock not found", file=sys.stderr)
         return 1
 
-    data = tomllib.loads(lock_path.read_text(encoding="utf-8"))
+    data: dict[str, Any] = tomllib.loads(lock_path.read_text(encoding="utf-8"))
     for package in data.get("package", []):
         if package.get("name") == package_name:
             print(package["version"])
