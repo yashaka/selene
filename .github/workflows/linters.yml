@@ -38,6 +38,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v6
         with:
           python-version: '3.10'
@@ -48,6 +50,8 @@ jobs:
           BLACK_VERSION=$(python .run/get_lock_version.py black)
           pip install "black==$BLACK_VERSION"
           .run/lint_black.sh
+        env:
+          GITHUB_EVENT_BEFORE: ${{ github.event.before }}
 
   Pycodestyle:
     name: Lint Pycodestyle
