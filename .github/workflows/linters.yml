@@ -15,7 +15,6 @@ on:
       - .github/workflows/deploy-mkdocs-poetry.yml
       - .github/workflows/publish.yml
       - .github/workflows/tests.yml
-      - .github/workflows/traffic2badge.yml
       - .github/FUNDING.yml
 
   pull_request:
@@ -31,7 +30,6 @@ on:
       - .github/workflows/deploy-mkdocs-poetry.yml
       - .github/workflows/publish.yml
       - .github/workflows/tests.yml
-      - .github/workflows/traffic2badge.yml
       - .github/FUNDING.yml
 
 jobs:
@@ -39,7 +37,9 @@ jobs:
   Black:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v6
         with:
           python-version: '3.10'
@@ -50,12 +50,14 @@ jobs:
           BLACK_VERSION=$(python .run/get_lock_version.py black)
           pip install "black==$BLACK_VERSION"
           .run/lint_black.sh
+        env:
+          GITHUB_EVENT_BEFORE: ${{ github.event.before }}
 
   Pycodestyle:
     name: Lint Pycodestyle
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
         with:
           python-version: '3.10'
@@ -70,7 +72,7 @@ jobs:
     name: Lint Pylint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
         with:
           python-version: '3.10'
@@ -85,7 +87,7 @@ jobs:
     name: Lint Pylint Full Report
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
         with:
           python-version: '3.10'
@@ -102,7 +104,7 @@ jobs:
     name: Mypy
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
         with:
           python-version: '3.10'
