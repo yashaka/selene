@@ -28,6 +28,25 @@ def test_search(browser):
         'github yashaka/selene python User-oriented API'
     ).press_enter()
 
+    # Cookie consent UI may cover search results and intercept clicks.
+    browser.driver.execute_script(
+        """
+        const selectors = [
+          '.banner.cookie-notice',
+          '.cookie-notice',
+          '[class*="cookie"][class*="notice"]',
+          '[class*="cookie"][class*="banner"]',
+        ];
+        selectors.forEach((selector) => {
+          document.querySelectorAll(selector).forEach((node) => {
+            node.style.display = 'none';
+            node.style.visibility = 'hidden';
+            node.style.pointerEvents = 'none';
+          });
+        });
+        """
+    )
+
     browser.all('.web-result').first.element('.result__link').click()
 
     browser.should(have.title_containing('yashaka/selene'))
