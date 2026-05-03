@@ -107,8 +107,13 @@ class Wait(Generic[E]):
                     return fn(self.entity)
                 except Exception as reason:
                     if time.time() > finish_time:
+                        reason_name = reason.__class__.__name__
+                        # Python 3.13 exposes `re.PatternError` instead of `re.error`.
+                        # Keep timeout messages backward-compatible across versions.
+                        if reason_name == 'PatternError':
+                            reason_name = 'error'
                         reason_string = '{name}: {message}'.format(
-                            name=reason.__class__.__name__,
+                            name=reason_name,
                             message=getattr(reason, "msg", str(reason)),
                         )
                         # TODO: think on how can we improve logging failures in selene, e.g. reverse msg and stacktrace
