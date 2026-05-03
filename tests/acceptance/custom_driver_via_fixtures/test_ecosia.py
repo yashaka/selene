@@ -22,13 +22,7 @@
 from selene import by, have
 
 
-def test_search(browser):
-    browser.open('https://www.ecosia.org/')
-    browser.element(by.name('q')).type(
-        'github yashaka/selene python User-oriented API'
-    ).press_enter()
-
-    # Cookie consent UI may cover search results and intercept clicks.
+def _hide_cookie_overlays(browser):
     browser.driver.execute_script(
         """
         const selectors = [
@@ -47,6 +41,23 @@ def test_search(browser):
         """
     )
 
-    browser.all('.web-result').first.element('.result__link').click()
+
+def test_search(browser):
+    browser.open('https://www.ecosia.org/')
+    browser.element(by.name('q')).type(
+        'github yashaka/selene python User-oriented API'
+    ).press_enter()
+
+    _hide_cookie_overlays(browser)
+    first_result_link = browser.all('.web-result').first.element('.result__link')
+    try:
+        first_result_link.click()
+    except Exception:
+        # Ecosia may render consent overlay after results are already present.
+        _hide_cookie_overlays(browser)
+        browser.driver.execute_script(
+            "arguments[0].click();",
+            first_result_link.locate(),
+        )
 
     browser.should(have.title_containing('yashaka/selene'))
