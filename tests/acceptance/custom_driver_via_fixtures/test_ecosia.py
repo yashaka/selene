@@ -26,15 +26,24 @@ def test_search(browser):
     browser.open('https://www.ecosia.org/')
     browser.element(by.name('q')).type('github yashaka/selene python').press_enter()
 
-    cookie_notice = browser.all('.banner.cookie-notice')
-    if len(cookie_notice()) > 0:
-        # Cookie consent UI may cover search results and intercept clicks.
-        browser.driver.execute_script(
-            """
-            const banner = document.querySelector('.banner.cookie-notice');
-            if (banner) banner.style.display = 'none';
-            """
-        )
+    # Cookie consent UI may cover search results and intercept clicks.
+    browser.driver.execute_script(
+        """
+        const selectors = [
+          '.banner.cookie-notice',
+          '.cookie-notice',
+          '[class*="cookie"][class*="notice"]',
+          '[class*="cookie"][class*="banner"]',
+        ];
+        selectors.forEach((selector) => {
+          document.querySelectorAll(selector).forEach((node) => {
+            node.style.display = 'none';
+            node.style.visibility = 'hidden';
+            node.style.pointerEvents = 'none';
+          });
+        });
+        """
+    )
 
     browser.all('.web-result').first.element('.result__link').click()
 
