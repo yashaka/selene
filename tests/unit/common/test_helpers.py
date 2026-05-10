@@ -34,7 +34,10 @@ def test_flatten_dissoc_on_error_return_false_and_absolute_url():
     assert helpers.flatten([1, [2, 3], 'ab']) == (1, 2, 3, 'ab')
     assert helpers.dissoc({'a': 1, 'b': 2}, 'a') == {'b': 2}
     assert helpers.on_error_return_false(lambda: 3 > 1) is True
-    assert helpers.on_error_return_false(lambda: (_ for _ in ()).throw(RuntimeError())) is False
+    assert (
+        helpers.on_error_return_false(lambda: (_ for _ in ()).throw(RuntimeError()))
+        is False
+    )
 
     assert helpers.is_absolute_url('HTTP://site') is True
     assert helpers.is_absolute_url('https://site') is True
