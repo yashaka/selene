@@ -115,6 +115,27 @@ def test_element_and_all_build_entities_from_locator_and_by(monkeypatch):
     assert many_css.locator.description == "browser.all(('css selector', '#name'))"
 
 
+def test_element_and_all_accept_native_locator_and_actions_shortcut(monkeypatch):
+    config = DummyConfig()
+    browser = browser_module.Browser(config)
+
+    locator = browser_module.Locator('native', lambda: 'ok')
+    from_locator = browser.element(locator)
+    many_from_locator = browser.all(locator)
+
+    class FakeActions:
+        def __init__(self, cfg):
+            self.config = cfg
+
+    monkeypatch.setattr(browser_module, '_Actions', FakeActions)
+    actions = browser._actions
+
+    assert from_locator._locator is locator
+    assert many_from_locator._locator is locator
+    assert isinstance(actions, FakeActions)
+    assert actions.config is config
+
+
 def test_open_and_switch_tab_commands(monkeypatch):
     config = DummyConfig()
     browser = browser_module.Browser(config)

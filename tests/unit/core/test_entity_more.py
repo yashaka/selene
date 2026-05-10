@@ -3,6 +3,7 @@ import types
 import pytest
 
 from selene.core.condition import Condition
+from selene.core.exceptions import TimeoutException, _SeleneError
 from selene.core.entity import Collection, Element
 from selene.core.locator import Locator
 
@@ -78,6 +79,9 @@ class DummyWebElement:
 
     def clear(self):
         self.cleared += 1
+
+    def click(self):
+        self.sent.append('clicked')
 
     def send_keys(self, *value):
         self.sent.extend(value)
@@ -256,3 +260,158 @@ def test_collection_by_their_collected_all_and_all_first():
 
     all_first = collection.all_first('.first')
     assert [el.text for el in all_first()] == ['F1', 'F2']
+
+
+def test_element_wait_hook_and_overlap_related_behaviors(monkeypatch):
+    config = DummyConfig()
+    root_we = DummyWebElement('root')
+    cover_we = DummyWebElement('cover', with_defaults=False)
+    element = Element(Locator('root', lambda: root_we), config)
+
+    monkeypatch.setattr(
+        Element,
+        '_actual_visible_webelement_and_maybe_its_cover',
+        lambda self, center_x_offset=0, center_y_offset=0: (root_we, cover_we),
+    )
+
+    with pytest.raises(_SeleneError, match='is overlapped by'):
+        _ = element._actual_not_overlapped_webelement
+
+    class CachedPresent:
+        @staticmethod
+        def matching(_condition):
+            return True
+
+    class CachedAbsent:
+        @staticmethod
+        def matching(_condition):
+            return False
+
+    class HookTarget:
+        def __init__(self, cached):
+            self.cached = cached
+
+    monkeypatch.setattr(
+        'selene.core.query.outer_html', lambda _element: '<div>html</div>'
+    )
+
+    hook = Element._log_webelement_outer_html_for(HookTarget(CachedPresent()))
+    enriched = hook(TimeoutException('boom'))
+    assert 'Actual webelement: <div>html</div>' in str(enriched)
+
+    plain = Element._log_webelement_outer_html_for(HookTarget(CachedAbsent()))(
+        TimeoutException('boom')
+    )
+    assert str(plain) == 'Message: boom\n'
+
+
+def test_element_set_type_click_and_pointer_actions(monkeypatch):
+    config = DummyConfig()
+    root_we = DummyWebElement('root', with_defaults=False)
+    overlap_we = DummyWebElement('overlap', with_defaults=False)
+    element = Element(Locator('root', lambda: root_we), config)
+
+    monkeypatch.setattr(
+        Element,
+        '_actual_visible_webelement_and_maybe_its_cover',
+        lambda self, center_x_offset=0, center_y_offset=0: (overlap_we, None),
+    )
+
+    config.wait_for_no_overlap_found_by_js = True
+    element.set_value('42').type('text')
+    assert overlap_we.cleared == 1
+    assert overlap_we.sent == ['42', 'text']
+
+    calls = []
+
+    class FakeActionChains:
+        def __init__(self, _driver):
+            pass
+
+        def move_to_element_with_offset(self, webelement, xoffset, yoffset):
+            calls.append(('move_to_element_with_offset', webelement, xoffset, yoffset))
+            return self
+
+        def click(self):
+            calls.append(('click',))
+            return self
+
+        def perform(self):
+            calls.append(('perform',))
+            return self
+
+        def double_click(self, webelement):
+            calls.append(('double_click', webelement))
+            return self
+
+        def context_click(self, webelement):
+            calls.append(('context_click', webelement))
+            return self
+
+        def move_to_element(self, webelement):
+            calls.append(('move_to_element', webelement))
+            return self
+
+    monkeypatch.setattr('selene.core.entity.ActionChains', FakeActionChains)
+
+    element.click(xoffset=5, yoffset=3).double_click().context_click().hover()
+    assert ('move_to_element_with_offset', overlap_we, 5, 3) in calls
+    assert ('double_click', overlap_we) in calls
+    assert ('context_click', overlap_we) in calls
+    assert ('move_to_element', overlap_we) in calls
+
+    config.wait_for_no_overlap_found_by_js = False
+    element.click()
+    assert 'clicked' in root_we.sent
+
+
+def test_element_click_set_and_type_js_branches(monkeypatch):
+    config = DummyConfig()
+    root_we = DummyWebElement('root', with_defaults=False)
+    element = Element(Locator('root', lambda: root_we), config)
+    js_calls = []
+
+    from selene.core import command
+
+    monkeypatch.setattr(
+        command.js,
+        'set_value',
+        lambda value: (lambda _element: js_calls.append(('set', value))),
+    )
+    monkeypatch.setattr(
+        command.js,
+        'type',
+        lambda text: (lambda _element: js_calls.append(('type', text))),
+    )
+    monkeypatch.setattr(
+        command.js,
+        'click',
+        lambda xoffset=0, yoffset=0: (
+            lambda _element: js_calls.append(('click', xoffset, yoffset))
+        ),
+    )
+
+    config.set_value_by_js = True
+    config.type_by_js = True
+    config.click_by_js = True
+    element.set_value(7).type('x').click(xoffset=9, yoffset=4)
+    assert js_calls == [('set', 7), ('type', 'x'), ('click', 9, 4)]
+
+
+def test_collection_len_and_selector_branches(monkeypatch):
+    config = DummyConfig()
+    parent = DummyWebElement('p')
+    parent.children[('css selector', '.title')] = DummyWebElement('t')
+    collection = Collection(Locator('rows', lambda: [parent]), config)
+
+    monkeypatch.setattr('selene.core.query.size', lambda c: len(c()))
+    assert len(collection) == 1
+
+    cond = Condition('always', lambda _e: None)
+    assert collection.by_their('.title', cond)[0]().text == 'p'
+    assert collection.element_by_its('.title', cond)().text == 'p'
+
+    failing = Condition('never', lambda _e: (_ for _ in ()).throw(AssertionError('x')))
+    config.log_outer_html_on_failure = False
+    with pytest.raises(AssertionError, match='Cannot find element by condition'):
+        collection.element_by(failing)()
