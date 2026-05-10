@@ -3,6 +3,8 @@ from typing import Optional
 import selene
 from selene import command, be, have, query
 from tests.integration.helpers.givenpage import GivenPage
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
 
 
 def test_drags_source_and_drops_it_to_target(session_browser):
@@ -159,30 +161,48 @@ class ReactContinuousSlider:
         self.thumb_input = self.thumb.element('input')
         self.volume_up = self.container.all('svg').second
         self.volume_down = self.container.all('svg').first
-        # self.volume_up = self.container.element('[data-testid=VolumeUpIcon]')
-        # self.volume_down = self.container.element('[data-testid=VolumeDownIcon]')
         self.rail = self.container.element('.MuiSlider-rail')
 
     def open(self):
         self.browser.open('https://mui.com/material-ui/react-slider/#ContinuousSlider')
+        self._dismiss_cookie_banner()
         return self
+
+    def _dismiss_cookie_banner(self):
+        driver = self.browser.driver
+        wait = WebDriverWait(driver, 3.0, poll_frequency=0.2)
+        try:
+            button = wait.until(
+                lambda d: d.find_element(
+                    By.XPATH,
+                    (
+                        "//div[@role='dialog' and .//*[contains(normalize-space(.), 'Cookie Preferences')]]"
+                        "//button[normalize-space()='Essential only']"
+                    ),
+                )
+            )
+            button.click()
+        except Exception:
+            return
 
 
 def test_drags_react_mui_slider(session_browser):
     browser = session_browser.with_(timeout=1.0)
     slider = ReactContinuousSlider(browser).open()
+    slider._dismiss_cookie_banner()
 
     # WHEN
+    original_value = slider.thumb_input.get(query.value)
     slider.thumb.perform(command.drag_and_drop_to(slider.volume_up))
-
+    slider.thumb_input.should(have.no.value(original_value))
     slider.thumb_input.should(have.value('100'))
 
     # WHEN
+    slider._dismiss_cookie_banner()
     slider.thumb.perform(command.drag_and_drop_to(slider.rail))
-
     slider.thumb_input.should(have.value('50'))
 
     # WHEN
+    slider._dismiss_cookie_banner()
     slider.thumb.perform(command.drag_and_drop_to(slider.volume_down))
-
     slider.thumb_input.should(have.value('0'))
