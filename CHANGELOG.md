@@ -99,12 +99,13 @@ TODOs:
 - can we force order of how `selene.*` is rendered on autocomplete? via `__all__`...
 - deprecate `have.js_returned` in favour of `have.script_returned`
 
-## 2.0.0rc10 (released on 06.03.2024)
+## 2.0.0rc10 (released on 10.05.2026)
 
 ### Added
 
-- backported `query._frame_context` for frame/iframe context management
-- added integration coverage for nested `with` usage of `query._frame_context`
+- backported experimental `query._frame_context` pseudo-query for frame/iframe
+  context management
+- added nested `with` usage support for frame contexts (including nested frames)
 
 ### Fixed
 
@@ -116,12 +117,35 @@ TODOs:
 - fixed `wait_until(...)` behavior to avoid saving screenshot/page source
   artifacts for handled `False` outcomes (issue
   [#548](https://github.com/yashaka/selene/issues/548))
+- fixed screenshot/page source links in timeout errors to always use valid
+  `file://` URI format on all OSes (issue
+  [#519](https://github.com/yashaka/selene/issues/519))
+- normalized timeout reason rendering on Python 3.13+ (`PatternError` ->
+  `error`) to keep error messages backward-compatible across Python versions
+- fixed `query.attribute(...)` typing to reflect that Selenium can return
+  `None` for missing attributes
 
 ### Changed
 
 - removed support for Python 3.8 and 3.9; Selene now requires Python >= 3.10
-- aligned project metadata/docs to Python `>=3.10`
-- updated CI workflows for GitHub Actions runtime changes (Node 24 readiness)
+- updated project classifiers for Python `3.10-3.14`
+- removed runtime dependency `future`
+- raised `typing-extensions` runtime dependency to `>=4.15.0`
+
+### Internal
+
+- migrated packaging metadata and lock file to Poetry 2.x / PEP 621 layout
+- extended CI/test support up to Python `3.14`
+- reworked test workflow scopes: blocking regression now runs on Python
+  `3.10-3.14`, while `clipboard`, `speed`, and `remote` tests run as separate
+  non-blocking jobs
+- hardened publish workflow: releases no longer auto-commit version bumps and
+  now explicitly validate consistency between release tag, `pyproject.toml`,
+  and `selene.__version__`
+- updated release workflow documentation to describe the current GitHub Release
+  -> CI publish flow, manual fallback, and troubleshooting steps
+- aligned release scripts with the current flow and fixed
+  `.run/bump_build_publish.sh`
 - removed deprecated `traffic2badge` workflow
 
 ## 2.0.0rc9 (released on 06.03.2024)
