@@ -49,7 +49,6 @@ Changelog = "https://github.com/yashaka/selene/releases"
 python = ">=3.10"
 selenium = ">=4.12.0"
 pyperclip = "^1.9.0"
-future = "*"
 typing-extensions = ">=4.15.0"
 
 [tool.poetry.dev-dependencies]
