@@ -217,7 +217,9 @@ def test_does_not_save_artifacts_on_wait_until_false(
     assert not custom_reports.exists() or list(custom_reports.iterdir()) == []
 
 
-def test_saves_only_screenshot_when_page_source_on_failure_disabled(a_browser, tmp_path):
+def test_saves_only_screenshot_when_page_source_on_failure_disabled(
+    a_browser, tmp_path
+):
     custom_reports = tmp_path / 'reports'
     browser_for_check = a_browser.with_(
         timeout=0.1,
@@ -234,7 +236,9 @@ def test_saves_only_screenshot_when_page_source_on_failure_disabled(a_browser, t
     assert artifacts == ['.png']
 
 
-def test_saves_only_page_source_when_screenshot_on_failure_disabled(a_browser, tmp_path):
+def test_saves_only_page_source_when_screenshot_on_failure_disabled(
+    a_browser, tmp_path
+):
     custom_reports = tmp_path / 'reports'
     browser_for_check = a_browser.with_(
         timeout=0.1,
@@ -251,7 +255,9 @@ def test_saves_only_page_source_when_screenshot_on_failure_disabled(a_browser, t
     assert artifacts == ['.html']
 
 
-def test_does_not_save_any_artifacts_when_all_failure_saving_disabled(a_browser, tmp_path):
+def test_does_not_save_any_artifacts_when_all_failure_saving_disabled(
+    a_browser, tmp_path
+):
     custom_reports = tmp_path / 'reports'
     browser_for_check = a_browser.with_(
         timeout=0.1,
