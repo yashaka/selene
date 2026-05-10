@@ -30,7 +30,7 @@ from selene import have, be, browser, Browser, Config, command, support
 from selene.core import query
 from selene.core.exceptions import TimeoutException
 from tests import resources
-from tests.helpers import headless_chrome_options
+from tests._support.helpers import headless_chrome_options
 
 EMPTY_PAGE_URL = resources.url('empty.html')
 

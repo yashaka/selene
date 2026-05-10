@@ -21,7 +21,7 @@
 # SOFTWARE.
 from selene import have, be, by, browser
 from tests import resources
-from tests.base_test import BaseTest
+from tests._support.base_test import BaseTest
 
 APP_URL = resources.TODOMVC_URL
 

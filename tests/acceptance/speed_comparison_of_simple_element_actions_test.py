@@ -31,7 +31,7 @@ from selene import be
 from selene.support.shared import browser
 from tests import resources
 from tests.acceptance.helpers.helper import get_test_driver
-from tests.helpers import time_spent
+from tests._support.helpers import time_spent
 
 pytestmark = [pytest.mark.speed, pytest.mark.flaky]
 

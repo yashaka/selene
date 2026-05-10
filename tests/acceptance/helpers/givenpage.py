@@ -21,7 +21,7 @@
 # SOFTWARE.
 
 from tests import resources
-from tests.helpers import convert_sec_to_ms
+from tests._support.helpers import convert_sec_to_ms
 
 EMPTY_PAGE = resources.url('empty.html')
 
