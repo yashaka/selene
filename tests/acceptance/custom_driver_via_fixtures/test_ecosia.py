@@ -23,8 +23,7 @@ from selene import by, have
 
 
 def _hide_cookie_overlays(browser):
-    browser.driver.execute_script(
-        """
+    browser.driver.execute_script("""
         const selectors = [
           '.banner.cookie-notice',
           '.cookie-notice',
@@ -38,8 +37,7 @@ def _hide_cookie_overlays(browser):
             node.style.pointerEvents = 'none';
           });
         });
-        """
-    )
+        """)
 
 
 def test_search(browser):
