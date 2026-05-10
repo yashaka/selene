@@ -1,4 +1,6 @@
 from pathlib import Path
+import sys
+import types
 
 import pytest
 
@@ -247,3 +249,302 @@ def test_get_url_strategy_handles_reset_window_and_base_url_concat():
     # absolute url should not be concatenated
     get('https://other.test/page')
     assert driver.got[-1] == 'https://other.test/page'
+
+
+def test_build_local_driver_strategy_selects_local_remote_and_appium(monkeypatch):
+    captured = []
+
+    class FakeService:
+        pass
+
+    class FakeBrowser:
+        def __init__(self, service=None, options=None):
+            captured.append((self.__class__.__name__, service, options))
+
+    class FakeChrome(FakeBrowser):
+        pass
+
+    class FakeFirefox(FakeBrowser):
+        pass
+
+    class FakeEdge(FakeBrowser):
+        pass
+
+    class FakeRemote:
+        def __init__(self, command_executor=None, options=None):
+            captured.append(('Remote', command_executor, options))
+
+    fake_webdriver = types.SimpleNamespace(
+        ChromeOptions=object,
+        EdgeOptions=object,
+        Chrome=FakeChrome,
+        Firefox=FakeFirefox,
+        Edge=FakeEdge,
+        Remote=FakeRemote,
+    )
+    fake_chrome_service = types.SimpleNamespace(Service=FakeService)
+    fake_firefox_service = types.SimpleNamespace(Service=FakeService)
+    fake_edge_service = types.SimpleNamespace(Service=FakeService)
+    fake_appium_webdriver = types.SimpleNamespace(
+        Remote=lambda command_executor=None, options=None: captured.append(
+            ('AppiumRemote', command_executor, options)
+        )
+        or 'appium-driver'
+    )
+    fake_appium = types.SimpleNamespace(webdriver=fake_appium_webdriver)
+
+    monkeypatch.setitem(sys.modules, 'selenium.webdriver', fake_webdriver)
+    monkeypatch.setitem(
+        sys.modules, 'selenium.webdriver.chrome.service', fake_chrome_service
+    )
+    monkeypatch.setitem(
+        sys.modules, 'selenium.webdriver.firefox.service', fake_firefox_service
+    )
+    monkeypatch.setitem(
+        sys.modules, 'selenium.webdriver.edge.service', fake_edge_service
+    )
+    monkeypatch.setitem(sys.modules, 'appium', fake_appium)
+
+    options = types.SimpleNamespace(capabilities={})
+    config = configuration_module.Config(driver_options=options)
+
+    config.driver_name = 'chrome'
+    configuration_module._build_local_driver_by_name_or_remote_by_url_and_options(
+        config
+    )
+    assert captured[-1][0] == 'FakeChrome'
+
+    config.driver_name = 'firefox'
+    configuration_module._build_local_driver_by_name_or_remote_by_url_and_options(
+        config
+    )
+    assert captured[-1][0] == 'FakeFirefox'
+
+    config.driver_name = 'edge'
+    configuration_module._build_local_driver_by_name_or_remote_by_url_and_options(
+        config
+    )
+    assert captured[-1][0] == 'FakeEdge'
+
+    config.driver_name = 'remote'
+    config.driver_remote_url = 'http://grid:4444/wd/hub'
+    configuration_module._build_local_driver_by_name_or_remote_by_url_and_options(
+        config
+    )
+    assert captured[-1] == ('Remote', 'http://grid:4444/wd/hub', options)
+
+    config.driver_name = 'appium'
+    config.driver_remote_url = ''
+    result = (
+        configuration_module._build_local_driver_by_name_or_remote_by_url_and_options(
+            config
+        )
+    )
+    assert result == 'appium-driver'
+    assert captured[-1] == ('AppiumRemote', 'http://127.0.0.1:4723/wd/hub', options)
+
+
+def test_build_local_driver_strategy_uses_browser_name_or_platform_name(monkeypatch):
+    captured = []
+
+    class FakeChrome:
+        def __init__(self, service=None, options=None):
+            captured.append(('Chrome', service, options))
+
+    class FakeRemote:
+        def __init__(self, command_executor=None, options=None):
+            captured.append(('Remote', command_executor, options))
+
+    fake_webdriver = types.SimpleNamespace(
+        ChromeOptions=object,
+        EdgeOptions=object,
+        Chrome=FakeChrome,
+        Firefox=FakeChrome,
+        Edge=FakeChrome,
+        Remote=FakeRemote,
+    )
+    fake_service_module = types.SimpleNamespace(Service=lambda: 'service')
+    fake_appium_webdriver = types.SimpleNamespace(
+        Remote=lambda command_executor=None, options=None: captured.append(
+            ('AppiumRemote', command_executor, options)
+        )
+    )
+    fake_appium = types.SimpleNamespace(webdriver=fake_appium_webdriver)
+
+    monkeypatch.setitem(sys.modules, 'selenium.webdriver', fake_webdriver)
+    monkeypatch.setitem(
+        sys.modules, 'selenium.webdriver.chrome.service', fake_service_module
+    )
+    monkeypatch.setitem(
+        sys.modules, 'selenium.webdriver.firefox.service', fake_service_module
+    )
+    monkeypatch.setitem(
+        sys.modules, 'selenium.webdriver.edge.service', fake_service_module
+    )
+    monkeypatch.setitem(sys.modules, 'appium', fake_appium)
+
+    config = configuration_module.Config(
+        driver_options=types.SimpleNamespace(capabilities={})
+    )
+    config.driver_name = None
+    config.driver_remote_url = None
+
+    configuration_module._build_local_driver_by_name_or_remote_by_url_and_options(
+        config
+    )
+    assert captured[-1][0] == 'Chrome'
+
+    config.driver_options = types.SimpleNamespace(
+        capabilities={'browserName': 'chrome'}
+    )
+    configuration_module._build_local_driver_by_name_or_remote_by_url_and_options(
+        config
+    )
+    assert captured[-1][0] == 'Chrome'
+
+    config.driver_name = None
+    config.driver_options = types.SimpleNamespace(
+        capabilities={'platformName': 'Android'}
+    )
+    configuration_module._build_local_driver_by_name_or_remote_by_url_and_options(
+        config
+    )
+    assert captured[-1][0] == 'AppiumRemote'
+
+
+def test_format_path_as_uri_windows_branch(monkeypatch):
+    config = configuration_module.Config()
+    original_name = configuration_module.os.name
+    original_sep = configuration_module.os.sep
+    monkeypatch.setattr(configuration_module.os, 'name', 'nt')
+    monkeypatch.setattr(configuration_module.os, 'sep', '\\')
+    try:
+        assert (
+            config._format_path_as_uri(r'C:\tmp\report.html')
+            == 'file://C:/tmp/report.html'
+        )
+    finally:
+        monkeypatch.setattr(configuration_module.os, 'name', original_name)
+        monkeypatch.setattr(configuration_module.os, 'sep', original_sep)
+
+
+def test_build_local_driver_strategy_raises_helpful_error_when_appium_missing(
+    monkeypatch,
+):
+    fake_webdriver = types.SimpleNamespace(
+        ChromeOptions=object,
+        EdgeOptions=object,
+        Chrome=lambda **_: None,
+        Firefox=lambda **_: None,
+        Edge=lambda **_: None,
+        Remote=lambda **_: None,
+    )
+    fake_service_module = types.SimpleNamespace(Service=lambda: 'service')
+    monkeypatch.setitem(sys.modules, 'selenium.webdriver', fake_webdriver)
+    monkeypatch.setitem(
+        sys.modules, 'selenium.webdriver.chrome.service', fake_service_module
+    )
+    monkeypatch.setitem(
+        sys.modules, 'selenium.webdriver.firefox.service', fake_service_module
+    )
+    monkeypatch.setitem(
+        sys.modules, 'selenium.webdriver.edge.service', fake_service_module
+    )
+    monkeypatch.delitem(sys.modules, 'appium', raising=False)
+
+    import builtins
+
+    original_import = builtins.__import__
+
+    def fake_import(name, *args, **kwargs):
+        if name == 'appium':
+            raise ImportError('no appium')
+        return original_import(name, *args, **kwargs)
+
+    monkeypatch.setattr(builtins, '__import__', fake_import)
+
+    config = configuration_module.Config(
+        driver_name='appium',
+        driver_options=types.SimpleNamespace(capabilities={}),
+    )
+    with pytest.raises(ImportError, match='Appium-Python-Client is not installed'):
+        configuration_module._build_local_driver_by_name_or_remote_by_url_and_options(
+            config
+        )
+
+
+def test_get_url_strategy_returns_early_without_base_url_or_when_disabled():
+    class Driver:
+        def __init__(self):
+            self.got = []
+
+        def get(self, url):
+            self.got.append(url)
+
+    driver = Driver()
+    config = configuration_module.Config()
+    setattr(
+        config,
+        configuration_module.persistent.Field.box_mask('driver'),
+        configuration_module.persistent.Box(driver),
+    )
+    config._is_driver_set_strategy = lambda value: value is not None
+    config._is_driver_alive_strategy = lambda _driver: True
+    config._reset_not_alive_driver_on_get_url = True
+
+    get = (
+        configuration_module._maybe_reset_driver_then_tune_window_and_get_with_base_url(
+            config
+        )
+    )
+    get()
+    assert driver.got == []
+
+    config.base_url = 'https://example.test'
+    config._get_base_url_on_open_with_no_args = False
+    get = (
+        configuration_module._maybe_reset_driver_then_tune_window_and_get_with_base_url(
+            config
+        )
+    )
+    get()
+    assert driver.got == []
+
+
+def test_managed_driver_descriptor_on_init_with_box_and_plain_driver():
+    descriptor = configuration_module._ManagedDriverDescriptor(default='default')
+
+    class Holder:
+        _schedule_driver_teardown_strategy = staticmethod(lambda *_args: None)
+
+    descriptor.__set_name__(Holder, 'driver')
+    holder = Holder()
+
+    boxed = configuration_module.persistent.Box('pre-boxed')
+    descriptor.__set__(holder, boxed)
+    assert getattr(holder, descriptor.name).value == 'pre-boxed'
+
+    holder2 = Holder()
+    scheduled = []
+    holder2._schedule_driver_teardown_strategy = (
+        lambda _config, get_driver: scheduled.append(get_driver())
+    )
+    descriptor.__set_name__(Holder, 'driver2')
+    descriptor2 = configuration_module._ManagedDriverDescriptor(default='default')
+    descriptor2.__set_name__(Holder, 'driver2')
+    descriptor2.__set__(holder2, 'driver-instance')
+    assert scheduled == ['driver-instance']
+
+
+def test_generate_filename_does_not_mkdir_when_folder_is_empty(monkeypatch):
+    config = configuration_module.Config()
+    config.reports_folder = ''
+    config._counter = iter([1])
+
+    made = []
+    monkeypatch.setattr(configuration_module.os.path, 'exists', lambda _p: False)
+    monkeypatch.setattr(configuration_module.os, 'makedirs', lambda p: made.append(p))
+
+    filename = config._generate_filename(prefix='x-', suffix='.txt')
+    assert filename.endswith('x-1.txt')
+    assert made == []

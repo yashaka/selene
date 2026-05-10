@@ -1,7 +1,9 @@
 import inspect
+import dataclasses
 
 from selene.common.data_structures import persistent
 import typing
+import pytest
 
 
 # TODO: find gaps in coverage and break down tests to be more atomic
@@ -562,3 +564,129 @@ class Test__dataclass:
         assert sub_avatar_with_own_url.browser_name == 'firefox'
         assert sub_avatar.browser_name == 'firefox'
         assert config.browser_name == 'firefox'
+
+
+class Test__persistent_internal_branches:
+    def test_set_new_attribute_returns_true_if_exists(self):
+        class Sample:
+            already = 1
+
+        assert persistent._set_new_attribute(Sample, 'already', 2) is True
+        assert Sample.already == 1
+
+    def test_boxed_descriptor_with_falsy_get_default_raises_type_error(self):
+        class FalsyDefaultDescriptor:
+            name = 'field'
+
+            def __get__(self, instance, owner):
+                return ''
+
+            def __set__(self, instance, value):
+                return None
+
+        boxed = persistent.Boxed('field')
+
+        class Holder:
+            pass
+
+        holder = Holder()
+        with pytest.raises(TypeError):
+            boxed.__set__(holder, FalsyDefaultDescriptor())
+
+    def test_field_validates_mutable_defaults_and_set_name_without_default_set_name(
+        self,
+    ):
+        with pytest.raises(ValueError, match="Don't use mutable type"):
+            persistent.Field('items', list, [])
+
+        field = persistent.Field('', int, 1)
+
+        class Owner:
+            pass
+
+        field.__set_name__(Owner, 'age')
+        assert field.name == 'age'
+
+    def test_field_value_from_reads_boxed_value(self):
+        class Holder:
+            pass
+
+        holder = Holder()
+        setattr(holder, persistent.Field.box_mask('size'), persistent.Box(42))
+        assert persistent.Field.value_from(holder, 'size') == 42
+
+    def test_replace_raises_on_non_dataclass_instance(self):
+        class NotDataclass:
+            pass
+
+        with pytest.raises(
+            TypeError, match='replace\\(\\) should be called on dataclass instances'
+        ):
+            persistent.replace(NotDataclass(), value=1)
+
+    def test_replace_skips_classvar_field(self):
+        class FakeDataclass:
+            __dataclass_fields__ = {}
+
+            def __init__(self, **kwargs):
+                self.kwargs = kwargs
+
+        class FakeField:
+            def __init__(self):
+                self._field_type = dataclasses._FIELD_CLASSVAR
+                self.init = True
+                self.name = 'cv'
+                self.default = persistent.MISSING
+                self.box_name = persistent.Field.box_mask('cv')
+
+        FakeDataclass.__dataclass_fields__ = {'cv': FakeField()}
+        obj = FakeDataclass()
+        result = persistent.replace(obj)
+        assert isinstance(result, FakeDataclass)
+        assert result.kwargs == {}
+
+    def test_replace_init_false_field_raises_and_skip_branch(self):
+        class FakeDataclass:
+            __dataclass_fields__ = {}
+
+            def __init__(self, **kwargs):
+                self.kwargs = kwargs
+
+        class FakeField:
+            def __init__(self, name):
+                self._field_type = dataclasses._FIELD
+                self.init = False
+                self.name = name
+                self.default = persistent.MISSING
+                self.box_name = persistent.Field.box_mask(name)
+
+        field = FakeField('x')
+        FakeDataclass.__dataclass_fields__ = {'x': field}
+        obj = FakeDataclass()
+
+        with pytest.raises(ValueError, match='init=False'):
+            persistent.replace(obj, x=1)
+
+        result = persistent.replace(obj)
+        assert result.kwargs == {}
+
+    def test_replace_requires_initvar_without_default(self):
+        class FakeDataclass:
+            __dataclass_fields__ = {}
+
+            def __init__(self, **kwargs):
+                self.kwargs = kwargs
+
+        class FakeField:
+            def __init__(self):
+                self._field_type = dataclasses._FIELD_INITVAR
+                self.init = True
+                self.name = 'required_initvar'
+                self.default = persistent.MISSING
+                self.box_name = persistent.Field.box_mask(self.name)
+
+        FakeDataclass.__dataclass_fields__ = {'required_initvar': FakeField()}
+        obj = FakeDataclass()
+
+        with pytest.raises(ValueError, match='must be specified with replace'):
+            persistent.replace(obj)
