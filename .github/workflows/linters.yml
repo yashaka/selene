@@ -1,6 +1,7 @@
 name: linters
 
 on:
+  workflow_dispatch:
 
   push:
     paths-ignore:
