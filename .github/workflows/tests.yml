@@ -19,26 +19,37 @@ on:
 
 jobs:
   regression:
-    name: Regression (blocking)
+    name: Regression (blocking) / Python ${{ matrix.python-version }}
     runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12", "3.13", "3.14"]
+
     env:
       DISPLAY: ":99"
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     steps:
       - uses: actions/checkout@v5
+
       - uses: actions/setup-python@v6
         with:
-          python-version: "3.10"
+          python-version: ${{ matrix.python-version }}
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install poetry
-          poetry install
+          poetry install --with dev
+
       - name: Install xvfb
         run: |
           sudo apt-get update
           sudo apt-get install -y xvfb
           sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
+
       - name: Regression tests
         run: |
           poetry run pytest -sv \
@@ -51,7 +62,9 @@ jobs:
             -m "not (clipboard or speed or remote or flaky)" \
             tests/ \
             --headless=True
+
       - name: Code Coverage
+        if: matrix.python-version == '3.10'
         uses: codecov/codecov-action@v4.5.0
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

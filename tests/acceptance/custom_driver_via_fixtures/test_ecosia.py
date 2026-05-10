@@ -22,12 +22,40 @@
 from selene import by, have
 
 
+def _hide_cookie_overlays(browser):
+    browser.driver.execute_script("""
+        const selectors = [
+          '.banner.cookie-notice',
+          '.cookie-notice',
+          '[class*="cookie"][class*="notice"]',
+          '[class*="cookie"][class*="banner"]',
+        ];
+        selectors.forEach((selector) => {
+          document.querySelectorAll(selector).forEach((node) => {
+            node.style.display = 'none';
+            node.style.visibility = 'hidden';
+            node.style.pointerEvents = 'none';
+          });
+        });
+        """)
+
+
 def test_search(browser):
     browser.open('https://www.ecosia.org/')
     browser.element(by.name('q')).type(
         'github yashaka/selene python User-oriented API'
     ).press_enter()
 
-    browser.all('.web-result').first.element('.result__link').click()
+    _hide_cookie_overlays(browser)
+    first_result_link = browser.all('.web-result').first.element('.result__link')
+    try:
+        first_result_link.click()
+    except Exception:
+        # Ecosia may render consent overlay after results are already present.
+        _hide_cookie_overlays(browser)
+        browser.driver.execute_script(
+            "arguments[0].click();",
+            first_result_link.locate(),
+        )
 
     browser.should(have.title_containing('yashaka/selene'))
