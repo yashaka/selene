@@ -64,8 +64,14 @@ jobs:
             --headless=True
 
       - name: Code Coverage
-        if: matrix.python-version == '3.10'
+        if: matrix.python-version == '3.10' && always()
         uses: codecov/codecov-action@v4.5.0
+        with:
+          files: ./coverage.xml
+          flags: regression
+          name: regression-py310
+          fail_ci_if_error: true
+          verbose: true
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
