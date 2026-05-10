@@ -59,7 +59,9 @@ class DummyWebElement:
         self.children_many = {}
         if with_defaults:
             self.children = {
-                ('css selector', '.child'): DummyWebElement('child', with_defaults=False),
+                ('css selector', '.child'): DummyWebElement(
+                    'child', with_defaults=False
+                ),
             }
             self.children_many = {
                 ('css selector', '.item'): [
@@ -124,7 +126,9 @@ def test_element_with_locate_raw_call_cached_and_relatives():
 
 def test_element_cached_preserves_error_when_initial_lookup_fails():
     config = DummyConfig()
-    failing = Element(Locator('bad', lambda: (_ for _ in ()).throw(RuntimeError('x'))), config)
+    failing = Element(
+        Locator('bad', lambda: (_ for _ in ()).throw(RuntimeError('x'))), config
+    )
 
     cached = failing.cached
     with pytest.raises(RuntimeError, match='x'):
@@ -154,7 +158,12 @@ def test_element_script_helpers_and_input_commands():
 
 def test_collection_core_navigation_and_slicing():
     config = DummyConfig()
-    items = [DummyWebElement('1'), DummyWebElement('2'), DummyWebElement('3'), DummyWebElement('4')]
+    items = [
+        DummyWebElement('1'),
+        DummyWebElement('2'),
+        DummyWebElement('3'),
+        DummyWebElement('4'),
+    ]
     collection = Collection(Locator('items', lambda: items), config)
 
     assert str(collection) == 'items'
@@ -181,7 +190,12 @@ def test_collection_by_filtered_and_element_by_paths(monkeypatch):
     items = [DummyWebElement('one'), DummyWebElement('two')]
     collection = Collection(Locator('items', lambda: items), config)
 
-    cond = Condition('has o', lambda e: None if 'o' in e().text else (_ for _ in ()).throw(AssertionError('no')))
+    cond = Condition(
+        'has o',
+        lambda e: (
+            None if 'o' in e().text else (_ for _ in ()).throw(AssertionError('no'))
+        ),
+    )
 
     filtered = collection.by(cond)
     assert [el.text for el in filtered()] == ['one', 'two']
@@ -194,8 +208,12 @@ def test_collection_by_filtered_and_element_by_paths(monkeypatch):
     assert picked().text == 'one'
 
     config.log_outer_html_on_failure = True
-    monkeypatch.setattr('selene.core.query.outer_html', lambda element: f'<li>{element().text}</li>')
-    no_match = Condition('never', lambda _e: (_ for _ in ()).throw(AssertionError('no')))
+    monkeypatch.setattr(
+        'selene.core.query.outer_html', lambda element: f'<li>{element().text}</li>'
+    )
+    no_match = Condition(
+        'never', lambda _e: (_ for _ in ()).throw(AssertionError('no'))
+    )
     with pytest.raises(AssertionError, match='Actual webelements collection'):
         collection.element_by(no_match)()
 
@@ -204,15 +222,31 @@ def test_collection_by_their_collected_all_and_all_first():
     config = DummyConfig()
     parent1 = DummyWebElement('p1')
     parent2 = DummyWebElement('p2')
-    parent1.children_many[('css selector', '.cell')] = [DummyWebElement('A1'), DummyWebElement('A2')]
-    parent2.children_many[('css selector', '.cell')] = [DummyWebElement('B1'), DummyWebElement('B2')]
+    parent1.children_many[('css selector', '.cell')] = [
+        DummyWebElement('A1'),
+        DummyWebElement('A2'),
+    ]
+    parent2.children_many[('css selector', '.cell')] = [
+        DummyWebElement('B1'),
+        DummyWebElement('B2'),
+    ]
     parent1.children[('css selector', '.first')] = DummyWebElement('F1')
     parent2.children[('css selector', '.first')] = DummyWebElement('F2')
 
     collection = Collection(Locator('rows', lambda: [parent1, parent2]), config)
 
-    cond = Condition('title has p', lambda e: None if e().text.startswith('p') else (_ for _ in ()).throw(AssertionError('bad')))
-    assert [el.text for el in collection.by_their(lambda it: it, cond)()] == ['p1', 'p2']
+    cond = Condition(
+        'title has p',
+        lambda e: (
+            None
+            if e().text.startswith('p')
+            else (_ for _ in ()).throw(AssertionError('bad'))
+        ),
+    )
+    assert [el.text for el in collection.by_their(lambda it: it, cond)()] == [
+        'p1',
+        'p2',
+    ]
 
     collected = collection.collected(lambda it: it.all('.cell'))
     assert [el.text for el in collected()] == ['A1', 'A2', 'B1', 'B2']

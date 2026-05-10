@@ -63,16 +63,16 @@ def test_executor_delegates_calls_to_config_strategies():
         configuration_module.persistent.Box('alive-driver'),
     )
     calls = []
-    config._driver_get_url_strategy = (
-        lambda _config: lambda url: calls.append(('get_url', url))
+    config._driver_get_url_strategy = lambda _config: lambda url: calls.append(
+        ('get_url', url)
     )
     config._save_screenshot_strategy = lambda _config, path: ('screenshot', path)
     config._save_page_source_strategy = lambda _config, path: ('page_source', path)
     config._is_driver_set_strategy = lambda value: value == 'alive-driver'
     config._is_driver_alive_strategy = lambda value: value == 'alive-driver'
     config._teardown_driver_strategy = lambda _config: lambda _driver: None
-    config._schedule_driver_teardown_strategy = lambda _config, get_driver: calls.append(
-        ('schedule', get_driver())
+    config._schedule_driver_teardown_strategy = (
+        lambda _config, get_driver: calls.append(('schedule', get_driver()))
     )
     config.build_driver_strategy = lambda _config: 'built-driver'
 
@@ -151,7 +151,9 @@ def test_managed_driver_descriptor_builds_and_calls_callable_driver_and_rebuilds
     scheduled = []
     alive_flag = {'alive': False}
 
-    config.build_driver_strategy = lambda _config: built.append(BuiltDriver()) or built[-1]
+    config.build_driver_strategy = (
+        lambda _config: built.append(BuiltDriver()) or built[-1]
+    )
     config._schedule_driver_teardown_strategy = (
         lambda _config, get_driver: scheduled.append(get_driver())
     )
@@ -227,8 +229,10 @@ def test_get_url_strategy_handles_reset_window_and_base_url_concat():
     config._is_driver_set_strategy = lambda _value: True
     config.build_driver_strategy = lambda _config: driver
 
-    get = configuration_module._maybe_reset_driver_then_tune_window_and_get_with_base_url(
-        config
+    get = (
+        configuration_module._maybe_reset_driver_then_tune_window_and_get_with_base_url(
+            config
+        )
     )
 
     # no args -> opens base_url

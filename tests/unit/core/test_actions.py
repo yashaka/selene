@@ -139,17 +139,21 @@ def test_actions_methods_and_aliases_call_underlying_chain(monkeypatch):
     source = object()
     target = object()
 
-    actions.click(target).click_and_hold(target).context_click(target).double_click(target)
+    actions.click(target).click_and_hold(target).context_click(target).double_click(
+        target
+    )
     actions.drag_and_drop(source, target).drag_and_drop_by_offset(source, 1, 2)
     actions.key_down('CTRL', target).key_up('CTRL', target).move_by_offset(3, 4)
-    actions.move_to_element(target).move_to(target).move_to_element_with_offset(target, 5, 6)
+    actions.move_to_element(target).move_to(target).move_to_element_with_offset(
+        target, 5, 6
+    )
     actions.move_with_offset_to(target, 7, 8).pause(0.1).release(target)
     actions.send_keys('a', 'b').send_keys_to_element(target, 'x').send_keys_to(
         target, 'y'
     )
-    actions.scroll_to_element(target).scroll_to(target).scroll_by_amount(9, 10).scroll_by(
-        11, 12
-    )
+    actions.scroll_to_element(target).scroll_to(target).scroll_by_amount(
+        9, 10
+    ).scroll_by(11, 12)
     actions.scroll_from_origin('origin', 13, 14)
 
     calls = FakeActionChains.last.calls
