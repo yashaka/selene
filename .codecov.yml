@@ -3,6 +3,8 @@ coverage:
   round: down
 
   status:
+    default_rules:
+      flag_coverage_not_uploaded_behavior: exclude
     project:
       default:
         target: auto
@@ -60,3 +62,17 @@ comment:
   layout: "reach,diff,flags,files"
   behavior: default
   require_changes: false
+
+flags:
+  core:
+    paths:
+      - selene/core/
+  common:
+    paths:
+      - selene/common/
+  support:
+    paths:
+      - selene/support/
+  api:
+    paths:
+      - selene/api/
