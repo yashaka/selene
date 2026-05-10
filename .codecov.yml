@@ -8,12 +8,48 @@ coverage:
         target: auto
         threshold: 0.1%
         informational: false
+      unit:
+        target: auto
+        threshold: 0.1%
+        informational: false
+        flags:
+          - unit
+      integration:
+        target: auto
+        threshold: 0.1%
+        informational: false
+        flags:
+          - integration
+      acceptance:
+        target: auto
+        threshold: 0.1%
+        informational: false
+        flags:
+          - acceptance
       core:
         target: auto
         threshold: 0.1%
         informational: false
         flags:
           - core
+      common:
+        target: auto
+        threshold: 0.1%
+        informational: false
+        flags:
+          - common
+      support:
+        target: auto
+        threshold: 0.1%
+        informational: false
+        flags:
+          - support
+      api:
+        target: auto
+        threshold: 0.1%
+        informational: false
+        flags:
+          - api
     patch:
       default:
         target: auto
