@@ -63,13 +63,30 @@ jobs:
             tests/ \
             --headless=True
 
-      - name: Code Coverage
+      - name: Build core-only coverage report
+        if: matrix.python-version == '3.10' && always()
+        run: |
+          poetry run coverage xml -i --include="selene/core/*" -o coverage-core.xml
+
+      - name: Code Coverage (selene)
         if: matrix.python-version == '3.10' && always()
         uses: codecov/codecov-action@v4.5.0
         with:
           files: ./coverage.xml
           flags: regression
           name: regression-py310
+          fail_ci_if_error: true
+          verbose: true
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Code Coverage (core)
+        if: matrix.python-version == '3.10' && always()
+        uses: codecov/codecov-action@v4.5.0
+        with:
+          files: ./coverage-core.xml
+          flags: core
+          name: core-py310
           fail_ci_if_error: true
           verbose: true
         env:

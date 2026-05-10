@@ -8,6 +8,12 @@ coverage:
         target: auto
         threshold: 0.1%
         informational: false
+      core:
+        target: auto
+        threshold: 0.1%
+        informational: false
+        flags:
+          - core
     patch:
       default:
         target: auto
