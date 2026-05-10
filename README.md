@@ -60,7 +60,7 @@ Selene’s core strength is its user-oriented API, which abstracts the complexit
 Selene currently supports two major versions:
 
 - **Latest Recommended Pre-Release Version (v2.0.0rc9)**:
-  - Python versions: `3.10+`
+  - Python versions: `3.10-3.14`
   - Selenium support: `>=4.12.0`
   - This version introduces an improved API, better performance, and is recommended for new projects.
   - Though is in alpha/beta stage, refining API, improving "migratability" and testing
@@ -77,7 +77,7 @@ For migration from v1.x to v2.x, follow the [migration guide](#migration-guide).
 ### Migration Guide
 
 From `1.0.2` to `2.0.0rc<LATEST>`:
-- Upgrade to Python 3.10+
+- Upgrade to Python 3.10-3.14
 - Update selene to `2.0.0rc<LATEST>`
   - Replace the `collection.first()` method from `.first()` to `.first`
   - Ensure all conditions like `text('foo')` use the `be.*` or `have.*` syntax
@@ -97,7 +97,7 @@ Examples of potential refactoring during migration:
 
 ## Prerequisites
 
-[Python 3.10+][python-310] is required.
+[Python 3.10-3.14][python-310] is required.
 
 Given [pyenv][pyenv] is installed, installing the needed version of Python is simple:
 ```bash
