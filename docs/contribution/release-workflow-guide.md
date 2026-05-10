@@ -1,55 +1,64 @@
 # Release workflow
 
-First make sure you described release notes in CHANGELOG.md.
+This guide describes how releases are published to PyPI in the current CI setup.
+First make sure release notes are described in `CHANGELOG.md`.
 
-## Automatically
+## CI-based release (recommended)
 
-1. Create new release on GitHub.
-2. Choose new tag or take not released yet.
+Before you click **Publish release** on GitHub, quick checklist:
 
-    Name it without `v` prefix, like: `1.0.1`, `2.0.0a39`
+1. `pyproject.toml` version is updated.
+2. `selene/__init__.py` `__version__` is updated.
+3. Release tag equals these versions and has no `v` prefix.
+4. `CHANGELOG.md` contains release notes for this version.
+5. Ensure repository secret `PYPI_TOKEN` is configured for publish workflow.
 
-3. Set "release title" to same value as tag name
 
-    (in order to fully render at Releases section on main github project page,
-    and be consistent with other common github projects)
+Then publish through GitHub Releases:
 
-4. Describe release notes.
+1. Create a new GitHub Release.
+2. Create or select a tag without `v` prefix, for example `1.0.1` or `2.0.0a39`.
+3. Set release title equal to the tag value.
+4. Add release notes (summary + details, usually based on `CHANGELOG.md`).
+5. Mark as pre-release when needed.
+6. Publish the release.
 
-    Give it a short summary as `# <Heading Summary>`
-    Provide details (usually copied from CHANGELOG)  
-    (if they are not the same as summary ;)
+After publishing, GitHub Actions workflow [`publish.yml`](https://github.com/yashaka/selene/blob/master/.github/workflows/publish.yml) is triggered on `release.published` and performs:
 
-5. Select pre-release checkbox if not stable.
+1. Version consistency check (`tag == pyproject.toml == selene/__init__.py`).
+2. Package build (`poetry build`).
+3. Distribution validation (`twine check dist/*`).
+4. Upload to PyPI (`poetry publish` using `PYPI_TOKEN`).
 
-    (Currently the 2.0.0a* alpha versions can also be marked
-    as stable)
+Important: CI does not auto-commit version changes. If versions do not match the release tag, the publish job fails.
 
-6. Publish the release on GitHub.
+## Manual fallback (maintainers-only emergency path)
 
-Then GitHub action will automatically build and publish release
-to PyPI with selected tag automatically.
-Also it will commit the tag semver
-into `__init__.py` and `pyproject.toml`
-before building if it has not been there yet.
+Use this path only when CI-based publish is unavailable.
+For regular releases, use GitHub Release + CI publish flow above.
 
-## Old fashion manually
+You can publish manually:
 
-(only if GitHub Actions CI is not available)
+1. `bash .run/bump_version.sh x.x.x`
+2. `bash .run/build.sh`
+3. `bash .run/publish.sh`
 
-1. bump version via `bash .run/bump_version.sh x.x.x`
-2. build via `bash .run/build.sh`
-3. publish via `bash .run/publish.sh`
-
-or
+Or in one command:
 
 `bash .run/bump_build_publish.sh x.x.x`
 
-or if you want to control all by yourself
+Or fully manual:
 
-1. manually bump version in `pyproject.toml` and `selene/__init.py:__version__`
-2. `poetry publish --build`
+1. Update versions in `pyproject.toml` and `selene/__init__.py`.
+2. Run `poetry publish --build`.
 
-Also don't forget to push a tag and describe release notes on GitHub!
-(If GitHub Actions works then publish job will fail
-because same version had already been published on pypi.org)
+Do not forget to push the release tag and publish release notes on GitHub.
+If the same version was already published manually, CI publish for that tag will fail on duplicate version upload.
+
+## Troubleshooting
+
+If `Publish Python Package` fails at `Check release version consistency`:
+
+1. Compare release tag with `pyproject.toml` version and `selene/__init__.py` `__version__`.
+2. Fix mismatches in source branch.
+3. Push changes and create a new release/tag that matches source versions.
