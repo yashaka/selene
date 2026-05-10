@@ -61,8 +61,6 @@ def test_search(browser):
         });
     """)
 
-    browser.all('.web-result').first.element('.result__link').click()
-
     _hide_cookie_overlays(browser)
     first_result_link = browser.all('.web-result').first.element('.result__link')
     try:
