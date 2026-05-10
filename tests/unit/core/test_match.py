@@ -145,7 +145,11 @@ def test_element_css_property_condition_and_collection_variants():
 
 
 def test_element_attribute_related_conditions_and_ignore_case_warning():
-    element = DummyElement(DummyWebElement(attrs={'role': 'Button', 'value': 'ABC', 'class': 'btn btn-primary'}))
+    element = DummyElement(
+        DummyWebElement(
+            attrs={'role': 'Button', 'value': 'ABC', 'class': 'btn btn-primary'}
+        )
+    )
     collection = DummyCollection(
         [
             DummyWebElement(attrs={'role': 'Button', 'value': 'ABC'}),
@@ -173,7 +177,12 @@ def test_element_attribute_related_conditions_and_ignore_case_warning():
 
 
 def test_element_blank_and_tag_conditions():
-    blank = DummyElement(DummyWebElement(text='', attrs={'value': ''},))
+    blank = DummyElement(
+        DummyWebElement(
+            text='',
+            attrs={'value': ''},
+        )
+    )
     tagged = DummyElement(DummyWebElement())
     tagged._webelement.tag_name = 'section'
 
@@ -210,7 +219,9 @@ def test_collection_texts_and_exact_texts_consider_only_visible():
 
 
 def test_browser_url_title_tabs_and_script_conditions():
-    browser = DummyBrowser(url='https://host/path', title='Page title', tabs=['t1', 't2', 't3'])
+    browser = DummyBrowser(
+        url='https://host/path', title='Page title', tabs=['t1', 't2', 't3']
+    )
 
     match.browser_has_url('https://host/path').call(browser)
     match.browser_has_url_containing('host').call(browser)
@@ -223,7 +234,10 @@ def test_browser_url_title_tabs_and_script_conditions():
     match.browser_has_tabs_number_less_than(4).call(browser)
     match.browser_has_tabs_number_less_than_or_equal(3).call(browser)
 
-    with pytest.raises(AssertionError, match=r"actual script_result: {'script': 'return 1', 'args': \(\)}"):
+    with pytest.raises(
+        AssertionError,
+        match=r"actual script_result: {'script': 'return 1', 'args': \(\)}",
+    ):
         match.browser_has_script_returned(1, 'return 1').call(browser)
 
 

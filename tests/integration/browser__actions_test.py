@@ -13,8 +13,7 @@ def test_browser_actions_drags_source_and_drops_it_to_target_with_implicit_waiti
     )
     page = GivenPage(browser.driver)
     page.opened_empty()
-    page.add_style_to_head(
-        """
+    page.add_style_to_head("""
         #target1, #target2 {
           float: left;
           width: 100px;
@@ -23,10 +22,8 @@ def test_browser_actions_drags_source_and_drops_it_to_target_with_implicit_waiti
           padding: 10px;
           border: 1px solid black;
         }
-        """
-    )
-    page.add_script_to_head(
-        """
+        """)
+    page.add_script_to_head("""
         function allowDrop(ev) {
           ev.preventDefault();
         }
@@ -40,8 +37,7 @@ def test_browser_actions_drags_source_and_drops_it_to_target_with_implicit_waiti
           var data = ev.dataTransfer.getData('text');
           ev.target.appendChild(document.getElementById(data));
         }
-        """
-    )
+        """)
     page.load_body_with_timeout(
         '''
         <h2>Drag and Drop</h2>
@@ -84,8 +80,7 @@ def test_browser_actions_fails_to_wait_for_drag_and_drop_before_perform(
     )
     page = GivenPage(browser.driver)
     page.opened_empty()
-    page.add_style_to_head(
-        """
+    page.add_style_to_head("""
         #target1, #target2 {
           float: left;
           width: 100px;
@@ -94,10 +89,8 @@ def test_browser_actions_fails_to_wait_for_drag_and_drop_before_perform(
           padding: 10px;
           border: 1px solid black;
         }
-        """
-    )
-    page.add_script_to_head(
-        """
+        """)
+    page.add_script_to_head("""
         function allowDrop(ev) {
           ev.preventDefault();
         }
@@ -111,8 +104,7 @@ def test_browser_actions_fails_to_wait_for_drag_and_drop_before_perform(
           var data = ev.dataTransfer.getData('text');
           ev.target.appendChild(document.getElementById(data));
         }
-        """
-    )
+        """)
     page.load_body_with_timeout(
         '''
         <h2>Drag and Drop</h2>
@@ -152,12 +144,10 @@ def test_browser_actions_fails_on_perform_step(monkeypatch, session_browser):
     browser = session_browser.with_(timeout=0.5)
     page = GivenPage(browser.driver)
     page.opened_empty()
-    page.load_body(
-        """
+    page.load_body("""
         <div id="source" draggable="true" style="width:40px;height:40px"></div>
         <div id="target" style="width:100px;height:50px"></div>
-        """
-    )
+        """)
 
     actions = browser._actions.drag_and_drop(
         browser.element('#source'), browser.element('#target')

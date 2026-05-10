@@ -135,7 +135,9 @@ def test_frame_context_enter_exit_and_decorator(monkeypatch):
     monkeypatch.setattr(query, 'functools', __import__('functools'), raising=False)
 
     support_stub = types.SimpleNamespace(
-        _wait=types.SimpleNamespace(with_=lambda context: (lambda _wait: (lambda fn: fn)))
+        _wait=types.SimpleNamespace(
+            with_=lambda context: (lambda _wait: (lambda fn: fn))
+        )
     )
     monkeypatch.setattr(query, 'support', support_stub, raising=False)
 
@@ -165,7 +167,9 @@ def test_frame_context_element_and_all_build_lazy_entities(monkeypatch):
     monkeypatch.setattr(query, 'Collection', DummyCollectionEntity)
     monkeypatch.setattr(query, 'functools', __import__('functools'), raising=False)
     support_stub = types.SimpleNamespace(
-        _wait=types.SimpleNamespace(with_=lambda context: (lambda _wait: (lambda fn: fn)))
+        _wait=types.SimpleNamespace(
+            with_=lambda context: (lambda _wait: (lambda fn: fn))
+        )
     )
     monkeypatch.setattr(query, 'support', support_stub, raising=False)
 

@@ -11,8 +11,7 @@ def test_drags_source_by_offset_and_drops_it_to_target(session_browser):
     browser = session_browser.with_(timeout=2)
     page = GivenPage(browser.driver)
     page.opened_empty()
-    page.add_style_to_head(
-        """
+    page.add_style_to_head("""
         #target1, #target2 {
           float: left;
           width: 100px;
@@ -21,10 +20,8 @@ def test_drags_source_by_offset_and_drops_it_to_target(session_browser):
           padding: 10px;
           border: 1px solid black;
         }
-        """
-    )
-    page.add_script_to_head(
-        """
+        """)
+    page.add_script_to_head("""
         function allowDrop(ev) {
           ev.preventDefault();
         }
@@ -38,10 +35,8 @@ def test_drags_source_by_offset_and_drops_it_to_target(session_browser):
           var data = ev.dataTransfer.getData('text');
           ev.target.appendChild(document.getElementById(data));
         }
-        """
-    )
-    page.load_body(
-        '''
+        """)
+    page.load_body('''
         <h2>Drag and Drop</h2>
         <p>Drag the image back and forth between the two div elements.</p>
 
@@ -56,8 +51,7 @@ def test_drags_source_by_offset_and_drops_it_to_target(session_browser):
         </div>
 
         <div id="target2" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-        '''
-    )
+        ''')
 
     # WHEN
     browser.element('#draggable').perform(command.drag_and_drop_by_offset(x=150, y=0))

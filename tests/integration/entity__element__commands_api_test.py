@@ -29,11 +29,9 @@ from tests.integration.helpers.givenpage import GivenPage
 
 def test_element_execute_script_variants_and_deprecated_private_alias(session_browser):
     page = GivenPage(session_browser.driver)
-    page.opened_with_body(
-        """
+    page.opened_with_body("""
         <input id='name' value='old'/>
-        """
-    )
+        """)
     element = session_browser.element('#name')
 
     element.execute_script('element.value = arguments[0]', 'new')
@@ -46,11 +44,9 @@ def test_element_execute_script_variants_and_deprecated_private_alias(session_br
 
 def test_element_set_type_send_keys_press_and_clear(session_browser):
     page = GivenPage(session_browser.driver)
-    page.opened_with_body(
-        """
+    page.opened_with_body("""
         <input id='field'/>
-        """
-    )
+        """)
     field = session_browser.element('#field')
 
     field.set_value('ab')
@@ -67,14 +63,12 @@ def test_element_set_type_send_keys_press_and_clear(session_browser):
 
 def test_element_set_alias_and_press_enter(session_browser):
     page = GivenPage(session_browser.driver)
-    page.opened_with_body(
-        """
+    page.opened_with_body("""
         <form id='form' onsubmit="event.preventDefault(); document.getElementById('status').textContent='submitted';">
           <input id='field'/>
         </form>
         <div id='status'>idle</div>
-        """
-    )
+        """)
     field = session_browser.element('#field')
 
     field.set('hello').press_enter()
@@ -83,8 +77,7 @@ def test_element_set_alias_and_press_enter(session_browser):
 
 def test_element_submit_click_double_context_and_hover(session_browser):
     page = GivenPage(session_browser.driver)
-    page.opened_with_body(
-        """
+    page.opened_with_body("""
         <style>
           #hover-target.hovered { outline: 2px solid red; }
         </style>
@@ -98,8 +91,7 @@ def test_element_submit_click_double_context_and_hover(session_browser):
                 ondblclick="window.__dbl=(window.__dbl||0)+1"
                 oncontextmenu="event.preventDefault(); window.__ctx=(window.__ctx||0)+1">Click me</button>
         <div id='hover-target' onmouseover="this.classList.add('hovered')">Hover me</div>
-        """
-    )
+        """)
 
     session_browser.element('#field').type('value')
     session_browser.element('#form').submit()
@@ -120,16 +112,14 @@ def test_element_submit_click_double_context_and_hover(session_browser):
 
 def test_element_relative_search_aliases_and_cached_lookup(session_browser):
     page = GivenPage(session_browser.driver)
-    page.opened_with_body(
-        """
+    page.opened_with_body("""
         <section id='root'>
           <ul>
             <li class='item'>one</li>
             <li class='item'>two</li>
           </ul>
         </section>
-        """
-    )
+        """)
 
     root = session_browser.element('#root')
     root.s('ul').ss('.item').should(have.exact_texts('one', 'two'))

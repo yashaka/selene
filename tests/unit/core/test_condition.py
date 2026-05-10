@@ -5,8 +5,18 @@ from selene.core.exceptions import ConditionNotMatchedError
 
 
 def test_by_and_passes_when_all_conditions_pass():
-    first = Condition('first is positive', lambda x: None if x > 0 else (_ for _ in ()).throw(AssertionError('first failed')))
-    second = Condition('second is less than 10', lambda x: None if x < 10 else (_ for _ in ()).throw(AssertionError('second failed')))
+    first = Condition(
+        'first is positive',
+        lambda x: (
+            None if x > 0 else (_ for _ in ()).throw(AssertionError('first failed'))
+        ),
+    )
+    second = Condition(
+        'second is less than 10',
+        lambda x: (
+            None if x < 10 else (_ for _ in ()).throw(AssertionError('second failed'))
+        ),
+    )
 
     combined = Condition.by_and(first, second)
 
@@ -35,7 +45,9 @@ def test_by_and_stops_on_first_failed_condition():
 
 
 def test_by_or_passes_when_any_condition_passes():
-    first = Condition('first fails', lambda _: (_ for _ in ()).throw(AssertionError('first failed')))
+    first = Condition(
+        'first fails', lambda _: (_ for _ in ()).throw(AssertionError('first failed'))
+    )
     second = Condition('second passes', lambda _: None)
     combined = Condition.by_or(first, second)
 
@@ -44,8 +56,12 @@ def test_by_or_passes_when_any_condition_passes():
 
 
 def test_by_or_raises_aggregated_errors_when_all_fail():
-    first = Condition('first fails', lambda _: (_ for _ in ()).throw(AssertionError('first failed')))
-    second = Condition('second fails', lambda _: (_ for _ in ()).throw(ValueError('second failed')))
+    first = Condition(
+        'first fails', lambda _: (_ for _ in ()).throw(AssertionError('first failed'))
+    )
+    second = Condition(
+        'second fails', lambda _: (_ for _ in ()).throw(ValueError('second failed'))
+    )
     combined = Condition.by_or(first, second)
 
     with pytest.raises(AssertionError, match='first failed; second failed'):
@@ -53,7 +69,12 @@ def test_by_or_raises_aggregated_errors_when_all_fail():
 
 
 def test_for_each_passes_when_all_items_match():
-    positive = Condition('is positive', lambda x: None if x > 0 else (_ for _ in ()).throw(AssertionError('not positive')))
+    positive = Condition(
+        'is positive',
+        lambda x: (
+            None if x > 0 else (_ for _ in ()).throw(AssertionError('not positive'))
+        ),
+    )
 
     per_item = Condition.for_each(positive)
 
@@ -62,7 +83,12 @@ def test_for_each_passes_when_all_items_match():
 
 
 def test_for_each_reports_items_and_indexes_on_failures():
-    positive = Condition('is positive', lambda x: None if x > 0 else (_ for _ in ()).throw(AssertionError('not positive')))
+    positive = Condition(
+        'is positive',
+        lambda x: (
+            None if x > 0 else (_ for _ in ()).throw(AssertionError('not positive'))
+        ),
+    )
     per_item = Condition.for_each(positive)
 
     with pytest.raises(AssertionError) as error:
@@ -75,7 +101,12 @@ def test_for_each_reports_items_and_indexes_on_failures():
 
 
 def test_as_not_inverts_condition_and_uses_default_description():
-    is_even = Condition('is even', lambda x: None if x % 2 == 0 else (_ for _ in ()).throw(AssertionError('not even')))
+    is_even = Condition(
+        'is even',
+        lambda x: (
+            None if x % 2 == 0 else (_ for _ in ()).throw(AssertionError('not even'))
+        ),
+    )
     inverted = Condition.as_not(is_even)
 
     inverted.call(3)
@@ -151,7 +182,12 @@ def test_predicate_returns_true_or_false_without_reraising():
 
 
 def test_not_alias_not_property_and_each_property_work():
-    base = Condition('is positive', lambda x: None if x > 0 else (_ for _ in ()).throw(AssertionError('not positive')))
+    base = Condition(
+        'is positive',
+        lambda x: (
+            None if x > 0 else (_ for _ in ()).throw(AssertionError('not positive'))
+        ),
+    )
     always = Condition('always', lambda _: None)
 
     assert isinstance(base.not_, Condition)

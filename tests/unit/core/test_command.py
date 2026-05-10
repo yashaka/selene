@@ -125,6 +125,7 @@ class FakeActionBuilder:
     def __init__(self, driver, mouse):
         self.driver = driver
         self.mouse = mouse
+
         class PointerAction:
             def move_to(self, _el):
                 return self
@@ -181,7 +182,9 @@ def test_long_press_default_and_shortcut_style(monkeypatch):
     monkeypatch.setattr(command, 'ActionChains', FakeActionChains)
     monkeypatch.setattr(command, 'ActionBuilder', FakeActionBuilder)
     monkeypatch.setattr(command, 'PointerInput', FakePointerInput)
-    monkeypatch.setattr(command, 'interaction', types.SimpleNamespace(POINTER_TOUCH='touch'))
+    monkeypatch.setattr(
+        command, 'interaction', types.SimpleNamespace(POINTER_TOUCH='touch')
+    )
     monkeypatch.setattr(command, 'Element', DummyElement)
 
     element = DummyElement()
@@ -237,8 +240,13 @@ def test_js_set_value_type_scroll_click_and_storage_clear():
 
     assert len(element.executed) >= 4
     assert any('scrollIntoView' in script for script, _ in element.executed)
-    assert any('window.localStorage.clear()' in script for script, _ in browser.driver.scripts)
-    assert any('window.sessionStorage.clear()' in script for script, _ in browser.driver.scripts)
+    assert any(
+        'window.localStorage.clear()' in script for script, _ in browser.driver.scripts
+    )
+    assert any(
+        'window.sessionStorage.clear()' in script
+        for script, _ in browser.driver.scripts
+    )
 
 
 def test_js_remove_and_set_style_commands_for_element_and_collection():

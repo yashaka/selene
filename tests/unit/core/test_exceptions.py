@@ -1,6 +1,10 @@
 import pytest
 
-from selene.core.exceptions import TimeoutException, ConditionNotMatchedError, _SeleneError
+from selene.core.exceptions import (
+    TimeoutException,
+    ConditionNotMatchedError,
+    _SeleneError,
+)
 
 
 def test_timeout_exception_str_includes_message_prefix_and_newline():
