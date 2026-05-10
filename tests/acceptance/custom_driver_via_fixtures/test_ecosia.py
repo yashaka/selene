@@ -45,8 +45,7 @@ def test_search(browser):
     browser.element(by.name('q')).type('github yashaka/selene python').press_enter()
 
     # Cookie consent UI may cover search results and intercept clicks.
-    browser.driver.execute_script(
-        """
+    browser.driver.execute_script("""
         const selectors = [
           '.banner.cookie-notice',
           '.cookie-notice',
@@ -60,8 +59,7 @@ def test_search(browser):
             node.style.pointerEvents = 'none';
           });
         });
-        """
-    )
+    """)
 
     browser.all('.web-result').first.element('.result__link').click()
 
