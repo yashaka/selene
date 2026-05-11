@@ -144,6 +144,8 @@ TODOs:
   and `selene.__version__`
 - updated release workflow documentation to describe the current GitHub Release
   -> CI publish flow, manual fallback, and troubleshooting steps
+- CI: stabilized Codecov policy for fork PRs (v5 uploader, split flags, 
+  non-blocking tokenless uploads, and GitHub coverage summary fallback).
 - aligned release scripts with the current flow and fixed
   `.run/bump_build_publish.sh`
 - removed deprecated `traffic2badge` workflow
