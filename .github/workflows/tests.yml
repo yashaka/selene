@@ -153,6 +153,7 @@ jobs:
         uses: codecov/codecov-action@v5
         with:
           files: ./coverage.xml
+          disable_search: true
           flags: regression
           name: regression-py310
           fail_ci_if_error: ${{ !(github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork) }}
@@ -165,6 +166,7 @@ jobs:
         uses: codecov/codecov-action@v5
         with:
           files: ./coverage-core.xml
+          disable_search: true
           flags: core
           name: core-py310
           fail_ci_if_error: ${{ !(github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork) }}
@@ -177,6 +179,7 @@ jobs:
         uses: codecov/codecov-action@v5
         with:
           files: ./coverage-common.xml
+          disable_search: true
           flags: common
           name: common-py310
           fail_ci_if_error: ${{ !(github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork) }}
@@ -189,6 +192,7 @@ jobs:
         uses: codecov/codecov-action@v5
         with:
           files: ./coverage-support.xml
+          disable_search: true
           flags: support
           name: support-py310
           fail_ci_if_error: ${{ !(github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork) }}
@@ -201,6 +205,7 @@ jobs:
         uses: codecov/codecov-action@v5
         with:
           files: ./coverage-api.xml
+          disable_search: true
           flags: api
           name: api-py310
           fail_ci_if_error: ${{ !(github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork) }}
@@ -213,6 +218,7 @@ jobs:
         uses: codecov/codecov-action@v5
         with:
           files: ./coverage-unit.xml
+          disable_search: true
           flags: unit
           name: unit-py310
           fail_ci_if_error: ${{ !(github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork) }}
@@ -225,6 +231,7 @@ jobs:
         uses: codecov/codecov-action@v5
         with:
           files: ./coverage-integration.xml
+          disable_search: true
           flags: integration
           name: integration-py310
           fail_ci_if_error: ${{ !(github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork) }}
@@ -237,6 +244,7 @@ jobs:
         uses: codecov/codecov-action@v5
         with:
           files: ./coverage-acceptance.xml
+          disable_search: true
           flags: acceptance
           name: acceptance-py310
           fail_ci_if_error: ${{ !(github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork) }}
