@@ -715,8 +715,6 @@ class Element(_LocatableEntity[WebElement], _WaitingConfiguredEntity):
 
         Can be customized via
         [config.drag_and_drop_by_js][selene.core.configuration.Config.drag_and_drop_by_js].
-        Though turning the config flag on will disable the _assert_location_changed feature
-        (wait for [#567](https://github.com/yashaka/selene/issues/567)).
 
         See more at [command.drag_and_drop_to][selene.core.command.drag_and_drop_to].
         See also [command.js.drag_and_drop_to][selene.core.command.js.drag_and_drop_to].
@@ -725,11 +723,17 @@ class Element(_LocatableEntity[WebElement], _WaitingConfiguredEntity):
         from selene.core import command
 
         if self.config.drag_and_drop_by_js:
-            self.wait.for_(command.js.drag_and_drop_to(target))
+            self.wait.for_(
+                command.js.drag_and_drop_to(
+                    target,
+                    _assert_location_changed=_assert_location_changed,
+                )
+            )
         else:
             self.wait.for_(
                 command.drag_and_drop_to(
-                    target, _assert_location_changed=_assert_location_changed
+                    target,
+                    _assert_location_changed=_assert_location_changed,
                 )
             )
 
