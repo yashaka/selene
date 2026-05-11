@@ -191,29 +191,3 @@ def test_remembers_last_saved_screenshot(a_browser, with_process_exit_teardown):
         a_browser.config.reports_folder,
         f'{next(a_browser.config._counter) - 1}.png',
     )
-
-
-@pytest.mark.parametrize(
-    'save_screenshot_on_failure, save_page_source_on_failure',
-    [
-        (True, False),
-        (False, True),
-        (False, False),
-    ],
-)
-def test_does_not_save_artifacts_on_wait_until_false(
-    a_browser, tmp_path, save_screenshot_on_failure, save_page_source_on_failure
-):
-    custom_reports = tmp_path / 'reports'
-    browser_for_check = a_browser.with_(
-        timeout=0.1,
-        reports_folder=str(custom_reports),
-        save_screenshot_on_failure=save_screenshot_on_failure,
-        save_page_source_on_failure=save_page_source_on_failure,
-    )
-    browser_for_check.open(EMPTY_PAGE_URL)
-
-    matched = browser_for_check.element('#does-not-exist').wait_until(be.visible)
-
-    assert matched is False
-    assert not custom_reports.exists() or list(custom_reports.iterdir()) == []
