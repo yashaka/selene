@@ -26,7 +26,7 @@ def test_have_no_attribute_descriptor_methods_work(session_browser):
 
     GivenPage(browser.driver).opened_with_body('''
         <input class="name" id="firstname" value="John">
-        <input class="name" id="lastname" value="Doe"> 
+        <input class="name" id="lastname" value="Doe">
     ''')
 
     name = browser.element('.name')
