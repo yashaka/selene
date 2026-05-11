@@ -13,9 +13,7 @@ def test_have_no_attribute_value_containing_does_not_raise_type_error(
         <input id="firstname" class="name" value="John">
     ''')
 
-    browser.element('.name').should(
-        have.no.attribute('id').value_containing('last')
-    )
+    browser.element('.name').should(have.no.attribute('id').value_containing('last'))
 
     with pytest.raises(AssertionError):
         browser.element('.name').should(
