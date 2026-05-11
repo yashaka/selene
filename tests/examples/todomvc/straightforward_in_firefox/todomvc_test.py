@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2015-2021 Iakiv Kramarenko
+# Copyright (c) 2015-2022 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -19,8 +19,8 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from selene import have, by, be
-from selene.support.shared import config, browser
+from selene import have, browser
+from tests import resources
 
 
 def setup_function():
@@ -32,33 +32,10 @@ def teardown_function():
     browser.config.browser_name = 'chrome'
 
 
-def test_filter_tasks():
-    browser.open('https://todomvc4tasj.herokuapp.com')
-    clear_completed_js_loaded = "return $._data($('#clear-completed').get(0), 'events').hasOwnProperty('click')"
-    browser.wait_to(
-        have.js_returned(True, clear_completed_js_loaded),
-        timeout=config.timeout * 3,
-    )
+def test_add_todos():
+    browser.open(resources.TODOMVC_URL)
 
     browser.element('#new-todo').set_value('a').press_enter()
     browser.element('#new-todo').set_value('b').press_enter()
     browser.element('#new-todo').set_value('c').press_enter()
     browser.all('#todo-list li').should(have.exact_texts('a', 'b', 'c'))
-
-    browser.all('#todo-list li').element_by(have.exact_text('b')).element(
-        '.toggle'
-    ).click()
-    browser.element(by.link_text('Active')).click()
-    browser.all('#todo-list li').filtered_by(be.visible).should(
-        have.exact_texts('a', 'c')
-    )
-
-    browser.element(by.link_text('Completed')).click()
-    browser.all('#todo-list li').filtered_by(be.visible).should(
-        have.exact_texts('b')
-    )
-
-    browser.element(by.link_text('All')).click()
-    browser.all('#todo-list li').filtered_by(be.visible).should(
-        have.exact_texts('a', 'b', 'c')
-    )

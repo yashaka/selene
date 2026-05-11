@@ -1,2 +1,8 @@
 #!/bin/bash
-poetry publish
+
+run() {
+  echo "+ $*"
+  "$@"
+}
+
+run poetry publish

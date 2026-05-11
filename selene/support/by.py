@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2015-2021 Iakiv Kramarenko
+# Copyright (c) 2015-2022 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -36,6 +36,10 @@ def id(attribute_value):
     return By.ID, attribute_value
 
 
+def class_name(value):
+    return By.CLASS_NAME, value
+
+
 def name(attribute_value):
     return By.NAME, attribute_value
 
@@ -68,7 +72,7 @@ def partial_text(value):
     )
 
 
-# todo: deprecate be_* ? since they hide "xpath" logic, which may not be working in all cases
+# TODO: deprecate be_* ? since they hide "xpath" logic, which may not be working in all cases
 #       for example in case of mobile...
 #       maybe the only good thing to keep is by.text and by.partial_text
 

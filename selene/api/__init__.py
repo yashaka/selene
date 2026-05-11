@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2015-2021 Iakiv Kramarenko
+# Copyright (c) 2015-2022 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,7 @@
 
 # --- BASE -- #
 
-from selene.core.entity import Browser
+from selene.core._browser import Browser
 from selene.core.configuration import Config
 
 from selene.support import by
@@ -31,7 +31,7 @@ from selene.support.conditions import be, have
 
 # --- ADVANCED --- #
 
-from selene.core import query, command
+from selene.core import query, command, Collection
 from selene.core.condition import not_  # just in case
 
 # --- SHARED --- #
@@ -42,7 +42,7 @@ from selene.support.shared.jquery_style import s, ss
 
 # --- probably just for Type Hints --- #
 
-from selene.core.entity import Element, Collection
+from selene.core._element import Element
 from selene.core.condition import Condition
 from selene.core.conditions import (
     ElementCondition,

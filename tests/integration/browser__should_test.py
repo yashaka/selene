@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2015-2021 Iakiv Kramarenko
+# Copyright (c) 2015-2022 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -30,7 +30,7 @@ from selene.core.exceptions import TimeoutException
 
 def x_test_waiting_for_conditions_like_url_containing(session_browser):
     """
-    todo: GivenPage(...).opened_with_body(...)\
+    TODO: GivenPage(...).opened_with_body(...)\
             .execute_script('script should click on link after 500ms'
                             'link should follow to #second')
           browser.should(have.url_containing('#second'))

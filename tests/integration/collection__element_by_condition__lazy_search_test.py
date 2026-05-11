@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2015-2021 Iakiv Kramarenko
+# Copyright (c) 2015-2022 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -41,9 +41,7 @@ def test_search_is_postponed_until_actual_action_like_questioning_displayed(
 ):
     page = GivenPage(session_browser.driver)
     page.opened_empty()
-    element = session_browser.all('.will-appear').element_by(
-        have.exact_text('Kate')
-    )
+    element = session_browser.all('.will-appear').element_by(have.exact_text('Kate'))
 
     page.load_body(
         '''
@@ -61,9 +59,7 @@ def test_search_is_updated_on_next_actual_action_like_questioning_displayed(
 ):
     page = GivenPage(session_browser.driver)
     page.opened_empty()
-    element = session_browser.all('.will-appear').element_by(
-        have.css_class('special')
-    )
+    element = session_browser.all('.will-appear').element_by(have.css_class('special'))
 
     page.load_body(
         '''

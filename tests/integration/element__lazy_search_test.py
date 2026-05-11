@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2015-2021 Iakiv Kramarenko
+# Copyright (c) 2015-2022 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -37,11 +37,12 @@ def test_search_is_postponed_until_actual_action_like_questioning_displayed(
 ):
     page = GivenPage(session_browser.driver)
     page.opened_empty()
-
     element = session_browser.element('#will-be-existing-element-id')
-    page.load_body('<h1 id="will-be-existing-element-id">Hello kitty:*</h1>')
+    page.load_body('<h1 id="will-be-existing-element-id">' 'Hello kitty:*' '</h1>')
 
-    assert element().is_displayed() is True
+    until_actual_action = element().is_displayed()
+
+    assert until_actual_action is True
 
 
 def test_search_is_updated_on_next_actual_action_like_questioning_displayed(
@@ -49,12 +50,14 @@ def test_search_is_updated_on_next_actual_action_like_questioning_displayed(
 ):
     page = GivenPage(session_browser.driver)
     page.opened_empty()
-
     element = session_browser.element('#will-be-existing-element-id')
-    page.load_body('<h1 id="will-be-existing-element-id">Hello kitty:*</h1>')
-    assert element().is_displayed() is True
-
+    page.load_body('<h1 id="will-be-existing-element-id">' 'Hello kitty:*' '</h1>')
     page.load_body(
-        '<h1 id="will-be-existing-element-id" style="display:none">Hello kitty:*</h1>'
+        '<h1 id="will-be-existing-element-id" style="display:none">'
+        'Hello kitty:*'
+        '</h1>'
     )
-    assert element().is_displayed() is False
+
+    updated_actual_action = element().is_displayed()
+
+    assert updated_actual_action is False

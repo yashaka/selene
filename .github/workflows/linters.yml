@@ -1,79 +1,119 @@
 name: linters
 
-on: [push, pull_request]
+on:
+  workflow_dispatch:
+
+  push:
+    paths-ignore:
+      - .run/
+      - .coveragerc
+      - .gitignore
+      - CHANGELOG.md
+      - CONTRIBUTING.md
+      - LICENSE
+      - mkdocs.yml
+      - README.md
+      - .github/workflows/deploy-mkdocs-poetry.yml
+      - .github/workflows/publish.yml
+      - .github/workflows/tests.yml
+      - .github/FUNDING.yml
+
+  pull_request:
+    paths-ignore:
+      - .run/
+      - .coveragerc
+      - .gitignore
+      - CHANGELOG.md
+      - CONTRIBUTING.md
+      - LICENSE
+      - mkdocs.yml
+      - README.md
+      - .github/workflows/deploy-mkdocs-poetry.yml
+      - .github/workflows/publish.yml
+      - .github/workflows/tests.yml
+      - .github/FUNDING.yml
 
 jobs:
 
   Black:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
-      - uses: psf/black@20.8b1
+      - uses: actions/checkout@v6
         with:
-          args: ". --check"
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.10'
+      - run: |
+          pip install tomli
+          # Keep CI in sync with local Poetry env:
+          # read black version from poetry.lock and install only that package via pip.
+          BLACK_VERSION=$(python .run/get_lock_version.py black)
+          pip install "black==$BLACK_VERSION"
+          .run/lint_black.sh
+        env:
+          GITHUB_EVENT_BEFORE: ${{ github.event.before }}
 
   Pycodestyle:
     name: Lint Pycodestyle
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Set up Python
-        uses: actions/setup-python@v2
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
         with:
-          python-version: '3.7'
+          python-version: '3.10'
       - name: Pycodestyle
         run: |
-          pip install pycodestyle
-          pycodestyle $(pwd) --ignore=E501,W503,E402,E731 --exclude=.venv,tests_from_past
-
-  Pycodestyle-full-report:
-    name: Lint Pycodestyle Full Report
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.7'
-      - name: Pycodestyle Full Report
-        run: |
-          pip install pycodestyle
-          pycodestyle $(pwd) --ignore=E501,W503 --exclude=.venv,tests_from_past
-        continue-on-error: true
+          pip install tomli
+          PYCODESTYLE_VERSION=$(python .run/get_lock_version.py pycodestyle)
+          pip install "pycodestyle==$PYCODESTYLE_VERSION"
+          .run/lint_pycodestyle.sh
 
   Pylint:
     name: Lint Pylint
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Set up Python
-        uses: actions/setup-python@v2
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
         with:
-          python-version: '3.7'
+          python-version: '3.10'
       - name: Pylint
         run: |
-          pip install pylint
-          touch __init__.py
-          pylint $(pwd) --rcfile=.pylintrc --disable="$(cat .pylint-disabled-rules)" --ignore-patterns=.venv,tests_from_past
-          rm __init__.py
+          pip install tomli
+          PYLINT_VERSION=$(python .run/get_lock_version.py pylint)
+          pip install "pylint==$PYLINT_VERSION"
+          .run/lint_pylint.sh
 
   Pylint-full-report:
     name: Lint Pylint Full Report
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Set up Python
-        uses: actions/setup-python@v2
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
         with:
-          python-version: '3.7'
+          python-version: '3.10'
       - name: Pylint Full Report
         run: |
-          pip install pylint
+          pip install tomli
+          PYLINT_VERSION=$(python .run/get_lock_version.py pylint)
+          pip install "pylint==$PYLINT_VERSION"
           touch __init__.py
-          pylint $(pwd) --rcfile=.pylintrc --disable="" --ignore-patterns=.venv,tests_from_past --exit-zero
+          pylint $(pwd) --disable="" --ignore-patterns=.venv --exit-zero
           rm __init__.py
+
+  Mypy:
+    name: Mypy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.10'
+      - name: Mypy
+        run: |
+          pip install tomli
+          # Keep CI in sync with local Poetry env:
+          # read mypy version from poetry.lock and install only that package via pip.
+          MYPY_VERSION=$(python .run/get_lock_version.py mypy)
+          pip install "mypy==$MYPY_VERSION"
+          .run/lint_mypy.sh

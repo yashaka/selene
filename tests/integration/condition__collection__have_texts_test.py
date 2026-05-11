@@ -1,8 +1,6 @@
-# -*- coding: utf-8 -*-
-
 # MIT License
 #
-# Copyright (c) 2015-2021 Iakiv Kramarenko
+# Copyright (c) 2015-2022 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -38,9 +36,8 @@ def test_should_have_texts(session_browser):
         '''
     )
 
-    session_browser.all('li').should(
-        have.texts('', '')
-    )  # funny:) but as it is
+    session_browser.all('li').should(have.texts('', ''))  # funny:) but as it is
+    session_browser.all('li').should(have.texts('Alex', 'Yakov'))
     session_browser.all('li').should(have.texts('Alex', 'Yakov'))
     session_browser.all('li').should(have.texts('Alex!', 'Yakov!'))
 
@@ -51,18 +48,20 @@ def test_should_have_texts_exception(session_browser):
         '''
         <ul>Hello:
            <li>Alex</li>
-           <li>Yakov</li>
+           <li> Yakov \n</li>
         </ul>
         '''
     )
 
-    with pytest.raises(TimeoutException) as error:
+    try:
         browser.all('li').should(have.texts('Alex'))
-    assert "has texts ('Alex',)" in error.value.msg
-    assert (
-        "AssertionError: actual visible_texts: ['Alex', 'Yakov']"
-        in error.value.msg
-    )
+        pytest.fail('should have failed on texts mismatch')
+    except AssertionError as error:
+        assert (
+            "browser.all(('css selector', 'li')).have texts ['Alex']\n"
+            '\n'
+            "Reason: ConditionMismatch: actual: ['Alex', 'Yakov']\n"
+        ) in str(error)
 
 
 def test_should_have_no_texts(session_browser):
@@ -95,10 +94,10 @@ def test_should_have_no_texts_exception(session_browser):
 
     with pytest.raises(TimeoutException) as error:
         browser.all('li').should(have.no.texts('Alex', 'Yakov'))
-    # todo: why do we have `has` below, should not it be `have`?
-    assert "has no texts ('Alex', 'Yakov')" in error.value.msg
-    assert "ConditionNotMatchedError: condition not matched" in error.value.msg
-    # todo: should not we see here actual texts in log too?
+    # TODO: why do we have `has` below, should not it be `have`?
+    assert "have no (texts ['Alex', 'Yakov'])" in error.value.msg
+    assert "Reason: ConditionMismatch: actual: ['Alex', 'Yakov']\n" in error.value.msg
+    # TODO: should not we see here actual texts in log too?
 
 
 def test_should_have_text(session_browser):
@@ -111,9 +110,9 @@ def test_should_have_text(session_browser):
         '''
     )
 
-    session_browser.all('li').should(have.text('ako'))
-    session_browser.all('li').should(have.text(''))
-    # todo: this test is a bit weird here...
+    session_browser.all('li').should(have.text('ako').each)
+    session_browser.all('li').should(have.text('').each)
+    # TODO: this test is a bit weird here...
     # the file is called condition__collection__have_texts_test.py
     # specifying that here we tests collection conditions...
     # but have.text is not a collection condition
@@ -123,7 +122,7 @@ def test_should_have_text(session_browser):
     # to assert its content
     # we either go `collection.should_each(have.text(''))` way
     # or `collection.should(have.text('').each)` way
-    # in the former case probably
+    # in the latter case probably
     #   we will move this test to condition__element__have_texts_test.py
     # in the latter case probably we keep it here
     # for now let's keep it here, and then we see...
@@ -141,9 +140,13 @@ def test_should_have_text_exception(session_browser):
     )
 
     with pytest.raises(TimeoutException) as error:
-        browser.all('li').should(have.text('Yakov'))
-    assert "has text Yakov" in error.value.msg
-    assert "AssertionError: actual text: Alex" in error.value.msg
+        browser.all('li').should(have.text('Yakov').each)
+    assert "each has text 'Yakov'" in error.value.msg
+    assert (
+        "AssertionError: Not matched elements among all with indexes from 0 to 1:\n"
+        "browser.all(('css selector', 'li')).cached[0]: actual text: Alex\n"
+        "browser.all(('css selector', 'li')).cached[1]: actual text: Alex"
+    ) in error.value.msg
 
 
 def test_should_have_no_text(session_browser):
@@ -156,7 +159,7 @@ def test_should_have_no_text(session_browser):
         '''
     )
 
-    session_browser.all('li').should(have.no.text('L'))
+    session_browser.all('li').should(have.no.text('L').each)
 
 
 def test_should_have_no_text_exception(session_browser):
@@ -171,6 +174,10 @@ def test_should_have_no_text_exception(session_browser):
     )
 
     with pytest.raises(TimeoutException) as error:
-        browser.all('li').should(have.no.text('Alex'))
-    assert "has no text Alex" in error.value.msg
-    assert "ConditionNotMatchedError: condition not matched" in error.value.msg
+        browser.all('li').should(have.no.text('Alex').each)
+    assert "each has no (text 'Alex')" in error.value.msg
+    assert (
+        "AssertionError: Not matched elements among all with indexes from 0 to 1:\n"
+        "browser.all(('css selector', 'li')).cached[0]: actual text: Alex\n"
+        "browser.all(('css selector', 'li')).cached[1]: actual text: Alex"
+    ) in error.value.msg

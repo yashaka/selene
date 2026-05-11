@@ -1,74 +1,328 @@
 name: tests
 
-on: [push, pull_request]
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "selene/**"
+      - "tests/**"
+      - "pyproject.toml"
+      - "poetry.lock"
+      - ".github/workflows/tests.yml"
+  pull_request:
+    paths:
+      - "selene/**"
+      - "tests/**"
+      - "pyproject.toml"
+      - "poetry.lock"
+      - ".github/workflows/tests.yml"
 
 jobs:
+  regression:
+    name: Regression (blocking) / Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
 
-  test:
-    name: Test selene
-    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12", "3.13", "3.14"]
+
+    env:
+      DISPLAY: ":99"
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install poetry
+          poetry install --with dev
+
+      - name: Install xvfb
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb
+          sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
+
+      - name: Clean old coverage artifacts
+        run: |
+          rm -f .coverage .coverage.* coverage*.xml
+
+      - name: Regression tests
+        run: |
+          poetry run pytest -sv \
+            --cov-config .coveragerc \
+            --cov-branch \
+            --cov-report html:skip-covered \
+            --cov-report term:skip-covered \
+            --cov=selene \
+            --cov-report xml:coverage.xml \
+            --tb=short \
+            -m "not (clipboard or speed or remote or flaky)" \
+            tests/ \
+            --headless=True
+
+      - name: Build package-slice coverage reports
+        if: matrix.python-version == '3.10' && always()
+        run: |
+          poetry run coverage xml -i --include="*/selene/core/*" -o coverage-core.xml
+          poetry run coverage xml -i --include="*/selene/common/*" -o coverage-common.xml
+          poetry run coverage xml -i --include="*/selene/support/*" -o coverage-support.xml
+          poetry run coverage xml -i --include="*/selene/api/*" -o coverage-api.xml
+
+      - name: Unit tests coverage report
+        if: matrix.python-version == '3.10' && always()
+        run: |
+          COVERAGE_FILE=.coverage.unit poetry run pytest -sv \
+            --cov-config .coveragerc \
+            --cov-branch \
+            --cov=selene \
+            --cov-report= \
+            --tb=short \
+            -m "not (clipboard or speed or remote or flaky)" \
+            tests/unit \
+            --headless=True
+          COVERAGE_FILE=.coverage.unit poetry run coverage xml -i -o coverage-unit.xml
+
+      - name: Integration tests coverage report
+        if: matrix.python-version == '3.10' && always()
+        run: |
+          COVERAGE_FILE=.coverage.integration poetry run pytest -sv \
+            --cov-config .coveragerc \
+            --cov-branch \
+            --cov=selene \
+            --cov-report= \
+            --tb=short \
+            -m "not (clipboard or speed or remote or flaky)" \
+            tests/integration \
+            --headless=True
+          COVERAGE_FILE=.coverage.integration poetry run coverage xml -i -o coverage-integration.xml
+
+      - name: Acceptance tests coverage report
+        if: matrix.python-version == '3.10' && always()
+        run: |
+          COVERAGE_FILE=.coverage.acceptance poetry run pytest -sv \
+            --cov-config .coveragerc \
+            --cov-branch \
+            --cov=selene \
+            --cov-report= \
+            --tb=short \
+            -m "not (clipboard or speed or remote or flaky)" \
+            tests/acceptance \
+            --headless=True
+          COVERAGE_FILE=.coverage.acceptance poetry run coverage xml -i -o coverage-acceptance.xml
+
+      - name: Debug coverage artifacts
+        if: matrix.python-version == '3.10' && always()
+        run: |
+          ls -lh coverage*.xml
+          shasum coverage*.xml
+
+      - name: Coverage summary for PR
+        if: matrix.python-version == '3.10' && always()
+        run: |
+          {
+            echo "## Coverage summary"
+            echo ""
+            echo "### Full selene (line + branch)"
+            poetry run coverage report --data-file=.coverage --skip-covered
+            echo ""
+            echo "### selene/core slice"
+            poetry run coverage report --data-file=.coverage --include="*/selene/core/*"
+            echo ""
+            echo "### Test layers"
+            echo ""
+            echo "#### unit"
+            poetry run coverage report --data-file=.coverage.unit --skip-covered
+            echo ""
+            echo "#### integration"
+            poetry run coverage report --data-file=.coverage.integration --skip-covered
+            echo ""
+            echo "#### acceptance"
+            poetry run coverage report --data-file=.coverage.acceptance --skip-covered
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Code Coverage (selene)
+        if: matrix.python-version == '3.10' && always()
+        uses: codecov/codecov-action@v5
+        with:
+          files: ./coverage.xml
+          flags: regression
+          name: regression-py310
+          fail_ci_if_error: ${{ !(github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork) }}
+          verbose: true
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Code Coverage (core)
+        if: matrix.python-version == '3.10' && always()
+        uses: codecov/codecov-action@v5
+        with:
+          files: ./coverage-core.xml
+          flags: core
+          name: core-py310
+          fail_ci_if_error: ${{ !(github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork) }}
+          verbose: true
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Code Coverage (common)
+        if: matrix.python-version == '3.10' && always()
+        uses: codecov/codecov-action@v5
+        with:
+          files: ./coverage-common.xml
+          flags: common
+          name: common-py310
+          fail_ci_if_error: ${{ !(github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork) }}
+          verbose: true
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Code Coverage (support)
+        if: matrix.python-version == '3.10' && always()
+        uses: codecov/codecov-action@v5
+        with:
+          files: ./coverage-support.xml
+          flags: support
+          name: support-py310
+          fail_ci_if_error: ${{ !(github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork) }}
+          verbose: true
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Code Coverage (api)
+        if: matrix.python-version == '3.10' && always()
+        uses: codecov/codecov-action@v5
+        with:
+          files: ./coverage-api.xml
+          flags: api
+          name: api-py310
+          fail_ci_if_error: ${{ !(github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork) }}
+          verbose: true
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Code Coverage (unit)
+        if: matrix.python-version == '3.10' && always()
+        uses: codecov/codecov-action@v5
+        with:
+          files: ./coverage-unit.xml
+          flags: unit
+          name: unit-py310
+          fail_ci_if_error: ${{ !(github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork) }}
+          verbose: true
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Code Coverage (integration)
+        if: matrix.python-version == '3.10' && always()
+        uses: codecov/codecov-action@v5
+        with:
+          files: ./coverage-integration.xml
+          flags: integration
+          name: integration-py310
+          fail_ci_if_error: ${{ !(github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork) }}
+          verbose: true
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Code Coverage (acceptance)
+        if: matrix.python-version == '3.10' && always()
+        uses: codecov/codecov-action@v5
+        with:
+          files: ./coverage-acceptance.xml
+          flags: acceptance
+          name: acceptance-py310
+          fail_ci_if_error: ${{ !(github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork) }}
+          verbose: true
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+  clipboard:
+    name: Clipboard (non-blocking)
+    if: ${{ false }}
+    runs-on: ubuntu-latest
+    continue-on-error: true
     env:
       DISPLAY: ":99"
     steps:
-
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - uses: technote-space/get-diff-action@v4.1.1
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
         with:
-          PATTERNS: |
-            +(selene|tests)/**/*.py
-          FILES: |
-            poetry.lock
-            tests.yml
-
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.7'
-        if: env.GIT_DIFF
-
-      # can be packaged as Docker-image
+          python-version: "3.10"
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install poetry
           poetry install
-        if: env.GIT_DIFF
-
-      # can be packaged as Docker-image
-      - name: Install Firefox & Chrome & xvfb
+      - name: Install xvfb and xclip
         run: |
           sudo apt-get update
-          sudo apt-get install firefox
-          sudo apt-get install google-chrome-stable
-          sudo apt-get install xvfb
+          sudo apt-get install -y xvfb xclip
           sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
-        if: env.GIT_DIFF
+      - name: Clipboard tests
+        run: poetry run pytest -sv --tb=short -m "clipboard" tests/ --headless=True
 
-      - name: Test selene with pytest
+  speed:
+    name: Speed (non-blocking)
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    env:
+      DISPLAY: ":99"
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.10"
+      - name: Install dependencies
         run: |
-          poetry run pytest -sv --cov-config .coveragerc --cov-report html:skip-covered --cov-report term:skip-covered --cov=selene  --cov-report xml:coverage.xml --tb=short tests/
-          mkdir -p Artifacts/skip-covered
-          cp -r skip-covered Artifacts/skip-covered
-        if: env.GIT_DIFF
+          python -m pip install --upgrade pip
+          pip install poetry
+          poetry install
+      - name: Install xvfb
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb
+          sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
+      - name: Speed tests
+        run: poetry run pytest -sv --tb=short -m "speed" tests/ --headless=True
 
-      # can be improved by flags/options
-      - name: Code Coverage
-        uses: codecov/codecov-action@v1
+  remote:
+    name: Remote (non-blocking)
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    env:
+      DISPLAY: ":99"
+      selenoid_login: ${{ secrets.SELENOID_LOGIN }}
+      selenoid_password: ${{ secrets.SELENOID_PASSWORD }}
+    steps:
+      - name: Check remote credentials
+        id: check_remote
+        run: |
+          if [ -n "${selenoid_login}" ] && [ -n "${selenoid_password}" ]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "Remote tests are skipped: SELENOID credentials are missing."
+          fi
+      - uses: actions/checkout@v5
+        if: steps.check_remote.outputs.enabled == 'true'
+      - uses: actions/setup-python@v6
+        if: steps.check_remote.outputs.enabled == 'true'
         with:
-          file: ./coverage.xml # optional
-          name: selene-codecov # optional
-          fail_ci_if_error: true # optional (default = false)
-          verbose: true
-        if: hashFiles('./coverage.xml') != '' && ${{ always() }}
-
-      # can be organized better
-      - name: Upload pytest test results
-        uses: actions/upload-artifact@v2
-        with:
-          name: Code coverage
-          path: |
-            Artifacts
-            coverage.xml
-        if: ${{ always() }}
+          python-version: "3.10"
+      - name: Install dependencies
+        if: steps.check_remote.outputs.enabled == 'true'
+        run: |
+          python -m pip install --upgrade pip
+          pip install poetry
+          poetry install
+      - name: Remote tests
+        if: steps.check_remote.outputs.enabled == 'true'
+        run: poetry run pytest -sv --tb=short -m "remote" tests/ --headless=True

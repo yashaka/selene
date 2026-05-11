@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2015-2021 Iakiv Kramarenko
+# Copyright (c) 2015-2022 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -20,14 +20,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import os
+from tests import resources
 from tests.helpers import convert_sec_to_ms
 
-EMPTY_PAGE_URL = (
-    'file://'
-    + os.path.abspath(os.path.dirname(__file__))
-    + '/../../../resources/empty.html'
-)
+EMPTY_PAGE = resources.url('empty.html')
 
 
 class LoadingHtmlPage:
@@ -36,7 +32,7 @@ class LoadingHtmlPage:
         self._timeout = timeout
 
     def load_in(self, driver):
-        driver.get(EMPTY_PAGE_URL)
+        driver.get(EMPTY_PAGE)
         return LoadedHtmlPage(driver).render_body(self._body, self._timeout)
 
 
@@ -77,9 +73,7 @@ class GivenPage:
         self._driver = driver
 
     def load_body_with_timeout(self, body, timeout):
-        return LoadedHtmlPage(self._driver).render_body_with_timeout(
-            body, timeout
-        )
+        return LoadedHtmlPage(self._driver).render_body_with_timeout(body, timeout)
 
     def opened_with_body_with_timeout(self, body, timeout):
         return LoadingHtmlPage(timeout, body).load_in(self._driver)

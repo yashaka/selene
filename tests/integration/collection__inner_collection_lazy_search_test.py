@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2015-2021 Iakiv Kramarenko
+# Copyright (c) 2015-2022 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -26,9 +26,7 @@ def test_search_does_not_start_on_creation(session_browser):
     page = GivenPage(session_browser.driver)
     page.opened_empty()
 
-    non_existent_collection = session_browser.element('ul').all(
-        '.not-existing'
-    )
+    non_existent_collection = session_browser.element('ul').all('.not-existing')
 
     assert str(non_existent_collection)
 
@@ -38,17 +36,19 @@ def test_search_is_postponed_until_actual_action_like_questioning_count(
 ):
     page = GivenPage(session_browser.driver)
     page.opened_empty()
-
     elements = session_browser.element('ul').all('.will-appear')
     page.load_body(
         '''
         <ul>Hello to:
             <li class='will-appear'>Bob</li>
             <li class='will-appear'>Kate</li>
-        </ul>'''
+        </ul>
+        '''
     )
 
-    assert len(elements) == 2
+    count = len(elements)
+
+    assert count == 2
 
 
 def test_search_is_updated_on_next_actual_action_like_questioning_count(
@@ -57,32 +57,34 @@ def test_search_is_updated_on_next_actual_action_like_questioning_count(
     page = GivenPage(session_browser.driver)
     page.opened_empty()
     elements = session_browser.element('ul').all('.will-appear')
-
     page.load_body(
         '''
         <ul>Hello to:
             <li class='will-appear'>Bob</li>
             <li class='will-appear'>Kate</li>
-        </ul>'''
+        </ul>
+        '''
     )
-    assert len(elements) == 2
-
+    original_count = len(elements)
     page.load_body(
         '''
         <ul>Hello to:
             <li class='will-appear'>Bob</li>
             <li class='will-appear'>Kate</li>
             <li class='will-appear'>Joe</li>
-        </ul>'''
+        </ul>
+        '''
     )
 
-    assert len(elements) == 3
+    updated_count = len(elements)
+
+    assert updated_count == 3
+    assert updated_count != original_count
 
 
 def test_searches_exactly_inside_parent(session_browser):
     page = GivenPage(session_browser.driver)
     page.opened_empty()
-
     elements = session_browser.element('ul').all('.will-appear')
     page.load_body(
         '''
@@ -90,7 +92,10 @@ def test_searches_exactly_inside_parent(session_browser):
             <li class='will-appear'>Bob</li>
             <li class='will-appear'>Kate</li>
         </ul>
-        <li class='forgotten'>Joe</li>'''
+        <li class='forgotten'>Joe</li>
+        '''
     )
 
-    assert len(elements) == 2
+    count = len(elements)
+
+    assert count == 2
