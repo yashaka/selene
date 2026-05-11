@@ -5,7 +5,7 @@ from selene.core.exceptions import TimeoutException
 from tests.integration.helpers.givenpage import GivenPage
 
 
-def test_collection_should_keeps_entity_aware_condition_name(session_browser):
+def test_collection_should_keeps_collection_condition_name(session_browser):
     browser = session_browser.with_(timeout=0.1)
 
     GivenPage(browser.driver).opened_with_body('''
@@ -16,13 +16,17 @@ def test_collection_should_keeps_entity_aware_condition_name(session_browser):
         </ul>
         ''')
 
+    condition = have.size(2)
+
     try:
-        browser.all('li').should(have.size(2))
+        browser.all('li').should(condition)
 
         pytest.fail('should have failed on collection size mismatch')
 
     except TimeoutException as error:
         message = str(error)
 
-        assert "browser.all(('css selector', 'li')).have size 2" in message
-        assert "browser.all(('css selector', 'li')).has size 2" not in message
+        assert f"browser.all(('css selector', 'li')).{condition}" in message
+        assert 'actual size: 3' in message
+        assert '<function Collection.should' not in message
+        assert '<function' not in message
