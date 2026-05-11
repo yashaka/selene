@@ -857,29 +857,44 @@ class Collection(_WaitingConfiguredEntity, Iterable[Element]):
         self,
         condition: Union[Condition[Collection], Condition[Element]],
     ) -> Collection:
+        applied_as_each = False
+
         def is_element_condition_applied_to_located_collection(
-            error: AttributeError,
+            error: Exception,
         ) -> bool:
-            return isinstance(
-                getattr(error, 'obj', None), list
-            ) or "'list' object has no attribute" in str(error)
+            return (
+                isinstance(error, AttributeError)
+                and (
+                    isinstance(getattr(error, 'obj', None), list)
+                    or "'list' object has no attribute" in str(error)
+                )
+            ) or (
+                isinstance(error, AssertionError)
+                and "'list' object has no attribute" in str(error)
+            )
+
+        def name_for(collection: Collection | None = None) -> str:
+            return (
+                Condition.for_each(condition)._name_for(collection)
+                if applied_as_each
+                else condition._name_for(collection)  # type: ignore[arg-type]
+            )
 
         def match(collection: Collection) -> None:
+            nonlocal applied_as_each
+
             try:
                 condition(collection)  # type: ignore[arg-type]
-            except AttributeError as error:
+            except (AttributeError, AssertionError) as error:
                 if is_element_condition_applied_to_located_collection(error):
+                    applied_as_each = True
                     Condition.for_each(condition)(collection)  # type: ignore[arg-type]
                     return
 
                 raise
 
-        self.wait.for_(
-            Condition(
-                lambda entity: condition._name_for(entity),  # type: ignore[attr-defined]
-                match,
-            )
-        )
+        self.wait.for_(Condition(name_for, match))
+
         return self
 
     @property
