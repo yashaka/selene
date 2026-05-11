@@ -874,8 +874,12 @@ class Collection(_WaitingConfiguredEntity, Iterable[Element]):
 
                 raise
 
-        self.wait.for_(Condition(str(condition), match))
-
+        self.wait.for_(
+            Condition(
+                lambda entity: condition._name_for(entity),  # type: ignore[attr-defined]
+                match,
+            )
+        )
         return self
 
     @property
