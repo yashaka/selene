@@ -42,13 +42,11 @@ def test_search_is_postponed_until_actual_action_like_questioning_displayed(
         '.will-exist-inner'
     )
     page = GivenPage(session_browser.driver)
-    page.opened_with_body(
-        '''
+    page.opened_with_body('''
         <h1 id="will-be-existing-element">
             <span class="will-exist-inner">Hello</span> kitty:*
         </h1>
-        '''
-    )
+        ''')
 
     until_actual_action = element().is_displayed()
 
@@ -62,20 +60,16 @@ def test_search_is_updated_on_next_actual_action_like_questioning_displayed(
         '.will-exist-inner'
     )
     page = GivenPage(session_browser.driver)
-    page.opened_with_body(
-        '''
+    page.opened_with_body('''
         <h1 id="will-be-existing-element">
             <span class="will-exist-inner">Hello</span> kitty:*
         </h1>
-        '''
-    )
-    page.load_body(
-        '''
+        ''')
+    page.load_body('''
         <h1 id="will-be-existing-element">
             <span class="will-exist-inner" style="display:none">Hello</span> kitty:*
         </h1>
-        '''
-    )
+        ''')
 
     updated_actual_action = element().is_displayed()
 
@@ -84,16 +78,14 @@ def test_search_is_updated_on_next_actual_action_like_questioning_displayed(
 
 def test_search_finds_exactly_inside_parent(session_browser):
     page = GivenPage(session_browser.driver)
-    page.opened_with_body(
-        '''
+    page.opened_with_body('''
         <a href="#first">go to Heading 2</a>
         <p>
             <a href="#second">go to Heading 2</a>
             <h1 id="first">Heading 1</h1>
             <h2 id="second">Heading 2</h2>
         </p>
-        '''
-    )
+        ''')
 
     session_browser.element('p').element('a').click()
 

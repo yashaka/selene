@@ -38,11 +38,7 @@ def test_search_is_postponed_until_actual_action_like_questioning_displayed(
     page = GivenPage(session_browser.driver)
     page.opened_empty()
     element = session_browser.element('#will-be-existing-element-id')
-    page.load_body(
-        '<h1 id="will-be-existing-element-id">'
-        'Hello kitty:*'
-        '</h1>'
-    )
+    page.load_body('<h1 id="will-be-existing-element-id">' 'Hello kitty:*' '</h1>')
 
     until_actual_action = element().is_displayed()
 
@@ -55,11 +51,7 @@ def test_search_is_updated_on_next_actual_action_like_questioning_displayed(
     page = GivenPage(session_browser.driver)
     page.opened_empty()
     element = session_browser.element('#will-be-existing-element-id')
-    page.load_body(
-        '<h1 id="will-be-existing-element-id">'
-        'Hello kitty:*'
-        '</h1>'
-    )
+    page.load_body('<h1 id="will-be-existing-element-id">' 'Hello kitty:*' '</h1>')
     page.load_body(
         '<h1 id="will-be-existing-element-id" style="display:none">'
         'Hello kitty:*'
