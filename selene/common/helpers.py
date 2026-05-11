@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2015-2021 Iakiv Kramarenko
+# Copyright (c) 2015-2022 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -19,10 +19,8 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-import warnings
-from typing import Union, Tuple, List, Type
+from typing import Union, Tuple, Iterable, Any
 
-from dataclasses import dataclass
 from selenium.webdriver.common.by import By
 
 
@@ -38,8 +36,8 @@ def as_dict(o, skip_empty=True):
     )
 
 
-def to_by(selector_or_by: Union[str, tuple]) -> Tuple[str, str]:
-    # todo: will it work `if isinstance(css_selector_or_by, Tuple[str, str]):` ?
+def to_by(selector_or_by: Union[str, Tuple[str, str]]) -> Tuple[str, str]:
+    # TODO: will it work `if isinstance(css_selector_or_by, Tuple[str, str]):` ?
     if isinstance(selector_or_by, tuple):
         return selector_or_by
     if isinstance(selector_or_by, str):
@@ -50,6 +48,7 @@ def to_by(selector_or_by: Union[str, tuple]) -> Tuple[str, str]:
                 or selector_or_by.startswith('./')
                 or selector_or_by.startswith('..')
                 or selector_or_by.startswith('(')
+                or selector_or_by.startswith('*/')
             )
             else (By.CSS_SELECTOR, selector_or_by)
         )
@@ -58,13 +57,17 @@ def to_by(selector_or_by: Union[str, tuple]) -> Tuple[str, str]:
     )
 
 
-def flatten(list_of_lists: List[list]) -> list:
-    # todo: consider adding skip_none=False option
-    return [
-        item
-        for sublist in list_of_lists
-        for item in (sublist if isinstance(sublist, list) else [sublist])
-    ]
+def flatten(collection: Iterable[Union[Iterable[Any], Any]]) -> Iterable[Any]:
+    # TODO: consider adding skip_none=False option
+    return tuple(  # TODO: refactor to return tuple
+        item_or_inner
+        for item in collection
+        for item_or_inner in (
+            item
+            if (isinstance(item, Iterable) and not isinstance(item, str))
+            else [item]
+        )
+    )
 
 
 def dissoc(associated: dict, *keys: str) -> dict:
@@ -87,3 +90,127 @@ def is_absolute_url(relative_or_absolute_url: str) -> bool:
         or url.startswith('about:')
         or url.startswith('data:')
     )
+
+
+_HTML_TAGS = [
+    'a',
+    'abbr',
+    'acronym',
+    'address',
+    'applet',
+    'area',
+    'article',
+    'aside',
+    'audio',
+    'b',
+    'base',
+    'basefont',
+    'bdi',
+    'bdo',
+    'big',
+    'blockquote',
+    'body',
+    'br',
+    'button',
+    'canvas',
+    'caption',
+    'center',
+    'cite',
+    'code',
+    'col',
+    'colgroup',
+    'data',
+    'datalist',
+    'dd',
+    'del',
+    'details',
+    'dfn',
+    'dialog',
+    'dir',
+    'div',
+    'dl',
+    'dt',
+    'em',
+    'embed',
+    'fieldset',
+    'figcaption',
+    'figure',
+    'font',
+    'footer',
+    'form',
+    'frame',
+    'frameset',
+    'h1',
+    'head',
+    'header',
+    'hgroup',
+    'hr',
+    'html',
+    'i',
+    'iframe',
+    'img',
+    'input',
+    'ins',
+    'kbd',
+    'label',
+    'legend',
+    'li',
+    'link',
+    'main',
+    'map',
+    'mark',
+    'menu',
+    'meta',
+    'meter',
+    'nav',
+    'noframes',
+    'noscript',
+    'object',
+    'ol',
+    'optgroup',
+    'option',
+    'output',
+    'p',
+    'param',
+    'picture',
+    'pre',
+    'progress',
+    'q',
+    'rp',
+    'rt',
+    'ruby',
+    's',
+    'samp',
+    'script',
+    'search',
+    'section',
+    'select',
+    'small',
+    'source',
+    'span',
+    'strike',
+    'strong',
+    'style',
+    'sub',
+    'summary',
+    'sup',
+    'svg',
+    'table',
+    'tbody',
+    'td',
+    'template',
+    'textarea',
+    'tfoot',
+    'th',
+    'thead',
+    'time',
+    'title',
+    'tr',
+    'track',
+    'tt',
+    'u',
+    'ul',
+    'var',
+    'video',
+    'wbr',
+]

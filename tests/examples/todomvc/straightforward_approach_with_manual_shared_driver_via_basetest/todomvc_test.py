@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2015-2021 Iakiv Kramarenko
+# Copyright (c) 2015-2022 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -19,11 +19,11 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from selene import have, be, by
-from selene.support.shared import browser
+from selene import have, be, by, browser
+from tests import resources
 from tests.base_test import BaseTest
 
-APP_URL = 'https://todomvc4tasj.herokuapp.com/'
+APP_URL = resources.TODOMVC_URL
 
 
 def setup_module():
@@ -33,31 +33,19 @@ def setup_module():
 class TestTodoMVC(BaseTest):
     def test_filter_tasks(self):
         browser.open(APP_URL)
-        clear_completed_js_loaded = "return $._data($('#clear-completed').get(0), 'events').hasOwnProperty('click')"
-        browser.wait_to(have.js_returned(True, clear_completed_js_loaded))
 
-        browser.element('#new-todo').should(be.enabled).set_value(
-            'a'
-        ).press_enter()
-        browser.element('#new-todo').should(be.enabled).set_value(
-            'b'
-        ).press_enter()
-        browser.element('#new-todo').should(be.enabled).set_value(
-            'c'
-        ).press_enter()
+        browser.element('#new-todo').should(be.enabled).set_value('a').press_enter()
+        browser.element('#new-todo').should(be.enabled).set_value('b').press_enter()
+        browser.element('#new-todo').should(be.enabled).set_value('c').press_enter()
 
-        browser.all("#todo-list>li").should(have.texts('a', 'b', 'c'))
+        browser.all('#todo-list>li').should(have.texts('a', 'b', 'c'))
 
-        browser.all("#todo-list>li").element_by(have.exact_text('b')).find(
-            ".toggle"
+        browser.all('#todo-list>li').element_by(have.exact_text('b')).element(
+            '.toggle'
         ).click()
 
-        browser.element(by.link_text("Active")).click()
-        browser.all("#todo-list>li").filtered_by(be.visible).should(
-            have.texts('a', 'c')
-        )
+        browser.element(by.link_text('Active')).click()
+        browser.all('#todo-list>li').should(have.texts('a', 'c'))
 
-        browser.element(by.link_text("Completed")).click()
-        browser.all("#todo-list>li").filtered_by(be.visible).should(
-            have.texts('b')
-        )
+        browser.element(by.link_text('Completed')).click()
+        browser.all('#todo-list>li').should(have.texts('b'))

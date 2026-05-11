@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2015-2021 Iakiv Kramarenko
+# Copyright (c) 2015-2022 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,18 @@ from selenium.webdriver.remote.webdriver import WebDriver
 from selene.common.helpers import on_error_return_false
 
 
-class Help:  # todo: should we make it private? like call it _Help (or think on better name)
+# TODO: consider privatizing
+class WebHelper:
+    # TODO: should we make it private? like call it _Help (or think on better name)
     # what about this style for example: ExtendedWebdriver(driver).is_alive() ?
     # over: Help(driver).has_browser_still_alive() ?
 
     def __init__(self, driver: WebDriver):
         self._driver = driver
 
-    def has_browser_still_alive(self):
+    # TODO: refactor to browser.get(query.is_alive)
+    #       or browser.get(query.is_driver_alive) ?
+    def is_browser_still_alive(self):
         return on_error_return_false(lambda: self._driver.title is not None)
 
     def save_page_source(self, file: str) -> Optional[str]:
@@ -50,7 +54,7 @@ class Help:  # todo: should we make it private? like call it _Help (or think on 
         try:
             with open(file, 'w', encoding="utf-8") as f:
                 f.write(html)
-        except IOError:
+        except OSError:
             return None
         finally:
             del html
@@ -60,7 +64,7 @@ class Help:  # todo: should we make it private? like call it _Help (or think on 
     def save_screenshot(self, file: str) -> Optional[str]:
         if not file.lower().endswith('.png'):
             warnings.warn(
-                "name used for saved pagesource does not match file "
+                "name used for saved screenshot does not match file "
                 "type. It should end with an `.png` extension",
                 UserWarning,
             )

@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2015-2021 Iakiv Kramarenko
+# Copyright (c) 2015-2022 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -20,11 +20,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from selene.core.entity import Browser
+from selene.core._browser import Browser
 from selene.core.configuration import Config
 
 from selene.support import by
 
 from selene.support.conditions import be, have
 
-# todo: probably we don't need it... it's currently removed from distribution
+# TODO: probably we don't need it... it's currently removed from distribution

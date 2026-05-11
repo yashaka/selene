@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2015-2021 Iakiv Kramarenko
+# Copyright (c) 2015-2022 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -20,14 +20,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
 
 from selene.support.shared import browser
 
 
 class BaseTest:
     def setup_method(self):
-        browser.set_driver(webdriver.Chrome(ChromeDriverManager().install()))
+        browser.config.driver = webdriver.Chrome(service=Service())
 
     def teardown_method(self):
         browser.quit()
+        browser.config.driver = ...

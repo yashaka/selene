@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2015-2021 Iakiv Kramarenko
+# Copyright (c) 2015-2022 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -36,9 +36,7 @@ def test_waits_for_visibility(session_browser):
         'document.getElementsByTagName("a")[0].style = "display:block";', 0.5
     )
 
-    element = session_browser.all('a').element_by(
-        have.exact_text('go to Heading 2')
-    )
+    element = session_browser.all('a').element_by(have.exact_text('go to Heading 2'))
     element.click()
 
     assert "second" in session_browser.driver.current_url
@@ -57,9 +55,7 @@ def test_waits_for_present_in_dom_and_visibility(session_browser):
         0.5,
     )
 
-    element = session_browser.all('a').element_by(
-        have.exact_text('go to Heading 2')
-    )
+    element = session_browser.all('a').element_by(have.exact_text('go to Heading 2'))
     element.click()
 
     assert "second" in session_browser.driver.current_url
@@ -80,9 +76,7 @@ def test_waits_first_for_present_in_dom_then_visibility(session_browser):
         'document.getElementsByTagName("a")[0].style = "display:block";', 0.5
     )
 
-    element = session_browser.all('a').element_by(
-        have.exact_text('go to Heading 2')
-    )
+    element = session_browser.all('a').element_by(have.exact_text('go to Heading 2'))
     element.click()
 
     assert "second" in session_browser.driver.current_url

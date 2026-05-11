@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2015-2021 Iakiv Kramarenko
+# Copyright (c) 2015-2022 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -21,10 +21,8 @@
 # SOFTWARE.
 
 from __future__ import annotations
+from selene import _managed
 
-from selene.support.shared.browser import SharedBrowser
-from selene.support.shared.config import SharedConfig
 
-config = SharedConfig()
-
-browser = SharedBrowser(config)
+config = _managed.config
+browser = _managed.browser

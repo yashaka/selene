@@ -1,7 +1,7 @@
 /*
 # MIT License
 #
-# Copyright (c) 2015-2021 Iakiv Kramarenko
+# Copyright (c) 2015-2022 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,7 @@
 $(document).ready(function(){
 
     // temporary solution for some specific waiting emulation
-    // todo: find a way to use setTimeout instead as in other cases
+    // TODO: find a way to use setTimeout instead as in other cases
     function hardWait(milliseconds) {
         var start = new Date().getTime();
         for (var i = 0; i < 1e7; i++) {
@@ -57,8 +57,8 @@ $(document).ready(function(){
             var $newItem = $templateItem.clone()
                 .attr('id','item_' + (++itemsCounter));
 
-            hardWait(1000)  // todo: refactor to use imitateLoading()
-            $(this).before($newItem);  // todo: delay adding this element to the dom also
+            hardWait(1000)  // TODO: refactor to use imitateLoading()
+            $(this).before($newItem);  // TODO: delay adding this element to the dom also
             imitateLoading(function(){
                 $newItem.show();
             })

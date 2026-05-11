@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2015-2021 Iakiv Kramarenko
+# Copyright (c) 2015-2022 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -19,30 +19,52 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
 from selene.core import match
-from selene.support.conditions import not_ as _not_
+from selene.support.conditions import not_ as __not
 
-not_ = _not_
+not_ = __not
 
-visible = match.element_is_visible
-hidden = match.element_is_hidden
-selected = match.element_is_selected
+present_in_dom = match.present_in_dom
+in_dom = match.present_in_dom  # TODO: do we need both present_in_dom and in_dom?
+absent_in_dom = match.absent_in_dom
+hidden_in_dom = match.hidden_in_dom
+hidden = match.hidden
+visible = match.visible
 
-present = match.element_is_present
-in_dom = match.element_is_present  # todo: do we need both present and in_dom?
-existing = match.element_is_present  # todo: consider deprecating
+selected = match.selected
 
-absent = match.element_is_absent
+enabled = match.enabled
+disabled = match.disabled
 
-enabled = match.element_is_enabled
-disabled = match.element_is_disabled
+checked = match.checked
 
-clickable = match.element_is_clickable
+clickable = match.clickable
 
-blank = match.element_is_blank
+blank = match.blank
+
+
+_empty = match._empty
 
 
 # --- Deprecated --- #
 
-empty = match.collection_is_empty
+empty = match.empty
+"""Deprecated 'is empty' condition. Use
+[size(0)][selene.support.conditions.have.size] instead.
+"""
+
+
+present = match.present
+"""Deprecated 'is present' condition. Use
+[present_in_dom][selene.support.conditions.be.present_in_dom] instead.
+"""
+
+absent = match.absent
+"""Deprecated 'is absent' condition. Use
+[absent_in_dom][selene.support.conditions.not_.absent_in_dom] instead.
+"""
+
+existing = match.existing
+"""Deprecated 'is existing' condition. Use
+[present_in_dom][selene.support.conditions.be.present_in_dom] instead.
+"""

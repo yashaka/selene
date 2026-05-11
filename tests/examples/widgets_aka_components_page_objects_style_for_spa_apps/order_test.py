@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2015-2021 Iakiv Kramarenko
+# Copyright (c) 2015-2022 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -22,18 +22,19 @@
 import os
 
 from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
 
-from selene.support.shared import config, browser
+from selene import browser, support
+
 from tests.examples.widgets_aka_components_page_objects_style_for_spa_apps.model.widgets import (
     Order,
 )
 
 
 def setup_function():
-    config.timeout = 4
-    browser.set_driver(webdriver.Chrome(ChromeDriverManager().install()))
-    config.base_url = 'file://{}/../../resources/orderapp/'.format(
+    browser.config.timeout = 4
+    browser.config.driver = webdriver.Chrome(service=Service())
+    browser.config.base_url = 'file://{}/../../resources/orderapp/'.format(
         os.path.abspath(os.path.dirname(__file__))
     )
 
@@ -63,9 +64,7 @@ def test_it_fills_order():
     )
 
     item.show_advanced_options.click()
-    item.advanced_options.should_be(
-        'optionscope2fortype1', 'optionscope3fortype2'
-    )
+    item.advanced_options.should_be('optionscope2fortype1', 'optionscope3fortype2')
 
     item.clear_options.click()
     item.advanced_options.should_be_empty()
