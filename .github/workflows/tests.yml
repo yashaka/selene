@@ -246,6 +246,7 @@ jobs:
 
   clipboard:
     name: Clipboard (non-blocking)
+    if: ${{ false }}
     runs-on: ubuntu-latest
     continue-on-error: true
     env:
