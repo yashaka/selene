@@ -100,7 +100,7 @@ TODOs:
 - example of basic auth and auth via cookies (https://github.com/autotests-cloud/example_project/blob/master/src/test/java/cloud/autotests/tests/demowebshop/LoginTests.java)
 - can we force order of how `selene.*` is rendered on autocomplete? via `__all__`...
 
-## 2.0.0rc10 (released on 10.05.2026)
+## 2.0.0rc10 (to be released on XX.05.2026)
 
 ### Added
 
@@ -125,9 +125,10 @@ TODOs:
   `error`) to keep error messages backward-compatible across Python versions
 - fixed `query.attribute(...)` typing to reflect that Selenium can return
   `None` for missing attributes
-- fixed ignored `_assert_location_changed` in `command.js.drag_and_drop_to` (#567).
+- fixed ignored `_assert_location_changed` in `command.js.drag_and_drop_to` [#567](https://github.com/yashaka/selene/issues/567).
 - fixed descriptor methods chained from negated conditions.
-  For example, `have.no.attribute(...).value_containing(...)` now works correctly. (#486)
+  For example, `have.no.attribute(...).value_containing(...)` now works correctly. [#486](https://github.com/yashaka/selene/issues/486)
+- fixed: collection.should with composed element conditions via and_/or_ [#433](https://github.com/yashaka/selene/issues/433)
 
 ### Changed
 
