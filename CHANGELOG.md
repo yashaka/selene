@@ -60,7 +60,9 @@ TODOs:
   - consider making have.size to work with elements too...
 - review all `# type: ignore`
 - review all typing.cast
-- fix «too much screenshots»? if can reproduce
+- consider changing artifacts behavior for handled `pytest.raises(TimeoutException)`
+  cases (currently artifacts are still saved) — tracked in
+  [#637](https://github.com/yashaka/selene/issues/637)
 - what about accepting None as locator of Element?
   in such case it such element will just do nothing regardless of what command is called on it
   - even better, we can accept Locators in browser.element(here)!!!
@@ -97,7 +99,6 @@ TODOs:
 - add safari support (trim space on text in case of safari)
 - example of basic auth and auth via cookies (https://github.com/autotests-cloud/example_project/blob/master/src/test/java/cloud/autotests/tests/demowebshop/LoginTests.java)
 - can we force order of how `selene.*` is rendered on autocomplete? via `__all__`...
-- deprecate `have.js_returned` in favour of `have.script_returned`
 
 ## 2.0.0rc10 (released on 10.05.2026)
 
@@ -114,9 +115,9 @@ TODOs:
   with a local compatible type alias in `selene.core._actions`
   (covers issues [#595](https://github.com/yashaka/selene/issues/595)
   and [#596](https://github.com/yashaka/selene/issues/596))
-- fixed `wait_until(...)` behavior to avoid saving screenshot/page source
-  artifacts for handled `False` outcomes (issue
-  [#548](https://github.com/yashaka/selene/issues/548))
+- as a follow-up to earlier `fix «too much screenshots»`, fixed `wait_until(...)` behavior 
+  to avoid saving screenshot/page source artifacts for handled `False` outcomes (issue [#548](https://github.com/yashaka/selene/issues/548)).
+
 - fixed screenshot/page source links in timeout errors to always use valid
   `file://` URI format on all OSes (issue
   [#519](https://github.com/yashaka/selene/issues/519))
