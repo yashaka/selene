@@ -652,42 +652,31 @@ class Collection(WaitingEntity['Collection'], Iterable[Element]):
         condition: Union[Condition[Collection], Condition[Element]],
     ) -> Collection:
         applied_as_each = False
+        condition_as_each = Condition.for_each(condition)
 
         def is_element_condition_applied_to_located_collection(
             error: Exception,
         ) -> bool:
-            return (
-                isinstance(error, AttributeError)
-                and (
-                    isinstance(getattr(error, 'obj', None), list)
-                    or "'list' object has no attribute" in str(error)
-                )
-            ) or (
-                isinstance(error, AssertionError)
-                and "'list' object has no attribute" in str(error)
-            )
+            return "'list' object has no attribute" in str(error)
 
-        def name_for(collection: Collection | None = None) -> str:
-            return (
-                Condition.for_each(condition)._name_for(collection)
-                if applied_as_each
-                else condition._name_for(collection)  # type: ignore[arg-type]
-            )
+        class Match:
+            def __call__(self, collection: Collection) -> None:
+                nonlocal applied_as_each
 
-        def match(collection: Collection) -> None:
-            nonlocal applied_as_each
+                try:
+                    condition.call(collection)  # type: ignore[arg-type]
+                except (AttributeError, AssertionError) as error:
+                    if is_element_condition_applied_to_located_collection(error):
+                        applied_as_each = True
+                        condition_as_each.call(collection)
+                        return
 
-            try:
-                condition(collection)  # type: ignore[arg-type]
-            except (AttributeError, AssertionError) as error:
-                if is_element_condition_applied_to_located_collection(error):
-                    applied_as_each = True
-                    Condition.for_each(condition)(collection)  # type: ignore[arg-type]
-                    return
+                    raise
 
-                raise
+            def __str__(self) -> str:
+                return str(condition_as_each if applied_as_each else condition)
 
-        self.wait.for_(Condition(name_for, match))
+        self.wait.for_(Match())
 
         return self
 
