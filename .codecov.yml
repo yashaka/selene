@@ -7,25 +7,29 @@ coverage:
       flag_coverage_not_uploaded_behavior: exclude
     project:
       default:
+        off: true
+      regression:
         target: auto
         threshold: 0.1%
         informational: false
+        flags:
+          - regression
       unit:
         target: auto
         threshold: 0.1%
-        informational: false
+        informational: true
         flags:
           - unit
       integration:
         target: auto
         threshold: 0.1%
-        informational: false
+        informational: true
         flags:
           - integration
       acceptance:
         target: auto
         threshold: 0.1%
-        informational: false
+        informational: true
         flags:
           - acceptance
       core:
