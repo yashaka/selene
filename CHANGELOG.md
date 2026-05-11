@@ -126,6 +126,8 @@ TODOs:
 - fixed `query.attribute(...)` typing to reflect that Selenium can return
   `None` for missing attributes
 - fixed ignored `_assert_location_changed` in `command.js.drag_and_drop_to` (#567).
+- fixed descriptor methods chained from negated conditions.
+  For example, `have.no.attribute(...).value_containing(...)` now works correctly. (#486)
 
 ### Changed
 

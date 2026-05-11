@@ -20,6 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 import warnings
+from types import MethodType
 from typing import Any
 
 from selene.core import match as _match
@@ -89,10 +90,10 @@ def attribute(name: str, *args, **kwargs):
     def values_containing(self, *expected: str) -> Condition[Collection]:
         return original.values_containing(*expected).not_
 
-    negated.value = value
-    negated.value_containing = value_containing
-    negated.values = values
-    negated.values_containing = values_containing
+    negated.value = MethodType(value, negated)
+    negated.value_containing = MethodType(value_containing, negated)
+    negated.values = MethodType(values, negated)
+    negated.values_containing = MethodType(values_containing, negated)
 
     return negated
 
@@ -125,10 +126,10 @@ def js_property(name: str, *args, **kwargs):
     def values_containing(self, *expected: str) -> Condition[Collection]:
         return original.values_containing(*expected).not_
 
-    negated.value = value
-    negated.value_containing = value_containing
-    negated.values = values
-    negated.values_containing = values_containing
+    negated.value = MethodType(value, negated)
+    negated.value_containing = MethodType(value_containing, negated)
+    negated.values = MethodType(values, negated)
+    negated.values_containing = MethodType(values_containing, negated)
 
     return negated
 
@@ -161,10 +162,10 @@ def css_property(name: str, *args, **kwargs):
     def values_containing(self, *expected: str) -> Condition[Collection]:
         return original.values_containing(*expected).not_
 
-    negated.value = value
-    negated.value_containing = value_containing
-    negated.values = values
-    negated.values_containing = values_containing
+    negated.value = MethodType(value, negated)
+    negated.value_containing = MethodType(value_containing, negated)
+    negated.values = MethodType(values, negated)
+    negated.values_containing = MethodType(values_containing, negated)
 
     return negated
 
