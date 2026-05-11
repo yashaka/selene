@@ -1,7 +1,10 @@
+import pytest
+
 from typing import Optional
 
 import selene
 from selene import command, be, have, query
+from selene.core.exceptions import TimeoutException
 from tests.integration.helpers.givenpage import GivenPage
 
 
@@ -9,8 +12,7 @@ def test_js_drags_source_and_drops_it_to_target(session_browser):
     browser = session_browser.with_(timeout=0.5)
     page = GivenPage(browser.driver)
     page.opened_empty()
-    page.add_style_to_head(
-        """
+    page.add_style_to_head("""
         #target1, #target2 {
           float: left;
           width: 100px;
@@ -19,10 +21,8 @@ def test_js_drags_source_and_drops_it_to_target(session_browser):
           padding: 10px;
           border: 1px solid black;
         }
-        """
-    )
-    page.add_script_to_head(
-        """
+    """)
+    page.add_script_to_head("""
         function allowDrop(ev) {
           ev.preventDefault();
         }
@@ -36,10 +36,8 @@ def test_js_drags_source_and_drops_it_to_target(session_browser):
           var data = ev.dataTransfer.getData('text');
           ev.target.appendChild(document.getElementById(data));
         }
-        """
-    )
-    page.load_body(
-        '''
+    """)
+    page.load_body("""
         <h2>Drag and Drop</h2>
         <p>Drag the image back and forth between the two div elements.</p>
 
@@ -54,8 +52,7 @@ def test_js_drags_source_and_drops_it_to_target(session_browser):
         </div>
 
         <div id="target2" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-        '''
-    )
+    """)
 
     # WHEN
     browser.element('#draggable').perform(
@@ -100,3 +97,92 @@ def test_js_does_not_drag_react_mui_slider(session_browser):
 
     slider.thumb_input.should(have.value(original_value))
     slider.thumb_input.should(have.no.value('100'))
+
+
+def test_js_drag_and_drop_to_asserts_location_changed_when_requested(session_browser):
+    browser = session_browser.with_(timeout=0.5)
+    page = GivenPage(browser.driver)
+
+    page.opened_empty()
+    page.load_body("""
+        <div id="source" draggable="true">source</div>
+        <div id="target">target</div>
+
+        <script>
+            const source = document.querySelector('#source')
+            const target = document.querySelector('#target')
+
+            source.addEventListener('dragstart', event => {
+                event.dataTransfer.setData('text', event.target.id)
+            })
+
+            target.addEventListener('drop', event => {
+                event.preventDefault()
+                // intentionally do nothing:
+                // source location should remain unchanged
+            })
+        </script>
+    """)
+
+    with pytest.raises(TimeoutException):
+        browser.element('#source').perform(
+            command.js.drag_and_drop_to(
+                browser.element('#target'),
+                _assert_location_changed=True,
+            )
+        )
+
+
+def test_js_drag_and_drop_to_passes_when_location_changed(session_browser):
+    browser = session_browser.with_(timeout=0.5)
+    page = GivenPage(browser.driver)
+
+    page.opened_empty()
+    page.add_style_to_head("""
+        #target1, #target2 {
+            float: left;
+            width: 100px;
+            height: 35px;
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid black;
+        }
+    """)
+    page.add_script_to_head("""
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        function drag(ev) {
+            ev.dataTransfer.setData('text', ev.target.id);
+        }
+
+        function drop(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData('text');
+            ev.target.appendChild(document.getElementById(data));
+        }
+    """)
+    page.load_body("""
+        <div id="target1" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <img
+                id="draggable"
+                src="https://via.placeholder.com/20"
+                draggable="true"
+                ondragstart="drag(event)"
+            >
+        </div>
+
+        <div id="target2" ondrop="drop(event)" ondragover="allowDrop(event)">
+        </div>
+    """)
+
+    browser.element('#draggable').perform(
+        command.js.drag_and_drop_to(
+            browser.element('#target2'),
+            _assert_location_changed=True,
+        )
+    )
+
+    browser.element('#target1').element('#draggable').should(be.not_.present)
+    browser.element('#target2').element('#draggable').should(be.present)
