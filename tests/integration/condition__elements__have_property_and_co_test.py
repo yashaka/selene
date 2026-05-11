@@ -7,12 +7,10 @@ def test_have_no_js_property_and_css_property_descriptor_methods_work(
 ):
     browser = session_browser.with_(timeout=0.1)
 
-    GivenPage(browser.driver).opened_with_body(
-        '''
+    GivenPage(browser.driver).opened_with_body('''
         <input id="field" value="John">
         <div id="box" style="display: block">Box</div>
-        '''
-    )
+    ''')
 
     browser.element('#field').should(
         have.no.js_property('value').value_containing('Doe')

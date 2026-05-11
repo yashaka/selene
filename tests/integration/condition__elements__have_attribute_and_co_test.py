@@ -9,11 +9,9 @@ def test_have_no_attribute_value_containing_does_not_raise_type_error(
 ):
     browser = session_browser.with_(timeout=0.1)
 
-    GivenPage(browser.driver).opened_with_body(
-        '''
+    GivenPage(browser.driver).opened_with_body('''
         <input id="firstname" class="name" value="John">
-        '''
-    )
+    ''')
 
     browser.element('.name').should(
         have.no.attribute('id').value_containing('last')
@@ -28,12 +26,10 @@ def test_have_no_attribute_value_containing_does_not_raise_type_error(
 def test_have_no_attribute_descriptor_methods_work(session_browser):
     browser = session_browser.with_(timeout=0.1)
 
-    GivenPage(browser.driver).opened_with_body(
-        '''
+    GivenPage(browser.driver).opened_with_body('''
         <input class="name" id="firstname" value="John">
-        <input class="name" id="lastname" value="Doe">
-        '''
-    )
+        <input class="name" id="lastname" value="Doe"> 
+    ''')
 
     name = browser.element('.name')
     names = browser.all('.name')
