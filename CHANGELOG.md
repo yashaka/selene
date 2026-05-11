@@ -124,6 +124,7 @@ TODOs:
   `error`) to keep error messages backward-compatible across Python versions
 - fixed `query.attribute(...)` typing to reflect that Selenium can return
   `None` for missing attributes
+- fixed ignored `_assert_location_changed` in `command.js.drag_and_drop_to` (#567).
 
 ### Changed
 

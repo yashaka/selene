@@ -389,61 +389,81 @@ class js:  # pylint: disable=invalid-name
     # TODO: add js.drag_and_drop_by_offset(x, y)
 
     @staticmethod
-    def drag_and_drop_to(target: Element) -> Command[Element]:
-        """
-        Simulates drag and drop via JavaScript.
+    def drag_and_drop_to(
+        target: Element,
+        _assert_location_changed: bool = False,
+    ) -> Command[Element]:
+        """Simulates drag and drop via JavaScript.
+
+        Args:
+            target: a destination element to drag and drop to
+            _assert_location_changed: False by default, but if True, then will
+                assert that element was dragged to the new location, hence forcing
+                a command retry if command was under waiting.
 
         May not work everywhere. Among known cases:
         * does not work on https://mui.com/material-ui/react-slider/#ContinuousSlider
           where the normal drag and drop works fine.
         """
 
-        def func(source: Element):
+        def func(source: Element) -> None:
+            source_webelement = source.locate()
+            source_location = (
+                source_webelement.location if _assert_location_changed else None
+            )
+
             script = """
             (function() {
-              function createEvent(typeOfEvent) {
-                var event = document.createEvent('CustomEvent');
-                event.initCustomEvent(typeOfEvent, true, true, null);
-                event.dataTransfer = {
-                  data: {},
-                  setData: function(key, value) {
-                    this.data[key] = value;
-                  },
-                  getData: function(key) {
-                    return this.data[key];
-                  }
-                };
-                return event;
-              }
-
-              function dispatchEvent(element, event, transferData) {
-                if (transferData !== undefined) {
-                  event.dataTransfer = transferData;
+                function createEvent(typeOfEvent) {
+                    var event = document.createEvent('CustomEvent');
+                    event.initCustomEvent(typeOfEvent, true, true, null);
+                    event.dataTransfer = {
+                        data: {},
+                        setData: function(key, value) {
+                            this.data[key] = value;
+                        },
+                        getData: function(key) {
+                            return this.data[key];
+                        }
+                    };
+                    return event;
                 }
-                if (element.dispatchEvent) {
-                  element.dispatchEvent(event);
-                } else if (element.fireEvent) {
-                  element.fireEvent("on" + event.type, event);
+
+                function dispatchEvent(element, event, transferData) {
+                    if (transferData !== undefined) {
+                        event.dataTransfer = transferData;
+                    }
+
+                    if (element.dispatchEvent) {
+                        element.dispatchEvent(event);
+                    } else if (element.fireEvent) {
+                        element.fireEvent("on" + event.type, event);
+                    }
                 }
-              }
 
-              function dragAndDrop(element, target) {
-                var dragStartEvent = createEvent('dragstart');
-                dispatchEvent(element, dragStartEvent);
-                var dropEvent = createEvent('drop');
-                dispatchEvent(target, dropEvent, dragStartEvent.dataTransfer);
-                var dragEndEvent = createEvent('dragend');
-                dispatchEvent(element, dragEndEvent, dropEvent.dataTransfer);
-              }
+                function dragAndDrop(element, target) {
+                    var dragStartEvent = createEvent('dragstart');
+                    dispatchEvent(element, dragStartEvent);
 
-              return dragAndDrop(arguments[0], arguments[1]);
+                    var dropEvent = createEvent('drop');
+                    dispatchEvent(target, dropEvent, dragStartEvent.dataTransfer);
+
+                    var dragEndEvent = createEvent('dragend');
+                    dispatchEvent(element, dragEndEvent, dropEvent.dataTransfer);
+                }
+
+                return dragAndDrop(arguments[0], arguments[1]);
             })(...arguments)
             """.strip()
+
             source.config.driver.execute_script(
                 script,
-                source.locate(),
+                source_webelement,
                 target.locate(),
             )
+
+            if _assert_location_changed and source_location == source.locate().location:
+                raise _SeleneError('Element was not dragged to the new place')
 
         return Command(f'drag and drop to: {target}', func)
 
