@@ -76,7 +76,9 @@ def _print_result(selene_time, selenium_time, selene_samples, selenium_samples):
 
 
 def _assert_submitted_items_count():
-    assert len(selenium_browser.find_elements(By.CSS_SELECTOR, "#todo-list li")) >= TASKS
+    assert (
+        len(selenium_browser.find_elements(By.CSS_SELECTOR, "#todo-list li")) >= TASKS
+    )
     assert len(browser.all("#todo-list li").locate()) >= TASKS
 
 
