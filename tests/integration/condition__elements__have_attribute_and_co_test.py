@@ -61,7 +61,9 @@ def test_have_attribute_href_value_uses_dom_attribute_not_absolute_url(session_b
     browser.element('.nav').should(have.attribute('href').value('#second'))
 
 
-def test_have_attribute_href_values_uses_dom_attribute_not_absolute_urls(session_browser):
+def test_have_attribute_href_values_uses_dom_attribute_not_absolute_urls(
+    session_browser,
+):
     browser = session_browser.with_(timeout=0.1)
 
     GivenPage(browser.driver).opened_with_body('''
