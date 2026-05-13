@@ -21,15 +21,26 @@
 # SOFTWARE.
 
 import time
+from statistics import median
 from selenium import webdriver
 
 
 def time_spent(function, *args, **kwargs):
-    start_time = time.time()
+    start_time = time.perf_counter()
     function(*args, **kwargs)
-    end_time = time.time()
+    end_time = time.perf_counter()
 
     return end_time - start_time
+
+
+def repeated_time_spent(
+    function, *args, repeats=7, warmups=1, aggregator=median, **kwargs
+):
+    for _ in range(warmups):
+        function(*args, **kwargs)
+
+    samples = [time_spent(function, *args, **kwargs) for _ in range(repeats)]
+    return aggregator(samples), samples
 
 
 def convert_sec_to_ms(timeout):
