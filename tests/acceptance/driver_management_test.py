@@ -173,6 +173,21 @@ def test_built_driver_will_not_be_killed_if_post_configured_for_hold_driver(
     assert driver.title == 'Selene Test Page'  # ALIVE
 
 
+def test_built_driver_will_not_be_killed_if_post_configured_for_deprecated_hold_browser_open(
+    with_process_exit_teardown,
+):
+    browser = selene.Browser(selene.Config())
+    browser.open(empty_page)
+
+    with pytest.warns(DeprecationWarning):
+        browser.config.hold_browser_open = True
+
+    atexit._run_exitfuncs()
+
+    driver = persistent.Field.value_from(browser.config, 'driver')
+    assert driver.title == 'Selene Test Page'  # ALIVE
+
+
 def test_driver_built_on_copy__will_not_be_killed__if_copied_with_hold_driver(
     with_process_exit_teardown,
 ):
@@ -357,8 +372,6 @@ def test_browser_resurrects_itself_and_copy__after_copy_programmed_to_death_fore
     browser.quit()
     copy = browser.with_(rebuild_not_alive_driver=False)  # <- GIVEN
 
-    # driver = browser.driver  # this will not work (TODO: add test for it?)
-    #                          # but will work if rebuild_... set to True on browser
     browser.open(empty_page)  # <- WHEN
     driver = persistent.Field.value_from(browser.config, 'driver')
 
@@ -367,6 +380,25 @@ def test_browser_resurrects_itself_and_copy__after_copy_programmed_to_death_fore
     assert driver is browser.driver
     assert driver is copy.driver
     assert driver is persistent.Field.value_from(copy.config, 'driver')
+
+
+def test_browser_driver_access_rebuilds_or_not_depending_on_rebuild_not_alive_driver(
+    with_process_exit_teardown,
+):
+    browser = selene.Browser(selene.Config())
+    browser.quit()
+
+    dead_driver = browser.driver
+    assert dead_driver.name == 'chrome'
+    pytest.raises(MaxRetryError, lambda: dead_driver.title)
+    dead_session_id = dead_driver.session_id
+
+    browser.config.rebuild_not_alive_driver = True
+    rebuilt = browser.driver
+    assert rebuilt.title == ''  # alive
+    assert rebuilt is not dead_driver
+    assert rebuilt.session_id != dead_session_id
+    assert rebuilt is persistent.Field.value_from(browser.config, 'driver')
 
 
 def test_can_build_second_driver_if_previous_was_forgotten_via_reset_to_ellipsis(
