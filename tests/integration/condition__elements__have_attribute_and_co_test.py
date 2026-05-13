@@ -25,7 +25,6 @@ from selene import have
 from selene.core import match
 from tests.integration.helpers.givenpage import GivenPage
 
-
 # todo: consider breaking it down into separate tests
 
 
@@ -33,8 +32,7 @@ def test_have_attribute__condition_variations(session_browser):
     browser = session_browser.with_(timeout=0.1)
     s = lambda selector: browser.element(selector)
     ss = lambda selector: browser.all(selector)
-    GivenPage(browser.driver).opened_with_body(
-        '''
+    GivenPage(browser.driver).opened_with_body('''
         <ul class="names">Hey:
            <li><label>First Name:</label> <input type="text" class="name" id="firstname" value="John 20th"></li>
            <li><label>Last Name:</label> <input type="text" class="name" id="lastname" value="Doe 2nd"></li>
@@ -43,8 +41,7 @@ def test_have_attribute__condition_variations(session_browser):
            <li><label>Pull up:</label><input type="text" class='exercise' id="pullup" value="20"></li>
            <li><label>Push up:</label><input type="text" class='exercise' id="pushup" value="30"></li>
         </ul>
-        '''
-    )
+        ''')
 
     names = browser.all('.name')
     exercises = browser.all('.exercise')
@@ -273,7 +270,9 @@ def test_have_attribute_href_value_uses_dom_attribute_not_absolute_url(session_b
     browser.element('.nav').should(have.attribute('href').value('#second'))
 
 
-def test_have_attribute_href_values_uses_dom_attribute_not_absolute_urls(session_browser):
+def test_have_attribute_href_values_uses_dom_attribute_not_absolute_urls(
+    session_browser,
+):
     browser = session_browser.with_(timeout=0.1)
 
     GivenPage(browser.driver).opened_with_body('''
