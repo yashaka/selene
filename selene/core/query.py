@@ -164,6 +164,13 @@ And here are a few implementation examples of already available queries in Selen
 ```python
 def attribute(name: str) -> Query[Element, str]:
     def fn(element: Element):
+        if name in ('href', 'src'):
+            return element.config.driver.execute_script(
+                'return arguments[0].getAttribute(arguments[1])',
+                element.locate(),
+                name,
+            )
+
         return element.locate().get_attribute(name)
 
     return Query(f'attribute {name}', fn)
@@ -217,6 +224,13 @@ def attribute(name: str) -> Query[Element, str]:
     """
 
     def fn(element: Element):
+        if name in ('href', 'src'):
+            return element.config.driver.execute_script(
+                'return arguments[0].getAttribute(arguments[1])',
+                element.locate(),
+                name,
+            )
+
         return element.locate().get_attribute(name)
 
     return Query(f'attribute {name}', fn)
@@ -230,6 +244,16 @@ def attributes(name: str) -> Query[Collection, List[str]]:
     """
 
     def fn(collection: Collection):
+        if name in ('href', 'src'):
+            return [
+                collection.config.driver.execute_script(
+                    'return arguments[0].getAttribute(arguments[1])',
+                    element,
+                    name,
+                )
+                for element in collection.locate()
+            ]
+
         return [element.get_attribute(name) for element in collection.locate()]
 
     return Query(f'{name} attributes', fn)
