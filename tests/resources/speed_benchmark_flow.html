@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Selene Speed Benchmark Flow</title>
+</head>
+<body>
+  <label for="new-todo">Task</label>
+  <input id="new-todo" type="text" autocomplete="off">
+  <ul id="todo-list"></ul>
+  <script>
+    const input = document.getElementById('new-todo');
+    const list = document.getElementById('todo-list');
+
+    input.addEventListener('keydown', function (event) {
+      if (event.key !== 'Enter') return;
+      event.preventDefault();
+      if (!input.value) return;
+
+      const item = document.createElement('li');
+      item.textContent = input.value;
+      list.appendChild(item);
+      input.value = '';
+    });
+  </script>
+</body>
+</html>
