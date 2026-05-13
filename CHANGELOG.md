@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased
+
+- TEST/CHORE: Added local self-hosted TinyMCE demo container under
+  `tools/tinymce-local/` to avoid remote read-only throttling issues.
+- TEST: Switched `tests/const.py::TINYMCE_URL` to environment-based config
+  with default `http://127.0.0.1:8000/demo/tinymce`.
+- CI: Updated `.github/workflows/tests.yml` to start and verify the local
+  TinyMCE demo before running tests.
+- DOCS: Added local TinyMCE workflow documentation to `CONTRIBUTING.md` and
+  `tools/tinymce-local/README.md`.
+
 ## > 2.0.0 release
 
 TODOs:
