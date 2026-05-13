@@ -143,21 +143,31 @@ jobs:
             echo "## Coverage summary"
             echo ""
             echo "### Full selene (line + branch)"
+            echo '```text'
             poetry run coverage report --data-file=.coverage --skip-covered
+            echo '```'
             echo ""
             echo "### selene/core slice"
+            echo '```text'
             poetry run coverage report --data-file=.coverage --include="*/selene/core/*"
+            echo '```'
             echo ""
             echo "### Test layers"
             echo ""
             echo "#### unit"
+            echo '```text'
             poetry run coverage report --data-file=.coverage.unit --skip-covered
+            echo '```'
             echo ""
             echo "#### integration"
+            echo '```text'
             poetry run coverage report --data-file=.coverage.integration --skip-covered
+            echo '```'
             echo ""
             echo "#### acceptance"
+            echo '```text'
             poetry run coverage report --data-file=.coverage.acceptance --skip-covered
+            echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Code Coverage (selene)
