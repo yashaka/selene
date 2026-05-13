@@ -71,6 +71,19 @@ Before implementing your ideas, it is recommended first to create a correspondin
 11. Push to the branch (`git push origin my-new-feature`)
 12. Create a new Pull Request
 
+## Local TinyMCE demo for integration tests
+
+Frame-context integration tests use `TINYMCE_URL` from `tests/const.py`.
+By default it points to `http://127.0.0.1:8000/demo/tinymce`.
+
+To start the local demo container:
+
+`./tools/tinymce-local/scripts/run.sh`
+
+To stop it:
+
+`./tools/tinymce-local/scripts/stop.sh`
+
 To get more information about contributing,
 you can *(and should)* read our
 [Code conventions][code-conventions]

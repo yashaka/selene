@@ -6,6 +6,7 @@ on:
     paths:
       - "selene/**"
       - "tests/**"
+      - "tools/tinymce-local/**"
       - "pyproject.toml"
       - "poetry.lock"
       - ".github/workflows/tests.yml"
@@ -13,6 +14,7 @@ on:
     paths:
       - "selene/**"
       - "tests/**"
+      - "tools/tinymce-local/**"
       - "pyproject.toml"
       - "poetry.lock"
       - ".github/workflows/tests.yml"
@@ -30,6 +32,7 @@ jobs:
     env:
       DISPLAY: ":99"
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      TINYMCE_URL: http://127.0.0.1:8000/demo/tinymce
 
     steps:
       - uses: actions/checkout@v5
@@ -49,6 +52,15 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y xvfb
           sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
+
+      - name: Start TinyMCE local demo
+        run: |
+          ./tools/tinymce-local/scripts/run.sh
+
+      - name: Verify TinyMCE local demo
+        run: |
+          curl -fsS http://127.0.0.1:8000/health
+          curl -fsSL "${TINYMCE_URL}/" | grep -q 'An iFrame contains the TinyMCE WYSIWYG Editor'
 
       - name: Clean old coverage artifacts
         run: |
