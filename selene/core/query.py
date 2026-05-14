@@ -191,6 +191,7 @@ see the actual implementation of Selene's queries in this module.
 
 # The actual list of queries ↙️
 """
+
 from __future__ import annotations
 
 import typing
@@ -211,7 +212,6 @@ from selene.core._element import Element
 from selene.core._browser import Browser
 from selene.core.locator import Locator
 from selene.web._elements import _FrameContext
-
 
 # TODO: should not we separate Query type from actual queries implementations?
 
