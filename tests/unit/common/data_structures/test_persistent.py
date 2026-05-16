@@ -593,6 +593,26 @@ class Test__persistent_internal_branches:
         with pytest.raises(TypeError):
             boxed.__set__(holder, FalsyDefaultDescriptor())
 
+    def test_boxed_descriptor_uses_truthy_default_from_get(self):
+        class TruthyDefaultDescriptor:
+            name = 'field'
+
+            def __get__(self, instance, owner):
+                return 'anonymous'
+
+            def __set__(self, instance, value):
+                return None
+
+        boxed = persistent.Boxed('field')
+
+        class Holder:
+            pass
+
+        holder = Holder()
+        boxed.__set__(holder, TruthyDefaultDescriptor())
+
+        assert holder.field.value == 'anonymous'
+
     def test_field_validates_mutable_defaults_and_set_name_without_default_set_name(
         self,
     ):

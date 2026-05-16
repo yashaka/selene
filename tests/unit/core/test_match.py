@@ -247,3 +247,29 @@ def test_browser_has_js_returned_is_deprecated_alias():
     with pytest.warns(DeprecationWarning):
         with pytest.raises(AssertionError):
             match.browser_has_js_returned('expected', 'return 1').call(browser)
+
+
+def test_element_has_attribute_href_and_src_use_javascript_get_attribute():
+    calls = []
+
+    class Driver:
+        @staticmethod
+        def execute_script(script, element, name):
+            calls.append((script, element, name))
+            return f'js:{name}'
+
+    first = DummyWebElement(attrs={'href': 'regular-href', 'src': 'regular-src'})
+    second = DummyWebElement(attrs={'href': 'regular-href-2', 'src': 'regular-src-2'})
+    element = DummyElement(first, driver=Driver())
+    collection = DummyCollection([first, second])
+    collection.config = types.SimpleNamespace(driver=Driver())
+
+    href = match.element_has_attribute('href')
+    src = match.element_has_attribute('src')
+
+    href.value('js:href').call(element)
+    src.value('js:src').call(element)
+    href.values('js:href', 'js:href').call(collection)
+    src.values('js:src', 'js:src').call(collection)
+
+    assert len(calls) == 6

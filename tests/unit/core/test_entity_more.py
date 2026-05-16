@@ -569,3 +569,26 @@ def test_collection_should_reraises_collection_condition_error_as_is():
 
     with pytest.raises(AssertionError, match='actual collection mismatch'):
         collection.should(broken_collection_condition)
+
+
+def test_element_type_uses_direct_lookup_when_overlap_wait_is_disabled():
+    config = DummyConfig()
+    root_we = DummyWebElement('root', with_defaults=False)
+    element = Element(Locator('root', lambda: root_we), config)
+
+    config.wait_for_no_overlap_found_by_js = False
+    element.type('plain')
+
+    assert root_we.sent == ['plain']
+
+
+def test_element_wait_wraps_failure_hook_when_outer_html_logging_enabled():
+    config = DummyConfig()
+    config.log_outer_html_on_failure = True
+    element = Element(Locator('root', lambda: DummyWebElement('root')), config)
+
+    wait = element.wait
+    error = wait.hook_failure(TimeoutException('boom'))
+
+    assert isinstance(wait, DummyWait)
+    assert 'Actual webelement: attr:outerHTML' in str(error)

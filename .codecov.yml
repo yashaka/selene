@@ -8,12 +8,6 @@ coverage:
     project:
       default:
         off: true
-      regression:
-        target: auto
-        threshold: 0.1%
-        informational: true
-        flags:
-          - regression
       unit:
         target: auto
         threshold: 0.1%
