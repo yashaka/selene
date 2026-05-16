@@ -268,3 +268,55 @@ def test_element_search_fails_with_message_when_explicitly_waits_for_not_conditi
         'Screenshot: *.png',
         'PageSource: *.html',
     ]
+
+
+def test_element_search_failure_logs_actual_webelement_outer_html_when_element_is_present(
+    session_browser,
+):
+    browser = session_browser.with_(
+        timeout=0.1,
+        log_outer_html_on_failure=True,
+    )
+
+    GivenPage(browser.driver).opened_with_body(
+        '''
+        <label id='element'>Hello world!</label>
+        '''
+    )
+
+    with pytest.raises(TimeoutException) as ex:
+        browser.element('#element').should(have.exact_text('Hello wor'))
+
+    assert exception_message(ex) == [
+        'Timed out after 0.1s, while waiting for:',
+        "browser.element(('css selector', '#element')).has exact text Hello wor",
+        '',
+        'Reason: AssertionError: actual text: Hello world!',
+        'Actual webelement: <label id="element">Hello world!</label>',
+        'Screenshot: *.png',
+        'PageSource: *.html',
+    ]
+
+
+def test_element_search_failure_does_not_log_actual_webelement_outer_html_when_element_is_absent(
+    session_browser,
+):
+    browser = session_browser.with_(
+        timeout=0.1,
+        log_outer_html_on_failure=True,
+    )
+
+    GivenPage(browser.driver).opened_with_body(
+        '''
+        <label id='element'>Hello world!</label>
+        '''
+    )
+
+    with pytest.raises(TimeoutException) as ex:
+        browser.element('#non-existing').click()
+
+    assert 'Actual webelement:' not in str(ex.value.msg)
+    assert "browser.element(('css selector', '#non-existing')).click" in str(
+        ex.value.msg
+    )
+    assert 'Reason: NoSuchElementException: no such element' in str(ex.value.msg)
