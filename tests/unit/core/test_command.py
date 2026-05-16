@@ -1,6 +1,11 @@
 import types
+from typing import cast
+
+import pytest
 
 from selene.core import command
+from selene.core.entity import Element
+from selene.core.exceptions import _SeleneError
 
 
 class DummyTempInput:
@@ -308,3 +313,21 @@ def test_js_drop_file_uses_temp_input_and_wait(monkeypatch):
     command.js.drop_file('/tmp/file.txt')(source)
 
     assert driver.temp_input.sent == ['/tmp/file.txt']
+
+
+def test_js_drag_and_drop_to_can_assert_location_changed():
+    driver = DummyDriver()
+    source = cast(
+        Element,
+        DummyElement(driver=driver, location={'x': 1, 'y': 1}),
+    )
+    target = cast(Element, DummyElement(driver=driver))
+
+    with pytest.raises(
+        _SeleneError,
+        match='Element was not dragged to the new place',
+    ):
+        command.js.drag_and_drop_to(
+            target,
+            _assert_location_changed=True,
+        )(source)
