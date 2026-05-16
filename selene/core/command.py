@@ -489,6 +489,25 @@ class js:  # pylint: disable=invalid-name
         yoffset = 0
 
         def func(source: Element):
+            existing_input = source.config.driver.execute_script(
+                """
+                var target = arguments[0];
+                if (
+                  target.matches
+                  && target.matches('input[type="file"]')
+                ) {
+                  return target;
+                }
+                return target.querySelector
+                  ? target.querySelector('input[type="file"]')
+                  : null;
+                """.strip(),
+                source.locate(),
+            )
+            if existing_input:
+                existing_input.send_keys(path)
+                return
+
             script = """
             var target = arguments[0],
             offsetX = arguments[1],

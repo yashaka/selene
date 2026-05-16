@@ -2,6 +2,7 @@ import types
 
 import pytest
 
+from selene.core import command
 from selene.core.condition import Condition
 from selene.core.exceptions import TimeoutException, _SeleneError
 from selene.core.entity import Collection, Element
@@ -158,6 +159,25 @@ def test_element_script_helpers_and_input_commands():
     assert root_we.sent[:2] == ['a', 'b']
     assert root_we.cleared == 1
     assert root_we.submitted == 1
+
+
+def test_element_drop_file_uses_js_drop_file_command(monkeypatch):
+    config = DummyConfig()
+    root_we = DummyWebElement('root')
+    element = Element(Locator('root', lambda: root_we), config)
+    calls = []
+
+    def fake_drop_file(path):
+        def fn(entity):
+            calls.append((path, entity))
+
+        return fn
+
+    monkeypatch.setattr(command.js, 'drop_file', fake_drop_file)
+
+    element.drop_file('/tmp/file.txt')
+
+    assert calls == [('/tmp/file.txt', element)]
 
 
 def test_collection_core_navigation_and_slicing():

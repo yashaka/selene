@@ -317,6 +317,32 @@ def test_js_drop_file_uses_temp_input_and_wait(monkeypatch):
     assert driver.temp_input.sent == ['/tmp/file.txt']
 
 
+def test_js_drop_file_uses_existing_file_input_when_present(monkeypatch):
+    driver = DummyDriver()
+    source = DummyElement(driver=driver)
+    existing_input = DummyTempInput()
+
+    original_execute_script = driver.execute_script
+
+    def execute_script(script, *args):
+        if 'querySelector(\'input[type="file"]\')' in script:
+            return existing_input
+        return original_execute_script(script, *args)
+
+    driver.execute_script = execute_script
+
+    class FailIfCalledWait:
+        def __init__(self, _driver, _timeout):
+            raise AssertionError('WebDriverWait should not be called')
+
+    monkeypatch.setattr(command, 'WebDriverWait', FailIfCalledWait)
+
+    command.js.drop_file('/tmp/file.txt')(source)
+
+    assert existing_input.sent == ['/tmp/file.txt']
+    assert driver.temp_input.sent == []
+
+
 def test_js_drag_and_drop_to_can_assert_location_changed():
     driver = DummyDriver()
     source = cast(

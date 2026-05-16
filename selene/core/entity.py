@@ -469,6 +469,12 @@ class Element(WaitingEntity['Element']):
         self.wait.command('send keys', lambda element: element().send_keys(*value))
         return self
 
+    def drop_file(self, path: str) -> Element:
+        from selene.core import command
+
+        self.wait.for_(command.js.drop_file(path))
+        return self
+
     def press(self, *keys) -> Element:
         def fn(element: Element):
             webelement = (
