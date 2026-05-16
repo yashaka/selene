@@ -32,7 +32,7 @@ jobs:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - uses: actions/setup-python@v6
         with:
@@ -160,7 +160,7 @@ jobs:
 
       - name: Code Coverage (selene)
         if: matrix.python-version == '3.10' && always()
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           files: ./coverage.xml
           disable_search: true
@@ -173,7 +173,7 @@ jobs:
 
       - name: Code Coverage (core)
         if: matrix.python-version == '3.10' && always()
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           files: ./coverage-core.xml
           disable_search: true
@@ -186,7 +186,7 @@ jobs:
 
       - name: Code Coverage (common)
         if: matrix.python-version == '3.10' && always()
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           files: ./coverage-common.xml
           disable_search: true
@@ -199,7 +199,7 @@ jobs:
 
       - name: Code Coverage (support)
         if: matrix.python-version == '3.10' && always()
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           files: ./coverage-support.xml
           disable_search: true
@@ -212,7 +212,7 @@ jobs:
 
       - name: Code Coverage (api)
         if: matrix.python-version == '3.10' && always()
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           files: ./coverage-api.xml
           disable_search: true
@@ -225,7 +225,7 @@ jobs:
 
       - name: Code Coverage (unit)
         if: matrix.python-version == '3.10' && always()
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           files: ./coverage-unit.xml
           disable_search: true
@@ -238,7 +238,7 @@ jobs:
 
       - name: Code Coverage (integration)
         if: matrix.python-version == '3.10' && always()
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           files: ./coverage-integration.xml
           disable_search: true
@@ -251,7 +251,7 @@ jobs:
 
       - name: Code Coverage (acceptance)
         if: matrix.python-version == '3.10' && always()
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           files: ./coverage-acceptance.xml
           disable_search: true
@@ -263,14 +263,14 @@ jobs:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   clipboard:
-    name: Clipboard (non-blocking)
+    name: Clipboard (non-blocking, disabled)
     if: ${{ false }}
     runs-on: ubuntu-latest
     continue-on-error: true
     env:
       DISPLAY: ":99"
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
         with:
           python-version: "3.10"
@@ -294,7 +294,7 @@ jobs:
     env:
       DISPLAY: ":99"
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
         with:
           python-version: "3.10"
@@ -329,7 +329,7 @@ jobs:
             echo "enabled=false" >> "$GITHUB_OUTPUT"
             echo "Remote tests are skipped: SELENOID credentials are missing."
           fi
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         if: steps.check_remote.outputs.enabled == 'true'
       - uses: actions/setup-python@v6
         if: steps.check_remote.outputs.enabled == 'true'
