@@ -239,7 +239,9 @@ class js:  # pylint: disable=invalid-name
         def __call__(self, element: Element) -> None: ...  # pragma: no cover
 
         @overload
-        def __call__(self, *, xoffset=0, yoffset=0) -> Command[Element]: ...  # pragma: no cover
+        def __call__(
+            self, *, xoffset=0, yoffset=0
+        ) -> Command[Element]: ...  # pragma: no cover
 
         def __call__(self, element: Element | None = None, *, xoffset=0, yoffset=0):
             def func(element: Element):
