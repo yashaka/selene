@@ -19,16 +19,4 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-
-from selene.support.shared import browser
-
-
-class BaseTest:
-    def setup_method(self):
-        browser.config.driver = webdriver.Chrome(service=Service())
-
-    def teardown_method(self):
-        browser.quit()
-        browser.config.driver = ...
+from tests._support.base_test import BaseTest

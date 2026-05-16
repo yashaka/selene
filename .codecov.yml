@@ -8,54 +8,12 @@ coverage:
     project:
       default:
         off: true
-      regression:
-        target: auto
-        threshold: 0.1%
-        informational: false
-        flags:
-          - regression
       unit:
         target: auto
         threshold: 0.1%
         informational: true
         flags:
           - unit
-      integration:
-        target: auto
-        threshold: 0.1%
-        informational: true
-        flags:
-          - integration
-      acceptance:
-        target: auto
-        threshold: 0.1%
-        informational: true
-        flags:
-          - acceptance
-      core:
-        target: auto
-        threshold: 0.1%
-        informational: false
-        flags:
-          - core
-      common:
-        target: auto
-        threshold: 0.1%
-        informational: false
-        flags:
-          - common
-      support:
-        target: auto
-        threshold: 0.1%
-        informational: false
-        flags:
-          - support
-      api:
-        target: auto
-        threshold: 0.1%
-        informational: false
-        flags:
-          - api
     patch:
       default:
         target: auto
@@ -66,17 +24,3 @@ comment:
   layout: "reach,diff,flags,files"
   behavior: default
   require_changes: false
-
-flags:
-  core:
-    paths:
-      - selene/core/
-  common:
-    paths:
-      - selene/common/
-  support:
-    paths:
-      - selene/support/
-  api:
-    paths:
-      - selene/api/

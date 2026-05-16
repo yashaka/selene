@@ -7,7 +7,7 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.firefox.service import Service as FirefoxService
 
 from selene import Config, Browser, support
-from tests.helpers import headless_chrome_options
+from tests._support.helpers import headless_chrome_options
 
 
 @pytest.fixture(scope='session')

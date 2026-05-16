@@ -59,11 +59,9 @@ def test_element_search_fails_with_message__when_no_such_element(
     session_browser,
 ):
     browser = session_browser.with_(timeout=0.1)
-    GivenPage(browser.driver).opened_with_body(
-        '''
+    GivenPage(browser.driver).opened_with_body('''
         <label id='element'>Hello world!</label>
-        '''
-    )
+        ''')
 
     with pytest.raises(TimeoutException) as ex:
         browser.element('#non-existing').click()
@@ -86,11 +84,9 @@ def test_element_search_fails_with_message_when_explicitly_waits_for_condition(
     session_browser,
 ):
     browser = session_browser.with_(timeout=0.1)
-    GivenPage(browser.driver).opened_with_body(
-        '''
+    GivenPage(browser.driver).opened_with_body('''
         <label id='element'>Hello world!</label>
-        '''
-    )
+        ''')
 
     with pytest.raises(TimeoutException) as ex:
         browser.element('#element').should(have.exact_text('Hello wor'))
@@ -110,11 +106,9 @@ def test_element_search_fails_with_message_when_implicitly_waits_for_condition(
 ):
     browser = session_browser.with_(timeout=0.1)
     page = GivenPage(browser.driver)
-    page.opened_with_body(
-        '''
+    page.opened_with_body('''
     <button id='hidden-button' style='display:none'>You can't click me, ha ha! :P</button>
-    '''
-    )
+    ''')
 
     with pytest.raises(TimeoutException) as ex:
         browser.element('#hidden-button').click()
@@ -136,13 +130,11 @@ def test_inner_element_search_fails_with_message_when_implicitly_waits_for_condi
 ):
     browser = session_browser.with_(timeout=0.1)
     page = GivenPage(browser.driver)
-    page.opened_with_body(
-        '''
+    page.opened_with_body('''
     <div id='container'>
         <button id='hidden-button' style='display:none'>You can't click me, ha ha! :P</button>
     </div>
-    '''
-    )
+    ''')
 
     with pytest.raises(TimeoutException) as ex:
         browser.element('#container').element('#hidden-button').click()
@@ -165,13 +157,11 @@ def test_inner_element_search_fails_with_message_when_implicitly_waits_for_condi
 ):
     browser = session_browser.with_(timeout=0.1)
     page = GivenPage(browser.driver)
-    page.opened_with_body(
-        '''
+    page.opened_with_body('''
     <div id='hidden-container' style='display:none'>
         <button id='button'>You still can't click me, ha ha! :P</button>
     </div>
-    '''
-    )
+    ''')
 
     with pytest.raises(TimeoutException) as ex:
         browser.element('#hidden-container').element('#button').click()
@@ -194,13 +184,11 @@ def test_inner_element_search_fails_with_message_when_implicitly_waits_for_condi
 ):
     browser = session_browser.with_(timeout=0.1)
     page = GivenPage(browser.driver)
-    page.opened_with_body(
-        '''
+    page.opened_with_body('''
     <div>
         <button id='button'>Try to click me</button>
     </div>
-    '''
-    )
+    ''')
 
     with pytest.raises(TimeoutException) as ex:
         browser.element('#not-existing').element('#button').click()
@@ -224,13 +212,11 @@ def test_indexed_selement_search_fails_with_message_when_implicitly_waits_for_co
 ):
     browser = session_browser.with_(timeout=0.1)
     page = GivenPage(browser.driver)
-    page.opened_with_body(
-        '''
+    page.opened_with_body('''
     <div>
         <button id='button'>Try to click me</button>
     </div>
-    '''
-    )
+    ''')
 
     with pytest.raises(TimeoutException) as ex:
         browser.all('button')[1].click()
@@ -251,11 +237,9 @@ def test_element_search_fails_with_message_when_explicitly_waits_for_not_conditi
 ):
     browser = session_browser.with_(timeout=0.1)
     page = GivenPage(browser.driver)
-    page.opened_with_body(
-        '''
+    page.opened_with_body('''
         <label id='element'>Hello world!</label>
-        '''
-    )
+        ''')
 
     with pytest.raises(TimeoutException) as ex:
         browser.element('#element').should(have._not_.exact_text('Hello world!'))
@@ -268,3 +252,51 @@ def test_element_search_fails_with_message_when_explicitly_waits_for_not_conditi
         'Screenshot: *.png',
         'PageSource: *.html',
     ]
+
+
+def test_element_search_failure_logs_actual_webelement_outer_html_when_element_is_present(
+    session_browser,
+):
+    browser = session_browser.with_(
+        timeout=0.1,
+        log_outer_html_on_failure=True,
+    )
+
+    GivenPage(browser.driver).opened_with_body('''
+        <label id='element'>Hello world!</label>
+        ''')
+
+    with pytest.raises(TimeoutException) as ex:
+        browser.element('#element').should(have.exact_text('Hello wor'))
+
+    assert exception_message(ex) == [
+        'Timed out after 0.1s, while waiting for:',
+        "browser.element(('css selector', '#element')).has exact text Hello wor",
+        '',
+        'Reason: AssertionError: actual text: Hello world!',
+        'Actual webelement: <label id="element">Hello world!</label>',
+        'Screenshot: *.png',
+        'PageSource: *.html',
+    ]
+
+
+def test_element_search_failure_does_not_log_actual_webelement_outer_html_when_element_is_absent(
+    session_browser,
+):
+    browser = session_browser.with_(
+        timeout=0.1,
+        log_outer_html_on_failure=True,
+    )
+
+    GivenPage(browser.driver).opened_with_body('''
+        <label id='element'>Hello world!</label>
+        ''')
+
+    with pytest.raises(TimeoutException) as ex:
+        browser.element('#non-existing').click()
+
+    assert 'Actual webelement:' not in str(ex.value.msg)
+    assert "browser.element(('css selector', '#non-existing')).click" in str(
+        ex.value.msg
+    )
+    assert 'Reason: NoSuchElementException: no such element' in str(ex.value.msg)

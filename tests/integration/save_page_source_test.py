@@ -191,17 +191,83 @@ def test_remembers_last_saved_page_source(a_browser, with_process_exit_teardown)
     )
 
 
-def test_does_not_save_artifacts_on_wait_until_false(a_browser, tmp_path):
+@pytest.mark.parametrize(
+    'save_screenshot_on_failure, save_page_source_on_failure',
+    [
+        (True, False),
+        (False, True),
+        (False, False),
+    ],
+)
+def test_does_not_save_artifacts_on_wait_until_false(
+    a_browser, tmp_path, save_screenshot_on_failure, save_page_source_on_failure
+):
     custom_reports = tmp_path / 'reports'
     browser_for_check = a_browser.with_(
         timeout=0.1,
         reports_folder=str(custom_reports),
-        save_screenshot_on_failure=True,
-        save_page_source_on_failure=True,
+        save_screenshot_on_failure=save_screenshot_on_failure,
+        save_page_source_on_failure=save_page_source_on_failure,
     )
     browser_for_check.open(EMPTY_PAGE_URL)
 
     matched = browser_for_check.element('#does-not-exist').wait_until(be.visible)
 
     assert matched is False
+    assert not custom_reports.exists() or list(custom_reports.iterdir()) == []
+
+
+def test_saves_only_screenshot_when_page_source_on_failure_disabled(
+    a_browser, tmp_path
+):
+    custom_reports = tmp_path / 'reports'
+    browser_for_check = a_browser.with_(
+        timeout=0.1,
+        reports_folder=str(custom_reports),
+        save_screenshot_on_failure=True,
+        save_page_source_on_failure=False,
+    )
+    browser_for_check.open(EMPTY_PAGE_URL)
+
+    with pytest.raises(TimeoutException):
+        browser_for_check.element('#does-not-exist').should(be.visible)
+
+    artifacts = sorted(path.suffix for path in custom_reports.iterdir())
+    assert artifacts == ['.png']
+
+
+def test_saves_only_page_source_when_screenshot_on_failure_disabled(
+    a_browser, tmp_path
+):
+    custom_reports = tmp_path / 'reports'
+    browser_for_check = a_browser.with_(
+        timeout=0.1,
+        reports_folder=str(custom_reports),
+        save_screenshot_on_failure=False,
+        save_page_source_on_failure=True,
+    )
+    browser_for_check.open(EMPTY_PAGE_URL)
+
+    with pytest.raises(TimeoutException):
+        browser_for_check.element('#does-not-exist').should(be.visible)
+
+    artifacts = sorted(path.suffix for path in custom_reports.iterdir())
+    assert artifacts == ['.html']
+
+
+def test_does_not_save_any_artifacts_when_all_failure_saving_disabled(
+    a_browser, tmp_path
+):
+    custom_reports = tmp_path / 'reports'
+    browser_for_check = a_browser.with_(
+        timeout=0.1,
+        reports_folder=str(custom_reports),
+        save_screenshot_on_failure=False,
+        save_page_source_on_failure=False,
+    )
+    browser_for_check.open(EMPTY_PAGE_URL)
+
+    with pytest.raises(TimeoutException):
+        browser_for_check.element('#does-not-exist').should(be.visible)
+
     assert not custom_reports.exists() or list(custom_reports.iterdir()) == []

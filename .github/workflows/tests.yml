@@ -25,7 +25,17 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.10", "3.11", "3.12", "3.13", "3.14"]
+        python-version:
+          - '3.10'
+          - '3.11'
+          - '3.12'
+          - '3.13'
+          - '3.14'
+        experimental:
+          - false
+        include:
+          - python-version: '3.15.0-beta.1'
+            experimental: true
 
     env:
       DISPLAY: ":99"
@@ -56,11 +66,9 @@ jobs:
 
       - name: Regression tests
         run: |
-          poetry run pytest -sv \
+          poetry run pytest -v \
             --cov-config .coveragerc \
             --cov-branch \
-            --cov-report html:skip-covered \
-            --cov-report term:skip-covered \
             --cov=selene \
             --cov-report xml:coverage.xml \
             --tb=short \
@@ -68,18 +76,10 @@ jobs:
             tests/ \
             --headless=True
 
-      - name: Build package-slice coverage reports
-        if: matrix.python-version == '3.10' && always()
-        run: |
-          poetry run coverage xml -i --include="*/selene/core/*" -o coverage-core.xml
-          poetry run coverage xml -i --include="*/selene/common/*" -o coverage-common.xml
-          poetry run coverage xml -i --include="*/selene/support/*" -o coverage-support.xml
-          poetry run coverage xml -i --include="*/selene/api/*" -o coverage-api.xml
-
       - name: Unit tests coverage report
         if: matrix.python-version == '3.10' && always()
         run: |
-          COVERAGE_FILE=.coverage.unit poetry run pytest -sv \
+          COVERAGE_FILE=.coverage.unit poetry run pytest -v \
             --cov-config .coveragerc \
             --cov-branch \
             --cov=selene \
@@ -89,40 +89,6 @@ jobs:
             tests/unit \
             --headless=True
           COVERAGE_FILE=.coverage.unit poetry run coverage xml -i -o coverage-unit.xml
-
-      - name: Integration tests coverage report
-        if: matrix.python-version == '3.10' && always()
-        run: |
-          COVERAGE_FILE=.coverage.integration poetry run pytest -sv \
-            --cov-config .coveragerc \
-            --cov-branch \
-            --cov=selene \
-            --cov-report= \
-            --tb=short \
-            -m "not (clipboard or speed or remote or flaky)" \
-            tests/integration \
-            --headless=True
-          COVERAGE_FILE=.coverage.integration poetry run coverage xml -i -o coverage-integration.xml
-
-      - name: Acceptance tests coverage report
-        if: matrix.python-version == '3.10' && always()
-        run: |
-          COVERAGE_FILE=.coverage.acceptance poetry run pytest -sv \
-            --cov-config .coveragerc \
-            --cov-branch \
-            --cov=selene \
-            --cov-report= \
-            --tb=short \
-            -m "not (clipboard or speed or remote or flaky)" \
-            tests/acceptance \
-            --headless=True
-          COVERAGE_FILE=.coverage.acceptance poetry run coverage xml -i -o coverage-acceptance.xml
-
-      - name: Debug coverage artifacts
-        if: matrix.python-version == '3.10' && always()
-        run: |
-          ls -lh coverage*.xml
-          shasum coverage*.xml
 
       - name: Coverage summary for PR
         if: matrix.python-version == '3.10' && always()
@@ -135,26 +101,9 @@ jobs:
             poetry run coverage report --data-file=.coverage --skip-covered
             echo '```'
             echo ""
-            echo "### selene/core slice"
-            echo '```text'
-            poetry run coverage report --data-file=.coverage --include="*/selene/core/*"
-            echo '```'
-            echo ""
-            echo "### Test layers"
-            echo ""
             echo "#### unit"
             echo '```text'
             poetry run coverage report --data-file=.coverage.unit --skip-covered
-            echo '```'
-            echo ""
-            echo "#### integration"
-            echo '```text'
-            poetry run coverage report --data-file=.coverage.integration --skip-covered
-            echo '```'
-            echo ""
-            echo "#### acceptance"
-            echo '```text'
-            poetry run coverage report --data-file=.coverage.acceptance --skip-covered
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
 
@@ -164,60 +113,7 @@ jobs:
         with:
           files: ./coverage.xml
           disable_search: true
-          flags: regression
-          name: regression-py310
-          fail_ci_if_error: ${{ !(github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork) }}
-          verbose: true
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-
-      - name: Code Coverage (core)
-        if: matrix.python-version == '3.10' && always()
-        uses: codecov/codecov-action@v6
-        with:
-          files: ./coverage-core.xml
-          disable_search: true
-          flags: core
-          name: core-py310
-          fail_ci_if_error: ${{ !(github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork) }}
-          verbose: true
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-
-      - name: Code Coverage (common)
-        if: matrix.python-version == '3.10' && always()
-        uses: codecov/codecov-action@v6
-        with:
-          files: ./coverage-common.xml
-          disable_search: true
-          flags: common
-          name: common-py310
-          fail_ci_if_error: ${{ !(github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork) }}
-          verbose: true
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-
-      - name: Code Coverage (support)
-        if: matrix.python-version == '3.10' && always()
-        uses: codecov/codecov-action@v6
-        with:
-          files: ./coverage-support.xml
-          disable_search: true
-          flags: support
-          name: support-py310
-          fail_ci_if_error: ${{ !(github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork) }}
-          verbose: true
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-
-      - name: Code Coverage (api)
-        if: matrix.python-version == '3.10' && always()
-        uses: codecov/codecov-action@v6
-        with:
-          files: ./coverage-api.xml
-          disable_search: true
-          flags: api
-          name: api-py310
+          name: selene-py310
           fail_ci_if_error: ${{ !(github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork) }}
           verbose: true
         env:
@@ -231,32 +127,6 @@ jobs:
           disable_search: true
           flags: unit
           name: unit-py310
-          fail_ci_if_error: ${{ !(github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork) }}
-          verbose: true
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-
-      - name: Code Coverage (integration)
-        if: matrix.python-version == '3.10' && always()
-        uses: codecov/codecov-action@v6
-        with:
-          files: ./coverage-integration.xml
-          disable_search: true
-          flags: integration
-          name: integration-py310
-          fail_ci_if_error: ${{ !(github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork) }}
-          verbose: true
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-
-      - name: Code Coverage (acceptance)
-        if: matrix.python-version == '3.10' && always()
-        uses: codecov/codecov-action@v6
-        with:
-          files: ./coverage-acceptance.xml
-          disable_search: true
-          flags: acceptance
-          name: acceptance-py310
           fail_ci_if_error: ${{ !(github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork) }}
           verbose: true
         env:

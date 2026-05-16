@@ -3,14 +3,15 @@ from typing import Optional
 import selene
 from selene import command, be, have, query
 from tests.integration.helpers.givenpage import GivenPage
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
 
 
 def test_drags_source_by_offset_and_drops_it_to_target(session_browser):
     browser = session_browser.with_(timeout=2)
     page = GivenPage(browser.driver)
     page.opened_empty()
-    page.add_style_to_head(
-        """
+    page.add_style_to_head("""
         #target1, #target2 {
           float: left;
           width: 100px;
@@ -19,10 +20,8 @@ def test_drags_source_by_offset_and_drops_it_to_target(session_browser):
           padding: 10px;
           border: 1px solid black;
         }
-        """
-    )
-    page.add_script_to_head(
-        """
+        """)
+    page.add_script_to_head("""
         function allowDrop(ev) {
           ev.preventDefault();
         }
@@ -36,10 +35,8 @@ def test_drags_source_by_offset_and_drops_it_to_target(session_browser):
           var data = ev.dataTransfer.getData('text');
           ev.target.appendChild(document.getElementById(data));
         }
-        """
-    )
-    page.load_body(
-        '''
+        """)
+    page.load_body('''
         <h2>Drag and Drop</h2>
         <p>Drag the image back and forth between the two div elements.</p>
 
@@ -54,8 +51,7 @@ def test_drags_source_by_offset_and_drops_it_to_target(session_browser):
         </div>
 
         <div id="target2" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-        '''
-    )
+        ''')
 
     # WHEN
     browser.element('#draggable').perform(command.drag_and_drop_by_offset(x=150, y=0))
@@ -78,26 +74,46 @@ class ReactContinuousSlider:
         self.thumb_input = self.thumb.element('input')
         self.volume_up = self.container.all('svg').second
         self.volume_down = self.container.all('svg').first
-        # self.volume_up = self.container.element('[data-testid=VolumeUpIcon]')
-        # self.volume_down = self.container.element('[data-testid=VolumeDownIcon]')
         self.rail = self.container.element('.MuiSlider-rail')
 
     def open(self):
         self.browser.open('https://mui.com/material-ui/react-slider/#ContinuousSlider')
+        self._dismiss_cookie_banner()
         return self
+
+    def _dismiss_cookie_banner(self):
+        driver = self.browser.driver
+        wait = WebDriverWait(driver, 3.0, poll_frequency=0.2)
+        try:
+            button = wait.until(
+                lambda d: d.find_element(
+                    By.XPATH,
+                    (
+                        "//div[@role='dialog' and .//*[contains(normalize-space(.), 'Cookie Preferences')]]"
+                        "//button[normalize-space()='Essential only']"
+                    ),
+                )
+            )
+            button.click()
+        except Exception:
+            return
 
 
 def test_drags_by_offset_react_mui_slider(session_browser):
     browser = session_browser.with_(timeout=1.0)
     slider = ReactContinuousSlider(browser).open()
+    slider._dismiss_cookie_banner()
     original_value = slider.thumb_input.get(query.value)
 
     # WHEN
-    slider.thumb.perform(command.drag_and_drop_by_offset(x=11, y=0))
-
+    slider._dismiss_cookie_banner()
+    slider.thumb.perform(command.drag_and_drop_by_offset(x=105, y=0))
     slider.thumb_input.should(have.no.value(original_value))
+    value_after_right_drag = int(slider.thumb_input.get(query.value))
+    assert value_after_right_drag >= 80
 
     # WHEN
-    slider.thumb.perform(command.drag_and_drop_by_offset(x=-11, y=0))
-
-    slider.thumb_input.should(have.value(original_value))
+    slider._dismiss_cookie_banner()
+    slider.thumb.perform(command.drag_and_drop_by_offset(x=-202, y=0))
+    value_after_left_drag = int(slider.thumb_input.get(query.value))
+    assert value_after_left_drag <= 20

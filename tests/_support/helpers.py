@@ -19,33 +19,32 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from selene import have, be, by, browser
-from tests import resources
-from tests._support.base_test import BaseTest
 
-APP_URL = resources.TODOMVC_URL
+import time
+from selenium import webdriver
 
 
-def setup_module():
-    browser.config.timeout = 4
+def time_spent(function, *args, **kwargs):
+    start_time = time.time()
+    function(*args, **kwargs)
+    end_time = time.time()
+
+    return end_time - start_time
 
 
-class TestTodoMVC(BaseTest):
-    def test_filter_tasks(self):
-        browser.open(APP_URL)
+def convert_sec_to_ms(timeout):
+    return timeout * 1000
 
-        browser.element('#new-todo').should(be.enabled).set_value('a').press_enter()
-        browser.element('#new-todo').should(be.enabled).set_value('b').press_enter()
-        browser.element('#new-todo').should(be.enabled).set_value('c').press_enter()
 
-        browser.all('#todo-list>li').should(have.texts('a', 'b', 'c'))
-
-        browser.all('#todo-list>li').element_by(have.exact_text('b')).element(
-            '.toggle'
-        ).click()
-
-        browser.element(by.link_text('Active')).click()
-        browser.all('#todo-list>li').should(have.texts('a', 'c'))
-
-        browser.element(by.link_text('Completed')).click()
-        browser.all('#todo-list>li').should(have.texts('b'))
+def headless_chrome_options():
+    options = webdriver.ChromeOptions()
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-gpu")
+    options.add_argument("--disable-notifications")
+    options.add_argument("--disable-extensions")
+    options.add_argument("--disable-infobars")
+    options.add_argument("--enable-automation")
+    options.add_argument("--headless")
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument("--disable-setuid-sandbox")
+    return options

@@ -21,7 +21,7 @@
 # SOFTWARE.
 
 from tests import resources
-from tests.helpers import convert_sec_to_ms
+from tests._support.helpers import convert_sec_to_ms
 
 EMPTY_PAGE_URL = resources.url('empty.html')
 
@@ -94,21 +94,17 @@ class GivenPage:
         LoadedHtmlPage(self._driver).execute_script(script)
 
     def add_style_to_head(self, text_node):
-        self.execute_script(
-            f"""
+        self.execute_script(f"""
             var style = document.createElement('style')
             style.appendChild(document.createTextNode(`{text_node}`))
             document.getElementsByTagName('head')[0].appendChild(style)
-            """
-        )
+            """)
         return self
 
     def add_script_to_head(self, text_node):
-        self.execute_script(
-            f"""
+        self.execute_script(f"""
             var script = document.createElement('script')
             script.appendChild(document.createTextNode(`{text_node}`))
             document.getElementsByTagName('head')[0].appendChild(script)
-            """
-        )
+            """)
         return self

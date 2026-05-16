@@ -13,8 +13,7 @@ def test_browser_actions_drags_source_and_drops_it_to_target_with_implicit_waiti
     )
     page = GivenPage(browser.driver)
     page.opened_empty()
-    page.add_style_to_head(
-        """
+    page.add_style_to_head("""
         #target1, #target2 {
           float: left;
           width: 100px;
@@ -23,10 +22,8 @@ def test_browser_actions_drags_source_and_drops_it_to_target_with_implicit_waiti
           padding: 10px;
           border: 1px solid black;
         }
-        """
-    )
-    page.add_script_to_head(
-        """
+        """)
+    page.add_script_to_head("""
         function allowDrop(ev) {
           ev.preventDefault();
         }
@@ -40,21 +37,17 @@ def test_browser_actions_drags_source_and_drops_it_to_target_with_implicit_waiti
           var data = ev.dataTransfer.getData('text');
           ev.target.appendChild(document.getElementById(data));
         }
-        """
-    )
+        """)
     page.load_body_with_timeout(
         '''
         <h2>Drag and Drop</h2>
-        <p>Drag the image back and forth between the two div elements.</p>
+        <p>Drag the glowing puck back and forth between the two zones.</p>
 
         <div id="target1" ondrop="drop(event)" ondragover="allowDrop(event)">
-          <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
-               id="draggable"
+          <div id="draggable"
                draggable="true"
                ondragstart="drag(event)"
-               width="40"
-               height="40"
-          >
+               style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#00d4ff,#6aff9a);"></div>
         </div>
 
         <div id="target2" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
@@ -87,8 +80,7 @@ def test_browser_actions_fails_to_wait_for_drag_and_drop_before_perform(
     )
     page = GivenPage(browser.driver)
     page.opened_empty()
-    page.add_style_to_head(
-        """
+    page.add_style_to_head("""
         #target1, #target2 {
           float: left;
           width: 100px;
@@ -97,10 +89,8 @@ def test_browser_actions_fails_to_wait_for_drag_and_drop_before_perform(
           padding: 10px;
           border: 1px solid black;
         }
-        """
-    )
-    page.add_script_to_head(
-        """
+        """)
+    page.add_script_to_head("""
         function allowDrop(ev) {
           ev.preventDefault();
         }
@@ -114,21 +104,17 @@ def test_browser_actions_fails_to_wait_for_drag_and_drop_before_perform(
           var data = ev.dataTransfer.getData('text');
           ev.target.appendChild(document.getElementById(data));
         }
-        """
-    )
+        """)
     page.load_body_with_timeout(
         '''
         <h2>Drag and Drop</h2>
-        <p>Drag the image back and forth between the two div elements.</p>
+        <p>Drag the glowing puck back and forth between the two zones.</p>
 
         <div id="target1" ondrop="drop(event)" ondragover="allowDrop(event)">
-          <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
-               id="draggable"
+          <div id="draggable"
                draggable="true"
                ondragstart="drag(event)"
-               width="40"
-               height="40"
-          >
+               style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#00d4ff,#6aff9a);"></div>
         </div>
 
         <div id="target2" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
@@ -152,9 +138,28 @@ def test_browser_actions_fails_to_wait_for_drag_and_drop_before_perform(
             "no such element: Unable to locate element: "
             "{\"method\":\"css selector\",\"selector\":\"#draggable\"}\n"
         ) in str(error)
-        # TODO: should we see in error something more like:
-        # actions.drag_and_drop( browser.element('#draggable'), browser.element('#target2') )
 
 
-# TODO: add test that simulate failure inside perform,
-#       not inside actions registration in context of waiting for located webelement
+def test_browser_actions_fails_on_perform_step(monkeypatch, session_browser):
+    browser = session_browser.with_(timeout=0.5)
+    page = GivenPage(browser.driver)
+    page.opened_empty()
+    page.load_body("""
+        <div id="source" draggable="true" style="width:40px;height:40px"></div>
+        <div id="target" style="width:100px;height:50px"></div>
+        """)
+
+    actions = browser._actions.drag_and_drop(
+        browser.element('#source'), browser.element('#target')
+    )
+
+    def simulated_failure():
+        raise RuntimeError('simulated perform failure')
+
+    monkeypatch.setattr(actions._chain, 'perform', simulated_failure)
+
+    with pytest.raises(TimeoutException) as error:
+        actions.perform()
+
+    assert 'simulated perform failure' in str(error.value)
+    assert 'Reason: RuntimeError' in str(error.value)

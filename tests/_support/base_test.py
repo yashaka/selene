@@ -19,33 +19,16 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from selene import have, be, by, browser
-from tests import resources
-from tests._support.base_test import BaseTest
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
 
-APP_URL = resources.TODOMVC_URL
-
-
-def setup_module():
-    browser.config.timeout = 4
+from selene.support.shared import browser
 
 
-class TestTodoMVC(BaseTest):
-    def test_filter_tasks(self):
-        browser.open(APP_URL)
+class BaseTest:
+    def setup_method(self):
+        browser.config.driver = webdriver.Chrome(service=Service())
 
-        browser.element('#new-todo').should(be.enabled).set_value('a').press_enter()
-        browser.element('#new-todo').should(be.enabled).set_value('b').press_enter()
-        browser.element('#new-todo').should(be.enabled).set_value('c').press_enter()
-
-        browser.all('#todo-list>li').should(have.texts('a', 'b', 'c'))
-
-        browser.all('#todo-list>li').element_by(have.exact_text('b')).element(
-            '.toggle'
-        ).click()
-
-        browser.element(by.link_text('Active')).click()
-        browser.all('#todo-list>li').should(have.texts('a', 'c'))
-
-        browser.element(by.link_text('Completed')).click()
-        browser.all('#todo-list>li').should(have.texts('b'))
+    def teardown_method(self):
+        browser.quit()
+        browser.config.driver = ...
