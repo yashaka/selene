@@ -6,27 +6,57 @@ from tests import resources
 from tests.integration.helpers.givenpage import GivenPage
 
 
-def x_test_drops_file_to_self(session_browser):
-    browser = session_browser.with_(timeout=2)
+def test_drops_file_to_self_when_input_type_file_inside_target(session_browser):
+    browser = session_browser
     page = GivenPage(browser.driver)
     page.opened_empty()
-    page.add_style_to_head(
-        """
-        TODO: implement this
-        """
-    )
-    page.add_script_to_head(
-        """
-        TODO: implement this
-        """
-    )
     page.load_body(
-        '''
-        TODO: implement this
-        '''
+        """
+        <div id="dropzone">
+          <input id="file-input" type="file" style="display:none" />
+          <span id="result"></span>
+        </div>
+        """
+    )
+    page.execute_script(
+        """
+        document.getElementById('file-input').addEventListener('change', function () {
+          var value = this.value || '';
+          var fileName = value.split('\\\\').pop();
+          document.getElementById('result').textContent = fileName;
+        });
+        """
     )
 
-    # TODO: implement
+    browser.element('#dropzone').perform(command.js.drop_file(resources.path('selenite.png')))
+
+    browser.element('#result').should(have.exact_text('selenite.png'))
+
+
+def test_element_drop_file_shortcut(session_browser):
+    browser = session_browser
+    page = GivenPage(browser.driver)
+    page.opened_with_body(
+        """
+        <div id="dropzone">
+          <input id="file-input" type="file" style="display:none" />
+          <span id="result"></span>
+        </div>
+        """
+    )
+    page.execute_script(
+        """
+        document.getElementById('file-input').addEventListener('change', function () {
+          var value = this.value || '';
+          var fileName = value.split('\\\\').pop();
+          document.getElementById('result').textContent = fileName;
+        });
+        """
+    )
+
+    browser.element('#dropzone').drop_file(resources.path('selenite.png'))
+
+    browser.element('#result').should(have.exact_text('selenite.png'))
 
 
 def test_drops_file_to_self_in_react_mui(session_browser):
