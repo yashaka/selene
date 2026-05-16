@@ -39,7 +39,7 @@ def test_deprecated_navigation_helpers():
 
 
 def test_escape_text_quotes_for_xpath_with_double_quotes():
-    escaped_quote = '\'"'
+    escaped_quote = """'"'"""
 
     assert by._escape_text_quotes_for_xpath('he said "hi"') == (
         f'concat("", "he said ", {escaped_quote}, "hi", {escaped_quote}, "")'
@@ -47,7 +47,7 @@ def test_escape_text_quotes_for_xpath_with_double_quotes():
 
 
 def test_text_builds_exact_xpath_with_escaped_double_quotes():
-    escaped_quote = '\'"'
+    escaped_quote = """'"'"""
 
     assert by.text('he said "hi"') == (
         By.XPATH,
@@ -57,7 +57,7 @@ def test_text_builds_exact_xpath_with_escaped_double_quotes():
 
 
 def test_partial_text_builds_contains_xpath_with_escaped_double_quotes():
-    escaped_quote = '\'"'
+    escaped_quote = """'"'"""
 
     assert by.partial_text('he said "hi"') == (
         By.XPATH,
