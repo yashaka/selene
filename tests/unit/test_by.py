@@ -36,3 +36,36 @@ def test_deprecated_navigation_helpers():
     assert sibling == (By.XPATH, './following-sibling::li')
     assert parent == (By.XPATH, '..')
     assert first == (By.XPATH, './span[1]')
+
+
+def test_escape_text_quotes_for_xpath_with_double_quotes():
+    assert by._escape_text_quotes_for_xpath('he said "hi"') == (
+        'concat("", "he said ", \'"\' , "hi", \'"\' , "")'
+    )
+
+
+def test_text_builds_exact_xpath_with_escaped_double_quotes():
+    assert by.text('he said "hi"') == (
+        By.XPATH,
+        './/*[text()[normalize-space(.) = '
+        'concat("", "he said ", \'"\' , "hi", \'"\' , "")]]',
+    )
+
+
+def test_partial_text_builds_contains_xpath_with_escaped_double_quotes():
+    assert by.partial_text('he said "hi"') == (
+        By.XPATH,
+        './/*[text()[contains(normalize-space(.), '
+        'concat("", "he said ", \'"\' , "hi", \'"\' , ""))]]',
+    )
+
+
+def test_deprecated_navigation_helpers_with_default_tag():
+    with pytest.warns(DeprecationWarning):
+        sibling = by.be_following_sibling()
+
+    with pytest.warns(DeprecationWarning):
+        first = by.be_first_child()
+
+    assert sibling == (By.XPATH, './following-sibling::*')
+    assert first == (By.XPATH, './*[1]')
