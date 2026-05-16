@@ -69,7 +69,6 @@ jobs:
           poetry run pytest -v \
             --cov-config .coveragerc \
             --cov-branch \
-            --cov-report term:skip-covered \
             --cov=selene \
             --cov-report xml:coverage.xml \
             --tb=short \
