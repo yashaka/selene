@@ -4,7 +4,6 @@ from typing import Any, Dict, List, Tuple, cast
 
 from selene.support.conditions import not_ as not_conditions
 
-
 Call = Tuple[str, Tuple[Any, ...], Dict[str, Any]]
 NOT_CALL: Call = ('not_', (), {})
 
