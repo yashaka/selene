@@ -114,10 +114,10 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
 
       - name: Install Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
@@ -133,7 +133,7 @@ jobs:
 
       # upload the static files as an artifact
       - name: Upload static artifact (.zip)
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v5
         with:
           path: "site/"
 
@@ -157,7 +157,7 @@ jobs:
     steps:
       - name: Deploy docs to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v1
+        uses: actions/deploy-pages@v5
 ```
 
 Push it into `main` branch (and other changes above) and Bob's your uncle!

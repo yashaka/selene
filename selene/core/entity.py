@@ -647,6 +647,39 @@ class Collection(WaitingEntity['Collection'], Iterable[Element]):
     def __call__(self) -> typing.Sequence[WebElement]:
         return self.locate()
 
+    def should(
+        self,
+        condition: Union[Condition[Collection], Condition[Element]],
+    ) -> Collection:
+        applied_as_each = False
+        condition_as_each = Condition.for_each(condition)
+
+        def is_element_condition_applied_to_located_collection(
+            error: Exception,
+        ) -> bool:
+            return "'list' object has no attribute" in str(error)
+
+        class Match:
+            def __call__(self, collection: Collection) -> None:
+                nonlocal applied_as_each
+
+                try:
+                    condition.call(collection)  # type: ignore[arg-type]
+                except (AttributeError, AssertionError) as error:
+                    if is_element_condition_applied_to_located_collection(error):
+                        applied_as_each = True
+                        condition_as_each.call(collection)
+                        return
+
+                    raise
+
+            def __str__(self) -> str:
+                return str(condition_as_each if applied_as_each else condition)
+
+        self.wait.for_(Match())
+
+        return self
+
     @property
     def cached(self) -> Collection:
         webelements = self()

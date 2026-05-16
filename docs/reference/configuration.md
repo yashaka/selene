@@ -115,3 +115,26 @@ _save_page_source_strategy: Callable[
 )
 ```
 <!-- markdownlint-enable MD001 -->
+
+### Failure Artifacts Behavior
+
+By default, Selene saves screenshot and page source for failures that are
+propagated as `TimeoutException` (for example, from `.should(...)` or action
+methods with implicit waiting).
+This includes handled failures in `pytest.raises(TimeoutException)` scenarios.
+
+Soft checks that are expected to return boolean do not save artifacts:
+
+- `.wait_until(condition)` returning `False`
+- `.matching(condition)` returning `False`
+
+Control flags:
+
+- `config.save_screenshot_on_failure` (`True` by default)
+- `config.save_page_source_on_failure` (`True` by default)
+
+Saved files location:
+
+- `config.reports_folder`
+- last saved paths are available via `config.last_screenshot` and
+  `config.last_page_source`

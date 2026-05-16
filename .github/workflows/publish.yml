@@ -4,39 +4,78 @@ on:
     types: [published]
 
 jobs:
-  build_and_publish:
+  publish:
+    name: Publish package to PyPI
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
 
-      - uses: actions/setup-python@v6
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
         with:
           python-version: "3.10"
 
-      - uses: abatilo/actions-poetry@v4
+      - name: Install Poetry
+        uses: abatilo/actions-poetry@v4
 
-      - name: Install twine
-        run: pip install twine
-
-      - name: Release context
+      - name: Install Twine
         run: |
-          echo "release.tag_name=${{ github.event.release.tag_name }}"
-          echo "release.target_commitish=${{ github.event.release.target_commitish }}"
-          echo "github.ref=${GITHUB_REF}"
-          echo "github.ref_name=${GITHUB_REF_NAME}"
-          echo "github.sha=${GITHUB_SHA}"
+          python -m pip install --upgrade pip
+          python -m pip install twine
 
       - name: Check release version consistency
+        run: |
+          python .run/check_release_version.py
+
+      - name: Build package
+        run: |
+          poetry build
+
+      - name: Check package metadata
+        run: |
+          twine check dist/*
+
+      - name: Smoke install built wheel
+        shell: bash
+        run: |
+          set -euxo pipefail
+
+          WHEEL="$(find "$GITHUB_WORKSPACE/dist" -maxdepth 1 -name '*.whl' -print -quit)"
+
+          if [ -z "$WHEEL" ]; then
+            echo "No wheel found in dist/"
+            exit 1
+          fi
+
+          python -m venv /tmp/selene-smoke
+          /tmp/selene-smoke/bin/python -m pip install --upgrade pip
+          /tmp/selene-smoke/bin/python -m pip install "$WHEEL"
+
+          cd /tmp
+
+          PYTHONPATH="" /tmp/selene-smoke/bin/python - <<'PY'
+          import importlib.metadata as metadata
+
+          import selene
+          from selene import be, browser, command, have, query
+          from selene.support.shared import browser as shared_browser
+
+          distribution_version = metadata.version("selene")
+
+          assert selene.__version__ == distribution_version, (
+              f"selene.__version__={selene.__version__!r} "
+              f"!= installed distribution version={distribution_version!r}"
+          )
+
+          print(f"Selene smoke import passed: {distribution_version}")
+          PY
+
+      - name: Publish package
+        run: |
+          poetry publish \
+            --username __token__ \
+            --password "$PYPI_TOKEN"
         env:
-          RELEASE_TAG: ${{ github.event.release.tag_name }}
-          RELEASE_TARGET_COMMITISH: ${{ github.event.release.target_commitish }}
-        run: python .run/check_release_version.py
-
-      - name: Build
-        run: poetry build
-
-      - name: Check dist
-        run: twine check dist/*
-
-      - name: Publish
-        run: poetry publish --username __token__ --password "${{ secrets.PYPI_TOKEN }}"
+          PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}

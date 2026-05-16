@@ -82,7 +82,7 @@ mkdocs-redirects = "^1.2.0"
 mkdocs-git-revision-date-localized-plugin = "^1.2.0"
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = ["poetry-core>=2.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.mypy]

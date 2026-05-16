@@ -182,9 +182,22 @@ def element_has_css_property(name: str):
 
 def element_has_attribute(name: str):
     def attribute_value(element: Element):
+        if name in ('href', 'src'):
+            return element.config.driver.execute_script(
+                'return arguments[0].getAttribute(arguments[1])', element(), name
+            )
+
         return element().get_attribute(name)
 
     def attribute_values(collection: Collection):
+        if name in ('href', 'src'):
+            return [
+                collection.config.driver.execute_script(
+                    'return arguments[0].getAttribute(arguments[1])', element, name
+                )
+                for element in collection()
+            ]
+
         return [element.get_attribute(name) for element in collection()]
 
     raw_attribute_condition = ElementCondition.raise_if_not_actual(
