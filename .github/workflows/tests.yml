@@ -113,8 +113,7 @@ jobs:
         with:
           files: ./coverage.xml
           disable_search: true
-          flags: regression
-          name: regression-py310
+          name: selene-py310
           fail_ci_if_error: ${{ !(github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork) }}
           verbose: true
         env:
