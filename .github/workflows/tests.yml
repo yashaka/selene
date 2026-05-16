@@ -25,7 +25,17 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.10", "3.11", "3.12", "3.13", "3.14", "3.15.0-beta.1"]
+        python-version:
+          - '3.10'
+          - '3.11'
+          - '3.12'
+          - '3.13'
+          - '3.14'
+        experimental:
+          - false
+        include:
+          - python-version: '3.15.0-beta.1'
+            experimental: true
 
     env:
       DISPLAY: ":99"
