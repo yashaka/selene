@@ -1,4 +1,6 @@
 import pytest
+import sys
+import importlib
 
 from selene.core.condition import Condition, not_
 from selene.core.exceptions import ConditionNotMatchedError
@@ -194,3 +196,17 @@ def test_not_alias_not_property_and_each_property_work():
     assert isinstance(not_(base), Condition)
     assert isinstance(base.each, Condition)
     assert isinstance(base.or_(always), Condition)
+
+
+def test_condition_module_uses_typing_callable_on_python_lt_310(monkeypatch):
+    import selene.core.condition as condition_module
+
+    original_version_info = sys.version_info
+    monkeypatch.setattr(sys, 'version_info', (3, 9, 18, 'final', 0))
+    reloaded = importlib.reload(condition_module)
+
+    try:
+        assert reloaded.Callable is not None
+    finally:
+        monkeypatch.setattr(sys, 'version_info', original_version_info)
+        importlib.reload(condition_module)

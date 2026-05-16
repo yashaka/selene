@@ -237,6 +237,8 @@ def test_js_set_value_type_scroll_click_and_storage_clear():
     command.js.scroll_into_view(element)
 
     command.js.click(element)
+    click_default = command.js.click()
+    click_default(element)
     click_with_offsets = command.js.click(xoffset=3, yoffset=4)
     click_with_offsets(element)
 
