@@ -7,7 +7,6 @@ from _pytest.monkeypatch import MonkeyPatch
 
 from selene.support.conditions import have
 
-
 Call = Tuple[str, Tuple[Any, ...], Dict[str, Any]]
 
 
