@@ -8,7 +8,10 @@ import subprocess
 import sys
 from pathlib import Path
 
-import tomllib
+try:
+    import tomllib  # Python >= 3.11
+except ModuleNotFoundError:  # pragma: no cover - CI on Python 3.10
+    import tomli as tomllib  # type: ignore[no-redef]
 
 
 def _read_pyproject_version(pyproject_path: Path) -> str:
