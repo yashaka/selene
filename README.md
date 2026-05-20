@@ -68,7 +68,7 @@ Find more below...
 - Latest version marked as stable is: [1.0.2][selene-stable]
     - its sources and corresponding README version
     can be found at [1.x][brunch-ver-1] branch.
-    - supports python `2.7, 3.5, 3.6, 3.7`
+    - supports legacy Python versions (see branch `1.x` for exact compatibility matrix)
 
 THIS README DESCRIBES THE USAGE OF THE PRE-RELEASE version of Selene. For older docs look at [1.x][brunch-ver-1] branch.
 
