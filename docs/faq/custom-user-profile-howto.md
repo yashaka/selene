@@ -108,7 +108,7 @@ It might be useful in rare cases.
 
 We recommend you to use
 [Path][pathlib-path] class of [pathlib][python-pathlib] module
-*(especially in Python 3.6+)* for work with local paths.
+*(especially in Python 3.10+)* for work with local paths.
 It lets you forget about slashes on different platforms,
 write more concise code, and do basic filesystem operations
 (writing / reading files, creating folders,

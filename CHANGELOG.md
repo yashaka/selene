@@ -100,60 +100,96 @@ TODOs:
 - example of basic auth and auth via cookies (https://github.com/autotests-cloud/example_project/blob/master/src/test/java/cloud/autotests/tests/demowebshop/LoginTests.java)
 - can we force order of how `selene.*` is rendered on autocomplete? via `__all__`...
 
-## 2.0.0rc10 (to be released on XX.05.2026)
+
+## 2.0.0rc10 (to be released)
+
+This release stabilizes the `2.0.0rc9` line on the way to the final `2.0.0` release. It focuses on Selenium 4 compatibility, Python 3.10+ support, long-standing condition semantics, frame/iframe context ergonomics, artifact handling in timeout flows, and CI/release hardening.
+
+### Breaking changes
+
+- Dropped Python 3.8 and 3.9 support. Selene now requires Python `>=3.10`.
 
 ### Added
 
-- backported experimental `query._frame_context` pseudo-query for frame/iframe
-  context management
-- added nested `with` usage support for frame contexts (including nested frames)
+- Added experimental `query._frame_context(...)` pseudo-query for explicit frame/iframe context management.
+- Added support for nested `with` usage in frame contexts, including nested frames/iframes.
+- Added frame-context helper methods for lazy lookup inside a frame context:
+  - `_element(selector)`;
+  - `_all(selector)`;
+  - `_within` / `_step` / `_steps` decorator aliases for PageObject-style steps executed inside a frame context.
 
 ### Fixed
 
-- fixed compatibility with Selenium `>=4.40` (including `4.43`) by replacing
-  direct `AnyDevice` import from `selenium.webdriver.common.action_chains`
-  with a local compatible type alias in `selene.core._actions`
-  (covers issues [#595](https://github.com/yashaka/selene/issues/595)
-  and [#596](https://github.com/yashaka/selene/issues/596))
-- as a follow-up to earlier `fix «too much screenshots»`, fixed `wait_until(...)` behavior 
-  to avoid saving screenshot/page source artifacts for handled `False` outcomes (issue [#548](https://github.com/yashaka/selene/issues/548)).
-
-- fixed screenshot/page source links in timeout errors to always use valid
-  `file://` URI format on all OSes (issue
-  [#519](https://github.com/yashaka/selene/issues/519))
-- normalized timeout reason rendering on Python 3.13+ (`PatternError` ->
-  `error`) to keep error messages backward-compatible across Python versions
-- fixed `query.attribute(...)` typing to reflect that Selenium can return
-  `None` for missing attributes
-- fixed ignored `_assert_location_changed` in `command.js.drag_and_drop_to` [#567](https://github.com/yashaka/selene/issues/567).
-- fixed descriptor methods chained from negated conditions.
-  For example, `have.no.attribute(...).value_containing(...)` now works correctly. [#486](https://github.com/yashaka/selene/issues/486)
-- fixed: collection.should with composed element conditions via and_/or_ [#433](https://github.com/yashaka/selene/issues/433)
+- Fixed compatibility with Selenium `>=4.40`, including Selenium `4.43`, by replacing the direct runtime import of `AnyDevice` from `selenium.webdriver.common.action_chains` with a local compatible type alias in `selene.core._actions`.
+  - Covers issues [#595](https://github.com/yashaka/selene/issues/595) and [#596](https://github.com/yashaka/selene/issues/596).
+- Fixed `have.attribute('href').value(...)` and `have.attribute('src').value(...)` semantics.
+  For `href` and `src`, Selene now reads the DOM attribute value via `getAttribute(...)` instead of comparing against Selenium/WebDriver-normalized absolute URLs.
+  - Fixes [#211](https://github.com/yashaka/selene/issues/211).
+- Fixed `collection.should(...)` when a composed element condition is passed directly to a collection, for example `have.css_class(...).and_(...)` or `have.text(...).or_(...)`.
+  Selene now keeps true collection conditions applied to the collection itself and falls back to per-item matching only for the element-condition-on-raw-list case.
+  - Fixes [#433](https://github.com/yashaka/selene/issues/433).
+- Fixed descriptor methods chained from negated conditions.
+  For example, `have.no.attribute(...).value_containing(...)` now works correctly.
+  The same binding fix applies to negated `attribute`, `js_property`, and `css_property` descriptor methods.
+  - Fixes [#486](https://github.com/yashaka/selene/issues/486).
+- Fixed ignored `_assert_location_changed=True` in `command.js.drag_and_drop_to(...)`.
+  The JavaScript drag-and-drop command now honors the flag and can participate correctly in Selene's retry/wait mechanism when the source element is expected to change location.
+  - Fixes [#567](https://github.com/yashaka/selene/issues/567).
+- Fixed `wait_until(...)` behavior for handled `False` outcomes so Selene does not save unnecessary screenshot/page-source artifacts.
+  This complements the earlier work on reducing excessive artifacts in expected/handled timeout flows.
+  - Fixes [#548](https://github.com/yashaka/selene/issues/548).
+- Fixed screenshot and page-source links in timeout errors to use valid `file://` URI formatting across operating systems.
+  - Fixes [#519](https://github.com/yashaka/selene/issues/519).
+- Normalized timeout reason rendering on Python 3.13+ by rendering `PatternError` as `error`, keeping timeout messages stable across supported Python versions.
+- Fixed `query.attribute(...)` typing to reflect Selenium behavior: a missing attribute can return `None`, so the query result type is now `str | None`.
+- Stabilized acceptance tests that interact with Ecosia by handling cookie overlays and using a JavaScript click fallback where appropriate.
 
 ### Changed
 
-- removed support for Python 3.8 and 3.9; Selene now requires Python >= 3.10
-- updated project classifiers for Python `3.10-3.14`
-- removed runtime dependency `future`
-- raised `typing-extensions` runtime dependency to `>=4.15.0`
+- Migrated package metadata to the PEP 621 `[project]` layout and Poetry 2.x lock/build tooling.
+- Updated project classifiers for Python `3.10`, `3.11`, `3.12`, `3.13`, and `3.14`.
+- Removed the runtime dependency on `future`.
+- Raised the runtime dependency on `typing-extensions` to `>=4.15.0`.
+- Kept Selenium dependency at `selenium>=4.12.0`.
+- Updated README/prerequisites/migration references to the new Python `>=3.10` baseline.
 
-### Internal
+### Tests and quality
 
-- migrated packaging metadata and lock file to Poetry 2.x / PEP 621 layout
-- extended CI/test support up to Python `3.14`
-- reworked test workflow scopes: blocking regression now runs on Python
-  `3.10-3.14`, while `clipboard`, `speed`, and `remote` tests run as separate
-  non-blocking jobs
-- hardened publish workflow: releases no longer auto-commit version bumps and
-  now explicitly validate consistency between release tag, `pyproject.toml`,
-  and `selene.__version__`
-- updated release workflow documentation to describe the current GitHub Release
-  -> CI publish flow, manual fallback, and troubleshooting steps
-- CI: stabilized Codecov policy for fork PRs (v5 uploader, split flags, 
-  non-blocking tokenless uploads, and GitHub coverage summary fallback).
-- aligned release scripts with the current flow and fixed
-  `.run/bump_build_publish.sh`
-- removed deprecated `traffic2badge` workflow
+- Added regression coverage for driver lifecycle behavior related to [#53](https://github.com/yashaka/selene/issues/53):
+  - direct `browser.driver` access with `rebuild_not_alive_driver=True`;
+  - deprecated `config.hold_browser_open` alias behavior;
+  - `DeprecationWarning` expectations around the deprecated alias.
+- Added local isolated speed benchmark coverage for [#62](https://github.com/yashaka/selene/issues/62)-related flows and tightened the cached-locator ratio threshold.
+- Expanded `wait_until(...)` integration coverage and aligned wait-related test naming.
+- Added regression tests for the `href`/`src` DOM-attribute behavior fixed in [#211](https://github.com/yashaka/selene/issues/211).
+- Added integration tests for composed collection conditions fixed in [#433](https://github.com/yashaka/selene/issues/433).
+- Added integration tests for negated descriptor methods fixed in [#486](https://github.com/yashaka/selene/issues/486).
+- Added integration tests for JavaScript drag-and-drop location assertions fixed in [#567](https://github.com/yashaka/selene/issues/567).
+- Increased unit/integration coverage around core behavior and split Codecov reporting by suite/package slice.
+
+### CI and release infrastructure
+
+- Reworked the test workflow:
+  - blocking regression now runs across Python `3.10`-`3.14`;
+  - clipboard, speed, and remote suites run as separate non-blocking jobs;
+  - remote tests are gated by credentials;
+  - coverage upload runs on Python `3.10` only.
+- Stabilized Codecov policy for fork pull requests:
+  - Codecov v5 uploader;
+  - split flags;
+  - non-blocking tokenless uploads;
+  - GitHub coverage summary fallback.
+- Fixed GitHub Step Summary coverage table formatting.
+- Synced rc workflow logic with `master` where applicable.
+- Updated GitHub Actions versions for current runner/runtime compatibility, including Node 24 readiness.
+- Hardened the publish workflow:
+  - release publishing no longer mutates source files or commits version bumps;
+  - release tag, `pyproject.toml`, and `selene.__version__` are checked for consistency before publishing;
+  - package metadata is validated with `twine check`;
+  - the built wheel is smoke-installed in a clean virtual environment before publishing.
+- Updated release workflow documentation to describe the current GitHub Release -> CI publish flow, manual fallback, and troubleshooting steps.
+- Aligned release scripts with the current flow and fixed `.run/bump_build_publish.sh` to call `.run/publish.sh` instead of the misspelled `.rub/publish.sh`.
+- Removed the obsolete `traffic2badge` workflow.
 
 ## 2.0.0rc9 (released on 06.03.2024)
 
