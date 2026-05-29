@@ -304,9 +304,12 @@ from selenium.webdriver.common.actions.pointer_input import PointerInput
 #       in order to make autocomplete work properly
 #       do it for save_screenshot and all other similar impls
 def save_screenshot(path: Optional[str] = None) -> Command[Browser]:
+    def func(browser: Browser) -> None:
+        browser.config._save_screenshot_strategy(browser.config, path)
+
     command: Command[Browser] = Command(
         'save screenshot',
-        lambda browser: browser.config._save_screenshot_strategy(browser.config, path),
+        func,
     )
 
     if isinstance(path, Browser):
@@ -319,9 +322,12 @@ def save_screenshot(path: Optional[str] = None) -> Command[Browser]:
 
 
 def save_page_source(path: Optional[str] = None) -> Command[Browser]:
+    def func(browser: Browser) -> None:
+        browser.config._save_page_source_strategy(browser.config, path)
+
     command: Command[Browser] = Command(
         'save page source',
-        lambda browser: browser.config._save_page_source_strategy(browser.config, path),
+        func,
     )
 
     if isinstance(path, Browser):
@@ -631,6 +637,21 @@ def _set_style_property(
     return None
 
 
+def _scroll_into_view(element: Element) -> None:
+    element.execute_script('element.scrollIntoView(true)')
+    return None
+
+
+def _clear_local_storage(browser: Browser) -> None:
+    browser.driver.execute_script('window.localStorage.clear()')
+    return None
+
+
+def _clear_session_storage(browser: Browser) -> None:
+    browser.driver.execute_script('window.sessionStorage.clear()')
+    return None
+
+
 class js:  # pylint: disable=invalid-name
     """A container for JavaScript-based commands.
 
@@ -688,7 +709,7 @@ class js:  # pylint: disable=invalid-name
 
     scroll_into_view: Command[Element] = Command(
         'scroll into view',
-        lambda element: element.execute_script('element.scrollIntoView(true)'),
+        _scroll_into_view,
     )
 
     # TODO: should we process collections too? i.e. click through all elements?
@@ -755,12 +776,12 @@ class js:  # pylint: disable=invalid-name
 
     clear_local_storage: Command[Browser] = Command(
         'clear local storage',
-        lambda browser: browser.driver.execute_script('window.localStorage.clear()'),
+        _clear_local_storage,
     )
 
     clear_session_storage: Command[Browser] = Command(
         'clear local storage',
-        lambda browser: browser.driver.execute_script('window.sessionStorage.clear()'),
+        _clear_session_storage,
     )
 
     remove: Command[Union[Element, Collection]] = Command('remove', _remove)
@@ -769,9 +790,12 @@ class js:  # pylint: disable=invalid-name
     def set_style_property(
         name: str, value: Union[str, int]
     ) -> Command[Union[Element, Collection]]:
+        def func(entity: Union[Element, Collection]) -> None:
+            _set_style_property(entity, name, value)
+
         return Command(
             f'set element.style.{name}="{value}"',
-            lambda entity: _set_style_property(entity, name, value),
+            func,
         )
 
     set_style_display_to_none: Command[Union[Element, Collection]] = Command(
