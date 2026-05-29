@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 from selene import browser, command, have, query
+from tests.const import TINYMCE_URL
 
 
 def teardown_function():
@@ -33,7 +34,7 @@ class WYSIWYG:
     text_area = browser.element('#tinymce')
 
     def open(self):
-        browser.open('https://the-internet.herokuapp.com/iframe')
+        browser.open(TINYMCE_URL)
         return self
 
     def set_bold(self):

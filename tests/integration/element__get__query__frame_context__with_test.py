@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 from selene import command, have, query
+from tests.const import TINYMCE_URL
 
 
 def test_actions_within_frame_context(session_browser):
@@ -34,7 +35,7 @@ def test_actions_within_frame_context(session_browser):
     text_area = browser.element('#tinymce')
 
     # WHEN
-    browser.open('https://the-internet.herokuapp.com/iframe')
+    browser.open(TINYMCE_URL)
 
     # AND
     with text_area_frame_context:

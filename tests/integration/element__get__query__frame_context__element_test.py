@@ -24,6 +24,7 @@ import logging
 import pytest
 
 from selene import command, have, query, support
+from tests.const import TINYMCE_URL
 
 
 class StringHandler(logging.Handler):
@@ -90,7 +91,7 @@ def test_actions_on_frame_element_with_logging(session_browser):
     '''
 
     # WHEN
-    browser.open('https://the-internet.herokuapp.com/iframe')
+    browser.open(TINYMCE_URL)
 
     # THEN everything inside frame context
     text_area.element('p').should(
