@@ -23,7 +23,6 @@ import pytest
 
 from selene import by, have
 
-
 pytestmark = pytest.mark.skip(
     reason='Ecosia currently blocks automated traffic with Cloudflare captcha'
 )
