@@ -61,9 +61,9 @@ def test_page_object_steps_within_frame_context():
     wysiwyg = WYSIWYG().open()
 
     wysiwyg.should_have_text_html(
-        '<p>Your content goes here.</p>',
+        '<p>Hello, World!</p>',
     ).select_all_text().set_bold().should_have_text_html(
-        '<p><strong>Your content goes here.</strong></p>',
+        '<p><strong>Hello, World!</strong></p>',
     )
 
     wysiwyg.reset_to('New content').should_have_text_html(
