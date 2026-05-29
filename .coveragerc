@@ -9,3 +9,5 @@ exclude_lines =
     if 0:
     def __str__
     pragma: no cover
+    ^\s*@overload
+    ^\s*def __call__\(.*\)\s*->\s*\.\.\.
