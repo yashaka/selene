@@ -3,6 +3,17 @@ import types
 from selene.core import query
 
 
+class DummyWait:
+    def __init__(self, entity):
+        self.entity = entity
+
+    def for_(self, fn):
+        return fn(self.entity)
+
+    def with_(self, **_kwargs):
+        return self
+
+
 class DummyWebElement:
     def __init__(self):
         self.size = {'width': 10, 'height': 5}
