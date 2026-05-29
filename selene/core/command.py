@@ -618,6 +618,19 @@ def _set_style_visibility_to_visible(entity: Union[Element, Collection]) -> None
     return None
 
 
+def _set_style_property(
+    entity: Union[Element, Collection], name: str, value: Union[str, int]
+) -> None:
+    if not hasattr(entity, '__iter__'):
+        entity.execute_script(f'element.style.{name}="{value}"')
+        return None
+
+    for element in entity:
+        element.execute_script(f'element.style.{name}="{value}"')
+
+    return None
+
+
 class js:  # pylint: disable=invalid-name
     """A container for JavaScript-based commands.
 
@@ -753,13 +766,12 @@ class js:  # pylint: disable=invalid-name
     remove: Command[Union[Element, Collection]] = Command('remove', _remove)
 
     @staticmethod
-    def set_style_property(name: str, value: Union[str, int]) -> Command[Element]:
-        def func(entity: Element) -> None:
-            entity.execute_script(f'element.style.{name}="{value}"')
-
+    def set_style_property(
+        name: str, value: Union[str, int]
+    ) -> Command[Union[Element, Collection]]:
         return Command(
             f'set element.style.{name}="{value}"',
-            func,
+            lambda entity: _set_style_property(entity, name, value),
         )
 
     set_style_display_to_none: Command[Union[Element, Collection]] = Command(
