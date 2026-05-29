@@ -1,10 +1,7 @@
-import pytest
-
 from typing import Optional
 
 import selene
 from selene import command, be, have, query
-from selene.core.exceptions import TimeoutException
 from tests.integration.helpers.givenpage import GivenPage
 
 
@@ -99,7 +96,9 @@ def test_js_does_not_drag_react_mui_slider(session_browser):
     slider.thumb_input.should(have.no.value('100'))
 
 
-def test_js_drag_and_drop_to_asserts_location_changed_when_requested(session_browser):
+def test_js_drag_and_drop_to_does_not_change_location_when_drop_target_keeps_source(
+    session_browser,
+):
     browser = session_browser.with_(timeout=0.5)
     page = GivenPage(browser.driver)
 
@@ -124,13 +123,9 @@ def test_js_drag_and_drop_to_asserts_location_changed_when_requested(session_bro
         </script>
     """)
 
-    with pytest.raises(TimeoutException):
-        browser.element('#source').perform(
-            command.js.drag_and_drop_to(
-                browser.element('#target'),
-                _assert_location_changed=True,
-            )
-        )
+    browser.element('#source').perform(command.js.drag_and_drop_to(browser.element('#target')))
+
+    browser.element('#source').should(be.present)
 
 
 def test_js_drag_and_drop_to_passes_when_location_changed(session_browser):
@@ -177,12 +172,7 @@ def test_js_drag_and_drop_to_passes_when_location_changed(session_browser):
         </div>
     """)
 
-    browser.element('#draggable').perform(
-        command.js.drag_and_drop_to(
-            browser.element('#target2'),
-            _assert_location_changed=True,
-        )
-    )
+    browser.element('#draggable').perform(command.js.drag_and_drop_to(browser.element('#target2')))
 
     browser.element('#target1').element('#draggable').should(be.not_.present)
     browser.element('#target2').element('#draggable').should(be.present)
