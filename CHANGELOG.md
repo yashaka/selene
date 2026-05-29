@@ -100,8 +100,7 @@ TODOs:
 - example of basic auth and auth via cookies (https://github.com/autotests-cloud/example_project/blob/master/src/test/java/cloud/autotests/tests/demowebshop/LoginTests.java)
 - can we force order of how `selene.*` is rendered on autocomplete? via `__all__`...
 
-
-## 2.0.0rc10 (to be released)
+## 2.0.0rc11 (to be released)
 
 ### More commands in command.py
 
@@ -120,6 +119,8 @@ TODOs:
 Providing a brief overview of the module and how to extend it with custom commands.
 
 ### Fix path of screenshot and pagesource for Windows
+
+## 2.0.0rc10 (to be released)
 
 This release stabilizes the `2.0.0rc9` line on the way to the final `2.0.0` release. It focuses on Selenium 4 compatibility, Python 3.10+ support, long-standing condition semantics, frame/iframe context ergonomics, artifact handling in timeout flows, and CI/release hardening.
 
