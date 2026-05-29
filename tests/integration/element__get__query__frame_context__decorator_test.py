@@ -38,7 +38,7 @@ class WYSIWYG:
         return self
 
     def set_bold(self):
-        self.toolbar.element('[title=Bold]').click()
+        self.toolbar.element('[aria-label=Bold]').click()
         return self
 
     @text_area_frame._within

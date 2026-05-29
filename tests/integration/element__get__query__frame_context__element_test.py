@@ -101,7 +101,7 @@ def test_actions_on_frame_element_with_logging(session_browser):
     ).perform(command.select_all)
 
     # AND (outside frame context)
-    toolbar.element('[title=Bold]').click()
+    toolbar.element('[aria-label=Bold]').click()
 
     # AND coming back inside frame context
     text_area.element('p').should(
@@ -131,8 +131,8 @@ def test_actions_on_frame_element_with_logging(session_browser):
             '«select all» keys shortcut as ctrl+a or cmd+a for mac: STARTED\n'
             "element('.tox-edit-area__iframe'): element('#tinymce').element('p'): send "
             '«select all» keys shortcut as ctrl+a or cmd+a for mac: PASSED\n'
-            "element('.tox-toolbar__primary').element('[title=Bold]'): click: STARTED\n"
-            "element('.tox-toolbar__primary').element('[title=Bold]'): click: PASSED\n"
+            "element('.tox-toolbar__primary').element('[aria-label=Bold]'): click: STARTED\n"
+            "element('.tox-toolbar__primary').element('[aria-label=Bold]'): click: PASSED\n"
             "element('.tox-edit-area__iframe'): element('#tinymce').element('p'): should "
             "have js property 'innerHTML' with value '<strong>Hello, "
             "World!</strong>': STARTED\n"

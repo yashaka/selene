@@ -53,7 +53,7 @@ def test_actions_within_frame_context(session_browser):
         # AND exiting context (switch to default)...
 
     # AND (outside frame context)
-    toolbar.element('[title=Bold]').click()
+    toolbar.element('[aria-label=Bold]').click()
 
     # AND (coming back to frame context)
     with text_area_frame_context:
