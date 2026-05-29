@@ -33,6 +33,7 @@ class DummyElementEntity:
         self._locator = locator
         self.config = config
         self._webelement = DummyWebElement()
+        self.wait = DummyWait(self)
 
     def __call__(self):
         if self._locator:
@@ -92,6 +93,7 @@ class DummyConfig:
     def __init__(self, driver):
         self.driver = driver
         self._wait_decorator = lambda _wait: (lambda fn: fn)
+        self._disable_wait_decorator_on_get_query = False
 
     def with_(self, **kwargs):
         clone = DummyConfig(self.driver)
