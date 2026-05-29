@@ -23,6 +23,7 @@ nav:
   #   - Stub Title 1: use-cases/path-to-some-example.md
   - Reference:
     - Config: reference/configuration.md
+    - command.*: reference/command.md
   - Contribution:
     - How to contribute: contribution/to-source-code-guide.md
     - Code conventions: contribution/code-conventions-guide.md
@@ -95,6 +96,7 @@ plugins:
           options:
             show_source: false
             docstring_section_style: list
+            show_docstring_modules: true
   - git-revision-date-localized:
       enable_creation_date: true
       type: timeago

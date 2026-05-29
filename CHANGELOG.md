@@ -100,6 +100,25 @@ TODOs:
 - example of basic auth and auth via cookies (https://github.com/autotests-cloud/example_project/blob/master/src/test/java/cloud/autotests/tests/demowebshop/LoginTests.java)
 - can we force order of how `selene.*` is rendered on autocomplete? via `__all__`...
 
+## 2.0.0rc11 (to be released)
+
+### More commands in command.py
+
+- `command.copy`
+- `command.paste`
+- `command.copy_and_paste(text)`
+    Requires 3rd party `pyperclip` package to be used,
+    in order to copy to clipboard before pasting
+    via simulating `ctrl+v` or `cmd+v` shortcut pressed.
+- `command.long_press(duration=0.1)` alias to `command._long_press(duration=0.1)`
+    actually the `_long_press` is now an outdated alias and probably will be duplicated in future releases
+- `command.press_sequentially(text: str)`
+
+### Document command.py on module level
+
+Providing a brief overview of the module and how to extend it with custom commands.
+
+### Fix path of screenshot and pagesource for Windows
 
 ## 2.0.0rc10 (to be released)
 
