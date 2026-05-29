@@ -563,6 +563,61 @@ def drag_and_drop_by_offset(x: int, y: int) -> Command[Element]:
     return Command(f'drag and drop by offset: x={x}, y={y}', func)
 
 
+def _remove(entity: Union[Element, Collection]) -> None:
+    if not hasattr(entity, '__iter__'):
+        entity.execute_script('element.remove()')
+        return None
+
+    for element in entity:
+        element.execute_script('element.remove()')
+
+    return None
+
+
+def _set_style_display_to_none(entity: Union[Element, Collection]) -> None:
+    if not hasattr(entity, '__iter__'):
+        entity.execute_script('element.style.display="none"')
+        return None
+
+    for element in entity:
+        element.execute_script('element.style.display="none"')
+
+    return None
+
+
+def _set_style_display_to_block(entity: Union[Element, Collection]) -> None:
+    if not hasattr(entity, '__iter__'):
+        entity.execute_script('element.style.display="block"')
+        return None
+
+    for element in entity:
+        element.execute_script('element.style.display="block"')
+
+    return None
+
+
+def _set_style_visibility_to_hidden(entity: Union[Element, Collection]) -> None:
+    if not hasattr(entity, '__iter__'):
+        entity.execute_script('element.style.visibility="hidden"')
+        return None
+
+    for element in entity:
+        element.execute_script('element.style.visibility="hidden"')
+
+    return None
+
+
+def _set_style_visibility_to_visible(entity: Union[Element, Collection]) -> None:
+    if not hasattr(entity, '__iter__'):
+        entity.execute_script('element.style.visibility="visible"')
+        return None
+
+    for element in entity:
+        element.execute_script('element.style.visibility="visible"')
+
+    return None
+
+
 class js:  # pylint: disable=invalid-name
     """A container for JavaScript-based commands.
 
@@ -695,75 +750,36 @@ class js:  # pylint: disable=invalid-name
         lambda browser: browser.driver.execute_script('window.sessionStorage.clear()'),
     )
 
-    remove: Command[Union[Element, Collection]] = Command(
-        'remove',
-        lambda entity: (
-            entity.execute_script('element.remove()')
-            if not hasattr(entity, '__iter__')
-            else [element.execute_script('element.remove()') for element in entity]
-        ),
-    )
+    remove: Command[Union[Element, Collection]] = Command('remove', _remove)
 
     @staticmethod
     def set_style_property(name: str, value: Union[str, int]) -> Command[Element]:
+        def func(entity: Element) -> None:
+            entity.execute_script(f'element.style.{name}="{value}"')
+
         return Command(
             f'set element.style.{name}="{value}"',
-            lambda entity: (
-                entity.execute_script(f'element.style.{name}="{value}"')
-                if not hasattr(entity, '__iter__')
-                else [
-                    element.execute_script(f'element.style.{name}="{value}"')
-                    for element in entity
-                ]
-            ),
+            func,
         )
 
     set_style_display_to_none: Command[Union[Element, Collection]] = Command(
         'set element.style.display="none"',
-        lambda entity: (
-            entity.execute_script('element.style.display="none"')
-            if not hasattr(entity, '__iter__')
-            else [
-                element.execute_script('element.style.display="none"')
-                for element in entity
-            ]
-        ),
+        _set_style_display_to_none,
     )
 
     set_style_display_to_block: Command[Union[Element, Collection]] = Command(
         'set element.style.display="block"',
-        lambda entity: (
-            entity.execute_script('element.style.display="block"')
-            if not hasattr(entity, '__iter__')
-            else [
-                element.execute_script('element.style.display="block"')
-                for element in entity
-            ]
-        ),
+        _set_style_display_to_block,
     )
 
     set_style_visibility_to_hidden: Command[Union[Element, Collection]] = Command(
         'set element.style.visibility="hidden"',
-        lambda entity: (
-            entity.execute_script('element.style.visibility="hidden"')
-            if not hasattr(entity, '__iter__')
-            else [
-                element.execute_script('element.style.visibility="hidden"')
-                for element in entity
-            ]
-        ),
+        _set_style_visibility_to_hidden,
     )
 
     set_style_visibility_to_visible: Command[Union[Element, Collection]] = Command(
         'set element.style.visibility="visible"',
-        lambda entity: (
-            entity.execute_script('element.style.visibility="visible"')
-            if not hasattr(entity, '__iter__')
-            else [
-                element.execute_script('element.style.visibility="visible"')
-                for element in entity
-            ]
-        ),
+        _set_style_visibility_to_visible,
     )
 
     # TODO: add js.drag_and_drop_by_offset(x, y)
