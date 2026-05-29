@@ -125,6 +125,7 @@ def test_query_builders_for_element_properties(monkeypatch):
     monkeypatch.setattr(query, 'Element', DummyElementEntity)
 
     entity = DummyElementEntity()
+    entity.locate = lambda: entity._webelement
 
     assert query.attribute('role')(entity) == 'attr:role'
     assert query.screenshot('ok.png')(entity) is True
