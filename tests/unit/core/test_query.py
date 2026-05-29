@@ -231,3 +231,67 @@ def test_saved_screenshot_and_page_source_queries_and_browser_shortcut(monkeypat
     # deprecated but still supported shortcut usage
     assert query.screenshot_saved(browser).startswith('shot:')
     assert query.page_source_saved(browser).startswith('source:')
+
+
+def test_frame_context_reenter_and_exit_without_enter(monkeypatch):
+    monkeypatch.setattr(query, 'functools', __import__('functools'), raising=False)
+    support_stub = types.SimpleNamespace(
+        _wait=types.SimpleNamespace(with_=lambda context: (lambda _wait: (lambda fn: fn)))
+    )
+    monkeypatch.setattr(query, 'support', support_stub, raising=False)
+
+    driver = DummyDriver()
+    container = DummyElementEntity(config=DummyConfig(driver))
+    context = query._frame_context(container)
+
+    context.__enter__()
+    context.__enter__()
+    assert driver.frame_calls == ['frame-node']
+
+    context.__exit__(None, None, None)
+    assert driver.parent_calls == 1
+
+    context.__exit__(None, None, None)
+    assert driver.parent_calls == 1
+
+
+def test_frame_context_uses_context_wait_decorator_when_original_is_none(monkeypatch):
+    monkeypatch.setattr(query, 'functools', __import__('functools'), raising=False)
+
+    decorated_calls = {'count': 0}
+
+    def with_context(context):
+        def make_decorator(_wait):
+            def decorator(for_):
+                def wrapped(*args, **kwargs):
+                    context.__enter__()
+                    try:
+                        return for_(*args, **kwargs)
+                    finally:
+                        context.__exit__(None, None, None)
+                        decorated_calls['count'] += 1
+
+                return wrapped
+
+            return decorator
+
+        return make_decorator
+
+    monkeypatch.setattr(
+        query,
+        'support',
+        types.SimpleNamespace(_wait=types.SimpleNamespace(with_=with_context)),
+        raising=False,
+    )
+
+    driver = DummyDriver()
+    config = DummyConfig(driver)
+    config._wait_decorator = None
+    container = DummyElementEntity(config=config)
+    context = query._frame_context(container)
+
+    element = context._element('#a')
+    assert element() == ('one', ('css selector', '#a'))
+    decorated = element.config._wait_decorator(object())(lambda value: value + '-ok')
+    assert decorated('x') == 'x-ok'
+    assert decorated_calls['count'] >= 1
