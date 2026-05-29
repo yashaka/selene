@@ -76,6 +76,17 @@ jobs:
             tests/ \
             --headless=True
 
+      - name: Upload Selene failure artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: selene-failure-artifacts-py${{ matrix.python-version }}
+          path: |
+            /home/runner/.selene/screenshots/**/*.png
+            /home/runner/.selene/screenshots/**/*.html
+          if-no-files-found: ignore
+          retention-days: 7
+
       - name: Unit tests coverage report
         if: matrix.python-version == '3.10' && always()
         run: |
