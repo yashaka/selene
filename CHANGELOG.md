@@ -1,16 +1,5 @@
 # Changelog
 
-## Unreleased
-
-- TEST/CHORE: Added local self-hosted TinyMCE demo container under
-  `tools/tinymce-local/` to avoid remote read-only throttling issues.
-- TEST: Switched `tests/const.py::TINYMCE_URL` to environment-based config
-  with default `http://127.0.0.1:8000/demo/tinymce`.
-- CI: Updated `.github/workflows/tests.yml` to start and verify the local
-  TinyMCE demo before running tests.
-- DOCS: Added local TinyMCE workflow documentation to `CONTRIBUTING.md` and
-  `tools/tinymce-local/README.md`.
-
 ## > 2.0.0 release
 
 TODOs:
@@ -71,7 +60,9 @@ TODOs:
   - consider making have.size to work with elements too...
 - review all `# type: ignore`
 - review all typing.cast
-- fix «too much screenshots»? if can reproduce
+- consider changing artifacts behavior for handled `pytest.raises(TimeoutException)`
+  cases (currently artifacts are still saved) — tracked in
+  [#637](https://github.com/yashaka/selene/issues/637)
 - what about accepting None as locator of Element?
   in such case it such element will just do nothing regardless of what command is called on it
   - even better, we can accept Locators in browser.element(here)!!!
@@ -108,48 +99,19 @@ TODOs:
 - add safari support (trim space on text in case of safari)
 - example of basic auth and auth via cookies (https://github.com/autotests-cloud/example_project/blob/master/src/test/java/cloud/autotests/tests/demowebshop/LoginTests.java)
 - can we force order of how `selene.*` is rendered on autocomplete? via `__all__`...
-- deprecate `have.js_returned` in favour of `have.script_returned`
 
-## 2.0.0rc10 (to be released on DD.05.2024)
+## 2.0.0rc11 (to be released)
 
-### A context manager, decorator and search context to work with iFrames (Experimental)
+### Local TinyMCE test demo
 
-```python
-from selene import browser, query, have
-
-my_frame_context = browser.element('#my-iframe').get(query._frame_context)
-# now simply:
-my_frame_context._element('#inside-iframe').click()
-my_frame_context._all('.items-inside-iframe').should(have.size(3))
-# – here switching to frame and back happens for each command implicitly
-...
-# or
-with my_frame_context:
-    # here elements inside frame will be found when searching via browser
-    browser.element('#inside-iframe').click()
-    browser.all('.items-inside-iframe').should(have.size(3))
-    # this is the most speedy version,
-    # because switching to frame happens on entering the context
-    # and switching back to default content happens on exiting the context
-    ...
-
-@my_frame_context._within
-def do_something(self):
-    # and here too ;)
-    ...
-
-# so now you can simply call it:
-do_something()
-...
-
-# Switch to default content happens automatically, nevertheless;)
-```
-
-See a bit more in documented ["FAQ: How to work with iFrames in Selene?"](https://yashaka.github.io/selene/faq/iframes-howto/) and much more in ["Reference: `query.*`](https://yashaka.github.io/selene/reference/query).
-
-### config._disable_wait_decorator_on_get_query
-
-`True` by default, is needed for cleaner logging implemented via `config._wait_decorator` and more optimal performance for `.get(query._frame_context)` in case of nested frames.
+- TEST/CHORE: Added local self-hosted TinyMCE demo container under
+  `tools/tinymce-local/` to avoid remote read-only throttling issues.
+- TEST: Switched `tests/const.py::TINYMCE_URL` to environment-based config
+  with default `http://127.0.0.1:8000/demo/tinymce`.
+- CI: Updated `.github/workflows/tests.yml` to start and verify the local
+  TinyMCE demo before running tests.
+- DOCS: Added local TinyMCE workflow documentation to `CONTRIBUTING.md` and
+  `tools/tinymce-local/README.md`.
 
 ### More commands in command.py
 
@@ -160,22 +122,106 @@ See a bit more in documented ["FAQ: How to work with iFrames in Selene?"](https:
     in order to copy to clipboard before pasting
     via simulating `ctrl+v` or `cmd+v` shortcut pressed.
 - `command.long_press(duration=0.1)` alias to `command._long_press(duration=0.1)`
-    actually the _long_press is now an outdated alias and probably will be duplicated in future releases
+    actually the `_long_press` is now an outdated alias and probably will be duplicated in future releases
 - `command.press_sequentially(text: str)`
 
-### Document command.py and query.py on module level
+### Document command.py on module level
 
-Providing a brief overview of the modules and how to define your own custom commands and queries. See official docs to check new articles in Reference.
-
-### Removed deprecated methods from Autocomplete on browser.*
-
-Just "autocomplete" is disabled, methods still work;)
+Providing a brief overview of the module and how to extend it with custom commands.
 
 ### Fix path of screenshot and pagesource for Windows
 
-Thanks to [Cameron Shimmin](https://github.com/cshimm) and Edale Miguel for PR [#525](https://github.com/yashaka/selene/pull/525)
+## 2.0.0rc10 (to be released)
 
-## 2.0.0rc9 (to be released on 06.03.2024)
+This release stabilizes the `2.0.0rc9` line on the way to the final `2.0.0` release. It focuses on Selenium 4 compatibility, Python 3.10+ support, long-standing condition semantics, frame/iframe context ergonomics, artifact handling in timeout flows, and CI/release hardening.
+
+### Breaking changes
+
+- Dropped Python 3.8 and 3.9 support. Selene now requires Python `>=3.10`.
+
+### Added
+
+- Added experimental `query._frame_context(...)` pseudo-query for explicit frame/iframe context management.
+- Added support for nested `with` usage in frame contexts, including nested frames/iframes.
+- Added frame-context helper methods for lazy lookup inside a frame context:
+  - `_element(selector)`;
+  - `_all(selector)`;
+  - `_within` / `_step` / `_steps` decorator aliases for PageObject-style steps executed inside a frame context.
+
+### Fixed
+
+- Fixed compatibility with Selenium `>=4.40`, including Selenium `4.43`, by replacing the direct runtime import of `AnyDevice` from `selenium.webdriver.common.action_chains` with a local compatible type alias in `selene.core._actions`.
+  - Covers issues [#595](https://github.com/yashaka/selene/issues/595) and [#596](https://github.com/yashaka/selene/issues/596).
+- Fixed `have.attribute('href').value(...)` and `have.attribute('src').value(...)` semantics.
+  For `href` and `src`, Selene now reads the DOM attribute value via `getAttribute(...)` instead of comparing against Selenium/WebDriver-normalized absolute URLs.
+  - Fixes [#211](https://github.com/yashaka/selene/issues/211).
+- Fixed `collection.should(...)` when a composed element condition is passed directly to a collection, for example `have.css_class(...).and_(...)` or `have.text(...).or_(...)`.
+  Selene now keeps true collection conditions applied to the collection itself and falls back to per-item matching only for the element-condition-on-raw-list case.
+  - Fixes [#433](https://github.com/yashaka/selene/issues/433).
+- Fixed descriptor methods chained from negated conditions.
+  For example, `have.no.attribute(...).value_containing(...)` now works correctly.
+  The same binding fix applies to negated `attribute`, `js_property`, and `css_property` descriptor methods.
+  - Fixes [#486](https://github.com/yashaka/selene/issues/486).
+- Fixed ignored `_assert_location_changed=True` in `command.js.drag_and_drop_to(...)`.
+  The JavaScript drag-and-drop command now honors the flag and can participate correctly in Selene's retry/wait mechanism when the source element is expected to change location.
+  - Fixes [#567](https://github.com/yashaka/selene/issues/567).
+- Fixed `wait_until(...)` behavior for handled `False` outcomes so Selene does not save unnecessary screenshot/page-source artifacts.
+  This complements the earlier work on reducing excessive artifacts in expected/handled timeout flows.
+  - Fixes [#548](https://github.com/yashaka/selene/issues/548).
+- Fixed screenshot and page-source links in timeout errors to use valid `file://` URI formatting across operating systems.
+  - Fixes [#519](https://github.com/yashaka/selene/issues/519).
+- Normalized timeout reason rendering on Python 3.13+ by rendering `PatternError` as `error`, keeping timeout messages stable across supported Python versions.
+- Fixed `query.attribute(...)` typing to reflect Selenium behavior: a missing attribute can return `None`, so the query result type is now `str | None`.
+- Stabilized acceptance tests that interact with Ecosia by handling cookie overlays and using a JavaScript click fallback where appropriate.
+
+### Changed
+
+- Migrated package metadata to the PEP 621 `[project]` layout and Poetry 2.x lock/build tooling.
+- Updated project classifiers for Python `3.10`, `3.11`, `3.12`, `3.13`, and `3.14`.
+- Removed the runtime dependency on `future`.
+- Raised the runtime dependency on `typing-extensions` to `>=4.15.0`.
+- Kept Selenium dependency at `selenium>=4.12.0`.
+- Updated README/prerequisites/migration references to the new Python `>=3.10` baseline.
+
+### Tests and quality
+
+- Added regression coverage for driver lifecycle behavior related to [#53](https://github.com/yashaka/selene/issues/53):
+  - direct `browser.driver` access with `rebuild_not_alive_driver=True`;
+  - deprecated `config.hold_browser_open` alias behavior;
+  - `DeprecationWarning` expectations around the deprecated alias.
+- Added local isolated speed benchmark coverage for [#62](https://github.com/yashaka/selene/issues/62)-related flows and tightened the cached-locator ratio threshold.
+- Expanded `wait_until(...)` integration coverage and aligned wait-related test naming.
+- Added regression tests for the `href`/`src` DOM-attribute behavior fixed in [#211](https://github.com/yashaka/selene/issues/211).
+- Added integration tests for composed collection conditions fixed in [#433](https://github.com/yashaka/selene/issues/433).
+- Added integration tests for negated descriptor methods fixed in [#486](https://github.com/yashaka/selene/issues/486).
+- Added integration tests for JavaScript drag-and-drop location assertions fixed in [#567](https://github.com/yashaka/selene/issues/567).
+- Increased unit/integration coverage around core behavior and split Codecov reporting by suite/package slice.
+
+### CI and release infrastructure
+
+- Reworked the test workflow:
+  - blocking regression now runs across Python `3.10`-`3.14`;
+  - clipboard, speed, and remote suites run as separate non-blocking jobs;
+  - remote tests are gated by credentials;
+  - coverage upload runs on Python `3.10` only.
+- Stabilized Codecov policy for fork pull requests:
+  - Codecov v5 uploader;
+  - split flags;
+  - non-blocking tokenless uploads;
+  - GitHub coverage summary fallback.
+- Fixed GitHub Step Summary coverage table formatting.
+- Synced rc workflow logic with `master` where applicable.
+- Updated GitHub Actions versions for current runner/runtime compatibility, including Node 24 readiness.
+- Hardened the publish workflow:
+  - release publishing no longer mutates source files or commits version bumps;
+  - release tag, `pyproject.toml`, and `selene.__version__` are checked for consistency before publishing;
+  - package metadata is validated with `twine check`;
+  - the built wheel is smoke-installed in a clean virtual environment before publishing.
+- Updated release workflow documentation to describe the current GitHub Release -> CI publish flow, manual fallback, and troubleshooting steps.
+- Aligned release scripts with the current flow and fixed `.run/bump_build_publish.sh` to call `.run/publish.sh` instead of the misspelled `.rub/publish.sh`.
+- Removed the obsolete `traffic2badge` workflow.
+
+## 2.0.0rc9 (released on 06.03.2024)
 
 ### Click with offsets
 
