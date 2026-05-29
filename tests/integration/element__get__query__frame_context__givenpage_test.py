@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2015-2022 Iakiv Kramarenko
+# Copyright (c) 2026 Iakiv Kramarenko
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -20,31 +20,32 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# --- BASE -- #
+from selene import have, query
+from tests.integration.helpers.givenpage import GivenPage
 
-from selene.core._browser import Browser
-from selene.core.configuration import Config
 
-from selene.support import by
+def test_frame_context_reenter_and_back_to_default_content_on_given_page(
+    session_browser,
+):
+    browser = session_browser.with_(timeout=1.0)
+    page = GivenPage(browser.driver)
 
-from selene.support.conditions import be, have
+    page.opened_with_body("""
+        <button id="outside" onclick="
+            document.getElementById('outside-result').textContent='clicked'
+        ">Outside</button>
+        <div id="outside-result">initial</div>
+        <iframe
+            id="f"
+            srcdoc="<html><body><div id='inside'>frame text</div></body></html>"
+        ></iframe>
+        """)
 
-# --- ADVANCED --- #
+    frame_context = browser.element('#f').get(query._frame_context)
 
-from selene.core import query, command
-from selene.core.condition import not_  # just in case
+    with frame_context:
+        with frame_context:
+            browser.element('#inside').should(have.exact_text('frame text'))
 
-# --- SHARED --- #
-
-from selene.support.shared import browser, config
-from selene.support.shared.jquery_style import s, ss
-
-# --- probably just for Type Hints --- #
-
-from selene.core.entity import Element, Collection
-from selene.core.condition import Condition
-from selene.core.conditions import (
-    ElementCondition,
-    CollectionCondition,
-    BrowserCondition,
-)
+    browser.element('#outside').click()
+    browser.element('#outside-result').should(have.exact_text('clicked'))

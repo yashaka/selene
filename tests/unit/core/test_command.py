@@ -1,11 +1,8 @@
 import types
 from typing import cast
 
-import pytest
-
 from selene.core import command
 from selene.core.entity import Element
-from selene.core.exceptions import _SeleneError
 
 
 class DummyTempInput:
@@ -317,7 +314,7 @@ def test_js_drop_file_uses_temp_input_and_wait(monkeypatch):
     assert driver.temp_input.sent == ['/tmp/file.txt']
 
 
-def test_js_drag_and_drop_to_can_assert_location_changed():
+def test_js_drag_and_drop_to():
     driver = DummyDriver()
     source = cast(
         Element,
@@ -325,11 +322,108 @@ def test_js_drag_and_drop_to_can_assert_location_changed():
     )
     target = cast(Element, DummyElement(driver=driver))
 
-    with pytest.raises(
-        _SeleneError,
-        match='Element was not dragged to the new place',
-    ):
-        command.js.drag_and_drop_to(
-            target,
-            _assert_location_changed=True,
-        )(source)
+    command.js.drag_and_drop_to(target)(source)
+
+
+def test_copy_and_paste_raises_helpful_error_when_pyperclip_is_missing(monkeypatch):
+    import builtins
+
+    monkeypatch.setattr(command, 'ActionChains', FakeActionChains)
+    monkeypatch.setattr(command, 'Element', DummyElement)
+
+    real_import = builtins.__import__
+
+    def fake_import(name, *args, **kwargs):
+        if name == 'pyperclip':
+            raise ImportError('missing pyperclip')
+        return real_import(name, *args, **kwargs)
+
+    monkeypatch.setattr(builtins, '__import__', fake_import)
+
+    element = DummyElement()
+    try:
+        command.copy_and_paste('hello')(element)
+        assert False, 'expected ImportError'
+    except ImportError as error:
+        assert 'pyperclip package is not installed' in str(error)
+        assert 'pip install pyperclip' in str(error)
+
+
+def test_copy_and_paste_uses_clipboard_and_pastes_for_element(monkeypatch):
+    import sys
+
+    monkeypatch.setattr(command, 'ActionChains', FakeActionChains)
+    monkeypatch.setattr(command, 'Element', DummyElement)
+
+    copied = []
+
+    class FakePyperclip:
+        @staticmethod
+        def copy(text):
+            copied.append(text)
+
+    monkeypatch.setitem(sys.modules, 'pyperclip', FakePyperclip)
+
+    element = DummyElement()
+    command.copy_and_paste('hello')(element)
+
+    assert copied == ['hello']
+    key_down_calls = [c for c in FakeActionChains.last.calls if c[0] == 'key_down']
+    key_up_calls = [c for c in FakeActionChains.last.calls if c[0] == 'key_up']
+    assert key_down_calls and key_up_calls
+    assert key_down_calls[0][1] == key_up_calls[0][1]
+    assert any(
+        c[0] == 'send_keys_to_element' and c[2] == 'v'
+        for c in FakeActionChains.last.calls
+    )
+    assert ('perform',) in FakeActionChains.last.calls
+
+
+def test_copy_and_paste_for_browser_uses_send_keys(monkeypatch):
+    import sys
+
+    monkeypatch.setattr(command, 'ActionChains', FakeActionChains)
+    monkeypatch.setattr(command, 'Element', DummyElement)
+
+    class FakePyperclip:
+        @staticmethod
+        def copy(_text):
+            return None
+
+    monkeypatch.setitem(sys.modules, 'pyperclip', FakePyperclip)
+
+    browser = DummyBrowser()
+    command.copy_and_paste('x')(browser)
+
+    assert any(c[0] == 'send_keys' and c[1] == 'v' for c in FakeActionChains.last.calls)
+
+
+def test_copy_and_paste_copy_paste_and_press_sequentially_commands(monkeypatch):
+    monkeypatch.setattr(command, 'ActionChains', FakeActionChains)
+    monkeypatch.setattr(command, 'Element', DummyElement)
+
+    element = DummyElement()
+    browser = DummyBrowser()
+
+    command.copy(element)
+    assert any(
+        c[0] == 'send_keys_to_element' and c[2] == 'c'
+        for c in FakeActionChains.last.calls
+    )
+    command.copy(browser)
+    assert any(c[0] == 'send_keys' and c[1] == 'c' for c in FakeActionChains.last.calls)
+
+    command.paste(element)
+    assert any(
+        c[0] == 'send_keys_to_element' and c[2] == 'v'
+        for c in FakeActionChains.last.calls
+    )
+    command.paste(browser)
+    assert any(c[0] == 'send_keys' and c[1] == 'v' for c in FakeActionChains.last.calls)
+
+    command.press_sequentially('ab')(element)
+    expected_payloads = [
+        c[2] for c in FakeActionChains.last.calls if c[0] == 'send_keys_to_element'
+    ]
+    assert expected_payloads == [command.Keys.END + 'a', command.Keys.END + 'b']
+    assert ('perform',) in FakeActionChains.last.calls

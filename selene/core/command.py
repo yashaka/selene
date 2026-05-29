@@ -65,6 +65,11 @@ Thus, by separating advanced commands from the standard ones,
 we emphasize for the end user of Selene – the importance
 of more conscious use of them.
 
+!!! tip
+
+    Yet you can always [extend Selene][how-to-extend-selene] entities
+    with your own commands built in.
+
 The list of advanced commands in this module is far from exhaustive,
 and there is no goal to make it complete, because in many cases, the end user
 will need his own list of custom commands specific to his application context.
@@ -271,7 +276,7 @@ Here the actual command is the `action` function
 defined inside the definition of the `press_sequentially` command builder,
 and returned from it wrapped in a more “descriptive” `Command` object.
 
-For more example of how to build your own custom commands
+For more examples of how to build your own custom commands
 see the actual implementation of Selene's advanced commands in this module.
 
 # The actual list of commands ↙️
@@ -624,12 +629,10 @@ class js:  # pylint: disable=invalid-name
             self._description = 'click'
 
         @overload
-        def __call__(self, element: Element) -> None: ...  # pragma: no cover
+        def __call__(self, element: Element) -> None: ...
 
         @overload
-        def __call__(
-            self, *, xoffset=0, yoffset=0
-        ) -> Command[Element]: ...  # pragma: no cover
+        def __call__(self, *, xoffset=0, yoffset=0) -> Command[Element]: ...
 
         def __call__(self, element: Element | None = None, *, xoffset=0, yoffset=0):
             def func(element: Element):
@@ -701,11 +704,13 @@ class js:  # pylint: disable=invalid-name
         )
         # command should return None anyway:
         and None
-        or None,  # TODO: should we change Command to return None | Any to avoid this workaround?,
+        or None,  # TODO: should we change Command to return None | Any to avoid this workaround?
     )
 
     @staticmethod
-    def set_style_property(name: str, value: Union[str, int]) -> Command[Element]:
+    def set_style_property(
+        name: str, value: Union[str, int]
+    ) -> Command[Union[Element, Collection]]:
         return Command(
             f'set element.style.{name}="{value}"',
             lambda entity: (
@@ -779,17 +784,9 @@ class js:  # pylint: disable=invalid-name
     # TODO: add js.drag_and_drop_by_offset(x, y)
 
     @staticmethod
-    def drag_and_drop_to(
-        target: Element,
-        _assert_location_changed: bool = False,
-    ) -> Command[Element]:
-        """Simulates drag and drop via JavaScript.
-
-        Args:
-            target: a destination element to drag and drop to
-            _assert_location_changed: False by default, but if True, then will
-                assert that element was dragged to the new location, hence forcing
-                a command retry if command was under waiting.
+    def drag_and_drop_to(target: Element) -> Command[Element]:
+        """
+        Simulates drag and drop via JavaScript.
 
         !!! warning
 
@@ -798,64 +795,52 @@ class js:  # pylint: disable=invalid-name
             where the normal drag and drop works fine.
         """
 
-        def func(source: Element) -> None:
-            source_webelement = source.locate()
-            source_location = (
-                source_webelement.location if _assert_location_changed else None
-            )
-
+        def func(source: Element):
             script = """
             (function() {
-                function createEvent(typeOfEvent) {
-                    var event = document.createEvent('CustomEvent');
-                    event.initCustomEvent(typeOfEvent, true, true, null);
-                    event.dataTransfer = {
-                        data: {},
-                        setData: function(key, value) {
-                            this.data[key] = value;
-                        },
-                        getData: function(key) {
-                            return this.data[key];
-                        }
-                    };
-                    return event;
+              function createEvent(typeOfEvent) {
+                var event = document.createEvent('CustomEvent');
+                event.initCustomEvent(typeOfEvent, true, true, null);
+                event.dataTransfer = {
+                  data: {},
+                  setData: function(key, value) {
+                    this.data[key] = value;
+                  },
+                  getData: function(key) {
+                    return this.data[key];
+                  }
+                };
+                return event;
+              }
+
+              function dispatchEvent(element, event, transferData) {
+                if (transferData !== undefined) {
+                  event.dataTransfer = transferData;
                 }
-
-                function dispatchEvent(element, event, transferData) {
-                    if (transferData !== undefined) {
-                        event.dataTransfer = transferData;
-                    }
-
-                    if (element.dispatchEvent) {
-                        element.dispatchEvent(event);
-                    } else if (element.fireEvent) {
-                        element.fireEvent("on" + event.type, event);
-                    }
+                if (element.dispatchEvent) {
+                  element.dispatchEvent(event);
+                } else if (element.fireEvent) {
+                  element.fireEvent("on" + event.type, event);
                 }
+              }
 
-                function dragAndDrop(element, target) {
-                    var dragStartEvent = createEvent('dragstart');
-                    dispatchEvent(element, dragStartEvent);
+              function dragAndDrop(element, target) {
+                var dragStartEvent = createEvent('dragstart');
+                dispatchEvent(element, dragStartEvent);
+                var dropEvent = createEvent('drop');
+                dispatchEvent(target, dropEvent, dragStartEvent.dataTransfer);
+                var dragEndEvent = createEvent('dragend');
+                dispatchEvent(element, dragEndEvent, dropEvent.dataTransfer);
+              }
 
-                    var dropEvent = createEvent('drop');
-                    dispatchEvent(target, dropEvent, dragStartEvent.dataTransfer);
-
-                    var dragEndEvent = createEvent('dragend');
-                    dispatchEvent(element, dragEndEvent, dropEvent.dataTransfer);
-                }
-
-                return dragAndDrop(arguments[0], arguments[1]);
+              return dragAndDrop(arguments[0], arguments[1]);
             })(...arguments)
             """.strip()
-
             source.config.driver.execute_script(
                 script,
-                source_webelement,
+                source.locate(),
                 target.locate(),
             )
-
-            if _assert_location_changed and source_location == source.locate().location:
-                raise _SeleneError('Element was not dragged to the new place')
 
         return Command(f'drag and drop to: {target}', func)
 

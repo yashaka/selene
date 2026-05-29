@@ -42,6 +42,7 @@ class DummyConfig:
         self.set_value_by_js = False
         self.type_by_js = False
         self.click_by_js = False
+        self._disable_wait_decorator_on_get_query = False
 
     def wait(self, entity):
         return DummyWait(entity)

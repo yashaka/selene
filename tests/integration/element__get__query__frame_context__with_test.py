@@ -19,43 +19,58 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-import pytest
 
-from selene import command, have, query, be
+from selene import command, have, query
+from tests.const import TINYMCE_URL
 
 
-# TODO: break down into 2 tests
-def test_actions_on_nested_frames_element_via_with_statement(session_browser):
+def test_actions_within_frame_context(session_browser):
     browser = session_browser.with_(timeout=1.0)
 
     # GIVEN even before opened browser
-    browser.open('https://the-internet.herokuapp.com/nested_frames')
+
+    toolbar = browser.element('.tox-toolbar__primary')
+    text_area_frame = browser.element('.tox-edit-area__iframe')
+    text_area_frame_context = query._frame_context(text_area_frame)  # THEN lazy;)
+    text_area = browser.element('#tinymce')
 
     # WHEN
-    with browser.element('[name=frame-top]').get(query._frame_context):
-        with browser.element('[name=frame-middle]').get(query._frame_context):
-            browser.element(
-                '#content',
-                # THEN
-            ).should(have.exact_text('MIDDLE'))
-        # AND
-        browser.element('[name=frame-right]').should(be.visible)
+    browser.open(TINYMCE_URL)
 
-    # WHEN failed
-    try:
-        with browser.element('[name=frame-top]').get(query._frame_context):
-            with browser.element('[name=frame-middle]').get(query._frame_context):
-                browser.element(
-                    '#content',
-                ).should(have.exact_text('LEFT'))
-        pytest.fail('should have failed on text mismatch')
-    except AssertionError as error:
+    # AND
+    with text_area_frame_context:
+
         # THEN
-        assert (
-            'Message: \n'
-            '\n'
-            'Timed out after 1.0s, while waiting for:\n'
-            "browser.element(('css selector', '#content')).has exact text LEFT\n"
-            '\n'
-            'Reason: AssertionError: actual text: MIDDLE\n'
-        ) in str(error)
+        text_area.element('p').should(
+            have.js_property('innerHTML').value(
+                'Hello, World!',
+            )
+        )
+
+        # WHEN
+        text_area.perform(command.select_all)
+
+        # AND exiting context (switch to default)...
+
+    # AND (outside frame context)
+    toolbar.element('[aria-label=Bold]').click()
+
+    # AND (coming back to frame context)
+    with text_area_frame_context:
+
+        # THEN
+        text_area.element('p').should(
+            have.js_property('innerHTML').value('<strong>Hello, World!</strong>')
+        )
+
+        # WHEN (just one more example)
+        text_area.perform(command.select_all).type(
+            'New content',
+        )
+
+        # THEN
+        text_area.element('p').should(
+            have.js_property('innerHTML').value(
+                '<strong>New content</strong>',
+            )
+        )

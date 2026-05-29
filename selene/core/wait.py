@@ -53,11 +53,11 @@ Fn = Callable[[T], R]
 
 # TODO: consider moving outside of "wait" module... because there is no direct cohesion with it
 class Query(Generic[E, R]):
-    def __init__(self, description: str, fn: Callable[[E], R]):
+    def __init__(self, description: str, fn: Callable[[E], R | None]):
         self._description = description
         self._fn = fn
 
-    def __call__(self, entity: E) -> R:
+    def __call__(self, entity: E) -> R | None:
         return self._fn(entity)
 
     def __str__(self):
@@ -76,14 +76,24 @@ class Wait(Generic[E]):
         entity: E,
         at_most: float,
         or_fail_with: Optional[Callable[[TimeoutException], Exception]] = None,
-        _decorator: Callable[
-            [Wait[E]], Callable[[Callable[..., R]], Callable[..., R]]
-        ] = lambda _: identity,
+        _decorator: (
+            Callable[[Wait[E]], Callable[[Callable[..., R]], Callable[..., R]]] | None
+        ) = None,
     ):
         self.entity = entity
         self._timeout = at_most
         self._hook_failure = or_fail_with or identity
-        self._decorator = _decorator
+        self._decorator = _decorator or (lambda wait: identity)
+
+    def with_(
+        self,
+        *,
+        decorator: (
+            Callable[[Wait[E]], Callable[[Callable[..., R]], Callable[..., R]]] | None
+        ),
+        # TODO: consider adding other options for consistency
+    ) -> Wait[E]:
+        return Wait(self.entity, self._timeout, self._hook_failure, decorator)
 
     @property
     def _entity(self):
@@ -171,5 +181,5 @@ class Wait(Generic[E]):
     def command(self, description: str, fn: Callable[[E], None]) -> None:
         self.for_(Command(description, fn))
 
-    def query(self, description: str, fn: Callable[[E], R]) -> R:
+    def query(self, description: str, fn: Callable[[E], R]) -> Optional[R]:
         return self.for_(Query(description, fn))

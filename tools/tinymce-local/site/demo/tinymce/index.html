@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>An iFrame contains the TinyMCE WYSIWYG Editor</title>
+    <style>
+      :root { color-scheme: light; }
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: #f6f7f9;
+        color: #1f2937;
+      }
+      .container {
+        max-width: 1080px;
+        margin: 32px auto;
+        padding: 0 16px;
+      }
+      h1 {
+        font-size: 28px;
+        font-weight: 700;
+        line-height: 1.2;
+        margin: 0 0 20px;
+      }
+    </style>
+    <script src="/tinymce/tinymce.min.js" referrerpolicy="origin"></script>
+  </head>
+  <body>
+    <div class="container">
+      <h1>An iFrame contains the TinyMCE WYSIWYG Editor</h1>
+      <form method="post">
+        <textarea id="tinymce">Hello, World!</textarea>
+      </form>
+    </div>
+
+    <script>
+      tinymce.init({
+        selector: '#tinymce',
+        license_key: 'gpl',
+        menubar: true,
+        height: 400,
+        promotion: false,
+        branding: false,
+        plugins: 'lists link table code help wordcount',
+        toolbar:
+          'undo redo | styles | bold italic | alignleft aligncenter alignright alignjustify | outdent indent',
+      });
+    </script>
+  </body>
+</html>
