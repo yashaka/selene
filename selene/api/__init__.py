@@ -39,7 +39,6 @@ from selene.core.condition import not_  # just in case
 from selene.support.shared import browser, config
 from selene.support.shared.jquery_style import s, ss
 
-
 # --- probably just for Type Hints --- #
 
 from selene.core.entity import Element, Collection

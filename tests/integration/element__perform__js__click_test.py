@@ -7,8 +7,7 @@ from tests.integration.helpers.givenpage import GivenPage
 def test_command_js_click_does_not_wait_for_no_overlay(session_browser):
     browser = session_browser.with_(timeout=0.5)
     page = GivenPage(browser.driver)
-    page.opened_with_body(
-        '''
+    page.opened_with_body('''
         <div
             id="overlay"
             style='
@@ -29,8 +28,7 @@ def test_command_js_click_does_not_wait_for_no_overlay(session_browser):
         </div>
         <a href="#second">go to Heading 2</a>
         <h2 id="second">Heading 2</h2>
-        '''
-    )
+        ''')
     before_call = time.time()
     page.execute_script_with_timeout(
         '''
@@ -49,8 +47,7 @@ def test_command_js_click_does_not_wait_for_no_overlay(session_browser):
 def test_command_js_click__call__is_still_same_command(session_browser):
     browser = session_browser.with_(timeout=0.5)
     page = GivenPage(browser.driver)
-    page.opened_with_body(
-        '''
+    page.opened_with_body('''
         <div
             id="overlay"
             style='
@@ -71,8 +68,7 @@ def test_command_js_click__call__is_still_same_command(session_browser):
         </div>
         <a href="#second">go to Heading 2</a>
         <h2 id="second">Heading 2</h2>
-        '''
-    )
+        ''')
     before_call = time.time()
     page.execute_script_with_timeout(
         '''
@@ -91,11 +87,9 @@ def test_command_js_click__call__is_still_same_command(session_browser):
 def x_test_command_js_click__with_offset(session_browser):
     browser = session_browser.with_(timeout=0.5)
     page = GivenPage(browser.driver)
-    page.opened_with_body(
-        '''
+    page.opened_with_body('''
         <input type="range" min="0.0" max="5.0" step="0.5" value="0">
-        '''
-    )
+        ''')
 
     # TODO: why it does not click on slider? o_O
     browser.element('input').perform(command.js.click(xoffset=-10))

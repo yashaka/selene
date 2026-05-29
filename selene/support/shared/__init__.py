@@ -23,6 +23,5 @@
 from __future__ import annotations
 from selene import _managed
 
-
 config = _managed.config
 browser = _managed.browser

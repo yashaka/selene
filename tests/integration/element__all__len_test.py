@@ -23,14 +23,12 @@ from tests.integration.helpers.givenpage import GivenPage
 
 
 def test_counts_invisible_tasks(session_browser):
-    GivenPage(session_browser.driver).opened_with_body(
-        '''
+    GivenPage(session_browser.driver).opened_with_body('''
         <ul>Hello to:
             <li class='will-appear'>Bob</li>
             <li class='will-appear' style='display:none'>Kate</li>
         </ul>
-        '''
-    )
+        ''')
 
     collection = session_browser.element('ul').all('.will-appear')
 

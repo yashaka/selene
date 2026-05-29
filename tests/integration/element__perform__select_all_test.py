@@ -7,11 +7,9 @@ def test_select_all_called_on_element_makes_type_to_reset_text(session_browser):
     browser = session_browser.with_(timeout=1)
     browser.config.hold_driver_at_exit = True
     page = GivenPage(browser.driver)
-    page.opened_with_body(
-        '''
+    page.opened_with_body('''
         <input id="text-field" value="text"></input>
-        '''
-    )
+        ''')
 
     browser.element('#text-field').perform(command.select_all).type('reset')
 
@@ -25,11 +23,9 @@ def test_select_all_called_on_browser_makes_type_to_reset_text_on_focused_elemen
     browser = session_browser.with_(timeout=1)
     browser.config.hold_driver_at_exit = True
     page = GivenPage(browser.driver)
-    page.opened_with_body(
-        '''
+    page.opened_with_body('''
         <input id="text-field" value="text"></input>
-        '''
-    )
+        ''')
     browser.element('#text-field').click()  # <- GIVEN
 
     browser.perform(command.select_all)
@@ -44,11 +40,9 @@ def test_select_all_called_on_browser_makes_type_to_append_text_on_not_focused_e
     browser = session_browser.with_(timeout=1)
     browser.config.hold_driver_at_exit = True
     page = GivenPage(browser.driver)
-    page.opened_with_body(
-        '''
+    page.opened_with_body('''
         <input id="text-field" value="text"></input>
-        '''
-    )
+        ''')
     # browser.element('#text-field').click()  # <- GIVEN
 
     browser.perform(command.select_all)

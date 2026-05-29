@@ -184,6 +184,7 @@ see the actual implementation of Selene's queries in this module.
 
 # The actual list of queries ↙️
 """
+
 from __future__ import annotations
 
 import functools

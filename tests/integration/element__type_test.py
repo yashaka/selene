@@ -10,11 +10,9 @@ def test_type_appends_text(session_browser):
     browser = session_browser.with_(timeout=1)
     browser.config.hold_driver_at_exit = True
     page = GivenPage(browser.driver)
-    page.opened_with_body(
-        '''
+    page.opened_with_body('''
         <input id="text-field" value="text"></input>
-        '''
-    )
+        ''')
 
     browser.element('#text-field').type(' appended')
 
@@ -26,8 +24,7 @@ def test_type_waits_for_no_overlay(session_browser):
         wait_for_no_overlap_found_by_js=True
     )
     page = GivenPage(browser.driver)
-    page.opened_with_body(
-        '''
+    page.opened_with_body('''
         <div
           id="overlay"
           style="display: block;
@@ -42,8 +39,7 @@ def test_type_waits_for_no_overlay(session_browser):
                 z-index: 10000">
         </div>
         <input id="text-field" value="before"></input>
-        '''
-    )
+        ''')
     time_before = time.time()
     page.opened_with_body_with_timeout(
         '''
@@ -75,8 +71,7 @@ def test_type_failure_when_overlapped(session_browser):
         wait_for_no_overlap_found_by_js=True
     )
     page = GivenPage(browser.driver)
-    page.opened_with_body(
-        '''
+    page.opened_with_body('''
         <div
           id="overlay"
           style="display: block;
@@ -91,8 +86,7 @@ def test_type_failure_when_overlapped(session_browser):
                 z-index: 10000">
         </div>
         <input id="text-field" value="before"></input>
-        '''
-    )
+        ''')
     time_before = time.time()
 
     try:
@@ -113,15 +107,13 @@ def test_type_waits_for_visibility(session_browser):
         wait_for_no_overlap_found_by_js=True
     )
     page = GivenPage(browser.driver)
-    page.opened_with_body(
-        '''
+    page.opened_with_body('''
         <input
             id="text-field"
             value="before"
             style="display: none">
         </input>
-        '''
-    )
+        ''')
     time_before = time.time()
     page.execute_script_with_timeout(
         '''
@@ -142,15 +134,13 @@ def test_type_failure_when_invisible(session_browser):
         wait_for_no_overlap_found_by_js=True
     )
     page = GivenPage(browser.driver)
-    page.opened_with_body(
-        '''
+    page.opened_with_body('''
         <input
             id="text-field"
             value="before"
             style="display: none">
         </input>
-        '''
-    )
+        ''')
     time_before = time.time()
 
     try:

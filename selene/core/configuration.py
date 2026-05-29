@@ -1435,11 +1435,8 @@ class Config:
         def save_and_log_screenshot(error: TimeoutException) -> Exception:
             path = self._save_screenshot_strategy(self)  # type: ignore
             uri = self._format_path_as_uri(path)
-            return TimeoutException(
-                error.msg
-                + f'''
-Screenshot: {uri}'''
-            )
+            return TimeoutException(error.msg + f'''
+Screenshot: {uri}''')
 
         def save_and_log_page_source(error: TimeoutException) -> Exception:
             filename = (

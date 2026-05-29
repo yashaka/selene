@@ -123,7 +123,9 @@ def test_js_drag_and_drop_to_does_not_change_location_when_drop_target_keeps_sou
         </script>
     """)
 
-    browser.element('#source').perform(command.js.drag_and_drop_to(browser.element('#target')))
+    browser.element('#source').perform(
+        command.js.drag_and_drop_to(browser.element('#target'))
+    )
 
     browser.element('#source').should(be.present)
 
@@ -172,7 +174,9 @@ def test_js_drag_and_drop_to_passes_when_location_changed(session_browser):
         </div>
     """)
 
-    browser.element('#draggable').perform(command.js.drag_and_drop_to(browser.element('#target2')))
+    browser.element('#draggable').perform(
+        command.js.drag_and_drop_to(browser.element('#target2'))
+    )
 
     browser.element('#target1').element('#draggable').should(be.not_.present)
     browser.element('#target2').element('#draggable').should(be.present)
