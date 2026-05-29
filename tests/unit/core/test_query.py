@@ -236,7 +236,9 @@ def test_saved_screenshot_and_page_source_queries_and_browser_shortcut(monkeypat
 def test_frame_context_reenter_and_exit_without_enter(monkeypatch):
     monkeypatch.setattr(query, 'functools', __import__('functools'), raising=False)
     support_stub = types.SimpleNamespace(
-        _wait=types.SimpleNamespace(with_=lambda context: (lambda _wait: (lambda fn: fn)))
+        _wait=types.SimpleNamespace(
+            with_=lambda context: (lambda _wait: (lambda fn: fn))
+        )
     )
     monkeypatch.setattr(query, 'support', support_stub, raising=False)
 

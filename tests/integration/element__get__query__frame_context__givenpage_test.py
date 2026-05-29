@@ -24,12 +24,13 @@ from selene import have, query
 from tests.integration.helpers.givenpage import GivenPage
 
 
-def test_frame_context_reenter_and_back_to_default_content_on_given_page(session_browser):
+def test_frame_context_reenter_and_back_to_default_content_on_given_page(
+    session_browser,
+):
     browser = session_browser.with_(timeout=1.0)
     page = GivenPage(browser.driver)
 
-    page.opened_with_body(
-        """
+    page.opened_with_body("""
         <button id="outside" onclick="
             document.getElementById('outside-result').textContent='clicked'
         ">Outside</button>
@@ -38,8 +39,7 @@ def test_frame_context_reenter_and_back_to_default_content_on_given_page(session
             id="f"
             srcdoc="<html><body><div id='inside'>frame text</div></body></html>"
         ></iframe>
-        """
-    )
+        """)
 
     frame_context = browser.element('#f').get(query._frame_context)
 

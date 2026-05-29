@@ -373,7 +373,8 @@ def test_copy_and_paste_uses_clipboard_and_pastes_for_element(monkeypatch):
     assert key_down_calls and key_up_calls
     assert key_down_calls[0][1] == key_up_calls[0][1]
     assert any(
-        c[0] == 'send_keys_to_element' and c[2] == 'v' for c in FakeActionChains.last.calls
+        c[0] == 'send_keys_to_element' and c[2] == 'v'
+        for c in FakeActionChains.last.calls
     )
     assert ('perform',) in FakeActionChains.last.calls
 
@@ -406,14 +407,16 @@ def test_copy_and_paste_copy_paste_and_press_sequentially_commands(monkeypatch):
 
     command.copy(element)
     assert any(
-        c[0] == 'send_keys_to_element' and c[2] == 'c' for c in FakeActionChains.last.calls
+        c[0] == 'send_keys_to_element' and c[2] == 'c'
+        for c in FakeActionChains.last.calls
     )
     command.copy(browser)
     assert any(c[0] == 'send_keys' and c[1] == 'c' for c in FakeActionChains.last.calls)
 
     command.paste(element)
     assert any(
-        c[0] == 'send_keys_to_element' and c[2] == 'v' for c in FakeActionChains.last.calls
+        c[0] == 'send_keys_to_element' and c[2] == 'v'
+        for c in FakeActionChains.last.calls
     )
     command.paste(browser)
     assert any(c[0] == 'send_keys' and c[1] == 'v' for c in FakeActionChains.last.calls)

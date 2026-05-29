@@ -60,9 +60,7 @@ def test_actions_within_frame_context(session_browser):
 
         # THEN
         text_area.element('p').should(
-            have.js_property('innerHTML').value(
-                '<strong>Hello, World!</strong>'
-            )
+            have.js_property('innerHTML').value('<strong>Hello, World!</strong>')
         )
 
         # WHEN (just one more example)
