@@ -102,6 +102,23 @@ TODOs:
 
 ## 2.0.0rc11 (to be released)
 
+### Shadow DOM support via query.js.shadow_root(s)
+
+As simple as:
+
+```python
+from selene import browser, query, have
+
+...
+
+browser.element('#element-with-shadow-dom').get(query.js.shadow_root).element(
+  '#shadowed-element'
+).click()
+browser.all('.item-with-shadow-dom').get(query.js.shadow_roots).should(have.size(3))
+```
+
+See one more example at [FAQ: How to work with Shadow DOM in Selene?](https://yashaka.github.io/selene/faq/shadow-dom-howto/)
+
 ### Local TinyMCE test demo
 
 - TEST/CHORE: Added local self-hosted TinyMCE demo container under
