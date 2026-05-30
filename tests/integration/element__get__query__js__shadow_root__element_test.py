@@ -37,20 +37,16 @@ def test_actions_on_shadow_root_element(session_browser):
     my_shadowed_text_1 = paragraph_1_shadow.element('[name=my-text]')
     my_shadowed_text_2 = paragraph_2_shadow.element('[name=my-text]')
     # AND
-    page.opened_with_body(
-        '''
+    page.opened_with_body('''
         <my-paragraph>Let's have some different text!</my-paragraph>
         <my-paragraph>Let's have some different text!\nIn a list!</my-paragraph>
-        '''
-    )
-    page.execute_script(
-        '''
+        ''')
+    page.execute_script('''
         document.querySelectorAll('my-paragraph').forEach(element => {
             element.attachShadow({mode: 'open'}).innerHTML =
                 '<span name="my-text">My default text</span>'
         })
-        '''
-    )
+        ''')
 
     # THEN
     my_shadowed_text_1.should(have.exact_text("My default text"))
