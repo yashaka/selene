@@ -839,7 +839,7 @@ browser.element('[id^=google_ads]').execute_script('element.remove()')
 # OR
 browser.element('[id^=google_ads]').execute_script('self.remove()')
 '''
-# are roughly equivalent to the lower-level Selenium call:
+# Both forms are element-scoped convenience alternatives to the lower-level Selenium call:
 browser.driver.execute_script('arguments[0].remove()', browser.element('[id^=google_ads]')())
 '''
 
@@ -847,7 +847,7 @@ browser.element('input').execute_script('element.value=arguments[0]', 'new value
 # OR
 browser.element('input').execute_script('self.value=arguments[0]', 'new value')
 '''
-# are roughly equivalent to the lower-level Selenium call:
+# Both forms are element-scoped convenience alternatives to the lower-level Selenium call:
 browser.driver.execute_script('arguments[0].value=arguments[1]', browser.element('input').locate(), 'new value')
 '''
 ```
