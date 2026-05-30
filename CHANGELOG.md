@@ -164,6 +164,14 @@ This release stabilizes the `2.0.0rc9` line on the way to the final `2.0.0` rele
   - `_element(selector)`;
   - `_all(selector)`;
   - `_within` / `_step` / `_steps` decorator aliases for PageObject-style steps executed inside a frame context.
+- Added more collection queries in `query.py`:
+  - `query.texts`
+  - `query.attributes(name)`
+  - `query.inner_htmls`
+  - `query.outer_htmls`
+  - `query.texts_content`
+  - `query.values`
+  - `query.tags`
 
 ### Fixed
 
@@ -212,6 +220,7 @@ This release stabilizes the `2.0.0rc9` line on the way to the final `2.0.0` rele
 - Added integration tests for composed collection conditions fixed in [#433](https://github.com/yashaka/selene/issues/433).
 - Added integration tests for negated descriptor methods fixed in [#486](https://github.com/yashaka/selene/issues/486).
 - Added integration tests for JavaScript drag-and-drop location assertions fixed in [#567](https://github.com/yashaka/selene/issues/567).
+- Added integration coverage for the new collection-style queries in `query.py`.
 - Increased unit/integration coverage around core behavior and split Codecov reporting by suite/package slice.
 
 ### CI and release infrastructure

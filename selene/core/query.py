@@ -173,7 +173,7 @@ inner_html = attribute('innerHTML')
 text_content = attribute('textContent')
 value = attribute('value')
 
-tag: Query[Element, str] = Query('tag name', lambda element: element().tag_name)
+tag: Query[Element, str] = Query('tag name', lambda element: element.locate().tag_name)
 ```
 
 – As you can see, it all comes simply to define a function or lambda on entity object
@@ -202,31 +202,67 @@ from selene.core.wait import Query, Command
 
 
 def attribute(name: str) -> Query[Element, str]:
+    """A query that gets the value of the attribute of the element
+
+    Args:
+        name (str): name of the attribute
+    """
+
     def fn(element: Element):
         return element.locate().get_attribute(name)
 
     return Query(f'attribute {name}', fn)
 
 
+def attributes(name: str) -> Query[Collection, List[str]]:
+    """A query that gets the values of the attribute of all elements in the collection
+
+    Args:
+        name (str): name of the attribute
+    """
+
+    def fn(collection: Collection):
+        return [element.get_attribute(name) for element in collection.locate()]
+
+    return Query(f'{name} attributes', fn)
+
+
 inner_html = attribute('innerHTML')
+inner_htmls = attributes('innerHTML')
 
 
 outer_html = attribute('outerHTML')
+outer_htmls = attributes('outerHTML')
 
 
 text_content = attribute('textContent')
 """
 full text of element without space normalization
 """
+texts_content = attributes('textContent')
+"""
+full text of element without space normalization
+"""
 
 
 value = attribute('value')
+values = attributes('value')
 
 tag: Query[Element, str] = Query('tag name', lambda element: element().tag_name)
+tags: Query[Collection, List[str]] = Query(
+    'tag names',
+    lambda collection: [element.tag_name for element in collection.locate()],
+)
 
 text: Query[Element, str] = Query('text', lambda element: element().text)
 """
 normalized text of element
+"""
+texts: Query[Collection, List[str]] = Query(
+    'texts', lambda collection: [element.text for element in collection.locate()]
+)
+"""
+list of normalized texts of all elements in collection
 """
 
 # TODO: add texts collection condition
@@ -692,9 +728,6 @@ class _frame_context:
 #     def __exit__(self, exc_type, exc_val, exc_tb):
 #         driver = self._container.config.driver
 #         driver.switch_to.parent_frame()
-
-
-# --- Collection queries --- #
 
 # --- Browser queries --- #
 

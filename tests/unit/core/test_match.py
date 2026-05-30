@@ -53,6 +53,9 @@ class DummyElement:
     def __call__(self):
         return self._webelement
 
+    def locate(self):
+        return self._webelement
+
 
 class DummyCollection:
     def __init__(self, webelements):
