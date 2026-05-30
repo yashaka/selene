@@ -52,7 +52,9 @@ class DummyElementEntity:
         return self._webelement
 
     def locate(self):
-        return 'frame-node'
+        if self._locator:
+            return self._locator()
+        return self._webelement
 
     def perform(self, command):
         return command(self)
@@ -70,6 +72,9 @@ class DummyCollectionEntity:
         if self._locator:
             return self._locator()
         return [1, 2, 3]
+
+    def locate(self):
+        return self()
 
 
 class DummyDriver:
@@ -160,7 +165,7 @@ def test_frame_context_enter_exit_and_decorator(monkeypatch):
     context = query._frame_context(container)
 
     context.__enter__()
-    assert driver.frame_calls == ['frame-node']
+    assert driver.frame_calls == [container._webelement]
 
     context.__exit__(None, None, None)
     assert driver.parent_calls == 1
@@ -248,7 +253,7 @@ def test_frame_context_reenter_and_exit_without_enter(monkeypatch):
 
     context.__enter__()
     context.__enter__()
-    assert driver.frame_calls == ['frame-node']
+    assert driver.frame_calls == [container._webelement]
 
     context.__exit__(None, None, None)
     assert driver.parent_calls == 1
