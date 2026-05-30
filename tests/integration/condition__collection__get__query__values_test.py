@@ -25,14 +25,12 @@ from tests.integration.helpers.givenpage import GivenPage
 
 
 def test_query_values(session_browser):
-    GivenPage(session_browser.driver).opened_with_body(
-        '''
+    GivenPage(session_browser.driver).opened_with_body('''
         <ul>Hello:
            <li><input type="text" value="Alex!"></li>
            <li><input type="text" value="  Yakov! \n "</li>
         </ul>
-        '''
-    )
+        ''')
 
     assert session_browser.all('input').get(query.values) == [
         'Alex!',
@@ -41,14 +39,12 @@ def test_query_values(session_browser):
 
 
 def test_query_values_after_retyped(session_browser):
-    GivenPage(session_browser.driver).opened_with_body(
-        '''
+    GivenPage(session_browser.driver).opened_with_body('''
         <ul>Hello:
            <li><input type="text" value="Alex!"></li>
            <li><input type="text" value="  Yakov! \n "</li>
         </ul>
-        '''
-    )
+        ''')
 
     session_browser.all('input').first.clear().type('  1 \n ')
     session_browser.all('input').second.clear().type('2')

@@ -25,14 +25,12 @@ from tests.integration.helpers.givenpage import GivenPage
 
 
 def test_query_texts_as_normalized(session_browser):
-    GivenPage(session_browser.driver).opened_with_body(
-        '''
+    GivenPage(session_browser.driver).opened_with_body('''
         <ul>Hello:
            <li>Alex!</li>
            <li>  Yakov! \n </li>
         </ul>
-        '''
-    )
+        ''')
 
     assert session_browser.all('li').get(query.texts) == ['Alex!', 'Yakov!']
 
