@@ -176,7 +176,7 @@ class Browser(WaitingEntity['Browser']):
         warnings.warn(
             'consider using browser.driver.execute_script '
             'instead of browser.execute_script',
-            PendingDeprecationWarning,
+            DeprecationWarning,
         )
         return self.driver.execute_script(script, *args)
 

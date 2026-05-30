@@ -180,7 +180,7 @@ def test_execute_script_and_last_properties_are_deprecated():
     config = DummyConfig()
     browser = browser_module.Browser(config)
 
-    with pytest.warns(PendingDeprecationWarning):
+    with pytest.warns(DeprecationWarning):
         assert browser.execute_script('return 1', 2) == 'script-result'
 
     with pytest.warns(DeprecationWarning):
