@@ -173,7 +173,7 @@ inner_html = attribute('innerHTML')
 text_content = attribute('textContent')
 value = attribute('value')
 
-tag: Query[Element, str] = Query('tag name', lambda element: element().tag_name)
+tag: Query[Element, str] = Query('tag name', lambda element: element.locate().tag_name)
 ```
 
 – As you can see, it all comes simply to define a function or lambda on entity object
@@ -248,7 +248,7 @@ full text of element without space normalization
 value = attribute('value')
 values = attributes('value')
 
-tag: Query[Element, str] = Query('tag name', lambda element: element.locate().tag_name)
+tag: Query[Element, str] = Query('tag name', lambda element: element().tag_name)
 tags: Query[Collection, List[str]] = Query(
     'tag names',
     lambda collection: [element.tag_name for element in collection.locate()],
