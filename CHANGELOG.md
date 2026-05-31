@@ -1,9 +1,9 @@
 # Changelog
 
-## 2.0.0 release readiness
+## 2.0.0 release preparation
 
-Old scratchpad TODOs that used to live before the rc10 notes were reviewed for the
-2.x release branch.
+The old TODO / placeholder notes that predated the current rc10+ release-preparation
+branch were reviewed and trimmed.
 
 ### Requires maintainer decision before final 2.0.0
 
@@ -17,22 +17,16 @@ Old scratchpad TODOs that used to live before the rc10 notes were reviewed for t
 - Decide whether `be.present` should remain as-is in 2.x or start a deprecation
   path in favor of more explicit naming.
 
-### Post-2.0 backlog / tracked separately
+### Tracked separately / post-2.0
 
 - Locator description customization is tracked in
   [#439](https://github.com/yashaka/selene/issues/439) and
   [#438](https://github.com/yashaka/selene/issues/438).
 - Artifact behavior for handled `pytest.raises(TimeoutException)` flows is tracked
   in [#637](https://github.com/yashaka/selene/issues/637).
-- Keep the remaining non-blocking ideas out of the rc10 release notes for now:
-  - error-message and stacktrace refinements;
-  - broader `all.*` error/reporting improvements;
-  - ActionChains retry ergonomics and `browser.switch_to` follow-up API cleanup;
-  - extra docs/examples such as custom location strategies and basic-auth flows;
-  - optional API polish such as `by` tuple aliases, `__all__`-based export ordering,
-    `element.caching`, callable-driver factory variants, `match.*` naming cleanup,
-    Safari-specific text normalization, and long-term ideas like soft assertions or a
-    Selenide-style compatibility layer.
+- Other non-blocking API/design ideas were intentionally removed from the main
+  release notes to keep the changelog focused on shipped behavior and explicit
+  release decisions.
 
 ## 2.0.0rc11 (to be released)
 
