@@ -25,7 +25,6 @@ from tests.integration.helpers.givenpage import GivenPage
 def test_counts_invisible_tasks(session_browser):
     page = GivenPage(session_browser.driver)
     page.opened_empty()
-    elements = session_browser.all('.will-appear')
     page.load_body(
         '''
         <ul>Hello to:
@@ -34,6 +33,7 @@ def test_counts_invisible_tasks(session_browser):
         </ul>
         '''
     )
+    elements = session_browser.all('.will-appear')
 
     count = len(elements)
 
