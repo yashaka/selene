@@ -16,9 +16,7 @@ def safe_filename(value: str, max_length: int = 180) -> str:
 @pytest.fixture(scope='session', autouse=True)
 def browser_management():
     browser.config.timeout = 0.5
-    browser.config.reports_folder = str(
-        Path(__file__).parent.parent / 'reports'
-    )
+    browser.config.reports_folder = str(Path(__file__).parent.parent / 'reports')
 
     yield
 
@@ -37,9 +35,8 @@ def name_selene_failure_screenshots_by_test(request):
     ) -> Optional[str]:
         if path is None:
             timestamp = datetime.now().strftime('%d-%m-%Y_%H-%M-%S_%f')
-            path = str(
-                Path(config.reports_folder) / f'{test_name}-{timestamp}.png'
-            )
+            reports_folder = config.reports_folder or '.'
+            path = str(Path(reports_folder) / f'{test_name}-{timestamp}.png')
 
         Path(path).parent.mkdir(parents=True, exist_ok=True)
 
