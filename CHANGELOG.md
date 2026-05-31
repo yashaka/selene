@@ -1,104 +1,38 @@
 # Changelog
 
-## > 2.0.0 release
+## 2.0.0 release readiness
 
-TODOs:
+Old scratchpad TODOs that used to live before the rc10 notes were reviewed for the
+2.x release branch.
 
-- `config.quit_last_driver_on_reset` (`False` by default)?
-- improve for other `all.*` methods (in addition to improved errors from `browser.all.element_by`)
-- why in the past we had when outer_html this: `'<button class="destroy" type="submit" displayed:false></button>'`
-  - but now we have this: `'<button class="destroy" type="submit"></button>'?`
-    - can we improve it?
-- add something like `element.click_with_offset`
-- consider adding hold_driver_open_at_exit_on_failure
-- case insensitive versions of conditions like have.attribute(...).value(...)
-  - experimental impl was already added in 2.0.0a16
-- consider adding more readable alias to by tuple, like in:
-  `css_or_xpath_or_by: Union[str, tuple]`
-- improve error messages
-  - should we come back to the "actual vs expected" style in error messages?
-- improve stacktraces
-  - consider using something like `__tracebackhide__ = True`
-- what about ActionChains?
-  - with retries?
-- what about soft assertions in selene?
-- maybe somewhen in 3.0 consider adding selene.support.shared.selenide module
-  - with selenide style api
-    - like s, ss, open_url
-    - SelenideElement#find, #find_all
-    - ElementsCollection#find, #filter, #get
-    - etc.
+### Requires maintainer decision before final 2.0.0
 
-## < 2.0.0 release ? o_O
+- Decide whether the experimental driver-lifecycle option should keep the current
+  `config._reset_not_alive_driver_on_get_url` name or be renamed before the final
+  `2.0.0` release.
+- Decide whether `config.wait(entity)` stays as public API or is deprecated in
+  favor of lower-level wait-building strategies.
+- Decide whether the managed driver descriptor should keep `...` as the internal
+  default sentinel or switch to `None` in the user-facing typing/documentation.
+- Decide whether `be.present` should remain as-is in 2.x or start a deprecation
+  path in favor of more explicit naming.
 
-TODOs:
+### Post-2.0 backlog / tracked separately
 
-- manager or executor at `config._executor`?
-- deprecate config.wait(entity) factory?
-  - isn't it enough to have `config._build_wait_strategy(entity)`?
-- decide on `config._reset_not_alive_driver_on_get_url` name
-  - reset vs rebuild?
-  - etc?
-- decide on None as default in managed driver descriptor instead of ...
-  taking into account that mypy does not like it
-  - actually I tend to keep both `...` and `None`, yet using `...` as default
-    in Selene's internals. But let's document this at least. 
-    Mentioning also this: https://github.com/python/mypy/issues/7818
-- consider a way to customize "locator description" [#439](https://github.com/yashaka/selene/issues/439)
-  - consider storing "raw selector" of locator to be able to log it as it is [#438](https://github.com/yashaka/selene/issues/438)
-  - consider storing `locator.name` and take it from class attribute name if Element object
-    is used as descriptor (via `__set_name__` impl.)
-    - while being a descriptor...
-      check if `hassattr(owner, 'element')` (or context, or container?)
-      then consider starting the search from the context 
-      and make this configurable via `config.search_from_defined_context = True`
-      (probably `False` by default)
-      and being able to override somehow on element definition level
-      - what about `config.search_context_strategy` ?
-- ensure we can't element.type on invisible element; add test for that
-- decide on have.size vs query.size
-  - consider making have.size to work with elements too...
-- review all `# type: ignore`
-- review all typing.cast
-- consider changing artifacts behavior for handled `pytest.raises(TimeoutException)`
-  cases (currently artifacts are still saved) — tracked in
-  [#637](https://github.com/yashaka/selene/issues/637)
-- what about accepting None as locator of Element?
-  in such case it such element will just do nothing regardless of what command is called on it
-  - even better, we can accept Locators in browser.element(here)!!!
-    and so we can implement own behavior, locating some kind of proxy that skips all commands!
-- deprecate `be.present`
-- todo consider adding element.caching as lazy version of element.cached
-- use `__all__` in selene api imports, etc
-  - The variable `__all__` is a list of public objects of that module, as interpreted by `import *`. ... In other words, `__all__` is a list of strings defining what symbols in a module will be exported when `from module import *` is used on the module
-- config.driver_proxy or config.driver_remote_proxy?
-- decide on driver as callable, and decide on driver as callable with config as param
-    - how can we check that user passed fn with params? 
-- consider renaming everything inside match.* so it can be readable when used as `.should(match.*)`
-  - take into account that `.matching(match.*)` is yet less readable
-  compared to `matching(have.*)` or `matching(be.*)`
-
-## 2.0.0rc?+1 (to be released on ??.??.2023)
-
-TODOs:
-
-- implement run_cross_platform_with_fixture_and_custom_location_strategy example with:
-    - location strategy
-    - element actions logging to allure
-    - jenkins pipeline with matrix job
-- deprecate browser.switch_to?
-    - add corresponding set of commands to be used as waiting commands via `browser.perform` 
-        - make `command.switch_to_frame` to accept selene element?
-    - add something like `browser.perform(switch_to_tab('my tab title'))`
-        - maybe make browser.switch ... to work with retry logic
-            or make separate command.switch...
-
-## 2.0.0rc? (to be released on DD.MM.2024)
-
-- set window size inside driver factory
-- add safari support (trim space on text in case of safari)
-- example of basic auth and auth via cookies (https://github.com/autotests-cloud/example_project/blob/master/src/test/java/cloud/autotests/tests/demowebshop/LoginTests.java)
-- can we force order of how `selene.*` is rendered on autocomplete? via `__all__`...
+- Locator description customization is tracked in
+  [#439](https://github.com/yashaka/selene/issues/439) and
+  [#438](https://github.com/yashaka/selene/issues/438).
+- Artifact behavior for handled `pytest.raises(TimeoutException)` flows is tracked
+  in [#637](https://github.com/yashaka/selene/issues/637).
+- Keep the remaining non-blocking ideas out of the rc10 release notes for now:
+  - error-message and stacktrace refinements;
+  - broader `all.*` error/reporting improvements;
+  - ActionChains retry ergonomics and `browser.switch_to` follow-up API cleanup;
+  - extra docs/examples such as custom location strategies and basic-auth flows;
+  - optional API polish such as `by` tuple aliases, `__all__`-based export ordering,
+    `element.caching`, callable-driver factory variants, `match.*` naming cleanup,
+    Safari-specific text normalization, and long-term ideas like soft assertions or a
+    Selenide-style compatibility layer.
 
 ## 2.0.0rc11 (to be released)
 
@@ -138,15 +72,12 @@ See one more example at [FAQ: How to work with Shadow DOM in Selene?](https://ya
     Requires 3rd party `pyperclip` package to be used,
     in order to copy to clipboard before pasting
     via simulating `ctrl+v` or `cmd+v` shortcut pressed.
-- `command.long_press(duration=0.1)` alias to `command._long_press(duration=0.1)`
-    actually the `_long_press` is now an outdated alias and probably will be duplicated in future releases
+- `command.long_press(duration=1.0)` with backward-compatible `_long_press` alias.
 - `command.press_sequentially(text: str)`
 
 ### Document command.py on module level
 
 Providing a brief overview of the module and how to extend it with custom commands.
-
-### Fix path of screenshot and pagesource for Windows
 
 ## 2.0.0rc10 (to be released)
 
