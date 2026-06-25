@@ -32,3 +32,4 @@ class BaseTest:
     def teardown_method(self):
         browser.quit()
         browser.config.driver = ...
+# This looks dope
