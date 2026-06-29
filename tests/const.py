@@ -5,6 +5,7 @@ from pathlib import Path
 import tests
 
 TINYMCE_URL = os.getenv('TINYMCE_URL', 'http://127.0.0.1:8000/demo/tinymce')
+NESTED_FRAMES_URL= os.getenv('NESTED_FRAMES_URL', 'http://127.0.0.1:8001/index.html')
 # SELENOID_HOST = 'selenoid.autotests.cloud'
 SELENOID_HOST = 'selenoid.autotest.how'
 LOGO_PATH = str(Path(tests.__file__).parent.parent / 'docs/assets/images/logo-icon.png')
