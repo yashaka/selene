@@ -23,13 +23,15 @@ import pytest
 
 from selene import command, have, query, be
 
+from tests import const
+
 
 # TODO: break down into 2 tests
 def test_actions_on_nested_frames_element_via_with_statement(session_browser):
     browser = session_browser.with_(timeout=1.0)
 
     # GIVEN even before opened browser
-    browser.open('https://the-internet.herokuapp.com/nested_frames')
+    browser.open(const.NESTED_FRAMES_URL)
 
     # WHEN
     with browser.element('[name=frame-top]').get(query._frame_context):
