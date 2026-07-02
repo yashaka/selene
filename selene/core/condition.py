@@ -429,6 +429,7 @@ and its [`Match`][selene.core.condition.Match] subclass, allowing to build such
 
 ## ⬇️ Classes to build and recompose conditions
 """
+
 from __future__ import annotations
 
 import functools
@@ -460,6 +461,9 @@ if sys.version_info >= (3, 10):
     from collections.abc import Callable
 else:
     from typing import Callable
+
+if typing.TYPE_CHECKING:
+    from selene.core.entity import Collection
 
 
 # TODO: Consider renaming to Match, while keeping Condition name as functional interface
@@ -950,7 +954,7 @@ class Condition(Generic[E]):
         return cls(' or '.join(map(str, conditions)), func)
 
     @classmethod
-    def for_each(cls, condition) -> Condition[Iterable[E]]:
+    def for_each(cls, condition) -> Condition[Collection]:
         # TODO: consider refactoring to be predicate-based or both-based
         #      and ensure inverted works
         def func(entity):
@@ -969,7 +973,7 @@ class Condition(Generic[E]):
                     )
                 )
 
-        return typing.cast(Condition[Iterable[E]], cls(f' each {condition}', func))
+        return typing.cast('Condition[Collection]', cls(f' each {condition}', func))
 
     @classmethod
     def as_not(
@@ -1336,7 +1340,7 @@ class Condition(Generic[E]):
         return Condition.by_or(self, condition)
 
     @property
-    def each(self) -> Condition[Iterable[E]]:
+    def each(self) -> Condition[Collection]:
         return Condition.for_each(self)
 
 
