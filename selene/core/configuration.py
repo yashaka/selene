@@ -56,6 +56,7 @@ from selene.common.helpers import on_error_return_false
 from selene.core.exceptions import TimeoutException
 
 from selene.core.wait import Wait
+from selene.core.retry import RetryStrategy, FixedDelay
 
 E = TypeVar('E')
 
@@ -1051,6 +1052,9 @@ class Config:
     poll_during_waits: int = 100
     """A fake option, not currently used in Selene waiting:)"""
 
+    retry_strategy: Optional[RetryStrategy] = None
+    """Pluggable strategy with custom backoff algorithm for waiting"""
+
     # --- Web-specific options ---
     # TODO: should we pass here None?
     #       and use "not None" as _get_base_url_on_open_with_no_args=True?
@@ -1665,10 +1669,11 @@ class Config:
                 # )
             ),
             _decorator=config._wait_decorator,
+            retry_strategy=config.retry_strategy,
         )
     )
     """A strategy for building a Wait object based on other config options
-    like `config.timeout`, `config.hook_wait_failure`, `config._wait_decorator`, etc.
+    like `config.timeout`, `config.hook_wait_failure`, `config._wait_decorator`, `config.retry_strategy`, etc.
     """
 
     # TODO: we definitely not need it inside something called Config,
