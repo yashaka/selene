@@ -30,6 +30,7 @@ from selene.core.exceptions import TimeoutException
 
 from selene.common.fp import identity
 from selene.common._typing_functions import Query, Command
+from selene.core.retry import RetryStrategy, FixedDelay
 
 T = TypeVar('T')
 R = TypeVar('R')
@@ -50,6 +51,7 @@ class Wait(Generic[E]):
         _decorator: (
             Callable[[Wait[E]], Callable[[Callable[..., R]], Callable[..., R]]] | None
         ) = None,
+        retry_strategy: Optional[RetryStrategy] = None,
         # TODO: should not we add here ignore_exceptions?
         #       (called as _falsy_exceptions in Condition init)
         #       and then tune it depending on context,
@@ -61,16 +63,24 @@ class Wait(Generic[E]):
         self._timeout = at_most
         self._hook_failure = or_fail_with or identity
         self._decorator = _decorator or (lambda wait: identity)
+        self._retry_strategy = retry_strategy or FixedDelay(0.1)
 
     def with_(
         self,
         *,
         decorator: (
             Callable[[Wait[E]], Callable[[Callable[..., R]], Callable[..., R]]] | None
-        ),
+        ) = None,
+        retry_strategy: Optional[RetryStrategy] = None,
         # TODO: consider adding other options for consistency
     ) -> Wait[E]:
-        return Wait(self.entity, self._timeout, self._hook_failure, decorator)
+        return Wait(
+            self.entity,
+            self._timeout,
+            self._hook_failure,
+            decorator if decorator is not None else self._decorator,
+            retry_strategy if retry_strategy is not None else self._retry_strategy,
+        )
 
     @property
     def _entity(self):
@@ -82,12 +92,12 @@ class Wait(Generic[E]):
         return self.entity
 
     def at_most(self, timeout: float) -> Wait[E]:
-        return Wait(self.entity, timeout, self._hook_failure)
+        return Wait(self.entity, timeout, self._hook_failure, self._decorator, self._retry_strategy)
 
     def or_fail_with(
         self, hook_failure: Optional[Callable[[TimeoutException], Exception]]
     ) -> Wait[E]:
-        return Wait(self.entity, self._timeout, hook_failure)
+        return Wait(self.entity, self._timeout, hook_failure, self._decorator, self._retry_strategy)
 
     @property
     def hook_failure(
@@ -101,6 +111,7 @@ class Wait(Generic[E]):
     def for_(self, fn: Callable[[E], R]) -> R:
         def logic(fn: Callable[[E], R]) -> R:
             finish_time = time.time() + self._timeout
+            delays = iter(self._retry_strategy)
 
             while True:
                 try:
@@ -135,6 +146,7 @@ class Wait(Generic[E]):
                         )
 
                         raise self._hook_failure(failure)
+                    time.sleep(next(delays))
 
         decorator = cast(
             Callable[[Wait[E]], Callable[[Callable[..., R]], Callable[..., R]]],
@@ -150,6 +162,7 @@ class Wait(Generic[E]):
                 self._timeout,
                 or_fail_with=identity,
                 _decorator=self._decorator,
+                retry_strategy=self._retry_strategy,
             ).for_(fn)
             return True
         except TimeoutException:
