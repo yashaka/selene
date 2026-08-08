@@ -1336,7 +1336,7 @@ class Condition(Generic[E]):
         return Condition.by_or(self, condition)
 
     @property
-    def each(self) -> Condition[Iterable[E]]:
+    def each(self) -> Condition[Iterable[E]] | Condition[typing.Any]:
         return Condition.for_each(self)
 
 
