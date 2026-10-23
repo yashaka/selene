@@ -1,0 +1,11 @@
+# Keeps the SHA-pinned GitHub Actions current (pins added 2026-10-23).
+# One grouped PR per month; Dependabot updates the SHA and the trailing tag comment.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      actions:
+        patterns: ["*"]
