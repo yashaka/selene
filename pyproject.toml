@@ -58,7 +58,7 @@ packages = [
 ]
 
 [tool.poetry.group.dev.dependencies]
-black = "^26.0.0"
+black = "^26.10.1"
 pycodestyle = "*"
 pylint = "4.0.5"
 pytest = "*"
