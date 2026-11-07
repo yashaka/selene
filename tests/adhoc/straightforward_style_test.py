@@ -22,6 +22,8 @@
 
 from selene.api import *
 
+from tests.const import TODOMVC4TASJ_URL
+
 
 def test_selene_demo():
     # config.browser_name = 'firefox'  # chrome was default
@@ -30,7 +32,7 @@ def test_selene_demo():
     active_tasks = tasks.by(have.css_class('active'))
 
     customized = browser.with_(timeout=config.timeout * 2)
-    customized.open('https://todomvc4tasj.herokuapp.com/')
+    customized.open(TODOMVC4TASJ_URL)
     # open_url('https://www.yahoo.com/')  # or like this
     # browser.driver.get('http://google.com')  # just in case, you can use the driver directly too
     # browser.driver().get('https://todomvc4tasj.herokuapp.com/')  # temporary this works too;)
