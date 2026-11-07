@@ -42,9 +42,9 @@ jobs:
       TODOMVC4TASJ_URL: "${{ vars.TODOMVC4TASJ_URL || format('https://{0}.github.io/todomvc4tasj/home.html', github.actor) }}"
 
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@v7.0.1
 
-      - uses: actions/setup-python@v7
+      - uses: actions/setup-python@v7.1.0
         with:
           python-version: ${{ matrix.python-version }}
           allow-prereleases: ${{ matrix.experimental }}
@@ -128,7 +128,7 @@ jobs:
 
       - name: Code Coverage (selene)
         if: matrix.python-version == '3.10' && always()
-        uses: codecov/codecov-action@v7
+        uses: codecov/codecov-action@v7.1.1
         with:
           files: ./coverage.xml
           disable_search: true
@@ -141,7 +141,7 @@ jobs:
 
       - name: Code Coverage (unit)
         if: matrix.python-version == '3.10' && always()
-        uses: codecov/codecov-action@v7
+        uses: codecov/codecov-action@v7.1.1
         with:
           files: ./coverage-unit.xml
           disable_search: true
@@ -160,8 +160,8 @@ jobs:
     env:
       DISPLAY: ":99"
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-python@v7
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-python@v7.1.0
         with:
           python-version: "3.10"
       - name: Install dependencies
@@ -184,8 +184,8 @@ jobs:
     env:
       DISPLAY: ":99"
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-python@v7
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-python@v7.1.0
         with:
           python-version: "3.10"
       - name: Install dependencies
@@ -209,8 +209,8 @@ jobs:
       DISPLAY: ":99"
       TODOMVC4TASJ_URL: "${{ vars.TODOMVC4TASJ_URL || format('https://{0}.github.io/todomvc4tasj/home.html', github.actor) }}"
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-python@v7
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-python@v7.1.0
         with:
           python-version: "3.10"
       - name: Install dependencies
@@ -244,9 +244,9 @@ jobs:
             echo "enabled=false" >> "$GITHUB_OUTPUT"
             echo "Remote tests are skipped: SELENOID credentials are missing."
           fi
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@v7.0.1
         if: steps.check_remote.outputs.enabled == 'true'
-      - uses: actions/setup-python@v7
+      - uses: actions/setup-python@v7.1.0
         if: steps.check_remote.outputs.enabled == 'true'
         with:
           python-version: "3.10"
