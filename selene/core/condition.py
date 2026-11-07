@@ -34,6 +34,9 @@ if sys.version_info >= (3, 10):
 else:
     from typing import Callable
 
+if typing.TYPE_CHECKING:
+    from selene.core.entity import Collection
+
 
 E = TypeVar('E')
 R = TypeVar('R')
@@ -68,7 +71,7 @@ class Condition(Generic[E]):
         return cls(' or '.join(map(str, conditions)), fn)
 
     @classmethod
-    def for_each(cls, condition) -> Condition[Iterable[E]]:
+    def for_each(cls, condition) -> Condition[Collection]:
         def fn(entity):
             items_with_error: List[Tuple[str, str]] = []
             index = None
@@ -85,7 +88,7 @@ class Condition(Generic[E]):
                     )
                 )
 
-        return typing.cast(Condition[Iterable[E]], cls(f' each {condition}', fn))
+        return typing.cast('Condition[Collection]', cls(f' each {condition}', fn))
 
     @classmethod
     def as_not(
@@ -186,7 +189,7 @@ class Condition(Generic[E]):
         return Condition.by_or(self, condition)
 
     @property
-    def each(self) -> Condition[Iterable[E]]:
+    def each(self) -> Condition[Collection]:
         return Condition.for_each(self)
 
 
