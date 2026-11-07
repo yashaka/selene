@@ -45,7 +45,7 @@ jobs:
       DISPLAY: ":99"
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       TINYMCE_URL: http://127.0.0.1:8000/demo/tinymce
-      TODOMVC4TASJ_URL: "${{ vars.TODOMVC4TASJ_URL || format('https://{0}.github.io/todomvc4tasj/home.html', github.repository_owner) }}"
+      TODOMVC4TASJ_URL: "${{ vars.TODOMVC4TASJ_URL || format('https://{0}.github.io/todomvc4tasj/home.html', github.actor) }}"
 
     steps:
       - uses: actions/checkout@v6
@@ -215,7 +215,7 @@ jobs:
     continue-on-error: true
     env:
       DISPLAY: ":99"
-      TODOMVC4TASJ_URL: "${{ vars.TODOMVC4TASJ_URL || format('https://{0}.github.io/todomvc4tasj/home.html', github.repository_owner) }}"
+      TODOMVC4TASJ_URL: "${{ vars.TODOMVC4TASJ_URL || format('https://{0}.github.io/todomvc4tasj/home.html', github.actor) }}"
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
