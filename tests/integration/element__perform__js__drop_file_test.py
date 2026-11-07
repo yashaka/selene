@@ -23,7 +23,10 @@ def x_test_drops_file_to_self(session_browser):
     # TODO: implement
 
 
+@pytest.mark.flaky
 def test_drops_file_to_self_in_react_mui(session_browser):
+    # TODO: external demo (app.qa.guru) moved behind Keycloak auth on learn.qa.guru;
+    #  redesign the test against a local page, then drop the flaky marker
     browser = session_browser
     try:
         browser.open('https://app.qa.guru/automation-practice-form/')
