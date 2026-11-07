@@ -60,9 +60,9 @@ packages = [
 ]
 
 [tool.poetry.group.dev.dependencies]
-black = "^26.0.0"
+black = "^26.10.1"
 pycodestyle = "*"
-pylint = "4.0.5"
+pylint = "4.0.9"
 pytest = "*"
 pytest-cov = "*"
 pyperclip = "*"
@@ -76,7 +76,7 @@ optional = true
 
 [tool.poetry.group.docs.dependencies]
 mkdocs = "^1.4.2"
-mkdocs-material = "^9.1.6"
+mkdocs-material = "^9.7.7"
 mkdocstrings = {extras = ["python"], version = "^0.21.2"}
 mkdocs-redirects = "^1.2.0"
 mkdocs-git-revision-date-localized-plugin = "^1.2.0"
