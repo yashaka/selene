@@ -1,10 +1,12 @@
 from selene import by, be, have, browser
 
+from tests.const import TODOMVC4TASJ_URL
+
 __author__ = 'yashaka'
 
 _elements = browser.all("#todo-list>li")
 
-app_url = 'https://todomvc4tasj.herokuapp.com/'
+app_url = TODOMVC4TASJ_URL
 
 
 def visit():

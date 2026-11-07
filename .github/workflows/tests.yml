@@ -23,21 +23,23 @@ jobs:
   regression:
     name: Regression (blocking) / Python ${{ matrix.python-version }}
     runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.experimental }}
 
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.10", "3.11", "3.12", "3.13", "3.14"]
+        python-version: ["3.10", "3.11", "3.12", "3.13", "3.14", "3.15"]
         experimental:
           - false
         include:
-          - python-version: "3.15.0-beta.1"
+          - python-version: "3.16"
             experimental: true
 
     env:
       DISPLAY: ":99"
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       TINYMCE_URL: http://127.0.0.1:8000/demo/tinymce
+      TODOMVC4TASJ_URL: "${{ vars.TODOMVC4TASJ_URL || format('https://{0}.github.io/todomvc4tasj/home.html', github.actor) }}"
 
     steps:
       - uses: actions/checkout@v6
@@ -45,6 +47,7 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}
+          allow-prereleases: ${{ matrix.experimental }}
 
       - name: Install dependencies
         run: |
@@ -204,6 +207,7 @@ jobs:
     continue-on-error: true
     env:
       DISPLAY: ":99"
+      TODOMVC4TASJ_URL: "${{ vars.TODOMVC4TASJ_URL || format('https://{0}.github.io/todomvc4tasj/home.html', github.actor) }}"
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
