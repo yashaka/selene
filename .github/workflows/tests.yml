@@ -21,7 +21,7 @@ on:
 
 jobs:
   regression:
-    name: Regression (blocking) / Python ${{ matrix.python-version }}
+    name: Regression ${{ matrix.experimental && '(non-blocking)' || '(blocking)' }} / Python ${{ matrix.python-version }}
     runs-on: ubuntu-latest
     continue-on-error: ${{ matrix.experimental }}
 
