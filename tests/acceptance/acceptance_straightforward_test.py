@@ -22,7 +22,7 @@
 from selene import browser, have, by, be
 
 # app_url = f'file://{os.path.abspath(os.path.dirname(__file__))}/../resources/todomvcapp/home.html'
-app_url = 'https://todomvc4tasj.herokuapp.com/'
+app_url = 'https://aleksandr-kotlyar.github.io/todomvc4tasj/home.html'
 # is_TodoMVC_loaded = ('return '
 #                      '$._data($("#new-todo").get(0), "events").hasOwnProperty("keyup") && '
 #                      '$._data($("#toggle-all").get(0), "events").hasOwnProperty("change") && '

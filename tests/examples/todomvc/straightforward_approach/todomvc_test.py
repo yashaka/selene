@@ -36,7 +36,7 @@ def teardown_module():
 
 class TestTodoMVC:
     def test_filter_tasks(self):
-        browser.open('https://todomvc4tasj.herokuapp.com/')
+        browser.open('https://aleksandr-kotlyar.github.io/todomvc4tasj/home.html')
         clear_completed_js_loaded = "return $._data($('#clear-completed').get(0), 'events').hasOwnProperty('click')"
         browser.wait.for_(have.script_returned(True, clear_completed_js_loaded))
         browser.wait.for_(have.title('TroopJS • TodoMVC'))

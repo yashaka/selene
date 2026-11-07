@@ -4,7 +4,7 @@ __author__ = 'yashaka'
 
 _elements = browser.all("#todo-list>li")
 
-app_url = 'https://todomvc4tasj.herokuapp.com/'
+app_url = 'https://aleksandr-kotlyar.github.io/todomvc4tasj/home.html'
 
 
 def visit():
