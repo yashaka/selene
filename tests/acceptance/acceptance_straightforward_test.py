@@ -21,8 +21,10 @@
 # SOFTWARE.
 from selene import browser, have, by, be
 
+from tests.const import TODOMVC4TASJ_URL
+
 # app_url = f'file://{os.path.abspath(os.path.dirname(__file__))}/../resources/todomvcapp/home.html'
-app_url = 'https://aleksandr-kotlyar.github.io/todomvc4tasj/home.html'
+app_url = TODOMVC4TASJ_URL
 # is_TodoMVC_loaded = ('return '
 #                      '$._data($("#new-todo").get(0), "events").hasOwnProperty("keyup") && '
 #                      '$._data($("#toggle-all").get(0), "events").hasOwnProperty("change") && '
