@@ -36,8 +36,10 @@ jobs:
   # Versioned docs deploy via mike: every version lives in the gh-pages branch,
   # mkdocs-material renders a version selector from versions.json
   deploy-docs:
-    # TODO: restore owner gate before merging into yashaka/selene
-    # if: github.repository_owner == 'yashaka'
+    # Deploys only on the upstream repo. To self-host versioned docs on your
+    # own fork (or a GitLab Pages mirror): enable Pages from the gh-pages
+    # branch and set the repository variable DOCS_DEPLOY=true
+    if: github.repository_owner == 'yashaka' || vars.DOCS_DEPLOY == 'true'
     runs-on: ubuntu-latest
 
     steps:
