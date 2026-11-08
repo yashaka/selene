@@ -8,25 +8,38 @@ env:
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on push events but only for the "main" branch
-  # and docs related files (paths)
+  # Docs of the master branch, rebuilt on every push affecting master;
+  # a new tag (e.g. 2.0.0) is published as its own docs version + 'latest'
+  # alias, becoming the default version shown on the site
   push:
     branches: [ "master" ]
+    tags: [ "*" ]
 
-  # Allows you to run this workflow manually from the Actions tab
+  # Manual deploy of any branch as any version label (rc branches, docs backfills)
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version label (e.g. 2.0.0rc10, master, 1.x)'
+        required: true
+        type: string
+      alias:
+        description: 'Optional alias (e.g. latest)'
+        required: false
+        type: string
+        default: ''
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+# GITHUB_TOKEN needs to be able to push the gh-pages branch maintained by mike
+permissions:
+  contents: write
+
 jobs:
-  # This workflow contains two jobs called "build-docs" and "deploy-docs"
-
-  # Build docs via MkDocs with poetry shell (environment)
-  build-docs:
-    if: github.repository_owner == 'yashaka'
-    # The type of runner that the job will run on
+  # Versioned docs deploy via mike: every version lives in the gh-pages branch,
+  # mkdocs-material renders a version selector from versions.json
+  deploy-docs:
+    # TODO: restore owner gate before merging into yashaka/selene
+    # if: github.repository_owner == 'yashaka'
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout repository
@@ -45,35 +58,42 @@ jobs:
       - name: Install Dependencies
         run: poetry install --no-root --only docs
 
-      # Build MkDocs static files (in 'site' folder)
-      - name: Build docs
-        run: poetry run mkdocs build
+      # mike has to live in the same environment as mkdocs to build docs
+      - name: Install mike
+        run: poetry run pip install mike
 
-      # upload the static files as an artifact
-      - name: Upload static artifact (.zip)
-        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5
-        with:
-          path: "site/"
+      - name: Configure git author for mike
+        run: |
+          git config user.name "selene-docs-bot"
+          git config user.email "selene-docs-bot@users.noreply.github.com"
 
-  # Deploy docs job
-  deploy-docs:
-    if: github.repository_owner == 'yashaka'
-    # Add a dependency to the build job
-    needs: build-docs
+      # Branch push -> label = branch name, no alias
+      # Tag push    -> label = tag name, aliased as 'latest'
+      # Dispatch    -> labels from inputs
+      - name: Resolve version label and alias
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            VERSION="${{ inputs.version }}"
+            ALIAS="${{ inputs.alias }}"
+          elif [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            VERSION="${{ github.ref_name }}"
+            ALIAS="latest"
+          else
+            VERSION="${{ github.ref_name }}"
+            ALIAS=""
+          fi
+          echo "DOCS_VERSION=$VERSION" >> "$GITHUB_ENV"
+          echo "DOCS_ALIAS=$ALIAS" >> "$GITHUB_ENV"
 
-    # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
-    permissions:
-      pages: write      # to deploy to Pages
-      id-token: write   # to verify the deployment originates from an appropriate source
+      - name: Deploy versioned docs
+        run: |
+          if [ -n "$DOCS_ALIAS" ]; then
+            poetry run mike deploy --push --update-aliases "$DOCS_VERSION" "$DOCS_ALIAS"
+          else
+            poetry run mike deploy --push "$DOCS_VERSION"
+          fi
 
-    # Deploy to the github-pages environment
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
-    # Specify runner + deployment step
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy docs to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5
+      # Site root then serves the 'latest' version by default
+      - name: Set default version
+        if: env.DOCS_ALIAS == 'latest'
+        run: poetry run mike set-default --push latest

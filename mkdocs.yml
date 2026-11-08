@@ -85,7 +85,11 @@ theme:
     - content.action.view
 
 extra:
-  version: 2.0.0rc10
+  version:
+    # Versioned docs are maintained by mike in the gh-pages branch
+    # (see .github/workflows/deploy-mkdocs-poetry.yml)
+    provider: mike
+    default: latest
   social:
     - icon: material/web
       link: https://autotest.how/sdet-start-ru
