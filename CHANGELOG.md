@@ -1,37 +1,5 @@
 # Changelog
 
-## 2.0.0 release preparation
-
-The old TODO / placeholder notes that predated the current rc10+ release-preparation
-branch were reviewed and trimmed: resolved decisions are kept below, implemented
-items are documented in the release sections, and non-blocking ideas are parked
-in [#710](https://github.com/yashaka/selene/issues/710) (locator-description
-sub-ideas - in a comment to
-[#439](https://github.com/yashaka/selene/issues/439)).
-
-### Requires maintainer decision before final 2.0.0
-
-- Decide whether the experimental driver-lifecycle option should keep the current
-  `config._reset_not_alive_driver_on_get_url` name or be renamed before the final
-  `2.0.0` release.
-- Decide whether `config.wait(entity)` stays as public API or is deprecated in
-  favor of lower-level wait-building strategies.
-- Decide whether the managed driver descriptor should keep `...` as the internal
-  default sentinel or switch to `None` in the user-facing typing/documentation.
-- Decide whether `be.present` should remain as-is in 2.x or start a deprecation
-  path in favor of more explicit naming.
-
-### Tracked separately / post-2.0
-
-- Locator description customization is tracked in
-  [#439](https://github.com/yashaka/selene/issues/439) and
-  [#438](https://github.com/yashaka/selene/issues/438).
-- Artifact behavior for handled `pytest.raises(TimeoutException)` flows is tracked
-  in [#637](https://github.com/yashaka/selene/issues/637).
-- Other non-blocking API/design ideas were intentionally removed from the main
-  release notes to keep the changelog focused on shipped behavior and explicit
-  release decisions.
-
 ## 2.0.0rc11 (to be released)
 
 ### Shadow DOM support via query.js.shadow_root(s)
