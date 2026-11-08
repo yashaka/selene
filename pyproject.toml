@@ -77,7 +77,10 @@ optional = true
 [tool.poetry.group.docs.dependencies]
 mkdocs = "^1.4.2"
 mkdocs-material = "^9.7.7"
-mkdocstrings = {extras = ["python"], version = "^0.21.2"}
+mkdocstrings = "0.26.1"
+mkdocstrings-python = "1.11.1"
+# pinned to the docs deps combo proven green in CI on the master line
+mkdocs-autorefs = "1.2.0"
 mkdocs-redirects = "^1.2.0"
 mkdocs-git-revision-date-localized-plugin = "^1.2.0"
 
