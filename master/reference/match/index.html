@@ -1,0 +1,6008 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="User-oriented Web UI browser tests in Python.">
+      
+      
+        <meta name="author" content="Iakiv Kramarenko">
+      
+      
+        <link rel="canonical" href="https://yashaka.github.io/selene/master/reference/match/">
+      
+      
+        <link rel="prev" href="../query/">
+      
+      
+        <link rel="next" href="../condition/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>match.* predefined conditions - Selene</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/timeago.css">
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+          <aside class="md-banner md-banner--warning">
+            <div class="md-banner__inner md-grid md-typeset">
+              
+  This documentation is for a version that is not the latest.
+  <a href="https://yashaka.github.io/selene/master"><strong>View the latest version</strong></a>.
+
+            </div>
+            <script>var el=document.querySelector("[data-md-component=outdated]"),base=new URL("../.."),outdated=__md_get("__outdated",sessionStorage,base);!0===outdated&&el&&(el.hidden=!1)</script>
+          </aside>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Selene" class="md-header__button md-logo" aria-label="Selene" data-md-component="logo">
+      
+  <img src="../../assets/images/logo-icon.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Selene
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              match.* predefined conditions
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7M9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="blue-grey" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/yashaka/selene" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    yashaka/selene
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Selene" class="md-nav__button md-logo" aria-label="Selene" data-md-component="logo">
+      
+  <img src="../../assets/images/logo-icon.png" alt="logo">
+
+    </a>
+    Selene
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/yashaka/selene" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    yashaka/selene
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../selene-quick-start-tutorial/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Selene Quick Start
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../selene-in-action-tutorial/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Selene in Action
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../selene-for-page-objects-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Selene for PageObjects
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../selene-cheetsheet-howto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Selene Cheetsheet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    FAQ
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/custom-test-id-selectors-howto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How to simplify search by Test IDs?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/clipboard-copy-and-paste-howto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How to work with clipboard in Selene?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/iframes-howto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How to work with iFrames
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/shadow-dom-howto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How to work with Shadow DOM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/custom-user-profile-howto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How to use custom profile
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/adding-chrome-extension-howto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How to add Chrome extension
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/extending-selene-howto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How to extend Selene [TBD]
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7_1" id="__nav_7_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    selene.core
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    selene.core
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Config
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../command/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    command.*
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../query/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    query.*
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    match.* predefined conditions
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    match.* predefined conditions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match._empty" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _empty
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.absent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        absent
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.absent_in_dom" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        absent_in_dom
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.blank" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        blank
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.checked" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        checked
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.clickable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        clickable
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.disabled" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        disabled
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.empty" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        empty
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.enabled" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enabled
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.existing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        existing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.hidden" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        hidden
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.hidden_in_dom" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        hidden_in_dom
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.present" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        present
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.present_in_dom" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        present_in_dom
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.selected" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        selected
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.visible" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        visible
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match._CollectionHasSomeThingsSupportingIgnoreCase" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _CollectionHasSomeThingsSupportingIgnoreCase
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="_CollectionHasSomeThingsSupportingIgnoreCase">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._CollectionHasSomeThingsSupportingIgnoreCase.ignore_case" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ignore_case
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match._ElementDescriptor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _ElementDescriptor
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="_ElementDescriptor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._ElementDescriptor.value" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        value
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._ElementDescriptor.value_containing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        value_containing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._ElementDescriptor.values" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        values
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._ElementDescriptor.values_containing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        values_containing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match._EntityHasSomethingSupportingIgnoreCase" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _EntityHasSomethingSupportingIgnoreCase
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="_EntityHasSomethingSupportingIgnoreCase">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._EntityHasSomethingSupportingIgnoreCase.ignore_case" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ignore_case
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match._exact_texts_like" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _exact_texts_like
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="_exact_texts_like">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._exact_texts_like._DEFAULT_GLOBS" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _DEFAULT_GLOBS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._exact_texts_like._MATCHING_EMPTY_STRING_MARKER" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _MATCHING_EMPTY_STRING_MARKER
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._exact_texts_like._MATCHING_SEPARATOR" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _MATCHING_SEPARATOR
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._exact_texts_like._PredefinedGlobPatterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _PredefinedGlobPatterns
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._exact_texts_like._PredefinedPatternType" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _PredefinedPatternType
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._exact_texts_like._RENDERING_SEPARATOR" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _RENDERING_SEPARATOR
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._exact_texts_like._RENDERING_TRANSLATIONS" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _RENDERING_TRANSLATIONS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._exact_texts_like._expected" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _expected
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._exact_texts_like._flags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _flags
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._exact_texts_like._globs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _globs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._exact_texts_like._inverted" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _inverted
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._exact_texts_like._name" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _name
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._exact_texts_like._name_prefix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _name_prefix
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._exact_texts_like._process_patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _process_patterns
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._exact_texts_like.ignore_case" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ignore_case
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._exact_texts_like.not_" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        not_
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._exact_texts_like._name_for" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _name_for
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._exact_texts_like.where" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        where
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match._text_patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _text_patterns
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="_text_patterns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._text_patterns._globs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _globs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._text_patterns.where" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        where
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match._text_patterns_like" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _text_patterns_like
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="_text_patterns_like">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._text_patterns_like._process_patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _process_patterns
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._text_patterns_like.ignore_case" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ignore_case
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._text_patterns_like.not_" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        not_
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._text_patterns_like.where_flags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        where_flags
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match._texts_like" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _texts_like
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="_texts_like">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._texts_like._process_patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _process_patterns
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._texts_like.ignore_case" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ignore_case
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._texts_like.not_" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        not_
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._texts_like.with_regex" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        with_regex
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._texts_like.with_wildcards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        with_wildcards
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._texts_like.where_wildcards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        where_wildcards
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.js" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        js
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="js">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match.js._active_element" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _active_element
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        size
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="size">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match.size._less_than" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _less_than
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match.size._more_than" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _more_than
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match.size.or_less" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        or_less
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match.size.or_more" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        or_more
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.tabs_number" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tabs_number
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="tabs_number">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match.tabs_number._less_than" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _less_than
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match.tabs_number._more_than" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _more_than
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match.tabs_number.or_less" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        or_less
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match.tabs_number.or_more" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        or_more
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.text_pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        text_pattern
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="text_pattern">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match.text_pattern.ignore_case" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ignore_case
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match.text_pattern.where_flags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        where_flags
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.attribute" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        attribute
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.browser_has_js_returned" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        browser_has_js_returned
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.css_class" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        css_class
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.css_property" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        css_property
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.exact_text" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        exact_text
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.exact_texts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        exact_texts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.native_property" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        native_property
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.script_returned" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        script_returned
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.size_greater_than" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        size_greater_than
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.size_greater_than_or_equal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        size_greater_than_or_equal
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.size_less_than" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        size_less_than
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.size_less_than_or_equal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        size_less_than_or_equal
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.tabs_number_greater_than" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tabs_number_greater_than
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.tabs_number_greater_than_or_equal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tabs_number_greater_than_or_equal
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.tabs_number_less_than" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tabs_number_less_than
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.tabs_number_less_than_or_equal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tabs_number_less_than_or_equal
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.tag" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tag
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.tag_containing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tag_containing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.text_containing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        text_containing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.texts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        texts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.title" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        title
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.title_containing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        title_containing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.url" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        url
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.url_containing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        url_containing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.value" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        value
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.value_containing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        value_containing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.values" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        values
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.values_containing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        values_containing
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../condition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Expected Conditions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../exceptions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Selene Exceptions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_2" id="__nav_7_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    selene.web
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    selene.web
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../web/elements/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Elements
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contribution
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contribution
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contribution/to-source-code-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How to contribute
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contribution/code-conventions-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code conventions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contribution/release-workflow-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Release workflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contribution/to-documentation-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How to contribute to docs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contribution/how-to-organize-docs-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How to organize docs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contribution/how-to-write-docs-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How to write docs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/yashaka/selene/releases" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changelog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    License
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match._empty" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _empty
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.absent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        absent
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.absent_in_dom" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        absent_in_dom
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.blank" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        blank
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.checked" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        checked
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.clickable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        clickable
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.disabled" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        disabled
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.empty" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        empty
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.enabled" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enabled
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.existing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        existing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.hidden" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        hidden
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.hidden_in_dom" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        hidden_in_dom
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.present" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        present
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.present_in_dom" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        present_in_dom
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.selected" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        selected
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.visible" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        visible
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match._CollectionHasSomeThingsSupportingIgnoreCase" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _CollectionHasSomeThingsSupportingIgnoreCase
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="_CollectionHasSomeThingsSupportingIgnoreCase">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._CollectionHasSomeThingsSupportingIgnoreCase.ignore_case" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ignore_case
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match._ElementDescriptor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _ElementDescriptor
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="_ElementDescriptor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._ElementDescriptor.value" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        value
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._ElementDescriptor.value_containing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        value_containing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._ElementDescriptor.values" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        values
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._ElementDescriptor.values_containing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        values_containing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match._EntityHasSomethingSupportingIgnoreCase" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _EntityHasSomethingSupportingIgnoreCase
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="_EntityHasSomethingSupportingIgnoreCase">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._EntityHasSomethingSupportingIgnoreCase.ignore_case" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ignore_case
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match._exact_texts_like" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _exact_texts_like
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="_exact_texts_like">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._exact_texts_like._DEFAULT_GLOBS" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _DEFAULT_GLOBS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._exact_texts_like._MATCHING_EMPTY_STRING_MARKER" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _MATCHING_EMPTY_STRING_MARKER
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._exact_texts_like._MATCHING_SEPARATOR" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _MATCHING_SEPARATOR
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._exact_texts_like._PredefinedGlobPatterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _PredefinedGlobPatterns
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._exact_texts_like._PredefinedPatternType" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _PredefinedPatternType
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._exact_texts_like._RENDERING_SEPARATOR" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _RENDERING_SEPARATOR
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._exact_texts_like._RENDERING_TRANSLATIONS" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _RENDERING_TRANSLATIONS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._exact_texts_like._expected" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _expected
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._exact_texts_like._flags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _flags
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._exact_texts_like._globs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _globs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._exact_texts_like._inverted" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _inverted
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._exact_texts_like._name" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _name
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._exact_texts_like._name_prefix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _name_prefix
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._exact_texts_like._process_patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _process_patterns
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._exact_texts_like.ignore_case" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ignore_case
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._exact_texts_like.not_" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        not_
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._exact_texts_like._name_for" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _name_for
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._exact_texts_like.where" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        where
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match._text_patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _text_patterns
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="_text_patterns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._text_patterns._globs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _globs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._text_patterns.where" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        where
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match._text_patterns_like" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _text_patterns_like
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="_text_patterns_like">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._text_patterns_like._process_patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _process_patterns
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._text_patterns_like.ignore_case" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ignore_case
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._text_patterns_like.not_" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        not_
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._text_patterns_like.where_flags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        where_flags
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match._texts_like" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _texts_like
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="_texts_like">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._texts_like._process_patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _process_patterns
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._texts_like.ignore_case" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ignore_case
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._texts_like.not_" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        not_
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._texts_like.with_regex" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        with_regex
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._texts_like.with_wildcards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        with_wildcards
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match._texts_like.where_wildcards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        where_wildcards
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.js" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        js
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="js">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match.js._active_element" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _active_element
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        size
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="size">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match.size._less_than" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _less_than
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match.size._more_than" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _more_than
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match.size.or_less" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        or_less
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match.size.or_more" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        or_more
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.tabs_number" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tabs_number
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="tabs_number">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match.tabs_number._less_than" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _less_than
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match.tabs_number._more_than" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _more_than
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match.tabs_number.or_less" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        or_less
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match.tabs_number.or_more" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        or_more
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.text_pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        text_pattern
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="text_pattern">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match.text_pattern.ignore_case" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ignore_case
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.match.text_pattern.where_flags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        where_flags
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.attribute" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        attribute
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.browser_has_js_returned" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        browser_has_js_returned
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.css_class" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        css_class
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.css_property" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        css_property
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.exact_text" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        exact_text
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.exact_texts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        exact_texts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.native_property" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        native_property
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.script_returned" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        script_returned
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.size_greater_than" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        size_greater_than
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.size_greater_than_or_equal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        size_greater_than_or_equal
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.size_less_than" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        size_less_than
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.size_less_than_or_equal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        size_less_than_or_equal
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.tabs_number_greater_than" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tabs_number_greater_than
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.tabs_number_greater_than_or_equal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tabs_number_greater_than_or_equal
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.tabs_number_less_than" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tabs_number_less_than
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.tabs_number_less_than_or_equal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tabs_number_less_than_or_equal
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.tag" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tag
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.tag_containing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tag_containing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.text_containing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        text_containing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.texts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        texts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.title" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        title
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.title_containing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        title_containing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.url" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        url
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.url_containing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        url_containing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.value" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        value
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.value_containing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        value_containing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.values" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        values
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.match.values_containing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        values_containing
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/yashaka/selene/edit/master/docs/reference/match.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h4v-1.91L12.09 18H6v-2h8.09l2-2H6v-2h12.09L20 10.09V8l-6-6zm7 1.5L18.5 9H13zm7.15 9.5a.55.55 0 0 0-.4.16l-1.02 1.02 2.09 2.08 1.02-1.01c.21-.22.21-.58 0-.79l-1.3-1.3a.54.54 0 0 0-.39-.16m-2.01 1.77L12 20.92V23h2.08l6.15-6.15z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/yashaka/selene/raw/master/docs/reference/match.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5m-7.86-1.75L8.85 19l.29-.74C10.43 15.06 13.5 13 17 13c1.05 0 2.06.21 3 .56V8l-6-6H6c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h4.5c-.55-.66-1-1.42-1.36-2.25M13 3.5 18.5 9H13z"/></svg>
+    </a>
+  
+
+
+<h1 id="_1"><a class="headerlink" href="#_1" title="Permanent link">#</a></h1>
+<div class="admonition warning">
+<p class="admonition-title">This is the latest development version</p>
+<p>Some features documented on this page may not yet be available
+in the published stable version.</p>
+</div>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+
+    <div class="doc doc-contents first">
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h2 id="selene.core.match._empty" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">_empty</span><span class="p">:</span> <span class="n">Condition</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="n">Match</span><span class="p">(</span><span class="s1">&#39;is empty&#39;</span><span class="p">,</span> <span class="n">__size_or_value_or_text</span><span class="p">,</span> <span class="n">by</span><span class="o">=</span><span class="k">lambda</span> <span class="n">actual_desc_and_result</span><span class="p">:</span> <span class="ow">not</span> <span class="n">actual_desc_and_result</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">_describe_actual_result</span><span class="o">=</span><span class="k">lambda</span> <span class="n">actual_desc_and_result</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;actual </span><span class="si">{</span><span class="n">actual_desc_and_result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">actual_desc_and_result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#selene.core.match._empty" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Experimental 4-in-1 "is form or input or element or collection empty" condition,
+that is an alternative to old and deprecated the <a class="autorefs autorefs-internal" href="#selene.core.match.empty">empty</a>
+collection condition.</p>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h2 id="selene.core.match.absent" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">absent</span><span class="p">:</span> <span class="n">Condition</span><span class="p">[</span><span class="n">Element</span><span class="p">]</span> <span class="o">=</span> <span class="n">Condition</span><span class="p">(</span><span class="s1">&#39;is absent in DOM&#39;</span><span class="p">,</span> <span class="n">present</span><span class="o">.</span><span class="n">not_</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#selene.core.match.absent" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Deprecated 'is absent' condition. Use absent_in_dom instead.</p>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h2 id="selene.core.match.absent_in_dom" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">absent_in_dom</span><span class="p">:</span> <span class="n">Condition</span><span class="p">[</span><span class="n">Element</span><span class="p">]</span> <span class="o">=</span> <span class="n">Condition</span><span class="p">(</span><span class="s1">&#39;is absent in DOM&#39;</span><span class="p">,</span> <span class="n">present_in_dom</span><span class="o">.</span><span class="n">not_</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#selene.core.match.absent_in_dom" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h2 id="selene.core.match.blank" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">blank</span><span class="p">:</span> <span class="n">Condition</span><span class="p">[</span><span class="n">Element</span><span class="p">]</span> <span class="o">=</span> <span class="n">Match</span><span class="p">(</span><span class="s1">&#39;is blank&#39;</span><span class="p">,</span> <span class="n">actual</span><span class="o">=</span><span class="k">lambda</span> <span class="n">element</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="n">webelement</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">))</span> <span class="k">if</span> <span class="p">(</span><span class="n">webelement</span> <span class="o">:=</span> <span class="n">element</span><span class="o">.</span><span class="n">locate</span><span class="p">())</span> <span class="ow">and</span> <span class="n">webelement</span><span class="o">.</span><span class="n">tag_name</span> <span class="o">==</span> <span class="s1">&#39;input&#39;</span> <span class="k">else</span> <span class="p">(</span><span class="s1">&#39;text&#39;</span><span class="p">,</span> <span class="n">webelement</span><span class="o">.</span><span class="n">text</span><span class="p">),</span> <span class="n">by</span><span class="o">=</span><span class="k">lambda</span> <span class="n">actual_desc_and_result</span><span class="p">:</span> <span class="ow">not</span> <span class="n">actual_desc_and_result</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">_describe_actual_result</span><span class="o">=</span><span class="k">lambda</span> <span class="n">actual_desc_and_result</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;actual </span><span class="si">{</span><span class="n">actual_desc_and_result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">actual_desc_and_result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#selene.core.match.blank" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Asserts that element is blank,
+i.e. has empty value if is an <input> element or empty text otherwise.</p>
+<p>Is similar to the experimental 4-in-1 <a class="autorefs autorefs-internal" href="#selene.core.match._empty">_empty</a> condition,
+works only for singular elements: if they are a value-based elements
+(like inputs and textarea) then it checks for empty value,
+if they are text-based elements then it checks for empty text content.</p>
+<p>The <code>_empty</code> condition works same but if applied to collection
+then will assert that it has size 0. And when applied to "form" element,
+then will check for all form "value-like" inputs to be empty.
+Hence, the <code>blank</code> condition is more precise, while <code>empty</code> is more general.
+Because of its generality, the <code>empty</code> condition can be easier to remember,
+but can lead to some kind of confusion when applied to both element
+and collection in same test.</p>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h2 id="selene.core.match.checked" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">checked</span><span class="p">:</span> <span class="n">Condition</span><span class="p">[</span><span class="n">Element</span><span class="p">]</span> <span class="o">=</span> <span class="n">native_property</span><span class="p">(</span><span class="s1">&#39;checked&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#selene.core.match.checked" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h2 id="selene.core.match.clickable" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">clickable</span><span class="p">:</span> <span class="n">Condition</span><span class="p">[</span><span class="n">Element</span><span class="p">]</span> <span class="o">=</span> <span class="n">visible</span><span class="o">.</span><span class="n">and_</span><span class="p">(</span><span class="n">enabled</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#selene.core.match.clickable" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h2 id="selene.core.match.disabled" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">disabled</span><span class="p">:</span> <span class="n">Condition</span><span class="p">[</span><span class="n">Element</span><span class="p">]</span> <span class="o">=</span> <span class="n">enabled</span><span class="o">.</span><span class="n">not_</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#selene.core.match.disabled" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h2 id="selene.core.match.empty" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">empty</span><span class="p">:</span> <span class="n">Condition</span><span class="p">[</span><span class="n">Collection</span><span class="p">]</span> <span class="o">=</span> <span class="n">Match</span><span class="p">(</span><span class="s1">&#39;is empty&#39;</span><span class="p">,</span> <span class="n">__is_empty</span><span class="p">,</span> <span class="n">by</span><span class="o">=</span><span class="n">predicate</span><span class="o">.</span><span class="n">is_truthy</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#selene.core.match.empty" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Deprecated 'is empty' collection condition.
+Use <a class="autorefs autorefs-internal" href="#selene.core.match.size">size(0)</a> instead.</p>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h2 id="selene.core.match.enabled" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">enabled</span><span class="p">:</span> <span class="n">Condition</span><span class="p">[</span><span class="n">Element</span><span class="p">]</span> <span class="o">=</span> <span class="n">Match</span><span class="p">(</span><span class="s1">&#39;is enabled&#39;</span><span class="p">,</span> <span class="n">by</span><span class="o">=</span><span class="k">lambda</span> <span class="n">element</span><span class="p">:</span> <span class="n">element</span><span class="o">.</span><span class="n">locate</span><span class="p">()</span><span class="o">.</span><span class="n">is_enabled</span><span class="p">())</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#selene.core.match.enabled" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h2 id="selene.core.match.existing" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">existing</span><span class="p">:</span> <span class="n">Condition</span><span class="p">[</span><span class="n">Element</span><span class="p">]</span> <span class="o">=</span> <span class="n">Match</span><span class="p">(</span><span class="s1">&#39;is present in DOM&#39;</span><span class="p">,</span> <span class="n">by</span><span class="o">=</span><span class="n">__deprecated_is_existing</span><span class="p">,</span> <span class="n">_falsy_exceptions</span><span class="o">=</span><span class="p">(</span><span class="ne">AssertionError</span><span class="p">,</span> <span class="n">NoSuchElementException</span><span class="p">))</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#selene.core.match.existing" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Deprecated 'is existing' condition. Use present_in_dom instead.</p>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h2 id="selene.core.match.hidden" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">hidden</span><span class="p">:</span> <span class="n">Condition</span><span class="p">[</span><span class="n">Element</span><span class="p">]</span> <span class="o">=</span> <span class="n">Condition</span><span class="p">(</span><span class="s1">&#39;is hidden&#39;</span><span class="p">,</span> <span class="n">visible</span><span class="o">.</span><span class="n">not_</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#selene.core.match.hidden" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h2 id="selene.core.match.hidden_in_dom" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">hidden_in_dom</span><span class="p">:</span> <span class="n">Condition</span><span class="p">[</span><span class="n">Element</span><span class="p">]</span> <span class="o">=</span> <span class="n">present_in_dom</span><span class="o">.</span><span class="n">and_</span><span class="p">(</span><span class="n">visible</span><span class="o">.</span><span class="n">not_</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#selene.core.match.hidden_in_dom" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h2 id="selene.core.match.present" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">present</span><span class="p">:</span> <span class="n">Condition</span><span class="p">[</span><span class="n">Element</span><span class="p">]</span> <span class="o">=</span> <span class="n">Match</span><span class="p">(</span><span class="s1">&#39;is present in DOM&#39;</span><span class="p">,</span> <span class="n">by</span><span class="o">=</span><span class="k">lambda</span> <span class="n">element</span><span class="p">:</span> <span class="n">fp</span><span class="o">.</span><span class="n">thread</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">fp</span><span class="o">.</span><span class="n">with_warn</span><span class="p">(</span><span class="s1">&#39;be.present is deprecated, use be.present_in_dom instead&#39;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">),</span> <span class="k">lambda</span> <span class="n">element</span><span class="p">:</span> <span class="n">element</span><span class="o">.</span><span class="n">locate</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">),</span> <span class="n">_falsy_exceptions</span><span class="o">=</span><span class="p">(</span><span class="ne">AssertionError</span><span class="p">,</span> <span class="n">NoSuchElementException</span><span class="p">))</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#selene.core.match.present" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Deprecated 'is present' condition. Use present_in_dom instead.</p>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h2 id="selene.core.match.present_in_dom" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">present_in_dom</span><span class="p">:</span> <span class="n">Condition</span><span class="p">[</span><span class="n">Element</span><span class="p">]</span> <span class="o">=</span> <span class="n">Match</span><span class="p">(</span><span class="s1">&#39;is present in DOM&#39;</span><span class="p">,</span> <span class="n">actual</span><span class="o">=</span><span class="k">lambda</span> <span class="n">element</span><span class="p">:</span> <span class="n">element</span><span class="o">.</span><span class="n">locate</span><span class="p">(),</span> <span class="n">by</span><span class="o">=</span><span class="k">lambda</span> <span class="n">webelement</span><span class="p">:</span> <span class="n">webelement</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="n">_describe_actual_result</span><span class="o">=</span><span class="k">lambda</span> <span class="n">webelement</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;actual html element: </span><span class="si">{</span><span class="n">webelement</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s1">&#39;outerHTML&#39;</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">appium_tools</span><span class="o">.</span><span class="n">_is_mobile_element</span><span class="p">(</span><span class="n">webelement</span><span class="p">)</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="n">webelement</span><span class="p">),</span> <span class="n">_falsy_exceptions</span><span class="o">=</span><span class="p">(</span><span class="ne">AssertionError</span><span class="p">,</span> <span class="n">NoSuchElementException</span><span class="p">))</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#selene.core.match.present_in_dom" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h2 id="selene.core.match.selected" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">selected</span><span class="p">:</span> <span class="n">Condition</span><span class="p">[</span><span class="n">Element</span><span class="p">]</span> <span class="o">=</span> <span class="n">Match</span><span class="p">(</span><span class="s1">&#39;is selected&#39;</span><span class="p">,</span> <span class="n">by</span><span class="o">=</span><span class="k">lambda</span> <span class="n">element</span><span class="p">:</span> <span class="n">element</span><span class="o">.</span><span class="n">locate</span><span class="p">()</span><span class="o">.</span><span class="n">is_selected</span><span class="p">())</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#selene.core.match.selected" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h2 id="selene.core.match.visible" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">visible</span><span class="p">:</span> <span class="n">Condition</span><span class="p">[</span><span class="n">Element</span><span class="p">]</span> <span class="o">=</span> <span class="n">Match</span><span class="p">(</span><span class="s1">&#39;is visible&#39;</span><span class="p">,</span> <span class="n">actual</span><span class="o">=</span><span class="k">lambda</span> <span class="n">element</span><span class="p">:</span> <span class="n">element</span><span class="o">.</span><span class="n">locate</span><span class="p">(),</span> <span class="n">by</span><span class="o">=</span><span class="k">lambda</span> <span class="n">actual</span><span class="p">:</span> <span class="n">actual</span><span class="o">.</span><span class="n">is_displayed</span><span class="p">(),</span> <span class="n">_describe_actual_result</span><span class="o">=</span><span class="k">lambda</span> <span class="n">actual</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;actual html element: </span><span class="si">{</span><span class="n">actual</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s1">&#39;outerHTML&#39;</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">appium_tools</span><span class="o">.</span><span class="n">_is_mobile_element</span><span class="p">(</span><span class="n">actual</span><span class="p">)</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="n">actual</span><span class="p">),</span> <span class="n">_falsy_exceptions</span><span class="o">=</span><span class="p">(</span><span class="ne">AssertionError</span><span class="p">,</span> <span class="n">NoSuchElementException</span><span class="p">))</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#selene.core.match.visible" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+    </div>
+
+</div>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="selene.core.match._CollectionHasSomeThingsSupportingIgnoreCase" class="doc doc-heading">
+            <code>_CollectionHasSomeThingsSupportingIgnoreCase</code>
+
+
+<a href="#selene.core.match._CollectionHasSomeThingsSupportingIgnoreCase" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="selene.core.condition.Match" href="../condition/#selene.core.condition.Match">Match</a>[<span title="selene.core.Collection">Collection</span>]</code></p>
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.match._CollectionHasSomeThingsSupportingIgnoreCase.ignore_case" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">ignore_case</span><span class="p">:</span> <span class="n">Condition</span><span class="p">[</span><span class="n">Collection</span><span class="p">]</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#selene.core.match._CollectionHasSomeThingsSupportingIgnoreCase.ignore_case" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="selene.core.match._ElementDescriptor" class="doc doc-heading">
+            <code>_ElementDescriptor</code>
+
+
+<a href="#selene.core.match._ElementDescriptor" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="selene.core.condition.Condition" href="../condition/#selene.core.condition.Condition">Condition</a>[<span title="selene.core._element.Element">Element</span>]</code></p>
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="selene.core.match._ElementDescriptor.value" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">value</span><span class="p">(</span><span class="n">expected</span><span class="p">)</span></code>
+
+<a href="#selene.core.match._ElementDescriptor.value" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="selene.core.match._ElementDescriptor.value_containing" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">value_containing</span><span class="p">(</span><span class="n">expected</span><span class="p">)</span></code>
+
+<a href="#selene.core.match._ElementDescriptor.value_containing" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="selene.core.match._ElementDescriptor.values" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">values</span><span class="p">(</span><span class="o">*</span><span class="n">expected</span><span class="p">)</span></code>
+
+<a href="#selene.core.match._ElementDescriptor.values" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="selene.core.match._ElementDescriptor.values_containing" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">values_containing</span><span class="p">(</span><span class="o">*</span><span class="n">expected</span><span class="p">)</span></code>
+
+<a href="#selene.core.match._ElementDescriptor.values_containing" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="selene.core.match._EntityHasSomethingSupportingIgnoreCase" class="doc doc-heading">
+            <code>_EntityHasSomethingSupportingIgnoreCase</code>
+
+
+<a href="#selene.core.match._EntityHasSomethingSupportingIgnoreCase" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="selene.core.condition.Match" href="../condition/#selene.core.condition.Match">Match</a>[<span title="selene.core.match.E">E</span>]</code></p>
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.match._EntityHasSomethingSupportingIgnoreCase.ignore_case" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">ignore_case</span><span class="p">:</span> <span class="n">Condition</span><span class="p">[</span><span class="n">E</span><span class="p">]</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#selene.core.match._EntityHasSomethingSupportingIgnoreCase.ignore_case" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="selene.core.match._exact_texts_like" class="doc doc-heading">
+            <code>_exact_texts_like</code>
+
+
+<a href="#selene.core.match._exact_texts_like" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="selene.core.condition.Condition" href="../condition/#selene.core.condition.Condition">Condition</a>[<span title="selene.core.Collection">Collection</span>]</code></p>
+
+
+        <p>Condition to match visible texts of all elements in a collection
+with supported list globs for items (item placeholders
+to include/exclude items from match).</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.match._exact_texts_like._DEFAULT_GLOBS" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">_DEFAULT_GLOBS</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(({</span><span class="o">...</span><span class="p">},</span> <span class="n">_PredefinedGlobPatterns</span><span class="p">[</span><span class="s1">&#39;exactly_one&#39;</span><span class="p">]),</span> <span class="p">([{</span><span class="o">...</span><span class="p">}],</span> <span class="n">_PredefinedGlobPatterns</span><span class="p">[</span><span class="s1">&#39;zero_or_one&#39;</span><span class="p">]),</span> <span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">_PredefinedGlobPatterns</span><span class="p">[</span><span class="s1">&#39;one_or_more&#39;</span><span class="p">]),</span> <span class="p">([</span><span class="o">...</span><span class="p">],</span> <span class="n">_PredefinedGlobPatterns</span><span class="p">[</span><span class="s1">&#39;zero_or_more&#39;</span><span class="p">]))</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#selene.core.match._exact_texts_like._DEFAULT_GLOBS" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.match._exact_texts_like._MATCHING_EMPTY_STRING_MARKER" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">_MATCHING_EMPTY_STRING_MARKER</span> <span class="o">=</span> <span class="s1">&#39;‹EMTPY_STRING›&#39;</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#selene.core.match._exact_texts_like._MATCHING_EMPTY_STRING_MARKER" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.match._exact_texts_like._MATCHING_SEPARATOR" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">_MATCHING_SEPARATOR</span> <span class="o">=</span> <span class="s1">&#39;‚&#39;</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#selene.core.match._exact_texts_like._MATCHING_SEPARATOR" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A separator to be used while matching
+to separate texts of different elements in a collection.</p>
+<p>Should be quite unique to not interfere with actual texts characters.
+Otherwise, will brake the match.</p>
+<p>Should be a one character string,
+because is used in predefined pattern for "exactly one" globbing
+that might not work correctly if there will be more than one character.</p>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.match._exact_texts_like._PredefinedGlobPatterns" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">_PredefinedGlobPatterns</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">_PredefinedPatternType</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">exactly_one</span><span class="o">=</span><span class="s1">&#39;[^&#39;</span> <span class="o">+</span> <span class="n">_MATCHING_SEPARATOR</span> <span class="o">+</span> <span class="s1">&#39;]+&#39;</span><span class="p">,</span> <span class="n">zero_or_one</span><span class="o">=</span><span class="s1">&#39;[^&#39;</span> <span class="o">+</span> <span class="n">_MATCHING_SEPARATOR</span> <span class="o">+</span> <span class="s1">&#39;]*&#39;</span><span class="p">,</span> <span class="n">one_or_more</span><span class="o">=</span><span class="s1">&#39;.+?&#39;</span><span class="p">,</span> <span class="n">zero_or_more</span><span class="o">=</span><span class="s1">&#39;.*?&#39;</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#selene.core.match._exact_texts_like._PredefinedGlobPatterns" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.match._exact_texts_like._PredefinedPatternType" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">_PredefinedPatternType</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;zero_or_one&#39;</span><span class="p">,</span> <span class="s1">&#39;exactly_one&#39;</span><span class="p">,</span> <span class="s1">&#39;one_or_more&#39;</span><span class="p">,</span> <span class="s1">&#39;zero_or_more&#39;</span><span class="p">]</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#selene.core.match._exact_texts_like._PredefinedPatternType" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.match._exact_texts_like._RENDERING_SEPARATOR" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">_RENDERING_SEPARATOR</span> <span class="o">=</span> <span class="s1">&#39;, &#39;</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#selene.core.match._exact_texts_like._RENDERING_SEPARATOR" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.match._exact_texts_like._RENDERING_TRANSLATIONS" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">_RENDERING_TRANSLATIONS</span> <span class="o">=</span> <span class="p">(({</span><span class="o">...</span><span class="p">},</span> <span class="s1">&#39;{...}&#39;</span><span class="p">),</span> <span class="p">([{</span><span class="o">...</span><span class="p">}],</span> <span class="s1">&#39;[{...}]&#39;</span><span class="p">),</span> <span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="s1">&#39;...&#39;</span><span class="p">),</span> <span class="p">([</span><span class="o">...</span><span class="p">],</span> <span class="s1">&#39;[...])&#39;</span><span class="p">),</span> <span class="p">((</span><span class="o">...</span><span class="p">),</span> <span class="s1">&#39;(...,)&#39;</span><span class="p">),</span> <span class="p">([(</span><span class="o">...</span><span class="p">)],</span> <span class="s1">&#39;[(...,)])&#39;</span><span class="p">))</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#selene.core.match._exact_texts_like._RENDERING_TRANSLATIONS" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.match._exact_texts_like._expected" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">_expected</span> <span class="o">=</span> <span class="n">expected</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#selene.core.match._exact_texts_like._expected" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.match._exact_texts_like._flags" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">_flags</span> <span class="o">=</span> <span class="n">_flags</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#selene.core.match._exact_texts_like._flags" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.match._exact_texts_like._globs" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">_globs</span> <span class="o">=</span> <span class="n">_globs</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#selene.core.match._exact_texts_like._globs" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.match._exact_texts_like._inverted" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">_inverted</span> <span class="o">=</span> <span class="n">_inverted</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#selene.core.match._exact_texts_like._inverted" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.match._exact_texts_like._name" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">_name</span> <span class="o">=</span> <span class="n">_name</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#selene.core.match._exact_texts_like._name" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.match._exact_texts_like._name_prefix" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">_name_prefix</span> <span class="o">=</span> <span class="n">_name_prefix</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#selene.core.match._exact_texts_like._name_prefix" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.match._exact_texts_like._process_patterns" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">_process_patterns</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">escape</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#selene.core.match._exact_texts_like._process_patterns" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.match._exact_texts_like.ignore_case" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">ignore_case</span><span class="p">:</span> <span class="n">Condition</span><span class="p">[</span><span class="n">Collection</span><span class="p">]</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#selene.core.match._exact_texts_like.ignore_case" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.match._exact_texts_like.not_" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">not_</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#selene.core.match._exact_texts_like.not_" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+    </div>
+
+</div>
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="selene.core.match._exact_texts_like._name_for" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">_name_for</span><span class="p">(</span><span class="n">entity</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+<a href="#selene.core.match._exact_texts_like._name_for" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="selene.core.match._exact_texts_like.where" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">where</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">exactly_one</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">zero_or_one</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">one_or_more</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">zero_or_more</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+<a href="#selene.core.match._exact_texts_like.where" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="selene.core.match._text_patterns" class="doc doc-heading">
+            <code>_text_patterns</code>
+
+
+<a href="#selene.core.match._text_patterns" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="selene.core.match._text_patterns_like" href="#selene.core.match._text_patterns_like">_text_patterns_like</a></code></p>
+
+
+        <p>Condition to match visible texts of all elements in a collection
+with supported item placeholders to include/exclude items from match
+(like <a class="autorefs autorefs-internal" href="#selene.core.match._exact_texts_like">_exact_texts_like</a> condition)
+and with additionally supported wildcards (implicit and explicit)
+for the corresponding matching of each item text in a collection</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.match._text_patterns._globs" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">_globs</span> <span class="o">=</span> <span class="p">()</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#selene.core.match._text_patterns._globs" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+    </div>
+
+</div>
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="selene.core.match._text_patterns.where" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">where</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+<a href="#selene.core.match._text_patterns.where" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Just a placeholder. This attribute is not supported for this condition</p>
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="selene.core.match._text_patterns_like" class="doc doc-heading">
+            <code>_text_patterns_like</code>
+
+
+<a href="#selene.core.match._text_patterns_like" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="selene.core.match._exact_texts_like" href="#selene.core.match._exact_texts_like">_exact_texts_like</a></code></p>
+
+
+        <p>Condition to match visible texts of all elements in a collection
+with supported item placeholders to include/exclude items from match
+(like <a class="autorefs autorefs-internal" href="#selene.core.match._exact_texts_like">_exact_texts_like</a> condition)
+and with additionally supported wildcards (implicit and explicit)
+for the corresponding matching of each item text in a collection</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.match._text_patterns_like._process_patterns" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">_process_patterns</span> <span class="o">=</span> <span class="n">_process_patterns</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#selene.core.match._text_patterns_like._process_patterns" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.match._text_patterns_like.ignore_case" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">ignore_case</span><span class="p">:</span> <span class="n">Condition</span><span class="p">[</span><span class="n">Collection</span><span class="p">]</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#selene.core.match._text_patterns_like.ignore_case" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.match._text_patterns_like.not_" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">not_</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#selene.core.match._text_patterns_like.not_" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+    </div>
+
+</div>
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="selene.core.match._text_patterns_like.where_flags" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">where_flags</span><span class="p">(</span><span class="n">flags</span><span class="p">)</span></code>
+
+<a href="#selene.core.match._text_patterns_like.where_flags" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="selene.core.match._texts_like" class="doc doc-heading">
+            <code>_texts_like</code>
+
+
+<a href="#selene.core.match._texts_like" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="selene.core.match._exact_texts_like" href="#selene.core.match._exact_texts_like">_exact_texts_like</a></code></p>
+
+
+        <p>Condition to match visible texts of all elements in a collection
+with supported item globs (placeholders to include/exclude items from match,
+like in <a class="autorefs autorefs-internal" href="#selene.core.match._exact_texts_like">_exact_texts_like</a> condition)
+and matching each expected item text (that is not an item glob) – "by contains".
+Has additional support for classic wildcards via <code>.with_wildcards</code> method
+(* matches any number of any characters including none,
+? matches any single character).</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.match._texts_like._process_patterns" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">_process_patterns</span> <span class="o">=</span> <span class="n">_process_patterns</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#selene.core.match._texts_like._process_patterns" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.match._texts_like.ignore_case" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">ignore_case</span><span class="p">:</span> <span class="n">Self</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#selene.core.match._texts_like.ignore_case" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.match._texts_like.not_" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">not_</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#selene.core.match._texts_like.not_" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.match._texts_like.with_regex" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">with_regex</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#selene.core.match._texts_like.with_regex" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>An alias to <a class="autorefs autorefs-internal" href="#selene.core.match._text_patterns_like">_text_patterns_like</a> condition
+: switches to regex matching mode for all items in the expected list</p>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.match._texts_like.with_wildcards" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">with_wildcards</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#selene.core.match._texts_like.with_wildcards" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+    </div>
+
+</div>
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="selene.core.match._texts_like.where_wildcards" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">where_wildcards</span><span class="p">(</span><span class="n">zero_or_more_chars</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exactly_one_char</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+<a href="#selene.core.match._texts_like.where_wildcards" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="selene.core.match.js" class="doc doc-heading">
+            <code>js</code>
+
+
+<a href="#selene.core.match.js" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.match.js._active_element" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">_active_element</span><span class="p">:</span> <span class="n">Condition</span><span class="p">[</span><span class="n">Element</span><span class="p">]</span> <span class="o">=</span> <span class="n">Match</span><span class="p">(</span><span class="s1">&#39;has focus&#39;</span><span class="p">,</span> <span class="n">by</span><span class="o">=</span><span class="k">lambda</span> <span class="n">element</span><span class="p">:</span> <span class="n">element</span><span class="o">.</span><span class="n">locate</span><span class="p">()</span> <span class="o">==</span> <span class="n">element</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">execute_script</span><span class="p">(</span><span class="s1">&#39;return document.activeElement&#39;</span><span class="p">))</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#selene.core.match.js._active_element" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="selene.core.match.size" class="doc doc-heading">
+            <code>size</code>
+
+
+<a href="#selene.core.match.size" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="selene.core.condition.Match" href="../condition/#selene.core.condition.Match">Match</a>[<span title="typing_extensions.Union">Union</span>[<span title="selene.core.Collection">Collection</span>, <span title="selene.core._browser.Browser">Browser</span>, <span title="selene.core._element.Element">Element</span>]]</code></p>
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.match.size._less_than" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">_less_than</span><span class="p">:</span> <span class="n">Condition</span><span class="p">[</span><span class="n">Collection</span><span class="p">]</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#selene.core.match.size._less_than" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.match.size._more_than" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">_more_than</span><span class="p">:</span> <span class="n">Condition</span><span class="p">[</span><span class="n">Collection</span><span class="p">]</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#selene.core.match.size._more_than" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.match.size.or_less" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">or_less</span><span class="p">:</span> <span class="n">Condition</span><span class="p">[</span><span class="n">Collection</span><span class="p">]</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#selene.core.match.size.or_less" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.match.size.or_more" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">or_more</span><span class="p">:</span> <span class="n">Condition</span><span class="p">[</span><span class="n">Collection</span><span class="p">]</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#selene.core.match.size.or_more" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="selene.core.match.tabs_number" class="doc doc-heading">
+            <code>tabs_number</code>
+
+
+<a href="#selene.core.match.tabs_number" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="selene.core.condition.Match" href="../condition/#selene.core.condition.Match">Match</a>[<span title="selene.core._browser.Browser">Browser</span>]</code></p>
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.match.tabs_number._less_than" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">_less_than</span><span class="p">:</span> <span class="n">Condition</span><span class="p">[</span><span class="n">Browser</span><span class="p">]</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#selene.core.match.tabs_number._less_than" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.match.tabs_number._more_than" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">_more_than</span><span class="p">:</span> <span class="n">Condition</span><span class="p">[</span><span class="n">Browser</span><span class="p">]</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#selene.core.match.tabs_number._more_than" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.match.tabs_number.or_less" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">or_less</span><span class="p">:</span> <span class="n">Condition</span><span class="p">[</span><span class="n">Browser</span><span class="p">]</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#selene.core.match.tabs_number.or_less" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.match.tabs_number.or_more" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">or_more</span><span class="p">:</span> <span class="n">Condition</span><span class="p">[</span><span class="n">Browser</span><span class="p">]</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#selene.core.match.tabs_number.or_more" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="selene.core.match.text_pattern" class="doc doc-heading">
+            <code>text_pattern</code>
+
+
+<a href="#selene.core.match.text_pattern" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="selene.core.condition.Condition" href="../condition/#selene.core.condition.Condition">Condition</a>[<span title="selene.core._element.Element">Element</span>]</code></p>
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.match.text_pattern.ignore_case" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">ignore_case</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#selene.core.match.text_pattern.ignore_case" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+    </div>
+
+</div>
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="selene.core.match.text_pattern.where_flags" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">where_flags</span><span class="p">(</span><span class="n">flags</span><span class="p">)</span></code>
+
+<a href="#selene.core.match.text_pattern.where_flags" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="selene.core.match.attribute" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">attribute</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">_inverted</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+<a href="#selene.core.match.attribute" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="selene.core.match.browser_has_js_returned" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">browser_has_js_returned</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">script</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span></code>
+
+<a href="#selene.core.match.browser_has_js_returned" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="selene.core.match.css_class" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">css_class</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">_inverted</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+<a href="#selene.core.match.css_class" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="selene.core.match.css_property" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">css_property</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">_inverted</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+<a href="#selene.core.match.css_property" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="selene.core.match.exact_text" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">exact_text</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">_ignore_case</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">_inverted</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+<a href="#selene.core.match.exact_text" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="selene.core.match.exact_texts" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">exact_texts</span><span class="p">(</span><span class="o">*</span><span class="n">expected</span><span class="p">,</span> <span class="n">_ignore_case</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">_inverted</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+<a href="#selene.core.match.exact_texts" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="selene.core.match.native_property" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">native_property</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">_inverted</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+<a href="#selene.core.match.native_property" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="selene.core.match.script_returned" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">script_returned</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">script</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span></code>
+
+<a href="#selene.core.match.script_returned" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="selene.core.match.size_greater_than" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">size_greater_than</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">_inverted</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+<a href="#selene.core.match.size_greater_than" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="selene.core.match.size_greater_than_or_equal" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">size_greater_than_or_equal</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">_inverted</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+<a href="#selene.core.match.size_greater_than_or_equal" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="selene.core.match.size_less_than" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">size_less_than</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">_inverted</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+<a href="#selene.core.match.size_less_than" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="selene.core.match.size_less_than_or_equal" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">size_less_than_or_equal</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">_inverted</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+<a href="#selene.core.match.size_less_than_or_equal" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="selene.core.match.tabs_number_greater_than" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">tabs_number_greater_than</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">_inverted</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+<a href="#selene.core.match.tabs_number_greater_than" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="selene.core.match.tabs_number_greater_than_or_equal" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">tabs_number_greater_than_or_equal</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">_inverted</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+<a href="#selene.core.match.tabs_number_greater_than_or_equal" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="selene.core.match.tabs_number_less_than" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">tabs_number_less_than</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">_inverted</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+<a href="#selene.core.match.tabs_number_less_than" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="selene.core.match.tabs_number_less_than_or_equal" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">tabs_number_less_than_or_equal</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">_inverted</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+<a href="#selene.core.match.tabs_number_less_than_or_equal" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="selene.core.match.tag" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">tag</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">_name</span><span class="o">=</span><span class="s1">&#39;has tag&#39;</span><span class="p">,</span> <span class="n">_by</span><span class="o">=</span><span class="n">predicate</span><span class="o">.</span><span class="n">equals</span><span class="p">)</span></code>
+
+<a href="#selene.core.match.tag" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="selene.core.match.tag_containing" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">tag_containing</span><span class="p">(</span><span class="n">expected</span><span class="p">)</span></code>
+
+<a href="#selene.core.match.tag_containing" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="selene.core.match.text_containing" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">text_containing</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">_ignore_case</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">_inverted</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+<a href="#selene.core.match.text_containing" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="selene.core.match.texts" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">texts</span><span class="p">(</span><span class="o">*</span><span class="n">expected</span><span class="p">,</span> <span class="n">_ignore_case</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">_inverted</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+<a href="#selene.core.match.texts" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="selene.core.match.title" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">title</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">_name</span><span class="o">=</span><span class="s1">&#39;has title&#39;</span><span class="p">,</span> <span class="n">_by</span><span class="o">=</span><span class="n">predicate</span><span class="o">.</span><span class="n">equals</span><span class="p">,</span> <span class="n">_inverted</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+<a href="#selene.core.match.title" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="selene.core.match.title_containing" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">title_containing</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">_inverted</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+<a href="#selene.core.match.title_containing" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="selene.core.match.url" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">url</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">_name</span><span class="o">=</span><span class="s1">&#39;has url&#39;</span><span class="p">,</span> <span class="n">_by</span><span class="o">=</span><span class="n">predicate</span><span class="o">.</span><span class="n">equals</span><span class="p">,</span> <span class="n">_inverted</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+<a href="#selene.core.match.url" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="selene.core.match.url_containing" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">url_containing</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">_inverted</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+<a href="#selene.core.match.url_containing" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="selene.core.match.value" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">value</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">_inverted</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+<a href="#selene.core.match.value" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="selene.core.match.value_containing" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">value_containing</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">_inverted</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+<a href="#selene.core.match.value_containing" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="selene.core.match.values" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">values</span><span class="p">(</span><span class="o">*</span><span class="n">expected</span><span class="p">,</span> <span class="n">_inverted</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+<a href="#selene.core.match.values" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="selene.core.match.values_containing" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">values_containing</span><span class="p">(</span><span class="o">*</span><span class="n">expected</span><span class="p">,</span> <span class="n">_inverted</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+<a href="#selene.core.match.values_containing" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+  
+    
+  
+  
+    
+  
+
+
+  <aside class="md-source-file">
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Last update">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago"><span class="timeago" datetime="2024-07-19T16:36:01+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date">2024-07-19</span>
+  </span>
+
+    
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Created">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago"><span class="timeago" datetime="2024-05-16T14:09:53+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date">2024-05-16</span>
+  </span>
+
+    
+    
+    
+  </aside>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://autotest.how/sdet-start-ru" target="_blank" rel="noopener" title="Запишись на курс" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.36 14c.08-.66.14-1.32.14-2s-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2m-5.15 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95a8.03 8.03 0 0 1-4.33 3.56M14.34 14H9.66c-.1-.66-.16-1.32-.16-2s.06-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2M12 19.96c-.83-1.2-1.5-2.53-1.91-3.96h3.82c-.41 1.43-1.08 2.76-1.91 3.96M8 8H5.08A7.92 7.92 0 0 1 9.4 4.44C8.8 5.55 8.35 6.75 8 8m-2.92 8H8c.35 1.25.8 2.45 1.4 3.56A8 8 0 0 1 5.08 16m-.82-2C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2M12 4.03c.83 1.2 1.5 2.54 1.91 3.97h-3.82c.41-1.43 1.08-2.77 1.91-3.97M18.92 8h-2.95a15.7 15.7 0 0 0-1.38-3.56c1.84.63 3.37 1.9 4.33 3.56M12 2C6.47 2 2 6.5 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://t.me/selene_py_ru" target="_blank" rel="noopener" title="Selene.py на русском" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M256 8a248 248 0 1 0 0 496 248 248 0 1 0 0-496m115 168.7c-3.7 39.2-19.9 134.4-28.1 178.3-3.5 18.6-10.3 24.8-16.9 25.4-14.4 1.3-25.3-9.5-39.3-18.7-21.8-14.3-34.2-23.2-55.3-37.2-24.5-16.1-8.6-25 5.3-39.5 3.7-3.8 67.1-61.5 68.3-66.7.2-.7.3-3.1-1.2-4.4s-3.6-.8-5.1-.5c-2.2.5-37.1 23.5-104.6 69.1-9.9 6.8-18.9 10.1-26.9 9.9-8.9-.2-25.9-5-38.6-9.1-15.5-5-27.9-7.7-26.8-16.3.6-4.5 6.7-9 18.4-13.7 72.3-31.5 120.5-52.3 144.6-62.3 68.9-28.6 83.2-33.6 92.5-33.8 2.1 0 6.6.5 9.6 2.9 2 1.7 3.2 4.1 3.5 6.7.5 3.2.6 6.5.4 9.8z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://autotest.how/sdet-start" target="_blank" rel="noopener" title="Sign up to Selene course" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.36 14c.08-.66.14-1.32.14-2s-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2m-5.15 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95a8.03 8.03 0 0 1-4.33 3.56M14.34 14H9.66c-.1-.66-.16-1.32-.16-2s.06-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2M12 19.96c-.83-1.2-1.5-2.53-1.91-3.96h3.82c-.41 1.43-1.08 2.76-1.91 3.96M8 8H5.08A7.92 7.92 0 0 1 9.4 4.44C8.8 5.55 8.35 6.75 8 8m-2.92 8H8c.35 1.25.8 2.45 1.4 3.56A8 8 0 0 1 5.08 16m-.82-2C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2M12 4.03c.83 1.2 1.5 2.54 1.91 3.97h-3.82c.41-1.43 1.08-2.77 1.91-3.97M18.92 8h-2.95a15.7 15.7 0 0 0-1.38-3.56c1.84.63 3.37 1.9 4.33 3.56M12 2C6.47 2 2 6.5 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://t.me/selene_py" target="_blank" rel="noopener" title="Selene.py (in English)" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M256 8a248 248 0 1 0 0 496 248 248 0 1 0 0-496m115 168.7c-3.7 39.2-19.9 134.4-28.1 178.3-3.5 18.6-10.3 24.8-16.9 25.4-14.4 1.3-25.3-9.5-39.3-18.7-21.8-14.3-34.2-23.2-55.3-37.2-24.5-16.1-8.6-25 5.3-39.5 3.7-3.8 67.1-61.5 68.3-66.7.2-.7.3-3.1-1.2-4.4s-3.6-.8-5.1-.5c-2.2.5-37.1 23.5-104.6 69.1-9.9 6.8-18.9 10.1-26.9 9.9-8.9-.2-25.9-5-38.6-9.1-15.5-5-27.9-7.7-26.8-16.3.6-4.5 6.7-9 18.4-13.7 72.3-31.5 120.5-52.3 144.6-62.3 68.9-28.6 83.2-33.6 92.5-33.8 2.1 0 6.6.5 9.6 2.9 2 1.7 3.2 4.1 3.5 6.7.5 3.2.6 6.5.4 9.8z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://autotest.how/sdet-start-uk" target="_blank" rel="noopener" title="Реєструйся на курс" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.36 14c.08-.66.14-1.32.14-2s-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2m-5.15 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95a8.03 8.03 0 0 1-4.33 3.56M14.34 14H9.66c-.1-.66-.16-1.32-.16-2s.06-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2M12 19.96c-.83-1.2-1.5-2.53-1.91-3.96h3.82c-.41 1.43-1.08 2.76-1.91 3.96M8 8H5.08A7.92 7.92 0 0 1 9.4 4.44C8.8 5.55 8.35 6.75 8 8m-2.92 8H8c.35 1.25.8 2.45 1.4 3.56A8 8 0 0 1 5.08 16m-.82-2C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2M12 4.03c.83 1.2 1.5 2.54 1.91 3.97h-3.82c.41-1.43 1.08-2.77 1.91-3.97M18.92 8h-2.95a15.7 15.7 0 0 0-1.38-3.56c1.84.63 3.37 1.9 4.33 3.56M12 2C6.47 2 2 6.5 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["search.suggest", "search.highlight", "content.code.copy", "content.action.edit", "content.action.view"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../js/timeago.min.js"></script>
+      
+        <script src="../../js/timeago_mkdocs_material.js"></script>
+      
+    
+  </body>
+</html>
