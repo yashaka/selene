@@ -1,6 +1,8 @@
 # Project information
 site_name: Selene
-site_url: https://yashaka.github.io/selene/
+# SITE_URL is set by the deploy workflow to the Pages URL of the repo that
+# runs it (fork or upstream); the default below is the upstream site
+site_url: !ENV [SITE_URL, 'https://yashaka.github.io/selene/']
 site_author: Iakiv Kramarenko
 site_description: >-
   User-oriented Web UI browser tests in Python.

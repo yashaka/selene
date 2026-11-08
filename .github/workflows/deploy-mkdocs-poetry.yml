@@ -85,6 +85,12 @@ jobs:
           echo "DOCS_VERSION=$VERSION" >> "$GITHUB_ENV"
           echo "DOCS_ALIAS=$ALIAS" >> "$GITHUB_ENV"
 
+      # mkdocs.yml resolves site_url from SITE_URL so that version-related
+      # features (e.g. the outdated banner) work on whatever repo runs this
+      - name: Point site_url at the Pages URL of this repo
+        run: |
+          echo "SITE_URL=https://${{ github.repository_owner }}.github.io/${GITHUB_REPOSITORY#*/}/" >> "$GITHUB_ENV"
+
       - name: Deploy versioned docs
         run: |
           if [ -n "$DOCS_ALIAS" ]; then
