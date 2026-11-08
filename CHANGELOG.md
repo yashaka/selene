@@ -3,7 +3,11 @@
 ## 2.0.0 release preparation
 
 The old TODO / placeholder notes that predated the current rc10+ release-preparation
-branch were reviewed and trimmed.
+branch were reviewed and trimmed: resolved decisions are kept below, implemented
+items are documented in the release sections, and non-blocking ideas are parked
+in [#710](https://github.com/yashaka/selene/issues/710) (locator-description
+sub-ideas - in a comment to
+[#439](https://github.com/yashaka/selene/issues/439)).
 
 ### Requires maintainer decision before final 2.0.0
 
