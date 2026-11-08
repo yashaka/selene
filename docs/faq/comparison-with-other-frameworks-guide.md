@@ -26,6 +26,25 @@
 | Playwright | 1.64.1 (2026-10-22) | ~15.1k | Microsoft | Active |
 | **Selene** | 2.0.0rc10 (2026-05-20, rc11 in development) | ~0.7k | Solo | 2.0 in release-candidate stage |
 
+## The 2026 landscape (release-level context)
+
+The table above is a static snapshot. What the recent release lines actually say
+(all from official release notes and registries, accessed 2026-11-08):
+
+- **The AI/agent wave is the axis every major tool pushes in 2026.** Playwright's
+  tagline is now "for testing, scripting, and AI agents"; 1.64 added WebMCP tool
+  inspection, 1.65 can normalize a locator into Python test code. Selenide 7.19.0
+  ships "Selenide MCP & CLI". SeleniumBase titles 4.57.0 "CDP and MCP updates".
+  Cypress sells Studio AI and Cloud MCP. Selene deliberately stays out of this race
+  (see its limitations below) — but you should know it's the marketing battleground.
+  [playwright-release-notes] [selenide-releases] [seleniumbase-releases] [cypress-why]
+- **Release cadence differs wildly:** Playwright ships ~monthly (1.63 → 1.65 between
+  September and November 2026); SeleniumBase pushed four releases in two weeks — CDP
+  Mode is patched near-constantly ("CDP Mode: Patch 130", "more stealth" Chromium
+  config); Selenide keeps a steady 7.x rhythm; Selenium does monthly minors. Splinter's
+  last PyPI release is 0.21.0 (2024-01-16) and its GitHub releases stopped at 0.19.0
+  back in 2023. [seleniumbase-releases] [selenide-releases] [splinter-releases]
+
 ## What we compare
 
 The same axes are applied to every framework:
@@ -250,9 +269,10 @@ learn: The API is designed to be intuitive and quick to pick up." [splinter-docs
 - Has screenshots support. [splinter-screenshots]
 
 **Non-obvious downsides:** the last release is 0.21.0 from 2024-01-16 (repo still gets
-occasional pushes, but no releases for almost 3 years); no automatic actionability
-waiting like the Selenide-style frameworks; a thin API means thin batteries — reporting
-and artifacts are on you.
+occasional pushes, but no releases for almost 3 years — and the GitHub releases feed
+stopped at 0.19.0 back in 2023); no automatic actionability waiting like the
+Selenide-style frameworks; a thin API means thin batteries — reporting and artifacts
+are on you.
 
 ### Helium
 
@@ -300,6 +320,9 @@ behave." [seleniumbase-readme]
   / CDP Mode for bot-detection-heavy sites. [seleniumbase-readme]
 - Parallelism: `pytest-xdist==3.8.0` ships as a pinned dependency, and Selenium Grid is
   documented for distributing tests. [seleniumbase-deps] [seleniumbase-readme]
+- The CDP/stealth stack is patched near-constantly: 4.56.4 "CDP Mode: Patch 130",
+  4.57.0 "CDP and MCP updates" with a "more stealth" default Chromium config — four
+  releases in the two weeks before 2026-11-08. [seleniumbase-releases]
 
 **Non-obvious downsides:** the feature surface is huge and "magical" — methods call
 JavaScript under the hood ("make sure that the readyState of the page is complete
@@ -329,6 +352,9 @@ assertions and does some magic for ajax-based applications". [selenide-site]
 - "Yes, Selenide takes screenshots automatically on every test failure" — and
   `Selenide.screenshot("name")` saves both `.png` and `.html` (page source).
   [selenide-screenshots]
+- The 7.x line stays busy: 7.19.0 (2026-10-10) added save/restore of browser state,
+  built-in clock and timezone emulation, and "Selenide MCP & CLI" support.
+  [selenide-releases]
 - Lazily re-resolved `$`/`$$` elements, fluent `should/be/have` conditions, collection
   conditions like `sizeGreaterThan`. [selenide-site]
 - Selene is a direct port of these ideas: the Selene README states "Selene -
@@ -356,6 +382,10 @@ application." [cypress-why]
   (in the paid Cloud). [cypress-why]
 - Cross-browser: "Chrome-family browsers, Firefox, and WebKit (Safari's browser
   engine)". The branded Safari is not on the list. [cypress-cross]
+- The 16.0 major (2026-09-01) moved Chromium interception to native browser networking —
+  "requests run over HTTP/2 by default" with real origin certificate validation — and
+  turned browser memory management on by default so long runs stop crashing.
+  [cypress-changelog]
 
 **Non-obvious downsides — documented by Cypress itself** in the permanent trade-offs:
 "Cypress is not a general purpose automation tool."; "You cannot use Cypress to drive
@@ -388,6 +418,9 @@ timeouts, no flaky tests." [playwright-home]
   [playwright-trace] [playwright-mock]
 - Parallelism via `pytest-xdist`; there is no own test runner in Python —
   "Playwright provides a Pytest plugin to write end-to-end tests." [playwright-runners]
+- Recent releases double down on agents and locator ergonomics: WebMCP tool inspection
+  (1.64), `Locator.within()`, frame-spanning `frame_locator()` and aria/screen snapshots
+  in traces (1.63), locator-to-Python-code normalization (1.65). [playwright-release-notes]
 
 **Non-obvious downsides:** instant reads don't wait — "locator.all() does not wait for
 elements to match the locator, and instead immediately returns whatever is present in
@@ -459,6 +492,10 @@ inspired by Selenide from Java world." [selene-readme]
 - *Documentation is admittedly incomplete* — the README itself says the official
   documentation "is far from being complete", and there is no full API reference page.
   [selene-readme]
+- *No AI-era integration hooks:* in 2026 Playwright, Cypress, Selenide and SeleniumBase
+  all shipped MCP/agent-facing integrations (see "The 2026 landscape" above); Selene
+  deliberately remains a lean library. If AI-assisted authoring or agent integrations
+  are on your roadmap, that's a real gap to weigh.
 - *Safari only through Selenium's safaridriver configuration* — no special support.
 
 ## Summary matrix
@@ -487,6 +524,9 @@ via the underlying Selenium driver, not specially documented".
 
 - **You need trace viewer, network mocking, video, or maximum speed** → Playwright.
   It's the most complete toolchain in 2026; give it its due.
+- **AI-assisted authoring or agent integrations are on your roadmap** → Playwright
+  (WebMCP, locator-to-code), Cypress (Studio AI, Cloud MCP), Selenide (MCP & CLI) and
+  SeleniumBase (MCP updates) all shipped them in 2026; Selene did not.
 - **Your team is JS/TS-native and wants in-browser time-travel debugging** → Cypress —
   accepting its documented trade-offs (single browser, single superdomain, JS only).
 - **You need W3C WebDriver infrastructure** (Selenium Grid, cloud device farms,
@@ -534,6 +574,12 @@ All accessed 2026-11-08.
 [playwright-runners]: https://playwright.dev/python/docs/test-runners
 [playwright-browsers]: https://playwright.dev/python/docs/browsers
 [playwright-grid]: https://playwright.dev/python/docs/selenium-grid
+[playwright-release-notes]: https://playwright.dev/python/docs/release-notes
+[seleniumbase-releases]: https://github.com/seleniumbase/SeleniumBase/releases
+[selenide-releases]: https://github.com/selenide/selenide/releases
+[splinter-releases]: https://github.com/cobrateam/splinter/releases
+[cypress-changelog]: https://docs.cypress.io/app/references/changelog
+[cypress-releases]: https://github.com/cypress-io/cypress/releases
 [selene-readme]: https://github.com/yashaka/selene/blob/selene-2.0.0rc10%2B/README.md
 [selene-config]: https://github.com/yashaka/selene/blob/selene-2.0.0rc10%2B/selene/core/configuration.py
 [selene-entity]: https://github.com/yashaka/selene/blob/selene-2.0.0rc10%2B/selene/core/entity.py
