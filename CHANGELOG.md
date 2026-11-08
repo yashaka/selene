@@ -50,10 +50,12 @@ Providing a brief overview of the module and how to extend it with custom comman
 - `query.attributes(name)` - raw attribute values of all matched elements;
 - with shortcuts: `query.inner_htmls`, `query.outer_htmls`, `query.texts_content`, `query.values`.
 
-### Extended frame/iframe context
+### Frame context: integration coverage
 
-- The experimental `query._frame_context` context now allows lazy `element(selector)` /
-  `all(selector)` lookup and direct `driver` access inside a frame context.
+- Added integration tests for the `query._frame_context` workflows:
+  element/collection lookup inside a frame (`_element` / `_all`),
+  nested frames, `with` usage, and decorator-based steps.
+- Extended the iframe how-to docs and added module-level documentation to `query.py`.
 
 ### Deprecated
 
