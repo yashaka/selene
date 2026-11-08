@@ -73,7 +73,60 @@ See one more example at [FAQ: How to work with Shadow DOM in Selene?](https://ya
 
 Providing a brief overview of the module and how to extend it with custom commands.
 
-## 2.0.0rc10 (to be released)
+### More collection queries in query.py
+
+- `query.attributes(name)` - raw attribute values of all matched elements;
+- with shortcuts: `query.inner_htmls`, `query.outer_htmls`, `query.texts_content`, `query.values`.
+
+### Extended frame/iframe context
+
+- The experimental `query._frame_context` context now allows lazy `element(selector)` /
+  `all(selector)` lookup and direct `driver` access inside a frame context.
+
+### Deprecated
+
+- `browser.execute_script(...)` shortcut, see [#446](https://github.com/yashaka/selene/issues/446).
+  Use the underlying driver directly:
+
+```python
+browser.driver.execute_script('arguments[0].value=arguments[1]', browser.element('input').locate(), 'new value')
+```
+
+- Tabs API is deprecated because the «tab» term is not relevant for the mobile context
+  (see the core/web/mobile split planned after 2.0, [#576](https://github.com/yashaka/selene/issues/576)):
+  - `browser.switch_to_next_tab()`, `browser.switch_to_previous_tab()`, `browser.switch_to_tab(...)` - `DeprecationWarning`;
+  - `browser.switch_to` - `PendingDeprecationWarning`.
+
+  No direct replacement in 2.x; the tab API rework is planned for 3.0.
+
+- Element action shortcuts are deprecated because they do not work (or make no sense) for mobile:
+  - `element.press_enter()`, `element.press_escape()`, `element.press_tab()` -
+    use `element.send_keys(Keys.ENTER)` style typing via `selenium.webdriver.common.keys.Keys`;
+  - `element.submit()`, `element.double_click()`, `element.context_click()`, `element.hover()`.
+
+  No direct replacement in 2.x - use raw driver/JS workarounds via custom commands where needed;
+  the actions API rework is planned for 3.0.
+
+- Nested search shortcuts `element.s(selector)` and `element.ss(selector)` -
+  use more explicit `element.element(selector)` and `element.all(selector)`.
+
+### Fixed
+
+- Fixed `Condition.each` / `Condition.for_each` typing to return `Condition[Collection]`
+  (backport of [#684](https://github.com/yashaka/selene/pull/684), fixes [#541](https://github.com/yashaka/selene/issues/541)).
+
+### Changed
+
+- REFACTOR (internal): `entity()` to `entity.locate()` in `query.py`.
+
+### Docs and tests
+
+- DOCS (examples): show custom failure screenshot names, see [#216](https://github.com/yashaka/selene/issues/216).
+- TEST (integration): clarified collection `len` test arrange block, see [#368](https://github.com/yashaka/selene/issues/368).
+- CHORE (ci): regression on stable Python 3.15 + 3.16 alpha (non-blocking).
+- CHORE: bumped dependencies per open dependabot PRs.
+
+## 2.0.0rc10 (released on 20.05.2026)
 
 This release stabilizes the `2.0.0rc9` line on the way to the final `2.0.0` release. It focuses on Selenium 4 compatibility, Python 3.10+ support, long-standing condition semantics, frame/iframe context ergonomics, artifact handling in timeout flows, and CI/release hardening.
 
@@ -89,14 +142,6 @@ This release stabilizes the `2.0.0rc9` line on the way to the final `2.0.0` rele
   - `_element(selector)`;
   - `_all(selector)`;
   - `_within` / `_step` / `_steps` decorator aliases for PageObject-style steps executed inside a frame context.
-- Added more collection queries in `query.py`:
-  - `query.texts`
-  - `query.attributes(name)`
-  - `query.inner_htmls`
-  - `query.outer_htmls`
-  - `query.texts_content`
-  - `query.values`
-  - `query.tags`
 
 ### Fixed
 
