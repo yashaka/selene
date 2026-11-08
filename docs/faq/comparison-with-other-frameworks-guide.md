@@ -267,6 +267,13 @@ chemical element like Selenium, but it is lighter." [helium-readme]
   Selenium scripts"; elements by user-visible labels instead of selectors; interacting
   with iFrames "without having to first 'switch to' the iFrame"; "Helium notices when
   popups open or close and focuses / defocuses them like a user would." [helium-readme]
+- Relative search by position instead of fragile CSS/XPath chains: [helium-cheatsheet]
+
+  ```python
+  Text(above='Balance', below='Transactions').value
+  Link(to_right_of='Invoice:')
+  Image(to_right_of=Link('Sign in', below=Text('Navigation')))
+  ```
 
 **Non-obvious downsides:** a solo maintainer — the README itself says the Java
 implementation was dropped because of lacking time; browser support is documented as
@@ -420,9 +427,17 @@ inspired by Selenide from Java world." [selene-readme]
   conditions are built with the same `Condition` class, so your domain-specific waits
   become reusable vocabulary. This is the axis where Playwright-Python has no
   equivalent API (see its section above).
+- *Collection filtering by conditions.* `filtered_by` narrows a collection without XPath
+  gymnastics — and gives a more precise failure spot during debugging: [selene-entity]
+
+  ```python
+  browser.all('.result').filtered_by(have.text('selenium'))
+  ```
 - *Query API for reads and artifacts:* `element.get(query.attribute('href'))`,
   `query.screenshot_saved`, `query.page_source_saved` — reads are explicit, artifacts
   are queries too.
+- *Raw Selenium one step away:* `browser.driver` exposes the underlying WebDriver at any
+  point, so existing Selenium code and knowledge plug in directly. [selene-browser]
 - *Sensible failure artifacts by default:* `save_screenshot_on_failure: bool = True`
   (plus page source and logged HTML of the failed element via config). [selene-config]
 - *Selenide inheritance* — the mental model is the same if you come from the JVM.
@@ -441,6 +456,9 @@ inspired by Selenide from Java world." [selene-readme]
   real argument for Playwright.
 - *Python only, and no built-in parallelism:* use pytest + pytest-xdist (it works —
   Selene is a library — but nothing is wired for you).
+- *Documentation is admittedly incomplete* — the README itself says the official
+  documentation "is far from being complete", and there is no full API reference page.
+  [selene-readme]
 - *Safari only through Selenium's safaridriver configuration* — no special support.
 
 ## Summary matrix
@@ -494,6 +512,7 @@ All accessed 2026-11-08.
 [splinter-src]: https://github.com/cobrateam/splinter/blob/master/splinter/driver/webdriver/__init__.py
 [splinter-screenshots]: https://github.com/cobrateam/splinter/blob/master/docs/screenshot.rst
 [helium-readme]: https://github.com/mherrmann/helium
+[helium-cheatsheet]: https://github.com/mherrmann/helium/blob/master/docs/cheatsheet.md
 [seleniumbase-readme]: https://github.com/seleniumbase/SeleniumBase
 [seleniumbase-recorder]: https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/recorder_mode.md
 [seleniumbase-deps]: https://github.com/seleniumbase/SeleniumBase/blob/master/requirements.txt
@@ -517,6 +536,8 @@ All accessed 2026-11-08.
 [playwright-grid]: https://playwright.dev/python/docs/selenium-grid
 [selene-readme]: https://github.com/yashaka/selene/blob/selene-2.0.0rc10%2B/README.md
 [selene-config]: https://github.com/yashaka/selene/blob/selene-2.0.0rc10%2B/selene/core/configuration.py
+[selene-entity]: https://github.com/yashaka/selene/blob/selene-2.0.0rc10%2B/selene/core/entity.py
+[selene-browser]: https://github.com/yashaka/selene/blob/selene-2.0.0rc10%2B/selene/core/_browser.py
 
 Registry data: PyPI JSON API (`pypi.org/pypi/<pkg>/json`), npm registry
 (`registry.npmjs.org/cypress`), GitHub releases/API for Selenide and all repositories.
