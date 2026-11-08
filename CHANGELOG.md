@@ -9,6 +9,7 @@
   Cypress and Playwright — one test shown in every framework, killer features and honest
   limitations per framework, with sources and maintenance data verified on 2026-11-08
   ([#474], continued from the draft in #500).
+- DOCS: README teaser linking to the new comparison guide.
 
 ### Shadow DOM support via query.js.shadow_root(s)
 

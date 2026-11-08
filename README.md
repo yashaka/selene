@@ -29,6 +29,8 @@ Selene was inspired by [Selenide][selenide] from Java world.
 
 Tests with Selene can be built either in a simple straightforward "selenide" style or with PageObjects composed from Widgets i.e. reusable element components.
 
+Curious how Selene compares to other frameworks? We maintain an honest, sourced comparison with Selenium, Splinter, Helium, SeleniumBase, Pylenium, Selenide, Cypress and Playwright — the same test shown in every one of them, killer features and limitations included: [How Selene compares to other frameworks](https://yashaka.github.io/selene/faq/comparison-with-other-frameworks-guide/).
+
 Currently, this [official documentation](https://yashaka.github.io/selene/) is far from being complete. Please, use the following links to get started from scratch:
 
 * [Selenides – Quick Start](https://autotest.how/selenides-quick-start-docs-md)
