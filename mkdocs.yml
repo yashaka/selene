@@ -57,6 +57,7 @@ nav:
 theme:
   language: en
   name: material
+  custom_dir: overrides
   icon:
     repo: fontawesome/brands/github
     edit: material/file-document-edit
