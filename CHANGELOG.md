@@ -1,105 +1,5 @@
 # Changelog
 
-## > 2.0.0 release
-
-TODOs:
-
-- `config.quit_last_driver_on_reset` (`False` by default)?
-- improve for other `all.*` methods (in addition to improved errors from `browser.all.element_by`)
-- why in the past we had when outer_html this: `'<button class="destroy" type="submit" displayed:false></button>'`
-  - but now we have this: `'<button class="destroy" type="submit"></button>'?`
-    - can we improve it?
-- add something like `element.click_with_offset`
-- consider adding hold_driver_open_at_exit_on_failure
-- case insensitive versions of conditions like have.attribute(...).value(...)
-  - experimental impl was already added in 2.0.0a16
-- consider adding more readable alias to by tuple, like in:
-  `css_or_xpath_or_by: Union[str, tuple]`
-- improve error messages
-  - should we come back to the "actual vs expected" style in error messages?
-- improve stacktraces
-  - consider using something like `__tracebackhide__ = True`
-- what about ActionChains?
-  - with retries?
-- what about soft assertions in selene?
-- maybe somewhen in 3.0 consider adding selene.support.shared.selenide module
-  - with selenide style api
-    - like s, ss, open_url
-    - SelenideElement#find, #find_all
-    - ElementsCollection#find, #filter, #get
-    - etc.
-
-## < 2.0.0 release ? o_O
-
-TODOs:
-
-- manager or executor at `config._executor`?
-- deprecate config.wait(entity) factory?
-  - isn't it enough to have `config._build_wait_strategy(entity)`?
-- decide on `config._reset_not_alive_driver_on_get_url` name
-  - reset vs rebuild?
-  - etc?
-- decide on None as default in managed driver descriptor instead of ...
-  taking into account that mypy does not like it
-  - actually I tend to keep both `...` and `None`, yet using `...` as default
-    in Selene's internals. But let's document this at least. 
-    Mentioning also this: https://github.com/python/mypy/issues/7818
-- consider a way to customize "locator description" [#439](https://github.com/yashaka/selene/issues/439)
-  - consider storing "raw selector" of locator to be able to log it as it is [#438](https://github.com/yashaka/selene/issues/438)
-  - consider storing `locator.name` and take it from class attribute name if Element object
-    is used as descriptor (via `__set_name__` impl.)
-    - while being a descriptor...
-      check if `hassattr(owner, 'element')` (or context, or container?)
-      then consider starting the search from the context 
-      and make this configurable via `config.search_from_defined_context = True`
-      (probably `False` by default)
-      and being able to override somehow on element definition level
-      - what about `config.search_context_strategy` ?
-- ensure we can't element.type on invisible element; add test for that
-- decide on have.size vs query.size
-  - consider making have.size to work with elements too...
-- review all `# type: ignore`
-- review all typing.cast
-- consider changing artifacts behavior for handled `pytest.raises(TimeoutException)`
-  cases (currently artifacts are still saved) — tracked in
-  [#637](https://github.com/yashaka/selene/issues/637)
-- what about accepting None as locator of Element?
-  in such case it such element will just do nothing regardless of what command is called on it
-  - even better, we can accept Locators in browser.element(here)!!!
-    and so we can implement own behavior, locating some kind of proxy that skips all commands!
-- deprecate `be.present`
-- todo consider adding element.caching as lazy version of element.cached
-- use `__all__` in selene api imports, etc
-  - The variable `__all__` is a list of public objects of that module, as interpreted by `import *`. ... In other words, `__all__` is a list of strings defining what symbols in a module will be exported when `from module import *` is used on the module
-- config.driver_proxy or config.driver_remote_proxy?
-- decide on driver as callable, and decide on driver as callable with config as param
-    - how can we check that user passed fn with params? 
-- consider renaming everything inside match.* so it can be readable when used as `.should(match.*)`
-  - take into account that `.matching(match.*)` is yet less readable
-  compared to `matching(have.*)` or `matching(be.*)`
-
-## 2.0.0rc?+1 (to be released on ??.??.2023)
-
-TODOs:
-
-- implement run_cross_platform_with_fixture_and_custom_location_strategy example with:
-    - location strategy
-    - element actions logging to allure
-    - jenkins pipeline with matrix job
-- deprecate browser.switch_to?
-    - add corresponding set of commands to be used as waiting commands via `browser.perform` 
-        - make `command.switch_to_frame` to accept selene element?
-    - add something like `browser.perform(switch_to_tab('my tab title'))`
-        - maybe make browser.switch ... to work with retry logic
-            or make separate command.switch...
-
-## 2.0.0rc? (to be released on DD.MM.2024)
-
-- set window size inside driver factory
-- add safari support (trim space on text in case of safari)
-- example of basic auth and auth via cookies (https://github.com/autotests-cloud/example_project/blob/master/src/test/java/cloud/autotests/tests/demowebshop/LoginTests.java)
-- can we force order of how `selene.*` is rendered on autocomplete? via `__all__`...
-
 ## 2.0.0rc11 (to be released)
 
 ### Shadow DOM support via query.js.shadow_root(s)
@@ -130,6 +30,11 @@ See one more example at [FAQ: How to work with Shadow DOM in Selene?](https://ya
 - DOCS: Added local TinyMCE workflow documentation to `CONTRIBUTING.md` and
   `tools/tinymce-local/README.md`.
 
+### CI artifacts on failure
+
+- CHORE (ci): upload Selene failure artifacts (screenshots, page sources)
+  into GitHub Actions runs, see [#671](https://github.com/yashaka/selene/pull/671).
+
 ### More commands in command.py
 
 - `command.copy`
@@ -138,17 +43,69 @@ See one more example at [FAQ: How to work with Shadow DOM in Selene?](https://ya
     Requires 3rd party `pyperclip` package to be used,
     in order to copy to clipboard before pasting
     via simulating `ctrl+v` or `cmd+v` shortcut pressed.
-- `command.long_press(duration=0.1)` alias to `command._long_press(duration=0.1)`
-    actually the `_long_press` is now an outdated alias and probably will be duplicated in future releases
+- `command.long_press(duration=1.0)` with backward-compatible `_long_press` alias.
 - `command.press_sequentially(text: str)`
 
 ### Document command.py on module level
 
 Providing a brief overview of the module and how to extend it with custom commands.
 
-### Fix path of screenshot and pagesource for Windows
+### More collection queries in query.py
 
-## 2.0.0rc10 (to be released)
+- `query.attributes(name)` - raw attribute values of all matched elements;
+- with shortcuts: `query.inner_htmls`, `query.outer_htmls`, `query.texts_content`, `query.values`.
+
+### Frame context: integration coverage
+
+- Added integration tests for the `query._frame_context` workflows:
+  element/collection lookup inside a frame (`_element` / `_all`),
+  nested frames, `with` usage, and decorator-based steps.
+- Extended the iframe how-to docs and added module-level documentation to `query.py`.
+
+### Deprecated
+
+- `browser.execute_script(...)` shortcut, see [#446](https://github.com/yashaka/selene/issues/446).
+  Use the underlying driver directly:
+
+```python
+browser.driver.execute_script('arguments[0].value=arguments[1]', browser.element('input').locate(), 'new value')
+```
+
+- Tabs API is deprecated because the «tab» term is not relevant for the mobile context
+  (see the core/web/mobile split planned after 2.0, [#576](https://github.com/yashaka/selene/issues/576)):
+  - `browser.switch_to_next_tab()`, `browser.switch_to_previous_tab()`, `browser.switch_to_tab(...)` - `DeprecationWarning`;
+  - `browser.switch_to` - `PendingDeprecationWarning`.
+
+  No direct replacement in 2.x; the tab API rework is planned for 3.0.
+
+- Element action shortcuts are deprecated because they do not work (or make no sense) for mobile:
+  - `element.press_enter()`, `element.press_escape()`, `element.press_tab()` -
+    use `element.send_keys(Keys.ENTER)` style typing via `selenium.webdriver.common.keys.Keys`;
+  - `element.submit()`, `element.double_click()`, `element.context_click()`, `element.hover()`.
+
+  No direct replacement in 2.x - use raw driver/JS workarounds via custom commands where needed;
+  the actions API rework is planned for 3.0.
+
+- Nested search shortcuts `element.s(selector)` and `element.ss(selector)` -
+  use more explicit `element.element(selector)` and `element.all(selector)`.
+
+### Fixed
+
+- Fixed `Condition.each` / `Condition.for_each` typing to return `Condition[Collection]`
+  (backport of [#684](https://github.com/yashaka/selene/pull/684), fixes [#541](https://github.com/yashaka/selene/issues/541)).
+
+### Changed
+
+- REFACTOR (internal): `entity()` to `entity.locate()` in `query.py`.
+
+### Docs and tests
+
+- DOCS (examples): show custom failure screenshot names, see [#216](https://github.com/yashaka/selene/issues/216).
+- TEST (integration): clarified collection `len` test arrange block, see [#368](https://github.com/yashaka/selene/issues/368).
+- CHORE (ci): regression on stable Python 3.15 + 3.16 alpha (non-blocking).
+- CHORE: bumped dependencies per open dependabot PRs.
+
+## 2.0.0rc10 (released on 20.05.2026)
 
 This release stabilizes the `2.0.0rc9` line on the way to the final `2.0.0` release. It focuses on Selenium 4 compatibility, Python 3.10+ support, long-standing condition semantics, frame/iframe context ergonomics, artifact handling in timeout flows, and CI/release hardening.
 
@@ -164,14 +121,6 @@ This release stabilizes the `2.0.0rc9` line on the way to the final `2.0.0` rele
   - `_element(selector)`;
   - `_all(selector)`;
   - `_within` / `_step` / `_steps` decorator aliases for PageObject-style steps executed inside a frame context.
-- Added more collection queries in `query.py`:
-  - `query.texts`
-  - `query.attributes(name)`
-  - `query.inner_htmls`
-  - `query.outer_htmls`
-  - `query.texts_content`
-  - `query.values`
-  - `query.tags`
 
 ### Fixed
 
