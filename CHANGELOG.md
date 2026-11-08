@@ -2,6 +2,14 @@
 
 ## 2.0.0rc11 (to be released)
 
+### FAQ guide: How Selene compares to other frameworks
+
+- DOCS: Added [FAQ guide "How Selene compares to other frameworks"](docs/faq/comparison-with-other-frameworks-guide.md)
+  comparing Selene 2.0 with Selenium, Splinter, Helium, SeleniumBase, Pylenium, Selenide,
+  Cypress and Playwright — one test shown in every framework, killer features and honest
+  limitations per framework, with sources and maintenance data verified on 2026-11-08
+  ([#474], continued from the draft in #500).
+
 ### Shadow DOM support via query.js.shadow_root(s)
 
 As simple as:
