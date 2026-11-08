@@ -1,6 +1,8 @@
 # Project information
 site_name: Selene
-site_url: https://yashaka.github.io/selene/
+# SITE_URL is set by the deploy workflow to the Pages URL of the repo that
+# runs it (fork or upstream); the default below is the upstream site
+site_url: !ENV [SITE_URL, 'https://yashaka.github.io/selene/']
 site_author: Iakiv Kramarenko
 site_description: >-
   User-oriented Web UI browser tests in Python.
@@ -55,6 +57,7 @@ nav:
 theme:
   language: en
   name: material
+  custom_dir: overrides
   icon:
     repo: fontawesome/brands/github
     edit: material/file-document-edit
@@ -85,7 +88,11 @@ theme:
     - content.action.view
 
 extra:
-  version: 2.0.0rc10
+  version:
+    # Versioned docs are maintained by mike in the gh-pages branch
+    # (see .github/workflows/deploy-mkdocs-poetry.yml)
+    provider: mike
+    default: latest
   social:
     - icon: material/web
       link: https://autotest.how/sdet-start-ru
