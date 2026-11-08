@@ -487,12 +487,24 @@ class Element(WaitingEntity['Element']):
         return self
 
     def press_enter(self) -> Element:
+        warnings.warn(
+            'element.press_enter() is deprecated because will not work for mobile',
+            DeprecationWarning,
+        )
         return self.press(Keys.ENTER)
 
     def press_escape(self) -> Element:
+        warnings.warn(
+            'element.press_escape() is deprecated because will not work for mobile',
+            DeprecationWarning,
+        )
         return self.press(Keys.ESCAPE)
 
     def press_tab(self) -> Element:
+        warnings.warn(
+            'element.press_tab() is deprecated because will not work for mobile',
+            DeprecationWarning,
+        )
         return self.press(Keys.TAB)
 
     def clear(self) -> Element:
@@ -509,6 +521,11 @@ class Element(WaitingEntity['Element']):
         return self
 
     def submit(self) -> Element:
+        warnings.warn(
+            'element.submit() is deprecated because does not make sense for mobile',
+            DeprecationWarning,
+        )
+
         def fn(element: Element):
             webelement = (
                 element._actual_not_overlapped_webelement
@@ -557,6 +574,10 @@ class Element(WaitingEntity['Element']):
         return self
 
     def double_click(self) -> Element:
+        warnings.warn(
+            'element.double_click() is deprecated because will not work for mobile',
+            DeprecationWarning,
+        )
         actions: ActionChains = ActionChains(self.config.driver)
 
         def fn(element: Element):
@@ -572,6 +593,10 @@ class Element(WaitingEntity['Element']):
         return self
 
     def context_click(self) -> Element:
+        warnings.warn(
+            'element.context_click() is deprecated because will not work for mobile',
+            DeprecationWarning,
+        )
         actions: ActionChains = ActionChains(self.config.driver)
 
         def fn(element: Element):
@@ -587,6 +612,10 @@ class Element(WaitingEntity['Element']):
         return self
 
     def hover(self) -> Element:
+        warnings.warn(
+            'element.hover() is deprecated because will not work for mobile',
+            DeprecationWarning,
+        )
         actions: ActionChains = ActionChains(self.config.driver)
 
         def fn(element: Element):
@@ -612,18 +641,20 @@ class Element(WaitingEntity['Element']):
     # def outer_html(self) -> str:
     #     return self.wait.for_(query.outer_html)
 
-    # --- Deprecate or not? --- #
+    # --- Deprecated --- #
 
     def s(self, css_or_xpath_or_by: Union[str, Tuple[str, str]]) -> Element:
-        # warnings.warn(
-        #     "consider using more explicit `element` instead: browser.element('#foo').element('.bar')",
-        #     SyntaxWarning)
+        warnings.warn(
+            "consider using more explicit `element` instead: browser.element('#foo').element('.bar')",
+            DeprecationWarning,
+        )
         return self.element(css_or_xpath_or_by)
 
     def ss(self, css_or_xpath_or_by: Union[str, Tuple[str, str]]) -> Collection:
-        # warnings.warn(
-        #     "consider using `all` instead: browser.element('#foo').all('.bar')",
-        #     SyntaxWarning)
+        warnings.warn(
+            "consider using `all` instead: browser.element('#foo').all('.bar')",
+            DeprecationWarning,
+        )
         return self.all(css_or_xpath_or_by)
 
 

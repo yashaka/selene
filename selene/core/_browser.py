@@ -117,6 +117,10 @@ class Browser(WaitingEntity['Browser']):
 
     # TODO: should we deprecate all switch_to_* methods?
     def switch_to_next_tab(self) -> Browser:
+        warnings.warn(
+            'browser.switch_to_next_tab is deprecated',
+            DeprecationWarning,
+        )
         from selene.core import query
 
         self.driver.switch_to.window(query.next_tab(self))
@@ -129,12 +133,20 @@ class Browser(WaitingEntity['Browser']):
         return self
 
     def switch_to_previous_tab(self) -> Browser:
+        warnings.warn(
+            'browser.switch_to_previous_tab is deprecated',
+            DeprecationWarning,
+        )
         from selene.core import query
 
         self.driver.switch_to.window(query.previous_tab(self))
         return self
 
     def switch_to_tab(self, index_or_name: Union[int, str]) -> Browser:
+        warnings.warn(
+            'browser.switch_to_tab is deprecated',
+            DeprecationWarning,
+        )
         if isinstance(index_or_name, int):
             index = index_or_name
             from selene.core import query
@@ -148,6 +160,10 @@ class Browser(WaitingEntity['Browser']):
     # TODO: consider deprecating
     @property
     def switch_to(self) -> SwitchTo:
+        warnings.warn(
+            'browser.switch_to is considered to be deprecated',
+            PendingDeprecationWarning,
+        )
         return self.driver.switch_to
 
     # TODO: should we add also a shortcut for self.driver.switch_to.alert ?
