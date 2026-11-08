@@ -30,6 +30,11 @@ See one more example at [FAQ: How to work with Shadow DOM in Selene?](https://ya
 - DOCS: Added local TinyMCE workflow documentation to `CONTRIBUTING.md` and
   `tools/tinymce-local/README.md`.
 
+### CI artifacts on failure
+
+- CHORE (ci): upload Selene failure artifacts (screenshots, page sources)
+  into GitHub Actions runs, see [#671](https://github.com/yashaka/selene/pull/671).
+
 ### More commands in command.py
 
 - `command.copy`
