@@ -1,0 +1,3085 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="User-oriented Web UI browser tests in Python.">
+      
+      
+        <meta name="author" content="Iakiv Kramarenko">
+      
+      
+        <link rel="canonical" href="https://yashaka.github.io/selene/2.0.0rc10/reference/configuration/">
+      
+      
+        <link rel="prev" href="../../faq/custom-user-profile-howto/">
+      
+      
+        <link rel="next" href="../../contribution/to-source-code-guide/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Config - Selene</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/timeago.css">
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+          <aside class="md-banner md-banner--warning">
+            <div class="md-banner__inner md-grid md-typeset">
+              
+  This documentation is for a version that is not the latest.
+  <a href="https://yashaka.github.io/selene/2.0.0rc10"><strong>View the latest version</strong></a>.
+
+            </div>
+            <script>var el=document.querySelector("[data-md-component=outdated]"),base=new URL("../.."),outdated=__md_get("__outdated",sessionStorage,base);!0===outdated&&el&&(el.hidden=!1)</script>
+          </aside>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Selene" class="md-header__button md-logo" aria-label="Selene" data-md-component="logo">
+      
+  <img src="../../assets/images/logo-icon.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Selene
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Config
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7M9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="blue-grey" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/yashaka/selene" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    yashaka/selene
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Selene" class="md-nav__button md-logo" aria-label="Selene" data-md-component="logo">
+      
+  <img src="../../assets/images/logo-icon.png" alt="logo">
+
+    </a>
+    Selene
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/yashaka/selene" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    yashaka/selene
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    FAQ
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/custom-user-profile-howto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How to use custom profile
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Config
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Config
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Config
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Config">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config.build_driver_strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        build_driver_strategy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config._schedule_driver_teardown_strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _schedule_driver_teardown_strategy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config._teardown_driver_strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _teardown_driver_strategy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config._is_driver_set_strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _is_driver_set_strategy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config._is_driver_alive_strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _is_driver_alive_strategy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config.driver_options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        driver_options
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config.driver_service" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        driver_service
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config.driver_remote_url" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        driver_remote_url
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config.driver_name" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        driver_name
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config._override_driver_with_all_driver_like_options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _override_driver_with_all_driver_like_options
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config.hold_driver_at_exit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        hold_driver_at_exit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config._driver_get_url_strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _driver_get_url_strategy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config._reset_not_alive_driver_on_get_url" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _reset_not_alive_driver_on_get_url
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config.rebuild_not_alive_driver" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        rebuild_not_alive_driver
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config.driver" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        driver
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config.timeout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        timeout
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config.base_url" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        base_url
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config._get_base_url_on_open_with_no_args" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _get_base_url_on_open_with_no_args
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config.window_width" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        window_width
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config.window_height" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        window_height
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config.log_outer_html_on_failure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        log_outer_html_on_failure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config.set_value_by_js" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        set_value_by_js
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config.type_by_js" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        type_by_js
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config.click_by_js" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        click_by_js
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config.reports_folder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        reports_folder
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config.save_screenshot_on_failure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        save_screenshot_on_failure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config.save_page_source_on_failure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        save_page_source_on_failure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config._counter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _counter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config.with_" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        with_
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config._format_path_as_uri" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _format_path_as_uri
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_save_screenshot_strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _save_screenshot_strategy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_save_page_source_strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _save_page_source_strategy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#failure-artifacts-behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure Artifacts Behavior
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contribution
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contribution
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contribution/to-source-code-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How to contribute
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contribution/code-conventions-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code conventions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contribution/release-workflow-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Release workflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contribution/to-documentation-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How to contribute to docs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contribution/how-to-organize-docs-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How to organize docs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contribution/how-to-write-docs-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How to write docs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changelog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    License
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Config
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Config">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config.build_driver_strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        build_driver_strategy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config._schedule_driver_teardown_strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _schedule_driver_teardown_strategy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config._teardown_driver_strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _teardown_driver_strategy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config._is_driver_set_strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _is_driver_set_strategy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config._is_driver_alive_strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _is_driver_alive_strategy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config.driver_options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        driver_options
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config.driver_service" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        driver_service
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config.driver_remote_url" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        driver_remote_url
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config.driver_name" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        driver_name
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config._override_driver_with_all_driver_like_options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _override_driver_with_all_driver_like_options
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config.hold_driver_at_exit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        hold_driver_at_exit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config._driver_get_url_strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _driver_get_url_strategy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config._reset_not_alive_driver_on_get_url" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _reset_not_alive_driver_on_get_url
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config.rebuild_not_alive_driver" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        rebuild_not_alive_driver
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config.driver" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        driver
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config.timeout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        timeout
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config.base_url" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        base_url
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config._get_base_url_on_open_with_no_args" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _get_base_url_on_open_with_no_args
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config.window_width" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        window_width
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config.window_height" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        window_height
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config.log_outer_html_on_failure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        log_outer_html_on_failure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config.set_value_by_js" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        set_value_by_js
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config.type_by_js" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        type_by_js
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config.click_by_js" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        click_by_js
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config.reports_folder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        reports_folder
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config.save_screenshot_on_failure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        save_screenshot_on_failure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config.save_page_source_on_failure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        save_page_source_on_failure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config._counter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _counter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config.with_" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        with_
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selene.core.configuration.Config._format_path_as_uri" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _format_path_as_uri
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_save_screenshot_strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _save_screenshot_strategy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_save_page_source_strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _save_page_source_strategy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#failure-artifacts-behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure Artifacts Behavior
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/yashaka/selene/edit/master/docs/reference/configuration.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h4v-1.91L12.09 18H6v-2h8.09l2-2H6v-2h12.09L20 10.09V8l-6-6zm7 1.5L18.5 9H13zm7.15 9.5a.55.55 0 0 0-.4.16l-1.02 1.02 2.09 2.08 1.02-1.01c.21-.22.21-.58 0-.79l-1.3-1.3a.54.54 0 0 0-.39-.16m-2.01 1.77L12 20.92V23h2.08l6.15-6.15z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/yashaka/selene/raw/master/docs/reference/configuration.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5m-7.86-1.75L8.85 19l.29-.74C10.43 15.06 13.5 13 17 13c1.05 0 2.06.21 3 .56V8l-6-6H6c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h4.5c-.55-.66-1-1.42-1.36-2.25M13 3.5 18.5 9H13z"/></svg>
+    </a>
+  
+
+
+<h1 id="_1"><a class="headerlink" href="#_1" title="Permanent link">#</a></h1>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+
+    <div class="doc doc-contents first">
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="selene.core.configuration.Config" class="doc doc-heading">
+            <code>Config</code>
+
+
+<a href="#selene.core.configuration.Config" class="headerlink" title="Permanent link">#</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+
+        <p>A one cross-cutting-concern-like object to group all options
+that might influence Selene behavior depending on context.
+For example, <code>config.timeout</code> is used in all "waiting" logic
+of Selene commands. And <code>config.base_url</code> is used
+in <code>browser.open(relative_url)</code> command.</p>
+<p>As option, the driver instance is also considered. Moreover, this config
+is not just config, but fully manages the driver lifecycle.
+Actually, the "driver manager" is a part of this config.</p>
+<p>While surfing through all available options, pay attention to terminology:</p>
+<ul>
+<li>all options that have a <code>driver</code> word in their name
+are related to driver management, and they are connected in a specific way:)<ul>
+<li>read more on this under
+<a class="autorefs autorefs-internal" href="#selene.core.configuration.Config.with_"><code>config.with_</code></a> doc section;)</li>
+</ul>
+</li>
+<li>all options that have a <code>strategy</code> word in their name directly influence
+the driver lifecycle in context of driver management.</li>
+<li>
+<div class="admonition warning">
+<p>all options that are prefixed with <code>_</code> are considered "experimental"
+(their naming can be changed in the future,
+or even an option can be removed)</p>
+</div>
+</li>
+</ul>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <p>Here's how you can build a driver with the instance of this config:</p>
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">selene</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">driver</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">driver</span>  <span class="c1"># new instance, built on 1st access to `driver`</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">driver</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;chrome&#39;</span>
+</code></pre></div>
+    <p>Or pre-configuring the firefox driver:</p>
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">selene</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span><span class="n">driver_name</span><span class="o">=</span><span class="s1">&#39;firefox&#39;</span><span class="p">)</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">driver</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">driver</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">driver</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;firefox&#39;</span>
+</code></pre></div>
+    <p>Or post-configuring the firefox driver:</p>
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">selene</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">config</span><span class="o">.</span><span class="n">driver_name</span> <span class="o">=</span> <span class="s1">&#39;firefox&#39;</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">driver</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">driver</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">driver</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;firefox&#39;</span>
+</code></pre></div>
+    <p>Selene has already predefined shared instance of Config,
+so you can economize on lines of code;)...</p>
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">selene.support.shared</span><span class="w"> </span><span class="kn">import</span> <span class="n">config</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">config</span><span class="o">.</span><span class="n">driver_name</span> <span class="o">=</span> <span class="s1">&#39;firefox&#39;</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">driver</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">driver</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">driver</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;firefox&#39;</span>
+</code></pre></div>
+    <p>Same shared Config instance is available as browser.config:</p>
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">selene</span><span class="w"> </span><span class="kn">import</span> <span class="n">browser</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">browser</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">driver_name</span> <span class="o">=</span> <span class="s1">&#39;firefox&#39;</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">driver</span> <span class="o">=</span> <span class="n">browser</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">driver</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">driver</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;firefox&#39;</span>
+</code></pre></div>
+    <p>There is an alternative style of customizing config.
+The <code>config.option_name = value</code> is known in programming
+as "imperative programming" style. When you are creating
+a new Config from scratch, you are actually using
+a "declarative programming" style:</p>
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">selene</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">my_config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span><span class="n">driver_name</span><span class="o">=</span><span class="s1">&#39;firefox&#39;</span><span class="p">)</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">driver</span> <span class="o">=</span> <span class="n">my_config</span><span class="o">.</span><span class="n">driver</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">driver</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;firefox&#39;</span>
+</code></pre></div>
+    <p>Here is an alternative declarative style of
+customizing new config by copying existing:</p>
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">selene</span><span class="w"> </span><span class="kn">import</span> <span class="n">browser</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">my_config</span> <span class="o">=</span> <span class="n">browser</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">with_</span><span class="p">(</span><span class="n">driver_name</span><span class="o">=</span><span class="s1">&#39;firefox&#39;</span><span class="p">)</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">driver</span> <span class="o">=</span> <span class="n">my_config</span><span class="o">.</span><span class="n">driver</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">driver</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;firefox&#39;</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="gp">&gt;&gt;&gt; </span><span class="c1"># AND...</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">driver</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">browser</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">driver</span>  <span class="c1"># ;)</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">browser</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;chrome&#39;</span>
+</code></pre></div>
+    <p>As you can see Selene config is closely related to the browser.
+Moreover, the same type of "declarative config copying" happens implicitly,
+when you apply "copying" to browser:</p>
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">selene</span><span class="w"> </span><span class="kn">import</span> <span class="n">browser</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">second_browser</span> <span class="o">=</span> <span class="n">browser</span><span class="o">.</span><span class="n">with_</span><span class="p">(</span><span class="n">driver_name</span><span class="o">=</span><span class="s1">&#39;firefox&#39;</span><span class="p">)</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">second_browser</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;firefox&#39;</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="gp">&gt;&gt;&gt; </span><span class="c1"># AND...</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">second_browser</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">driver</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">browser</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">driver</span>  <span class="c1"># ;)</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">browser</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;chrome&#39;</span>
+</code></pre></div>
+    <p>Moreover, if you need only a driver, you can have it
+via <code>browser.driver</code> shortcut, thus, completely hiding the config:</p>
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">selene</span><span class="w"> </span><span class="kn">import</span> <span class="n">browser</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">second_browser</span> <span class="o">=</span> <span class="n">browser</span><span class="o">.</span><span class="n">with_</span><span class="p">(</span><span class="n">driver_name</span><span class="o">=</span><span class="s1">&#39;firefox&#39;</span><span class="p">)</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">second_browser</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;firefox&#39;</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="gp">&gt;&gt;&gt; </span><span class="c1"># AND...</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">second_browser</span><span class="o">.</span><span class="n">driver</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">browser</span><span class="o">.</span><span class="n">driver</span>  <span class="c1"># ;)</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">browser</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;chrome&#39;</span>
+</code></pre></div>
+    <ul>
+<li>such shortcut exists only for the <code>driver</code> option of config,
+not for other options like <code>timeout</code> or <code>base_url</code>.
+More nuances of <code>browser</code> behavior find in its docs;).</li>
+</ul>
+<p>And here are some more examples of customizing config
+for common test automation use cases...</p>
+<p>Scenario: "Run locally in headless Chrome"</p>
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">selene</span><span class="w"> </span><span class="kn">import</span> <span class="n">browser</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">selenium</span><span class="w"> </span><span class="kn">import</span> <span class="n">webdriver</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="gp">&gt;&gt;&gt;</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">options</span> <span class="o">=</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">ChromeOptions</span><span class="p">()</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--headless&#39;</span><span class="p">)</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="gp">&gt;&gt;&gt; </span><span class="c1"># additional options:</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--no-sandbox&#39;</span><span class="p">)</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--disable-gpu&#39;</span><span class="p">)</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--disable-notifications&#39;</span><span class="p">)</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--disable-extensions&#39;</span><span class="p">)</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--disable-infobars&#39;</span><span class="p">)</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--enable-automation&#39;</span><span class="p">)</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--disable-dev-shm-usage&#39;</span><span class="p">)</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--disable-setuid-sandbox&#39;</span><span class="p">)</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">browser</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">driver_options</span> <span class="o">=</span> <span class="n">options</span>
+</code></pre></div>
+    <p>Scenario: "Run remotely on Selenoid"</p>
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">selene</span><span class="w"> </span><span class="kn">import</span> <span class="n">browser</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">selenium</span><span class="w"> </span><span class="kn">import</span> <span class="n">webdriver</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="gp">&gt;&gt;&gt;</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">options</span> <span class="o">=</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">ChromeOptions</span><span class="p">()</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">options</span><span class="o">.</span><span class="n">browser_version</span> <span class="o">=</span> <span class="s1">&#39;100.0&#39;</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">options</span><span class="o">.</span><span class="n">set_capability</span><span class="p">(</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="gp">&gt;&gt;&gt; </span>    <span class="s1">&#39;selenoid:options&#39;</span><span class="p">,</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="gp">&gt;&gt;&gt; </span>    <span class="p">{</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="gp">&gt;&gt;&gt; </span>        <span class="s1">&#39;screenResolution&#39;</span><span class="p">:</span> <span class="s1">&#39;1920x1080x24&#39;</span><span class="p">,</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="gp">&gt;&gt;&gt; </span>        <span class="s1">&#39;enableVNC&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="gp">&gt;&gt;&gt; </span>        <span class="s1">&#39;enableVideo&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="gp">&gt;&gt;&gt; </span>        <span class="s1">&#39;enableLog&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="gp">&gt;&gt;&gt; </span>    <span class="p">},</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="gp">&gt;&gt;&gt; </span><span class="p">)</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">browser</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">driver_options</span> <span class="o">=</span> <span class="n">options</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">browser</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">driver_remote_url</span> <span class="o">=</span> <span class="p">(</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="gp">&gt;&gt;&gt; </span>    <span class="sa">f</span><span class="s1">&#39;https://</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;LOGIN&quot;</span><span class="p">)</span><span class="si">}</span><span class="s1">:</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;PASSWORD&quot;</span><span class="p">)</span><span class="si">}</span><span class="s1">@&#39;</span>
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="gp">&gt;&gt;&gt; </span>    <span class="sa">f</span><span class="s1">&#39;selenoid.autotests.cloud/wd/hub&#39;</span>
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="gp">&gt;&gt;&gt; </span><span class="p">)</span>
+</code></pre></div>
+    <p>Scenario: "Run remotely on BrowserStack in iOS Safari"</p>
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">selene</span><span class="w"> </span><span class="kn">import</span> <span class="n">browser</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">selenium.webdriver.common.options</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArgOptions</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="gp">&gt;&gt;&gt;</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">options</span> <span class="o">=</span> <span class="n">ArgOptions</span><span class="p">()</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">options</span><span class="o">.</span><span class="n">set_capability</span><span class="p">(</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="gp">&gt;&gt;&gt; </span>    <span class="s1">&#39;bstack:options&#39;</span><span class="p">,</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="gp">&gt;&gt;&gt; </span>    <span class="p">{</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="gp">&gt;&gt;&gt; </span>        <span class="s1">&#39;deviceName&#39;</span><span class="p">:</span> <span class="s1">&#39;iPhone 14 Pro Max&#39;</span><span class="p">,</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="gp">&gt;&gt;&gt; </span>        <span class="c1"># &#39;browserName&#39;: &#39;safari&#39;,  # default for iPhone</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="gp">&gt;&gt;&gt; </span>        <span class="s1">&#39;userName&#39;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;BROWSERSTACK_USERNAME&#39;</span><span class="p">),</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="gp">&gt;&gt;&gt; </span>        <span class="s1">&#39;accessKey&#39;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;BROWSERSTACK_ACCESS_KEY&#39;</span><span class="p">),</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="gp">&gt;&gt;&gt; </span>    <span class="p">},</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="gp">&gt;&gt;&gt; </span><span class="p">)</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">browser</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">driver_options</span> <span class="o">=</span> <span class="n">options</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">browser</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">driver_remote_url</span> <span class="o">=</span> <span class="s1">&#39;http://hub.browserstack.com/wd/hub&#39;</span>
+</code></pre></div>
+    <p>Scenario: "Run locally in Android Chrome"</p>
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">selene</span><span class="w"> </span><span class="kn">import</span> <span class="n">browser</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">appium.options.common</span><span class="w"> </span><span class="kn">import</span> <span class="n">AppiumOptions</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="gp">&gt;&gt;&gt;</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">mobile_options</span> <span class="o">=</span> <span class="n">AppiumOptions</span><span class="p">()</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">mobile_options</span><span class="o">.</span><span class="n">new_command_timeout</span> <span class="o">=</span> <span class="mi">60</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Mandatory, also tells Selene to build Appium driver:</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">mobile_options</span><span class="o">.</span><span class="n">platform_name</span> <span class="o">=</span> <span class="s1">&#39;android&#39;</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">mobile_options</span><span class="o">.</span><span class="n">set_capability</span><span class="p">(</span><span class="s1">&#39;browserName&#39;</span><span class="p">,</span> <span class="s1">&#39;chrome&#39;</span><span class="p">)</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="gp">&gt;&gt;&gt;</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">browser</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">driver_options</span> <span class="o">=</span> <span class="n">mobile_options</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Not mandatory, because it is the default value:</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="gp">&gt;&gt;&gt; </span><span class="c1"># browser.config.driver_remote_url = &#39;http://127.0.0.1:4723/wd/hub&#39;</span>
+</code></pre></div>
+    <p>Scenario: "Run locally in Android App"</p>
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">selene</span><span class="w"> </span><span class="kn">import</span> <span class="n">browser</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">appium.options.android</span><span class="w"> </span><span class="kn">import</span> <span class="n">UiAutomator2Options</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="gp">&gt;&gt;&gt;</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">android_options</span> <span class="o">=</span> <span class="n">UiAutomator2Options</span><span class="p">()</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">android_options</span><span class="o">.</span><span class="n">new_command_timeout</span> <span class="o">=</span> <span class="mi">60</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">android_options</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="s1">&#39;wikipedia-alpha-universal-release.apk&#39;</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">android_options</span><span class="o">.</span><span class="n">app_wait_activity</span> <span class="o">=</span> <span class="s1">&#39;org.wikipedia.*&#39;</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="gp">&gt;&gt;&gt;</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">browser</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">driver_options</span> <span class="o">=</span> <span class="n">android_options</span>
+</code></pre></div>
+    <p>Scenario: "Run remotely in Android App on BrowserStack"</p>
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">selene</span><span class="w"> </span><span class="kn">import</span> <span class="n">browser</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">appium.options.android</span><span class="w"> </span><span class="kn">import</span> <span class="n">UiAutomator2Options</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="gp">&gt;&gt;&gt;</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">options</span> <span class="o">=</span> <span class="n">UiAutomator2Options</span><span class="p">()</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">options</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="s1">&#39;bs://c700ce60cf13ae8ed97705a55b8e022f13c5827c&#39;</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">options</span><span class="o">.</span><span class="n">set_capability</span><span class="p">(</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="gp">&gt;&gt;&gt; </span>    <span class="s1">&#39;bstack:options&#39;</span><span class="p">,</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="gp">&gt;&gt;&gt; </span>    <span class="p">{</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="gp">&gt;&gt;&gt; </span>        <span class="s1">&#39;deviceName&#39;</span><span class="p">:</span> <span class="s1">&#39;Google Pixel 7&#39;</span><span class="p">,</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="gp">&gt;&gt;&gt; </span>        <span class="s1">&#39;userName&#39;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;BROWSERSTACK_USERNAME&#39;</span><span class="p">),</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="gp">&gt;&gt;&gt; </span>        <span class="s1">&#39;accessKey&#39;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;BROWSERSTACK_ACCESS_KEY&#39;</span><span class="p">),</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="gp">&gt;&gt;&gt; </span>    <span class="p">},</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="gp">&gt;&gt;&gt; </span><span class="p">)</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">browser</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">driver_options</span> <span class="o">=</span> <span class="n">options</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">browser</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">driver_remote_url</span> <span class="o">=</span> <span class="s1">&#39;http://hub.browserstack.com/wd/hub&#39;</span>
+</code></pre></div>
+        <p>By having config options that influences Selene behavior,
+like <code>config.timeout</code> and <code>config.base_url</code>,
+– together with complete "driver management",
+we definitely break SRP principle... In the name of Good:D. Kind of;).</p>
+<p>All this makes it far from being a simple options data class...
+– yet kept as one "class for everything" to keep things easier to use,
+especially taking into account some historical reasons of Selene design,
+that was influenced a lot by the Selenide from Java world.
+As a result sometimes options are not consistent with each other,
+when we speak about different contexts of their usage.
+For example, this same config,
+once customized with <code>config.driver_options = UiAutomator2Options()</code>,
+will result in mobile driver built, but then all other web-related options,
+for example, a <code>config.base_url</code> will be not relevant.
+Some of them will be ignored, while some of them,
+for example js-related, like <code>config.set_value_by_js</code>,
+will break the code execution (JavaScript does not work in mobile apps).
+In an ideal world, we would have to split this config into several ones,
+starting BaseConfig and continuing with WebConfig, MobileConfig, etc.
+Yet, we have what we have. This complicates things a bit,
+especially for us, contributors of Selene,
+but makes easier for newbies in a lot of "harder" cases,
+like customizing same shared browser instance for multi-platform test runs,
+when we have one test that works for all platforms.
+Thus, we allow to do "harder" tasks easier for "less experienced" users.
+Again, such "easiness" does not mean "simplicity" for us, contributors,
+and also for advanced Selene users,
+who want to customize things in a lot of ways
+and have them easier to support on a long run.
+But for now, let's keep it as is, considered as a trade-off.</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.configuration.Config.build_driver_strategy" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">build_driver_strategy</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Config</span><span class="p">],</span> <span class="n">WebDriver</span><span class="p">]</span> <span class="o">=</span> <span class="n">_build_local_driver_by_name_or_remote_by_url_and_options</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#selene.core.configuration.Config.build_driver_strategy" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A factory to build a driver instance based on this config instance.
+The driver built with this factory will be available via <code>config.driver</code>.
+Hence, you can't use <code>config.driver</code> directly inside this factory,
+because it may lead to recursion.</p>
+<p>The default factory builds:</p>
+<ul>
+<li>either a local driver by value specified in <code>config.driver_name</code></li>
+<li>or a local driver by browserName capability specified in <code>config.driver_options</code></li>
+<li>or remote driver by value specified in <code>config.driver_remote_url</code></li>
+<li>or mobile driver according to <code>config.driver_options</code> capabilities</li>
+</ul>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.configuration.Config._schedule_driver_teardown_strategy" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">_schedule_driver_teardown_strategy</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Config</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="n">WebDriver</span><span class="p">]],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">config</span><span class="p">,</span> <span class="n">get_driver</span><span class="p">:</span> <span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">_teardown_driver_strategy</span><span class="p">(</span><span class="n">config</span><span class="p">)(</span><span class="n">get_driver</span><span class="p">()))</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#selene.core.configuration.Config._schedule_driver_teardown_strategy" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Defines when drier will be teardown.
+Is supposed to use config._teardown_driver_strategy under the hood.</p>
+<p>By default, it's registered as an atexit handler.</p>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.configuration.Config._teardown_driver_strategy" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">_teardown_driver_strategy</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Config</span><span class="p">,</span> <span class="n">WebDriver</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">config</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">driver</span><span class="p">:</span> <span class="n">driver</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">config</span><span class="o">.</span><span class="n">hold_driver_at_exit</span> <span class="ow">and</span> <span class="n">config</span><span class="o">.</span><span class="n">_is_driver_set_strategy</span><span class="p">(</span><span class="n">driver</span><span class="p">)</span> <span class="ow">and</span> <span class="n">config</span><span class="o">.</span><span class="n">_is_driver_alive_strategy</span><span class="p">(</span><span class="n">driver</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#selene.core.configuration.Config._teardown_driver_strategy" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Defines how driver will be teardown.</p>
+<p>By default it quits the driver if it's alive and not asked to be held at exit
+via <code>config.hold_driver_at_exit</code>.</p>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.configuration.Config._is_driver_set_strategy" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">_is_driver_set_strategy</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">WebDriver</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">driver</span><span class="p">:</span> <span class="n">driver</span> <span class="ow">is</span> <span class="ow">not</span> <span class="o">...</span> <span class="ow">and</span> <span class="n">driver</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#selene.core.configuration.Config._is_driver_set_strategy" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Defines how to check if driver is set, and so defines how to "unset" or "reset" it.</p>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.configuration.Config._is_driver_alive_strategy" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">_is_driver_alive_strategy</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">WebDriver</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">driver</span><span class="p">:</span> <span class="n">driver</span><span class="o">.</span><span class="n">service</span><span class="o">.</span><span class="n">process</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">driver</span><span class="o">.</span><span class="n">service</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">poll</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="s1">&#39;service&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="n">on_error_return_false</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">driver</span><span class="o">.</span><span class="n">window_handles</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#selene.core.configuration.Config._is_driver_alive_strategy" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Defines the logic of checking driver for being alive.</p>
+<p>Is supposed to be used in context of triggering automatic driver rebuild,
+depending on context.</p>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.configuration.Config.driver_options" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">driver_options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">BaseOptions</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#selene.core.configuration.Config.driver_options" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Individual browser options to be used on building a driver.</p>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <p>Can be used instead of <code>config.driver_name</code> to tell Selene
+which driver to build, e.g. just specifying</p>
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">selene</span><span class="w"> </span><span class="kn">import</span> <span class="n">browser</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">selenium</span><span class="w"> </span><span class="kn">import</span> <span class="n">webdriver</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="gp">&gt;&gt;&gt;</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">browser</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">driver_options</span> <span class="o">=</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">FirefoxOptions</span><span class="p">()</span><span class="err">`</span>
+</code></pre></div>
+    <p>– will tell Selene to build a Firefox driver.</p>
+<p>But usually you want something more specific,
+like specifying to run a browser in headless more:</p>
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">selene</span><span class="w"> </span><span class="kn">import</span> <span class="n">browser</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">selenium</span><span class="w"> </span><span class="kn">import</span> <span class="n">webdriver</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="gp">&gt;&gt;&gt;</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">options</span> <span class="o">=</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">ChromeOptions</span><span class="p">()</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--headless&#39;</span><span class="p">)</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">browser</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">driver_options</span> <span class="o">=</span> <span class="n">options</span>
+</code></pre></div>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.configuration.Config.driver_service" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">driver_service</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Service</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#selene.core.configuration.Config.driver_service" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Service instance for managing the starting and stopping of the driver.
+Might be useful, for example, for customizing driver executable path,
+if you want to use a custom driver executable instead of the one,
+downloaded by Selenium Manager automatically.</p>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.configuration.Config.driver_remote_url" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">driver_remote_url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#selene.core.configuration.Config.driver_remote_url" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A URL to be used as remote server address to instantiate a RemoteConnection
+to be used by RemoteWebDriver to connect to the remote server.</p>
+<p>Also known as <code>command_executor</code>,
+when passing on init: <code>driver = remote.WebDriver(command_executor=HERE)</code>.
+Currently we name it and type hint as URL,
+but if you pass a RemoteConnection object,
+it will work same way as in Selenium WebDriver.</p>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.configuration.Config.driver_name" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">driver_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#selene.core.configuration.Config.driver_name" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A desired name of the driver to build by <code>config.build_driver_strategy</code>.</p>
+<p>If not set (i.e. set to None, that is a current default value),
+the 'chrome' driver will be used by default.</p>
+<p>It is ignored by default <code>config.build_driver_strategy</code>
+if <code>config.driver_remote_url</code> is set.</p>
+<p>If you are going to provide your desired driver options
+via <code>config.driver_options</code>,
+then Selene will try to guess the corresponding driver name
+based on the options you provided. I.e. no need to provide both:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">config</span><span class="o">.</span><span class="n">driver_name</span> <span class="o">=</span> <span class="s1">&#39;chrome&#39;</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">config</span><span class="o">.</span><span class="n">driver_options</span> <span class="o">=</span> <span class="n">ChromeOptions</span><span class="p">()</span>
+</code></pre></div>
+<p>It's enough to provide only the options:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">config</span><span class="o">.</span><span class="n">driver_options</span> <span class="o">=</span> <span class="n">ChromeOptions</span><span class="p">()</span>
+</code></pre></div>
+<p>GIVEN set to any of: 'chrome', 'firefox', 'edge',<br>
+AND config.driver is left unset (default value is ...),<br>
+THEN default config.build_driver_strategy will automatically install drivers<br>
+AND build webdriver instance for you<br>
+AND this config will store the instance in config.driver<br></p>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.configuration.Config._override_driver_with_all_driver_like_options" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">_override_driver_with_all_driver_like_options</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#selene.core.configuration.Config._override_driver_with_all_driver_like_options" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Controls whether driver will be deep copied
+with <code>config.driver_name</code>, <code>config.driver_remote_url</code>,
+and so for any other <code>config.*driver*</code> option.
+when customizing config via <code>config.with_(**options_to_override)</code>.</p>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <p>Building 2 drivers with implicit deep copy of driver storage:</p>
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">chrome_config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="gp">&gt;&gt;&gt; </span>    <span class="n">driver_name</span><span class="o">=</span><span class="s1">&#39;chrome&#39;</span><span class="p">,</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="gp">&gt;&gt;&gt; </span>    <span class="n">timeout</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="gp">&gt;&gt;&gt; </span>    <span class="n">base_url</span><span class="o">=</span><span class="s1">&#39;https://autotest.how&#39;</span><span class="p">,</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="gp">&gt;&gt;&gt; </span><span class="p">)</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">chrome</span> <span class="o">=</span> <span class="n">chrome_config</span><span class="o">.</span><span class="n">driver</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">firefox_config</span> <span class="o">=</span> <span class="n">chrome_config</span><span class="o">.</span><span class="n">with_</span><span class="p">(</span><span class="n">driver_name</span><span class="o">=</span><span class="s1">&#39;firefox&#39;</span><span class="p">)</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">firefox</span> <span class="o">=</span> <span class="n">firefox_config</span><span class="o">.</span><span class="n">driver</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">firefox</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">chrome</span>
+</code></pre></div>
+    <p>Building 2 drivers with explicit deep copy of driver storage [1]:</p>
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">chrome_config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="gp">&gt;&gt;&gt; </span>    <span class="n">driver_name</span><span class="o">=</span><span class="s1">&#39;chrome&#39;</span><span class="p">,</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="gp">&gt;&gt;&gt; </span>    <span class="n">timeout</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="gp">&gt;&gt;&gt; </span>    <span class="n">base_url</span><span class="o">=</span><span class="s1">&#39;https://autotest.how&#39;</span><span class="p">,</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="gp">&gt;&gt;&gt; </span>    <span class="n">_override_driver_with_all_driver_like_options</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="gp">&gt;&gt;&gt; </span><span class="p">)</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">chrome</span> <span class="o">=</span> <span class="n">chrome_config</span><span class="o">.</span><span class="n">driver</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">firefox_config</span> <span class="o">=</span> <span class="n">chrome_config</span><span class="o">.</span><span class="n">with_</span><span class="p">(</span><span class="n">driver_name</span><span class="o">=</span><span class="s1">&#39;firefox&#39;</span><span class="p">,</span> <span class="n">driver</span><span class="o">=...</span><span class="p">)</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">firefox</span> <span class="o">=</span> <span class="n">firefox_config</span><span class="o">.</span><span class="n">driver</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">firefox</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">chrome</span>
+</code></pre></div>
+    <p>Building 2 drivers with explicit deep copy of driver storage [2]:</p>
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">chrome_config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="gp">&gt;&gt;&gt; </span>    <span class="n">driver_name</span><span class="o">=</span><span class="s1">&#39;chrome&#39;</span><span class="p">,</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="gp">&gt;&gt;&gt; </span>    <span class="n">timeout</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="gp">&gt;&gt;&gt; </span>    <span class="n">base_url</span><span class="o">=</span><span class="s1">&#39;https://autotest.how&#39;</span><span class="p">,</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="gp">&gt;&gt;&gt; </span><span class="p">)</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">chrome_config</span><span class="o">.</span><span class="n">_override_driver_with_all_driver_like_options</span> <span class="o">=</span> <span class="kc">False</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">chrome</span> <span class="o">=</span> <span class="n">chrome_config</span><span class="o">.</span><span class="n">driver</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">firefox_config</span> <span class="o">=</span> <span class="n">chrome_config</span><span class="o">.</span><span class="n">with_</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;firefox&#39;</span><span class="p">,</span> <span class="n">driver</span><span class="o">=...</span><span class="p">)</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">firefox</span> <span class="o">=</span> <span class="n">firefox_config</span><span class="o">.</span><span class="n">driver</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">firefox</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">chrome</span>
+</code></pre></div>
+    <p>Building 1 driver because driver storage was not copied:</p>
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">chrome_config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="gp">&gt;&gt;&gt; </span>    <span class="n">driver_name</span><span class="o">=</span><span class="s1">&#39;chrome&#39;</span><span class="p">,</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="gp">&gt;&gt;&gt; </span>    <span class="n">timeout</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="gp">&gt;&gt;&gt; </span>    <span class="n">base_url</span><span class="o">=</span><span class="s1">&#39;https://autotest.how&#39;</span><span class="p">,</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="gp">&gt;&gt;&gt; </span><span class="p">)</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">chrome_config</span><span class="o">.</span><span class="n">_override_driver_with_all_driver_like_options</span> <span class="o">=</span> <span class="kc">False</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">chrome</span> <span class="o">=</span> <span class="n">chrome_config</span><span class="o">.</span><span class="n">driver</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">firefox_config</span> <span class="o">=</span> <span class="n">chrome_config</span><span class="o">.</span><span class="n">with_</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;firefox&#39;</span><span class="p">)</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">firefox</span> <span class="o">=</span> <span class="n">firefox_config</span><span class="o">.</span><span class="n">driver</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">firefox</span> <span class="ow">is</span> <span class="n">chrome</span>  <span class="c1"># o_O ;)</span>
+</code></pre></div>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.configuration.Config.hold_driver_at_exit" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">hold_driver_at_exit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#selene.core.configuration.Config.hold_driver_at_exit" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Controls whether driver will be automatically quit at process exit or not.</p>
+<p>Will not take much effect on Chrome
+for 4.5.0 &lt; selenium versions &lt;= 4.8.3 &lt; ?.?.?,
+Because for some reason, Selenium of such versions kills driver by himself,
+regardless of what Selene thinks about it:D</p>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.configuration.Config._driver_get_url_strategy" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">_driver_get_url_strategy</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Config</span><span class="p">],</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="kc">None</span><span class="p">]]</span> <span class="o">=</span> <span class="n">_maybe_reset_driver_then_tune_window_and_get_with_base_url</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#selene.core.configuration.Config._driver_get_url_strategy" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Defines how to get url with driver depending on other options, like config.base_url.</p>
+<p>Is used inside <code>browser.open(relative_or_absolute_url)</code>,
+and defines its behavior correspondingly.</p>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.configuration.Config._reset_not_alive_driver_on_get_url" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">_reset_not_alive_driver_on_get_url</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#selene.core.configuration.Config._reset_not_alive_driver_on_get_url" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Controls whether driver should be automatically reset and, thus,
+forced to be rebuilt, if it was noticed as not alive (e.g. after quit or crash)
+on next call to <code>config.driver.get(url)</code>
+(via <code>config._driver_get_url_strategy</code>).</p>
+<p>Does not work if <code>config.driver</code> was set manually to <code>Callable[[], WebDriver]</code>.</p>
+<p>Is a more "week" option than <code>config.rebuild_not_alive_driver</code>,
+that is disabled by default,
+that forces to rebuild driver on any next access.</p>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.configuration.Config.rebuild_not_alive_driver" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">rebuild_not_alive_driver</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#selene.core.configuration.Config.rebuild_not_alive_driver" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Controls whether driver should be automatically rebuilt
+when on next call to config.driver
+it was noticed as not alive (e.g. after quit or crash).</p>
+<p>May slow down your tests if running against remote Selenium server,
+e.g. Grid or selenoid, because of additional request to check
+if driver is alive per each driver action.</p>
+<p>Does not work if <code>config.driver</code> was set manually to <code>Callable[[], WebDriver]</code>.</p>
+<p>Is a more "strong" option than <code>config._reset_not_alive_driver_on_get_url</code>,
+(enabled by default), that schedules rebuilding driver
+on next access only inside "get url" logic.</p>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.configuration.Config.driver" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">driver</span><span class="p">:</span> <span class="n">WebDriver</span> <span class="o">=</span> <span class="n">_ManagedDriverDescriptor</span><span class="p">(</span><span class="n">default</span><span class="o">=...</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#selene.core.configuration.Config.driver" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A driver instance with lifecycle managed by this config special options
+depending on their values and customization of this attribute.</p>
+<p>Once driver-definition-related options are set
+(like <code>config.driver_options</code>, <code>config.driver_remote_url</code>),
+the driver will be built on first access to this attribute.
+Thus, to build the driver with Selene,
+you simply call <code>config.driver</code> for the first time,
+and usually the simplest way to access it
+– is through either <code>browser.config.driver</code> or even <code>browser.driver</code> shortcut.
+Moreover, usually you don't do this explicitly,
+but rather use <code>browser.open(url)</code> to build a driver and open a page.</p>
+
+
+<details class="scenarios" open>
+  <summary>Scenarios</summary>
+  <p>GIVEN unset, i.e. equals to default <code>...</code> or <code>None</code>,<br>
+WHEN accessed first time (e.g. via config.driver)<br>
+THEN it will be set to the instance built by <code>config.build_driver_strategy</code>.<br></p>
+<p>GIVEN set manually to an existing driver instance,
+      like: <code>config.driver = Chrome()</code><br>
+THEN it will be reused as it is on any next access<br>
+WHEN reset to <code>...</code> OR <code>None</code><br>
+THEN will be rebuilt by <code>config.build_driver_strategy</code><br></p>
+<p>GIVEN set manually to an existing driver instance (not callable),
+      like: <code>config.driver = Chrome()</code><br>
+AND at some point of time the driver is not alive
+    like crashed or quit<br>
+AND <code>config._reset_not_alive_driver_on_get_url</code> is set to <code>True</code>,
+    that is default<br>
+WHEN driver.get(url) is requested under the hood
+     like at <code>browser.open(url)</code><br>
+THEN config.driver will be reset to <code>...</code><br>
+AND thus will be rebuilt by <code>config.build_driver_strategy</code><br></p>
+<p>GIVEN set manually to a callable that returns WebDriver instance
+      (currently marked with FutureWarning, so might be deprecated)<br>
+WHEN accessed fist time<br>
+AND any next time<br>
+THEN will call the callable and return the result<br></p>
+<p>GIVEN unset or set manually to not callable<br>
+AND <code>config.hold_driver_at_exit</code> is set to <code>False</code> (that is default)<br>
+WHEN the process exits<br>
+THEN driver will be quit.<br></p>
+</details>    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.configuration.Config.timeout" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">timeout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">4</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#selene.core.configuration.Config.timeout" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A default timeout for all Selene waiting that happens under the hood
+of the majority of Selene commands and assertions.</p>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.configuration.Config.base_url" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">base_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#selene.core.configuration.Config.base_url" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A base url to be used when opening a page with relative url.</p>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <p>Instead of duplicating the same base url in all your tests:</p>
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">selene</span><span class="w"> </span><span class="kn">import</span> <span class="n">browser</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">browser</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;https://mywebapp.xyz/signin&#39;</span><span class="p">)</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="gp">&gt;&gt;&gt; </span><span class="o">...</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">browser</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;https://mywebapp.xyz/signup&#39;</span><span class="p">)</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="gp">&gt;&gt;&gt; </span><span class="o">...</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">browser</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;https://mywebapp.xyz/profile&#39;</span><span class="p">)</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="gp">&gt;&gt;&gt; </span><span class="o">...</span>
+</code></pre></div>
+    <p>You can set it once in your config and then just use relative urls:</p>
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">selene</span><span class="w"> </span><span class="kn">import</span> <span class="n">browser</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">browser</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">base_url</span> <span class="o">=</span> <span class="s1">&#39;https://mywebapp.xyz&#39;</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">browser</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;/signin&#39;</span><span class="p">)</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="gp">&gt;&gt;&gt; </span><span class="o">...</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">browser</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;/signup&#39;</span><span class="p">)</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="gp">&gt;&gt;&gt; </span><span class="o">...</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="gp">&gt;&gt;&gt; </span><span class="n">browser</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;/profile&#39;</span><span class="p">)</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="gp">&gt;&gt;&gt; </span><span class="o">...</span>
+</code></pre></div>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.configuration.Config._get_base_url_on_open_with_no_args" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">_get_base_url_on_open_with_no_args</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#selene.core.configuration.Config._get_base_url_on_open_with_no_args" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A flag to indicate whether to use <code>config.base_url</code>
+when opening a page with <code>browser.open()</code> command without arguments.</p>
+<p>If you call <code>browser.open()</code> without arguments,
+it will just force the driver to be built and real browser to be opened.</p>
+<p>Even if you have set <code>config.base_url</code>, to reuse it in your tests on <code>browser.open</code>,
+you have to specify the url explicitly, like <code>browser.open('/')</code>
+or at least <code>browser.open('')</code>.</p>
+<p>But there are cases where you would like to load base url on <code>browser.open()</code>,
+for example in context of cross-platform testing. Then you use this option;)
+See example at
+https://github.com/yashaka/selene/blob/master/examples/run_cross_platform</p>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.configuration.Config.window_width" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">window_width</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#selene.core.configuration.Config.window_width" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>If set, will be used to set the window width on next call to <code>browser.open(url)</code>.</p>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.configuration.Config.window_height" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">window_height</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#selene.core.configuration.Config.window_height" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>If set, will be used to set the window height on next call to <code>browser.open(url)</code>.</p>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.configuration.Config.log_outer_html_on_failure" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">log_outer_html_on_failure</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#selene.core.configuration.Config.log_outer_html_on_failure" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>If set to True, will log outer html of the element on failure of any Selene command.</p>
+<p>Is disabled by default, because:</p>
+<ul>
+<li>it might add too much of noise to the logs</li>
+<li>will not work on mobile app tests because under the hood - uses JavaScript</li>
+</ul>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.configuration.Config.set_value_by_js" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">set_value_by_js</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#selene.core.configuration.Config.set_value_by_js" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A flag to indicate whether to use JavaScript to set value of an element
+on <code>element.set_value(value)</code> for purposes of speeding up the test execution,
+or as a workaround when default selenium-based implementation does not work.</p>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.configuration.Config.type_by_js" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">type_by_js</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#selene.core.configuration.Config.type_by_js" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A flag to indicate whether to use JavaScript to type text to an element
+on <code>element.type(text)</code> for purposes of speeding up the test execution,
+or as a workaround when default selenium-based implementation does not work.</p>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.configuration.Config.click_by_js" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">click_by_js</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#selene.core.configuration.Config.click_by_js" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A flag to indicate whether to use JavaScript to click on element
+via <code>element.click()</code>, usually, as a workaround,
+when default selenium-based implementation does not work.</p>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.configuration.Config.reports_folder" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">reports_folder</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s1">&#39;~&#39;</span><span class="p">),</span> <span class="s1">&#39;.selene&#39;</span><span class="p">,</span> <span class="s1">&#39;screenshots&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">)))</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#selene.core.configuration.Config.reports_folder" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A folder to save screenshots and page sources on failure.</p>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.configuration.Config.save_screenshot_on_failure" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">save_screenshot_on_failure</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#selene.core.configuration.Config.save_screenshot_on_failure" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A flag to indicate whether to save screenshot on failure or not.
+If saved, will be also logged to the console on failure.</p>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.configuration.Config.save_page_source_on_failure" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">save_page_source_on_failure</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#selene.core.configuration.Config.save_page_source_on_failure" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A flag to indicate whether to save page source on failure or not.
+If saved, will be also logged to the console on failure.</p>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="selene.core.configuration.Config._counter" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">_counter</span><span class="p">:</span> <span class="n">itertools</span><span class="o">.</span><span class="n">count</span> <span class="o">=</span> <span class="n">itertools</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))))</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#selene.core.configuration.Config._counter" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A counter, currently used for incrementing screenshot and page source names</p>
+    </div>
+
+</div>
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="selene.core.configuration.Config.with_" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">with_</span><span class="p">(</span><span class="o">**</span><span class="n">options_to_override</span><span class="p">)</span></code>
+
+<a href="#selene.core.configuration.Config.with_" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          –
+          <div class="doc-md-description">
+            <p>A new config with overridden options that were specified as arguments.</p>
+<p>All other config options will be shallow-copied
+from the current config.
+Those other options that are of immutable types,
+like <code>int</code> - will be also copied by reference,
+i.e. in a truly shallow way.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+          <b><code>**options_to_override</code></b>
+          –
+          <div class="doc-md-description">
+            <p>options to override in the new config.</p>
+<p>Technically "override" here means:
+"deep copy option storage and update its value to the specified one".
+All other option storages will be:
+"shallow copied from the current config".</p>
+<p>If <code>driver_name</code> is among <code>options_to_override</code>,
+and <code>driver</code> is not among them,
+and <code>self._override_driver_with_all_driver_like_options</code> is True,
+then <code>driver</code> will be implicitly added to the options to override,
+i.e. <code>with_(driver_name='firefox')</code> will be equivalent
+to <code>with_(driver_name='firefox', driver=...)</code>.
+The latter gives a readable and concise shortcut
+to spawn more than one browser:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">selene</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">base_url</span><span class="o">=</span><span class="s1">&#39;https://autotest.how&#39;</span><span class="p">)</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">chrome</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">driver</span>  <span class="c1"># chrome is default browser</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">firefox_config</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">with_</span><span class="p">(</span><span class="n">driver_name</span><span class="o">=</span><span class="s1">&#39;firefox&#39;</span><span class="p">)</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="n">firefox</span> <span class="o">=</span> <span class="n">firefox_config</span><span class="o">.</span><span class="n">driver</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="n">edge_config</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">with_</span><span class="p">(</span><span class="n">driver_name</span><span class="o">=</span><span class="s1">&#39;edge&#39;</span><span class="p">)</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="n">edge</span> <span class="o">=</span> <span class="n">edge_config</span><span class="o">.</span><span class="n">driver</span>
+</code></pre></div>
+<p>Same logic applies to <code>remote_url</code>,
+and all other config.<em>driver</em> options.</p>
+          </div>
+        </li>
+    </ul>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="selene.core.configuration.Config._format_path_as_uri" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">_format_path_as_uri</span><span class="p">(</span><span class="n">path</span><span class="p">)</span></code>
+
+<a href="#selene.core.configuration.Config._format_path_as_uri" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Converts a local file path to a URI that can be clicked in most editors and browsers.</p>
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+<h3 id="_save_screenshot_strategy">_save_screenshot_strategy<a class="headerlink" href="#_save_screenshot_strategy" title="Permanent link">#</a></h3>
+<p>Defines a strategy for saving a screenshot.</p>
+<p>The default strategy saves a screenshot to a file,
+and stores the path to <code>config.last_screenshot</code>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">_save_screenshot_strategy</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="p">[</span><span class="n">Config</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="n">Any</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">config</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">:</span> <span class="n">fp</span><span class="o">.</span><span class="n">thread</span><span class="p">(</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">path</span><span class="p">,</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="k">lambda</span> <span class="n">path</span><span class="p">:</span> <span class="p">(</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>        <span class="n">config</span><span class="o">.</span><span class="n">_generate_filename</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="s1">&#39;.png&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">path</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="p">),</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="k">lambda</span> <span class="n">path</span><span class="p">:</span> <span class="p">(</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">next</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">_counter</span><span class="p">)</span><span class="si">}</span><span class="s1">.png&#39;</span><span class="p">)</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>        <span class="k">if</span> <span class="n">path</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.png&#39;</span><span class="p">)</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>        <span class="k">else</span> <span class="n">path</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>    <span class="p">),</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>    <span class="n">fp</span><span class="o">.</span><span class="n">do</span><span class="p">(</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>        <span class="n">fp</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">,</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>            <span class="k">lambda</span> <span class="n">folder</span><span class="p">:</span> <span class="p">(</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>                <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>                <span class="k">if</span> <span class="n">folder</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span>
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>                <span class="k">else</span> <span class="o">...</span>
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>            <span class="p">),</span>
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>        <span class="p">)</span>
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>    <span class="p">),</span>
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>    <span class="n">fp</span><span class="o">.</span><span class="n">do</span><span class="p">(</span>
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>        <span class="k">lambda</span> <span class="n">path</span><span class="p">:</span> <span class="p">(</span>
+<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>                <span class="s1">&#39;name used for saved screenshot does not match file &#39;</span>
+<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>                <span class="s1">&#39;type. It should end with an `.png` extension&#39;</span><span class="p">,</span>
+<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>                <span class="ne">UserWarning</span><span class="p">,</span>
+<a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>            <span class="p">)</span>
+<a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>            <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.png&#39;</span><span class="p">)</span>
+<a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a>            <span class="k">else</span> <span class="o">...</span>
+<a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a>        <span class="p">)</span>
+<a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a>    <span class="p">),</span>
+<a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a>    <span class="k">lambda</span> <span class="n">path</span><span class="p">:</span> <span class="p">(</span><span class="n">path</span> <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">get_screenshot_as_file</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span><span class="p">),</span>
+<a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a>    <span class="n">fp</span><span class="o">.</span><span class="n">do</span><span class="p">(</span>
+<a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a>        <span class="k">lambda</span> <span class="n">path</span><span class="p">:</span> <span class="nb">setattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s1">&#39;last_screenshot&#39;</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+<a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a>    <span class="p">),</span>
+<a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a><span class="p">)</span>
+</code></pre></div>
+<h3 id="_save_page_source_strategy">_save_page_source_strategy<a class="headerlink" href="#_save_page_source_strategy" title="Permanent link">#</a></h3>
+<p>Defines a strategy for saving a page source on failure.</p>
+<p>The default strategy saves a page_source to a file,
+and stores the path to <code>config.last_page_source</code>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">_save_page_source_strategy</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="p">[</span><span class="n">Config</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="n">Any</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">config</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">:</span> <span class="n">fp</span><span class="o">.</span><span class="n">thread</span><span class="p">(</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">path</span><span class="p">,</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="k">lambda</span> <span class="n">path</span><span class="p">:</span> <span class="p">(</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>        <span class="n">config</span><span class="o">.</span><span class="n">_generate_filename</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="s1">&#39;.html&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">path</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="p">),</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="k">lambda</span> <span class="n">path</span><span class="p">:</span> <span class="p">(</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">next</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">_counter</span><span class="p">)</span><span class="si">}</span><span class="s1">.html&#39;</span><span class="p">)</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>        <span class="k">if</span> <span class="n">path</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.html&#39;</span><span class="p">)</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>        <span class="k">else</span> <span class="n">path</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>    <span class="p">),</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>    <span class="n">fp</span><span class="o">.</span><span class="n">do</span><span class="p">(</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>        <span class="n">fp</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span>
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">,</span>
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>            <span class="k">lambda</span> <span class="n">folder</span><span class="p">:</span> <span class="p">(</span>
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>                <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span>
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>                <span class="k">if</span> <span class="n">folder</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span>
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>                <span class="k">else</span> <span class="o">...</span>
+<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>            <span class="p">),</span>
+<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>        <span class="p">)</span>
+<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>    <span class="p">),</span>
+<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>    <span class="n">fp</span><span class="o">.</span><span class="n">do</span><span class="p">(</span>
+<a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>        <span class="k">lambda</span> <span class="n">path</span><span class="p">:</span> <span class="p">(</span>
+<a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>                <span class="s1">&#39;name used for saved page source does not match file &#39;</span>
+<a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a>                <span class="s1">&#39;type. It should end with an `.html` extension&#39;</span><span class="p">,</span>
+<a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a>                <span class="ne">UserWarning</span><span class="p">,</span>
+<a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a>            <span class="p">)</span>
+<a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a>            <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.html&#39;</span><span class="p">)</span>
+<a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a>            <span class="k">else</span> <span class="o">...</span>
+<a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a>        <span class="p">)</span>
+<a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a>    <span class="p">),</span>
+<a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a>    <span class="k">lambda</span> <span class="n">path</span><span class="p">:</span> <span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">page_source</span><span class="p">),</span>
+<a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a>    <span class="n">fp</span><span class="o">.</span><span class="n">do</span><span class="p">(</span><span class="k">lambda</span> <span class="n">path_and_source</span><span class="p">:</span> <span class="n">fp</span><span class="o">.</span><span class="n">write_silently</span><span class="p">(</span><span class="o">*</span><span class="n">path_and_source</span><span class="p">)),</span>
+<a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a>    <span class="k">lambda</span> <span class="n">path_and_source</span><span class="p">:</span> <span class="n">path_and_source</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+<a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a>    <span class="n">fp</span><span class="o">.</span><span class="n">do</span><span class="p">(</span>
+<a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a>        <span class="k">lambda</span> <span class="n">path</span><span class="p">:</span> <span class="nb">setattr</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s1">&#39;last_page_source&#39;</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+<a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a>    <span class="p">),</span>
+<a id="__codelineno-1-40" name="__codelineno-1-40" href="#__codelineno-1-40"></a><span class="p">)</span>
+</code></pre></div>
+<h3 id="failure-artifacts-behavior">Failure Artifacts Behavior<a class="headerlink" href="#failure-artifacts-behavior" title="Permanent link">#</a></h3>
+<p>By default, Selene saves screenshot and page source for failures that are
+propagated as <code>TimeoutException</code> (for example, from <code>.should(...)</code> or action
+methods with implicit waiting).
+This includes handled failures in <code>pytest.raises(TimeoutException)</code> scenarios.</p>
+<p>Soft checks that are expected to return boolean do not save artifacts:</p>
+<ul>
+<li><code>.wait_until(condition)</code> returning <code>False</code></li>
+<li><code>.matching(condition)</code> returning <code>False</code></li>
+</ul>
+<p>Control flags:</p>
+<ul>
+<li><code>config.save_screenshot_on_failure</code> (<code>True</code> by default)</li>
+<li><code>config.save_page_source_on_failure</code> (<code>True</code> by default)</li>
+</ul>
+<p>Saved files location:</p>
+<ul>
+<li><code>config.reports_folder</code></li>
+<li>last saved paths are available via <code>config.last_screenshot</code> and
+  <code>config.last_page_source</code></li>
+</ul>
+
+
+
+
+
+
+
+  
+    
+  
+  
+    
+  
+
+
+  <aside class="md-source-file">
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Last update">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="May 11, 2026 13:15:51 UTC"><span class="timeago" datetime="2026-05-11T13:15:51+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="May 11, 2026 13:15:51 UTC">2026-05-11</span>
+  </span>
+
+    
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Created">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="April 15, 2023 15:27:14 UTC"><span class="timeago" datetime="2023-04-15T15:27:14+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="April 15, 2023 15:27:14 UTC">2023-04-15</span>
+  </span>
+
+    
+    
+    
+  </aside>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://autotest.how/sdet-start-ru" target="_blank" rel="noopener" title="Запишись на курс" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.36 14c.08-.66.14-1.32.14-2s-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2m-5.15 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95a8.03 8.03 0 0 1-4.33 3.56M14.34 14H9.66c-.1-.66-.16-1.32-.16-2s.06-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2M12 19.96c-.83-1.2-1.5-2.53-1.91-3.96h3.82c-.41 1.43-1.08 2.76-1.91 3.96M8 8H5.08A7.92 7.92 0 0 1 9.4 4.44C8.8 5.55 8.35 6.75 8 8m-2.92 8H8c.35 1.25.8 2.45 1.4 3.56A8 8 0 0 1 5.08 16m-.82-2C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2M12 4.03c.83 1.2 1.5 2.54 1.91 3.97h-3.82c.41-1.43 1.08-2.77 1.91-3.97M18.92 8h-2.95a15.7 15.7 0 0 0-1.38-3.56c1.84.63 3.37 1.9 4.33 3.56M12 2C6.47 2 2 6.5 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://t.me/selene_py_ru" target="_blank" rel="noopener" title="Selene.py на русском" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M256 8a248 248 0 1 0 0 496 248 248 0 1 0 0-496m115 168.7c-3.7 39.2-19.9 134.4-28.1 178.3-3.5 18.6-10.3 24.8-16.9 25.4-14.4 1.3-25.3-9.5-39.3-18.7-21.8-14.3-34.2-23.2-55.3-37.2-24.5-16.1-8.6-25 5.3-39.5 3.7-3.8 67.1-61.5 68.3-66.7.2-.7.3-3.1-1.2-4.4s-3.6-.8-5.1-.5c-2.2.5-37.1 23.5-104.6 69.1-9.9 6.8-18.9 10.1-26.9 9.9-8.9-.2-25.9-5-38.6-9.1-15.5-5-27.9-7.7-26.8-16.3.6-4.5 6.7-9 18.4-13.7 72.3-31.5 120.5-52.3 144.6-62.3 68.9-28.6 83.2-33.6 92.5-33.8 2.1 0 6.6.5 9.6 2.9 2 1.7 3.2 4.1 3.5 6.7.5 3.2.6 6.5.4 9.8z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://autotest.how/sdet-start" target="_blank" rel="noopener" title="Sign up to Selene course" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.36 14c.08-.66.14-1.32.14-2s-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2m-5.15 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95a8.03 8.03 0 0 1-4.33 3.56M14.34 14H9.66c-.1-.66-.16-1.32-.16-2s.06-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2M12 19.96c-.83-1.2-1.5-2.53-1.91-3.96h3.82c-.41 1.43-1.08 2.76-1.91 3.96M8 8H5.08A7.92 7.92 0 0 1 9.4 4.44C8.8 5.55 8.35 6.75 8 8m-2.92 8H8c.35 1.25.8 2.45 1.4 3.56A8 8 0 0 1 5.08 16m-.82-2C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2M12 4.03c.83 1.2 1.5 2.54 1.91 3.97h-3.82c.41-1.43 1.08-2.77 1.91-3.97M18.92 8h-2.95a15.7 15.7 0 0 0-1.38-3.56c1.84.63 3.37 1.9 4.33 3.56M12 2C6.47 2 2 6.5 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://t.me/selene_py" target="_blank" rel="noopener" title="Selene.py (in English)" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M256 8a248 248 0 1 0 0 496 248 248 0 1 0 0-496m115 168.7c-3.7 39.2-19.9 134.4-28.1 178.3-3.5 18.6-10.3 24.8-16.9 25.4-14.4 1.3-25.3-9.5-39.3-18.7-21.8-14.3-34.2-23.2-55.3-37.2-24.5-16.1-8.6-25 5.3-39.5 3.7-3.8 67.1-61.5 68.3-66.7.2-.7.3-3.1-1.2-4.4s-3.6-.8-5.1-.5c-2.2.5-37.1 23.5-104.6 69.1-9.9 6.8-18.9 10.1-26.9 9.9-8.9-.2-25.9-5-38.6-9.1-15.5-5-27.9-7.7-26.8-16.3.6-4.5 6.7-9 18.4-13.7 72.3-31.5 120.5-52.3 144.6-62.3 68.9-28.6 83.2-33.6 92.5-33.8 2.1 0 6.6.5 9.6 2.9 2 1.7 3.2 4.1 3.5 6.7.5 3.2.6 6.5.4 9.8z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://autotest.how/sdet-start-uk" target="_blank" rel="noopener" title="Реєструйся на курс" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.36 14c.08-.66.14-1.32.14-2s-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2m-5.15 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95a8.03 8.03 0 0 1-4.33 3.56M14.34 14H9.66c-.1-.66-.16-1.32-.16-2s.06-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2M12 19.96c-.83-1.2-1.5-2.53-1.91-3.96h3.82c-.41 1.43-1.08 2.76-1.91 3.96M8 8H5.08A7.92 7.92 0 0 1 9.4 4.44C8.8 5.55 8.35 6.75 8 8m-2.92 8H8c.35 1.25.8 2.45 1.4 3.56A8 8 0 0 1 5.08 16m-.82-2C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2M12 4.03c.83 1.2 1.5 2.54 1.91 3.97h-3.82c.41-1.43 1.08-2.77 1.91-3.97M18.92 8h-2.95a15.7 15.7 0 0 0-1.38-3.56c1.84.63 3.37 1.9 4.33 3.56M12 2C6.47 2 2 6.5 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["search.suggest", "search.highlight", "content.code.copy", "content.action.edit", "content.action.view"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../js/timeago.min.js"></script>
+      
+        <script src="../../js/timeago_mkdocs_material.js"></script>
+      
+    
+  </body>
+</html>

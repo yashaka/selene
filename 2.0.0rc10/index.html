@@ -1,0 +1,1881 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="User-oriented Web UI browser tests in Python.">
+      
+      
+        <meta name="author" content="Iakiv Kramarenko">
+      
+      
+        <link rel="canonical" href="https://yashaka.github.io/selene/2.0.0rc10/">
+      
+      
+      
+        <link rel="next" href="faq/custom-user-profile-howto/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Selene</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="css/timeago.css">
+    
+      <link rel="stylesheet" href="assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#selene-user-oriented-web-ui-browser-tests-in-python-selenide-port" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+          <aside class="md-banner md-banner--warning">
+            <div class="md-banner__inner md-grid md-typeset">
+              
+  This documentation is for a version that is not the latest.
+  <a href="https://yashaka.github.io/selene/2.0.0rc10"><strong>View the latest version</strong></a>.
+
+            </div>
+            <script>var el=document.querySelector("[data-md-component=outdated]"),base=new URL("."),outdated=__md_get("__outdated",sessionStorage,base);!0===outdated&&el&&(el.hidden=!1)</script>
+          </aside>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="." title="Selene" class="md-header__button md-logo" aria-label="Selene" data-md-component="logo">
+      
+  <img src="assets/images/logo-icon.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Selene
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Overview
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7M9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="blue-grey" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/yashaka/selene" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    yashaka/selene
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="." title="Selene" class="md-nav__button md-logo" aria-label="Selene" data-md-component="logo">
+      
+  <img src="assets/images/logo-icon.png" alt="logo">
+
+    </a>
+    Selene
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/yashaka/selene" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    yashaka/selene
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="." class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#versions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Versions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Versions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#migration-guide" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Migration guide
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Installation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#via-poetry-pyenv-recommended" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        via poetry + pyenv (recommended)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#via-pip" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        via pip
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#from-sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        from sources
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Usage
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Usage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#quick-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick Start
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#core-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core Api
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#automatic-driver-and-browser-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Automatic Driver and Browser Management
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#advanced-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Advanced API
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tutorials" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tutorials
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#more-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        More Examples
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contribution
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#release-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Release Workflow
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#changelog" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Changelog
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    FAQ
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="faq/custom-user-profile-howto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How to use custom profile
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="reference/configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Config
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contribution
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contribution
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="contribution/to-source-code-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How to contribute
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="contribution/code-conventions-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code conventions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="contribution/release-workflow-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Release workflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="contribution/to-documentation-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How to contribute to docs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="contribution/how-to-organize-docs-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How to organize docs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="contribution/how-to-write-docs-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How to write docs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changelog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    License
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#versions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Versions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Versions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#migration-guide" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Migration guide
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Installation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#via-poetry-pyenv-recommended" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        via poetry + pyenv (recommended)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#via-pip" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        via pip
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#from-sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        from sources
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Usage
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Usage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#quick-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick Start
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#core-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core Api
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#automatic-driver-and-browser-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Automatic Driver and Browser Management
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#advanced-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Advanced API
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tutorials" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tutorials
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#more-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        More Examples
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contribution
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#release-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Release Workflow
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#changelog" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Changelog
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/yashaka/selene/edit/master/docs/index.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h4v-1.91L12.09 18H6v-2h8.09l2-2H6v-2h12.09L20 10.09V8l-6-6zm7 1.5L18.5 9H13zm7.15 9.5a.55.55 0 0 0-.4.16l-1.02 1.02 2.09 2.08 1.02-1.01c.21-.22.21-.58 0-.79l-1.3-1.3a.54.54 0 0 0-.39-.16m-2.01 1.77L12 20.92V23h2.08l6.15-6.15z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/yashaka/selene/raw/master/docs/index.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5m-7.86-1.75L8.85 19l.29-.74C10.43 15.06 13.5 13 17 13c1.05 0 2.06.21 3 .56V8l-6-6H6c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h4.5c-.55-.66-1-1.42-1.36-2.25M13 3.5 18.5 9H13z"/></svg>
+    </a>
+  
+
+
+<h1 id="selene-user-oriented-web-ui-browser-tests-in-python-selenide-port">Selene - User-oriented Web UI browser tests in Python (Selenide port)<a class="headerlink" href="#selene-user-oriented-web-ui-browser-tests-in-python-selenide-port" title="Permanent link">#</a></h1>
+<p><img alt="Pre-release Version" src="https://img.shields.io/github/v/release/yashaka/selene?label=latest" />
+<a href="https://github.com/yashaka/selene/actions/workflows/tests.yml"><img alt="tests" src="https://github.com/yashaka/selene/actions/workflows/tests.yml/badge.svg" /></a>
+<a href="https://codecov.io/gh/yashaka/selene"><img alt="codecov" src="https://img.shields.io/codecov/c/github/yashaka/selene/master.svg" /></a>
+<img alt="Free" src="https://img.shields.io/badge/free-open--source-green.svg" />
+<a href="https://github.com/yashaka/selene/blob/master/LICENSE"><img alt="MIT License" src="https://img.shields.io/badge/license-MIT-green.svg" /></a></p>
+<p><a href="https://pepy.tech/project/selene"><img alt="Downloads" src="https://pepy.tech/badge/selene" /></a>
+<a href="https://github.com/yashaka/python-web-test"><img alt="Project Template" src="https://img.shields.io/badge/project-template-9cf.svg" /></a>
+<a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg" /></a></p>
+<p><a href="https://t.me/selene_py"><img alt="Join telegram chat https://t.me/selene_py" src="https://img.shields.io/badge/chat-telegram-blue" /></a>
+<a href="https://t.me/selene_py_ru"><img alt="Присоединяйся к чату https://t.me/selene_py_ru" src="https://img.shields.io/badge/%D1%87%D0%B0%D1%82-telegram-red" /></a></p>
+<p><a href="https://autotest.how/sdet-start"><img alt="Sign up for a course https://autotest.how/sdet-start" src="https://img.shields.io/badge/course-sign_up-blue" /></a>
+<a href="https://autotest.how/sdet-start-ru"><img alt="Запишись на курс https://autotest.how/sdet-start-ru" src="https://img.shields.io/badge/%D0%BD%D0%B0%D0%B1%D0%BE%D1%80-%D0%BD%D0%B0%20%D0%BA%D1%83%D1%80%D1%81-red" /></a>
+<a href="https://autotest.how/sdet-start-uk"><img alt="Реєструйся на курс https://autotest.how/sdet-start-uk" src="https://img.shields.io/badge/%D0%BD%D0%B0%D0%B1%D1%96%D1%80-%D0%BD%D0%B0_%D0%BA%D1%83%D1%80%D1%81-yellow" /></a></p>
+<p>Main features:</p>
+<ul>
+<li><strong>User-oriented API for Selenium Webdriver</strong> (code like speak common English)</li>
+<li><strong>Ajax support</strong> (Smart implicit waiting and retry mechanism)</li>
+<li><strong>PageObjects support</strong> (all elements are lazy-evaluated objects)</li>
+<li><strong>Automatic driver management</strong> (no need to install and setup driver for quick local execution)</li>
+</ul>
+<p>Selene was inspired by <a href="http://selenide.org/">Selenide</a> from Java world.</p>
+<p>Tests with Selene can be built either in a simple straightforward "selenide" style or with PageObjects composed from Widgets i.e. reusable element components.</p>
+<p>Currently, this <a href="https://yashaka.github.io/selene/">official documentation</a> is far from being complete. Please, use the following links to get started from scratch:</p>
+<ul>
+<li><a href="https://autotest.how/selenides-quick-start-docs-md">Selenides – Quick Start</a></li>
+<li><a href="https://autotest.how/selenides-in-action-docs-md">Selenides in Action</a></li>
+<li><a href="https://autotest.how/selene-cheatsheet-md">Selene Cheatsheet</a></li>
+</ul>
+<p>Find more below...</p>
+<ul>
+<li><a href="#versions">Versions</a><ul>
+<li><a href="#migration-guide">Migration Guide</a></li>
+</ul>
+</li>
+<li><a href="#prerequisites">Prerequisites</a></li>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#usage">Usage</a><ul>
+<li><a href="#quick-start">Quick Start</a></li>
+<li><a href="#core-api">Core API</a></li>
+<li><a href="#automatic-driver-and-browser-management">Automatic Driver and Browser Management</a></li>
+<li><a href="#advanced-api">Advanced API</a></li>
+</ul>
+</li>
+<li><a href="#tutorials">Tutorials</a></li>
+<li><a href="#more-examples">Examples</a></li>
+<li><a href="#contribution">Contribution</a></li>
+<li><a href="#release-workflow">Release Workflow</a></li>
+<li><a href="#changelog">Changelog</a></li>
+</ul>
+<h2 id="versions">Versions<a class="headerlink" href="#versions" title="Permanent link">#</a></h2>
+<ul>
+<li>Latest recommended version to use is latest among <a href="https://pypi.org/project/selene/2.0.0rc10/">2.0.0rc*</a><ul>
+<li>it's a completely new version of selene, with improved API and speed</li>
+<li>supports Python <code>&gt;=3.10</code></li>
+<li>supports Selenium <code>&gt;=4.12.0</code></li>
+<li>it's incompatible with <a href="https://github.com/yashaka/selene/tree/1.x">1.x</a></li>
+<li>current master branch is pointed to 2.x</li>
+<li>yet in alpha/beta stage, refining API, improving "migratability" and testing</li>
+<li>most active Selene users already upgraded to 2.0 alpha/beta 
+  and have been using it in production during last 2 years</li>
+<li>the only risk is API changes, 
+  some commands are in progress of deprecation and renaming</li>
+</ul>
+</li>
+<li>Latest version marked as stable is: <a href="https://pypi.org/project/selene/1.0.2/">1.0.2</a><ul>
+<li>its sources and corresponding README version
+can be found at <a href="https://github.com/yashaka/selene/tree/1.x">1.x</a> branch.</li>
+<li>supports legacy Python versions (see branch <code>1.x</code> for exact compatibility matrix)</li>
+</ul>
+</li>
+</ul>
+<p>THIS README DESCRIBES THE USAGE OF THE PRE-RELEASE version of Selene. For older docs look at <a href="https://github.com/yashaka/selene/tree/1.x">1.x</a> branch.</p>
+<h3 id="migration-guide">Migration guide<a class="headerlink" href="#migration-guide" title="Permanent link">#</a></h3>
+<p>From <code>1.0.2</code> to <code>2.0.0b&lt;LATEST&gt;</code>:</p>
+<ul>
+<li>upgrade to Python 3.10+</li>
+<li>update selene to <code>2.0.0b&lt;LATEST&gt;</code><ul>
+<li>find&amp;replace the <code>collection.first()</code> method from <code>.first()</code> to <code>.first</code></li>
+<li>ensure all conditions like <code>text('foo')</code> are used via <code>be.*</code> or <code>have.*</code> syntax<ul>
+<li>example:<ul>
+<li>find&amp;replace all<ul>
+<li><code>(text('foo'))</code> to <code>(have.text('foo'))</code></li>
+<li><code>(visible)</code> to <code>(be.visible)</code></li>
+</ul>
+</li>
+<li>smarter find&amp;replace (with some manual refactoring)<ul>
+<li><code>.should(x, timeout=y)</code> to <code>.with_(timeout=y).should(x)</code></li>
+<li><code>.should_not(be.*)</code> to <code>.should(be.not_.*)</code> or <code>.should(be.*.not_)</code></li>
+<li><code>.should_not(have.*)</code> to <code>.should(have.no.*)</code> or <code>.should(have.*.not_)</code></li>
+<li><code>.should_each(condition)</code> to <code>.should(condition.each)</code></li>
+</ul>
+</li>
+<li>and add corresponding imports:
+<code>from selene import be, have</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>fix another broken imports if available</li>
+<li>run tests, read deprecation warnings, and refactor to new style recommended in warning messages</li>
+</ul>
+</li>
+</ul>
+<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">#</a></h2>
+<p><a href="https://www.python.org/downloads/release/python-31016/">Python 3.10+</a></p>
+<p>Given <a href="https://github.com/pyenv/pyenv">pyenv</a> installed, installing needed version of Python is pretty simple:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>$ pyenv install 3.10.16
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>$ pyenv global 3.10.16
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>$ python -V
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>Python 3.10.16
+</code></pre></div>
+<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">#</a></h2>
+<h3 id="via-poetry-pyenv-recommended">via poetry + pyenv (recommended)<a class="headerlink" href="#via-poetry-pyenv-recommended" title="Permanent link">#</a></h3>
+<p>GIVEN <a href="https://python-poetry.org/">poetry</a> and <a href="https://github.com/pyenv/pyenv">pyenv</a> installed ...</p>
+<p>AND</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>poetry new my-tests-with-selene
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>cd my-tests-with-selene
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>pyenv local 3.10.16
+</code></pre></div>
+<p>WHEN latest pre-release recommended version:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>poetry add selene --allow-prereleases
+</code></pre></div>
+<p>WHEN latest stable version:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>poetry add selene
+</code></pre></div>
+<p>THEN</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>poetry install
+</code></pre></div>
+<h3 id="via-pip">via pip<a class="headerlink" href="#via-pip" title="Permanent link">#</a></h3>
+<p>Latest recommended pre-release alpha version:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>pip install selene --pre
+</code></pre></div>
+<p>Latest stable version:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>pip install selene
+</code></pre></div>
+<h3 id="from-sources">from sources<a class="headerlink" href="#from-sources" title="Permanent link">#</a></h3>
+<p>GIVEN webdriver</p>
+<p>THEN</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>git clone https://github.com/yashaka/selene.git
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>python setup.py install
+</code></pre></div>
+<p>or using pip:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>pip install git+https://github.com/yashaka/selene.git
+</code></pre></div>
+<h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">#</a></h2>
+<h3 id="quick-start">Quick Start<a class="headerlink" href="#quick-start" title="Permanent link">#</a></h3>
+<p>Simply...</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">selene</span><span class="w"> </span><span class="kn">import</span> <span class="n">browser</span><span class="p">,</span> <span class="n">by</span><span class="p">,</span> <span class="n">be</span><span class="p">,</span> <span class="n">have</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="n">browser</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;https://google.com/ncr&#39;</span><span class="p">)</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="n">browser</span><span class="o">.</span><span class="n">element</span><span class="p">(</span><span class="n">by</span><span class="o">.</span><span class="n">name</span><span class="p">(</span><span class="s1">&#39;q&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">should</span><span class="p">(</span><span class="n">be</span><span class="o">.</span><span class="n">blank</span><span class="p">)</span>\
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>    <span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="s1">&#39;selenium&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">press_enter</span><span class="p">()</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="n">browser</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="s1">&#39;#rso&gt;div&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">should</span><span class="p">(</span><span class="n">have</span><span class="o">.</span><span class="n">size_greater_than</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>\
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>    <span class="o">.</span><span class="n">first</span><span class="o">.</span><span class="n">should</span><span class="p">(</span><span class="n">have</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="s1">&#39;Selenium automates browsers&#39;</span><span class="p">))</span>
+</code></pre></div>
+<p>OR with custom setup</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">selene</span><span class="w"> </span><span class="kn">import</span> <span class="n">browser</span><span class="p">,</span> <span class="n">by</span><span class="p">,</span> <span class="n">be</span><span class="p">,</span> <span class="n">have</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="n">browser</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">driver_name</span> <span class="o">=</span> <span class="s1">&#39;firefox&#39;</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="n">browser</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">base_url</span> <span class="o">=</span> <span class="s1">&#39;https://google.com&#39;</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="n">browser</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="mi">2</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="c1"># browser.config.* = ...</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="n">browser</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;/ncr&#39;</span><span class="p">)</span>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="n">browser</span><span class="o">.</span><span class="n">element</span><span class="p">(</span><span class="n">by</span><span class="o">.</span><span class="n">name</span><span class="p">(</span><span class="s1">&#39;q&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">should</span><span class="p">(</span><span class="n">be</span><span class="o">.</span><span class="n">blank</span><span class="p">)</span> \
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>    <span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="s1">&#39;selenium&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">press_enter</span><span class="p">()</span>
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="n">browser</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="s1">&#39;#rso&gt;div&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">should</span><span class="p">(</span><span class="n">have</span><span class="o">.</span><span class="n">size_greater_than</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span> \
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>    <span class="o">.</span><span class="n">first</span><span class="o">.</span><span class="n">should</span><span class="p">(</span><span class="n">have</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="s1">&#39;Selenium automates browsers&#39;</span><span class="p">))</span>
+</code></pre></div>
+<p>OR more Selenide from java style:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">selene</span><span class="w"> </span><span class="kn">import</span> <span class="n">browser</span><span class="p">,</span> <span class="n">by</span><span class="p">,</span> <span class="n">be</span><span class="p">,</span> <span class="n">have</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">selene.support.shared</span><span class="w"> </span><span class="kn">import</span> <span class="n">config</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">selene.support.shared.jquery_style</span><span class="w"> </span><span class="kn">import</span> <span class="n">s</span><span class="p">,</span> <span class="n">ss</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="n">config</span><span class="o">.</span><span class="n">browser_name</span> <span class="o">=</span> <span class="s1">&#39;firefox&#39;</span>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="n">config</span><span class="o">.</span><span class="n">base_url</span> <span class="o">=</span> <span class="s1">&#39;https://google.com&#39;</span>
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="n">config</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="mi">2</span>
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="c1"># config.* = ...</span>
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="n">browser</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;/ncr&#39;</span><span class="p">)</span>
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a><span class="n">s</span><span class="p">(</span><span class="n">by</span><span class="o">.</span><span class="n">name</span><span class="p">(</span><span class="s1">&#39;q&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">should</span><span class="p">(</span><span class="n">be</span><span class="o">.</span><span class="n">blank</span><span class="p">)</span> \
+<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a>    <span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="s1">&#39;selenium&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">press_enter</span><span class="p">()</span>
+<a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a><span class="n">ss</span><span class="p">(</span><span class="s1">&#39;#rso&gt;div&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">should</span><span class="p">(</span><span class="n">have</span><span class="o">.</span><span class="n">size_greater_than</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span> \
+<a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a>    <span class="o">.</span><span class="n">first</span><span class="o">.</span><span class="n">should</span><span class="p">(</span><span class="n">have</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="s1">&#39;Selenium automates browsers&#39;</span><span class="p">))</span>
+</code></pre></div>
+<h3 id="core-api">Core Api<a class="headerlink" href="#core-api" title="Permanent link">#</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1"># Given:</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">selenium.webdriver</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chrome</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="c1"># AND chromedriver executable available in $PATH</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="c1"># WHEN:</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="kn">from</span><span class="w"> </span><span class="nn">selene</span><span class="w"> </span><span class="kn">import</span> <span class="n">Browser</span><span class="p">,</span> <span class="n">Config</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="n">browser</span> <span class="o">=</span> <span class="n">Browser</span><span class="p">(</span>
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>    <span class="n">Config</span><span class="p">(</span>
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>        <span class="n">driver</span><span class="o">=</span><span class="n">Chrome</span><span class="p">(),</span>
+<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a>        <span class="n">base_url</span><span class="o">=</span><span class="s1">&#39;https://google.com&#39;</span><span class="p">,</span>
+<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a>        <span class="n">timeout</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a>    <span class="p">)</span>
+<a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a><span class="p">)</span>
+<a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a>
+<a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a><span class="c1"># AND:</span>
+<a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a><span class="n">browser</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;/ncr&#39;</span><span class="p">)</span>
+<a id="__codelineno-12-19" name="__codelineno-12-19" href="#__codelineno-12-19"></a>
+<a id="__codelineno-12-20" name="__codelineno-12-20" href="#__codelineno-12-20"></a><span class="c1"># AND:</span>
+<a id="__codelineno-12-21" name="__codelineno-12-21" href="#__codelineno-12-21"></a><span class="c1"># browser.element(&#39;//*[@name=&quot;q&quot;]&#39;)).type(&#39;selenium&#39;).press_enter()</span>
+<a id="__codelineno-12-22" name="__codelineno-12-22" href="#__codelineno-12-22"></a><span class="c1"># OR...</span>
+<a id="__codelineno-12-23" name="__codelineno-12-23" href="#__codelineno-12-23"></a><span class="c1"># browser.element(&#39;[name=q]&#39;)).type(&#39;selenium&#39;).press_enter()</span>
+<a id="__codelineno-12-24" name="__codelineno-12-24" href="#__codelineno-12-24"></a><span class="c1"># OR...</span>
+<a id="__codelineno-12-25" name="__codelineno-12-25" href="#__codelineno-12-25"></a><span class="kn">from</span><span class="w"> </span><span class="nn">selene</span><span class="w"> </span><span class="kn">import</span> <span class="n">by</span>
+<a id="__codelineno-12-26" name="__codelineno-12-26" href="#__codelineno-12-26"></a><span class="c1"># browser.element(by.name(&#39;q&#39;)).type(&#39;selenium&#39;).press_enter()</span>
+<a id="__codelineno-12-27" name="__codelineno-12-27" href="#__codelineno-12-27"></a><span class="c1"># OR...for total readability</span>
+<a id="__codelineno-12-28" name="__codelineno-12-28" href="#__codelineno-12-28"></a><span class="n">query</span> <span class="o">=</span> <span class="n">browser</span><span class="o">.</span><span class="n">element</span><span class="p">(</span><span class="n">by</span><span class="o">.</span><span class="n">name</span><span class="p">(</span><span class="s1">&#39;q&#39;</span><span class="p">))</span>
+<a id="__codelineno-12-29" name="__codelineno-12-29" href="#__codelineno-12-29"></a><span class="c1"># actual search doesn&#39;t start on calling browser.element above, </span>
+<a id="__codelineno-12-30" name="__codelineno-12-30" href="#__codelineno-12-30"></a><span class="c1"># i.e. the element is &quot;lazy&quot;... or in other words it serves as locator         </span>
+<a id="__codelineno-12-31" name="__codelineno-12-31" href="#__codelineno-12-31"></a><span class="c1"># Below, on calling actual first action, </span>
+<a id="__codelineno-12-32" name="__codelineno-12-32" href="#__codelineno-12-32"></a><span class="c1">#     ⬇ the actual webelement is located first time</span>
+<a id="__codelineno-12-33" name="__codelineno-12-33" href="#__codelineno-12-33"></a><span class="n">query</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="s1">&#39;selenium&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">press_enter</span><span class="p">()</span>       
+<a id="__codelineno-12-34" name="__codelineno-12-34" href="#__codelineno-12-34"></a><span class="c1">#                      ⬆</span>
+<a id="__codelineno-12-35" name="__codelineno-12-35" href="#__codelineno-12-35"></a><span class="c1">#                  and here it&#39;s located again, i.e. the element is &quot;dynamic&quot;</span>
+<a id="__codelineno-12-36" name="__codelineno-12-36" href="#__codelineno-12-36"></a>
+<a id="__codelineno-12-37" name="__codelineno-12-37" href="#__codelineno-12-37"></a><span class="c1"># AND in case we need to filter collection of items </span>
+<a id="__codelineno-12-38" name="__codelineno-12-38" href="#__codelineno-12-38"></a><span class="c1">#     by some condition like visibility:</span>
+<a id="__codelineno-12-39" name="__codelineno-12-39" href="#__codelineno-12-39"></a>
+<a id="__codelineno-12-40" name="__codelineno-12-40" href="#__codelineno-12-40"></a><span class="kn">from</span><span class="w"> </span><span class="nn">selene</span><span class="w"> </span><span class="kn">import</span> <span class="n">be</span>
+<a id="__codelineno-12-41" name="__codelineno-12-41" href="#__codelineno-12-41"></a><span class="n">results</span> <span class="o">=</span> <span class="n">browser</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="s1">&#39;#rso&gt;div&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">by</span><span class="p">(</span><span class="n">be</span><span class="o">.</span><span class="n">visible</span><span class="p">)</span>
+<a id="__codelineno-12-42" name="__codelineno-12-42" href="#__codelineno-12-42"></a>
+<a id="__codelineno-12-43" name="__codelineno-12-43" href="#__codelineno-12-43"></a><span class="c1"># THEN we can assert some condition:</span>
+<a id="__codelineno-12-44" name="__codelineno-12-44" href="#__codelineno-12-44"></a><span class="kn">from</span><span class="w"> </span><span class="nn">selene</span><span class="w"> </span><span class="kn">import</span> <span class="n">have</span>
+<a id="__codelineno-12-45" name="__codelineno-12-45" href="#__codelineno-12-45"></a><span class="c1"># results.should(have.size_greater_than(5))</span>
+<a id="__codelineno-12-46" name="__codelineno-12-46" href="#__codelineno-12-46"></a><span class="c1"># results.first.should(have.text(&#39;Selenium automates browsers&#39;))</span>
+<a id="__codelineno-12-47" name="__codelineno-12-47" href="#__codelineno-12-47"></a><span class="c1"># OR...</span>
+<a id="__codelineno-12-48" name="__codelineno-12-48" href="#__codelineno-12-48"></a><span class="n">results</span><span class="o">.</span><span class="n">should</span><span class="p">(</span><span class="n">have</span><span class="o">.</span><span class="n">size_greater_than</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>\
+<a id="__codelineno-12-49" name="__codelineno-12-49" href="#__codelineno-12-49"></a>    <span class="o">.</span><span class="n">first</span><span class="o">.</span><span class="n">should</span><span class="p">(</span><span class="n">have</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="s1">&#39;Selenium automates browsers&#39;</span><span class="p">))</span>
+<a id="__codelineno-12-50" name="__codelineno-12-50" href="#__codelineno-12-50"></a>
+<a id="__codelineno-12-51" name="__codelineno-12-51" href="#__codelineno-12-51"></a><span class="c1"># FINALLY the browser can be quit:</span>
+<a id="__codelineno-12-52" name="__codelineno-12-52" href="#__codelineno-12-52"></a><span class="n">browser</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
+<a id="__codelineno-12-53" name="__codelineno-12-53" href="#__codelineno-12-53"></a><span class="c1"># but it&#39;s not mandatory, because by default Selenes kills all drivers on exit</span>
+<a id="__codelineno-12-54" name="__codelineno-12-54" href="#__codelineno-12-54"></a><span class="c1"># that can be disabled by:</span>
+<a id="__codelineno-12-55" name="__codelineno-12-55" href="#__codelineno-12-55"></a><span class="n">browser</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">hold_driver_at_exit</span> <span class="o">=</span> <span class="kc">True</span>
+</code></pre></div>
+<h3 id="automatic-driver-and-browser-management">Automatic Driver and Browser Management<a class="headerlink" href="#automatic-driver-and-browser-management" title="Permanent link">#</a></h3>
+<p>Instead of:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">selenium.webdriver</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chrome</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">selene</span><span class="w"> </span><span class="kn">import</span> <span class="n">Browser</span><span class="p">,</span> <span class="n">Config</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="n">browser</span> <span class="o">=</span> <span class="n">Browser</span><span class="p">(</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>    <span class="n">Config</span><span class="p">(</span>
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>        <span class="n">driver</span><span class="o">=</span><span class="n">Chrome</span><span class="p">(),</span>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>        <span class="n">base_url</span><span class="o">=</span><span class="s1">&#39;https://google.com&#39;</span><span class="p">,</span>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>        <span class="n">timeout</span><span class="o">=</span><span class="mi">2</span>
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>    <span class="p">)</span>
+<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="p">)</span>
+<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a>
+<a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a><span class="n">browser</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;/ncr&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p>You can simply use the browser instance predefined for you in <code>selene</code> module:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">selene</span><span class="w"> </span><span class="kn">import</span> <span class="n">browser</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="n">browser</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">base_url</span> <span class="o">=</span> <span class="s1">&#39;https://google.com&#39;</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="n">browser</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="mi">2</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="n">browser</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;/ncr&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p>So you don't need to create you driver instance manually. It will be created for you automatically.</p>
+<p>Yet, if you need some special case, like working with remote driver, etc., you can still use shared browser object with additional configuration:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">selenium</span><span class="w"> </span><span class="kn">import</span> <span class="n">webdriver</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">selene</span><span class="w"> </span><span class="kn">import</span> <span class="n">browser</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="n">options</span> <span class="o">=</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">ChromeOptions</span><span class="p">()</span>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--headless&#39;</span><span class="p">)</span>
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--no-sandbox&#39;</span><span class="p">)</span>
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--disable-gpu&#39;</span><span class="p">)</span>
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--disable-notifications&#39;</span><span class="p">)</span>
+<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a><span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--disable-extensions&#39;</span><span class="p">)</span>
+<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--disable-infobars&#39;</span><span class="p">)</span>
+<a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a><span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--enable-automation&#39;</span><span class="p">)</span>
+<a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a><span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--disable-dev-shm-usage&#39;</span><span class="p">)</span>
+<a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a><span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--disable-setuid-sandbox&#39;</span><span class="p">)</span>
+<a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a><span class="n">browser</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">driver_options</span> <span class="o">=</span> <span class="n">options</span>
+<a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a><span class="n">browser</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">driver_remote_url</span> <span class="o">=</span> <span class="s1">&#39;http://localhost:4444/wd/hub&#39;</span><span class="p">,</span> 
+<a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a><span class="n">browser</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">base_url</span> <span class="o">=</span> <span class="s1">&#39;https://google.com&#39;</span>
+<a id="__codelineno-15-17" name="__codelineno-15-17" href="#__codelineno-15-17"></a><span class="n">browser</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="mi">2</span>
+<a id="__codelineno-15-18" name="__codelineno-15-18" href="#__codelineno-15-18"></a>
+<a id="__codelineno-15-19" name="__codelineno-15-19" href="#__codelineno-15-19"></a><span class="n">browser</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;/ncr&#39;</span><span class="p">)</span>
+<a id="__codelineno-15-20" name="__codelineno-15-20" href="#__codelineno-15-20"></a><span class="o">...</span>
+</code></pre></div>
+<p>But if you like to create the driver on your own, you can do it too:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">selenium</span><span class="w"> </span><span class="kn">import</span> <span class="n">webdriver</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">selene</span><span class="w"> </span><span class="kn">import</span> <span class="n">browser</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="n">options</span> <span class="o">=</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">ChromeOptions</span><span class="p">()</span>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--headless&#39;</span><span class="p">)</span>
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="c1"># ... other arguments</span>
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="n">browser</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">driver</span> <span class="o">=</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">Remote</span><span class="p">(</span>
+<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>  <span class="s1">&#39;http://localhost:4444/wd/hub&#39;</span><span class="p">,</span> 
+<a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a>  <span class="n">options</span><span class="o">=</span><span class="n">options</span>
+<a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a><span class="p">)</span>
+<a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a><span class="c1"># Once you start to build and set the driver on your own,</span>
+<a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a><span class="c1"># probably you are going to fully manage it life cycle,</span>
+<a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a><span class="c1"># thus, consider disabling the automatic driver reset on browser.open</span>
+<a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a><span class="c1"># if driver was crashed or quit:</span>
+<a id="__codelineno-16-15" name="__codelineno-16-15" href="#__codelineno-16-15"></a><span class="n">browser</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">_reset_not_alive_driver_on_get_url</span> <span class="o">=</span> <span class="kc">False</span>
+<a id="__codelineno-16-16" name="__codelineno-16-16" href="#__codelineno-16-16"></a><span class="c1"># And consider disabling the automatic driver quit on exit:</span>
+<a id="__codelineno-16-17" name="__codelineno-16-17" href="#__codelineno-16-17"></a><span class="n">browser</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">hold_driver_at_exit</span> <span class="o">=</span> <span class="kc">True</span>
+<a id="__codelineno-16-18" name="__codelineno-16-18" href="#__codelineno-16-18"></a><span class="c1"># Other common options will still be useful:</span>
+<a id="__codelineno-16-19" name="__codelineno-16-19" href="#__codelineno-16-19"></a><span class="n">browser</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">base_url</span> <span class="o">=</span> <span class="s1">&#39;https://google.com&#39;</span>
+<a id="__codelineno-16-20" name="__codelineno-16-20" href="#__codelineno-16-20"></a><span class="n">browser</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="mi">2</span>
+<a id="__codelineno-16-21" name="__codelineno-16-21" href="#__codelineno-16-21"></a>
+<a id="__codelineno-16-22" name="__codelineno-16-22" href="#__codelineno-16-22"></a><span class="n">browser</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;/ncr&#39;</span><span class="p">)</span>
+<a id="__codelineno-16-23" name="__codelineno-16-23" href="#__codelineno-16-23"></a><span class="o">...</span>
+<a id="__codelineno-16-24" name="__codelineno-16-24" href="#__codelineno-16-24"></a>
+<a id="__codelineno-16-25" name="__codelineno-16-25" href="#__codelineno-16-25"></a><span class="c1"># Finally, you can quit the driver manually:</span>
+<a id="__codelineno-16-26" name="__codelineno-16-26" href="#__codelineno-16-26"></a><span class="n">browser</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
+</code></pre></div>
+<h3 id="advanced-api">Advanced API<a class="headerlink" href="#advanced-api" title="Permanent link">#</a></h3>
+<p>Sometimes you might need some extra things to reach your specific goals... Here go examples of Selene's <code>command</code>, <code>query</code>, custom conditions, <code>.matching(condition)</code> and <code>.wait_until(condition)</code>...</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">selene</span><span class="w"> </span><span class="kn">import</span> <span class="n">browser</span><span class="p">,</span> <span class="n">have</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="o">...</span>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="c1">###################################################</span>
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="c1"># Maybe you need some advanced actions on elements,</span>
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="c1"># e.g. for workaround something through js:</span>
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>
+<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a><span class="kn">from</span><span class="w"> </span><span class="nn">selene</span><span class="w"> </span><span class="kn">import</span> <span class="n">command</span>
+<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a>
+<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a><span class="n">browser</span><span class="o">.</span><span class="n">element</span><span class="p">(</span><span class="s1">&#39;#not-in-view&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">perform</span><span class="p">(</span><span class="n">command</span><span class="o">.</span><span class="n">js</span><span class="o">.</span><span class="n">scroll_into_view</span><span class="p">)</span>
+<a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a>
+<a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a><span class="o">...</span>
+<a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a>
+<a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a><span class="c1">###################################################</span>
+<a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a><span class="c1"># Probably you think that will need something like:</span>
+<a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a>
+<a id="__codelineno-17-18" name="__codelineno-17-18" href="#__codelineno-17-18"></a><span class="kn">from</span><span class="w"> </span><span class="nn">selene</span><span class="w"> </span><span class="kn">import</span> <span class="n">query</span>
+<a id="__codelineno-17-19" name="__codelineno-17-19" href="#__codelineno-17-19"></a>
+<a id="__codelineno-17-20" name="__codelineno-17-20" href="#__codelineno-17-20"></a><span class="o">...</span>
+<a id="__codelineno-17-21" name="__codelineno-17-21" href="#__codelineno-17-21"></a>
+<a id="__codelineno-17-22" name="__codelineno-17-22" href="#__codelineno-17-22"></a><span class="k">def</span><span class="w"> </span><span class="nf">my_int_from</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+<a id="__codelineno-17-23" name="__codelineno-17-23" href="#__codelineno-17-23"></a>    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+<a id="__codelineno-17-24" name="__codelineno-17-24" href="#__codelineno-17-24"></a>
+<a id="__codelineno-17-25" name="__codelineno-17-25" href="#__codelineno-17-25"></a><span class="n">product_text</span> <span class="o">=</span> <span class="n">browser</span><span class="o">.</span><span class="n">element</span><span class="p">(</span><span class="s1">&#39;#price-label&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+<a id="__codelineno-17-26" name="__codelineno-17-26" href="#__codelineno-17-26"></a><span class="c1"># ... to assert something not standard:</span>
+<a id="__codelineno-17-27" name="__codelineno-17-27" href="#__codelineno-17-27"></a><span class="n">price</span> <span class="o">=</span> <span class="n">my_int_from</span><span class="p">(</span><span class="n">product_text</span><span class="p">)</span>
+<a id="__codelineno-17-28" name="__codelineno-17-28" href="#__codelineno-17-28"></a><span class="k">assert</span> <span class="n">price</span> <span class="o">&gt;</span> <span class="mi">100</span>
+<a id="__codelineno-17-29" name="__codelineno-17-29" href="#__codelineno-17-29"></a>
+<a id="__codelineno-17-30" name="__codelineno-17-30" href="#__codelineno-17-30"></a><span class="c1"># But such version is very unstable in dynamic web world...</span>
+<a id="__codelineno-17-31" name="__codelineno-17-31" href="#__codelineno-17-31"></a><span class="c1"># Usually it&#39;s...</span>
+<a id="__codelineno-17-32" name="__codelineno-17-32" href="#__codelineno-17-32"></a><span class="c1"># either better to implement your custom condition:</span>
+<a id="__codelineno-17-33" name="__codelineno-17-33" href="#__codelineno-17-33"></a>
+<a id="__codelineno-17-34" name="__codelineno-17-34" href="#__codelineno-17-34"></a><span class="kn">from</span><span class="w"> </span><span class="nn">selene.core.condition</span><span class="w"> </span><span class="kn">import</span> <span class="n">Condition</span>
+<a id="__codelineno-17-35" name="__codelineno-17-35" href="#__codelineno-17-35"></a><span class="kn">from</span><span class="w"> </span><span class="nn">selene.core.conditions</span><span class="w"> </span><span class="kn">import</span> <span class="n">ElementCondition</span>
+<a id="__codelineno-17-36" name="__codelineno-17-36" href="#__codelineno-17-36"></a><span class="kn">from</span><span class="w"> </span><span class="nn">selene.core.entity</span><span class="w"> </span><span class="kn">import</span> <span class="n">Element</span>
+<a id="__codelineno-17-37" name="__codelineno-17-37" href="#__codelineno-17-37"></a>
+<a id="__codelineno-17-38" name="__codelineno-17-38" href="#__codelineno-17-38"></a>
+<a id="__codelineno-17-39" name="__codelineno-17-39" href="#__codelineno-17-39"></a><span class="k">def</span><span class="w"> </span><span class="nf">have_in_text_the_int_number_more_than</span><span class="p">(</span><span class="n">number</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Condition</span><span class="p">[</span><span class="n">Element</span><span class="p">]:</span>
+<a id="__codelineno-17-40" name="__codelineno-17-40" href="#__codelineno-17-40"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">fn</span><span class="p">(</span><span class="n">element</span><span class="p">:</span> <span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-17-41" name="__codelineno-17-41" href="#__codelineno-17-41"></a>        <span class="n">text</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+<a id="__codelineno-17-42" name="__codelineno-17-42" href="#__codelineno-17-42"></a>        <span class="n">parsed_number</span> <span class="o">=</span> <span class="n">my_int_from</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<a id="__codelineno-17-43" name="__codelineno-17-43" href="#__codelineno-17-43"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">parsed_number</span> <span class="o">&gt;</span> <span class="n">number</span><span class="p">:</span>
+<a id="__codelineno-17-44" name="__codelineno-17-44" href="#__codelineno-17-44"></a>            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span>
+<a id="__codelineno-17-45" name="__codelineno-17-45" href="#__codelineno-17-45"></a>                <span class="sa">f</span><span class="s1">&#39;actual text was: </span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s1">&#39;</span>
+<a id="__codelineno-17-46" name="__codelineno-17-46" href="#__codelineno-17-46"></a>                <span class="sa">f</span><span class="s1">&#39;with parsed int number: </span><span class="si">{</span><span class="n">parsed_number</span><span class="si">}</span><span class="s1">&#39;</span>
+<a id="__codelineno-17-47" name="__codelineno-17-47" href="#__codelineno-17-47"></a>            <span class="p">)</span>
+<a id="__codelineno-17-48" name="__codelineno-17-48" href="#__codelineno-17-48"></a>    <span class="k">return</span> <span class="n">ElementCondition</span><span class="p">(</span>
+<a id="__codelineno-17-49" name="__codelineno-17-49" href="#__codelineno-17-49"></a>        <span class="sa">f</span><span class="s1">&#39;has in text the int number more than: </span><span class="si">{</span><span class="n">number</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> 
+<a id="__codelineno-17-50" name="__codelineno-17-50" href="#__codelineno-17-50"></a>        <span class="n">fn</span>
+<a id="__codelineno-17-51" name="__codelineno-17-51" href="#__codelineno-17-51"></a>    <span class="p">)</span>
+<a id="__codelineno-17-52" name="__codelineno-17-52" href="#__codelineno-17-52"></a>
+<a id="__codelineno-17-53" name="__codelineno-17-53" href="#__codelineno-17-53"></a>
+<a id="__codelineno-17-54" name="__codelineno-17-54" href="#__codelineno-17-54"></a><span class="n">browser</span><span class="o">.</span><span class="n">element</span><span class="p">(</span><span class="s1">&#39;#price-label&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">should</span><span class="p">(</span>
+<a id="__codelineno-17-55" name="__codelineno-17-55" href="#__codelineno-17-55"></a>    <span class="n">have_in_text_the_int_number_more_than</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<a id="__codelineno-17-56" name="__codelineno-17-56" href="#__codelineno-17-56"></a><span class="p">)</span>
+<a id="__codelineno-17-57" name="__codelineno-17-57" href="#__codelineno-17-57"></a><span class="sd">&#39;&#39;&#39;</span>
+<a id="__codelineno-17-58" name="__codelineno-17-58" href="#__codelineno-17-58"></a><span class="sd"># You even can create your own project_package/selene_extensions/have.py</span>
+<a id="__codelineno-17-59" name="__codelineno-17-59" href="#__codelineno-17-59"></a><span class="sd"># with the following content:</span>
+<a id="__codelineno-17-60" name="__codelineno-17-60" href="#__codelineno-17-60"></a>
+<a id="__codelineno-17-61" name="__codelineno-17-61" href="#__codelineno-17-61"></a><span class="sd">from selene.support.conditioins.have import *</span>
+<a id="__codelineno-17-62" name="__codelineno-17-62" href="#__codelineno-17-62"></a>
+<a id="__codelineno-17-63" name="__codelineno-17-63" href="#__codelineno-17-63"></a><span class="sd">def int_number_more_than(number) -&gt; Condition[Element]:</span>
+<a id="__codelineno-17-64" name="__codelineno-17-64" href="#__codelineno-17-64"></a><span class="sd">    def fn(element: Element) -&gt; None:</span>
+<a id="__codelineno-17-65" name="__codelineno-17-65" href="#__codelineno-17-65"></a><span class="sd">        text = element.get(query.text)</span>
+<a id="__codelineno-17-66" name="__codelineno-17-66" href="#__codelineno-17-66"></a><span class="sd">        parsed_number = my_int_from(text)</span>
+<a id="__codelineno-17-67" name="__codelineno-17-67" href="#__codelineno-17-67"></a><span class="sd">        if not parsed_number &gt; number:</span>
+<a id="__codelineno-17-68" name="__codelineno-17-68" href="#__codelineno-17-68"></a><span class="sd">            raise AssertionError(</span>
+<a id="__codelineno-17-69" name="__codelineno-17-69" href="#__codelineno-17-69"></a><span class="sd">                f&#39;actual text was: {text}&#39;</span>
+<a id="__codelineno-17-70" name="__codelineno-17-70" href="#__codelineno-17-70"></a><span class="sd">                f&#39;with parsed int number: {parsed_number}&#39;</span>
+<a id="__codelineno-17-71" name="__codelineno-17-71" href="#__codelineno-17-71"></a><span class="sd">            )</span>
+<a id="__codelineno-17-72" name="__codelineno-17-72" href="#__codelineno-17-72"></a><span class="sd">    return ElementCondition(</span>
+<a id="__codelineno-17-73" name="__codelineno-17-73" href="#__codelineno-17-73"></a><span class="sd">        f&#39;has in text the int number more than: {number}&#39;, </span>
+<a id="__codelineno-17-74" name="__codelineno-17-74" href="#__codelineno-17-74"></a><span class="sd">        fn</span>
+<a id="__codelineno-17-75" name="__codelineno-17-75" href="#__codelineno-17-75"></a><span class="sd">    )</span>
+<a id="__codelineno-17-76" name="__codelineno-17-76" href="#__codelineno-17-76"></a>
+<a id="__codelineno-17-77" name="__codelineno-17-77" href="#__codelineno-17-77"></a><span class="sd"># And then in your test:</span>
+<a id="__codelineno-17-78" name="__codelineno-17-78" href="#__codelineno-17-78"></a>
+<a id="__codelineno-17-79" name="__codelineno-17-79" href="#__codelineno-17-79"></a><span class="sd">from project_package.selene_extensions import have</span>
+<a id="__codelineno-17-80" name="__codelineno-17-80" href="#__codelineno-17-80"></a>
+<a id="__codelineno-17-81" name="__codelineno-17-81" href="#__codelineno-17-81"></a><span class="sd">browser.element(&#39;#price-label&#39;).should(have.text(&#39;Price: &#39;) \</span>
+<a id="__codelineno-17-82" name="__codelineno-17-82" href="#__codelineno-17-82"></a><span class="sd">    .should(have.int_number_more_than(100))</span>
+<a id="__codelineno-17-83" name="__codelineno-17-83" href="#__codelineno-17-83"></a>
+<a id="__codelineno-17-84" name="__codelineno-17-84" href="#__codelineno-17-84"></a><span class="sd"># i.e. using it same style as in selene,</span>
+<a id="__codelineno-17-85" name="__codelineno-17-85" href="#__codelineno-17-85"></a><span class="sd"># with also access to all original selene conditions</span>
+<a id="__codelineno-17-86" name="__codelineno-17-86" href="#__codelineno-17-86"></a><span class="sd">&#39;&#39;&#39;</span>
+<a id="__codelineno-17-87" name="__codelineno-17-87" href="#__codelineno-17-87"></a>
+<a id="__codelineno-17-88" name="__codelineno-17-88" href="#__codelineno-17-88"></a><span class="c1"># Such condition-based alternative to the original `assert price &gt; 100` is less fragile,</span>
+<a id="__codelineno-17-89" name="__codelineno-17-89" href="#__codelineno-17-89"></a><span class="c1"># because Python&#39;s `assert` does not have &quot;implicit waiting&quot;,</span>
+<a id="__codelineno-17-90" name="__codelineno-17-90" href="#__codelineno-17-90"></a><span class="c1"># while Selene&#39;s `should` command does have ;)</span>
+<a id="__codelineno-17-91" name="__codelineno-17-91" href="#__codelineno-17-91"></a>
+<a id="__codelineno-17-92" name="__codelineno-17-92" href="#__codelineno-17-92"></a><span class="c1"># Furthermore, the good test is when you totally control your test data, </span>
+<a id="__codelineno-17-93" name="__codelineno-17-93" href="#__codelineno-17-93"></a><span class="c1"># and the code like below:</span>
+<a id="__codelineno-17-94" name="__codelineno-17-94" href="#__codelineno-17-94"></a>
+<a id="__codelineno-17-95" name="__codelineno-17-95" href="#__codelineno-17-95"></a><span class="n">product</span> <span class="o">=</span> <span class="n">browser</span><span class="o">.</span><span class="n">element</span><span class="p">(</span><span class="s1">&#39;#to-remember-for-future&#39;</span><span class="p">)</span>
+<a id="__codelineno-17-96" name="__codelineno-17-96" href="#__codelineno-17-96"></a>
+<a id="__codelineno-17-97" name="__codelineno-17-97" href="#__codelineno-17-97"></a><span class="n">product_text_before</span> <span class="o">=</span> <span class="n">product</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+<a id="__codelineno-17-98" name="__codelineno-17-98" href="#__codelineno-17-98"></a><span class="n">price_before</span> <span class="o">=</span> <span class="n">my_int_from</span><span class="p">(</span><span class="n">product_text_before</span><span class="p">)</span>
+<a id="__codelineno-17-99" name="__codelineno-17-99" href="#__codelineno-17-99"></a>
+<a id="__codelineno-17-100" name="__codelineno-17-100" href="#__codelineno-17-100"></a><span class="o">...</span> <span class="c1"># some test steps</span>
+<a id="__codelineno-17-101" name="__codelineno-17-101" href="#__codelineno-17-101"></a>
+<a id="__codelineno-17-102" name="__codelineno-17-102" href="#__codelineno-17-102"></a><span class="n">product_text_after</span> <span class="o">=</span> <span class="n">product</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+<a id="__codelineno-17-103" name="__codelineno-17-103" href="#__codelineno-17-103"></a><span class="n">price_after</span> <span class="o">=</span> <span class="n">my_int_from</span><span class="p">(</span><span class="n">product_text_after</span><span class="p">)</span>
+<a id="__codelineno-17-104" name="__codelineno-17-104" href="#__codelineno-17-104"></a>
+<a id="__codelineno-17-105" name="__codelineno-17-105" href="#__codelineno-17-105"></a><span class="k">assert</span> <span class="n">price_after</span> <span class="o">&gt;</span> <span class="n">price_before</span>
+<a id="__codelineno-17-106" name="__codelineno-17-106" href="#__codelineno-17-106"></a>
+<a id="__codelineno-17-107" name="__codelineno-17-107" href="#__codelineno-17-107"></a><span class="c1"># – normally, should be refactored to something like:</span>
+<a id="__codelineno-17-108" name="__codelineno-17-108" href="#__codelineno-17-108"></a>
+<a id="__codelineno-17-109" name="__codelineno-17-109" href="#__codelineno-17-109"></a><span class="n">product</span> <span class="o">=</span> <span class="n">browser</span><span class="o">.</span><span class="n">element</span><span class="p">(</span><span class="s1">&#39;#to-remember-for-future&#39;</span><span class="p">)</span>
+<a id="__codelineno-17-110" name="__codelineno-17-110" href="#__codelineno-17-110"></a>
+<a id="__codelineno-17-111" name="__codelineno-17-111" href="#__codelineno-17-111"></a><span class="n">product</span><span class="o">.</span><span class="n">should</span><span class="p">(</span><span class="n">have</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="s1">&#39;100$&#39;</span><span class="p">))</span>
+<a id="__codelineno-17-112" name="__codelineno-17-112" href="#__codelineno-17-112"></a>
+<a id="__codelineno-17-113" name="__codelineno-17-113" href="#__codelineno-17-113"></a><span class="o">...</span> <span class="c1"># some test steps</span>
+<a id="__codelineno-17-114" name="__codelineno-17-114" href="#__codelineno-17-114"></a>
+<a id="__codelineno-17-115" name="__codelineno-17-115" href="#__codelineno-17-115"></a><span class="n">product</span><span class="o">.</span><span class="n">should</span><span class="p">(</span><span class="n">have</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="s1">&#39;125$&#39;</span><span class="p">))</span>
+<a id="__codelineno-17-116" name="__codelineno-17-116" href="#__codelineno-17-116"></a>
+<a id="__codelineno-17-117" name="__codelineno-17-117" href="#__codelineno-17-117"></a>
+<a id="__codelineno-17-118" name="__codelineno-17-118" href="#__codelineno-17-118"></a><span class="c1">###############################################</span>
+<a id="__codelineno-17-119" name="__codelineno-17-119" href="#__codelineno-17-119"></a><span class="c1"># You might also think you need something like:</span>
+<a id="__codelineno-17-120" name="__codelineno-17-120" href="#__codelineno-17-120"></a>
+<a id="__codelineno-17-121" name="__codelineno-17-121" href="#__codelineno-17-121"></a><span class="kn">from</span><span class="w"> </span><span class="nn">selene</span><span class="w"> </span><span class="kn">import</span> <span class="n">query</span>
+<a id="__codelineno-17-122" name="__codelineno-17-122" href="#__codelineno-17-122"></a>
+<a id="__codelineno-17-123" name="__codelineno-17-123" href="#__codelineno-17-123"></a><span class="k">if</span> <span class="n">browser</span><span class="o">.</span><span class="n">element</span><span class="p">(</span><span class="s1">&#39;#i-might-say-yes-or-no&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">text</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;yes&#39;</span><span class="p">:</span>
+<a id="__codelineno-17-124" name="__codelineno-17-124" href="#__codelineno-17-124"></a>    <span class="o">...</span>  <span class="c1"># do something...</span>
+<a id="__codelineno-17-125" name="__codelineno-17-125" href="#__codelineno-17-125"></a>
+<a id="__codelineno-17-126" name="__codelineno-17-126" href="#__codelineno-17-126"></a><span class="c1"># Or:</span>
+<a id="__codelineno-17-127" name="__codelineno-17-127" href="#__codelineno-17-127"></a>
+<a id="__codelineno-17-128" name="__codelineno-17-128" href="#__codelineno-17-128"></a><span class="kn">from</span><span class="w"> </span><span class="nn">selene</span><span class="w"> </span><span class="kn">import</span> <span class="n">query</span>
+<a id="__codelineno-17-129" name="__codelineno-17-129" href="#__codelineno-17-129"></a>
+<a id="__codelineno-17-130" name="__codelineno-17-130" href="#__codelineno-17-130"></a><span class="k">if</span> <span class="n">browser</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="s1">&#39;.option&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">size</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+<a id="__codelineno-17-131" name="__codelineno-17-131" href="#__codelineno-17-131"></a>    <span class="o">...</span>  <span class="c1"># do something...</span>
+<a id="__codelineno-17-132" name="__codelineno-17-132" href="#__codelineno-17-132"></a>
+<a id="__codelineno-17-133" name="__codelineno-17-133" href="#__codelineno-17-133"></a><span class="c1"># – maybe, one day, you really find a use case:)</span>
+<a id="__codelineno-17-134" name="__codelineno-17-134" href="#__codelineno-17-134"></a>
+<a id="__codelineno-17-135" name="__codelineno-17-135" href="#__codelineno-17-135"></a><span class="c1"># But for above cases, probably easier would be:</span>
+<a id="__codelineno-17-136" name="__codelineno-17-136" href="#__codelineno-17-136"></a>
+<a id="__codelineno-17-137" name="__codelineno-17-137" href="#__codelineno-17-137"></a><span class="k">if</span> <span class="n">browser</span><span class="o">.</span><span class="n">element</span><span class="p">(</span><span class="s1">&#39;#i-might-say-yes-or-no&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">wait_until</span><span class="p">(</span><span class="n">have</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="s1">&#39;yes&#39;</span><span class="p">)):</span>
+<a id="__codelineno-17-138" name="__codelineno-17-138" href="#__codelineno-17-138"></a>    <span class="o">...</span>  <span class="c1"># do something</span>
+<a id="__codelineno-17-139" name="__codelineno-17-139" href="#__codelineno-17-139"></a>
+<a id="__codelineno-17-140" name="__codelineno-17-140" href="#__codelineno-17-140"></a><span class="o">...</span>
+<a id="__codelineno-17-141" name="__codelineno-17-141" href="#__codelineno-17-141"></a>
+<a id="__codelineno-17-142" name="__codelineno-17-142" href="#__codelineno-17-142"></a><span class="k">if</span> <span class="n">browser</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="s1">&#39;.i-will-appear&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">wait_until</span><span class="p">(</span><span class="n">have</span><span class="o">.</span><span class="n">size_greater_than_or_equal</span><span class="p">(</span><span class="mi">2</span><span class="p">)):</span>
+<a id="__codelineno-17-143" name="__codelineno-17-143" href="#__codelineno-17-143"></a>    <span class="o">...</span>  <span class="c1"># do something</span>
+<a id="__codelineno-17-144" name="__codelineno-17-144" href="#__codelineno-17-144"></a>
+<a id="__codelineno-17-145" name="__codelineno-17-145" href="#__codelineno-17-145"></a><span class="c1"># Or, by using non-waiting versions, if &quot;you are in a rush:)&quot;:</span>
+<a id="__codelineno-17-146" name="__codelineno-17-146" href="#__codelineno-17-146"></a>
+<a id="__codelineno-17-147" name="__codelineno-17-147" href="#__codelineno-17-147"></a><span class="k">if</span> <span class="n">browser</span><span class="o">.</span><span class="n">element</span><span class="p">(</span><span class="s1">&#39;#i-might-say-yes-or-no&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">matching</span><span class="p">(</span><span class="n">have</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="s1">&#39;yes&#39;</span><span class="p">)):</span>
+<a id="__codelineno-17-148" name="__codelineno-17-148" href="#__codelineno-17-148"></a>    <span class="o">...</span>  <span class="c1"># do something</span>
+<a id="__codelineno-17-149" name="__codelineno-17-149" href="#__codelineno-17-149"></a>
+<a id="__codelineno-17-150" name="__codelineno-17-150" href="#__codelineno-17-150"></a><span class="o">...</span>
+<a id="__codelineno-17-151" name="__codelineno-17-151" href="#__codelineno-17-151"></a>
+<a id="__codelineno-17-152" name="__codelineno-17-152" href="#__codelineno-17-152"></a><span class="k">if</span> <span class="n">browser</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="s1">&#39;.i-will-appear&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">matching</span><span class="p">(</span><span class="n">have</span><span class="o">.</span><span class="n">size_greater_than_or_equal</span><span class="p">(</span><span class="mi">2</span><span class="p">)):</span>
+<a id="__codelineno-17-153" name="__codelineno-17-153" href="#__codelineno-17-153"></a>    <span class="o">...</span> <span class="c1"># do something</span>
+</code></pre></div>
+<h2 id="tutorials">Tutorials<a class="headerlink" href="#tutorials" title="Permanent link">#</a></h2>
+<p>TBD</p>
+<h2 id="more-examples">More Examples<a class="headerlink" href="#more-examples" title="Permanent link">#</a></h2>
+<ul>
+<li><a href="https://github.com/yashaka/python-web-test">Project template</a></li>
+</ul>
+<p>TBD</p>
+<h2 id="contribution">Contribution<a class="headerlink" href="#contribution" title="Permanent link">#</a></h2>
+<p><a href="contribution/to-source-code-guide/">see CONTRIBUTING.md</a></p>
+<h2 id="release-workflow">Release Workflow<a class="headerlink" href="#release-workflow" title="Permanent link">#</a></h2>
+<p><a href="contribution/release-workflow-guide/">see Release workflow</a></p>
+<h2 id="changelog">Changelog<a class="headerlink" href="#changelog" title="Permanent link">#</a></h2>
+<p><a href="changelog/">see CHANGELOG.md</a></p>
+
+
+
+
+
+
+
+  
+    
+  
+  
+    
+  
+
+
+  <aside class="md-source-file">
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Last update">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="February 27, 2023 15:03:34 UTC"><span class="timeago" datetime="2023-02-27T15:03:34+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="February 27, 2023 15:03:34 UTC">2023-02-27</span>
+  </span>
+
+    
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Created">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="April 17, 2015 09:35:16 UTC"><span class="timeago" datetime="2015-04-17T09:35:16+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="April 17, 2015 09:35:16 UTC">2015-04-17</span>
+  </span>
+
+    
+    
+    
+  </aside>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://autotest.how/sdet-start-ru" target="_blank" rel="noopener" title="Запишись на курс" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.36 14c.08-.66.14-1.32.14-2s-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2m-5.15 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95a8.03 8.03 0 0 1-4.33 3.56M14.34 14H9.66c-.1-.66-.16-1.32-.16-2s.06-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2M12 19.96c-.83-1.2-1.5-2.53-1.91-3.96h3.82c-.41 1.43-1.08 2.76-1.91 3.96M8 8H5.08A7.92 7.92 0 0 1 9.4 4.44C8.8 5.55 8.35 6.75 8 8m-2.92 8H8c.35 1.25.8 2.45 1.4 3.56A8 8 0 0 1 5.08 16m-.82-2C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2M12 4.03c.83 1.2 1.5 2.54 1.91 3.97h-3.82c.41-1.43 1.08-2.77 1.91-3.97M18.92 8h-2.95a15.7 15.7 0 0 0-1.38-3.56c1.84.63 3.37 1.9 4.33 3.56M12 2C6.47 2 2 6.5 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://t.me/selene_py_ru" target="_blank" rel="noopener" title="Selene.py на русском" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M256 8a248 248 0 1 0 0 496 248 248 0 1 0 0-496m115 168.7c-3.7 39.2-19.9 134.4-28.1 178.3-3.5 18.6-10.3 24.8-16.9 25.4-14.4 1.3-25.3-9.5-39.3-18.7-21.8-14.3-34.2-23.2-55.3-37.2-24.5-16.1-8.6-25 5.3-39.5 3.7-3.8 67.1-61.5 68.3-66.7.2-.7.3-3.1-1.2-4.4s-3.6-.8-5.1-.5c-2.2.5-37.1 23.5-104.6 69.1-9.9 6.8-18.9 10.1-26.9 9.9-8.9-.2-25.9-5-38.6-9.1-15.5-5-27.9-7.7-26.8-16.3.6-4.5 6.7-9 18.4-13.7 72.3-31.5 120.5-52.3 144.6-62.3 68.9-28.6 83.2-33.6 92.5-33.8 2.1 0 6.6.5 9.6 2.9 2 1.7 3.2 4.1 3.5 6.7.5 3.2.6 6.5.4 9.8z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://autotest.how/sdet-start" target="_blank" rel="noopener" title="Sign up to Selene course" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.36 14c.08-.66.14-1.32.14-2s-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2m-5.15 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95a8.03 8.03 0 0 1-4.33 3.56M14.34 14H9.66c-.1-.66-.16-1.32-.16-2s.06-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2M12 19.96c-.83-1.2-1.5-2.53-1.91-3.96h3.82c-.41 1.43-1.08 2.76-1.91 3.96M8 8H5.08A7.92 7.92 0 0 1 9.4 4.44C8.8 5.55 8.35 6.75 8 8m-2.92 8H8c.35 1.25.8 2.45 1.4 3.56A8 8 0 0 1 5.08 16m-.82-2C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2M12 4.03c.83 1.2 1.5 2.54 1.91 3.97h-3.82c.41-1.43 1.08-2.77 1.91-3.97M18.92 8h-2.95a15.7 15.7 0 0 0-1.38-3.56c1.84.63 3.37 1.9 4.33 3.56M12 2C6.47 2 2 6.5 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://t.me/selene_py" target="_blank" rel="noopener" title="Selene.py (in English)" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M256 8a248 248 0 1 0 0 496 248 248 0 1 0 0-496m115 168.7c-3.7 39.2-19.9 134.4-28.1 178.3-3.5 18.6-10.3 24.8-16.9 25.4-14.4 1.3-25.3-9.5-39.3-18.7-21.8-14.3-34.2-23.2-55.3-37.2-24.5-16.1-8.6-25 5.3-39.5 3.7-3.8 67.1-61.5 68.3-66.7.2-.7.3-3.1-1.2-4.4s-3.6-.8-5.1-.5c-2.2.5-37.1 23.5-104.6 69.1-9.9 6.8-18.9 10.1-26.9 9.9-8.9-.2-25.9-5-38.6-9.1-15.5-5-27.9-7.7-26.8-16.3.6-4.5 6.7-9 18.4-13.7 72.3-31.5 120.5-52.3 144.6-62.3 68.9-28.6 83.2-33.6 92.5-33.8 2.1 0 6.6.5 9.6 2.9 2 1.7 3.2 4.1 3.5 6.7.5 3.2.6 6.5.4 9.8z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://autotest.how/sdet-start-uk" target="_blank" rel="noopener" title="Реєструйся на курс" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.36 14c.08-.66.14-1.32.14-2s-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2m-5.15 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95a8.03 8.03 0 0 1-4.33 3.56M14.34 14H9.66c-.1-.66-.16-1.32-.16-2s.06-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2M12 19.96c-.83-1.2-1.5-2.53-1.91-3.96h3.82c-.41 1.43-1.08 2.76-1.91 3.96M8 8H5.08A7.92 7.92 0 0 1 9.4 4.44C8.8 5.55 8.35 6.75 8 8m-2.92 8H8c.35 1.25.8 2.45 1.4 3.56A8 8 0 0 1 5.08 16m-.82-2C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2M12 4.03c.83 1.2 1.5 2.54 1.91 3.97h-3.82c.41-1.43 1.08-2.77 1.91-3.97M18.92 8h-2.95a15.7 15.7 0 0 0-1.38-3.56c1.84.63 3.37 1.9 4.33 3.56M12 2C6.47 2 2 6.5 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["search.suggest", "search.highlight", "content.code.copy", "content.action.edit", "content.action.view"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
+    
+    
+      <script src="assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="js/timeago.min.js"></script>
+      
+        <script src="js/timeago_mkdocs_material.js"></script>
+      
+    
+  </body>
+</html>
