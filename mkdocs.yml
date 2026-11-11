@@ -20,6 +20,7 @@ nav:
   # - Learn Advanced:
   #   - Stub Title 1: learn-advanced/automate-testing-guide.md
   - FAQ:
+    - How Selene compares to other frameworks: faq/comparison-with-other-frameworks-guide.md
     - How to work with iFrames: faq/iframes-howto.md
     - How to work with Shadow DOM: faq/shadow-dom-howto.md
     - How to use custom profile: faq/custom-user-profile-howto.md
