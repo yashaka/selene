@@ -71,6 +71,13 @@ Before implementing your ideas, it is recommended first to create a correspondin
 11. Push to the branch (`git push origin my-new-feature`)
 12. Create a new Pull Request
 
+## Code conventions
+
+We use the following tools to maintain code quality:
+- [black](https://github.com/psf/black) for formatting
+- [pycodestyle](https://github.com/PyCQA/pycodestyle) for style checks
+- [pylint](https://github.com/PyCQA/pylint) for linting
+
 ## Local TinyMCE demo for integration tests
 
 Frame-context integration tests use `TINYMCE_URL` from `tests/const.py`.
